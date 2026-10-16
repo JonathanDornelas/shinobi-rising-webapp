@@ -1,0 +1,173 @@
+<title>Prancha de Ícones-Semente</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&family=Pixelify+Sans:wght@500;700&family=Shippori+Mincho+B1:wght@600;700;800&display=swap">
+<style>
+/* Layout: prancha de revisão — cabeçalho curto, duas "mesas" (Washi e Sumi) lado a lado, depois contexto de uso e critérios. */
+:root {
+  --bg: #FBF7F0; --surface: #F4E4D6; --line: #E6D2BF; --fg: #1A1A1A; --muted: #5C524A; --link: #8B2E20;
+  --primary: #C44536; --secondary: #5C1E15; --accent: #BF9000; --success: #2F7A4F; --warning: #C98A00;
+  /* the two test grounds are fixed on purpose: the page exists to compare them */
+  --washi-bg: #FBF7F0; --washi-panel: #F4E4D6; --washi-line: #E6D2BF; --washi-fg: #1A1A1A; --washi-muted: #5C524A;
+  --sumi-bg: #16110F; --sumi-panel: #1F1815; --sumi-line: #2E2420; --sumi-fg: #EFE3D3; --sumi-muted: #B5A797;
+  --pv: #C44536; --pc: #2D7FB8;
+  --display: "Shippori Mincho B1", "Noto Serif JP", Georgia, serif;
+  --body: "Noto Sans", "Segoe UI", system-ui, sans-serif;
+  --pixel: "Pixelify Sans", "Noto Sans", monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #16110F; --surface: #1F1815; --line: #2E2420; --fg: #EFE3D3; --muted: #B5A797; --link: #E8806F; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #16110F; --surface: #1F1815; --line: #2E2420; --fg: #EFE3D3; --muted: #B5A797; --link: #E8806F; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font: 15px/1.6 var(--body); }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 40px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 40px; }
+img.px { image-rendering: pixelated; image-rendering: crisp-edges; display: block; }
+h1, h2 { font-family: var(--display); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(28px, 4vw, 38px); line-height: 1.15; font-weight: 800; }
+h2 { font-size: 22px; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+.eyebrow { font: 700 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+header { display: grid; gap: 12px; position: relative; }
+header .kanji { position: absolute; right: 0; top: -12px; font: 800 96px/1 var(--display); color: var(--line); pointer-events: none; user-select: none; }
+header p { color: var(--muted); }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; color: var(--muted); }
+.meta b { color: var(--fg); font-variant-numeric: tabular-nums; }
+
+/* two grounds */
+.grounds { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr)); gap: 16px; }
+.ground { border-radius: 8px; padding: 20px; display: grid; gap: 18px; min-width: 0; border: 1px solid var(--g-line); background: var(--g-bg); color: var(--g-fg); }
+.ground.washi { --g-bg: var(--washi-bg); --g-panel: var(--washi-panel); --g-line: var(--washi-line); --g-fg: var(--washi-fg); --g-muted: var(--washi-muted); }
+.ground.sumi { --g-bg: var(--sumi-bg); --g-panel: var(--sumi-panel); --g-line: var(--sumi-line); --g-fg: var(--sumi-fg); --g-muted: var(--sumi-muted); }
+.ground h3 { margin: 0; font: 700 13px/1 var(--body); letter-spacing: .06em; text-transform: uppercase; color: var(--g-muted); display: flex; justify-content: space-between; }
+.ground h3 span { font-weight: 500; letter-spacing: 0; text-transform: none; }
+.scales { overflow-x: auto; }
+.scales table { border-collapse: collapse; width: 100%; }
+.scales th { font: 500 12px/1 var(--body); color: var(--g-muted); text-align: left; padding: 0 8px 8px 0; }
+.scales td { padding: 6px 12px 6px 0; vertical-align: middle; }
+.scales td:first-child { font: 500 12px/1.3 var(--body); color: var(--g-muted); white-space: nowrap; }
+
+/* context mockups */
+.ctx { display: grid; gap: 12px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.nav { display: grid; gap: 2px; background: var(--g-panel); border-radius: 8px; padding: 6px; }
+.nav a { display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-radius: 4px; color: var(--g-fg); text-decoration: none; font-weight: 500; }
+.nav a.on { box-shadow: inset 3px 0 0 var(--primary); background: var(--g-bg); }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 5px; border-radius: 2px; font: 500 13px/1.4 var(--body); border: 1px solid var(--g-line); }
+.chip.katon { background: color-mix(in srgb, #E8692E 14%, transparent); }
+.chip.konoha { background: var(--g-panel); }
+.badge-ok { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 5px; border-radius: 2px; background: var(--success); color: #FFFFFF; font: 600 13px/1.4 var(--body); }
+.tracker { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; font-size: 13px; }
+.tracker .bar { height: 8px; border-radius: 2px; background: var(--g-line); overflow: hidden; }
+.tracker .bar i { display: block; height: 100%; background: var(--pc); }
+.tracker b { font-variant-numeric: tabular-nums; }
+.skill { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 8px 10px; background: var(--g-panel); border-radius: 4px; }
+.skill small { color: var(--g-muted); display: block; font-size: 12px; }
+.skill .val { font: 700 22px/1 var(--pixel); }
+.jutsu-head { display: flex; align-items: center; gap: 10px; background: var(--secondary); color: #F4E4D6; border-radius: 8px 8px 0 0; padding: 8px 12px; }
+.jutsu-head strong { font: 700 17px/1.2 var(--display); }
+.jutsu-head em { font-size: 12px; opacity: .85; display: block; }
+
+/* icon notes */
+.notes { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 12px; }
+.note { display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: start; padding: 14px; border-top: 1px solid var(--line); }
+.note .pix { width: 64px; height: 64px; background: var(--surface); border-radius: 4px; display: grid; place-items: center; }
+.note h4 { margin: 0 0 2px; font: 700 15px/1.3 var(--body); }
+.note code { font-size: 12px; color: var(--muted); word-break: break-all; }
+.note p { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.tag { display: inline-block; font: 700 11px/1 var(--body); letter-spacing: .05em; text-transform: uppercase; padding: 4px 6px; border-radius: 2px; margin-top: 6px; }
+.tag.canon { background: var(--secondary); color: #F4E4D6; }
+.tag.ia { background: var(--surface); color: var(--fg); border: 1px solid var(--line); }
+.tag.code { background: var(--accent); color: #1A1A1A; }
+
+/* review */
+.review { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; }
+.review section { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.check { display: grid; gap: 8px; }
+.check label { display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start; cursor: pointer; }
+.check input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--primary); }
+.check input:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.progress { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+ol.next { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+ol.next li::marker { font-family: var(--pixel); color: var(--primary); }
+footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+footer .seal { font-family: var(--display); font-weight: 800; color: var(--fg); }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="kanji" aria-hidden="true">印</span>
+    <span class="eyebrow">Shinobi no Michi · PixelLab · conjunto-semente</span>
+    <h1>Prancha de Ícones-Semente</h1>
+    <p>Os 6 ícones que definem o estilo de todo o conjunto. Confira nos dois fundos, nas escalas permitidas e dentro de componentes reais antes de liberar a produção dos lotes.</p>
+    <div class="meta">
+      <span>Tamanho nativo <b>32×32</b></span>
+      <span>Escalas <b>1× · 2× · 3×</b></span>
+      <span>Paleta <b>25 cores</b></span>
+      <span>Gerações usadas <b>15 de 40</b></span>
+    </div>
+  </header>
+
+  <div class="grounds">
+    {{GROUND:washi:Washi (tema claro):#FBF7F0}}
+    {{GROUND:sumi:Sumi (tema escuro):#16110F}}
+  </div>
+
+  <section style="display:grid;gap:12px">
+    <h2>Como cada ícone foi feito</h2>
+    <div class="notes">
+      <div class="note"><div class="pix"><img class="px" src="{{pc}}" width="64" height="64" alt=""></div><div><h4>Pontos de Chakra</h4><code>ic-recurso-pc-32.png</code><br><span class="tag ia">PixelLab</span><p>Gerado por texto com paleta forçada. Veio sem contorno; o contorno de 1px foi aplicado em código.</p></div></div>
+      <div class="note"><div class="pix"><img class="px" src="{{katon}}" width="64" height="64" alt=""></div><div><h4>Katon (Fogo)</h4><code>ic-elemento-katon-32.png</code><br><span class="tag canon">Canônico</span><p>Ícone oficial de natureza do chakra (octógono com 火), redesenhado pelo PixelLab em img2img com força 180.</p></div></div>
+      <div class="note"><div class="pix"><img class="px" src="{{taijutsu}}" width="64" height="64" alt=""></div><div><h4>Taijutsu</h4><code>ic-pericia-taijutsu-32.png</code><br><span class="tag ia">PixelLab</span><p>Punho com bandagens de treino, gerado por texto. Também serve como ícone do tipo de jutsu.</p></div></div>
+      <div class="note"><div class="pix"><img class="px" src="{{konoha}}" width="64" height="64" alt=""></div><div><h4>Konohagakure</h4><code>ic-vila-konoha-32.png</code><br><span class="tag canon">Canônico</span><p>Símbolo oficial da vila sobre aço, como a placa do hitaiate. PixelLab img2img com força 300 e brilho metálico em código.</p></div></div>
+      <div class="note"><div class="pix"><img class="px" src="{{aprovado}}" width="64" height="64" alt=""></div><div><h4>Aprovado</h4><code>ic-status-aprovado-32.png</code><br><span class="tag code">Desenho em código</span><p>Selo hanko com o kanji 可 ("aprovado"). O texto-para-imagem colocou um "$" no carimbo, então foi desenhado pixel a pixel.</p></div></div>
+      <div class="note"><div class="pix"><img class="px" src="{{jutsus}}" width="64" height="64" alt=""></div><div><h4>Jutsus (navegação)</h4><code>ic-nav-jutsus-32.png</code><br><span class="tag ia">PixelLab</span><p>Mãos em selo com brilho de chakra. A primeira versão saiu escura demais e sumia no tema Sumi; esta foi refeita em tom de pele claro.</p></div></div>
+    </div>
+  </section>
+
+  <div class="review">
+    <section>
+      <h2>Critérios de aprovação</h2>
+      <p class="progress" id="progress">0 de 6 conferidos</p>
+      <div class="check" id="checks">
+        <label><input type="checkbox" id="c1"><span>Os 6 parecem do mesmo jogo: mesma espessura de contorno, mesma luz vinda do alto à esquerda.</span></label>
+        <label><input type="checkbox" id="c2"><span>Todos leem bem no Sumi, inclusive os contornos escuros.</span></label>
+        <label><input type="checkbox" id="c3"><span>Os símbolos canônicos (Konoha, Katon) são reconhecíveis à primeira vista.</span></label>
+        <label><input type="checkbox" id="c4"><span>Em 1× (32px), nenhum vira borrão; o 可 e o 火 continuam legíveis.</span></label>
+        <label><input type="checkbox" id="c5"><span>O nível de sombreamento está igual entre os feitos por IA e os desenhados em código.</span></label>
+        <label><input type="checkbox" id="c6"><span>Dentro dos componentes, o ícone apoia o texto sem roubar a atenção.</span></label>
+      </div>
+    </section>
+    <section>
+      <h2>Depois da aprovação</h2>
+      <ol class="next">
+        <li><strong>Lote A</strong>: núcleo da interface, 60 ícones numa chamada só, usando estas 6 sementes como referência de estilo.</li>
+        <li><strong>Canônicos</strong>: 7 vilas, 12 brasões de clã e 4 elementos, a partir dos símbolos oficiais.</li>
+        <li><strong>Lote B</strong>: mundo do jogo, ações e brasões genéricos, 59 ícones.</li>
+        <li><strong>Selos de rank</strong> E–S desenhados em código e <strong>ilustrações</strong> 96×96.</li>
+      </ol>
+      <p class="progress">Restam 25 gerações no trial (mais 5 por dia). O lote A cabe; o resto precisa de alguns dias de bônus ou de um plano pago.</p>
+    </section>
+  </div>
+
+  <footer><span>Fonte: <code>pixellab/icones-p1.json</code> · prompts em <code>pixellab/prompts-p1.md</code></span><span class="seal">「忍道」</span></footer>
+</div>
+
+<script>
+(function () {
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('#checks input'));
+  var out = document.getElementById('progress');
+  var KEY = 'prancha-sementes-checks';
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || '{}'); boxes.forEach(function (b) { b.checked = !!saved[b.id]; }); } catch (e) {}
+  function update() {
+    var n = boxes.filter(function (b) { return b.checked; }).length;
+    out.textContent = n === boxes.length ? 'Tudo conferido: estilo pronto para os lotes' : n + ' de ' + boxes.length + ' conferidos';
+    try { var s = {}; boxes.forEach(function (b) { s[b.id] = b.checked; }); localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {}
+  }
+  boxes.forEach(function (b) { b.addEventListener('change', update); });
+  update();
+})();
+</script>

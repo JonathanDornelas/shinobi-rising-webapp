@@ -1,0 +1,3287 @@
+[
+  {
+    "id": "acao-conceder",
+    "arquivo": "ic-acao-conceder-32.png",
+    "categoria": "acao",
+    "alt": "Conceder recompensas",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "acao-construir-marionete",
+    "arquivo": "ic-acao-construir-marionete-32.png",
+    "categoria": "acao",
+    "alt": "Construir marionete",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "acao-convidar",
+    "arquivo": "ic-acao-convidar-32.png",
+    "categoria": "acao",
+    "alt": "Convidar",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "acao-criar-cla",
+    "arquivo": "ic-acao-criar-cla-32.png",
+    "categoria": "acao",
+    "alt": "Criar clã",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "acao-criar-jutsu",
+    "arquivo": "ic-acao-criar-jutsu-32.png",
+    "categoria": "acao",
+    "alt": "Criar jutsu",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "acao-criar-personagem",
+    "arquivo": "ic-acao-criar-personagem-32.png",
+    "categoria": "acao",
+    "alt": "Criar personagem",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "acao-forjar",
+    "arquivo": "ic-acao-forjar-32.png",
+    "categoria": "acao",
+    "alt": "Forjar arma",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "acao-novo-npc",
+    "arquivo": "ic-acao-novo-npc-32.png",
+    "categoria": "acao",
+    "alt": "Novo NPC",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "acao-subir-nivel",
+    "arquivo": "ic-acao-subir-nivel-32.png",
+    "categoria": "acao",
+    "alt": "Subir de nível",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "arma-arco-longo",
+    "arquivo": "ic-arma-arco-longo-32.png",
+    "categoria": "arma",
+    "alt": "Arco longo",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-bo",
+    "arquivo": "ic-arma-bo-32.png",
+    "categoria": "arma",
+    "alt": "Bo",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-fuuma-shuriken",
+    "arquivo": "ic-arma-fuuma-shuriken-32.png",
+    "categoria": "arma",
+    "alt": "Fuuma shuriken",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-hanbo",
+    "arquivo": "ic-arma-hanbo-32.png",
+    "categoria": "arma",
+    "alt": "Hanbo",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-kanabo",
+    "arquivo": "ic-arma-kanabo-32.png",
+    "categoria": "arma",
+    "alt": "Kanabo",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-katana",
+    "arquivo": "ic-arma-katana-32.png",
+    "categoria": "arma",
+    "alt": "Katana",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-kodachi",
+    "arquivo": "ic-arma-kodachi-32.png",
+    "categoria": "arma",
+    "alt": "Kodachi",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-kunai",
+    "arquivo": "ic-arma-kunai-32.png",
+    "categoria": "arma",
+    "alt": "Kunai",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-kusarigama",
+    "arquivo": "ic-arma-kusarigama-32.png",
+    "categoria": "arma",
+    "alt": "Kusarigama",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-manriki",
+    "arquivo": "ic-arma-manriki-32.png",
+    "categoria": "arma",
+    "alt": "Manriki",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-naginata",
+    "arquivo": "ic-arma-naginata-32.png",
+    "categoria": "arma",
+    "alt": "Naginata",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-nodachi",
+    "arquivo": "ic-arma-nodachi-32.png",
+    "categoria": "arma",
+    "alt": "Nodachi",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-nunchaku",
+    "arquivo": "ic-arma-nunchaku-32.png",
+    "categoria": "arma",
+    "alt": "Nunchaku",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-sai",
+    "arquivo": "ic-arma-sai-32.png",
+    "categoria": "arma",
+    "alt": "Sai",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-senbon",
+    "arquivo": "ic-arma-senbon-32.png",
+    "categoria": "arma",
+    "alt": "Senbon",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-shuriken",
+    "arquivo": "ic-arma-shuriken-32.png",
+    "categoria": "arma",
+    "alt": "Shuriken",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-tanto",
+    "arquivo": "ic-arma-tanto-32.png",
+    "categoria": "arma",
+    "alt": "Tanto",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-tonfa",
+    "arquivo": "ic-arma-tonfa-32.png",
+    "categoria": "arma",
+    "alt": "Tonfa",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-wakizashi",
+    "arquivo": "ic-arma-wakizashi-32.png",
+    "categoria": "arma",
+    "alt": "Wakizashi",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "arma-yari",
+    "arquivo": "ic-arma-yari-32.png",
+    "categoria": "arma",
+    "alt": "Yari",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "atributo-agi",
+    "arquivo": "ic-atributo-agi-32.png",
+    "categoria": "atributo",
+    "alt": "Agilidade (AGI)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "atributo-ctr",
+    "arquivo": "ic-atributo-ctr-32.png",
+    "categoria": "atributo",
+    "alt": "Controle (CTR)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "atributo-esp",
+    "arquivo": "ic-atributo-esp-32.png",
+    "categoria": "atributo",
+    "alt": "Espírito (ESP)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": true,
+    "prioridade": "P1"
+  },
+  {
+    "id": "atributo-for",
+    "arquivo": "ic-atributo-for-32.png",
+    "categoria": "atributo",
+    "alt": "Força (FOR)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "atributo-int",
+    "arquivo": "ic-atributo-int-32.png",
+    "categoria": "atributo",
+    "alt": "Inteligência (INT)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "atributo-vig",
+    "arquivo": "ic-atributo-vig-32.png",
+    "categoria": "atributo",
+    "alt": "Vigor (VIG)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "callout-atencao",
+    "arquivo": "ic-callout-atencao-32.png",
+    "categoria": "callout",
+    "alt": "Atenção",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "callout-citacao",
+    "arquivo": "ic-callout-citacao-32.png",
+    "categoria": "callout",
+    "alt": "Citação",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "callout-destaque",
+    "arquivo": "ic-callout-destaque-32.png",
+    "categoria": "callout",
+    "alt": "Destaque",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "callout-pre-requisito",
+    "arquivo": "ic-callout-pre-requisito-32.png",
+    "categoria": "callout",
+    "alt": "Pré-requisito",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "cla-aburame",
+    "arquivo": "ic-cla-aburame-32.png",
+    "categoria": "cla",
+    "alt": "Clã Aburame",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Aburame Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "cla-akimichi",
+    "arquivo": "ic-cla-akimichi-32.png",
+    "categoria": "cla",
+    "alt": "Clã Akimichi",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Akimichi Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "cla-hozuki",
+    "arquivo": "ic-cla-hozuki-32.png",
+    "categoria": "cla",
+    "alt": "Clã Hozuki",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Hōzuki Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "cla-hyuuga",
+    "arquivo": "ic-cla-hyuuga-32.png",
+    "categoria": "cla",
+    "alt": "Clã Hyuuga",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Hyūga Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "cla-inuzuka",
+    "arquivo": "ic-cla-inuzuka-32.png",
+    "categoria": "cla",
+    "alt": "Clã Inuzuka",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Inuzuka Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "cla-kaguya",
+    "arquivo": "ic-cla-kaguya-32.png",
+    "categoria": "cla",
+    "alt": "Clã Kaguya",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Kaguya Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "cla-nara",
+    "arquivo": "ic-cla-nara-32.png",
+    "categoria": "cla",
+    "alt": "Clã Nara",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Nara Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "cla-sabaku",
+    "arquivo": "ic-cla-sabaku-32.png",
+    "categoria": "cla",
+    "alt": "Clã Sabaku / Realeza de Suna",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "cla-senju",
+    "arquivo": "ic-cla-senju-32.png",
+    "categoria": "cla",
+    "alt": "Clã Senju",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Senju Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "cla-uchiha",
+    "arquivo": "ic-cla-uchiha-32.png",
+    "categoria": "cla",
+    "alt": "Clã Uchiha",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Uchiha Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "cla-uzumaki",
+    "arquivo": "ic-cla-uzumaki-32.png",
+    "categoria": "cla",
+    "alt": "Clã Uzumaki",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Uzumaki Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "cla-yamanaka",
+    "arquivo": "ic-cla-yamanaka-32.png",
+    "categoria": "cla",
+    "alt": "Clã Yamanaka",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Yamanaka Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "cla-yuki",
+    "arquivo": "ic-cla-yuki-32.png",
+    "categoria": "cla",
+    "alt": "Clã Yuki",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Yuki Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "dado-d20",
+    "arquivo": "ic-dado-d20-32.png",
+    "categoria": "dado",
+    "alt": "Dado d20",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "elemento-doton",
+    "arquivo": "ic-elemento-doton-32.png",
+    "categoria": "elemento",
+    "alt": "Doton (Terra)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Nature Icon Earth.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "elemento-fuuton",
+    "arquivo": "ic-elemento-fuuton-32.png",
+    "categoria": "elemento",
+    "alt": "Fuuton (Vento)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Nature Icon Wind.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "elemento-hyoton",
+    "arquivo": "ic-elemento-hyoton-32.png",
+    "categoria": "elemento",
+    "alt": "Hyōton (Gelo)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Nature Icon Ice.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "elemento-jiton",
+    "arquivo": "ic-elemento-jiton-32.png",
+    "categoria": "elemento",
+    "alt": "Jiton (Magnético)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Nature Icon Magnet.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "elemento-katon",
+    "arquivo": "ic-elemento-katon-32.png",
+    "categoria": "elemento",
+    "alt": "Katon (Fogo)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "semente",
+    "metodo": "canônico: ícone de natureza oficial (octógono com 火) → canon.js → pixflux img2img força 180",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "elemento-mokuton",
+    "arquivo": "ic-elemento-mokuton-32.png",
+    "categoria": "elemento",
+    "alt": "Mokuton (Madeira)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Nature Icon Wood.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "elemento-raiton",
+    "arquivo": "ic-elemento-raiton-32.png",
+    "categoria": "elemento",
+    "alt": "Raiton (Raio)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Nature Icon Lightning.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "elemento-ranton",
+    "arquivo": "ic-elemento-ranton-32.png",
+    "categoria": "elemento",
+    "alt": "Ranton (Tempestade)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Nature Icon Storm.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "elemento-suiton",
+    "arquivo": "ic-elemento-suiton-32.png",
+    "categoria": "elemento",
+    "alt": "Suiton (Água)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Nature Icon Water.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "elemento-yoton",
+    "arquivo": "ic-elemento-yoton-32.png",
+    "categoria": "elemento",
+    "alt": "Yōton (Lava)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Nature Icon Lava.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "equip-arma-curta",
+    "arquivo": "ic-equip-arma-curta-32.png",
+    "categoria": "equip",
+    "alt": "Armas brancas curtas",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "equip-arma-distancia",
+    "arquivo": "ic-equip-arma-distancia-32.png",
+    "categoria": "equip",
+    "alt": "Armas de distância",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "equip-arma-exotica",
+    "arquivo": "ic-equip-arma-exotica-32.png",
+    "categoria": "equip",
+    "alt": "Armas brancas exóticas",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "equip-arma-longa",
+    "arquivo": "ic-equip-arma-longa-32.png",
+    "categoria": "equip",
+    "alt": "Armas brancas longas",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "equip-ferramenta",
+    "arquivo": "ic-equip-ferramenta-32.png",
+    "categoria": "equip",
+    "alt": "Ferramentas",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "equip-kit",
+    "arquivo": "ic-equip-kit-32.png",
+    "categoria": "equip",
+    "alt": "Kits",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "equip-pergaminho",
+    "arquivo": "ic-equip-pergaminho-32.png",
+    "categoria": "equip",
+    "alt": "Pergaminhos",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "equip-pilula",
+    "arquivo": "ic-equip-pilula-32.png",
+    "categoria": "equip",
+    "alt": "Pílulas",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "equip-sete-espadas",
+    "arquivo": "ic-equip-sete-espadas-32.png",
+    "categoria": "equip",
+    "alt": "Sete Espadas da Névoa",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "equip-veneno",
+    "arquivo": "ic-equip-veneno-32.png",
+    "categoria": "equip",
+    "alt": "Venenos",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-bukijutsu",
+    "arquivo": "ic-esp-bukijutsu-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Bukijutsu",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-controle-chakra",
+    "arquivo": "ic-esp-controle-chakra-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Controle de Chakra",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-elemento",
+    "arquivo": "ic-esp-elemento-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Elemento Específico",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-furtividade",
+    "arquivo": "ic-esp-furtividade-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Furtividade e Assassinato",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-genjutsu",
+    "arquivo": "ic-esp-genjutsu-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Genjutsu",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-invocacao",
+    "arquivo": "ic-esp-invocacao-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Invocação",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-marionete",
+    "arquivo": "ic-esp-marionete-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Marionete",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-medico",
+    "arquivo": "ic-esp-medico-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Ninjutsu Médico",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": true,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-ninjutsu",
+    "arquivo": "ic-esp-ninjutsu-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Ninjutsu",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-reservatorio",
+    "arquivo": "ic-esp-reservatorio-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Reservatório de Chakra",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-resistencia",
+    "arquivo": "ic-esp-resistencia-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Resistência Física",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-selamento",
+    "arquivo": "ic-esp-selamento-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Selamento",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-sennin",
+    "arquivo": "ic-esp-sennin-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Sennin",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": true,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-sensor",
+    "arquivo": "ic-esp-sensor-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Sensor de Chakra",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-taijutsu",
+    "arquivo": "ic-esp-taijutsu-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Taijutsu",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "esp-velocidade",
+    "arquivo": "ic-esp-velocidade-32.png",
+    "categoria": "esp",
+    "alt": "Especialização: Velocidade",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "espada-hiramekarei",
+    "arquivo": "ic-espada-hiramekarei-32.png",
+    "categoria": "espada",
+    "alt": "Hiramekarei",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "espada-kabutowari",
+    "arquivo": "ic-espada-kabutowari-32.png",
+    "categoria": "espada",
+    "alt": "Kabutowari",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "espada-kiba",
+    "arquivo": "ic-espada-kiba-32.png",
+    "categoria": "espada",
+    "alt": "Kiba",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "espada-kubikiribocho",
+    "arquivo": "ic-espada-kubikiribocho-32.png",
+    "categoria": "espada",
+    "alt": "Kubikiribocho",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "espada-nuibari",
+    "arquivo": "ic-espada-nuibari-32.png",
+    "categoria": "espada",
+    "alt": "Nuibari",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "espada-samehada",
+    "arquivo": "ic-espada-samehada-32.png",
+    "categoria": "espada",
+    "alt": "Samehada",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "espada-shibuki",
+    "arquivo": "ic-espada-shibuki-32.png",
+    "categoria": "espada",
+    "alt": "Shibuki",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "estado-amedrontado",
+    "arquivo": "ic-estado-amedrontado-32.png",
+    "categoria": "estado",
+    "alt": "Amedrontado",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "estado-atordoado",
+    "arquivo": "ic-estado-atordoado-32.png",
+    "categoria": "estado",
+    "alt": "Atordoado",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": true,
+    "prioridade": "P2"
+  },
+  {
+    "id": "estado-caido",
+    "arquivo": "ic-estado-caido-32.png",
+    "categoria": "estado",
+    "alt": "Caído",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "estado-cego",
+    "arquivo": "ic-estado-cego-32.png",
+    "categoria": "estado",
+    "alt": "Cego",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "estado-controlado",
+    "arquivo": "ic-estado-controlado-32.png",
+    "categoria": "estado",
+    "alt": "Controlado",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": true,
+    "prioridade": "P2"
+  },
+  {
+    "id": "estado-desprevenido",
+    "arquivo": "ic-estado-desprevenido-32.png",
+    "categoria": "estado",
+    "alt": "Desprevenido",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "estado-em-chamas",
+    "arquivo": "ic-estado-em-chamas-32.png",
+    "categoria": "estado",
+    "alt": "Em chamas",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": true,
+    "prioridade": "P2"
+  },
+  {
+    "id": "estado-em-genjutsu",
+    "arquivo": "ic-estado-em-genjutsu-32.png",
+    "categoria": "estado",
+    "alt": "Em genjutsu",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": true,
+    "prioridade": "P2"
+  },
+  {
+    "id": "estado-envenenado",
+    "arquivo": "ic-estado-envenenado-32.png",
+    "categoria": "estado",
+    "alt": "Envenenado",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "estado-imobilizado",
+    "arquivo": "ic-estado-imobilizado-32.png",
+    "categoria": "estado",
+    "alt": "Imobilizado",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "estado-paralisado",
+    "arquivo": "ic-estado-paralisado-32.png",
+    "categoria": "estado",
+    "alt": "Paralisado",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": true,
+    "prioridade": "P2"
+  },
+  {
+    "id": "estado-sangrando",
+    "arquivo": "ic-estado-sangrando-32.png",
+    "categoria": "estado",
+    "alt": "Sangrando",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-antidoto",
+    "arquivo": "ic-item-antidoto-32.png",
+    "categoria": "item",
+    "alt": "Antídoto",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-antidoto-raro",
+    "arquivo": "ic-item-antidoto-raro-32.png",
+    "categoria": "item",
+    "alt": "Antídoto raro",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-bomba-fumaca",
+    "arquivo": "ic-item-bomba-fumaca-32.png",
+    "categoria": "item",
+    "alt": "Bomba de fumaça",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-fio-ninja",
+    "arquivo": "ic-item-fio-ninja-32.png",
+    "categoria": "item",
+    "alt": "Fio ninja",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-hyourougan",
+    "arquivo": "ic-item-hyourougan-32.png",
+    "categoria": "item",
+    "alt": "Hyourougan",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-kan-no-kami",
+    "arquivo": "ic-item-kan-no-kami-32.png",
+    "categoria": "item",
+    "alt": "Kan no Kami",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-kit-marionetista",
+    "arquivo": "ic-item-kit-marionetista-32.png",
+    "categoria": "item",
+    "alt": "Kit de marionetista",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-kit-medico",
+    "arquivo": "ic-item-kit-medico-32.png",
+    "categoria": "item",
+    "alt": "Kit médico",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-lente-noturna",
+    "arquivo": "ic-item-lente-noturna-32.png",
+    "categoria": "item",
+    "alt": "Lente de visão noturna",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-papel-explosivo",
+    "arquivo": "ic-item-papel-explosivo-32.png",
+    "categoria": "item",
+    "alt": "Papel explosivo",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-pergaminho-avancado",
+    "arquivo": "ic-item-pergaminho-avancado-32.png",
+    "categoria": "item",
+    "alt": "Pergaminho avançado",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-pergaminho-basico",
+    "arquivo": "ic-item-pergaminho-basico-32.png",
+    "categoria": "item",
+    "alt": "Pergaminho básico",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-pergaminho-jutsu",
+    "arquivo": "ic-item-pergaminho-jutsu-32.png",
+    "categoria": "item",
+    "alt": "Pergaminho de jutsu pré-armado",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-pergaminho-mestre",
+    "arquivo": "ic-item-pergaminho-mestre-32.png",
+    "categoria": "item",
+    "alt": "Pergaminho mestre",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-pilula-cura",
+    "arquivo": "ic-item-pilula-cura-32.png",
+    "categoria": "item",
+    "alt": "Pílula de cura",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "item-pilula-militar",
+    "arquivo": "ic-item-pilula-militar-32.png",
+    "categoria": "item",
+    "alt": "Pílula militar",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "kamon-base-01",
+    "arquivo": "ic-kamon-base-01-32.png",
+    "categoria": "kamon",
+    "alt": "Brasão: folha",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kamon-base-02",
+    "arquivo": "ic-kamon-base-02-32.png",
+    "categoria": "kamon",
+    "alt": "Brasão: leque",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kamon-base-03",
+    "arquivo": "ic-kamon-base-03-32.png",
+    "categoria": "kamon",
+    "alt": "Brasão: onda",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kamon-base-04",
+    "arquivo": "ic-kamon-base-04-32.png",
+    "categoria": "kamon",
+    "alt": "Brasão: chama",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kamon-base-05",
+    "arquivo": "ic-kamon-base-05-32.png",
+    "categoria": "kamon",
+    "alt": "Brasão: montanha",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kamon-base-06",
+    "arquivo": "ic-kamon-base-06-32.png",
+    "categoria": "kamon",
+    "alt": "Brasão: nuvem",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kamon-base-07",
+    "arquivo": "ic-kamon-base-07-32.png",
+    "categoria": "kamon",
+    "alt": "Brasão: lua",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kamon-base-08",
+    "arquivo": "ic-kamon-base-08-32.png",
+    "categoria": "kamon",
+    "alt": "Brasão: osso",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kamon-base-09",
+    "arquivo": "ic-kamon-base-09-32.png",
+    "categoria": "kamon",
+    "alt": "Brasão: inseto",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kamon-base-10",
+    "arquivo": "ic-kamon-base-10-32.png",
+    "categoria": "kamon",
+    "alt": "Brasão: olho",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kamon-base-11",
+    "arquivo": "ic-kamon-base-11-32.png",
+    "categoria": "kamon",
+    "alt": "Brasão: espiral",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kamon-base-12",
+    "arquivo": "ic-kamon-base-12-32.png",
+    "categoria": "kamon",
+    "alt": "Brasão: lâmina",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kkg-combinacao",
+    "arquivo": "ic-kkg-combinacao-32.png",
+    "categoria": "kkg",
+    "alt": "Combinação elemental",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kkg-corporal",
+    "arquivo": "ic-kkg-corporal-32.png",
+    "categoria": "kkg",
+    "alt": "Kekkei Genkai corporal",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kkg-dojutsu",
+    "arquivo": "ic-kkg-dojutsu-32.png",
+    "categoria": "kkg",
+    "alt": "Dōjutsu",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": true,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kkg-hibrido",
+    "arquivo": "ic-kkg-hibrido-32.png",
+    "categoria": "kkg",
+    "alt": "Kekkei Genkai híbrido",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": true,
+    "prioridade": "P1"
+  },
+  {
+    "id": "kkg-mental",
+    "arquivo": "ic-kkg-mental-32.png",
+    "categoria": "kkg",
+    "alt": "Kekkei Genkai mental",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": true,
+    "prioridade": "P1"
+  },
+  {
+    "id": "marca",
+    "arquivo": "ic-marca-32.png",
+    "categoria": "marca",
+    "alt": "Shinobi no Michi",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "modulo-companheiro",
+    "arquivo": "ic-modulo-companheiro-32.png",
+    "categoria": "modulo",
+    "alt": "Companheiros",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "modulo-mangekyou",
+    "arquivo": "ic-modulo-mangekyou-32.png",
+    "categoria": "modulo",
+    "alt": "Mangekyou",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "modulo-portoes",
+    "arquivo": "ic-modulo-portoes-32.png",
+    "categoria": "modulo",
+    "alt": "Portões Internos",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "nav-aprovacoes",
+    "arquivo": "ic-nav-aprovacoes-32.png",
+    "categoria": "nav",
+    "alt": "Aprovações",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "nav-campanhas",
+    "arquivo": "ic-nav-campanhas-32.png",
+    "categoria": "nav",
+    "alt": "Campanhas",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "nav-clas",
+    "arquivo": "ic-nav-clas-32.png",
+    "categoria": "nav",
+    "alt": "Clãs",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "nav-configuracoes",
+    "arquivo": "ic-nav-configuracoes-32.png",
+    "categoria": "nav",
+    "alt": "Configurações",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "nav-equipamentos",
+    "arquivo": "ic-nav-equipamentos-32.png",
+    "categoria": "nav",
+    "alt": "Equipamentos",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "nav-jutsus",
+    "arquivo": "ic-nav-jutsus-32.png",
+    "categoria": "nav",
+    "alt": "Jutsus",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "semente",
+    "metodo": "pixflux",
+    "contorno_automatico": true,
+    "prioridade": "P1"
+  },
+  {
+    "id": "nav-membros",
+    "arquivo": "ic-nav-membros-32.png",
+    "categoria": "nav",
+    "alt": "Membros",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "nav-notificacoes",
+    "arquivo": "ic-nav-notificacoes-32.png",
+    "categoria": "nav",
+    "alt": "Notificações",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "nav-npcs",
+    "arquivo": "ic-nav-npcs-32.png",
+    "categoria": "nav",
+    "alt": "NPCs",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "nav-perfil",
+    "arquivo": "ic-nav-perfil-32.png",
+    "categoria": "nav",
+    "alt": "Perfil",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "nav-personagens",
+    "arquivo": "ic-nav-personagens-32.png",
+    "categoria": "nav",
+    "alt": "Personagens",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "nav-referencia",
+    "arquivo": "ic-nav-referencia-32.png",
+    "categoria": "nav",
+    "alt": "Referência rápida",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "nav-regras",
+    "arquivo": "ic-nav-regras-32.png",
+    "categoria": "nav",
+    "alt": "Regras",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "nav-submissoes",
+    "arquivo": "ic-nav-submissoes-32.png",
+    "categoria": "nav",
+    "alt": "Minhas submissões",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "papel-jogador",
+    "arquivo": "ic-papel-jogador-32.png",
+    "categoria": "papel",
+    "alt": "Jogador",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "papel-mestre",
+    "arquivo": "ic-papel-mestre-32.png",
+    "categoria": "papel",
+    "alt": "Mestre",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "parte-1",
+    "arquivo": "ic-parte-1-32.png",
+    "categoria": "parte",
+    "alt": "Parte I — Fundamentos, Combate e Sombra",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "parte-2",
+    "arquivo": "ic-parte-2-32.png",
+    "categoria": "parte",
+    "alt": "Parte II — Criando seu Personagem",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "parte-3",
+    "arquivo": "ic-parte-3-32.png",
+    "categoria": "parte",
+    "alt": "Parte III — Recursos do Ninja",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "parte-4",
+    "arquivo": "ic-parte-4-32.png",
+    "categoria": "parte",
+    "alt": "Parte IV — Avanços de Poder",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "parte-5",
+    "arquivo": "ic-parte-5-32.png",
+    "categoria": "parte",
+    "alt": "Parte V — Crescimento e Customização",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "parte-6",
+    "arquivo": "ic-parte-6-32.png",
+    "categoria": "parte",
+    "alt": "Parte VI — Criação Avançada",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "parte-referencia",
+    "arquivo": "ic-parte-referencia-32.png",
+    "categoria": "parte",
+    "alt": "Referência e Apêndice",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-acrobacia",
+    "arquivo": "ic-pericia-acrobacia-32.png",
+    "categoria": "pericia",
+    "alt": "Acrobacia",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-atletismo",
+    "arquivo": "ic-pericia-atletismo-32.png",
+    "categoria": "pericia",
+    "alt": "Atletismo",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-bukijutsu",
+    "arquivo": "ic-pericia-bukijutsu-32.png",
+    "categoria": "pericia",
+    "alt": "Bukijutsu",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-furtividade",
+    "arquivo": "ic-pericia-furtividade-32.png",
+    "categoria": "pericia",
+    "alt": "Furtividade",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-genjutsu",
+    "arquivo": "ic-pericia-genjutsu-32.png",
+    "categoria": "pericia",
+    "alt": "Genjutsu",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-investigacao",
+    "arquivo": "ic-pericia-investigacao-32.png",
+    "categoria": "pericia",
+    "alt": "Investigação",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-kugutsu",
+    "arquivo": "ic-pericia-kugutsu-32.png",
+    "categoria": "pericia",
+    "alt": "Kugutsu",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-medicina",
+    "arquivo": "ic-pericia-medicina-32.png",
+    "categoria": "pericia",
+    "alt": "Medicina",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-ninjutsu",
+    "arquivo": "ic-pericia-ninjutsu-32.png",
+    "categoria": "pericia",
+    "alt": "Ninjutsu",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": true,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-percepcao",
+    "arquivo": "ic-pericia-percepcao-32.png",
+    "categoria": "pericia",
+    "alt": "Percepção",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-persuasao",
+    "arquivo": "ic-pericia-persuasao-32.png",
+    "categoria": "pericia",
+    "alt": "Persuasão",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-rastreamento",
+    "arquivo": "ic-pericia-rastreamento-32.png",
+    "categoria": "pericia",
+    "alt": "Rastreamento",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-selamento",
+    "arquivo": "ic-pericia-selamento-32.png",
+    "categoria": "pericia",
+    "alt": "Selamento (Fuuinjutsu)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-sobrevivencia",
+    "arquivo": "ic-pericia-sobrevivencia-32.png",
+    "categoria": "pericia",
+    "alt": "Sobrevivência",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "pericia-taijutsu",
+    "arquivo": "ic-pericia-taijutsu-32.png",
+    "categoria": "pericia",
+    "alt": "Taijutsu",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "semente",
+    "metodo": "pixflux",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "rank-a",
+    "arquivo": "ic-rank-a-32.png",
+    "categoria": "rank",
+    "alt": "Rank A",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "desenho",
+    "metodo": "desenho em código",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "rank-b",
+    "arquivo": "ic-rank-b-32.png",
+    "categoria": "rank",
+    "alt": "Rank B",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "desenho",
+    "metodo": "desenho em código",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "rank-c",
+    "arquivo": "ic-rank-c-32.png",
+    "categoria": "rank",
+    "alt": "Rank C",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "desenho",
+    "metodo": "desenho em código",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "rank-d",
+    "arquivo": "ic-rank-d-32.png",
+    "categoria": "rank",
+    "alt": "Rank D",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "desenho",
+    "metodo": "desenho em código",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "rank-e",
+    "arquivo": "ic-rank-e-32.png",
+    "categoria": "rank",
+    "alt": "Rank E",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "desenho",
+    "metodo": "desenho em código",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "rank-s",
+    "arquivo": "ic-rank-s-32.png",
+    "categoria": "rank",
+    "alt": "Rank S",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "desenho",
+    "metodo": "desenho em código",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "recurso-carga",
+    "arquivo": "ic-recurso-carga-32.png",
+    "categoria": "recurso",
+    "alt": "Carga",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "recurso-defesa",
+    "arquivo": "ic-recurso-defesa-32.png",
+    "categoria": "recurso",
+    "alt": "Defesa",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "recurso-defesa-mental",
+    "arquivo": "ic-recurso-defesa-mental-32.png",
+    "categoria": "recurso",
+    "alt": "Defesa Mental",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "recurso-fadiga",
+    "arquivo": "ic-recurso-fadiga-32.png",
+    "categoria": "recurso",
+    "alt": "Fadiga",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "recurso-iniciativa",
+    "arquivo": "ic-recurso-iniciativa-32.png",
+    "categoria": "recurso",
+    "alt": "Iniciativa",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "recurso-pc",
+    "arquivo": "ic-recurso-pc-32.png",
+    "categoria": "recurso",
+    "alt": "Pontos de Chakra",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "semente",
+    "metodo": "pixflux + contorno automático",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "recurso-pd",
+    "arquivo": "ic-recurso-pd-32.png",
+    "categoria": "recurso",
+    "alt": "Pontos de Destino",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "recurso-pe",
+    "arquivo": "ic-recurso-pe-32.png",
+    "categoria": "recurso",
+    "alt": "Pontos de Estamina",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": true,
+    "prioridade": "P1"
+  },
+  {
+    "id": "recurso-pic",
+    "arquivo": "ic-recurso-pic-32.png",
+    "categoria": "recurso",
+    "alt": "Pontos de Influência do Clã",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "recurso-pt",
+    "arquivo": "ic-recurso-pt-32.png",
+    "categoria": "recurso",
+    "alt": "Pontos de Treino",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "recurso-pv",
+    "arquivo": "ic-recurso-pv-32.png",
+    "categoria": "recurso",
+    "alt": "Pontos de Vida",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "recurso-rd",
+    "arquivo": "ic-recurso-rd-32.png",
+    "categoria": "recurso",
+    "alt": "Redução de Dano",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "recurso-ryo",
+    "arquivo": "ic-recurso-ryo-32.png",
+    "categoria": "recurso",
+    "alt": "Ryo",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "recurso-xp",
+    "arquivo": "ic-recurso-xp-32.png",
+    "categoria": "recurso",
+    "alt": "Experiência (XP)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "status-ajustes",
+    "arquivo": "ic-status-ajustes-32.png",
+    "categoria": "status",
+    "alt": "Ajustes solicitados",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "status-aprovado",
+    "arquivo": "ic-status-aprovado-32.png",
+    "categoria": "status",
+    "alt": "Aprovado",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "semente",
+    "metodo": "desenho em código (kanji 可)",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "status-em-revisao",
+    "arquivo": "ic-status-em-revisao-32.png",
+    "categoria": "status",
+    "alt": "Em revisão",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "status-excecao-mestre",
+    "arquivo": "ic-status-excecao-mestre-32.png",
+    "categoria": "status",
+    "alt": "Exceção do Mestre",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-c",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "status-rascunho",
+    "arquivo": "ic-status-rascunho-32.png",
+    "categoria": "status",
+    "alt": "Rascunho",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "status-rejeitado",
+    "arquivo": "ic-status-rejeitado-32.png",
+    "categoria": "status",
+    "alt": "Rejeitado",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-a",
+    "metodo": "PixelLab lote A",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "status-revogado",
+    "arquivo": "ic-status-revogado-32.png",
+    "categoria": "status",
+    "alt": "Revogado",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "desenho",
+    "metodo": "PixelLab lote C",
+    "contorno_automatico": false,
+    "prioridade": "P2"
+  },
+  {
+    "id": "vila-ame",
+    "arquivo": "ic-vila-ame-32.png",
+    "categoria": "vila",
+    "alt": "Amegakure",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Amegakure Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "vila-iwa",
+    "arquivo": "ic-vila-iwa-32.png",
+    "categoria": "vila",
+    "alt": "Iwagakure",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Iwagakure Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "vila-kiri",
+    "arquivo": "ic-vila-kiri-32.png",
+    "categoria": "vila",
+    "alt": "Kirigakure",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Kirigakure Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "vila-konoha",
+    "arquivo": "ic-vila-konoha-32.png",
+    "categoria": "vila",
+    "alt": "Konohagakure",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "semente",
+    "metodo": "canônico: SVG oficial → canon.js (preenchimento aço, como a placa do hitaiate) → pixflux img2img força 300 → sombreamento metálico em código",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "vila-kumo",
+    "arquivo": "ic-vila-kumo-32.png",
+    "categoria": "vila",
+    "alt": "Kumogakure",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Kumogakure Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "vila-oto",
+    "arquivo": "ic-vila-oto-32.png",
+    "categoria": "vila",
+    "alt": "Otogakure",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Otogakure Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "vila-sem",
+    "arquivo": "ic-vila-sem-32.png",
+    "categoria": "vila",
+    "alt": "Sem vila (errante)",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "lote-b",
+    "metodo": "PixelLab lote B",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "vila-suna",
+    "arquivo": "ic-vila-suna-32.png",
+    "categoria": "vila",
+    "alt": "Sunagakure",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Sunagakure Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  },
+  {
+    "id": "vila-taki",
+    "arquivo": "ic-vila-taki-32.png",
+    "categoria": "vila",
+    "alt": "Takigakure",
+    "tamanhos": [
+      32,
+      64,
+      96
+    ],
+    "origem": "canon",
+    "metodo": "canônico: Takigakure Symbol.svg → PixelLab img2img",
+    "contorno_automatico": false,
+    "prioridade": "P1"
+  }
+]

@@ -1,0 +1,18 @@
+# dependências e builds (futuro SvelteKit)
+node_modules/
+.svelte-kit/
+build/
+.env
+.env.*
+
+# PixelLab: argumentos de geração (base64 grandes) e pacote zip (o conteúdo já está em pixellab/export-claude-design/)
+pixellab/scripts/args/
+pixellab/*.zip
+pixellab/gerados/*.log
+pixellab/gerados/**/get_object.txt
+
+# Office / sistema
+~$*
+Thumbs.db
+desktop.ini
+.DS_Store

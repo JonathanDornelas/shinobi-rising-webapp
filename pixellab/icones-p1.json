@@ -1,0 +1,1556 @@
+{
+  "versao": 2,
+  "observacao": "Fonte única dos ícones P1. prompts-p1.md é gerado a partir deste arquivo. Prompts em inglês (o modelo responde melhor); alt em pt-BR.",
+  "paleta": [
+    "#1A1A1A",
+    "#2B1A14",
+    "#5C1E15",
+    "#8B2E20",
+    "#C44536",
+    "#E07A5F",
+    "#FBF7F0",
+    "#F4E4D6",
+    "#D9C2A7",
+    "#A88B6A",
+    "#BF9000",
+    "#F2C14E",
+    "#069BBD",
+    "#7FD3E6",
+    "#38761D",
+    "#7FB069",
+    "#674EA7",
+    "#A895D6",
+    "#7F6000",
+    "#8D6E3F",
+    "#5E6B73",
+    "#A7B4BC",
+    "#E8692E",
+    "#2E6FD1",
+    "#FFFFFF"
+  ],
+  "sementes": [
+    {
+      "id": "recurso-pc",
+      "arquivo": "static/icons/recurso/ic-recurso-pc-32.png",
+      "metodo": "pixflux + contorno automático",
+      "alt": "Pontos de Chakra"
+    },
+    {
+      "id": "elemento-katon",
+      "arquivo": "static/icons/elemento/ic-elemento-katon-32.png",
+      "metodo": "canônico: ícone de natureza oficial (octógono com 火) → canon.js → pixflux img2img força 180",
+      "alt": "Katon (Fogo)",
+      "referencia": "Nature Icon Fire.svg"
+    },
+    {
+      "id": "pericia-taijutsu",
+      "arquivo": "static/icons/pericia/ic-pericia-taijutsu-32.png",
+      "metodo": "pixflux",
+      "alt": "Taijutsu"
+    },
+    {
+      "id": "vila-konoha",
+      "arquivo": "static/icons/vila/ic-vila-konoha-32.png",
+      "metodo": "canônico: SVG oficial → canon.js (preenchimento aço, como a placa do hitaiate) → pixflux img2img força 300 → sombreamento metálico em código",
+      "alt": "Konohagakure",
+      "referencia": "Konohagakure Symbol.svg"
+    },
+    {
+      "id": "status-aprovado",
+      "arquivo": "static/icons/status/ic-status-aprovado-32.png",
+      "metodo": "desenho em código (kanji 可)",
+      "alt": "Aprovado"
+    },
+    {
+      "id": "nav-jutsus",
+      "arquivo": "static/icons/nav/ic-nav-jutsus-32.png",
+      "metodo": "pixflux",
+      "alt": "Jutsus"
+    }
+  ],
+  "lotes": [
+    {
+      "id": "A",
+      "nome": "Núcleo da interface",
+      "ferramenta": "create_1_direction_object",
+      "parametros": {
+        "size": 32,
+        "view": "sidescroller",
+        "description": "pixel art RPG UI icon set, ninja fantasy theme inspired by feudal Japan, each icon a single centered object, crisp 1px black outline, medium shading, light from top-left, transparent background",
+        "palette": "paleta",
+        "style_images": "sementes"
+      },
+      "itens": [
+        {
+          "id": "marca",
+          "categoria": "marca",
+          "prompt": "metal ninja forehead protector plate with an engraved shuriken, red cloth band",
+          "alt": "Shinobi no Michi"
+        },
+        {
+          "id": "nav-regras",
+          "categoria": "nav",
+          "prompt": "open paper scroll with a red ribbon bookmark",
+          "alt": "Regras"
+        },
+        {
+          "id": "nav-campanhas",
+          "categoria": "nav",
+          "prompt": "rolled mission map scroll tied with a red wax seal",
+          "alt": "Campanhas"
+        },
+        {
+          "id": "nav-personagens",
+          "categoria": "nav",
+          "prompt": "bust portrait of a ninja wearing a forehead protector",
+          "alt": "Personagens"
+        },
+        {
+          "id": "nav-clas",
+          "categoria": "nav",
+          "prompt": "tall vertical clan banner flag on a pole with a round crest",
+          "alt": "Clãs"
+        },
+        {
+          "id": "nav-equipamentos",
+          "categoria": "nav",
+          "prompt": "kunai knife and shuriken crossed",
+          "alt": "Equipamentos"
+        },
+        {
+          "id": "nav-npcs",
+          "categoria": "nav",
+          "prompt": "plain white ninja mask with simple red markings",
+          "alt": "NPCs"
+        },
+        {
+          "id": "nav-aprovacoes",
+          "categoria": "nav",
+          "prompt": "red seal stamp with a wooden handle standing on an ink pad",
+          "alt": "Aprovações"
+        },
+        {
+          "id": "nav-submissoes",
+          "categoria": "nav",
+          "prompt": "paper scroll with an arrow flying up and to the right",
+          "alt": "Minhas submissões"
+        },
+        {
+          "id": "nav-membros",
+          "categoria": "nav",
+          "prompt": "three small ninja forehead protectors side by side",
+          "alt": "Membros"
+        },
+        {
+          "id": "nav-configuracoes",
+          "categoria": "nav",
+          "prompt": "bronze gear with a small red ribbon",
+          "alt": "Configurações"
+        },
+        {
+          "id": "nav-notificacoes",
+          "categoria": "nav",
+          "prompt": "black messenger crow perched",
+          "alt": "Notificações"
+        },
+        {
+          "id": "nav-perfil",
+          "categoria": "nav",
+          "prompt": "wooden name tag plaque hanging from a cord",
+          "alt": "Perfil"
+        },
+        {
+          "id": "nav-referencia",
+          "categoria": "nav",
+          "prompt": "small folding japanese screen with three panels",
+          "alt": "Referência rápida"
+        },
+        {
+          "id": "parte-1",
+          "categoria": "parte",
+          "prompt": "two crossed kunai over a paper scroll",
+          "alt": "Parte I — Fundamentos, Combate e Sombra"
+        },
+        {
+          "id": "parte-2",
+          "categoria": "parte",
+          "prompt": "white ninja mask with a calligraphy brush",
+          "alt": "Parte II — Criando seu Personagem"
+        },
+        {
+          "id": "parte-3",
+          "categoria": "parte",
+          "prompt": "ninja hip pouch with a scroll and a kunai sticking out",
+          "alt": "Parte III — Recursos do Ninja"
+        },
+        {
+          "id": "parte-4",
+          "categoria": "parte",
+          "prompt": "closed wooden temple gate with iron bands",
+          "alt": "Parte IV — Avanços de Poder"
+        },
+        {
+          "id": "parte-5",
+          "categoria": "parte",
+          "prompt": "green sprout growing from the top of a wooden training post",
+          "alt": "Parte V — Crescimento e Customização"
+        },
+        {
+          "id": "parte-6",
+          "categoria": "parte",
+          "prompt": "calligraphy brush and smithing hammer crossed over a scroll",
+          "alt": "Parte VI — Criação Avançada"
+        },
+        {
+          "id": "parte-referencia",
+          "categoria": "parte",
+          "prompt": "closed book with colored bookmark ribbons",
+          "alt": "Referência e Apêndice"
+        },
+        {
+          "id": "atributo-for",
+          "categoria": "atributo",
+          "prompt": "muscular flexed arm with a red arm band",
+          "alt": "Força (FOR)"
+        },
+        {
+          "id": "atributo-agi",
+          "categoria": "atributo",
+          "prompt": "straw sandal with gust of wind lines",
+          "alt": "Agilidade (AGI)"
+        },
+        {
+          "id": "atributo-vig",
+          "categoria": "atributo",
+          "prompt": "sturdy tree stump with deep spreading roots",
+          "alt": "Vigor (VIG)"
+        },
+        {
+          "id": "atributo-int",
+          "categoria": "atributo",
+          "prompt": "eye drawn on an open paper scroll",
+          "alt": "Inteligência (INT)"
+        },
+        {
+          "id": "atributo-ctr",
+          "categoria": "atributo",
+          "prompt": "single fingertip balancing a small glowing blue chakra orb",
+          "alt": "Controle (CTR)"
+        },
+        {
+          "id": "atributo-esp",
+          "categoria": "atributo",
+          "prompt": "blue spirit flame wisp",
+          "alt": "Espírito (ESP)"
+        },
+        {
+          "id": "recurso-pv",
+          "categoria": "recurso",
+          "prompt": "red heart",
+          "alt": "Pontos de Vida"
+        },
+        {
+          "id": "recurso-pe",
+          "categoria": "recurso",
+          "prompt": "golden amber energy drop with a small spark",
+          "alt": "Pontos de Estamina"
+        },
+        {
+          "id": "recurso-pt",
+          "categoria": "recurso",
+          "prompt": "wooden training post wrapped with rope",
+          "alt": "Pontos de Treino"
+        },
+        {
+          "id": "recurso-pd",
+          "categoria": "recurso",
+          "prompt": "golden four-pointed star with a red ribbon",
+          "alt": "Pontos de Destino"
+        },
+        {
+          "id": "recurso-xp",
+          "categoria": "recurso",
+          "prompt": "mission scroll with a gold star seal",
+          "alt": "Experiência (XP)"
+        },
+        {
+          "id": "recurso-ryo",
+          "categoria": "recurso",
+          "prompt": "oval gold coin with a square hole in the middle",
+          "alt": "Ryo"
+        },
+        {
+          "id": "recurso-pic",
+          "categoria": "recurso",
+          "prompt": "small red omamori charm pouch with a knot",
+          "alt": "Pontos de Influência do Clã"
+        },
+        {
+          "id": "recurso-fadiga",
+          "categoria": "recurso",
+          "prompt": "tired face with closed eyes and a cold sweat drop",
+          "alt": "Fadiga"
+        },
+        {
+          "id": "recurso-rd",
+          "categoria": "recurso",
+          "prompt": "riveted metal armor plate",
+          "alt": "Redução de Dano"
+        },
+        {
+          "id": "recurso-defesa",
+          "categoria": "recurso",
+          "prompt": "round wooden shield",
+          "alt": "Defesa"
+        },
+        {
+          "id": "recurso-defesa-mental",
+          "categoria": "recurso",
+          "prompt": "eye inside a small shield",
+          "alt": "Defesa Mental"
+        },
+        {
+          "id": "recurso-iniciativa",
+          "categoria": "recurso",
+          "prompt": "kunai being quick-drawn from a leg holster with motion lines",
+          "alt": "Iniciativa"
+        },
+        {
+          "id": "recurso-carga",
+          "categoria": "recurso",
+          "prompt": "travel backpack bundle tied with cloth",
+          "alt": "Carga"
+        },
+        {
+          "id": "pericia-acrobacia",
+          "categoria": "pericia",
+          "prompt": "ninja figure doing a backflip",
+          "alt": "Acrobacia"
+        },
+        {
+          "id": "pericia-atletismo",
+          "categoria": "pericia",
+          "prompt": "coiled climbing rope with a grappling hook",
+          "alt": "Atletismo"
+        },
+        {
+          "id": "pericia-bukijutsu",
+          "categoria": "pericia",
+          "prompt": "katana mid-slash with a white arc trail",
+          "alt": "Bukijutsu"
+        },
+        {
+          "id": "pericia-furtividade",
+          "categoria": "pericia",
+          "prompt": "footprints fading into a dark shadow",
+          "alt": "Furtividade"
+        },
+        {
+          "id": "pericia-genjutsu",
+          "categoria": "pericia",
+          "prompt": "eye with a purple hypnotic spiral iris",
+          "alt": "Genjutsu"
+        },
+        {
+          "id": "pericia-investigacao",
+          "categoria": "pericia",
+          "prompt": "magnifying glass over a paper scroll",
+          "alt": "Investigação"
+        },
+        {
+          "id": "pericia-kugutsu",
+          "categoria": "pericia",
+          "prompt": "wooden puppet hanging from blue chakra strings",
+          "alt": "Kugutsu"
+        },
+        {
+          "id": "pericia-medicina",
+          "categoria": "pericia",
+          "prompt": "open hand glowing with green healing light",
+          "alt": "Medicina"
+        },
+        {
+          "id": "pericia-ninjutsu",
+          "categoria": "pericia",
+          "prompt": "open palm holding a swirling white and blue energy sphere",
+          "alt": "Ninjutsu"
+        },
+        {
+          "id": "pericia-percepcao",
+          "categoria": "pericia",
+          "prompt": "wide open eye with sound wave arcs",
+          "alt": "Percepção"
+        },
+        {
+          "id": "pericia-persuasao",
+          "categoria": "pericia",
+          "prompt": "open folding paper fan",
+          "alt": "Persuasão"
+        },
+        {
+          "id": "pericia-rastreamento",
+          "categoria": "pericia",
+          "prompt": "trail of dog paw prints",
+          "alt": "Rastreamento"
+        },
+        {
+          "id": "pericia-selamento",
+          "categoria": "pericia",
+          "prompt": "paper scroll with a black spiral seal mark",
+          "alt": "Selamento (Fuuinjutsu)"
+        },
+        {
+          "id": "pericia-sobrevivencia",
+          "categoria": "pericia",
+          "prompt": "campfire with a hanging cooking pot",
+          "alt": "Sobrevivência"
+        },
+        {
+          "id": "status-rascunho",
+          "categoria": "status",
+          "prompt": "calligraphy brush with a wet ink tip",
+          "alt": "Rascunho"
+        },
+        {
+          "id": "status-em-revisao",
+          "categoria": "status",
+          "prompt": "burning incense stick with a curl of smoke",
+          "alt": "Em revisão"
+        },
+        {
+          "id": "status-ajustes",
+          "categoria": "status",
+          "prompt": "paper scroll with a red brush stroke correction mark",
+          "alt": "Ajustes solicitados"
+        },
+        {
+          "id": "status-rejeitado",
+          "categoria": "status",
+          "prompt": "torn paper scroll",
+          "alt": "Rejeitado"
+        },
+        {
+          "id": "papel-mestre",
+          "categoria": "papel",
+          "prompt": "japanese war fan gunbai",
+          "alt": "Mestre"
+        },
+        {
+          "id": "papel-jogador",
+          "categoria": "papel",
+          "prompt": "ninja headband cloth tied in a knot",
+          "alt": "Jogador"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "nome": "Mundo do jogo, ações e brasões genéricos",
+      "ferramenta": "create_1_direction_object",
+      "parametros": "iguais ao lote A; incluir até 2 ícones aprovados do lote A como style_images extras. Os kamon-base saem como silhueta chapada e viram máscara branca por pós-processamento (todo pixel opaco → #FFFFFF, sem contorno)",
+      "itens": [
+        {
+          "id": "vila-sem",
+          "categoria": "vila",
+          "prompt": "metal forehead protector plate with a deep scratch across it",
+          "alt": "Sem vila (errante)",
+          "observacao": "canônico como conceito: o hitaiate riscado dos ninjas renegados"
+        },
+        {
+          "id": "cla-sabaku",
+          "categoria": "cla",
+          "prompt": "Gaara's large sand gourd with a cork, tan clay",
+          "alt": "Clã Sabaku / Realeza de Suna",
+          "observacao": "o clã não tem brasão oficial; a cabaça do Gaara é o símbolo canônico mais reconhecível"
+        },
+        {
+          "id": "kkg-dojutsu",
+          "categoria": "kkg",
+          "prompt": "eye with a glowing red patterned iris",
+          "alt": "Dōjutsu"
+        },
+        {
+          "id": "kkg-corporal",
+          "categoria": "kkg",
+          "prompt": "forearm with a bone spike growing out of it",
+          "alt": "Kekkei Genkai corporal"
+        },
+        {
+          "id": "kkg-mental",
+          "categoria": "kkg",
+          "prompt": "head silhouette with purple mind waves",
+          "alt": "Kekkei Genkai mental"
+        },
+        {
+          "id": "kkg-combinacao",
+          "categoria": "kkg",
+          "prompt": "fire and water energies merging into one swirl",
+          "alt": "Combinação elemental"
+        },
+        {
+          "id": "kkg-hibrido",
+          "categoria": "kkg",
+          "prompt": "glowing spiral with a small insect",
+          "alt": "Kekkei Genkai híbrido"
+        },
+        {
+          "id": "esp-controle-chakra",
+          "categoria": "esp",
+          "prompt": "blue chakra thread passing through the eye of a needle",
+          "alt": "Especialização: Controle de Chakra"
+        },
+        {
+          "id": "esp-reservatorio",
+          "categoria": "esp",
+          "prompt": "large gourd filled with glowing blue chakra",
+          "alt": "Especialização: Reservatório de Chakra"
+        },
+        {
+          "id": "esp-elemento",
+          "categoria": "esp",
+          "prompt": "five small colored element orbs arranged in a circle",
+          "alt": "Especialização: Elemento Específico"
+        },
+        {
+          "id": "esp-velocidade",
+          "categoria": "esp",
+          "prompt": "blurred running ninja silhouette with speed lines",
+          "alt": "Especialização: Velocidade"
+        },
+        {
+          "id": "esp-resistencia",
+          "categoria": "esp",
+          "prompt": "iron armored forearm guard",
+          "alt": "Especialização: Resistência Física"
+        },
+        {
+          "id": "esp-genjutsu",
+          "categoria": "esp",
+          "prompt": "bronze medallion with a purple hypnotic eye",
+          "alt": "Especialização: Genjutsu"
+        },
+        {
+          "id": "esp-ninjutsu",
+          "categoria": "esp",
+          "prompt": "bronze medallion with a blue energy sphere",
+          "alt": "Especialização: Ninjutsu"
+        },
+        {
+          "id": "esp-bukijutsu",
+          "categoria": "esp",
+          "prompt": "bronze medallion with a katana",
+          "alt": "Especialização: Bukijutsu"
+        },
+        {
+          "id": "esp-taijutsu",
+          "categoria": "esp",
+          "prompt": "bronze medallion with a bandaged fist",
+          "alt": "Especialização: Taijutsu"
+        },
+        {
+          "id": "esp-selamento",
+          "categoria": "esp",
+          "prompt": "paper scroll bound by an iron chain",
+          "alt": "Especialização: Selamento"
+        },
+        {
+          "id": "esp-furtividade",
+          "categoria": "esp",
+          "prompt": "dagger blade emerging from a dark shadow",
+          "alt": "Especialização: Furtividade e Assassinato"
+        },
+        {
+          "id": "esp-marionete",
+          "categoria": "esp",
+          "prompt": "wooden puppet head with visible joints",
+          "alt": "Especialização: Marionete"
+        },
+        {
+          "id": "esp-invocacao",
+          "categoria": "esp",
+          "prompt": "white smoke cloud puff with a seal mark",
+          "alt": "Especialização: Invocação"
+        },
+        {
+          "id": "esp-sensor",
+          "categoria": "esp",
+          "prompt": "concentric blue chakra rings radiating outward",
+          "alt": "Especialização: Sensor de Chakra"
+        },
+        {
+          "id": "esp-medico",
+          "categoria": "esp",
+          "prompt": "round pill with a green healing glow",
+          "alt": "Especialização: Ninjutsu Médico"
+        },
+        {
+          "id": "esp-sennin",
+          "categoria": "esp",
+          "prompt": "mossy stone surrounded by green nature energy",
+          "alt": "Especialização: Sennin"
+        },
+        {
+          "id": "equip-arma-distancia",
+          "categoria": "equip",
+          "prompt": "steel four-pointed shuriken",
+          "alt": "Armas de distância"
+        },
+        {
+          "id": "equip-arma-curta",
+          "categoria": "equip",
+          "prompt": "short tanto knife",
+          "alt": "Armas brancas curtas"
+        },
+        {
+          "id": "equip-arma-longa",
+          "categoria": "equip",
+          "prompt": "katana in a black sheath",
+          "alt": "Armas brancas longas"
+        },
+        {
+          "id": "equip-arma-exotica",
+          "categoria": "equip",
+          "prompt": "kusarigama sickle with a chain",
+          "alt": "Armas brancas exóticas"
+        },
+        {
+          "id": "equip-sete-espadas",
+          "categoria": "equip",
+          "prompt": "giant cleaver sword wrapped in bandages",
+          "alt": "Sete Espadas da Névoa"
+        },
+        {
+          "id": "equip-pilula",
+          "categoria": "equip",
+          "prompt": "round brown soldier pill",
+          "alt": "Pílulas"
+        },
+        {
+          "id": "equip-veneno",
+          "categoria": "equip",
+          "prompt": "purple poison vial with a cork",
+          "alt": "Venenos"
+        },
+        {
+          "id": "equip-pergaminho",
+          "categoria": "equip",
+          "prompt": "storage scroll with a seal symbol",
+          "alt": "Pergaminhos"
+        },
+        {
+          "id": "equip-kit",
+          "categoria": "equip",
+          "prompt": "cloth medical pouch with a green leaf mark",
+          "alt": "Kits"
+        },
+        {
+          "id": "equip-ferramenta",
+          "categoria": "equip",
+          "prompt": "coil of thin ninja wire",
+          "alt": "Ferramentas"
+        },
+        {
+          "id": "callout-destaque",
+          "categoria": "callout",
+          "prompt": "glowing paper lantern",
+          "alt": "Destaque"
+        },
+        {
+          "id": "callout-atencao",
+          "categoria": "callout",
+          "prompt": "wooden sign with an exclamation mark",
+          "alt": "Atenção"
+        },
+        {
+          "id": "callout-pre-requisito",
+          "categoria": "callout",
+          "prompt": "bronze key",
+          "alt": "Pré-requisito"
+        },
+        {
+          "id": "callout-citacao",
+          "categoria": "callout",
+          "prompt": "stone tablet with carved lines",
+          "alt": "Citação"
+        },
+        {
+          "id": "dado-d20",
+          "categoria": "dado",
+          "prompt": "twenty-sided die d20",
+          "alt": "Dado d20"
+        },
+        {
+          "id": "acao-criar-personagem",
+          "categoria": "acao",
+          "prompt": "ninja bust portrait with a plus sign",
+          "alt": "Criar personagem"
+        },
+        {
+          "id": "acao-criar-cla",
+          "categoria": "acao",
+          "prompt": "clan banner flag with a plus sign",
+          "alt": "Criar clã"
+        },
+        {
+          "id": "acao-criar-jutsu",
+          "categoria": "acao",
+          "prompt": "blank paper scroll with a calligraphy brush",
+          "alt": "Criar jutsu"
+        },
+        {
+          "id": "acao-forjar",
+          "categoria": "acao",
+          "prompt": "anvil with a hammer and sparks",
+          "alt": "Forjar arma"
+        },
+        {
+          "id": "acao-construir-marionete",
+          "categoria": "acao",
+          "prompt": "wooden puppet head next to small carving tools",
+          "alt": "Construir marionete"
+        },
+        {
+          "id": "acao-convidar",
+          "categoria": "acao",
+          "prompt": "folded letter with a red wax seal",
+          "alt": "Convidar"
+        },
+        {
+          "id": "acao-subir-nivel",
+          "categoria": "acao",
+          "prompt": "paper scroll with a glowing upward arrow",
+          "alt": "Subir de nível"
+        },
+        {
+          "id": "acao-conceder",
+          "categoria": "acao",
+          "prompt": "coin pouch with a gold star",
+          "alt": "Conceder recompensas"
+        },
+        {
+          "id": "acao-novo-npc",
+          "categoria": "acao",
+          "prompt": "white mask with a plus sign",
+          "alt": "Novo NPC"
+        },
+        {
+          "id": "kamon-base-01",
+          "categoria": "kamon",
+          "prompt": "flat single color emblem silhouette of a leaf",
+          "alt": "Brasão: folha"
+        },
+        {
+          "id": "kamon-base-02",
+          "categoria": "kamon",
+          "prompt": "flat single color emblem silhouette of an open fan",
+          "alt": "Brasão: leque"
+        },
+        {
+          "id": "kamon-base-03",
+          "categoria": "kamon",
+          "prompt": "flat single color emblem silhouette of a wave",
+          "alt": "Brasão: onda"
+        },
+        {
+          "id": "kamon-base-04",
+          "categoria": "kamon",
+          "prompt": "flat single color emblem silhouette of a flame",
+          "alt": "Brasão: chama"
+        },
+        {
+          "id": "kamon-base-05",
+          "categoria": "kamon",
+          "prompt": "flat single color emblem silhouette of a mountain",
+          "alt": "Brasão: montanha"
+        },
+        {
+          "id": "kamon-base-06",
+          "categoria": "kamon",
+          "prompt": "flat single color emblem silhouette of a cloud",
+          "alt": "Brasão: nuvem"
+        },
+        {
+          "id": "kamon-base-07",
+          "categoria": "kamon",
+          "prompt": "flat single color emblem silhouette of a crescent moon",
+          "alt": "Brasão: lua"
+        },
+        {
+          "id": "kamon-base-08",
+          "categoria": "kamon",
+          "prompt": "flat single color emblem silhouette of a bone",
+          "alt": "Brasão: osso"
+        },
+        {
+          "id": "kamon-base-09",
+          "categoria": "kamon",
+          "prompt": "flat single color emblem silhouette of an insect",
+          "alt": "Brasão: inseto"
+        },
+        {
+          "id": "kamon-base-10",
+          "categoria": "kamon",
+          "prompt": "flat single color emblem silhouette of an eye",
+          "alt": "Brasão: olho"
+        },
+        {
+          "id": "kamon-base-11",
+          "categoria": "kamon",
+          "prompt": "flat single color emblem silhouette of a spiral",
+          "alt": "Brasão: espiral"
+        },
+        {
+          "id": "kamon-base-12",
+          "categoria": "kamon",
+          "prompt": "flat single color emblem silhouette of a blade",
+          "alt": "Brasão: lâmina"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "nome": "P2: estados, catálogo de armas e itens, módulos",
+      "ferramenta": "create_1_direction_object",
+      "parametros": "iguais ao lote A",
+      "itens": [
+        {
+          "id": "pericia-kugutsu",
+          "categoria": "pericia",
+          "prompt": "wooden marionette puppet dangling from glowing blue chakra strings tied to a wooden control bar",
+          "alt": "Kugutsu",
+          "prioridade": "P2"
+        },
+        {
+          "id": "estado-atordoado",
+          "categoria": "estado",
+          "prompt": "small yellow stars spinning in a circle",
+          "alt": "Atordoado",
+          "prioridade": "P2"
+        },
+        {
+          "id": "estado-paralisado",
+          "categoria": "estado",
+          "prompt": "stiff figure crackling with yellow electricity",
+          "alt": "Paralisado",
+          "prioridade": "P2"
+        },
+        {
+          "id": "estado-imobilizado",
+          "categoria": "estado",
+          "prompt": "heavy iron chain wrapped in a loop",
+          "alt": "Imobilizado",
+          "prioridade": "P2"
+        },
+        {
+          "id": "estado-controlado",
+          "categoria": "estado",
+          "prompt": "puppet strings attached to a dark shadow figure",
+          "alt": "Controlado",
+          "prioridade": "P2"
+        },
+        {
+          "id": "estado-caido",
+          "categoria": "estado",
+          "prompt": "figure lying flat on the ground",
+          "alt": "Caído",
+          "prioridade": "P2"
+        },
+        {
+          "id": "estado-cego",
+          "categoria": "estado",
+          "prompt": "white cloth blindfold",
+          "alt": "Cego",
+          "prioridade": "P2"
+        },
+        {
+          "id": "estado-amedrontado",
+          "categoria": "estado",
+          "prompt": "pale frightened face with a sweat drop",
+          "alt": "Amedrontado",
+          "prioridade": "P2"
+        },
+        {
+          "id": "estado-em-chamas",
+          "categoria": "estado",
+          "prompt": "small figure engulfed in orange flames",
+          "alt": "Em chamas",
+          "prioridade": "P2"
+        },
+        {
+          "id": "estado-envenenado",
+          "categoria": "estado",
+          "prompt": "purple poison drop with bubbles",
+          "alt": "Envenenado",
+          "prioridade": "P2"
+        },
+        {
+          "id": "estado-sangrando",
+          "categoria": "estado",
+          "prompt": "red blood drop",
+          "alt": "Sangrando",
+          "prioridade": "P2"
+        },
+        {
+          "id": "estado-em-genjutsu",
+          "categoria": "estado",
+          "prompt": "purple spiral swirl over a closed eye",
+          "alt": "Em genjutsu",
+          "prioridade": "P2"
+        },
+        {
+          "id": "estado-desprevenido",
+          "categoria": "estado",
+          "prompt": "big red exclamation mark",
+          "alt": "Desprevenido",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-shuriken",
+          "categoria": "arma",
+          "prompt": "steel four-pointed shuriken",
+          "alt": "Shuriken",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-kunai",
+          "categoria": "arma",
+          "prompt": "steel kunai knife with ring handle",
+          "alt": "Kunai",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-senbon",
+          "categoria": "arma",
+          "prompt": "three thin steel senbon needles",
+          "alt": "Senbon",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-fuuma-shuriken",
+          "categoria": "arma",
+          "prompt": "large folding windmill shuriken",
+          "alt": "Fuuma shuriken",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-arco-longo",
+          "categoria": "arma",
+          "prompt": "japanese longbow with an arrow",
+          "alt": "Arco longo",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-tanto",
+          "categoria": "arma",
+          "prompt": "short tanto dagger",
+          "alt": "Tanto",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-wakizashi",
+          "categoria": "arma",
+          "prompt": "wakizashi short sword",
+          "alt": "Wakizashi",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-kodachi",
+          "categoria": "arma",
+          "prompt": "kodachi short curved sword",
+          "alt": "Kodachi",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-nunchaku",
+          "categoria": "arma",
+          "prompt": "wooden nunchaku with chain",
+          "alt": "Nunchaku",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-katana",
+          "categoria": "arma",
+          "prompt": "katana with a wrapped handle",
+          "alt": "Katana",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-nodachi",
+          "categoria": "arma",
+          "prompt": "very long nodachi sword",
+          "alt": "Nodachi",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-naginata",
+          "categoria": "arma",
+          "prompt": "naginata polearm with curved blade",
+          "alt": "Naginata",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-bo",
+          "categoria": "arma",
+          "prompt": "long wooden bo staff",
+          "alt": "Bo",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-yari",
+          "categoria": "arma",
+          "prompt": "yari spear",
+          "alt": "Yari",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-kusarigama",
+          "categoria": "arma",
+          "prompt": "kusarigama sickle with a weighted chain",
+          "alt": "Kusarigama",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-manriki",
+          "categoria": "arma",
+          "prompt": "manriki chain with weights at both ends",
+          "alt": "Manriki",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-tonfa",
+          "categoria": "arma",
+          "prompt": "pair of wooden tonfa",
+          "alt": "Tonfa",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-sai",
+          "categoria": "arma",
+          "prompt": "steel sai with three prongs",
+          "alt": "Sai",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-hanbo",
+          "categoria": "arma",
+          "prompt": "short wooden hanbo staff",
+          "alt": "Hanbo",
+          "prioridade": "P2"
+        },
+        {
+          "id": "arma-kanabo",
+          "categoria": "arma",
+          "prompt": "studded iron kanabo club",
+          "alt": "Kanabo",
+          "prioridade": "P2"
+        },
+        {
+          "id": "espada-kubikiribocho",
+          "categoria": "espada",
+          "prompt": "giant cleaver sword with a round hole near the tip",
+          "alt": "Kubikiribocho",
+          "prioridade": "P2"
+        },
+        {
+          "id": "espada-samehada",
+          "categoria": "espada",
+          "prompt": "sword covered in blue shark scales wrapped in bandages",
+          "alt": "Samehada",
+          "prioridade": "P2"
+        },
+        {
+          "id": "espada-hiramekarei",
+          "categoria": "espada",
+          "prompt": "wide twin-handled blade wrapped in cloth",
+          "alt": "Hiramekarei",
+          "prioridade": "P2"
+        },
+        {
+          "id": "espada-kabutowari",
+          "categoria": "espada",
+          "prompt": "axe and hammer connected by a chain",
+          "alt": "Kabutowari",
+          "prioridade": "P2"
+        },
+        {
+          "id": "espada-nuibari",
+          "categoria": "espada",
+          "prompt": "long needle sword with a thin wire",
+          "alt": "Nuibari",
+          "prioridade": "P2"
+        },
+        {
+          "id": "espada-shibuki",
+          "categoria": "espada",
+          "prompt": "sword with a scroll of explosive tags on the blade",
+          "alt": "Shibuki",
+          "prioridade": "P2"
+        },
+        {
+          "id": "espada-kiba",
+          "categoria": "espada",
+          "prompt": "twin short swords crackling with lightning",
+          "alt": "Kiba",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-hyourougan",
+          "categoria": "item",
+          "prompt": "small round brown soldier pill",
+          "alt": "Hyourougan",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-pilula-cura",
+          "categoria": "item",
+          "prompt": "green healing pill",
+          "alt": "Pílula de cura",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-pilula-militar",
+          "categoria": "item",
+          "prompt": "red military pill",
+          "alt": "Pílula militar",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-antidoto",
+          "categoria": "item",
+          "prompt": "small green antidote vial",
+          "alt": "Antídoto",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-antidoto-raro",
+          "categoria": "item",
+          "prompt": "golden rare antidote vial",
+          "alt": "Antídoto raro",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-bomba-fumaca",
+          "categoria": "item",
+          "prompt": "round smoke bomb with a short fuse",
+          "alt": "Bomba de fumaça",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-fio-ninja",
+          "categoria": "item",
+          "prompt": "kunai tied to a long ninja wire",
+          "alt": "Fio ninja",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-kan-no-kami",
+          "categoria": "item",
+          "prompt": "small chakra sensing paper slip",
+          "alt": "Kan no Kami",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-papel-explosivo",
+          "categoria": "item",
+          "prompt": "explosive tag paper with a red seal",
+          "alt": "Papel explosivo",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-lente-noturna",
+          "categoria": "item",
+          "prompt": "night vision goggles",
+          "alt": "Lente de visão noturna",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-pergaminho-basico",
+          "categoria": "item",
+          "prompt": "small storage scroll",
+          "alt": "Pergaminho básico",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-pergaminho-avancado",
+          "categoria": "item",
+          "prompt": "medium storage scroll with blue seal",
+          "alt": "Pergaminho avançado",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-pergaminho-mestre",
+          "categoria": "item",
+          "prompt": "large ornate storage scroll with gold trim",
+          "alt": "Pergaminho mestre",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-pergaminho-jutsu",
+          "categoria": "item",
+          "prompt": "scroll with a glowing jutsu seal",
+          "alt": "Pergaminho de jutsu pré-armado",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-kit-marionetista",
+          "categoria": "item",
+          "prompt": "wooden toolbox with puppet strings and carving tools",
+          "alt": "Kit de marionetista",
+          "prioridade": "P2"
+        },
+        {
+          "id": "item-kit-medico",
+          "categoria": "item",
+          "prompt": "open medical kit with bandages",
+          "alt": "Kit médico",
+          "prioridade": "P2"
+        },
+        {
+          "id": "modulo-companheiro",
+          "categoria": "modulo",
+          "prompt": "ninja dog wearing a forehead protector, sitting",
+          "alt": "Companheiros",
+          "prioridade": "P2"
+        },
+        {
+          "id": "modulo-portoes",
+          "categoria": "modulo",
+          "prompt": "stone gate with eight locks",
+          "alt": "Portões Internos",
+          "prioridade": "P2"
+        },
+        {
+          "id": "modulo-mangekyou",
+          "categoria": "modulo",
+          "prompt": "red eye with a black pinwheel pattern",
+          "alt": "Mangekyou",
+          "prioridade": "P2"
+        },
+        {
+          "id": "status-revogado",
+          "categoria": "status",
+          "prompt": "red seal stamp crossed out with a black line",
+          "alt": "Revogado",
+          "prioridade": "P2"
+        },
+        {
+          "id": "status-excecao-mestre",
+          "categoria": "status",
+          "prompt": "red seal stamp with a gold star",
+          "alt": "Exceção do Mestre",
+          "prioridade": "P2"
+        }
+      ]
+    }
+  ],
+  "desenho_em_codigo": {
+    "motivo": "Letras e emblemas geométricos saem errados no texto-para-imagem (o selo veio com '$'). Desenhados pixel a pixel, sem custo.",
+    "itens": [
+      {
+        "id": "rank-e",
+        "categoria": "rank",
+        "descricao": "carimbo quadrado #E6D2BF, letra E #5C524A",
+        "alt": "Rank E"
+      },
+      {
+        "id": "rank-d",
+        "categoria": "rank",
+        "descricao": "carimbo quadrado #A88B6A, letra D #1A1A1A",
+        "alt": "Rank D"
+      },
+      {
+        "id": "rank-c",
+        "categoria": "rank",
+        "descricao": "carimbo quadrado #5E6B73, letra C #FFFFFF",
+        "alt": "Rank C"
+      },
+      {
+        "id": "rank-b",
+        "categoria": "rank",
+        "descricao": "carimbo quadrado #5C1E15, letra B #F4E4D6",
+        "alt": "Rank B"
+      },
+      {
+        "id": "rank-a",
+        "categoria": "rank",
+        "descricao": "carimbo quadrado #C44536, letra A #FFFFFF",
+        "alt": "Rank A"
+      },
+      {
+        "id": "rank-s",
+        "categoria": "rank",
+        "descricao": "carimbo quadrado #1A1A1A com borda #BF9000, letra S #F2C14E",
+        "alt": "Rank S"
+      }
+    ]
+  },
+  "ilustracoes": {
+    "ferramenta": "create_image_pixflux",
+    "parametros": {
+      "width": 96,
+      "height": 96,
+      "no_background": true,
+      "outline": "single color black outline",
+      "shading": "medium shading",
+      "detail": "medium detail",
+      "color_image": "paleta",
+      "estilo_no_prompt": "pixel art illustration, ninja fantasy theme inspired by feudal Japan, crisp 1px black outline, medium shading, light from top-left"
+    },
+    "itens": [
+      {
+        "id": "il-vazio",
+        "prompt": "blank paper scroll unrolled open, empty",
+        "alt": "Pergaminho em branco"
+      },
+      {
+        "id": "il-sem-resultados",
+        "prompt": "magnifying glass over drifting mist",
+        "alt": "Nenhum resultado"
+      },
+      {
+        "id": "il-erro",
+        "prompt": "broken steel shuriken split in two pieces",
+        "alt": "Algo deu errado"
+      },
+      {
+        "id": "il-404",
+        "prompt": "small lost ninja standing in fog next to a wooden signpost with a question mark",
+        "alt": "Página não encontrada"
+      },
+      {
+        "id": "il-403",
+        "prompt": "closed wooden gate sealed with a glowing paper seal talisman",
+        "alt": "Acesso selado"
+      },
+      {
+        "id": "il-offline",
+        "prompt": "black crow sitting alone on a bare branch",
+        "alt": "Sem conexão"
+      },
+      {
+        "id": "il-enviado",
+        "prompt": "black crow flying while carrying a rolled scroll",
+        "alt": "Enviado"
+      },
+      {
+        "id": "il-aprovado",
+        "prompt": "large square red seal stamp pressing down onto paper",
+        "alt": "Aprovado",
+        "observacao": "gerar sem texto; o kanji 承認 entra depois, desenhado em código"
+      },
+      {
+        "id": "il-convite",
+        "prompt": "folded letter with a red wax seal resting on a ninja forehead protector",
+        "alt": "Convite"
+      },
+      {
+        "id": "il-boas-vindas",
+        "prompt": "silhouettes of a team of three young ninjas standing together",
+        "alt": "Boas-vindas"
+      },
+      {
+        "id": "il-cha",
+        "prompt": "japanese clay teapot and a small tea cup with steam",
+        "alt": "Hora do chá"
+      },
+      {
+        "id": "il-memorial",
+        "prompt": "lit paper lantern in front of a small stone grave marker",
+        "alt": "Memorial",
+        "prioridade": "P2"
+      }
+    ]
+  },
+  "pendentes": [
+    {
+      "id": "an-carregando",
+      "descricao": "shuriken girando, 32×32, 8 quadros, 12 fps. Base: equip-arma-distancia do lote B; animar com animate_object ou pixelart_workbench (definir na hora)."
+    },
+    {
+      "id": "versoes-16px",
+      "descricao": "Redesenhos simplificados em 16×16 (create_image_pixen aceita 16×16, 1 geração cada; ou desenho em código). Ficam para antes da implementação."
+    }
+  ],
+  "regra_canonica": "Símbolos que existem no mangá/anime (vilas, clãs, natureza do chakra) são recriações fiéis dos originais: referência oficial (wiki Naruto, SVG) → base 32px na paleta (scripts/canon.js) → PixelLab img2img. Só usar motivo inventado quando não houver símbolo canônico.",
+  "canonicos": {
+    "pipeline": [
+      "node scripts/fetch-ref.js <id>=<arquivo.svg>  (Edge headless contorna o bloqueio da CDN)",
+      "node scripts/canon.js referencias/<id>.png base.png [--fill=#HEX para símbolos de traço] [--ink=0.42 --erode=2 para bordas grossas]",
+      "create_image_pixflux com init_image = base, init_image_strength 180–300, paleta forçada, prompt descrevendo o símbolo",
+      "Revisar: se a forma deformar, subir a força (300) e sombrear em código"
+    ],
+    "custo": "1 geração por símbolo (+1 se precisar refazer)",
+    "itens": [
+      {
+        "id": "vila-suna",
+        "categoria": "vila",
+        "referencia": "Sunagakure Symbol.svg",
+        "alt": "Sunagakure"
+      },
+      {
+        "id": "vila-kiri",
+        "categoria": "vila",
+        "referencia": "Kirigakure Symbol.svg",
+        "alt": "Kirigakure"
+      },
+      {
+        "id": "vila-kumo",
+        "categoria": "vila",
+        "referencia": "Kumogakure Symbol.svg",
+        "alt": "Kumogakure"
+      },
+      {
+        "id": "vila-iwa",
+        "categoria": "vila",
+        "referencia": "Iwagakure Symbol.svg",
+        "alt": "Iwagakure"
+      },
+      {
+        "id": "vila-ame",
+        "categoria": "vila",
+        "referencia": "Amegakure Symbol.svg",
+        "alt": "Amegakure"
+      },
+      {
+        "id": "vila-taki",
+        "categoria": "vila",
+        "referencia": "Takigakure Symbol.svg",
+        "alt": "Takigakure"
+      },
+      {
+        "id": "vila-oto",
+        "categoria": "vila",
+        "referencia": "Otogakure Symbol.svg",
+        "alt": "Otogakure"
+      },
+      {
+        "id": "cla-nara",
+        "categoria": "cla",
+        "referencia": "Nara Symbol.svg",
+        "alt": "Clã Nara"
+      },
+      {
+        "id": "cla-akimichi",
+        "categoria": "cla",
+        "referencia": "Akimichi Symbol.svg",
+        "alt": "Clã Akimichi"
+      },
+      {
+        "id": "cla-yamanaka",
+        "categoria": "cla",
+        "referencia": "Yamanaka Symbol.svg",
+        "alt": "Clã Yamanaka"
+      },
+      {
+        "id": "cla-inuzuka",
+        "categoria": "cla",
+        "referencia": "Inuzuka Symbol.svg",
+        "alt": "Clã Inuzuka"
+      },
+      {
+        "id": "cla-aburame",
+        "categoria": "cla",
+        "referencia": "Aburame Symbol.svg",
+        "alt": "Clã Aburame"
+      },
+      {
+        "id": "cla-hyuuga",
+        "categoria": "cla",
+        "referencia": "Hyūga Symbol.svg",
+        "alt": "Clã Hyuuga"
+      },
+      {
+        "id": "cla-uchiha",
+        "categoria": "cla",
+        "referencia": "Uchiha Symbol.svg",
+        "alt": "Clã Uchiha"
+      },
+      {
+        "id": "cla-senju",
+        "categoria": "cla",
+        "referencia": "Senju Symbol.svg",
+        "alt": "Clã Senju"
+      },
+      {
+        "id": "cla-uzumaki",
+        "categoria": "cla",
+        "referencia": "Uzumaki Symbol.svg",
+        "alt": "Clã Uzumaki"
+      },
+      {
+        "id": "cla-kaguya",
+        "categoria": "cla",
+        "referencia": "Kaguya Symbol.svg",
+        "alt": "Clã Kaguya"
+      },
+      {
+        "id": "cla-hozuki",
+        "categoria": "cla",
+        "referencia": "Hōzuki Symbol.svg",
+        "alt": "Clã Hozuki"
+      },
+      {
+        "id": "cla-yuki",
+        "categoria": "cla",
+        "referencia": "Yuki Symbol.svg",
+        "alt": "Clã Yuki"
+      },
+      {
+        "id": "elemento-suiton",
+        "categoria": "elemento",
+        "referencia": "Nature Icon Water.svg",
+        "alt": "Suiton (Água)"
+      },
+      {
+        "id": "elemento-doton",
+        "categoria": "elemento",
+        "referencia": "Nature Icon Earth.svg",
+        "alt": "Doton (Terra)"
+      },
+      {
+        "id": "elemento-raiton",
+        "categoria": "elemento",
+        "referencia": "Nature Icon Lightning.svg",
+        "alt": "Raiton (Raio)"
+      },
+      {
+        "id": "elemento-fuuton",
+        "categoria": "elemento",
+        "referencia": "Nature Icon Wind.svg",
+        "alt": "Fuuton (Vento)"
+      }
+    ],
+    "p2": [
+      {
+        "id": "elemento-mokuton",
+        "categoria": "elemento",
+        "referencia": "Nature Icon Wood.svg",
+        "alt": "Mokuton (Madeira)"
+      },
+      {
+        "id": "elemento-hyoton",
+        "categoria": "elemento",
+        "referencia": "Nature Icon Ice.svg",
+        "alt": "Hyōton (Gelo)"
+      },
+      {
+        "id": "elemento-yoton",
+        "categoria": "elemento",
+        "referencia": "Nature Icon Lava.svg",
+        "alt": "Yōton (Lava)"
+      },
+      {
+        "id": "elemento-ranton",
+        "categoria": "elemento",
+        "referencia": "Nature Icon Storm.svg",
+        "alt": "Ranton (Tempestade)"
+      },
+      {
+        "id": "elemento-jiton",
+        "categoria": "elemento",
+        "referencia": "Nature Icon Magnet.svg",
+        "alt": "Jiton (Magnético)"
+      }
+    ]
+  }
+}
