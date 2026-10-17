@@ -1,7 +1,30 @@
+/// <reference types="node" />
+import { readFileSync, writeFileSync } from 'node:fs';
 import { defineConfig } from 'vitest/config';
 import tailwindcss from '@tailwindcss/vite';
-import adapter from '@sveltejs/adapter-static';
+import adapterStatic from '@sveltejs/adapter-static';
+import type { Adapter } from '@sveltejs/kit';
 import { sveltekit } from '@sveltejs/kit/vite';
+
+/**
+ * Site estático. No Vercel o adapter-static entra no modo automático (Build Output API),
+ * que não gera página de erro: aqui geramos o 404.html (G4) e o registramos para rotas inexistentes.
+ */
+function adapter(): Adapter {
+	if (!process.env.VERCEL) return adapterStatic({ fallback: '404.html' });
+	const base = adapterStatic();
+	return {
+		...base,
+		async adapt(builder) {
+			await base.adapt(builder);
+			await builder.generateFallback('.vercel/output/static/404.html');
+			const arquivo = '.vercel/output/config.json';
+			const config = JSON.parse(readFileSync(arquivo, 'utf8'));
+			config.routes.push({ handle: 'error' }, { status: 404, src: '^/.*$', dest: '/404.html' });
+			writeFileSync(arquivo, JSON.stringify(config, null, '  '));
+		}
+	};
+}
 
 export default defineConfig({
 	plugins: [
@@ -13,7 +36,7 @@ export default defineConfig({
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
 			// A documentação é toda pré-renderizada; o 404.html cobre rotas desconhecidas.
-			adapter: adapter({ fallback: '404.html' })
+			adapter: adapter()
 		})
 	],
 	test: {
