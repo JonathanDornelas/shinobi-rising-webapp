@@ -16,3 +16,14 @@ pixellab/gerados/**/get_object.txt
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# SvelteKit
+/.svelte-kit
+/build
+.output
+.vercel
+.netlify
+.wrangler
+!.env.example
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
