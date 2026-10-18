@@ -1,6 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
 import { carregarCampanha } from '#lib/campanhas/servidor.ts';
 import { claDaFicha } from '#lib/clas/servidor.ts';
+import { jutsusDaFicha } from '#lib/jutsus/servidor.ts';
 import { catalogoFicha } from '#lib/personagem/catalogo.server.ts';
 import { xpDoNivel } from '#lib/personagem/progressao.ts';
 import { hrefFicha } from '#lib/personagem/status.ts';
@@ -20,6 +21,6 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		navTitulo: `NÍVEL ${p.nivel} → ${p.nivel + 1}`,
 		campanha,
 		personagem: p,
-		catalogo: catalogoFicha(cla && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(cla) ? cla : null, await claDaFicha(locals.supabase, p.cla_id))
+		catalogo: catalogoFicha(cla && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(cla) ? cla : null, await claDaFicha(locals.supabase, p.cla_id), await jutsusDaFicha(locals.supabase, p.id, p.cla_id))
 	};
 };

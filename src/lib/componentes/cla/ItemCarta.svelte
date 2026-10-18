@@ -2,6 +2,8 @@
 	// Uma carta do clã na lista: rank, nome, origem e onde é usada; as originais abrem para editar nome e descrição.
 	import type { CriadorCla } from '#lib/clas/criador.svelte.ts';
 	import type { CartaCla } from '#lib/clas/regras.ts';
+	import { STATUS_CLA } from '#lib/clas/status.ts';
+	import type { StatusCla } from '#lib/supabase/banco.ts';
 	import Icone from '../ui/Icone.svelte';
 
 	interface Props {
@@ -17,6 +19,14 @@
 	const icone = $derived(carta.tipo === 'habilidade' ? 'acao/ic-acao-criar-jutsu' : `rank/ic-rank-${(carta.rank ?? 'c').toLowerCase()}`);
 	const ro = $derived(!c.editavel);
 	const idx = $derived(c.dados.cartas.findIndex((x) => x.id === carta.id));
+	const detalhado = $derived(c.jutsusDasCartas[carta.id] ?? null);
+	const original = $derived(carta.tipo === 'jutsu' && !carta.slug);
+	let abrindo = $state(false);
+	async function detalhar() {
+		abrindo = true;
+		await c.detalharCarta?.(carta.id);
+		abrindo = false;
+	}
 </script>
 
 <div class="border-b-2 border-b3 {escolhida ? 'bg-[rgba(196,69,54,.10)]' : ''}">
@@ -37,6 +47,18 @@
 			<button type="button" class="btn-icone h-9 w-9 font-pixel text-sm text-err" aria-label="Remover {carta.nome}" onclick={() => c.removerCarta(carta.id)}>✕</button>
 		{/if}
 	</div>
+	{#if original && (detalhado || c.detalharCarta)}
+		<div class="flex flex-wrap items-center gap-2 pb-2 pl-11 text-[13px]">
+			{#if detalhado}
+				{@const st = STATUS_CLA[detalhado.status as StatusCla]}
+				<span class="inline-flex h-7 items-center gap-0.5 border-2 border-ink pr-1.5 text-xs font-semibold {st.classe}"><Icone id={st.icone} class="h-6 w-6" />{st.rotulo}</span>
+				{#if detalhado.rank}<span class="font-semibold">Rank {detalhado.rank}{detalhado.custo ? ` · ${detalhado.custo}` : ''}</span>{/if}
+			{/if}
+			{#if c.detalharCarta}
+				<button type="button" class="link font-semibold" disabled={abrindo} onclick={detalhar}>{detalhado ? 'Abrir no criador de jutsus' : 'Detalhar no criador de jutsus (PJ, custo, efeito)'}</button>
+			{/if}
+		</div>
+	{/if}
 	{#if aberta && idx >= 0}
 		<div class="flex flex-col gap-2 pb-3 pl-11">
 			<div class="flex gap-2">

@@ -16,15 +16,19 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
 	const dono = cla.autor_id === usuario.id;
 
 	const fichaId = url.searchParams.get('ficha');
-	const [{ data: ficha }, { data: outros }, { data: versaoNova }] = await Promise.all([
+	const [{ data: ficha }, { data: outros }, { data: versaoNova }, { data: jutsusCartas }] = await Promise.all([
 		fichaId && /^[0-9a-f-]{36}$/i.test(fichaId)
 			? locals.supabase.from('personagens').select('id, nome').eq('id', fichaId).eq('jogador_id', usuario.id).maybeSingle()
 			: Promise.resolve({ data: null }),
 		locals.supabase.from('clas').select('nome').eq('campanha_id', params.id).eq('status', 'aprovado').neq('id', cla.id),
 		dono && cla.status === 'aprovado'
 			? locals.supabase.from('clas').select('id').eq('anterior_id', cla.id).in('status', ['rascunho', 'em_revisao', 'ajustes']).maybeSingle()
-			: Promise.resolve({ data: null })
+			: Promise.resolve({ data: null }),
+		locals.supabase.from('jutsus_criados').select('id, carta_id, status, rank, resumo, versao').eq('cla_id', cla.id).eq('tipo', 'jutsu').order('versao', { ascending: false })
 	]);
+	// a versão mais nova de cada carta
+	const porCarta: Record<string, { id: string; status: string; rank: string | null; custo: string | null }> = {};
+	for (const j of jutsusCartas ?? []) if (j.carta_id && !porCarta[j.carta_id]) porCarta[j.carta_id] = { id: j.id, status: j.status, rank: j.rank, custo: (j.resumo as { custo?: string })?.custo ?? null };
 
 	return {
 		titulo: cla.nome ? `Clã ${cla.nome}` : 'Criar clã',
@@ -40,6 +44,7 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
 		ficha: ficha ?? null,
 		versaoNova: versaoNova?.id ?? null,
 		jutsus: jutsusParaCla(),
+		jutsusCartas: porCarta,
 		outrosClas: [...new Set([...clasDoLivro.map((c) => c.nome), ...(outros ?? []).map((c) => c.nome).filter(Boolean)])].sort()
 	};
 };

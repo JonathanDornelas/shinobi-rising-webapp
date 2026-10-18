@@ -3,6 +3,9 @@ import { clas, equipamentos, especializacoes, jutsus } from '#lib/livro/dados.se
 import type { Bloco, Trecho } from '#lib/livro/tipos.ts';
 import type { JutsuCatalogo } from '#lib/clas/criador.svelte.ts';
 import { claParaFicha, slugCarta, type ClaDados } from '#lib/clas/regras.ts';
+import { paraJutsuLivro } from '#lib/jutsus/regras.ts';
+import type { JutsuCriadoFicha } from '#lib/jutsus/servidor.ts';
+import { slugJutsuCriado } from '#lib/jutsus/status.ts';
 import { CLAS, ESPECIALIZACOES, JUTSUS_ACADEMIA, PESOS } from './dados.ts';
 import type { JutsuFicha } from './progressao.ts';
 import type { ItemLoja, JutsuOpcao } from './regras.ts';
@@ -108,7 +111,7 @@ export function catalogoCriacao(clasPermitidos: string[]) {
 }
 export type CatalogoCriacao = ReturnType<typeof catalogoCriacao>;
 
-function jutsuFicha(j: (typeof jutsus)[number]): JutsuFicha {
+function jutsuFicha(j: Pick<(typeof jutsus)[number], 'slug' | 'nome' | 'rank' | 'tipo' | 'custo' | 'custoNum' | 'elemento' | 'cla' | 'origem' | 'efeito' | 'info'>): JutsuFicha {
 	return {
 		slug: j.slug,
 		nome: j.nome,
@@ -131,11 +134,14 @@ export function jutsusParaCla(): JutsuCatalogo[] {
 		.map((j) => ({ slug: j.slug, nome: j.nome, rank: j.rank, tipo: j.tipo, elemento: j.elemento }));
 }
 
-/** Jutsus originais de um clã criado: nome e descrição; números e custo chegam com o criador de jutsus (cap. 20). */
-function jutsusOriginais(id: string, d: ClaDados): JutsuFicha[] {
+/** Jutsus originais de um clã criado: com os números do criador de jutsus (cap. 20) quando a carta já tem um jutsu aprovado. */
+function jutsusOriginais(id: string, d: ClaDados, criados: JutsuCriadoFicha[]): JutsuFicha[] {
 	return d.cartas
 		.filter((c) => c.tipo === 'jutsu' && !c.slug)
-		.map((c) => ({
+		.map((c) => {
+			const feito = criados.find((j) => j.cla_id === id && j.carta_id === c.id);
+			if (feito) return { ...jutsuFicha(paraJutsuLivro(slugCarta(id, c), feito.dados, `Clã ${d.conceito.nome.trim()}`)), cla: id };
+			return {
 			slug: slugCarta(id, c),
 			nome: c.nome,
 			rank: c.rank ?? 'C',
@@ -147,22 +153,25 @@ function jutsusOriginais(id: string, d: ClaDados): JutsuFicha[] {
 			origem: `Clã ${d.conceito.nome.trim()}`,
 			efeito: c.descricao,
 			info: []
-		}));
+			};
+		});
 }
 
 /** Catálogo da ficha em jogo (P3, P4, P5): jutsus gerais e do clã, marcos e dados do clã, loja e especializações. */
-export function catalogoFicha(claSlug: string | null, criado?: { id: string; dados: ClaDados } | null) {
+export function catalogoFicha(claSlug: string | null, criado?: { id: string; dados: ClaDados } | null, jutsusCriados: JutsuCriadoFicha[] = []) {
+	// jutsus criados para o personagem: entram como jutsus gerais, aprendidos com PT no treino
+	const proprios = jutsusCriados.filter((j) => j.personagem_id).map((j) => jutsuFicha(paraJutsuLivro(slugJutsuCriado(j.id), j.dados, 'Criação própria')));
 	const base = catalogoCriacao(claSlug ? [claSlug] : []);
 	const doCla = claSlug ? jutsus.filter((j) => j.cla === claSlug) : [];
 	const cla = claSlug ? clas.find((c) => c.slug === claSlug) : undefined;
 	if (criado) {
-		const originais = jutsusOriginais(criado.id, criado.dados);
+		const originais = jutsusOriginais(criado.id, criado.dados, jutsusCriados);
 		const cartas = criado.dados.cartas.filter((c) => c.tipo === 'jutsu');
 		return {
 			loja: base.loja,
 			especializacoes: base.especializacoes,
 			armas: base.armas,
-			jutsus: [...jutsus.filter((j) => !j.cla).map(jutsuFicha), ...originais],
+			jutsus: [...jutsus.filter((j) => !j.cla).map(jutsuFicha), ...proprios, ...originais],
 			jutsusDoCla: cartas.map((c) => ({ slug: slugCarta(criado.id, c), nome: c.nome })),
 			cla: claParaFicha(criado.id, criado.dados)
 		};
@@ -171,7 +180,7 @@ export function catalogoFicha(claSlug: string | null, criado?: { id: string; dad
 		loja: base.loja,
 		especializacoes: base.especializacoes,
 		armas: base.armas,
-		jutsus: [...jutsus.filter((j) => !j.cla), ...doCla].map(jutsuFicha),
+		jutsus: [...[...jutsus.filter((j) => !j.cla), ...doCla].map(jutsuFicha), ...proprios],
 		jutsusDoCla: doCla.map((j) => ({ slug: j.slug, nome: j.nome })),
 		cla: cla
 			? {

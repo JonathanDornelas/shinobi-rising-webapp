@@ -11,11 +11,22 @@ export interface JutsuCatalogo {
 	elemento: string | null;
 }
 
+/** Jutsu do criador (J2) ligado a uma carta original do clã. */
+export interface JutsuDaCarta {
+	id: string;
+	status: string;
+	rank: string | null;
+	custo: string | null;
+}
+
 export class CriadorCla {
 	dados: ClaDados = $state()!;
 	passo = $state(0);
 	readonly editavel: boolean;
 	readonly jutsus: JutsuCatalogo[];
+	/** Cartas já detalhadas no criador de jutsus e como abrir o criador (salvando o clã antes). */
+	jutsusDasCartas: Record<string, JutsuDaCarta> = {};
+	detalharCarta: ((cartaId: string) => Promise<void>) | null = null;
 
 	constructor(dados: ClaDados, jutsus: JutsuCatalogo[], editavel: boolean, passo = 0) {
 		this.dados = dados;

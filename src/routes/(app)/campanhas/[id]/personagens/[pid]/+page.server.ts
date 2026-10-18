@@ -1,5 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 import { claDaFicha } from '#lib/clas/servidor.ts';
+import { jutsusDaFicha } from '#lib/jutsus/servidor.ts';
 import { catalogoFicha } from '#lib/personagem/catalogo.server.ts';
 import { hrefEditar } from '#lib/personagem/status.ts';
 import type { PageServerLoad } from './$types';
@@ -19,10 +20,11 @@ export const load: PageServerLoad = async ({ locals, params, parent }) => {
 	const dono = p.jogador_id === usuario.id;
 	if (dono && p.status === 'rascunho') redirect(303, hrefEditar(params.id, p.id));
 
-	const [{ data: registros }, { data: pedidos }, criado] = await Promise.all([
+	const [{ data: registros }, { data: pedidos }, criado, jutsusCriados] = await Promise.all([
 		locals.supabase.from('ficha_registros').select('id, tipo, texto, icone, criado_em, ator:perfis!ficha_registros_ator_id_fkey(nome)').eq('personagem_id', p.id).order('criado_em', { ascending: false }).limit(60),
 		locals.supabase.from('pedidos_pt').select('id, sessao, semanas, pt, descricao, status, criado_em, comentario').eq('personagem_id', p.id).order('criado_em', { ascending: false }).limit(20),
-		claDaFicha(locals.supabase, p.cla_id)
+		claDaFicha(locals.supabase, p.cla_id),
+		jutsusDaFicha(locals.supabase, p.id, p.cla_id)
 	]);
 	const cla = (p.resumo as { cla?: string | null })?.cla ?? null;
 	return {
@@ -32,7 +34,7 @@ export const load: PageServerLoad = async ({ locals, params, parent }) => {
 		completa: { ...p, dono, mestre: papel === 'mestre' },
 		registros: registros ?? [],
 		pedidos: pedidos ?? [],
-		catalogo: catalogoFicha(cla && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(cla) ? cla : null, criado),
+		catalogo: catalogoFicha(cla && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(cla) ? cla : null, criado, jutsusCriados),
 		claCriado: criado ? { id: criado.id, status: criado.status } : null,
 		arquivada: !!campanha.arquivada_em
 	};

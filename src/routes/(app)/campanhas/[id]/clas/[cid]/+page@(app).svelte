@@ -27,6 +27,8 @@
 	import type { ClaDados } from '#lib/clas/regras.ts';
 	import { hrefCla, hrefClas, STATUS_CLA } from '#lib/clas/status.ts';
 	import { hrefEditar } from '#lib/personagem/status.ts';
+	import { jutsuVazio, resumoJutsu } from '#lib/jutsus/regras.ts';
+	import { hrefJutsu } from '#lib/jutsus/status.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 	import { dataCurta } from '#lib/formatar.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
@@ -41,6 +43,8 @@
 	const k = data.campanha;
 	// svelte-ignore state_referenced_locally
 	const c = new CriadorCla(data.dados, data.jutsus, data.editavel, data.editavel ? 0 : 10);
+	// svelte-ignore state_referenced_locally
+	c.jutsusDasCartas = data.jutsusCartas;
 	const status = $derived(data.cla.status as StatusCla);
 	const revisando = $derived(data.papel === 'mestre' && !data.dono && status === 'em_revisao');
 	const souMestre = $derived(data.papel === 'mestre');
@@ -84,6 +88,27 @@
 		await garantirSalvo();
 		await goto(destino, { refreshAll: true });
 	}
+
+	// cartas originais: abre o criador de jutsus (J2) ligado ao clã e à carta, e volta para cá
+	// svelte-ignore state_referenced_locally
+	if (data.dono && !k.arquivada_em)
+		c.detalharCarta = async (cartaId: string) => {
+			const ja = c.jutsusDasCartas[cartaId];
+			const volta = hrefCla(k.id, cla0.id, data.ficha?.id);
+			if (ja) return sair(hrefJutsu(k.id, ja.id, volta));
+			await garantirSalvo();
+			const carta = c.carta(cartaId);
+			const d = jutsuVazio();
+			d.nome = carta?.nome ?? '';
+			d.descricao = carta?.descricao ?? '';
+			const { data: novo, error } = await supabase()
+				.from('jutsus_criados')
+				.insert({ campanha_id: k.id, autor_id: cla0.autor_id, tipo: 'jutsu', cla_id: cla0.id, carta_id: cartaId, nome: d.nome, dados: d as unknown as Json, resumo: resumoJutsu(d) as unknown as Json })
+				.select('id')
+				.single();
+			if (error || !novo) return toasts.mostrar('Não foi possível abrir o criador de jutsus.', 'erro');
+			await goto(hrefJutsu(k.id, novo.id, volta));
+		};
 
 	// ---------------------------------------------------------------- envio, versões
 	let modal = $state<'confirmar' | 'decidir' | 'excluir' | null>(null);

@@ -8,6 +8,7 @@ export type TipoConvite = 'email' | 'link' | 'codigo';
 export type StatusConvite = 'pendente' | 'aceito' | 'recusado' | 'revogado';
 export type StatusFicha = 'rascunho' | 'em_revisao' | 'ajustes' | 'aprovada' | 'rejeitada';
 export type StatusCla = 'rascunho' | 'em_revisao' | 'ajustes' | 'aprovado' | 'rejeitado';
+export type StatusCriacao = StatusCla;
 
 export type Preferencias = {
 	tema?: 'sumi' | 'washi' | 'sistema';
@@ -110,6 +111,30 @@ export type Personagem = {
 	falecido_em: string | null;
 	cla_id: string | null;
 }
+
+/** Jutsu ou habilidade criada (cap. 20); `dados` é um JutsuDados ou HabilidadeDados (src/lib/jutsus/regras.ts). */
+export type JutsuCriado = {
+	id: string;
+	campanha_id: string;
+	autor_id: string;
+	tipo: 'jutsu' | 'habilidade';
+	personagem_id: string | null;
+	cla_id: string | null;
+	carta_id: string | null;
+	nome: string;
+	rank: string | null;
+	status: StatusCriacao;
+	versao: number;
+	anterior_id: string | null;
+	dados: Json;
+	resumo: Json;
+	mensagem: string | null;
+	comentario_mestre: string | null;
+	enviado_em: string | null;
+	decidido_em: string | null;
+	criado_em: string;
+	atualizado_em: string;
+};
 
 /** Clã criado por um jogador (cap. 8.4); `dados` é um ClaDados (src/lib/clas/regras.ts). */
 export type Cla = {
@@ -272,6 +297,7 @@ export type Database = {
 				[Rel<'pedidos_pt_personagem_id_fkey', 'personagem_id', 'personagens'>, Rel<'pedidos_pt_campanha_id_fkey', 'campanha_id', 'campanhas'>]
 			>;
 			clas: Tabela<Cla, 'campanha_id' | 'autor_id', [Rel<'clas_campanha_id_fkey', 'campanha_id', 'campanhas'>, Rel<'clas_autor_id_fkey', 'autor_id', 'perfis'>]>;
+			jutsus_criados: Tabela<JutsuCriado, 'campanha_id' | 'autor_id', [Rel<'jutsus_criados_campanha_id_fkey', 'campanha_id', 'campanhas'>, Rel<'jutsus_criados_autor_id_fkey', 'autor_id', 'perfis'>]>;
 			atividades: Tabela<Atividade, 'campanha_id' | 'tipo' | 'texto', [Rel<'atividades_campanha_id_fkey', 'campanha_id', 'campanhas'>]>;
 		};
 		Views: { [_ in never]: never };
@@ -301,9 +327,13 @@ export type Database = {
 			retirar_cla: { Args: { cla: string }; Returns: undefined };
 			decidir_cla: { Args: { cla: string; decisao: StatusCla; comentario?: string | null }; Returns: undefined };
 			nova_versao_cla: { Args: { cla: string }; Returns: string };
+			enviar_jutsu: { Args: { jutsu: string }; Returns: StatusCriacao };
+			retirar_jutsu: { Args: { jutsu: string }; Returns: undefined };
+			decidir_jutsu: { Args: { jutsu: string; decisao: StatusCriacao; comentario?: string | null }; Returns: undefined };
+			nova_versao_jutsu: { Args: { jutsu: string }; Returns: string };
 			definir_situacao: { Args: { ficha: string; situacao: SituacaoFicha; epitafio?: string | null }; Returns: undefined };
 		};
-		Enums: { papel: Papel; tipo_convite: TipoConvite; status_convite: StatusConvite; status_ficha: StatusFicha; status_cla: StatusCla };
+		Enums: { papel: Papel; tipo_convite: TipoConvite; status_convite: StatusConvite; status_ficha: StatusFicha; status_cla: StatusCla; status_criacao: StatusCriacao };
 		CompositeTypes: { [_ in never]: never };
 	};
 };

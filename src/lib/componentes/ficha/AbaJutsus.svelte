@@ -3,6 +3,7 @@
 	import { TIPO_JUTSU } from '#lib/livro/dominio.ts';
 	import type { TipoJutsu } from '#lib/livro/tipos.ts';
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
+	import { page } from '$app/state';
 	import Icone from '../ui/Icone.svelte';
 
 	let { f }: { f: FichaJogo } = $props();
@@ -21,6 +22,13 @@
 		<button type="button" class="min-h-10 border-2 px-3 text-[13px] font-semibold {filtro === n ? 'border-vermelhao bg-grena text-papel' : 'border-b3 hover:border-mut'}" aria-pressed={filtro === n} onclick={() => (filtro = n)}>{n}</button>
 	{/each}
 	<span class="flex-1"></span>
+	{#if f.editavel && page.data.completa?.dono}
+		<form method="POST" action="/campanhas/{page.params.id}/jutsus?/criar">
+			<input type="hidden" name="personagem" value={f.id} />
+			<input type="hidden" name="volta" value={page.url.pathname} />
+			<button type="submit" class="btn-jogo btn-contorno com-icone min-h-10 text-xs" title="Criar um jutsu original para esta ficha (cap. 20); depois de aprovado, aprende no treino"><Icone id="acao/ic-acao-criar-jutsu" />CRIAR JUTSU</button>
+		</form>
+	{/if}
 	{#if f.calc.especializacoes.some((e) => e.id === 'controle-chakra')}
 		<span class="flex items-center gap-1.5 text-[13px] leading-[18px] text-mut"><Icone id="esp/ic-esp-controle-chakra" />Reduções de especialização aplicadas</span>
 	{/if}
