@@ -1,0 +1,59 @@
+// Consultas de campanha feitas no servidor (RLS com a sessão dos cookies).
+import { error } from '@sveltejs/kit';
+import type { Papel } from '#lib/supabase/banco.ts';
+
+export type ResumoCampanha = Awaited<ReturnType<typeof listarCampanhas>>[number];
+
+/** C1: campanhas da conta, com papel, membros e a última atividade. */
+export async function listarCampanhas(locals: App.Locals, usuarioId: string) {
+	const { data, error: e } = await locals.supabase
+		.from('campanhas')
+		.select(
+			'id, nome, capa, era, era_alternativa, nivel_inicial, mestre_id, arquivada_em, criada_em, atualizada_em, mestre:perfis!campanhas_mestre_id_fkey(nome), membros(usuario_id, papel, perfil:perfis!membros_usuario_id_fkey(nome))'
+		)
+		.order('atualizada_em', { ascending: false });
+	if (e) error(503, 'Não foi possível carregar as campanhas.');
+	const lista = data ?? [];
+	const ids = lista.map((c) => c.id);
+	const { data: atividades } = ids.length
+		? await locals.supabase.from('atividades').select('campanha_id, texto, criada_em').in('campanha_id', ids).order('criada_em', { ascending: false }).limit(200)
+		: { data: [] };
+	const ultima = new Map<string, { texto: string; criada_em: string }>();
+	for (const a of atividades ?? []) if (!ultima.has(a.campanha_id)) ultima.set(a.campanha_id, a);
+
+	return lista.map((c) => {
+		const membros = c.membros ?? [];
+		const meu = membros.find((m) => m.usuario_id === usuarioId);
+		const jogadores = membros.filter((m) => m.papel === 'jogador');
+		return {
+			id: c.id,
+			nome: c.nome,
+			capa: c.capa,
+			era: c.era,
+			era_alternativa: c.era_alternativa,
+			nivel_inicial: c.nivel_inicial,
+			arquivada_em: c.arquivada_em,
+			papel: (meu?.papel ?? (c.mestre_id === usuarioId ? 'mestre' : 'jogador')) as Papel,
+			mestre: c.mestre?.nome ?? null,
+			jogadores: jogadores.length,
+			nomesJogadores: jogadores.map((m) => m.perfil?.nome ?? '?'),
+			ultima: ultima.get(c.id) ?? null
+		};
+	});
+}
+
+/** Campanha aberta (layout de /campanhas/[id]): 404 se não existe ou a conta não é membro. */
+export async function carregarCampanha(locals: App.Locals, id: string, usuarioId: string) {
+	if (!/^[0-9a-f-]{36}$/i.test(id)) error(404, 'Campanha não encontrada.');
+	const { data: campanha, error: e } = await locals.supabase.from('campanhas').select('*').eq('id', id).maybeSingle();
+	if (e) error(503, 'Não foi possível carregar a campanha.');
+	if (!campanha) error(404, 'Campanha não encontrada.');
+	const { data: membros } = await locals.supabase
+		.from('membros')
+		.select('usuario_id, papel, entrou_em, perfil:perfis!membros_usuario_id_fkey(nome, avatar)')
+		.eq('campanha_id', id)
+		.order('entrou_em');
+	const lista = (membros ?? []).map((m) => ({ id: m.usuario_id, papel: m.papel, entrou_em: m.entrou_em, nome: m.perfil?.nome ?? '?' }));
+	const papel: Papel = campanha.mestre_id === usuarioId ? 'mestre' : 'jogador';
+	return { campanha, membros: lista, papel };
+}

@@ -235,6 +235,23 @@
 		opacity: 1;
 	}
 }
+/* selo de aprovado (C2 sucesso, DS 1 · Movimento) */
+@keyframes carimbo {
+	0% {
+		transform: scale(1.15) rotate(-6deg);
+		opacity: 0;
+	}
+	70% {
+		transform: scale(1) rotate(-3deg);
+		opacity: 1;
+	}
+	100% {
+		transform: rotate(-3deg);
+	}
+}
+@utility carimbo {
+	animation: carimbo 250ms ease-out both;
+}
 
 @layer base {
 	html {
@@ -411,6 +428,9 @@
 	.btn-jogo.com-icone {
 		padding-left: 8px;
 	}
+	.btn-jogo:disabled:not([aria-busy='true']) {
+		opacity: 0.55;
+	}
 	.btn-primario {
 		background: #c44536;
 		color: #ffffff;
@@ -542,6 +562,85 @@
 		border-color: #c44536;
 		outline: 2px solid var(--focus);
 		outline-offset: 2px;
+	}
+
+	/* caixa de seleção e interruptor (DS 2 · B2) */
+	.caixa {
+		appearance: none;
+		width: 24px;
+		height: 24px;
+		flex: none;
+		display: grid;
+		place-content: center;
+		margin: 0;
+		background: var(--b1);
+		border: 2px solid var(--mut);
+		cursor: pointer;
+	}
+	.caixa:checked {
+		background: #c44536;
+		border-color: var(--ink);
+	}
+	.caixa:checked::after {
+		content: '';
+		width: 12px;
+		height: 7px;
+		border-left: 3px solid #ffffff;
+		border-bottom: 3px solid #ffffff;
+		transform: translateY(-2px) rotate(-45deg);
+	}
+	.caixa[aria-invalid='true'] {
+		border-color: var(--err);
+	}
+	.interruptor {
+		appearance: none;
+		position: relative;
+		width: 52px;
+		height: 28px;
+		flex: none;
+		margin: 0;
+		background: var(--b3);
+		border: 2px solid var(--ink);
+		cursor: pointer;
+	}
+	.interruptor::after {
+		content: '';
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		width: 20px;
+		height: 20px;
+		background: var(--mut);
+		transition: left 120ms steps(2);
+	}
+	.interruptor:checked {
+		background: #c44536;
+	}
+	.interruptor:checked::after {
+		left: 26px;
+		background: #ffffff;
+	}
+	.caixa:focus-visible,
+	.interruptor:focus-visible {
+		outline: 2px solid var(--focus);
+		outline-offset: 2px;
+	}
+
+	/* regras da mesa formatadas (C4/C7) */
+	.texto-regras {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+	.texto-regras :where(p, ul, h3) {
+		margin: 0;
+	}
+	.texto-regras ul {
+		padding-left: 20px;
+		list-style: square;
+	}
+	.texto-regras h3 {
+		font: 700 16px/22px var(--font-mincho);
 	}
 
 	/* esqueleto de carregamento */

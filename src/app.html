@@ -16,7 +16,9 @@
 			// Aplica tema e tamanho de leitura antes da primeira pintura (sem piscar).
 			try {
 				var d = document.documentElement;
-				d.dataset.theme = localStorage.getItem('snm:tema') === 'washi' ? 'washi' : 'sumi';
+				var t = localStorage.getItem('snm:tema');
+				if (t === 'sistema') t = matchMedia('(prefers-color-scheme: light)').matches ? 'washi' : 'sumi';
+				d.dataset.theme = t === 'washi' ? 'washi' : 'sumi';
 				var l = localStorage.getItem('snm:leitura');
 				if (l) d.dataset.leitura = l;
 			} catch (e) {}

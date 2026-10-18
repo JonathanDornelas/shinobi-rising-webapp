@@ -9,13 +9,15 @@
 	import Toaster from '#lib/componentes/ui/Toaster.svelte';
 	import { paleta } from '#lib/estado/paleta.svelte.ts';
 	import { preferencias } from '#lib/estado/preferencias.svelte.ts';
+	import { sessao } from '#lib/estado/sessao.svelte.ts';
 	import type { LayoutProps } from './$types';
 
-	let { children }: LayoutProps = $props();
+	let { children, data }: LayoutProps = $props();
 
 	onMount(() => {
 		preferencias.iniciar();
 		paleta.iniciar();
+		sessao.iniciar(data.usuario);
 	});
 
 	function atalho(e: KeyboardEvent) {

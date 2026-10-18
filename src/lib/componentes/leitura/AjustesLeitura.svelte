@@ -40,7 +40,7 @@
 			<span class="text-[13px] leading-[18px] font-semibold">Tema</span>
 			<div class="flex gap-2">
 				{#each [['sumi', 'SUMI'], ['washi', 'WASHI']] as const as [tema, rotulo] (tema)}
-					{@const on = preferencias.tema === tema}
+					{@const on = preferencias.aplicado === tema}
 					<button
 						type="button"
 						class="t-num min-h-10 flex-1 text-[13px] {on ? 'bg-vermelhao text-white' : 'border-2 border-mut text-fg'}"

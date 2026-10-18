@@ -2,13 +2,20 @@
 	// G5 · Página inicial — tela-título de jogo para visitantes.
 	import Rodape from '#lib/componentes/shell/Rodape.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
+	import { goto } from '$app/navigation';
+	import { sessao } from '#lib/estado/sessao.svelte.ts';
+
+	// A home é estática; quem já entrou segue direto para as campanhas.
+	$effect(() => {
+		if (sessao.pronta && sessao.usuario) goto('/campanhas', { replaceState: true });
+	});
 
 	const recursos = [
 		{ icone: 'nav/ic-nav-regras', titulo: 'Documentação navegável', texto: 'O livro inteiro com sumário, glossário, referências cruzadas e busca.', breve: false },
 		{ icone: 'acao/ic-acao-criar-personagem', titulo: 'Criador de personagens em 11 passos', texto: 'Atributos, perícias, vila, clã e jutsus com as contas feitas para você.', breve: true },
 		{ icone: 'kkg/ic-kkg-dojutsu', titulo: 'Clãs e Kekkei Genkai', texto: 'Use os clãs do livro ou crie o seu com a balança de PKG.', breve: false },
 		{ icone: 'acao/ic-acao-criar-jutsu', titulo: 'Criação de jutsus por PJ', texto: 'Monte a técnica e veja rank e custo mudarem a cada escolha.', breve: true },
-		{ icone: 'status/ic-status-aprovado', titulo: 'Aprovação do Mestre', texto: 'Fichas e criações passam pelo Mestre antes de entrar na mesa.', breve: true }
+		{ icone: 'status/ic-status-aprovado', titulo: 'Campanhas e convites', texto: 'Crie a mesa, chame o grupo por link ou código e decida o que precisa de aprovação.', breve: false }
 	];
 	const inicios = [
 		{ icone: 'papel/ic-papel-jogador', titulo: 'Novo jogador', texto: 'Leia as Partes I, II e a metade inicial da III antes da primeira sessão. O resto você consulta durante o jogo.', link: 'Começar pela Parte I', href: '/regras/introducao' },
@@ -41,7 +48,7 @@
 	<!-- CTAs: cards no tablet/desktop, botões no mobile -->
 	<div class="flex w-full flex-col gap-2.5 md:hidden">
 		<a href="/regras" class="btn-jogo btn-primario com-icone min-h-[52px] text-[15px]"><Icone id="nav/ic-nav-regras" />Ler as regras</a>
-		<span class="btn-jogo min-h-[52px] border-2 border-[#5C524A] text-[15px] text-[#B5A797]" aria-disabled="true"><Icone id="papel/ic-papel-mestre" />Criar uma campanha {@render emBreve()}</span>
+		<a href="/campanhas/nova" class="btn-jogo btn-contorno com-icone min-h-[52px] border-[#5C524A] text-[15px] text-b0fg hover:border-papel hover:bg-[#2E2420]"><Icone id="papel/ic-papel-mestre" />Criar uma campanha</a>
 	</div>
 	<div class="hidden w-full max-w-[780px] grid-cols-2 gap-4 md:grid lg:mt-2 lg:gap-5">
 		<a href="/regras" class="cartao-link flex flex-col border-2 border-vermelhao bg-[#1F1815] shadow-[4px_4px_0_#000]">
