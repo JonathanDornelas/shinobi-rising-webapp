@@ -28,6 +28,13 @@ describe('perfis', () => {
 		expect(await antigo.como(aiko, `select nome from campanhas`)).toEqual([{ nome: 'Primeira' }]);
 	});
 
+	it('funções internas não podem ser chamadas pela API', async () => {
+		await expect(banco.como(null, `select excluir_conta()`)).rejects.toThrow(/permission denied/);
+		await expect(banco.como(kaito, `select notificar($1, 'x', 'x', null, 'x')`, [kaito.id])).rejects.toThrow(/permission denied/);
+		await expect(banco.como(kaito, `select registrar_atividade(gen_random_uuid(), 'x', 'x', 'x')`)).rejects.toThrow(/permission denied/);
+		await expect(banco.como(null, `select meus_convites()`)).rejects.toThrow(/permission denied/);
+	});
+
 	it('só o dono edita', async () => {
 		await banco.como(bruno, `update perfis set nome = 'Hackeado' where id = $1`, [kaito.id]);
 		const [k] = await banco.como<{ nome: string }>(kaito, `select nome from perfis where id = $1`, [kaito.id]);
