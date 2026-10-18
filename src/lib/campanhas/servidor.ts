@@ -1,5 +1,6 @@
 // Consultas de campanha feitas no servidor (RLS com a sessão dos cookies).
 import { error } from '@sveltejs/kit';
+import type { ResumoFicha } from '#lib/personagem/regras.ts';
 import type { Papel } from '#lib/supabase/banco.ts';
 
 /** Registra a causa no log do servidor (Vercel) e mostra a mensagem genérica ao usuário. */
@@ -61,5 +62,13 @@ export async function carregarCampanha(locals: App.Locals, id: string, usuarioId
 		.order('entrou_em');
 	const lista = (membros ?? []).map((m) => ({ id: m.usuario_id, papel: m.papel, entrou_em: m.entrou_em, nome: m.perfil?.nome ?? '?' }));
 	const papel: Papel = campanha.mestre_id === usuarioId ? 'mestre' : 'jogador';
-	return { campanha, membros: lista, papel };
+	// RLS: o Mestre vê todas as fichas; o jogador vê as próprias e as aprovadas do grupo.
+	const { data: fichas } = await locals.supabase
+		.from('personagens')
+		.select('id, jogador_id, nome, status, nivel, resumo, enviada_em, decidida_em, comentario_mestre, atualizada_em')
+		.eq('campanha_id', id)
+		.neq('status', 'rejeitada')
+		.order('criada_em');
+	const personagens = (fichas ?? []).map((f) => ({ ...f, resumo: f.resumo as Partial<ResumoFicha> }));
+	return { campanha, membros: lista, papel, personagens };
 }

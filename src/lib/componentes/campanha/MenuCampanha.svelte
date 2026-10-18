@@ -61,7 +61,7 @@
 					</a>
 				{:else}
 					<span class="flex min-h-11 cursor-not-allowed items-center gap-2.5 pr-3 text-[15px] leading-5 font-medium text-mut {i.recuo ? 'pl-5' : 'pl-3'}" aria-disabled="true" title={EM_BREVE}>
-						<Icone id="nav/ic-nav-{i.icone}" class="opacity-50" />{i.nome}<span class="flex-1"></span><span class="font-pixel text-[11px] tracking-[0.06em]">EM BREVE</span>
+						<Icone id="nav/ic-nav-{i.icone}" class="opacity-50" /><span class="min-w-0 flex-1 truncate">{i.nome}</span><span class="flex-none font-pixel text-[10px] tracking-[0.04em] whitespace-nowrap">EM BREVE</span>
 					</span>
 				{/if}
 			{/each}

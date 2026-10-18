@@ -1,0 +1,106 @@
+// Catálogo do criador de personagem montado a partir dos dados do livro (só no servidor, para não mandar o livro inteiro).
+import { clas, equipamentos, especializacoes, jutsus } from '#lib/livro/dados.server.ts';
+import type { Bloco, Trecho } from '#lib/livro/tipos.ts';
+import { CLAS, ESPECIALIZACOES, JUTSUS_ACADEMIA, PESOS } from './dados.ts';
+import type { ItemLoja, JutsuOpcao } from './regras.ts';
+
+const texto = (t: Trecho[] | Trecho[][] | null | undefined): string =>
+	!t ? '' : (t as (Trecho | Trecho[])[]).map((x) => (Array.isArray(x) ? texto(x) : x.t)).join(Array.isArray(t[0]) ? ' ' : '');
+
+const numero = (s: string) => Number((/[\d.]+/.exec(s)?.[0] ?? '0').replace(/\./g, ''));
+const peso = (s: string) => PESOS[s.trim().toLowerCase()] ?? 0.5;
+
+export interface JutsuResumo extends JutsuOpcao {
+	tipo: string;
+	custo: string;
+	efeito: string;
+}
+
+function jutsuResumo(slug: string): JutsuResumo | null {
+	const j = jutsus.find((x) => x.slug === slug);
+	if (!j) return null;
+	return { slug: j.slug, nome: j.nome, rank: j.rank as 'E' | 'D', elemento: j.elemento, tipo: j.tipo, custo: j.custo, efeito: texto(j.efeito).slice(0, 180) };
+}
+
+/** Kunai, shuriken e senbon contam em conjuntos de 10; consumíveis pequenos em conjuntos de 5 (cap. 11). */
+const CONJUNTO_10 = ['arma-kunai', 'arma-shuriken', 'arma-senbon'];
+const CONSUMIVEIS = /p[íi]lula|hyourougan|antídoto|bomba|papel explosivo/i;
+const ICONES_ITEM: Record<string, string> = {
+	'Hyourougan (pílula soldado)': 'item/ic-item-hyourougan',
+	'Pílula de cura': 'item/ic-item-pilula-cura',
+	'Pílula militar': 'item/ic-item-pilula-militar',
+	'Antídoto comum': 'item/ic-item-antidoto',
+	'Antídoto raro': 'item/ic-item-antidoto-raro',
+	'Bomba de fumaça': 'item/ic-item-bomba-fumaca',
+	'Fio ninja (50m)': 'item/ic-item-fio-ninja',
+	'Kan no Kami (Papel Sensível)': 'item/ic-item-kan-no-kami',
+	'Papel Explosivo': 'item/ic-item-papel-explosivo',
+	'Lente de visão noturna': 'item/ic-item-lente-noturna',
+	'Kit de marionetista': 'item/ic-item-kit-marionetista',
+	'Kit médico (5 usos)': 'item/ic-item-kit-medico'
+};
+
+function itensUtilitarios(): ItemLoja[] {
+	const aba = equipamentos.abas.find((a) => a.id === 'itens');
+	const tabela = aba?.secoes.flatMap((s) => s.blocos).find((b): b is Extract<Bloco, { tipo: 'tabela' }> => b.tipo === 'tabela');
+	if (!tabela) return [];
+	const itens: ItemLoja[] = [];
+	for (const linha of tabela.linhas) {
+		const [nome, preco, p] = linha.map((c) => texto(c as Trecho[][]).trim());
+		// Itens com preço variável (venenos, pergaminhos) ficam para a loja completa.
+		if (!/^\d/.test(preco) || /\ba\b/.test(preco)) continue;
+		itens.push({
+			id: `item-${nome.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`,
+			nome,
+			preco: numero(preco),
+			peso: peso(p),
+			conjunto: CONSUMIVEIS.test(nome) ? 5 : undefined,
+			grupo: 'Itens utilitários',
+			icone: ICONES_ITEM[nome] ?? 'equip/ic-equip-ferramenta'
+		});
+	}
+	itens.push(
+		{ id: 'item-pergaminho-basico', nome: 'Pergaminho básico (5 de carga)', preco: 1000, peso: 0.5, grupo: 'Itens utilitários', icone: 'item/ic-item-pergaminho-basico' },
+		{ id: 'item-pergaminho-avancado', nome: 'Pergaminho avançado (15 de carga)', preco: 8000, peso: 0.5, grupo: 'Itens utilitários', icone: 'item/ic-item-pergaminho-avancado' }
+	);
+	return itens;
+}
+
+export function catalogoCriacao(clasPermitidos: string[]) {
+	const armas: ItemLoja[] = equipamentos.categorias.flatMap((c) =>
+		c.armas.map((a) => ({
+			id: a.slug,
+			nome: a.nome,
+			preco: numero(a.preco),
+			peso: peso(a.peso),
+			conjunto: CONJUNTO_10.includes(a.slug) ? 10 : undefined,
+			grupo: `Armas · ${c.titulo}`,
+			icone: a.icone ?? c.icone
+		}))
+	);
+
+	const gerais = jutsus.filter((j) => !j.cla && !JUTSUS_ACADEMIA.includes(j.slug));
+	const jutsusE = gerais.filter((j) => j.rank === 'E').map((j) => jutsuResumo(j.slug)!);
+	const jutsusD = gerais.filter((j) => j.rank === 'D').map((j) => jutsuResumo(j.slug)!);
+	const conhecidos = Object.fromEntries(
+		[...JUTSUS_ACADEMIA, ...Object.values(CLAS).flatMap((c) => c.jutsus)].map((s) => [s, jutsuResumo(s)]).filter(([, j]) => j)
+	) as Record<string, JutsuResumo>;
+
+	const listaClas = clas
+		.filter((c) => clasPermitidos.includes(c.slug))
+		.map((c) => ({ slug: c.slug, nome: c.nome, epiteto: c.epiteto, kkg: c.kkg?.nome ?? null, bonus: c.bonus.map((b) => b.texto), marco: CLAS[c.slug]?.marco ?? '' }));
+
+	const esps = Object.entries(ESPECIALIZACOES).map(([id, e]) => {
+		const livro = especializacoes.lista.find((x) => x.slug === e.slug);
+		return {
+			id,
+			nome: livro?.nome.replace(/ \(.*\)$/, '') ?? id,
+			icone: livro?.icone ?? `esp/ic-esp-${id}`,
+			niveis: (livro?.niveis ?? []).map((n) => ({ nivel: n.nivel, texto: texto(n.beneficio) })),
+			bloqueio: e.bloqueio ?? null
+		};
+	});
+
+	return { loja: [...armas, ...itensUtilitarios()], jutsusE, jutsusD, conhecidos, clas: listaClas, especializacoes: esps, armas: armas.map((a) => a.nome) };
+}
+export type CatalogoCriacao = ReturnType<typeof catalogoCriacao>;

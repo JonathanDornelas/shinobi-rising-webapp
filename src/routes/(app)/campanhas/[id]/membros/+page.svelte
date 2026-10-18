@@ -81,7 +81,7 @@
 						? 'border-[#8B2E20] bg-grena text-papel'
 						: 'border-mut bg-b2'}"><Icone id={PAPEL[m.papel].icone} />{PAPEL[m.papel].nome}</span
 				>
-				<span class="text-sm leading-5 text-mut max-md:hidden">{m.papel === 'mestre' ? '—' : 'Sem personagem'}</span>
+				<span class="truncate text-sm leading-5 max-md:hidden {data.personagens.find((p) => p.jogador_id === m.id)?.nome ? '' : 'text-mut'}">{m.papel === 'mestre' ? '—' : data.personagens.find((p) => p.jogador_id === m.id)?.nome || 'Sem personagem'}</span>
 				<span class="text-[13px] leading-[18px] text-mut max-md:hidden">{m.papel === 'mestre' ? 'criou' : 'entrou'} em {dataCurta(m.entrou_em)}</span>
 				<div class="relative justify-self-end" data-menu>
 					{#if mestre && m.papel === 'jogador' && !c.arquivada_em}

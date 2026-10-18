@@ -6,6 +6,7 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type Papel = 'mestre' | 'jogador';
 export type TipoConvite = 'email' | 'link' | 'codigo';
 export type StatusConvite = 'pendente' | 'aceito' | 'recusado' | 'revogado';
+export type StatusFicha = 'rascunho' | 'em_revisao' | 'ajustes' | 'aprovada' | 'rejeitada';
 
 export type Preferencias = {
 	tema?: 'sumi' | 'washi' | 'sistema';
@@ -81,6 +82,24 @@ export type Convite = {
 	criado_em: string;
 	respondido_por: string | null;
 	respondido_em: string | null;
+}
+
+export type Personagem = {
+	id: string;
+	campanha_id: string;
+	jogador_id: string;
+	nome: string;
+	status: StatusFicha;
+	nivel: number;
+	xp: number;
+	dados: Json;
+	resumo: Json;
+	mensagem: string | null;
+	comentario_mestre: string | null;
+	enviada_em: string | null;
+	decidida_em: string | null;
+	criada_em: string;
+	atualizada_em: string;
 }
 
 export type Notificacao = {
@@ -175,6 +194,11 @@ export type Database = {
 			>;
 			convites: Tabela<Convite, 'campanha_id' | 'tipo', [Rel<'convites_campanha_id_fkey', 'campanha_id', 'campanhas'>]>;
 			notificacoes: Tabela<Notificacao, 'usuario_id' | 'tipo' | 'texto'>;
+			personagens: Tabela<
+				Personagem,
+				'campanha_id' | 'jogador_id',
+				[Rel<'personagens_campanha_id_fkey', 'campanha_id', 'campanhas'>, Rel<'personagens_jogador_id_fkey', 'jogador_id', 'perfis'>]
+			>;
 			atividades: Tabela<Atividade, 'campanha_id' | 'tipo' | 'texto', [Rel<'atividades_campanha_id_fkey', 'campanha_id', 'campanhas'>]>;
 		};
 		Views: { [_ in never]: never };
@@ -186,8 +210,11 @@ export type Database = {
 			excluir_conta: { Args: Record<string, never>; Returns: undefined };
 			meus_convites: { Args: Record<string, never>; Returns: Json };
 			reenviar_convite: { Args: { convite: string }; Returns: undefined };
+			enviar_ficha: { Args: { ficha: string }; Returns: StatusFicha };
+			retirar_ficha: { Args: { ficha: string }; Returns: undefined };
+			decidir_ficha: { Args: { ficha: string; decisao: StatusFicha; comentario?: string | null }; Returns: undefined };
 		};
-		Enums: { papel: Papel; tipo_convite: TipoConvite; status_convite: StatusConvite };
+		Enums: { papel: Papel; tipo_convite: TipoConvite; status_convite: StatusConvite; status_ficha: StatusFicha };
 		CompositeTypes: { [_ in never]: never };
 	};
 };

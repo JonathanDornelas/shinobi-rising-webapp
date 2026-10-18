@@ -7,12 +7,16 @@
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import Modal from '#lib/componentes/ui/Modal.svelte';
 	import Retrato from '#lib/componentes/ui/Retrato.svelte';
+	import SeloStatus from '#lib/componentes/personagem/SeloStatus.svelte';
+	import { hrefFicha } from '#lib/personagem/status.ts';
+	import { sinal } from '#lib/personagem/regras.ts';
 	import { nomeEra, rankSugerido } from '#lib/campanhas/dominio.ts';
 	import { regrasEmHtml } from '#lib/campanhas/texto.ts';
 	import { copiarConvite, destinoConvite, reenviarConvite, revogarConvite, validadeConvite } from '#lib/campanhas/convites.ts';
 	import { sessao } from '#lib/estado/sessao.svelte.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
-	import { tempoRelativo } from '#lib/formatar.ts';
+	import { dataCurta, tempoRelativo } from '#lib/formatar.ts';
+	import { APROVACAO_PADRAO } from '#lib/campanhas/dominio.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
 	import type { PageProps } from './$types';
 
@@ -21,7 +25,25 @@
 	const mestre = $derived(data.papel === 'mestre');
 	const jogadores = $derived(data.membros.filter((m) => m.papel === 'jogador'));
 	const arquivada = $derived(!!c.arquivada_em);
-	const SEM_FICHAS = 'Chega com as fichas de personagem, no próximo lote';
+	const SEM_FICHAS = 'Chega com a ficha de personagem e o XP, no próximo lote';
+
+	// ---------------------------------------------------------------- fichas
+	const fichaDe = (jogador: string) => data.personagens.find((p) => p.jogador_id === jogador);
+	const eu = $derived(data.usuario?.id ?? sessao.usuario?.id ?? '');
+	const minha = $derived(fichaDe(eu));
+	const contagem = (s: string) => data.personagens.filter((p) => p.jogador_id === eu && p.status === s).length;
+	const emRevisao = $derived(data.personagens.filter((p) => p.status === 'em_revisao'));
+	let criando = $state(false);
+	async function criarPersonagem() {
+		if (!sessao.usuario) return;
+		criando = true;
+		const { data: nova, error } = await supabase().from('personagens').insert({ campanha_id: c.id, jogador_id: sessao.usuario.id }).select('id').single();
+		criando = false;
+		if (error || !nova) return toasts.mostrar('Não foi possível começar a ficha. Tente de novo.', 'erro');
+		await goto(hrefFicha(c.id, nova.id));
+	}
+	const barra = (valor: number | undefined, cor: string, brilho: string) => ({ valor: valor ?? 0, cor, brilho });
+	const aprovacaoFichas = $derived({ ...APROVACAO_PADRAO, ...c.aprovacao }.fichas);
 
 	// Primeiros passos (C3 recém-criada): some quando o que dá para fazer agora está feito.
 	const passos = $derived([
@@ -114,13 +136,30 @@
 				<section class="border-2 border-[#8B2E20] bg-b2 sombra-painel" aria-label="Aguardando sua revisão">
 					<div class="flex items-center gap-2.5 bg-grena px-3.5 py-2.5 text-papel">
 						<Icone id="nav/ic-nav-aprovacoes" />
-						<h2 class="m-0 flex-1 font-pixel text-sm leading-none font-bold tracking-[0.1em]">AGUARDANDO SUA REVISÃO · 0</h2>
+						<h2 class="m-0 flex-1 font-pixel text-sm leading-none font-bold tracking-[0.1em]">AGUARDANDO SUA REVISÃO · {emRevisao.length}</h2>
 					</div>
-					<div class="flex flex-col items-center gap-2.5 p-6 text-center">
-						<img src="/illustrations/il-cha-96.png" width="96" height="96" alt="" class="[image-rendering:pixelated]" />
-						<span class="text-base leading-[22px] font-semibold">Nada para revisar. Hora do chá, Mestre.</span>
-						<span class="text-[13px] leading-[18px] text-mut">Fichas, clãs, jutsus e pedidos de treino aparecem aqui quando os jogadores enviarem.</span>
-					</div>
+					{#if emRevisao.length}
+						<ul class="m-0 flex list-none flex-col p-0">
+							{#each emRevisao as p (p.id)}
+								<li>
+									<a href={hrefFicha(c.id, p.id)} class="flex items-center gap-3 border-b-2 border-b3 px-3.5 py-2 text-fg last:border-b-0 hover:bg-b3">
+										<Icone id="acao/ic-acao-criar-personagem" />
+										<span class="flex min-w-0 flex-1 flex-col gap-0.5">
+											<span class="text-[15px] leading-5 font-semibold">Ficha de {p.nome || 'personagem sem nome'}</span>
+											<span class="text-[13px] leading-[18px] text-mut">{data.membros.find((m) => m.id === p.jogador_id)?.nome ?? 'Jogador'} · nível {p.nivel}</span>
+										</span>
+										<span class="text-xs leading-4 font-semibold whitespace-nowrap text-mut">{tempoRelativo(p.enviada_em ?? p.atualizada_em)}</span>
+									</a>
+								</li>
+							{/each}
+						</ul>
+					{:else}
+						<div class="flex flex-col items-center gap-2.5 p-6 text-center">
+							<img src="/illustrations/il-cha-96.png" width="96" height="96" alt="" class="[image-rendering:pixelated]" />
+							<span class="text-base leading-[22px] font-semibold">Nada para revisar. Hora do chá, Mestre.</span>
+							<span class="text-[13px] leading-[18px] text-mut">Fichas aparecem aqui quando os jogadores enviarem. Clãs, jutsus e treinos chegam nos próximos lotes.</span>
+						</div>
+					{/if}
 				</section>
 
 				<section class="painel-sombra" aria-label="Grupo">
@@ -128,13 +167,31 @@
 					{#if jogadores.length}
 						<ul class="m-0 flex list-none flex-col p-0">
 							{#each jogadores as j, i (j.id)}
-								<li class="flex items-center gap-2.5 border-b-2 border-b3 px-3.5 py-2 last:border-b-0" style:background={i % 2 ? 'var(--b1)' : undefined}>
-									<Retrato nome={j.nome} tamanho={40} />
-									<div class="flex min-w-0 flex-1 flex-col">
-										<span class="truncate text-[15px] leading-5 font-semibold">{j.nome}</span>
-										<span class="text-xs leading-4 text-mut">Entrou {tempoRelativo(j.entrou_em)}</span>
-									</div>
-									<span class="text-[13px] leading-[18px] text-mut">Ficha ainda não criada</span>
+								{@const f = fichaDe(j.id)}
+								<li style:background={i % 2 ? 'var(--b1)' : undefined}>
+									<svelte:element
+										this={f ? 'a' : 'div'}
+										href={f ? hrefFicha(c.id, f.id) : undefined}
+										class="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b-2 border-b3 px-3.5 py-2 text-fg {f ? 'hover:bg-b3' : ''}"
+									>
+										{#if f?.resumo?.cla && f.status === 'aprovada' && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(f.resumo.cla)}
+											<Icone id="cla/ic-cla-{f.resumo.cla}" />
+										{:else}
+											<Retrato nome={f?.nome || j.nome} tamanho={32} />
+										{/if}
+										<span class="flex min-w-[140px] flex-1 flex-col">
+											<span class="truncate font-mincho text-[15px] leading-5 font-bold">{f?.nome || 'Sem ficha ainda'}</span>
+											<span class="text-xs leading-4 text-mut">{j.nome}</span>
+										</span>
+										{#if f?.status === 'aprovada'}
+											<span class="t-num text-lg">NV {f.nivel}</span>
+											<span class="text-xs leading-4 max-lg:hidden">{rankSugerido(f.nivel)}</span>
+											<span class="t-num flex gap-3 text-xs">
+												<span>PV {f.resumo.pv ?? '—'}</span><span>PC {f.resumo.pc ?? '—'}</span><span>PE {f.resumo.pe ?? '—'}</span>
+											</span>
+										{/if}
+										{#if f}<SeloStatus status={f.status} />{:else}<span class="text-[13px] text-mut">Entrou {tempoRelativo(j.entrou_em)}</span>{/if}
+									</svelte:element>
 								</li>
 							{/each}
 						</ul>
@@ -210,28 +267,85 @@
 		<div class="flex min-w-0 flex-col gap-5">
 			<section class="painel-sombra" aria-label="Meu personagem">
 				{@render cabeca('Meu personagem')}
-				<div class="flex items-center gap-5 p-5 max-sm:flex-col max-sm:items-start md:p-7">
-					<Icone id="acao/ic-acao-criar-personagem" tamanho={96} />
-					<div class="flex flex-col gap-2">
-						<h3 class="m-0 font-mincho text-2xl leading-8 font-bold">Crie seu personagem</h3>
-						<p class="m-0 text-[15px] leading-[23px] text-mut">11 passos com as contas feitas para você. O Mestre revisa antes da primeira sessão.</p>
-						<button type="button" class="btn-jogo btn-primario mt-1 min-h-12 self-start" disabled aria-describedby="cp-breve">CRIAR PERSONAGEM</button>
-						<span id="cp-breve" class="text-xs leading-4 text-mut">A criação de personagem chega no próximo lote.</span>
+				{#if !minha}
+					<div class="flex items-center gap-5 p-5 max-sm:flex-col max-sm:items-start md:p-7">
+						<Icone id="acao/ic-acao-criar-personagem" tamanho={96} />
+						<div class="flex flex-col gap-2">
+							<h3 class="m-0 font-mincho text-2xl leading-8 font-bold">Crie seu personagem</h3>
+							<p class="m-0 text-[15px] leading-[23px] text-mut">12 passos com as contas feitas para você. {aprovacaoFichas ? 'O Mestre revisa antes da primeira sessão.' : 'Nesta campanha a ficha entra direto na mesa.'}</p>
+							<button type="button" class="btn-jogo btn-primario mt-1 min-h-12 self-start" disabled={arquivada || criando} aria-busy={criando} onclick={criarPersonagem}>
+								{#if criando}<Girando />{/if}CRIAR PERSONAGEM
+							</button>
+						</div>
 					</div>
-				</div>
+				{:else}
+					{@const r = minha.resumo}
+					<div class="flex items-start gap-[18px] p-4 max-sm:flex-col">
+						<Retrato nome={minha.nome || '?'} tamanho={128} class="max-sm:hidden" />
+						<div class="flex min-w-0 flex-1 flex-col gap-2">
+							<div class="flex flex-wrap items-center gap-2.5">
+								<span class="font-mincho text-[28px] leading-9 font-bold max-sm:text-2xl">{minha.nome || 'Personagem sem nome'}</span>
+								<SeloStatus status={minha.status} />
+							</div>
+							<span class="flex items-center gap-2 text-sm leading-5 font-semibold">
+								{#if r.cla && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(r.cla)}<Icone id="cla/ic-cla-{r.cla}" alt="Clã {r.cla}" />{/if}
+								{#if r.vila}<Icone id="vila/ic-vila-{r.vila}" alt="Vila" />{/if}
+								Nível {minha.nivel} · {rankSugerido(minha.nivel)}
+							</span>
+							{#if r.pv}
+								<div class="mt-1 grid grid-cols-3 gap-3">
+									{#each [barra(r.pv, '#C44536', '#E07A5F'), barra(r.pc, '#2D7FB8', '#7FD3E6'), barra(r.pe, '#D29A1E', '#F2C14E')] as b, i (i)}
+										<div class="flex flex-col gap-1">
+											<span class="t-num text-[13px]">{['PV', 'PC', 'PE'][i]} {b.valor}/{b.valor}</span>
+											<div class="h-3 border-2 border-ink bg-b3"><div class="h-full w-full" style:background={b.cor} style:box-shadow="inset 0 2px 0 {b.brilho}"></div></div>
+										</div>
+									{/each}
+								</div>
+							{/if}
+						</div>
+					</div>
+					{#if minha.status === 'em_revisao'}
+						<ol class="m-0 mx-4 mb-4 flex list-none flex-wrap items-center gap-y-2 p-0 text-xs leading-4 font-semibold">
+							{#each [['Enviada · ' + dataCurta(minha.enviada_em ?? minha.atualizada_em), 'var(--ok)', ''], ['Em revisão pelo Mestre', 'var(--warn)', ''], ['Aprovação', 'transparent', 'text-mut']] as [t, cor, classe], i (i)}
+								<li class="flex flex-1 items-center gap-1.5">
+									<span class="h-6 w-6 flex-none border-2 border-ink" style:background={cor}></span><span class={classe}>{t}</span>
+									{#if i < 2}<span class="mx-2 h-1 flex-1 bg-b3"></span>{/if}
+								</li>
+							{/each}
+						</ol>
+					{:else if minha.status === 'ajustes'}
+						<div class="mx-4 mb-4">
+							<Alerta tipo="info" titulo="{data.membros.find((m) => m.papel === 'mestre')?.nome ?? 'O Mestre'} pediu ajustes">
+								{#if minha.comentario_mestre}<span>“{minha.comentario_mestre}”</span>{/if}
+							</Alerta>
+						</div>
+					{/if}
+					<div class="flex justify-end border-t-2 border-b3 px-4 py-3">
+						<a href={hrefFicha(c.id, minha.id)} class="btn-jogo {minha.status === 'ajustes' ? 'btn-secundario' : 'btn-primario'}">
+							{minha.status === 'rascunho' ? 'CONTINUAR FICHA' : minha.status === 'ajustes' ? 'REVISAR FICHA' : 'ABRIR FICHA'}
+						</a>
+					</div>
+				{/if}
 			</section>
 
 			<section class="painel-sombra" aria-label="Grupo">
 				{@render cabeca('Grupo')}
 				<ul class="m-0 grid list-none gap-2.5 p-3.5 sm:grid-cols-2 lg:grid-cols-3">
-					{#each data.membros as m (m.id)}
+					{#each data.membros.filter((m) => m.id !== eu) as m (m.id)}
+						{@const f = m.papel === 'jogador' ? fichaDe(m.id) : undefined}
 						<li class="flex items-center gap-2.5 border-2 border-b3 bg-b1 p-2.5">
-							<Retrato nome={m.nome} tamanho={40} />
+							<Retrato nome={f?.nome || m.nome} tamanho={40} />
 							<div class="flex min-w-0 flex-col gap-0.5">
-								<span class="truncate font-mincho text-[15px] leading-5 font-bold">{m.nome}{m.id === sessao.usuario?.id ? ' (você)' : ''}</span>
-								<span class="text-xs leading-4 text-mut">{m.papel === 'mestre' ? 'Mestre' : 'Sem personagem ainda'}</span>
+								<span class="truncate font-mincho text-[15px] leading-5 font-bold">{f?.nome || m.nome}</span>
+								<span class="flex items-center gap-1 text-xs leading-4 text-mut">
+									{#if m.papel === 'mestre'}Mestre · {m.nome}{:else if f}
+										{#if f.resumo.cla && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(f.resumo.cla)}<Icone id="cla/ic-cla-{f.resumo.cla}" />{/if}NV {f.nivel} · {m.nome}
+									{:else}{m.nome} · sem ficha aprovada{/if}
+								</span>
 							</div>
 						</li>
+					{:else}
+						<li class="text-sm text-mut">Só você por enquanto.</li>
 					{/each}
 				</ul>
 			</section>
@@ -241,9 +355,9 @@
 			<section class="painel-sombra" aria-label="Minhas submissões">
 				{@render cabeca('Minhas submissões')}
 				<ul class="m-0 flex list-none flex-col p-0">
-					{#each [['status/ic-status-rascunho', 'Rascunhos'], ['status/ic-status-em-revisao', 'Em revisão'], ['status/ic-status-ajustes', 'Ajustes solicitados'], ['status/ic-status-aprovado', 'Aprovadas']] as [icone, nome] (nome)}
+					{#each [['status/ic-status-rascunho', 'Rascunhos', 'rascunho'], ['status/ic-status-em-revisao', 'Em revisão', 'em_revisao'], ['status/ic-status-ajustes', 'Ajustes solicitados', 'ajustes'], ['status/ic-status-aprovado', 'Aprovadas', 'aprovada']] as [icone, nome, s] (nome)}
 						<li class="flex items-center gap-2.5 border-b-2 border-b3 px-3.5 py-1.5 last:border-b-0">
-							<Icone id={icone} /><span class="flex-1 text-sm leading-5 font-medium">{nome}</span><span class="t-num text-base">0</span>
+							<Icone id={icone} /><span class="flex-1 text-sm leading-5 font-medium">{nome}</span><span class="t-num text-base">{contagem(s)}</span>
 						</li>
 					{/each}
 				</ul>

@@ -4,7 +4,13 @@ Documentação web e criador de campanhas do RPG de mesa **Shinobi no Michi — 
 
 Stack: SvelteKit 3 (Svelte 5) + Tailwind CSS 4 + DaisyUI 5 + Supabase, publicado no Vercel (`adapter-vercel`): a documentação é pré-renderizada; conta e campanhas rodam no servidor. As telas são desenhadas antes no Claude Design (direção visual 1a "Jogo", temas sumi e washi).
 
-**Fase atual:** Lote 3, conta (A1–A4) e campanhas (C1–C7). Feitos antes: documentação do livro (G1–G5 e D1–D10). Próximo: criação de personagem.
+**Fase atual:** Lote 4, criação de personagem (P2) com envio e decisão do Mestre. Feitos antes: documentação do livro (G1–G5, D1–D10), conta (A1–A4) e campanhas (C1–C7). Próximo: ficha, nível e treino.
+
+## Criação de personagem
+
+`src/lib/personagem/regras.ts` é o motor do cap. 6: a partir das escolhas (`FichaDados`) calcula atributos, perícias, PT, recursos, carga e ryo, e gera as verificações da revisão (ok, aviso, bloqueio). Os números do livro que ele usa ficam em `dados.ts` (vilas do cap. 7, bônus de criação e marco do nível 1 dos 13 clãs, backgrounds, efeitos das especializações, custos de proficiência); jutsus, clãs, especializações e itens da loja vêm dos dados gerados do livro, montados no servidor por `catalogo.server.ts`. O motor é testado com os exemplos do próprio livro (`regras.spec.ts`).
+
+A ficha fica na tabela `personagens` (escolhas em `dados`, valores para listas em `resumo`). O status só muda pelas funções `enviar_ficha`, `retirar_ficha` e `decidir_ficha`; uma campanha que não exige aprovação de fichas aprova no envio. O criador de clãs e de jutsus, os retratos e o "Subir de nível" para campanhas que começam acima do nível 1 chegam nos próximos lotes.
 
 ## Rodando
 
@@ -50,7 +56,8 @@ Ele também extrai os 13 clãs (cap. 8.3), as 16 especializações (cap. 19), ar
 | Caminho | Conteúdo |
 |---|---|
 | `src/routes/` | Telas: `/` (G5), `/regras` (D1), `/regras/[capitulo]` (D2), `clas` (D3), `jutsus` (D4/D5), `equipamentos` (D6), `especializacoes` (D7), `glossario` (D8), `referencia-rapida` (D10), `/busca` (D9) |
-| `src/routes/(app)/` | Conta: `/entrar` (A1), `/criar-conta` (A2), `/recuperar-senha` e `/redefinir-senha` (A3), `/perfil` (A4), `/notificacoes` (G3). Campanhas: `/campanhas` (C1), `/campanhas/nova` (C2), `/campanhas/[id]` (C3/C4), `membros` (C5), `configuracoes` (C7), `/convite/[chave]` (C6) |
+| `src/routes/(app)/` | Conta: `/entrar` (A1), `/criar-conta` (A2), `/recuperar-senha` e `/redefinir-senha` (A3), `/perfil` (A4), `/notificacoes` (G3). Campanhas: `/campanhas` (C1), `/campanhas/nova` (C2), `/campanhas/[id]` (C3/C4), `membros` (C5), `configuracoes` (C7), `/convite/[chave]` (C6). Personagens: `/campanhas/[id]/personagens/[pid]` (P2, criador e ficha em revisão) |
+| `src/lib/personagem/` | Motor e tabelas da criação de personagem, catálogo do servidor e estado do criador |
 | `src/lib/supabase/`, `src/hooks.server.ts` | Clientes do Supabase (navegador e servidor), tipos do banco e a guarda das áreas logadas |
 | `src/lib/campanhas/`, `src/lib/conta/` | Regras de campanha (eras, vilas, clãs, aprovação, tabela de XP), convites e validações de conta |
 | `supabase/` | Migrações SQL e testes do banco |
