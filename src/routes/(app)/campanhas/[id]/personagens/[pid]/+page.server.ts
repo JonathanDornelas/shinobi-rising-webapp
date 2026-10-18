@@ -30,7 +30,7 @@ export const load: PageServerLoad = async ({ locals, params, parent }) => {
 		locals.supabase.from('ficha_registros').select('id, tipo, texto, icone, criado_em, ator:perfis!ficha_registros_ator_id_fkey(nome)').eq('personagem_id', p.id).order('criado_em', { ascending: false }).limit(60),
 		locals.supabase.from('pedidos_pt').select('id, sessao, semanas, pt, descricao, status, criado_em, comentario').eq('personagem_id', p.id).order('criado_em', { ascending: false }).limit(20),
 		claDaFicha(locals.supabase, p.cla_id),
-		jutsusDaFicha(locals.supabase, p.id, p.cla_id),
+		jutsusDaFicha(locals.supabase, p.id, p.cla_id, p.dados),
 		locals.supabase.from('equipamentos_criados').select('id, nome, resumo, anterior_id').eq('campanha_id', params.id).eq('tipo', 'item').eq('status', 'aprovado'),
 		locals.supabase.from('equipamentos_criados').select('id, tipo, nome, resumo').eq('personagem_id', p.id).eq('status', 'aprovado').eq('entregue', false)
 	]);

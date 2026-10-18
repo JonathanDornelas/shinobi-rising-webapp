@@ -7,7 +7,7 @@
 	import { gravar, ler } from '#lib/estado/armazenamento.ts';
 	import Icone from '../ui/Icone.svelte';
 
-	let { id, papel, parte }: { id: string; papel: Papel; parte: 'lateral' | 'abas' } = $props();
+	let { id, papel, parte, pendentes = 0 }: { id: string; papel: Papel; parte: 'lateral' | 'abas'; pendentes?: number } = $props();
 
 	type Item = { chave: string; nome: string; curto: string; icone: string; href?: string; recuo?: boolean; contagem?: number } | { grupo: string };
 	const mestre = $derived(papel === 'mestre');
@@ -21,10 +21,10 @@
 			{ chave: 'jutsus', nome: 'Jutsus', curto: 'JUTSUS', icone: 'jutsus', href: `${base}/jutsus`, recuo: true },
 			{ chave: 'equip', nome: 'Equipamentos', curto: 'EQUIPAMENTOS', icone: 'equipamentos', href: `${base}/equipamentos`, recuo: true },
 			{ grupo: 'MESA' },
-			mestre ? { chave: 'npcs', nome: 'NPCs', curto: 'NPCS', icone: 'npcs' } : null,
+			{ chave: 'npcs', nome: mestre ? 'NPCs' : 'NPCs conhecidos', curto: 'NPCS', icone: 'npcs', href: `${base}/npcs` },
 			mestre
-				? { chave: 'aprovacoes', nome: 'Aprovações', curto: 'APROVAÇÕES', icone: 'aprovacoes' }
-				: { chave: 'submissoes', nome: 'Minhas submissões', curto: 'SUBMISSÕES', icone: 'submissoes' },
+				? { chave: 'aprovacoes', nome: 'Aprovações', curto: 'APROVAÇÕES', icone: 'aprovacoes', href: `${base}/aprovacoes`, contagem: pendentes }
+				: { chave: 'submissoes', nome: 'Minhas submissões', curto: 'SUBMISSÕES', icone: 'submissoes', href: `${base}/submissoes` },
 			{ chave: 'membros', nome: 'Membros', curto: 'MEMBROS', icone: 'membros', href: `${base}/membros` },
 			mestre ? { chave: 'config', nome: 'Configurações', curto: 'CONFIG.', icone: 'configuracoes', href: `${base}/configuracoes` } : null
 		] as (Item | null)[]).filter((i): i is Item => !!i)
@@ -58,7 +58,7 @@
 							? 'bg-grena font-semibold text-papel shadow-[inset_4px_0_0_#C44536]'
 							: 'font-medium text-fg hover:bg-b3'}"
 					>
-						<Icone id="nav/ic-nav-{i.icone}" />{i.nome}
+						<Icone id="nav/ic-nav-{i.icone}" /><span class="min-w-0 flex-1 truncate">{i.nome}</span>{#if i.contagem}<span class="t-num flex-none bg-vermelhao px-1.5 py-1 text-xs text-white" aria-label="{i.contagem} pendentes">{i.contagem}</span>{/if}
 					</a>
 				{:else}
 					<span class="flex min-h-11 cursor-not-allowed items-center gap-2.5 pr-3 text-[15px] leading-5 font-medium text-mut {i.recuo ? 'pl-5' : 'pl-3'}" aria-disabled="true" title={EM_BREVE}>
@@ -85,6 +85,7 @@
 					class="relative flex h-[52px] w-[52px] items-center justify-center border-2 {on ? 'border-vermelhao bg-grena' : 'border-transparent hover:border-b3'}"
 				>
 					<Icone id="nav/ic-nav-{i.icone}" />
+					{#if i.contagem}<span class="t-num absolute -top-1 -right-1 bg-vermelhao px-1 text-[11px] text-white">{i.contagem}</span>{/if}
 				</a>
 			{:else}
 				<span title="{i.nome}: {EM_BREVE.toLowerCase()}" aria-label="{i.nome} (em breve)" aria-disabled="true" class="flex h-[52px] w-[52px] cursor-not-allowed items-center justify-center opacity-40">
@@ -106,7 +107,7 @@
 							href={i.href}
 							aria-current={on ? 'page' : undefined}
 							class="flex items-center gap-1.5 px-3.5 py-[15px] font-pixel text-sm leading-none font-semibold tracking-[0.06em] whitespace-nowrap {on ? 'bg-vermelhao text-white' : 'text-mut'}"
-							>{on ? '▸ ' : ''}{i.curto}</a
+							>{on ? '▸ ' : ''}{i.curto}{i.contagem ? ` · ${i.contagem}` : ''}</a
 						>
 					{:else}
 						<span aria-disabled="true" title={EM_BREVE} class="flex items-center px-3.5 py-[15px] font-pixel text-sm leading-none font-semibold tracking-[0.06em] whitespace-nowrap text-mut opacity-50">{i.curto}</span>

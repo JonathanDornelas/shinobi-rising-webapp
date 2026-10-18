@@ -1,7 +1,9 @@
 <script lang="ts">
 	// J1 · Biblioteca de jutsus da campanha: oficiais do livro, criados aprovados, em revisão (Mestre) e minhas criações.
 	// Daqui saem o criador de jutsu (J2) e o de habilidade (J3, modal).
+	import ModalConceder, { type Concessao } from '#lib/componentes/campanha/ModalConceder.svelte';
 	import ModalHabilidade from '#lib/componentes/jutsu/ModalHabilidade.svelte';
+	import { CUSTO_JUTSU } from '#lib/personagem/dados.ts';
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import Modal from '#lib/componentes/ui/Modal.svelte';
@@ -34,6 +36,7 @@
 		status: StatusCriacao | null;
 		href: string;
 		externo: boolean;
+		conceder?: Concessao;
 	}
 	const criados = $derived(data.criados.map((c) => ({ ...c, resumo: c.resumo as Partial<ResumoJutsu> & { origem?: string } })));
 	const substituidos = $derived(new Set(criados.filter((c) => c.status === 'aprovado' && c.anterior_id).map((c) => c.anterior_id)));
@@ -49,7 +52,8 @@
 		habilidade: c.tipo === 'habilidade',
 		status: c.status,
 		href: hrefJutsu(k.id, c.id),
-		externo: false
+		externo: false,
+		conceder: c.tipo === 'jutsu' && c.status === 'aprovado' ? { tipo: 'jutsu', slug: `jc-${c.id}`, nome: c.nome, custo: CUSTO_JUTSU[c.rank ?? 'C'] ?? 0 } : undefined
 	});
 
 	let busca = $state('');
@@ -57,7 +61,7 @@
 	const oficiais = $derived(
 		data.oficiais
 			.filter((j) => (!filtroTipo || j.tipo === filtroTipo) && (!busca.trim() || `${j.nome} ${j.origem}`.toLowerCase().includes(busca.trim().toLowerCase())))
-			.map<Card>((j) => ({ chave: j.slug, nome: j.nome, linha: j.origem || j.tipo, rank: j.rank, tipo: j.tipo, custo: j.custo, habilidade: false, status: null, href: `/regras/jutsus/${j.slug}`, externo: true }))
+			.map<Card>((j) => ({ chave: j.slug, nome: j.nome, linha: j.origem || j.tipo, rank: j.rank, tipo: j.tipo, custo: j.custo, habilidade: false, status: null, href: `/regras/jutsus/${j.slug}`, externo: true, conceder: j.cla ? undefined : ({ tipo: 'jutsu', slug: j.slug, nome: j.nome, custo: CUSTO_JUTSU[j.rank] ?? 0 } as Concessao) }))
 	);
 	const listas = $derived<Record<Aba, Card[]>>({
 		oficiais,
@@ -81,6 +85,8 @@
 	};
 	const ativa = $derived(!k.arquivada_em);
 	let modal = $state<'jutsu' | 'habilidade' | null>(null);
+	let concedendo = $state<Concessao | null>(null);
+	const fichasAtivas = $derived(data.personagens.filter((p) => p.status === 'aprovada' && p.situacao === 'ativo' && !p.pre_gerado).map((p) => ({ id: p.id, nome: p.nome, pt: p.pt })));
 	let paraFicha = $state('');
 </script>
 
@@ -118,7 +124,7 @@
 			<ul class="m-0 grid list-none gap-3 p-0 lg:grid-cols-2">
 				{#each listas[aba] as j (j.chave)}
 					{@const st = j.status ? STATUS_CRIACAO[j.status] : null}
-					<li>
+					<li class="relative">
 						<a
 							href={j.href}
 							target={j.externo ? '_blank' : undefined}
@@ -136,6 +142,9 @@
 								{#if st}<span class="inline-flex h-8 items-center gap-0.5 border-2 border-ink pr-1.5 text-xs leading-none font-semibold {st.classe}"><Icone id={st.icone} class="h-7 w-7" />{st.rotulo}</span>{/if}
 							</span>
 						</a>
+						{#if mestre && ativa && j.conceder}
+							<button type="button" class="absolute -top-2 -right-2 flex h-9 w-9 items-center justify-center border-2 border-ink bg-b2 hover:bg-b3" title="Conceder a uma ficha" aria-label="Conceder {j.nome} a uma ficha" onclick={() => (concedendo = j.conceder!)}><Icone id="acao/ic-acao-conceder" /></button>
+						{/if}
 					</li>
 				{/each}
 			</ul>
@@ -167,6 +176,8 @@
 			</div>
 		</form>
 	</Modal>
+{:else if concedendo}
+	<ModalConceder alvo={concedendo} fichas={fichasAtivas} aoFechar={() => (concedendo = null)} />
 {:else if modal === 'habilidade'}
 	<ModalHabilidade campanha={k.id} {eu} fichas={minhasFichas} clas={data.meusClas} {mestre} aoFechar={() => (modal = null)} />
 {/if}

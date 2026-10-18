@@ -7,7 +7,7 @@
 </script>
 
 <div
-	class="pointer-events-none fixed right-4 bottom-[80px] left-4 z-[60] flex flex-col items-end gap-2 md:bottom-6 md:left-auto md:w-[420px]"
+	class="pointer-events-none fixed right-4 bottom-[136px] left-4 z-[60] flex flex-col items-end gap-2 md:bottom-[84px] md:left-auto md:w-[420px]"
 	aria-live="polite"
 	role="status"
 >

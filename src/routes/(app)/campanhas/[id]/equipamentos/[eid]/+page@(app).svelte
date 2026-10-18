@@ -258,6 +258,7 @@
 			{:else if revisando}
 				<Alerta tipo="info" titulo="Pedido de {data.autor} aguardando sua revisão"><span>As verificações estão ao lado. Decida no fim da página.</span></Alerta>
 			{/if}
+			{#if e0.excecao}<Alerta tipo="aviso" titulo="Exceção do Mestre"><span>“{e0.excecao}”</span></Alerta>{/if}
 			{#if naoAprovada && data.editavel}
 				<Alerta tipo="aviso" titulo="A ficha de {data.ficha?.nome} ainda não foi aprovada"><span>Dá para montar o rascunho; o envio espera a ficha entrar na mesa (o ryo sai dela na aprovação).</span></Alerta>
 			{/if}

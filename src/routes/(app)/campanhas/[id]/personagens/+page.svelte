@@ -4,7 +4,11 @@
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import Retrato from '#lib/componentes/ui/Retrato.svelte';
 	import { hrefEditar, hrefFicha, STATUS_FICHA } from '#lib/personagem/status.ts';
-	import type { StatusFicha } from '#lib/supabase/banco.ts';
+	import { goto, refreshAll } from '$app/navigation';
+	import { fichaVazia, resumoFicha } from '#lib/personagem/regras.ts';
+	import { toasts } from '#lib/estado/toasts.svelte.ts';
+	import { supabase } from '#lib/supabase/cliente.ts';
+	import type { Json, StatusFicha } from '#lib/supabase/banco.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -22,6 +26,7 @@
 		status: StatusFicha | null;
 		situacao: string;
 		meu: boolean;
+		preGerado: boolean;
 		href: string;
 	}
 	const eu = $derived(data.usuario?.id ?? '');
@@ -43,6 +48,7 @@
 				status: p.status,
 				situacao: p.situacao,
 				meu,
+				preGerado: p.pre_gerado,
 				href: meu && (p.status === 'rascunho' || p.status === 'ajustes') ? hrefEditar(c.id, p.id) : hrefFicha(c.id, p.id)
 			});
 		}
@@ -58,6 +64,7 @@
 				status: 'aprovada',
 				situacao: g.situacao,
 				meu: false,
+				preGerado: g.pre_gerado,
 				href: hrefFicha(c.id, g.id)
 			});
 		}
@@ -67,6 +74,30 @@
 	let filtro = $state<Filtro>('Todos');
 	const visiveis = $derived(cards.filter((x) => filtro === 'Todos' || x.grupo === filtro));
 	const conta = (f: Filtro) => (f === 'Todos' ? cards.length : cards.filter((x) => x.grupo === f).length);
+	// pré-gerados: o Mestre cria fichas prontas; quem não tem ficha ativa assume uma
+	const temFichaAtiva = $derived(data.personagens.some((p) => p.jogador_id === eu && !p.pre_gerado && p.situacao === 'ativo' && p.status !== 'rejeitada'));
+	let ocupado = $state(false);
+	async function criarPreGerado() {
+		ocupado = true;
+		const dados = fichaVazia();
+		const { data: novo, error } = await supabase()
+			.from('personagens')
+			.insert({ campanha_id: c.id, jogador_id: eu, nome: '', pre_gerado: true, dados: dados as unknown as Json, resumo: resumoFicha(dados) as unknown as Json })
+			.select('id')
+			.single();
+		ocupado = false;
+		if (error || !novo) return toasts.mostrar('Não foi possível criar o pré-gerado.', 'erro');
+		await goto(hrefEditar(c.id, novo.id));
+	}
+	async function assumir(x: Card) {
+		ocupado = true;
+		const { error } = await supabase().rpc('assumir_pre_gerado', { ficha: x.id });
+		ocupado = false;
+		if (error) return toasts.mostrar(error.message.length < 120 ? error.message : 'Não foi possível assumir.', 'erro', 6000);
+		toasts.mostrar(`${x.nome} agora é seu.`, 'sucesso');
+		await refreshAll();
+		await goto(hrefFicha(c.id, x.id));
+	}
 	const ROTULO: Record<Card['grupo'], { classe: string; icone: string }> = {
 		Ativo: { classe: 'bg-ok text-okfg border-ink', icone: 'status/ic-status-aprovado' },
 		'Em criação': { classe: 'bg-[#5E6B73] text-white border-ink', icone: 'status/ic-status-rascunho' },
@@ -80,7 +111,7 @@
 	<div class="flex flex-wrap items-center gap-3">
 		<h1 class="m-0 flex-1 font-mincho text-[30px] leading-[38px] font-bold max-md:text-2xl">Personagens</h1>
 		{#if data.papel === 'mestre'}
-			<span class="btn-jogo com-icone cursor-not-allowed border-2 border-b3 text-[13px] text-mut" title="Pré-gerados chegam com os NPCs, no lote de Aprovações e NPCs" aria-disabled="true"><Icone id="acao/ic-acao-criar-personagem" class="opacity-60" />CRIAR PRÉ-GERADO · EM BREVE</span>
+			<button type="button" class="btn-jogo btn-contorno com-icone text-[13px]" disabled={ocupado || !!c.arquivada_em} title="Ficha pronta que um jogador sem personagem pode assumir" onclick={criarPreGerado}><Icone id="acao/ic-acao-criar-personagem" />CRIAR PRÉ-GERADO</button>
 		{/if}
 	</div>
 	{#if cards.length}
@@ -102,8 +133,8 @@
 								<Retrato nome={x.nome} tamanho={64} />
 							{/if}
 							<span class="flex min-w-0 flex-1 flex-col gap-1.5">
-								<span class="truncate font-mincho text-lg leading-6 font-bold">{x.nome}{x.meu ? ' (sua)' : ''}</span>
-								<span class="text-[13px] leading-[18px] text-mut">{x.jogador} · Nível {x.nivel}{nomeClaFicha(x.cla) ? ` · Clã ${nomeClaFicha(x.cla)}` : ''}</span>
+								<span class="truncate font-mincho text-lg leading-6 font-bold">{x.nome}{x.preGerado ? '' : x.meu ? ' (sua)' : ''}</span>
+								<span class="text-[13px] leading-[18px] text-mut">{x.preGerado ? 'Pré-gerado do Mestre' : x.jogador} · Nível {x.nivel}{nomeClaFicha(x.cla) ? ` · Clã ${nomeClaFicha(x.cla)}` : ''}</span>
 								<span class="inline-flex h-9 items-center gap-0.5 self-start border-2 pr-2 text-xs leading-none font-semibold {ROTULO[x.grupo].classe}">
 									<Icone id={ROTULO[x.grupo].icone} />{x.grupo === 'Em criação' && x.status ? STATUS_FICHA[x.status].rotulo : x.grupo}
 								</span>
@@ -112,6 +143,12 @@
 								<span class="absolute top-4 -right-[34px] rotate-45 border-y-2 border-[#5E6B73] bg-[#1A1A1A] px-10 py-1.5 font-pixel text-xs font-bold tracking-[0.1em] text-papel">MEMORIAL</span>
 							{/if}
 						</a>
+						{#if x.preGerado && x.grupo === 'Ativo' && data.papel === 'jogador'}
+							<div class="flex items-center gap-2 border-2 border-t-0 border-frame bg-b2 px-3.5 py-2">
+								<span class="flex-1 text-[13px] leading-[18px] text-mut">{temFichaAtiva ? 'Você já tem uma ficha ativa nesta campanha.' : 'Disponível: quem assumir passa a ser o dono.'}</span>
+								<button type="button" class="btn-jogo btn-primario min-h-10 text-xs" disabled={ocupado || temFichaAtiva || !!c.arquivada_em} onclick={() => assumir(x)}>ASSUMIR</button>
+							</div>
+						{/if}
 					</li>
 				{/each}
 			</ul>

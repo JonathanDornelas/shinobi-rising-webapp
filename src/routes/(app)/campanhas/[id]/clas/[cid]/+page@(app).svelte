@@ -304,6 +304,8 @@
 					</Alerta>
 				{/if}
 
+				{#if cla0.excecao}<Alerta tipo="aviso" titulo="Exceção do Mestre"><span>“{cla0.excecao}”</span></Alerta>{/if}
+
 				{#if c.passo === 0}<PassoConceitoCla {c} />
 				{:else if c.passo === 1}<PassoBonusCla {c} />
 				{:else if c.passo === 2}<PassoKkgCla {c} />

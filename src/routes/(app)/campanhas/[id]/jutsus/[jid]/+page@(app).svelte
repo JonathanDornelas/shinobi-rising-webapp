@@ -255,6 +255,8 @@
 					<Alerta tipo="info" titulo="{habilidade ? 'Habilidade' : 'Jutsu'} de {data.autor} aguardando sua revisão"><span>As verificações automáticas estão ao lado. Decida no fim da página.</span></Alerta>
 				{/if}
 
+				{#if j0.excecao}<Alerta tipo="aviso" titulo="Exceção do Mestre"><span>“{j0.excecao}”</span></Alerta>{/if}
+
 				{#if habilidade}
 					<div class="flex flex-col gap-3">
 						<Campo id="hab-nome" rotulo="Nome" obrigatorio><input id="hab-nome" class="campo" maxlength="60" readonly={ro} bind:value={h.nome} /></Campo>

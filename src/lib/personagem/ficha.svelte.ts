@@ -207,6 +207,19 @@ export class FichaJogo {
 		toasts.mostrar(`Chegou ao inventário: ${entregas.map((e) => e.nome).join(', ')}.`, 'sucesso', 6000);
 	}
 
+	/** Itens concedidos pelo Mestre (personagens.entregas): somam ao inventário e as entregas são limpas. */
+	async receberItens(itens: ItemInventario[]) {
+		if (!this.editavel || !itens.length) return;
+		for (const it of itens) {
+			const ja = this.inventario.find((i) => i.id === it.id);
+			if (ja) ja.qtd += it.qtd || 1;
+			else this.inventario.push({ ...it, qtd: it.qtd || 1 });
+		}
+		const { error } = await supabase().rpc('receber_entregas', { ficha: this.id, inventario: $state.snapshot(this.inventario) as unknown as Json });
+		if (error) return toasts.mostrar('Não foi possível receber os itens concedidos.', 'erro');
+		toasts.mostrar(`O Mestre concedeu: ${itens.map((i) => i.nome).join(', ')}.`, 'sucesso', 6000);
+	}
+
 	async alterarQtd(id: string, delta: number) {
 		const i = this.inventario.find((x) => x.id === id);
 		if (!i || !this.editavel) return;

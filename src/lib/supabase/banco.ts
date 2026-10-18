@@ -110,6 +110,9 @@ export type Personagem = {
 	epitafio: string | null;
 	falecido_em: string | null;
 	cla_id: string | null;
+	excecao: string | null;
+	pre_gerado: boolean;
+	entregas: Json;
 }
 
 /** Jutsu ou habilidade criada (cap. 20); `dados` é um JutsuDados ou HabilidadeDados (src/lib/jutsus/regras.ts). */
@@ -130,6 +133,7 @@ export type JutsuCriado = {
 	resumo: Json;
 	mensagem: string | null;
 	comentario_mestre: string | null;
+	excecao: string | null;
 	enviado_em: string | null;
 	decidido_em: string | null;
 	criado_em: string;
@@ -152,12 +156,40 @@ export type EquipamentoCriado = {
 	resumo: Json;
 	mensagem: string | null;
 	comentario_mestre: string | null;
+	excecao: string | null;
 	entregue: boolean;
 	enviado_em: string | null;
 	decidido_em: string | null;
 	criado_em: string;
 	atualizado_em: string;
 };
+
+/** NPC da campanha (ficha resumida do cap. 23.2). Só o Mestre lê a tabela; o grupo vê os revelados por npcs_revelados(). */
+export type Npc = {
+	id: string;
+	campanha_id: string;
+	nome: string;
+	funcao: string;
+	origem: string;
+	aparencia: string;
+	rank: 'genin' | 'chunin' | 'jounin' | 'anbu' | 'lendario';
+	pv: number;
+	pc: number;
+	defesa: number;
+	iniciativa: number;
+	ataque: string;
+	especial: string;
+	tags: string[];
+	quer: string;
+	segredo: string;
+	notas: string;
+	revelado: boolean;
+	membros: number;
+	pv_atual: number[];
+	criado_em: string;
+	atualizado_em: string;
+};
+export type NpcRevelado = Pick<Npc, 'id' | 'nome' | 'funcao' | 'origem' | 'aparencia' | 'rank' | 'tags'>;
 
 /** Clã criado por um jogador (cap. 8.4); `dados` é um ClaDados (src/lib/clas/regras.ts). */
 export type Cla = {
@@ -173,6 +205,7 @@ export type Cla = {
 	resumo: Json;
 	mensagem: string | null;
 	comentario_mestre: string | null;
+	excecao: string | null;
 	enviado_em: string | null;
 	decidido_em: string | null;
 	criado_em: string;
@@ -213,6 +246,7 @@ export type PersonagemPublico = {
 	nome: string;
 	nivel: number;
 	situacao: SituacaoFicha;
+	pre_gerado: boolean;
 	resumo: Json;
 }
 
@@ -322,6 +356,7 @@ export type Database = {
 			clas: Tabela<Cla, 'campanha_id' | 'autor_id', [Rel<'clas_campanha_id_fkey', 'campanha_id', 'campanhas'>, Rel<'clas_autor_id_fkey', 'autor_id', 'perfis'>]>;
 			jutsus_criados: Tabela<JutsuCriado, 'campanha_id' | 'autor_id', [Rel<'jutsus_criados_campanha_id_fkey', 'campanha_id', 'campanhas'>, Rel<'jutsus_criados_autor_id_fkey', 'autor_id', 'perfis'>]>;
 			equipamentos_criados: Tabela<EquipamentoCriado, 'campanha_id' | 'autor_id' | 'tipo', [Rel<'equipamentos_criados_campanha_id_fkey', 'campanha_id', 'campanhas'>, Rel<'equipamentos_criados_autor_id_fkey', 'autor_id', 'perfis'>]>;
+			npcs: Tabela<Npc, 'campanha_id', [Rel<'npcs_campanha_id_fkey', 'campanha_id', 'campanhas'>]>;
 			atividades: Tabela<Atividade, 'campanha_id' | 'tipo' | 'texto', [Rel<'atividades_campanha_id_fkey', 'campanha_id', 'campanhas'>]>;
 		};
 		Views: { [_ in never]: never };
@@ -360,6 +395,12 @@ export type Database = {
 			decidir_equipamento: { Args: { equipamento: string; decisao: StatusCriacao; comentario?: string | null }; Returns: undefined };
 			nova_versao_equipamento: { Args: { equipamento: string }; Returns: string };
 			receber_equipamentos: { Args: { ficha: string; inventario: Json; equipamentos: string[] }; Returns: undefined };
+			registrar_excecao: { Args: { tipo: string; alvo: string; justificativa: string }; Returns: undefined };
+			npcs_revelados: { Args: { campanha: string }; Returns: NpcRevelado[] };
+			assumir_pre_gerado: { Args: { ficha: string }; Returns: undefined };
+			conceder_jutsu: { Args: { ficha: string; slug: string; nome: string; custo_pt?: number }; Returns: undefined };
+			conceder_item: { Args: { ficha: string; item: Json; custo_ryo?: number }; Returns: undefined };
+			receber_entregas: { Args: { ficha: string; inventario: Json }; Returns: undefined };
 			definir_situacao: { Args: { ficha: string; situacao: SituacaoFicha; epitafio?: string | null }; Returns: undefined };
 		};
 		Enums: { papel: Papel; tipo_convite: TipoConvite; status_convite: StatusConvite; status_ficha: StatusFicha; status_cla: StatusCla; status_criacao: StatusCriacao };

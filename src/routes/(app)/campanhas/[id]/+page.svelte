@@ -33,7 +33,7 @@
 	// ---------------------------------------------------------------- fichas
 	/** A ficha ativa do jogador (falecidas e arquivadas ficam na lista de Personagens). */
 	const fichaDe = (jogador: string) => data.personagens.find((p) => p.jogador_id === jogador && p.situacao === 'ativo');
-	const ativas = $derived(data.personagens.filter((p) => p.status === 'aprovada' && p.situacao === 'ativo'));
+	const ativas = $derived(data.personagens.filter((p) => p.status === 'aprovada' && p.situacao === 'ativo' && !p.pre_gerado));
 	let recompensando = $state(false);
 	const SEM_FICHAS = 'Nenhuma ficha aprovada e ativa para receber recompensas';
 

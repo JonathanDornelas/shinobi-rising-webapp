@@ -1,7 +1,9 @@
 <script lang="ts">
 	// E1 · Biblioteca de equipamentos: armas, itens e marionetes, cada um com oficiais do livro, da campanha, em revisão
 	// (Mestre) e minhas criações. Daqui saem a forja (E3), a oficina (E4) e o novo item (E2, modal).
+	import ModalConceder, { type Concessao } from '#lib/componentes/campanha/ModalConceder.svelte';
 	import ModalItem from '#lib/componentes/equipamento/ModalItem.svelte';
+	import { PESOS } from '#lib/personagem/dados.ts';
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import Modal from '#lib/componentes/ui/Modal.svelte';
@@ -35,6 +37,7 @@
 		status: StatusCriacao | null;
 		href: string | null;
 		externo: boolean;
+		conceder?: Concessao;
 	}
 	const ryo = (n: number) => `${n.toLocaleString('pt-BR')} ryo`;
 	const criados = $derived(data.criados.map((c) => ({ ...c, resumo: c.resumo as Partial<ResumoEquipamento> })));
@@ -52,7 +55,16 @@
 			.join(' · '),
 		status: c.status,
 		href: `/campanhas/${k.id}/equipamentos/${c.id}`,
-		externo: false
+		externo: false,
+		// o que foi aprovado sem dono (itens, armas e marionetes da biblioteca) o Mestre pode conceder
+		conceder:
+			c.status === 'aprovado' && (c.tipo === 'item' || !c.personagem_id)
+				? {
+						tipo: 'item',
+						custo: c.custo,
+						item: { id: c.tipo === 'item' ? `eqi-${c.id}` : `eq-${c.id}`, nome: c.nome, qtd: 1, peso: c.tipo === 'marionete' ? 0 : (c.resumo.carga ?? 0.5), conjunto: c.resumo.consumivel ? 5 : undefined, grupo: c.tipo === 'arma' ? 'Armas' : c.tipo === 'item' ? 'Itens' : 'Outros', icone: c.resumo.icone ?? 'equip/ic-equip-ferramenta', nota: c.tipo === 'item' ? undefined : [c.resumo.categoria, c.resumo.dano].filter(Boolean).join(' · ') }
+					}
+				: undefined
 	});
 	const oficiais = $derived<Record<Tipo, Card[]>>({
 		arma: data.armas.map((a) => ({
@@ -66,9 +78,25 @@
 			rodape: 'Oficial · cap. 12',
 			status: null,
 			href: '/regras/equipamentos',
-			externo: true
+			externo: true,
+			conceder: { tipo: 'item', custo: a.preco, item: { id: a.slug, nome: a.nome, qtd: CONJUNTOS.includes(a.slug) ? 10 : 1, peso: a.carga, conjunto: CONJUNTOS.includes(a.slug) ? 10 : undefined, grupo: 'Armas', icone: a.icone } } as Concessao
 		})),
-		item: data.itens.map((i) => ({ chave: i.nome, icone: 'equip/ic-equip-ferramenta', categoria: 'ITEM', nome: i.nome, preco: i.preco, peso: i.peso, efeito: i.efeito, rodape: 'Oficial · cap. 11', status: null, href: '/regras/equipamento-e-itens', externo: true })),
+		item: data.itens.map((i) => ({
+			chave: i.nome,
+			icone: 'equip/ic-equip-ferramenta',
+			categoria: 'ITEM',
+			nome: i.nome,
+			preco: i.preco,
+			peso: i.peso,
+			efeito: i.efeito,
+			rodape: 'Oficial · cap. 11',
+			status: null,
+			href: '/regras/equipamento-e-itens',
+			externo: true,
+			conceder: /^d/.test(i.preco) && !/a/.test(i.preco)
+				? ({ tipo: 'item', custo: Number(i.preco.replace(/D/g, '')), item: { id: `item-${slug(i.nome)}`, nome: i.nome, qtd: 1, peso: PESOS[i.peso.replace(/.$/, '').trim().toLowerCase()] ?? 0.5, grupo: 'Itens', icone: 'equip/ic-equip-ferramenta' } } as Concessao)
+				: undefined
+		})),
 		marionete: []
 	});
 	let tipo = $state<Tipo>('arma');
@@ -100,6 +128,10 @@
 	};
 	const ativa = $derived(!k.arquivada_em);
 	let modal = $state<'item' | 'arma' | 'marionete' | null>(null);
+	let concedendo = $state<Concessao | null>(null);
+	const CONJUNTOS = ['arma-kunai', 'arma-shuriken', 'arma-senbon'];
+	const slug = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+	const fichasAtivas = $derived(data.personagens.filter((p) => p.status === 'aprovada' && p.situacao === 'ativo' && !p.pre_gerado).map((p) => ({ id: p.id, nome: p.nome, pt: p.pt, ryo: p.ryo })));
 </script>
 
 <main class="flex min-w-0 flex-col gap-3.5 p-4 md:p-6">
@@ -131,7 +163,7 @@
 			<ul class="m-0 grid list-none gap-3 p-0 md:grid-cols-2 xl:grid-cols-3">
 				{#each visiveis as c (c.chave)}
 					{@const st = c.status ? STATUS_CRIACAO[c.status] : null}
-					<li>
+					<li class="relative">
 						<svelte:element
 							this={c.href ? 'a' : 'div'}
 							href={c.href}
@@ -155,6 +187,9 @@
 								</span>
 							</span>
 						</svelte:element>
+						{#if mestre && ativa && c.conceder}
+							<button type="button" class="absolute -top-2 -right-2 flex h-9 w-9 items-center justify-center border-2 border-ink bg-b2 hover:bg-b3" title="Conceder a uma ficha" aria-label="Conceder {c.nome} a uma ficha" onclick={() => (concedendo = c.conceder!)}><Icone id="acao/ic-acao-conceder" /></button>
+						{/if}
 					</li>
 				{/each}
 			</ul>
@@ -168,7 +203,9 @@
 	</div>
 </main>
 
-{#if modal === 'item'}
+{#if concedendo}
+	<ModalConceder alvo={concedendo} fichas={fichasAtivas} aoFechar={() => (concedendo = null)} />
+{:else if modal === 'item'}
 	<ModalItem campanha={k.id} {eu} direto={mestre || !aprovacao.itens} aoFechar={() => (modal = null)} />
 {:else if modal}
 	<Modal rotulo={modal === 'arma' ? 'Forjar arma' : 'Construir marionete'} largura={520} topo={120} aoFechar={() => (modal = null)}>

@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ locals, params, parent }) => {
 		locals.supabase.from('clas').select('id, nome, status').eq('campanha_id', params.id).eq('autor_id', usuario.id).neq('status', 'rejeitado'),
 		locals.supabase.from('clas').select('id, nome').eq('campanha_id', params.id)
 	]);
-	const oficiais = jutsusDoLivro.map((j) => ({ slug: j.slug, nome: j.nome, rank: j.rank, tipo: j.tipo, custo: j.custo, origem: j.origem, elemento: j.elemento }));
+	const oficiais = jutsusDoLivro.map((j) => ({ slug: j.slug, nome: j.nome, rank: j.rank, tipo: j.tipo, custo: j.custo, origem: j.origem, elemento: j.elemento, cla: j.cla }));
 	return { titulo: `Jutsus · ${campanha.nome}`, navTitulo: 'JUTSUS', oficiais, criados: criados ?? [], meusClas: clas ?? [], nomesClas: Object.fromEntries((nomesClas ?? []).map((c) => [c.id, c.nome])) as Record<string, string> };
 };
 

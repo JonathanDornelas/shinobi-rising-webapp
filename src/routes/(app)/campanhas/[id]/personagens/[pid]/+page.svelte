@@ -55,6 +55,13 @@
 		for (const e of pendentes) entregues.add(e.id);
 		untrack(() => f.receberEntregas(pendentes));
 	});
+	let itensRecebidos = false;
+	$effect(() => {
+		const itens = (p?.entregas ?? []) as unknown as ItemInventario[];
+		if (!f?.editavel || !itens.length || itensRecebidos) return;
+		itensRecebidos = true;
+		untrack(() => f.receberItens(itens));
+	});
 	const xp = $derived(p ? progressoXp(p.nivel, p.xp) : null);
 	const vila = $derived(f ? VILAS.find((v) => v.id === f.dados.vila.id) : null);
 	const falecido = $derived(p?.situacao === 'falecido');
@@ -215,6 +222,7 @@
 		</header>
 
 		<BarraRecursos {f} />
+		{#if p?.excecao}<div class="mx-4 mt-4 md:mx-6"><Alerta tipo="aviso" titulo="Exceção do Mestre"><span>“{p.excecao}”</span></Alerta></div>{/if}
 
 		{#if f.atual.situacao !== 'bem' && f.editavel}
 			<div role="alert" class="mx-4 mt-4 flex flex-wrap items-center gap-3 border-2 border-err bg-[rgba(229,83,75,.14)] py-2 pr-3 pl-1.5 md:mx-6">

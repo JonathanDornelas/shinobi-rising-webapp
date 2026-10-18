@@ -23,10 +23,10 @@
 		<Icone id={PAPEL[data.papel].icone} />{PAPEL[data.papel].nome}
 	</span>
 </div>
-<MenuCampanha id={c.id} papel={data.papel} parte="abas" />
+<MenuCampanha id={c.id} papel={data.papel} parte="abas" pendentes={data.pendentes} />
 
 <div class="flex flex-1">
-	<MenuCampanha id={c.id} papel={data.papel} parte="lateral" />
+	<MenuCampanha id={c.id} papel={data.papel} parte="lateral" pendentes={data.pendentes} />
 	<div class="flex min-w-0 flex-1 flex-col">
 		{#if c.arquivada_em}
 			<div class="px-4 pt-4 md:px-6">

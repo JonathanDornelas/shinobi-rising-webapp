@@ -21,6 +21,6 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		navTitulo: `NÍVEL ${p.nivel} → ${p.nivel + 1}`,
 		campanha,
 		personagem: p,
-		catalogo: catalogoFicha(cla && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(cla) ? cla : null, await claDaFicha(locals.supabase, p.cla_id), await jutsusDaFicha(locals.supabase, p.id, p.cla_id))
+		catalogo: catalogoFicha(cla && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(cla) ? cla : null, await claDaFicha(locals.supabase, p.cla_id), await jutsusDaFicha(locals.supabase, p.id, p.cla_id, p.dados))
 	};
 };

@@ -63,19 +63,29 @@ export async function carregarCampanha(locals: App.Locals, id: string, usuarioId
 	const lista = (membros ?? []).map((m) => ({ id: m.usuario_id, papel: m.papel, entrou_em: m.entrou_em, nome: m.perfil?.nome ?? '?' }));
 	const papel: Papel = campanha.mestre_id === usuarioId ? 'mestre' : 'jogador';
 	// RLS: o Mestre vê todas as fichas; o jogador, só as próprias. O grupo aparece pelo resumo público.
-	const [{ data: fichas }, { data: grupo }, { data: pedidos }] = await Promise.all([
+	const conta = (tabela: 'clas' | 'jutsus_criados' | 'equipamentos_criados') =>
+		papel === 'mestre' ? locals.supabase.from(tabela).select('id', { count: 'exact', head: true }).eq('campanha_id', id).eq('status', 'em_revisao') : Promise.resolve({ count: 0 });
+	const [{ data: fichas }, { data: grupo }, { data: pedidos }, clasPend, jutsusPend, equipPend] = await Promise.all([
 		locals.supabase
 			.from('personagens')
-			.select('id, jogador_id, nome, status, situacao, nivel, xp, pt, resumo, estado, enviada_em, decidida_em, comentario_mestre, atualizada_em, epitafio')
+			.select('id, jogador_id, nome, status, situacao, nivel, xp, pt, resumo, estado, enviada_em, decidida_em, comentario_mestre, atualizada_em, epitafio, pre_gerado, excecao, ryo')
 			.eq('campanha_id', id)
 			.neq('status', 'rejeitada')
 			.order('criada_em'),
 		locals.supabase.rpc('personagens_do_grupo', { campanha: id }),
 		papel === 'mestre'
 			? locals.supabase.from('pedidos_pt').select('id, personagem_id, sessao, semanas, pt, descricao, criado_em').eq('campanha_id', id).eq('status', 'pendente').order('criado_em')
-			: Promise.resolve({ data: [] })
+			: Promise.resolve({ data: [] }),
+		conta('clas'),
+		conta('jutsus_criados'),
+		conta('equipamentos_criados')
 	]);
 	const personagens = (fichas ?? []).map((f) => ({ ...f, resumo: f.resumo as Partial<ResumoFicha> }));
 	const publicos = (grupo ?? []).map((g) => ({ ...g, resumo: g.resumo as Partial<ResumoFicha> }));
-	return { campanha, membros: lista, papel, personagens, grupo: publicos, pedidosPt: pedidos ?? [] };
+	// fila do Mestre: fichas, clãs, jutsus, equipamentos e pedidos de PT esperando decisão
+	const pendentes =
+		papel === 'mestre'
+			? personagens.filter((p) => p.status === 'em_revisao').length + (pedidos ?? []).length + (clasPend.count ?? 0) + (jutsusPend.count ?? 0) + (equipPend.count ?? 0)
+			: 0;
+	return { campanha, membros: lista, papel, personagens, grupo: publicos, pedidosPt: pedidos ?? [], pendentes };
 }

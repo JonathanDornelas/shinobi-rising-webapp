@@ -12,8 +12,12 @@ export interface JutsuCriadoFicha {
 	dados: JutsuDados;
 }
 
-export async function jutsusDaFicha(supabase: Cliente, personagemId: string, claId: string | null | undefined): Promise<JutsuCriadoFicha[]> {
-	const filtro = claId ? `personagem_id.eq.${personagemId},cla_id.eq.${claId}` : `personagem_id.eq.${personagemId}`;
+export async function jutsusDaFicha(supabase: Cliente, personagemId: string, claId: string | null | undefined, dados?: unknown): Promise<JutsuCriadoFicha[]> {
+	// jutsus criados concedidos pelo Mestre ou aprendidos chegam pelos slugs jc-<id> nos treinos da ficha
+	const treinos = ((dados as { progresso?: { treinos?: { tipo: string; slug?: string }[] } })?.progresso?.treinos ?? []).flatMap((t) =>
+		t.tipo === 'jutsu' && t.slug?.startsWith('jc-') && /^jc-[0-9a-f-]{36}$/.test(t.slug) ? [t.slug.slice(3)] : []
+	);
+	const filtro = [`personagem_id.eq.${personagemId}`, claId ? `cla_id.eq.${claId}` : '', treinos.length ? `id.in.(${treinos.join(',')})` : ''].filter(Boolean).join(',');
 	const { data } = await supabase
 		.from('jutsus_criados')
 		.select('id, personagem_id, cla_id, carta_id, dados, versao, anterior_id')
@@ -24,6 +28,6 @@ export async function jutsusDaFicha(supabase: Cliente, personagemId: string, cla
 	// numa cadeia de versões aprovadas, vale a mais nova
 	const substituidos = new Set((data ?? []).map((j) => j.anterior_id).filter(Boolean));
 	return (data ?? [])
-		.filter((j) => !substituidos.has(j.id))
-		.map((j) => ({ id: j.id, personagem_id: j.personagem_id, cla_id: j.cla_id, carta_id: j.carta_id, dados: normalizarJutsu(j.dados as Partial<JutsuDados>) }));
+		.filter((j) => !substituidos.has(j.id) || treinos.includes(j.id))
+		.map((j) => ({ id: j.id, personagem_id: treinos.includes(j.id) ? personagemId : j.personagem_id, cla_id: j.cla_id, carta_id: j.carta_id, dados: normalizarJutsu(j.dados as Partial<JutsuDados>) }));
 }
