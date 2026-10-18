@@ -30,9 +30,13 @@ export interface Usuario {
 	email: string;
 }
 
-export async function criarBanco() {
+/** `contasAntigas`: contas criadas antes da migração (como num projeto que já tinha usuários). */
+export async function criarBanco(contasAntigas: { email: string; nome: string }[] = []) {
 	const db = new PGlite();
 	await db.exec(AUTH_FALSO);
+	for (const c of contasAntigas) {
+		await db.query(`insert into auth.users (email, raw_user_meta_data) values ($1, $2)`, [c.email, JSON.stringify({ nome: c.nome })]);
+	}
 	for (const arquivo of readdirSync(MIGRACOES).filter((f) => f.endsWith('.sql')).sort()) {
 		await db.exec(readFileSync(join(MIGRACOES, arquivo), 'utf8'));
 	}

@@ -19,6 +19,15 @@ describe('perfis', () => {
 		expect(r.map((p) => p.nome).sort((a, b) => a.localeCompare(b))).toEqual(['Bruno', 'Carla', 'diego', 'Kaito']);
 	});
 
+	it('contas criadas antes da migração ganham perfil e podem criar campanha', async () => {
+		const antigo = await criarBanco([{ email: 'aiko@exemplo.com', nome: 'Aiko' }]);
+		const [{ id }] = (await antigo.db.query<{ id: string }>(`select id from auth.users`)).rows;
+		const aiko = { id, email: 'aiko@exemplo.com' };
+		expect(await antigo.como(aiko, `select nome from perfis`)).toEqual([{ nome: 'Aiko' }]);
+		await antigo.como(aiko, `insert into campanhas (nome, mestre_id) values ('Primeira', $1)`, [id]);
+		expect(await antigo.como(aiko, `select nome from campanhas`)).toEqual([{ nome: 'Primeira' }]);
+	});
+
 	it('só o dono edita', async () => {
 		await banco.como(bruno, `update perfis set nome = 'Hackeado' where id = $1`, [kaito.id]);
 		const [k] = await banco.como<{ nome: string }>(kaito, `select nome from perfis where id = $1`, [kaito.id]);

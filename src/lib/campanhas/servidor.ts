@@ -2,6 +2,12 @@
 import { error } from '@sveltejs/kit';
 import type { Papel } from '#lib/supabase/banco.ts';
 
+/** Registra a causa no log do servidor (Vercel) e mostra a mensagem genérica ao usuário. */
+function falhou(onde: string, e: { code?: string; message: string }, mensagem: string): never {
+	console.error(`[supabase] ${onde}: ${e.code ?? ''} ${e.message}`);
+	error(503, mensagem);
+}
+
 export type ResumoCampanha = Awaited<ReturnType<typeof listarCampanhas>>[number];
 
 /** C1: campanhas da conta, com papel, membros e a última atividade. */
@@ -12,7 +18,7 @@ export async function listarCampanhas(locals: App.Locals, usuarioId: string) {
 			'id, nome, capa, era, era_alternativa, nivel_inicial, mestre_id, arquivada_em, criada_em, atualizada_em, mestre:perfis!campanhas_mestre_id_fkey(nome), membros(usuario_id, papel, perfil:perfis!membros_usuario_id_fkey(nome))'
 		)
 		.order('atualizada_em', { ascending: false });
-	if (e) error(503, 'Não foi possível carregar as campanhas.');
+	if (e) falhou('listar campanhas', e, 'Não foi possível carregar as campanhas.');
 	const lista = data ?? [];
 	const ids = lista.map((c) => c.id);
 	const { data: atividades } = ids.length
@@ -46,7 +52,7 @@ export async function listarCampanhas(locals: App.Locals, usuarioId: string) {
 export async function carregarCampanha(locals: App.Locals, id: string, usuarioId: string) {
 	if (!/^[0-9a-f-]{36}$/i.test(id)) error(404, 'Campanha não encontrada.');
 	const { data: campanha, error: e } = await locals.supabase.from('campanhas').select('*').eq('id', id).maybeSingle();
-	if (e) error(503, 'Não foi possível carregar a campanha.');
+	if (e) falhou('carregar campanha', e, 'Não foi possível carregar a campanha.');
 	if (!campanha) error(404, 'Campanha não encontrada.');
 	const { data: membros } = await locals.supabase
 		.from('membros')

@@ -26,6 +26,12 @@ begin
 end $$;
 create trigger ao_criar_usuario after insert on auth.users for each row execute function public.criar_perfil();
 
+-- contas criadas antes desta migração também ganham perfil
+insert into public.perfis (id, nome)
+select u.id, left(coalesce(nullif(trim(u.raw_user_meta_data ->> 'nome'), ''), split_part(u.email, '@', 1)), 40)
+from auth.users u
+on conflict (id) do nothing;
+
 -- ---------------------------------------------------------------- campanhas
 create type public.papel as enum ('mestre', 'jogador');
 
