@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Moldura da campanha: sub-cabeçalho (nome, era, papel), menu lateral e abas no mobile.
 	import MenuCampanha from '#lib/componentes/campanha/MenuCampanha.svelte';
+	import AvisoRolagem from '#lib/componentes/rolagens/AvisoRolagem.svelte';
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import { PAPEL, rotuloEra } from '#lib/campanhas/dominio.ts';
@@ -17,7 +18,7 @@
 	<span class="flex-1"></span>
 	<span
 		class="inline-flex h-9 flex-none items-center gap-1 border-2 pr-2.5 text-[13px] leading-none font-semibold {data.papel === 'mestre'
-			? 'border-[#8B2E20] bg-grena text-papel'
+			? 'border-[var(--vermelhao-lo)] bg-grena text-papel'
 			: 'border-mut text-fg'}"
 	>
 		<Icone id={PAPEL[data.papel].icone} />{PAPEL[data.papel].nome}
@@ -38,3 +39,4 @@
 		{@render children()}
 	</div>
 </div>
+<AvisoRolagem campanha={c.id} />

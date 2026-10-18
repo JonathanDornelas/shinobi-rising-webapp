@@ -21,14 +21,27 @@ export function rotuloEra(c: Pick<Campanha, 'era' | 'era_alternativa'>): string 
 	return ERAS.find((e) => e.id === c.era)?.curto ?? c.era.toUpperCase();
 }
 
+// Paisagens das vilas (PixelLab, pixellab/gerados/capas-vilas); a Floresta é o interior genérico dos Renegados.
 export const CAPAS = [
-	{ id: 'capa-nevoa', nome: 'Névoa' },
-	{ id: 'capa-floresta', nome: 'Floresta' },
-	{ id: 'capa-deserto', nome: 'Deserto' },
-	{ id: 'capa-montanha', nome: 'Montanha' },
-	{ id: 'capa-chuva', nome: 'Chuva' },
-	{ id: 'capa-rochas', nome: 'Rochas' }
+	{ id: 'capa-konoha', nome: 'Konoha' },
+	{ id: 'capa-suna', nome: 'Suna' },
+	{ id: 'capa-kiri', nome: 'Kiri' },
+	{ id: 'capa-kumo', nome: 'Kumo' },
+	{ id: 'capa-iwa', nome: 'Iwa' },
+	{ id: 'capa-ame', nome: 'Ame' },
+	{ id: 'capa-taki', nome: 'Taki' },
+	{ id: 'capa-oto', nome: 'Oto' },
+	{ id: 'capa-floresta', nome: 'Renegados' }
 ] as const;
+
+// capas genéricas de antes das vilas (a migração converte o banco; aqui só por segurança)
+const CAPA_ANTIGA: Record<string, string> = { 'capa-nevoa': 'capa-kiri', 'capa-deserto': 'capa-suna', 'capa-montanha': 'capa-kumo', 'capa-chuva': 'capa-ame', 'capa-rochas': 'capa-iwa' };
+
+/** URL da paisagem (256×96) de uma capa de campanha. */
+export const urlCapa = (id: string | null | undefined) => `/covers/${CAPA_ANTIGA[id ?? ''] ?? id ?? 'capa-konoha'}-256.png`;
+
+/** Paisagem da vila do personagem (Renegado/sem vila: floresta). */
+export const capaDaVila = (vila: string | null | undefined) => urlCapa(CAPAS.some((c) => c.id === `capa-${vila}`) ? `capa-${vila}` : 'capa-floresta');
 
 export const VILAS = [
 	{ id: 'konoha', nome: 'Konoha' },
@@ -155,7 +168,7 @@ export function dadosPadrao(): DadosCampanha {
 	return {
 		nome: '',
 		premissa: '',
-		capa: 'capa-nevoa',
+		capa: 'capa-konoha',
 		era: 'classica',
 		era_alternativa: '',
 		nivel_inicial: 1,

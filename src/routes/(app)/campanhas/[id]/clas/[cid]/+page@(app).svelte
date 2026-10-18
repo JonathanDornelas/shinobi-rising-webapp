@@ -198,7 +198,7 @@
 
 <div class="flex flex-1 flex-col">
 	{#if data.ficha && voltarFicha}
-		<div class="flex flex-wrap items-center gap-2.5 border-b-2 border-[#8B2E20] bg-grena px-4 py-1.5 text-[13px] leading-[18px] font-semibold text-papel md:px-6">
+		<div class="flex flex-wrap items-center gap-2.5 border-b-2 border-[var(--vermelhao-lo)] bg-grena px-4 py-1.5 text-[13px] leading-[18px] font-semibold text-papel md:px-6">
 			◂ <button type="button" class="underline underline-offset-[3px] hover:no-underline" style:color="#F2C14E" onclick={() => sair(voltarFicha)}>Voltar à criação de personagem</button>
 			<span class="text-[#E6D2BF]">· {data.ficha.nome || 'personagem sem nome'}, passo 4</span>
 		</div>
@@ -218,7 +218,7 @@
 			<span class="font-pixel text-xs leading-none font-bold tracking-[0.08em] text-title">PB</span>
 			<div class="flex h-4 flex-1 gap-0.5">
 				{#each Array.from({ length: Math.max(c.pb.limite, c.pb.usados) }, (_, i) => i) as i (i)}
-					<div class="flex-1 border-2 border-ink" style:background={i < c.pb.usados ? (i >= c.pb.limite ? 'var(--err)' : c.pb.restantes === 0 ? 'var(--ok)' : '#C44536') : 'var(--b3)'}></div>
+					<div class="flex-1 border-2 border-ink" style:background={i < c.pb.usados ? (i >= c.pb.limite ? 'var(--err)' : c.pb.restantes === 0 ? 'var(--ok)' : 'var(--vermelhao)') : 'var(--b3)'}></div>
 				{/each}
 			</div>
 			<span class="t-num text-sm" aria-live="polite" style:color={c.pb.restantes === 0 ? 'var(--ok)' : c.pb.restantes < 0 ? 'var(--err)' : undefined}>{c.pb.restantes} / {c.pb.limite}</span>
@@ -263,7 +263,7 @@
 						<button
 							type="button"
 							aria-current={atual ? 'step' : undefined}
-							class="flex min-h-11 w-full items-center gap-2.5 px-3 text-left {atual ? 'bg-grena text-papel shadow-[inset_4px_0_0_#C44536]' : 'text-fg hover:bg-b3'}"
+							class="flex min-h-11 w-full items-center gap-2.5 px-3 text-left {atual ? 'bg-grena text-papel shadow-[inset_4px_0_0_var(--vermelhao)]' : 'text-fg hover:bg-b3'}"
 							onclick={() => ir(i)}
 						>
 							<span class="t-num flex h-7 w-7 flex-none items-center justify-center border-2 text-[13px] {atual ? 'border-ink bg-vermelhao text-white' : e.classe}">{atual ? i + 1 : e.marca || i + 1}</span>
@@ -319,7 +319,7 @@
 				{:else}<PassoRevisaoCla {c} irPara={ir} leitura={!data.editavel} />{/if}
 
 				{#if revisando}
-					<section class="mt-2 flex flex-wrap items-center gap-2 border-2 border-[#8B2E20] bg-b2 p-3.5 sombra-painel" aria-label="Decisão do Mestre">
+					<section class="mt-2 flex flex-wrap items-center gap-2 border-2 border-[var(--vermelhao-lo)] bg-b2 p-3.5 sombra-painel" aria-label="Decisão do Mestre">
 						<span class="t-rotulo flex-1">Sua decisão · {c.analise.bloqueios ? `${c.analise.bloqueios} bloqueio${c.analise.bloqueios > 1 ? 's' : ''} nas verificações` : 'sem bloqueios'}</span>
 						<button type="button" class="btn-jogo btn-erro min-h-11" onclick={() => abrirDecisao('rejeitado')}>REJEITAR</button>
 						<button type="button" class="btn-jogo btn-secundario" onclick={() => abrirDecisao('ajustes')}>PEDIR AJUSTES</button>

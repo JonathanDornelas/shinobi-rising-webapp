@@ -32,7 +32,7 @@
 >{#if pos}<span
 		{id}
 		role="tooltip"
-		class="pointer-events-none fixed z-[70] max-w-[260px] border-2 border-[#8B2E20] bg-b0 px-3 py-2 text-[13px] leading-[18px] font-medium text-b0fg"
+		class="pointer-events-none fixed z-[70] max-w-[260px] border-2 border-[var(--vermelhao-lo)] bg-b0 px-3 py-2 text-[13px] leading-[18px] font-medium text-b0fg"
 		style:left="{pos.left}px"
 		style:top="{pos.top}px">{texto}</span
 	>{/if}

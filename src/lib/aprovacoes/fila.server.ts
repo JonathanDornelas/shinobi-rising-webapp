@@ -7,7 +7,7 @@ import { armasBase } from '#lib/equipamentos/catalogo.server.ts';
 import { analisarArma, analisarItem, analisarMarionete, calcularArma, calcularMarionete, normalizar, type ArmaDados, type ItemDados, type MarioneteDados } from '#lib/equipamentos/regras.ts';
 import { analisarHabilidade, analisarJutsu, calcularJutsu, normalizarHabilidade, normalizarJutsu, type HabilidadeDados, type JutsuDados } from '#lib/jutsus/regras.ts';
 import { TIPO_JUTSU } from '#lib/livro/dominio.ts';
-import { catalogoCriacao } from '#lib/personagem/catalogo.server.ts';
+import { catalogoCriacao, jutsusCriadosDaCriacao } from '#lib/personagem/catalogo.server.ts';
 import { ptDaSessao, SESSOES_TREINO } from '#lib/personagem/dados.ts';
 import { analisar, especializacoes, normalizarFicha, recursos, type FichaDados, type ResumoFicha } from '#lib/personagem/regras.ts';
 import type { Campanha, Database } from '#lib/supabase/banco.ts';
@@ -73,7 +73,8 @@ export async function montarFila(supabase: SupabaseClient<Database>, campanha: C
 		const f = normalizarFicha(p.dados as Partial<FichaDados>);
 		const r = p.resumo as Partial<ResumoFicha>;
 		const sc = p.cla_id ? (statusCla.get(p.cla_id) ?? null) : null;
-		const a = analisar(f, ctxCampanha, { jutsusD: catalogo.jutsusD, loja: catalogo.loja, statusCla: sc });
+		const jutsusCriados = jutsusCriadosDaCriacao(so(jutsus.data).filter((j) => j.personagem_id === p.id && j.tipo === 'jutsu'));
+		const a = analisar(f, ctxCampanha, { jutsusD: catalogo.jutsusD, loja: catalogo.loja, statusCla: sc, jutsusCriados });
 		const at = r.atributos ?? f.atributos;
 		itens.push({
 			...base({ ...p, versao: 1, mensagem: p.mensagem }),

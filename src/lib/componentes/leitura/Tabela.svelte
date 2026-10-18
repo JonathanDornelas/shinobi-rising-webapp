@@ -47,7 +47,7 @@
 					<thead>
 						<tr class="bg-vermelhao text-left font-pixel text-[13px] leading-[18px] font-bold tracking-[.06em] text-white uppercase">
 							{#each cab as h, c (c)}
-								<th scope="col" class="px-3 py-2.5 align-bottom {c === 0 ? 'sticky left-0 z-[1] bg-vermelhao shadow-[2px_0_0_#8B2E20] md:static md:shadow-none' : ''}">{h}</th>
+								<th scope="col" class="px-3 py-2.5 align-bottom {c === 0 ? 'sticky left-0 z-[1] bg-vermelhao shadow-[2px_0_0_var(--vermelhao-lo)] md:static md:shadow-none' : ''}">{h}</th>
 							{/each}
 						</tr>
 					</thead>

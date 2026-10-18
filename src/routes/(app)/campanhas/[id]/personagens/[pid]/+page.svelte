@@ -12,6 +12,9 @@
 	import AbaVisao from '#lib/componentes/ficha/AbaVisao.svelte';
 	import BarraRecursos from '#lib/componentes/ficha/BarraRecursos.svelte';
 	import GavetaTreino from '#lib/componentes/ficha/GavetaTreino.svelte';
+	import BarraRolagem from '#lib/componentes/rolagens/BarraRolagem.svelte';
+	import BotaoRolar from '#lib/componentes/rolagens/BotaoRolar.svelte';
+	import { teste } from '#lib/rolagens/expressoes.ts';
 	import SeloStatus from '#lib/componentes/personagem/SeloStatus.svelte';
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
 	import Campo from '#lib/componentes/ui/Campo.svelte';
@@ -21,6 +24,8 @@
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import Modal from '#lib/componentes/ui/Modal.svelte';
 	import Retrato from '#lib/componentes/ui/Retrato.svelte';
+	import EnviarRetrato from '#lib/componentes/personagem/EnviarRetrato.svelte';
+	import ExcluirFicha from '#lib/componentes/personagem/ExcluirFicha.svelte';
 	import { APROVACAO_PADRAO, rankSugerido } from '#lib/campanhas/dominio.ts';
 	import { BACKGROUNDS, ELEMENTOS, VILAS } from '#lib/personagem/dados.ts';
 	import { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
@@ -82,6 +87,7 @@
 	// svelte-ignore state_referenced_locally
 	let treinando = $state(page.url.searchParams.get('treino') === '1' && !!data.completa?.dono);
 	let menu = $state(false);
+	let excluindo = $state(false);
 
 	// toast do último ajuste (com Desfazer)
 	let toastVisivel = $state(false);
@@ -122,7 +128,7 @@
 	{@const g = data.publico}
 	<main class="flex flex-col gap-5 p-4 md:p-6">
 		<header class="flex items-start gap-5 border-b-2 border-b3 pb-5">
-			<Retrato nome={g.nome} tamanho={128} class="max-sm:hidden" />
+			<Retrato nome={g.nome} foto={g.retrato} tamanho={128} class="max-sm:hidden" />
 			<div class="flex flex-col gap-2">
 				<h1 class="m-0 font-mincho text-4xl leading-[44px] font-bold max-md:text-[28px]">{g.nome}</h1>
 				{#if g.resumo.conceito}<span class="text-base leading-6 text-mut">{g.resumo.conceito}</span>{/if}
@@ -162,9 +168,10 @@
 		{/if}
 
 		<header class="flex flex-wrap items-start gap-5 border-b-2 border-b3 px-4 py-5 md:px-6" class:grayscale={falecido}>
-			<div class="relative flex-none max-sm:hidden">
-				<Retrato nome={p.nome || '?'} tamanho={128} />
+			<div class="relative flex flex-none flex-col items-start gap-2">
+				<Retrato nome={p.nome || '?'} foto={p.retrato} tamanho={128} class="max-sm:h-16! max-sm:w-16!" />
 				{#if falecido}<span class="absolute inset-x-[-2px] bottom-3 border-y-2 border-[#5E6B73] bg-[#1A1A1A] py-[5px] text-center font-pixel text-xs font-bold tracking-[0.1em] text-papel">MEMORIAL</span>{/if}
+				{#if p.dono && !data.arquivada && !falecido}<EnviarRetrato ficha={p.id} atual={p.retrato} />{/if}
 			</div>
 			<div class="flex min-w-[240px] flex-1 flex-col gap-2">
 				<div class="flex flex-wrap items-center gap-3">
@@ -179,7 +186,7 @@
 				<div class="flex flex-wrap gap-2">
 					{#if data.catalogo?.cla}<span class="inline-flex h-9 items-center gap-1 border-2 border-b3 pr-2.5 text-[13px] font-semibold"><Brasao slug={data.catalogo.cla.slug} kamon={data.catalogo.cla.brasao?.kamon} cor={data.catalogo.cla.brasao?.cor} />Clã {data.catalogo.cla.nome}</span>{/if}
 					{#if vila}<span class="inline-flex h-9 items-center gap-1 border-2 border-b3 pr-2.5 text-[13px] font-semibold"><Icone id="vila/ic-vila-{vila.id}" />{vila.nome.replace(/gakure$/, '')}</span>{/if}
-					<span class="inline-flex h-9 items-center border-2 border-[#8B2E20] bg-grena px-2.5 font-pixel text-xs font-bold tracking-[0.06em] text-papel uppercase">{rankSugerido(p.nivel).split(' ')[0]}</span>
+					<span class="inline-flex h-9 items-center border-2 border-[var(--vermelhao-lo)] bg-grena px-2.5 font-pixel text-xs font-bold tracking-[0.06em] text-papel uppercase">{rankSugerido(p.nivel).split(' ')[0]}</span>
 				</div>
 				{#if falecido && p.epitafio}<span class="font-mincho text-base leading-6 font-semibold text-mut italic">“{p.epitafio}”{p.falecido_em ? ` · ${dataCurta(p.falecido_em)}` : ''}</span>{/if}
 			</div>
@@ -214,6 +221,9 @@
 										<button type="button" role="menuitem" class="flex min-h-11 items-center px-3.5 text-left text-[15px] hover:bg-b3" onclick={() => ((situacao = 'ativo'), (menu = false))}>Reativar ficha</button>
 									{/if}
 								{/if}
+								{#if (p.dono || p.mestre) && !data.arquivada}
+									<button type="button" role="menuitem" class="flex min-h-11 items-center border-t-2 border-b3 px-3.5 text-left text-[15px] text-err hover:bg-b3" onclick={() => ((excluindo = true), (menu = false))}>Excluir ficha</button>
+								{/if}
 							</div>
 						{/if}
 					</div>
@@ -231,6 +241,7 @@
 					{#if f.atual.situacao === 'morte'}PV na metade negativa do máximo: morte imediata (cap. 4). O Mestre decide o desfecho.{:else}Inconsciente · Save de Morte por turno: 1d20{f.calc.atributos.ESP > 0 ? ` + ${f.calc.atributos.ESP} (ESP)` : ''} ≥ 10.{/if}
 				</span>
 				{#if f.atual.situacao === 'caido'}
+					<BotaoRolar texto="SAVE" expressao={teste(Math.max(0, f.calc.atributos.ESP))} rotulo="Save de Morte (DT 10)" personagem={f.id} d20 />
 					{#each [['sucessos', 'SUCESSOS', 'var(--ok)'], ['falhas', 'FALHAS', 'var(--err)']] as const as [t, rotulo, cor] (t)}
 						<div class="flex items-center gap-1 font-pixel text-xs font-bold" role="group" aria-label="{rotulo}: {f.atual.saves[t]} de 3">
 							<span class="mr-1">{rotulo}</span>
@@ -252,10 +263,12 @@
 					class="flex items-center gap-1.5 px-3.5 py-[15px] font-pixel text-sm leading-none font-semibold tracking-[0.05em] whitespace-nowrap {aba === a.id ? 'bg-vermelhao text-white' : 'text-mut hover:text-fg'}"
 					onclick={() => (aba = a.id)}
 				>
-					{aba === a.id ? '▸ ' : ''}{a.nome}{#if a.id === 'jutsus'}<span class="border-2 px-1 py-0.5 text-xs {aba === a.id ? 'border-[#8B2E20]' : 'border-b3'}">{f.calc.jutsus.length}</span>{/if}
+					{aba === a.id ? '▸ ' : ''}{a.nome}{#if a.id === 'jutsus'}<span class="border-2 px-1 py-0.5 text-xs {aba === a.id ? 'border-[var(--vermelhao-lo)]' : 'border-b3'}">{f.calc.jutsus.length}</span>{/if}
 				</button>
 			{/each}
 		</div>
+
+		{#if f.editavel}<div class="mx-4 mt-3 md:mx-6"><BarraRolagem registro="/campanhas/{k.id}/rolagens" /></div>{/if}
 
 		<div class="flex flex-col gap-5 px-4 pt-5 pb-8 md:px-6" role="tabpanel">
 			{#if aba === 'visao'}<AbaVisao {f} aoAbrirJutsus={() => (aba = 'jutsus')} />
@@ -306,6 +319,7 @@
 		</div>
 	{/if}
 
+	{#if excluindo}<ExcluirFicha ficha={{ id: p.id, nome: p.nome, retrato: p.retrato, campanha_id: k.id }} deOutro={!p.dono} aoFechar={() => (excluindo = false)} />{/if}
 	{#if treinando}<GavetaTreino {f} pt={p.pt} aprovacaoTreino={aprovacao.treino} aoFechar={() => (treinando = false)} />{/if}
 
 	{#if situacao}
@@ -343,13 +357,13 @@
 		0%,
 		49% {
 			box-shadow:
-				inset 0 -4px 0 #8b2e20,
+				inset 0 -4px 0 var(--vermelhao-lo),
 				0 0 0 2px #f2c14e;
 		}
 		50%,
 		100% {
 			box-shadow:
-				inset 0 -4px 0 #8b2e20,
+				inset 0 -4px 0 var(--vermelhao-lo),
 				0 0 0 2px transparent;
 		}
 	}

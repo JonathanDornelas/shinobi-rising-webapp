@@ -66,7 +66,7 @@
 	const bloqueado = $derived(falha?.tipo === 'tentativas');
 </script>
 
-<PainelConta capa="capa-nevoa" frase>
+<PainelConta capa="capa-konoha" frase>
 	{#if vindoDeConvite}<FaixaConvite {volta} />{/if}
 	<div class="flex flex-col gap-1.5">
 		<span class="t-rotulo">Conta</span>

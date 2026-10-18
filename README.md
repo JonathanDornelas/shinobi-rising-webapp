@@ -4,13 +4,15 @@ Documentação web e criador de campanhas do RPG de mesa **Shinobi no Michi — 
 
 Stack: SvelteKit 3 (Svelte 5) + Tailwind CSS 4 + DaisyUI 5 + Supabase, publicado no Vercel (`adapter-vercel`): a documentação é pré-renderizada; conta e campanhas rodam no servidor. As telas são desenhadas antes no Claude Design (direção visual 1a "Jogo", temas sumi e washi).
 
-**Fase atual:** Lote 9, central de aprovações do Mestre (R1, R2), minhas submissões (R3), NPCs (N1, N2), personagens pré-gerados e concessões do Mestre. Feitos antes: equipamentos (E1–E4), jutsus (J1–J3), documentação do livro (G1–G5, D1–D10), conta (A1–A4), campanhas (C1–C7), criação de personagem (P2), ficha em jogo, nível, treino e recompensas (P1, P3–P6, C8) e clãs (K1, K2). Todas as telas do brief estão implementadas; o que vem depois está em `todo.md`.
+**Fase atual:** itens do `todo.md`: rolagens da campanha ao vivo, retrato do ninja, temas do usuário, paisagens das vilas, jutsus originais na criação de personagem e de clã, e exclusão de fichas. Feitos antes: aprovações, submissões, NPCs, pré-gerados e concessões do Mestre (R1–R3, N1, N2), equipamentos (E1–E4), jutsus (J1–J3), documentação do livro (G1–G5, D1–D10), conta (A1–A4), campanhas (C1–C7), criação de personagem (P2), ficha em jogo, nível, treino e recompensas (P1, P3–P6, C8) e clãs (K1, K2). Todas as telas do brief estão implementadas; o que vem depois está em `todo.md`.
 
 ## Criação de personagem
 
 `src/lib/personagem/regras.ts` é o motor do cap. 6: a partir das escolhas (`FichaDados`) calcula atributos, perícias, PT, recursos, carga e ryo, e gera as verificações da revisão (ok, aviso, bloqueio). Os números do livro que ele usa ficam em `dados.ts` (vilas do cap. 7, bônus de criação e marco do nível 1 dos 13 clãs, backgrounds, efeitos das especializações, custos de proficiência); jutsus, clãs, especializações e itens da loja vêm dos dados gerados do livro, montados no servidor por `catalogo.server.ts`. O motor é testado com os exemplos do próprio livro (`regras.spec.ts`).
 
-A ficha fica na tabela `personagens` (escolhas em `dados`, valores para listas em `resumo`). O status só muda pelas funções `enviar_ficha`, `retirar_ficha` e `decidir_ficha`; uma campanha que não exige aprovação de fichas aprova no envio. Os retratos chegam num próximo lote.
+A ficha fica na tabela `personagens` (escolhas em `dados`, valores para listas em `resumo`). O status só muda pelas funções `enviar_ficha`, `retirar_ficha` e `decidir_ficha`; uma campanha que não exige aprovação de fichas aprova no envio. No passo 9, a ficha pode escolher jutsus originais de Rank E ou D feitos para ela no criador de jutsus; eles vão para a revisão junto com a ficha.
+
+O retrato do ninja é uma foto enquadrada no navegador (256×256, webp) no bucket `retratos` do Storage, em `<id da ficha>/<arquivo>.webp`; só o dono envia, e a ficha guarda o caminho em `retrato` (`definir_retrato`). O dono exclui a própria ficha em qualquer status e o Mestre exclui qualquer ficha da campanha (`excluir_ficha`, o jogador é avisado).
 
 ## Ficha, nível e treino
 
@@ -25,6 +27,12 @@ A fila de aprovações (`src/lib/aprovacoes/fila.server.ts`) junta fichas, clãs
 Depois da aprovação, a progressão fica em `dados.progresso` (as escolhas de cada nível e os treinos) e o nível atual é `1 + progresso.niveis.length`. `src/lib/personagem/progressao.ts` cuida de XP e níveis (cap. 17), lê os marcos de clã (cap. 8.3), monta os passos dinâmicos do Subir de nível, calcula o custo real dos jutsus com as reduções do cap. 9, lista o que dá para treinar com PT (cap. 18) e guarda as regras de descanso, PV 0 e PIC.
 
 No banco, o estado em jogo (PV/PC/PE atuais, fadiga, condições, saves de morte, PD e PIC), o inventário, o ryo e o saldo de PT só mudam pelas funções `atualizar_estado`, `atualizar_inventario`, `subir_nivel`, `treinar`, `solicitar_pt`/`decidir_pedido_pt`, `conceder_recompensa` e `definir_situacao`; cada uma deixa uma linha no registro da ficha. A ficha completa é só do dono e do Mestre; o grupo vê o resumo público por `personagens_do_grupo()`. Quando a campanha começa acima do nível 1, a ficha aprovada recebe o XP do nível inicial e sobe pelo próprio P4.
+
+## Rolagens, temas e capas
+
+As rolagens são sorteadas no servidor: `rolar(campanha, expressao, rotulo, personagem, modo, oculta)` aceita expressões como `1d20+5` ou `2d6+1d4-1`, aplica vantagem e desvantagem (cap. 2: o d20 duas vezes, fica o maior ou o menor) e o crítico (cap. 4: os dados de dano dobram), e grava em `rolagens`. As ocultas só o autor e o Mestre veem (RLS). A tabela está no Supabase Realtime: o registro da campanha e o aviso no canto da tela recebem as rolagens da mesa na hora. `src/lib/rolagens/expressoes.ts` monta as expressões da ficha (atributos, perícias, iniciativa, save de morte, ataque e dano dos jutsus lidos do texto do livro, ataque e dano das armas). O d20 e a animação dele são do PixelLab (`static/dados/`).
+
+O tema do usuário (perfil → Aparência) guarda acento, destaque, fundo, texto, escala e raio em `perfis.preferencias.visual` e vira variáveis CSS no `<html>` (`src/lib/estado/visual.ts`); o `app.html` aplica antes da primeira pintura. As capas das campanhas são as paisagens das vilas (`static/covers/capa-<vila>-256.png`, geradas no PixelLab), e a Floresta é a dos Renegados.
 
 ## Rodando
 
@@ -75,12 +83,13 @@ Ele também extrai os 13 clãs (cap. 8.3), as 16 especializações (cap. 19), ar
 | `src/lib/supabase/`, `src/hooks.server.ts` | Clientes do Supabase (navegador e servidor), tipos do banco e a guarda das áreas logadas |
 | `src/lib/campanhas/`, `src/lib/conta/` | Regras de campanha (eras, vilas, clãs, aprovação, tabela de XP), convites e validações de conta |
 | `supabase/` | Migrações SQL e testes do banco |
+| `src/lib/rolagens/` | Expressões de dados da ficha e o rolador (rolar, aviso, tempo real) |
 | `src/lib/componentes/` | `shell` (navbar, dock, rodapé, notificações), `leitura` (blocos, tabelas, destaques, sumário), `regras` (CMP-01 a 17), `busca` (G2), `conta`, `campanha` (menu, card, formulários, convites), `ui` |
 | `src/lib/livro/` | tipos, cores de domínio, utilitários de texto e os dados gerados |
 | `src/routes/layout.css` | tokens dos temas sumi/washi, tema DaisyUI e classes da direção 1a |
 | `instrucoes-claude-design.md` | Especificação de todas as telas, identidade visual, componentes, fluxos e estados |
 | `shinobi_no_michi_v18.docx` | Livro de regras (fonte de todo o conteúdo) |
-| `static/icons/`, `static/illustrations/`, `static/covers/` | Ícones PixelLab servidos pelo site |
+| `static/icons/`, `static/illustrations/`, `static/covers/`, `static/dados/` | Ícones, paisagens das vilas e dados PixelLab servidos pelo site |
 | `pixellab/` | Inventário, prompts e pipeline de geração dos ícones; pacote para o Claude Design |
 
 ## Para o Claude Design

@@ -67,7 +67,7 @@
 	{#if lista.length}
 		<div class="grid grid-cols-[minmax(0,1fr)] gap-4 sm:grid-cols-2 lg:grid-cols-4">
 			{#each lista as c (c.slug)}<CardCla cla={c} completo={false} />{/each}
-			<a href={data.hrefCriacao} class="flex min-h-[150px] flex-col items-center justify-center gap-2.5 border-2 border-dashed border-[#8B2E20] p-4 text-center hover:bg-b2">
+			<a href={data.hrefCriacao} class="flex min-h-[150px] flex-col items-center justify-center gap-2.5 border-2 border-dashed border-[var(--vermelhao-lo)] p-4 text-center hover:bg-b2">
 				<Icone id="acao/ic-acao-criar-cla" tamanho={64} />
 				<span class="font-mincho text-[17px] leading-6 font-bold">Crie seu próprio clã</span>
 				<span class="link text-[13px] leading-[18px] font-semibold">cap. 8.4 · Criação de clãs</span>

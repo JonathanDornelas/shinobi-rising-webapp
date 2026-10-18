@@ -132,7 +132,7 @@
 						{@const on = !!sel[g.id]?.includes(o.v)}
 						<label class="flex min-h-8 cursor-pointer items-center gap-2.5 text-sm leading-5 font-medium {o.n || on ? '' : 'text-mut'}">
 							<input type="checkbox" class="peer sr-only" checked={on} onchange={() => alternar(g.id, o.v)} />
-							<span class="flex h-5 w-5 flex-none items-center justify-center border-2 font-pixel text-xs font-bold text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus" style:background={on ? '#C44536' : 'var(--b1)'} style:border-color={on ? 'var(--ink)' : 'var(--field)'}>{on ? '✓' : ''}</span>
+							<span class="flex h-5 w-5 flex-none items-center justify-center border-2 font-pixel text-xs font-bold text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus" style:background={on ? 'var(--vermelhao)' : 'var(--b1)'} style:border-color={on ? 'var(--ink)' : 'var(--field)'}>{on ? '✓' : ''}</span>
 							<span class="flex-1">{o.nome}</span>
 							<span class="t-num text-xs text-mut">{o.n}</span>
 						</label>

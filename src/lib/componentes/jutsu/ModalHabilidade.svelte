@@ -78,13 +78,13 @@
 				<textarea id="hab-descricao" class="campo h-auto min-h-[64px] resize-y py-2.5 text-[15px] leading-[22px]" maxlength="800" bind:value={d.descricao}></textarea>
 			</Campo>
 		</div>
-		<article class="self-start border-2 border-[#8B2E20] bg-b1">
+		<article class="self-start border-2 border-[var(--vermelhao-lo)] bg-b1">
 			<header class="flex items-center gap-2 bg-grena px-3.5 py-3">
 				<span class="flex flex-1 flex-col">
 					<span class="font-mincho text-lg leading-6 font-bold text-papel">{d.nome.trim() || 'Nome da habilidade'}</span>
 					<span class="text-[13px] leading-[18px] text-papel-2 italic">{nomeOrigem ? `Habilidade · ${nomeOrigem}` : 'Habilidade'}</span>
 				</span>
-				<span class="border-2 border-[#8B2E20] px-2 py-1.5 font-pixel text-xs leading-none font-bold text-papel">HABILIDADE</span>
+				<span class="border-2 border-[var(--vermelhao-lo)] px-2 py-1.5 font-pixel text-xs leading-none font-bold text-papel">HABILIDADE</span>
 			</header>
 			<div class="flex flex-col gap-2 px-3.5 py-3 text-sm leading-[21px]">
 				{#if d.descricao.trim()}<p class="m-0">{d.descricao.trim()}</p>{/if}

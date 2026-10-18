@@ -135,6 +135,9 @@
 		} else if (acao === 'transferir') {
 			erro = (await sb.rpc('transferir_mestre', { campanha: c.id, novo_mestre: novoMestre })).error;
 		} else if (acao === 'excluir') {
+			// os retratos das fichas saem do Storage antes (depois, a política não acha mais as fichas)
+			const fotos = data.personagens.map((p) => p.retrato).filter((r): r is string => !!r);
+			if (fotos.length) await sb.storage.from('retratos').remove(fotos);
 			erro = (await sb.from('campanhas').delete().eq('id', c.id)).error;
 		}
 		ocupado = false;
@@ -161,7 +164,7 @@
 			? { id: 'arquivar' as const, titulo: 'Desarquivar campanha', texto: 'Volta a ser editável para o Mestre e os jogadores.', botao: 'DESARQUIVAR' }
 			: { id: 'arquivar' as const, titulo: 'Arquivar campanha', texto: 'Vira só leitura para todos. Pode ser desarquivada.', botao: 'ARQUIVAR' },
 		{ id: 'transferir' as const, titulo: 'Transferir papel de Mestre', texto: 'Escolha um jogador e digite o nome da campanha para confirmar.', botao: 'TRANSFERIR' },
-		{ id: 'excluir' as const, titulo: 'Excluir campanha', texto: 'Apaga membros, convites e atividade. Não dá para desfazer.', botao: 'EXCLUIR' }
+		{ id: 'excluir' as const, titulo: 'Excluir campanha', texto: 'Apaga fichas, clãs, jutsus, equipamentos, NPCs, rolagens, membros e convites. Não dá para desfazer.', botao: 'EXCLUIR' }
 	]);
 </script>
 
@@ -289,7 +292,7 @@
 				</Campo>
 			{:else}
 				<h2 class="t-h3 m-0">Excluir {c.nome}?</h2>
-				<p class="m-0 text-[15px] leading-[23px] text-mut">Membros, convites e atividade somem para sempre. Para guardar o histórico, prefira arquivar.</p>
+				<p class="m-0 text-[15px] leading-[23px] text-mut">Fichas (com os retratos), clãs, jutsus, equipamentos, NPCs, rolagens, membros, convites e atividade somem para sempre. Para guardar o histórico, prefira arquivar.</p>
 			{/if}
 			{#if acao !== 'arquivar'}
 				<Campo id="confirma-nome" rotulo="Digite o nome da campanha para confirmar" ajuda={c.nome}>

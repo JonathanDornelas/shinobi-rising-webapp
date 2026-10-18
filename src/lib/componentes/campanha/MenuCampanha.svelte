@@ -21,6 +21,7 @@
 			{ chave: 'jutsus', nome: 'Jutsus', curto: 'JUTSUS', icone: 'jutsus', href: `${base}/jutsus`, recuo: true },
 			{ chave: 'equip', nome: 'Equipamentos', curto: 'EQUIPAMENTOS', icone: 'equipamentos', href: `${base}/equipamentos`, recuo: true },
 			{ grupo: 'MESA' },
+			{ chave: 'rolagens', nome: 'Rolagens', curto: 'ROLAGENS', icone: 'rolagens', href: `${base}/rolagens` },
 			{ chave: 'npcs', nome: mestre ? 'NPCs' : 'NPCs conhecidos', curto: 'NPCS', icone: 'npcs', href: `${base}/npcs` },
 			mestre
 				? { chave: 'aprovacoes', nome: 'Aprovações', curto: 'APROVAÇÕES', icone: 'aprovacoes', href: `${base}/aprovacoes`, contagem: pendentes }
@@ -55,7 +56,7 @@
 						href={i.href}
 						aria-current={on ? 'page' : undefined}
 						class="flex min-h-11 items-center gap-2.5 pr-3 text-[15px] leading-5 {i.recuo ? 'pl-5' : 'pl-3'} {on
-							? 'bg-grena font-semibold text-papel shadow-[inset_4px_0_0_#C44536]'
+							? 'bg-grena font-semibold text-papel shadow-[inset_4px_0_0_var(--vermelhao)]'
 							: 'font-medium text-fg hover:bg-b3'}"
 					>
 						<Icone id="nav/ic-nav-{i.icone}" /><span class="min-w-0 flex-1 truncate">{i.nome}</span>{#if i.contagem}<span class="t-num flex-none bg-vermelhao px-1.5 py-1 text-xs text-white" aria-label="{i.contagem} pendentes">{i.contagem}</span>{/if}

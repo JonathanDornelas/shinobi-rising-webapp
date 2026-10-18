@@ -75,7 +75,7 @@
 				{#each NIVEIS_PROFICIENCIA as n (n.id)}<option value={n.id}>{n.nome} (+{n.bonus}) · {custoProficiencia(p.tipo, n.id)} PT</option>{/each}
 			</select>
 		</label>
-		<span class="border-2 border-[#8B2E20] bg-grena px-2 py-1.5 font-pixel text-[13px] leading-none font-bold tracking-[0.06em] text-papel uppercase">{nivel.nome}</span>
+		<span class="border-2 border-[var(--vermelhao-lo)] bg-grena px-2 py-1.5 font-pixel text-[13px] leading-none font-bold tracking-[0.06em] text-papel uppercase">{nivel.nome}</span>
 		<span class="t-num text-lg">{custoProficiencia(p.tipo, p.nivel)} PT</span>
 		{#if c.editavel}<button type="button" class="link self-center text-[13px] font-semibold text-err" onclick={() => remover(i)}>Remover</button>{/if}
 		<span class="w-full text-[13px] leading-[18px] text-mut">{tipo.beneficio}{p.tipo === 'categoria' ? ' · categorias custam +1 PT por nível' : ''}</span>

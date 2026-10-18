@@ -18,7 +18,7 @@
 	const cor = $derived(TIPO_JUTSU[jutsu.tipo].cor);
 </script>
 
-<article id="jutsu-{jutsu.slug}" class="@container flex scroll-mt-20 border-2 border-[#8B2E20] bg-b2" class:sombra-painel={!semSombra}>
+<article id="jutsu-{jutsu.slug}" class="@container flex scroll-mt-20 border-2 border-[var(--vermelhao-lo)] bg-b2" class:sombra-painel={!semSombra}>
 	<div class="w-1 flex-none" style:background={cor}></div>
 	<div class="min-w-0 flex-1">
 		<header class="flex flex-col gap-2.5 bg-grena px-3.5 py-3 @[520px]:flex-row @[520px]:items-start @[520px]:gap-3.5 @[520px]:px-4 @[520px]:py-3.5">

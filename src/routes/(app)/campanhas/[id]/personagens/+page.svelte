@@ -27,6 +27,7 @@
 		situacao: string;
 		meu: boolean;
 		preGerado: boolean;
+		retrato: string | null;
 		href: string;
 	}
 	const eu = $derived(data.usuario?.id ?? '');
@@ -49,6 +50,7 @@
 				situacao: p.situacao,
 				meu,
 				preGerado: p.pre_gerado,
+				retrato: p.retrato,
 				href: meu && (p.status === 'rascunho' || p.status === 'ajustes') ? hrefEditar(c.id, p.id) : hrefFicha(c.id, p.id)
 			});
 		}
@@ -65,6 +67,7 @@
 				situacao: g.situacao,
 				meu: false,
 				preGerado: g.pre_gerado,
+				retrato: g.retrato,
 				href: hrefFicha(c.id, g.id)
 			});
 		}
@@ -127,10 +130,10 @@
 				{#each visiveis as x (x.id)}
 					<li>
 						<a href={x.href} class="painel-sombra cartao-link relative flex items-start gap-3 overflow-hidden p-3.5 text-fg" class:grayscale={x.grupo === 'Falecido'}>
-							{#if temIconeCla(x.cla)}
-								<span class="flex h-16 w-16 flex-none items-center justify-center border-2 border-[#8B2E20] bg-grena"><IconeCla resumo={x.cla} /></span>
+							{#if !x.retrato && temIconeCla(x.cla)}
+								<span class="flex h-16 w-16 flex-none items-center justify-center border-2 border-[var(--vermelhao-lo)] bg-grena"><IconeCla resumo={x.cla} /></span>
 							{:else}
-								<Retrato nome={x.nome} tamanho={64} />
+								<Retrato nome={x.nome} foto={x.retrato} tamanho={64} />
 							{/if}
 							<span class="flex min-w-0 flex-1 flex-col gap-1.5">
 								<span class="truncate font-mincho text-lg leading-6 font-bold">{x.nome}{x.preGerado ? '' : x.meu ? ' (sua)' : ''}</span>

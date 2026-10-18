@@ -81,7 +81,7 @@
 				</span>
 				<span
 					class="inline-flex h-9 items-center gap-1 justify-self-start border-2 pr-2.5 text-[13px] leading-none font-semibold max-md:hidden {m.papel === 'mestre'
-						? 'border-[#8B2E20] bg-grena text-papel'
+						? 'border-[var(--vermelhao-lo)] bg-grena text-papel'
 						: 'border-mut bg-b2'}"><Icone id={PAPEL[m.papel].icone} />{PAPEL[m.papel].nome}</span
 				>
 				<span class="truncate text-sm leading-5 max-md:hidden {personagemDe(m.id) ? '' : 'text-mut'}">{m.papel === 'mestre' ? '—' : personagemDe(m.id) || 'Sem personagem'}</span>

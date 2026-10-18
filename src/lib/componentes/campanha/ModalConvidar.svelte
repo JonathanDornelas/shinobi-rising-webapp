@@ -193,7 +193,7 @@
 				{:else}
 					<div class="flex flex-col items-center gap-2.5 py-4">
 						<span class="text-sm leading-5 font-semibold text-mut">Código curto para dizer em voz alta</span>
-						<span class="border-2 border-[#8B2E20] bg-b1 px-5 py-3.5 font-pixel text-5xl leading-none font-bold tracking-[0.12em] sombra-painel">{atual.codigo}</span>
+						<span class="border-2 border-[var(--vermelhao-lo)] bg-b1 px-5 py-3.5 font-pixel text-5xl leading-none font-bold tracking-[0.12em] sombra-painel">{atual.codigo}</span>
 						<button type="button" class="btn-jogo btn-contorno min-h-11 px-3.5 text-[13px]" onclick={() => copiarConvite(atual)}>COPIAR CÓDIGO</button>
 					</div>
 				{/if}

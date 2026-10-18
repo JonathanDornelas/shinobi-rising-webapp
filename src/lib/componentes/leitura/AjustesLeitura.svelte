@@ -30,7 +30,7 @@
 					<button
 						type="button"
 						class="t-num min-h-10 flex-1 text-[13px] {i < TAMANHOS_LEITURA.length - 1 ? 'border-r-2 border-frame' : ''}"
-						style:background={preferencias.leitura === t ? '#C44536' : 'transparent'}
+						style:background={preferencias.leitura === t ? 'var(--vermelhao)' : 'transparent'}
 						style:color={preferencias.leitura === t ? '#FFFFFF' : 'var(--fg)'}
 						aria-pressed={preferencias.leitura === t}
 						onclick={() => preferencias.definirLeitura(t)}>{t}</button

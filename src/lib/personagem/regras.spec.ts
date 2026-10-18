@@ -162,6 +162,17 @@ describe('revisão (cap. 6, Passo 12)', () => {
 		f.background = { id: 'proprio', escolha: null, proprio: { nome: 'Pescador', pericia: 'sobrevivencia', traco: 'Cresceu no mar' } };
 		expect(analisar(f, ctx, { jutsusD, loja }).dependencias).toEqual(['Background próprio "Pescador"']);
 	});
+	it('jutsu original da criação vai para a revisão junto com a ficha', () => {
+		const f = hana();
+		const id = '6f5e9451-0000-4000-8000-000000000001';
+		f.jutsus.D = [`jc-${id}`];
+		const original = (status: string): JutsuOpcao[] => [{ slug: `jc-${id}`, nome: 'Kaze no Ha', rank: 'D', elemento: null, criado: { id, status } }];
+		const bloqueios = (status: string) => analisar(f, ctx, { jutsusD, loja, jutsusCriados: original(status) }).verificacoes.filter((v) => v.nivel === 'bloqueio').map((v) => v.texto);
+		expect(bloqueios('rascunho')).toEqual(['Envie o jutsu "Kaze no Ha" para a revisão do Mestre antes da ficha']);
+		expect(bloqueios('aprovado')).toEqual([]);
+		expect(analisar(f, ctx, { jutsusD, loja, jutsusCriados: original('em_revisao') }).dependencias).toEqual(['Jutsu "Kaze no Ha"']);
+		expect(analisar(f, ctx, { jutsusD, loja }).verificacoes.some((v) => /não está mais disponível/.test(v.texto))).toBe(true);
+	});
 	it('normaliza fichas parciais', () => {
 		const f = normalizarFicha({ conceito: { nome: 'Ren' } } as Partial<FichaDados>);
 		expect(f.atributos.FOR).toBe(0);

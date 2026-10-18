@@ -18,7 +18,7 @@
 </script>
 
 {#if convite?.campanha}
-	<div class="flex items-center gap-2.5 border-2 border-[#8B2E20] bg-grena py-1.5 pr-3 pl-1.5 text-papel">
+	<div class="flex items-center gap-2.5 border-2 border-[var(--vermelhao-lo)] bg-grena py-1.5 pr-3 pl-1.5 text-papel">
 		<Icone id="acao/ic-acao-convidar" />
 		<span class="text-sm leading-5 font-medium">{convite.convidado_por ?? 'O Mestre'} convidou você para <i>{convite.campanha.nome}</i>. {acao}</span>
 	</div>

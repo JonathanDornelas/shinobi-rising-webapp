@@ -44,13 +44,13 @@
 	{#each itens as item (item.rotulo)}
 		{@const on = ativo(item.href)}
 		{#if item.href}
-			<a href={item.href} class="relative flex flex-col items-center justify-center gap-0.5 {on ? 'bg-[#16110F] text-b0fg shadow-[inset_0_3px_0_#C44536]' : 'text-b0mut'}" aria-current={on ? 'page' : undefined}>
+			<a href={item.href} class="relative flex flex-col items-center justify-center gap-0.5 {on ? 'bg-[#16110F] text-b0fg shadow-[inset_0_3px_0_var(--vermelhao)]' : 'text-b0mut'}" aria-current={on ? 'page' : undefined}>
 				<Icone id={item.icone!} />
 				<span class="font-pixel text-xs leading-none font-semibold tracking-[.04em]">{item.rotulo}</span>
 				{#if item.marca}<span class="absolute top-1.5 left-[calc(50%+8px)] h-4 min-w-4 bg-vermelhao px-[3px] text-center font-pixel text-xs leading-4 font-bold text-white" aria-label="{item.marca} não lidas">{item.marca}</span>{/if}
 			</a>
 		{:else}
-			<button type="button" class="flex flex-col items-center justify-center gap-0.5 {on ? 'bg-[#16110F] text-b0fg shadow-[inset_0_3px_0_#C44536]' : 'text-b0mut'}" onclick={() => paleta.abrir()}>
+			<button type="button" class="flex flex-col items-center justify-center gap-0.5 {on ? 'bg-[#16110F] text-b0fg shadow-[inset_0_3px_0_var(--vermelhao)]' : 'text-b0mut'}" onclick={() => paleta.abrir()}>
 				<span class="flex h-8 w-8 items-center justify-center"><Traco nome="buscar" /></span>
 				<span class="font-pixel text-xs leading-none font-semibold tracking-[.04em]">{item.rotulo}</span>
 			</button>

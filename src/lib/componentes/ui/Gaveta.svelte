@@ -21,7 +21,7 @@
 		aria-modal="true"
 		aria-label={rotulo}
 		tabindex="-1"
-		class="absolute top-0 bottom-0 left-0 flex w-[min(340px,88vw)] flex-col border-r-2 border-[#8B2E20] bg-b2 shadow-[8px_0_0_#000] outline-none"
+		class="absolute top-0 bottom-0 left-0 flex w-[min(340px,88vw)] flex-col border-r-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_0_0_#000] outline-none"
 		{@attach prenderFoco(aoFechar)}
 	>
 		<div class="flex items-center py-2 pr-2 pl-4">

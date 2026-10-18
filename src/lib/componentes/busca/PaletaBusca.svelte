@@ -111,7 +111,7 @@
 		aria-modal="true"
 		aria-label="Buscar"
 		tabindex="-1"
-		class="flex h-full w-full flex-col bg-b2 outline-none md:h-auto md:border-2 md:border-[#8B2E20] md:shadow-[8px_8px_0_#000] md:max-h-[calc(100vh-120px)] md:w-[640px] md:self-start"
+		class="flex h-full w-full flex-col bg-b2 outline-none md:h-auto md:border-2 md:border-[var(--vermelhao-lo)] md:shadow-[8px_8px_0_#000] md:max-h-[calc(100vh-120px)] md:w-[640px] md:self-start"
 		{@attach prenderFoco(fechar)}
 	>
 		<div class="flex h-[60px] flex-none items-center gap-1.5 border-b-2 border-b3 bg-b0 px-1.5 md:gap-3 md:bg-transparent md:px-3.5">
@@ -206,8 +206,8 @@
 							role="option"
 							aria-selected={i === selecao}
 							class="flex w-full items-start gap-2.5 border-b-2 border-b3 px-3.5 py-2 text-left md:border-b-0"
-							style:background={i === selecao ? '#5C1E15' : undefined}
-							style:box-shadow={i === selecao ? 'inset 4px 0 0 #C44536' : undefined}
+							style:background={i === selecao ? 'var(--grena)' : undefined}
+							style:box-shadow={i === selecao ? 'inset 4px 0 0 var(--vermelhao)' : undefined}
 							style:color={i === selecao ? '#F4E4D6' : undefined}
 							onmouseenter={() => (selecao = i)}
 							onclick={() => abrir(r.href)}
@@ -219,7 +219,7 @@
 								{#if t}<span class="line-clamp-2 text-[13px] leading-[19px] {i === selecao ? 'text-papel-2' : 'text-mut'}">{t.pre}<mark>{t.hit}</mark>{t.pos}</span>{/if}
 							</span>
 							{#if r.rank}<Icone id="rank/ic-rank-{r.rank.toLowerCase()}" alt="Rank {r.rank}" />{/if}
-							{#if i === selecao}<span class="kbd-jogo hidden self-center border-[#8B2E20] text-papel md:inline-block">ENTER</span>{/if}
+							{#if i === selecao}<span class="kbd-jogo hidden self-center border-[var(--vermelhao-lo)] text-papel md:inline-block">ENTER</span>{/if}
 						</button>
 					{/each}
 				{/each}

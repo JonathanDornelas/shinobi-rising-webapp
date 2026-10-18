@@ -67,7 +67,7 @@
 			{@const on = tipo === g.tipo}
 			<button
 				type="button"
-				class="flex min-h-11 items-center gap-2.5 border-b-2 border-b3 px-3.5 text-left text-sm leading-5 last:border-b-0 {on ? 'bg-grena font-semibold text-papel shadow-[inset_4px_0_0_#C44536]' : g.n ? 'font-medium hover:bg-b3' : 'font-medium text-mut'}"
+				class="flex min-h-11 items-center gap-2.5 border-b-2 border-b3 px-3.5 text-left text-sm leading-5 last:border-b-0 {on ? 'bg-grena font-semibold text-papel shadow-[inset_4px_0_0_var(--vermelhao)]' : g.n ? 'font-medium hover:bg-b3' : 'font-medium text-mut'}"
 				aria-pressed={on}
 				onclick={() => ((tipo = g.tipo), (pagina = 1))}
 			>
@@ -147,7 +147,7 @@
 						<button
 							type="button"
 							class="flex h-11 w-11 items-center justify-center border-l-2 border-frame"
-							style:background={n === pagina ? '#C44536' : undefined}
+							style:background={n === pagina ? 'var(--vermelhao)' : undefined}
 							style:color={n === pagina ? '#FFFFFF' : undefined}
 							aria-current={n === pagina ? 'page' : undefined}
 							onclick={() => ((pagina = n), scrollTo({ top: 0 }))}>{n}</button

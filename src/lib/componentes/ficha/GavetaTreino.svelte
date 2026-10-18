@@ -151,7 +151,7 @@
 </script>
 
 <div class="fixed inset-0 z-40 flex justify-end bg-[rgba(14,11,10,.78)]" role="presentation" onclick={(e) => e.target === e.currentTarget && aoFechar()}>
-	<div role="dialog" aria-modal="true" aria-label="Treino" tabindex="-1" class="flex h-full w-full max-w-[720px] flex-col border-l-2 border-[#8B2E20] bg-b2 shadow-[-8px_0_0_#000] outline-none" {@attach prenderFoco(aoFechar)}>
+	<div role="dialog" aria-modal="true" aria-label="Treino" tabindex="-1" class="flex h-full w-full max-w-[720px] flex-col border-l-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[-8px_0_0_#000] outline-none" {@attach prenderFoco(aoFechar)}>
 		<div class="flex items-center gap-2.5 bg-grena py-3 pr-3 pl-5 text-papel">
 			<Icone id="recurso/ic-recurso-pt" />
 			<h2 class="m-0 flex-1 font-mincho text-[22px] leading-7 font-bold">Treino · {f.dados.conceito.nome}</h2>
@@ -161,7 +161,7 @@
 			<span class="t-rotulo">PT</span>
 			<div class="flex h-[18px] flex-1 gap-0.5" aria-hidden="true">
 				{#each { length: Math.min(Math.max(pt, 1), 40) } as _, i (i)}
-					<div class="flex-1 border-2 border-ink" style:background={i < custo ? '#C44536' : i < pt ? 'var(--b1)' : 'var(--b3)'}></div>
+					<div class="flex-1 border-2 border-ink" style:background={i < custo ? 'var(--vermelhao)' : i < pt ? 'var(--b1)' : 'var(--b3)'}></div>
 				{/each}
 			</div>
 			<span class="t-num text-base" style:color={resta === 0 && custo ? 'var(--ok)' : undefined} aria-live="polite">{resta} / {pt}</span>
@@ -245,7 +245,7 @@
 				{#each SESSOES_TREINO as s (s.id)}
 					<label class="flex min-h-11 cursor-pointer items-center gap-2.5 border-2 bg-b1 px-2.5 {sessao === s.id ? 'border-vermelhao' : 'border-b3'}">
 						<input type="radio" name="sessao" value={s.id} bind:group={sessao} class="sr-only" />
-						<span class="h-[18px] w-[18px] flex-none rotate-45 border-2 border-ink" style:background={sessao === s.id ? '#C44536' : 'var(--b1)'} aria-hidden="true"></span>
+						<span class="h-[18px] w-[18px] flex-none rotate-45 border-2 border-ink" style:background={sessao === s.id ? 'var(--vermelhao)' : 'var(--b1)'} aria-hidden="true"></span>
 						<span class="flex flex-1 flex-col"><span class="text-[15px] font-medium">{s.nome}</span><span class="text-xs text-mut">{s.nota}</span></span>
 					</label>
 				{/each}

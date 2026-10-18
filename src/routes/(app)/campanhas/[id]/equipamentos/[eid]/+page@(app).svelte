@@ -209,7 +209,7 @@
 				<span class="font-pixel text-xs leading-none font-bold tracking-[0.08em] text-title">{medidor.rotulo}</span>
 				<div class="flex h-[18px] w-[220px] gap-0.5 max-sm:flex-1">
 					{#each Array.from({ length: medidor.max }, (_, i) => i) as i (i)}
-						<div class="flex-1 border-2 border-ink {i < medidor.limite ? '' : 'border-dashed'}" style:background={i < medidor.usados ? (i >= medidor.limite ? 'var(--err)' : medidor.usados === medidor.limite ? 'var(--ok)' : '#C44536') : i < medidor.limite ? 'var(--b3)' : 'transparent'}></div>
+						<div class="flex-1 border-2 border-ink {i < medidor.limite ? '' : 'border-dashed'}" style:background={i < medidor.usados ? (i >= medidor.limite ? 'var(--err)' : medidor.usados === medidor.limite ? 'var(--ok)' : 'var(--vermelhao)') : i < medidor.limite ? 'var(--b3)' : 'transparent'}></div>
 					{/each}
 				</div>
 				<span class="t-num text-[15px]" aria-live="polite" style:color={medidor.usados > medidor.limite ? 'var(--err)' : medidor.usados === medidor.limite ? 'var(--ok)' : undefined}>{medidor.usados} / {medidor.limite}</span>
@@ -288,7 +288,7 @@
 			{/if}
 
 			{#if revisando}
-				<section class="flex flex-wrap items-center gap-2 border-2 border-[#8B2E20] bg-b2 p-3.5 sombra-painel" aria-label="Decisão do Mestre">
+				<section class="flex flex-wrap items-center gap-2 border-2 border-[var(--vermelhao-lo)] bg-b2 p-3.5 sombra-painel" aria-label="Decisão do Mestre">
 					<span class="t-rotulo flex-1">Sua decisão · {bloqueios ? `${bloqueios} bloqueio${bloqueios > 1 ? 's' : ''}` : 'sem bloqueios'}</span>
 					<button type="button" class="btn-jogo btn-erro min-h-11" onclick={() => abrirDecisao('rejeitado')}>REJEITAR</button>
 					<button type="button" class="btn-jogo btn-secundario" onclick={() => abrirDecisao('ajustes')}>PEDIR AJUSTES</button>

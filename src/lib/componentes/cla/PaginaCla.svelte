@@ -22,7 +22,7 @@
 </div>
 
 <div class="flex items-center gap-3 border-b-2 border-ink bg-grena p-4 text-papel">
-	<span class="flex h-[72px] w-[72px] flex-none items-center justify-center border-2 border-[#8B2E20] bg-carvao"><Brasao kamon={k.kamon} cor={k.cor} tamanho={64} /></span>
+	<span class="flex h-[72px] w-[72px] flex-none items-center justify-center border-2 border-[var(--vermelhao-lo)] bg-carvao"><Brasao kamon={k.kamon} cor={k.cor} tamanho={64} /></span>
 	<span class="flex min-w-0 flex-col gap-0.5">
 		<span class="font-mincho text-[22px] leading-7 font-bold">Clã {k.nome.trim() || 'sem nome'}</span>
 		<span class="text-[13px] leading-[18px] text-[#E6D2BF] italic">{[k.significado.trim(), vila].filter(Boolean).join(' · ') || 'Significado · vila'}</span>
@@ -38,7 +38,7 @@
 		</div>
 		<span class="mt-1.5 font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">KEKKEI GENKAI</span>
 		{#if kkg}
-			<span class="chip self-start border-2 border-[#8B2E20] bg-grena text-[13px] font-semibold text-papel"><Icone id="kkg/ic-kkg-{d.kekkei.tipo ?? 'hibrido'}" />{kkg}</span>
+			<span class="chip self-start border-2 border-[var(--vermelhao-lo)] bg-grena text-[13px] font-semibold text-papel"><Icone id="kkg/ic-kkg-{d.kekkei.tipo ?? 'hibrido'}" />{kkg}</span>
 			<span class="text-[13px] leading-[19px]">{textoKkg(d)}</span>
 		{:else}
 			<span class="text-[13px] text-mut">Nenhum.</span>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	// C2 passo 1 / C7 Identidade: nome, premissa e capa.
-	import { CAPAS, type DadosCampanha, type ErrosCampanha } from '#lib/campanhas/dominio.ts';
+	import { CAPAS, urlCapa, type DadosCampanha, type ErrosCampanha } from '#lib/campanhas/dominio.ts';
 	import Campo from '../ui/Campo.svelte';
 
 	let { dados = $bindable(), erros = {} }: { dados: DadosCampanha; erros?: ErrosCampanha } = $props();
@@ -38,7 +38,7 @@
 				{@const on = dados.capa === capa.id}
 				<label class="relative cursor-pointer border-2 bg-b1 {on ? 'border-vermelhao' : 'border-b3 hover:border-mut'}">
 					<input type="radio" name="capa" value={capa.id} bind:group={dados.capa} class="sr-only" />
-					<img src="/covers/{capa.id}-256.png" alt="" class="aspect-[256/96] w-full object-cover [image-rendering:pixelated]" />
+					<img src={urlCapa(capa.id)} alt="" class="aspect-[256/96] w-full object-cover [image-rendering:pixelated]" />
 					<span class="flex min-h-9 items-center gap-1.5 px-2 text-[13px] font-semibold {on ? 'bg-grena text-papel' : ''}">{on ? '▸ ' : ''}{capa.nome}</span>
 				</label>
 			{/each}

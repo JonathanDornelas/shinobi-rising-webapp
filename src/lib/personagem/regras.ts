@@ -174,6 +174,8 @@ export interface ItemLoja {
 	conjunto?: number;
 	grupo: string;
 	icone: string;
+	/** Dano da arma (cap. 11), para a rolagem na ficha. */
+	dano?: string;
 }
 
 /** Jutsu disponível para escolha no passo 9. */
@@ -182,6 +184,8 @@ export interface JutsuOpcao {
 	nome: string;
 	rank: 'E' | 'D';
 	elemento: string | null;
+	/** Jutsu original criado para esta ficha (cap. 20): precisa ir para a revisão junto com ela. */
+	criado?: { id: string; status: string };
 }
 
 export type Nivel = 'ok' | 'aviso' | 'bloqueio';
@@ -445,7 +449,7 @@ export interface Analise {
 }
 
 /** Verificações da revisão (passo 12) e o estado de cada passo na navegação. */
-export function analisar(f: FichaDados, ctx: ContextoCampanha, opcoes: { jutsusD: JutsuOpcao[]; loja: ItemLoja[]; statusCla?: string | null }): Analise {
+export function analisar(f: FichaDados, ctx: ContextoCampanha, opcoes: { jutsusD: JutsuOpcao[]; loja: ItemLoja[]; statusCla?: string | null; jutsusCriados?: JutsuOpcao[] }): Analise {
 	const v: Verificacao[] = [];
 	const add = (nivel: Nivel, texto: string, passo: number) => v.push({ nivel, texto, passo, ref: `cap. 6, Passo ${passo}` });
 
@@ -523,9 +527,17 @@ export function analisar(f: FichaDados, ctx: ContextoCampanha, opcoes: { jutsusD
 	if (f.jutsus.D.length > JUTSUS_INICIAIS.D) add('bloqueio', 'Escolha só 1 jutsu Rank D', 9);
 	else if (!f.jutsus.D.length) add('aviso', 'Nenhum jutsu Rank D escolhido', 9);
 	else {
-		const d = opcoes.jutsusD.find((j) => j.slug === f.jutsus.D[0]);
+		const d = [...opcoes.jutsusD, ...(opcoes.jutsusCriados ?? [])].find((j) => j.slug === f.jutsus.D[0]);
 		if (d?.elemento && !els.includes(d.elemento)) add('bloqueio', `${d.nome} exige afinidade com ${d.elemento}`, 9);
 		else add('ok', 'Jutsu Rank D escolhido', 9);
+	}
+
+	// jutsus originais escolhidos na criação vão para a revisão do Mestre junto com a ficha
+	for (const slug of [...f.jutsus.E, ...f.jutsus.D].filter((s) => s.startsWith('jc-'))) {
+		const j = opcoes.jutsusCriados?.find((x) => x.slug === slug);
+		if (!j?.criado) add('bloqueio', 'Um jutsu original escolhido não está mais disponível (rascunho, rejeitado ou apagado)', 9);
+		else if (j.criado.status === 'em_revisao') dependencias.push(`Jutsu "${j.nome}"`);
+		else if (j.criado.status !== 'aprovado') add('bloqueio', `Envie o jutsu "${j.nome}" para a revisão do Mestre antes da ficha`, 9);
 	}
 
 	// 10 · Equipamento

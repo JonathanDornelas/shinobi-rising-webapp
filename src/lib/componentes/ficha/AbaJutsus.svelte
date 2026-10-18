@@ -4,7 +4,12 @@
 	import type { TipoJutsu } from '#lib/livro/tipos.ts';
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
 	import { page } from '$app/state';
+	import { NIVEIS_PROFICIENCIA } from '#lib/personagem/dados.ts';
+	import type { JutsuFicha } from '#lib/personagem/progressao.ts';
+	import { linhasPericia } from '#lib/personagem/regras.ts';
+	import { curaDoEfeito, danoDoEfeito, periciaDoAtaque, somar, teste, totalPericia } from '#lib/rolagens/expressoes.ts';
 	import Icone from '../ui/Icone.svelte';
+	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
 
 	let { f }: { f: FichaJogo } = $props();
 	const lista = $derived(f.calc.jutsus.map((s) => f.catalogo.jutsus.find((j) => j.slug === s)).filter((j) => !!j));
@@ -15,6 +20,22 @@
 	const ctrFino = $derived(f.calc.atributos.CTR >= 3);
 	const exausto = $derived(f.atual.fadiga >= 2);
 	const esgotado = $derived(f.atual.fadiga >= 3);
+	const linhas = $derived(linhasPericia(f.dados));
+
+	// rolagens do jutsu: ataque (1d20 + perícia do tipo + proficiência, cap. 4 e 9) e dano/cura lidos do efeito
+	function rolagens(j: JutsuFicha) {
+		const pericia = periciaDoAtaque(j.info);
+		const base = pericia ? totalPericia(linhas, pericia) : null;
+		const prof = f.calc.proficiencias.find((p) => p.tipo === 'jutsu' && p.alvo === j.slug);
+		const bonusProf = prof ? NIVEIS_PROFICIENCIA[prof.nivel - 1].bonus : 0;
+		const dano = danoDoEfeito(j.efeito);
+		const atributo = dano?.atributo as keyof typeof f.calc.atributos | null | undefined;
+		return {
+			ataque: base === null ? null : { expr: teste(base + bonusProf), rotulo: `${j.nome} · ataque (${pericia}${bonusProf ? ` + ${bonusProf} prof.` : ''})` },
+			dano: dano ? { expr: somar(dano.dados, atributo ? f.calc.atributos[atributo] : 0), rotulo: `${j.nome} · dano${atributo ? ` (${dano.dados} + ${atributo})` : ''}` } : null,
+			cura: curaDoEfeito(j.efeito)
+		};
+	}
 </script>
 
 <div class="flex flex-wrap items-center gap-2.5">
@@ -74,6 +95,19 @@
 						{/each}
 					</dl>
 					<p class="m-0 text-sm leading-[21px]"><b>Efeito.</b> {j!.efeito}</p>
+					{#if f.editavel}
+						{@const rr = rolagens(j!)}
+						{#if rr.ataque || rr.dano || rr.cura}
+							<div class="flex flex-wrap items-center gap-2">
+								{#if rr.ataque}<BotaoRolar texto="ATAQUE {rr.ataque.expr}" expressao={rr.ataque.expr} rotulo={rr.ataque.rotulo} personagem={f.id} d20 />{/if}
+								{#if rr.dano}
+									<BotaoRolar texto="DANO {rr.dano.expr}" expressao={rr.dano.expr} rotulo={rr.dano.rotulo} personagem={f.id} />
+									<BotaoRolar texto="CRÍTICO" expressao={rr.dano.expr} rotulo="{rr.dano.rotulo} · crítico" personagem={f.id} critico />
+								{/if}
+								{#if rr.cura}<BotaoRolar texto="CURA {rr.cura}" expressao={rr.cura} rotulo="{j!.nome} · cura" personagem={f.id} />{/if}
+							</div>
+						{/if}
+					{/if}
 					{#if c.notas.length}<p class="m-0 text-[13px] text-mut">Custo: {c.base} {c.unidade} base · {c.notas.join(' · ')}</p>{/if}
 				</div>
 			{/if}

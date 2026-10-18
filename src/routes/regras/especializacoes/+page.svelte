@@ -58,7 +58,7 @@
 		{#each esp.lista as e (e.slug)}
 			{@const atual = nivel[e.slug] ?? 1}
 			{@const beneficio = e.niveis.find((n) => n.nivel === atual)}
-			<article id={e.slug} class="sombra-painel flex scroll-mt-4 flex-col gap-2 border-2 bg-b2 p-3" style:border-color={e.requisito ? '#8B2E20' : 'var(--frame)'}>
+			<article id={e.slug} class="sombra-painel flex scroll-mt-4 flex-col gap-2 border-2 bg-b2 p-3" style:border-color={e.requisito ? 'var(--vermelhao-lo)' : 'var(--frame)'}>
 				<div class="flex items-center gap-2.5"><Icone id={e.icone} /><h3 class="m-0 font-mincho text-base leading-[22px] font-bold">{e.nome}</h3></div>
 				<div class="flex gap-[3px]" role="tablist" aria-label="Níveis de {e.nome}">
 					{#each e.niveis as n (n.nivel)}
@@ -67,7 +67,7 @@
 							role="tab"
 							aria-selected={n.nivel === atual}
 							class="t-num flex-1 py-[5px] text-xs"
-							style:background={n.nivel === atual ? '#C44536' : 'var(--b3)'}
+							style:background={n.nivel === atual ? 'var(--vermelhao)' : 'var(--b3)'}
 							style:color={n.nivel === atual ? '#FFFFFF' : 'var(--fg)'}
 							onclick={() => (nivel[e.slug] = n.nivel)}>NV {n.nivel}</button
 						>

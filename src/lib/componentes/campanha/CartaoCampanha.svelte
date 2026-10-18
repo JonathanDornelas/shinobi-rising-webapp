@@ -1,6 +1,6 @@
 <script lang="ts">
 	// CMP-19 · Card de campanha (C1): capa com badge de papel, nome, era, grupo e última atividade.
-	import { nomeEra, PAPEL } from '#lib/campanhas/dominio.ts';
+	import { nomeEra, PAPEL, urlCapa } from '#lib/campanhas/dominio.ts';
 	import type { ResumoCampanha } from '#lib/campanhas/servidor.ts';
 	import { dataCurta, tempoRelativo } from '#lib/formatar.ts';
 	import Icone from '../ui/Icone.svelte';
@@ -24,10 +24,10 @@
 	aria-label="{c.nome}, {PAPEL[c.papel].nome}{arquivada ? ', arquivada' : ''}"
 >
 	<div class="relative aspect-[256/96] overflow-hidden border-b-2 border-ink">
-		<img src="/covers/{c.capa}-256.png" alt="" class="h-full w-full object-cover [image-rendering:pixelated]" loading="lazy" />
+		<img src={urlCapa(c.capa)} alt="" class="h-full w-full object-cover [image-rendering:pixelated]" loading="lazy" />
 		<span
 			class="absolute top-2.5 left-2.5 inline-flex h-9 items-center gap-1 border-2 pr-2.5 text-[13px] leading-none font-semibold {c.papel === 'mestre'
-				? 'border-[#8B2E20] bg-grena text-papel'
+				? 'border-[var(--vermelhao-lo)] bg-grena text-papel'
 				: 'border-mut bg-b2 text-fg'}"
 		>
 			<Icone id={PAPEL[c.papel].icone} />{PAPEL[c.papel].nome}

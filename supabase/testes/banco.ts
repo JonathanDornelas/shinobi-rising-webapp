@@ -23,6 +23,12 @@ create function auth.jwt() returns jsonb language sql stable as $$
 	select coalesce(nullif(current_setting('request.jwt.claims', true), ''), '{}')::jsonb
 $$;
 grant execute on function auth.uid(), auth.jwt() to anon, authenticated;
+create schema storage;
+grant usage on schema storage to anon, authenticated;
+create table storage.buckets (id text primary key, name text, public boolean, file_size_limit bigint, allowed_mime_types text[]);
+create table storage.objects (id uuid primary key default gen_random_uuid(), bucket_id text references storage.buckets, name text, owner uuid default auth.uid());
+alter table storage.objects enable row level security;
+grant select, insert, delete on storage.objects to authenticated;
 `;
 
 export interface Usuario {

@@ -4,8 +4,10 @@
 	import type { Criador } from '#lib/personagem/criador.svelte.ts';
 	import Campo from '../ui/Campo.svelte';
 	import Retrato from '../ui/Retrato.svelte';
+	import EnviarRetrato from './EnviarRetrato.svelte';
 
-	let { c }: { c: Criador } = $props();
+	// a foto vale em qualquer status (não muda regras): o dono troca mesmo com a ficha em revisão ou aprovada
+	let { c, ficha, retrato = null, podeFoto = false }: { c: Criador; ficha?: string; retrato?: string | null; podeFoto?: boolean } = $props();
 	const f = $derived(c.ficha.conceito);
 	const EXEMPLOS = ['a herdeira do clã que quer ser reconhecida', 'o órfão que sonha ser Hokage', 'o renegado que perdeu sua vila'];
 </script>
@@ -40,8 +42,11 @@
 	</div>
 	<div class="flex flex-col gap-2">
 		<span class="text-sm leading-5 font-semibold">Retrato</span>
-		<Retrato nome={f.nome || '?'} tamanho={128} />
-		<span class="text-xs leading-4 text-mut">Os retratos (avatar-01…24) chegam em breve; por enquanto aparecem as iniciais.</span>
+		<Retrato nome={f.nome || '?'} foto={retrato} tamanho={128} />
+		{#if podeFoto && ficha}
+			<EnviarRetrato {ficha} atual={retrato} />
+			<span class="text-xs leading-4 text-mut">PNG, JPG ou WEBP. Você enquadra num quadrado antes de enviar.</span>
+		{:else if !retrato}<span class="text-xs leading-4 text-mut">Sem foto: aparecem as iniciais.</span>{/if}
 		<div class="mt-2 border-2 border-dashed border-b3 bg-b2 p-2 text-[13px] leading-[18px] font-semibold">
 			Nível 1 · {rankSugerido(1)}<br /><span class="font-normal text-mut">
 				{#if c.ctx.nivelInicial > 1}A campanha começa no nível {c.ctx.nivelInicial}: depois da aprovação, a ficha sobe de nível pelo fluxo de Subir de nível.{:else}definido pela campanha{/if}

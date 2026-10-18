@@ -27,7 +27,7 @@
 				{#if cla.vila.icone}<Icone id={cla.vila.icone} />{/if}{cla.vila.nome}
 			</span>
 			{#if cla.kkg}
-				<span class="chip border-[#8B2E20] bg-grena text-xs text-papel"><Icone id={cla.kkg.icone} />{cla.kkg.nome} · {cla.kkg.tipo}</span>
+				<span class="chip border-[var(--vermelhao-lo)] bg-grena text-xs text-papel"><Icone id={cla.kkg.icone} />{cla.kkg.nome} · {cla.kkg.tipo}</span>
 			{:else}
 				<span class="chip sem-icone border-dashed text-xs text-mut">Sem KKG</span>
 			{/if}

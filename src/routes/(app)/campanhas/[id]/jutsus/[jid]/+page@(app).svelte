@@ -425,7 +425,7 @@
 				{/if}
 
 				{#if revisando}
-					<section class="mt-2 flex flex-wrap items-center gap-2 border-2 border-[#8B2E20] bg-b2 p-3.5 sombra-painel" aria-label="Decisão do Mestre">
+					<section class="mt-2 flex flex-wrap items-center gap-2 border-2 border-[var(--vermelhao-lo)] bg-b2 p-3.5 sombra-painel" aria-label="Decisão do Mestre">
 						<span class="t-rotulo flex-1">Sua decisão · {bloqueios ? `${bloqueios} bloqueio${bloqueios > 1 ? 's' : ''}` : 'sem bloqueios'}</span>
 						<button type="button" class="btn-jogo btn-erro min-h-11" onclick={() => abrirDecisao('rejeitado')}>REJEITAR</button>
 						<button type="button" class="btn-jogo btn-secundario" onclick={() => abrirDecisao('ajustes')}>PEDIR AJUSTES</button>
@@ -438,7 +438,7 @@
 			</main>
 
 			{#if !habilidade}
-				<div class="sticky bottom-[128px] z-10 flex min-h-[52px] items-center gap-2 border-t-2 border-[#8B2E20] bg-grena pr-2 pl-3.5 text-papel md:bottom-[68px] lg:hidden">
+				<div class="sticky bottom-[128px] z-10 flex min-h-[52px] items-center gap-2 border-t-2 border-[var(--vermelhao-lo)] bg-grena pr-2 pl-3.5 text-papel md:bottom-[68px] lg:hidden">
 					<span class="flex-1 font-pixel text-sm leading-none font-bold" aria-live="polite">PJ {c.calc.pj} · RANK {c.calc.rank} · {c.calc.custo.texto}</span>
 					<button type="button" class="flex min-h-11 items-center border-2 border-vermelhao px-2.5 font-pixel text-xs font-bold" aria-expanded={verCard} onclick={() => (verCard = !verCard)}>{verCard ? 'FECHAR' : 'VER CARD'}</button>
 				</div>
@@ -455,10 +455,10 @@
 		<aside class="flex flex-col gap-3.5 border-l-2 border-b3 bg-b2 p-4 {verCard ? 'max-lg:fixed max-lg:inset-x-0 max-lg:top-14 max-lg:bottom-[180px] max-lg:z-20 max-lg:overflow-y-auto' : 'max-lg:hidden'}" aria-label="Prévia">
 			<span class="font-pixel text-[13px] leading-none font-bold tracking-[0.1em] text-title">PRÉVIA</span>
 			{#if habilidade}
-				<article class="border-2 border-[#8B2E20] bg-b1">
+				<article class="border-2 border-[var(--vermelhao-lo)] bg-b1">
 					<header class="flex items-center gap-2 bg-grena px-3.5 py-3">
 						<span class="flex flex-1 flex-col"><span class="font-mincho text-lg leading-6 font-bold text-papel">{h.nome.trim() || 'Nome da habilidade'}</span><span class="text-[13px] leading-[18px] text-papel-2 italic">Habilidade{h.traducao ? ` · ${h.traducao}` : ''}</span></span>
-						<span class="border-2 border-[#8B2E20] px-2 py-1.5 font-pixel text-xs leading-none font-bold text-papel">HABILIDADE</span>
+						<span class="border-2 border-[var(--vermelhao-lo)] px-2 py-1.5 font-pixel text-xs leading-none font-bold text-papel">HABILIDADE</span>
 					</header>
 					<div class="flex flex-col gap-2 px-3.5 py-3 text-sm leading-[21px]">
 						{#if h.descricao.trim()}<p class="m-0">{h.descricao.trim()}</p>{/if}

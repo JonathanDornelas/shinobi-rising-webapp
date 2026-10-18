@@ -156,7 +156,7 @@
 					{@const atual = passo === i}
 					{@const feito = i < passo}
 					<li>
-						<button type="button" aria-current={atual ? 'step' : undefined} class="flex min-h-12 w-full items-center gap-2.5 px-3.5 text-left {atual ? 'bg-grena text-papel shadow-[inset_4px_0_0_#C44536]' : 'text-fg hover:bg-b3'}" onclick={() => (passo = i)}>
+						<button type="button" aria-current={atual ? 'step' : undefined} class="flex min-h-12 w-full items-center gap-2.5 px-3.5 text-left {atual ? 'bg-grena text-papel shadow-[inset_4px_0_0_var(--vermelhao)]' : 'text-fg hover:bg-b3'}" onclick={() => (passo = i)}>
 							<span class="t-num flex h-7 w-7 items-center justify-center border-2 text-[13px] {atual ? 'border-ink bg-vermelhao text-white' : feito ? 'border-ink bg-ok text-okfg' : 'border-b3 text-mut'}">{feito ? '✓' : i + 1}</span>
 							<span class="text-[15px] leading-5 font-semibold">{NOME_PASSO_NIVEL[s]}</span>
 						</button>
@@ -193,7 +193,7 @@
 						{#each ATRIBUTOS as a (a.id)}
 							{@const livre = atributosOk.includes(a.id)}
 							{@const on = atributo === a.id}
-							<button type="button" role="radio" aria-checked={on} disabled={!livre} title={livre ? undefined : 'No limite atual'} class="relative flex flex-col gap-1.5 border-2 bg-b2 p-3 text-left disabled:opacity-50 {on ? 'border-vermelhao shadow-[4px_4px_0_#8B2E20]' : 'border-frame hover:border-mut'}" onclick={() => (atributo = a.id)}>
+							<button type="button" role="radio" aria-checked={on} disabled={!livre} title={livre ? undefined : 'No limite atual'} class="relative flex flex-col gap-1.5 border-2 bg-b2 p-3 text-left disabled:opacity-50 {on ? 'border-vermelhao shadow-[4px_4px_0_var(--vermelhao-lo)]' : 'border-frame hover:border-mut'}" onclick={() => (atributo = a.id)}>
 								<Icone id="atributo/ic-atributo-{a.id.toLowerCase()}" />
 								<span class="font-pixel text-sm font-bold">{a.id} <span class="font-sans text-xs font-normal text-mut">{a.nome}</span></span>
 								<span class="t-num text-xl">{sinal(fAntes.atributos[a.id])} → <span class="text-ok">{sinal(fAntes.atributos[a.id] + 1)}</span></span>
@@ -217,7 +217,7 @@
 					<div role="radiogroup" aria-label="Especialização" class="grid grid-cols-2 gap-2.5 md:grid-cols-3 xl:grid-cols-4">
 						{#each espsDisponiveis as e (e.id)}
 							{@const on = especializacao === e.id}
-							<button type="button" role="radio" aria-checked={on} class="relative flex flex-col gap-1.5 border-2 bg-b2 p-2.5 text-left {on ? 'border-vermelhao shadow-[4px_4px_0_#8B2E20]' : 'border-frame hover:border-mut'}" onclick={() => ((especializacao = e.id), (espElemento = null))}>
+							<button type="button" role="radio" aria-checked={on} class="relative flex flex-col gap-1.5 border-2 bg-b2 p-2.5 text-left {on ? 'border-vermelhao shadow-[4px_4px_0_var(--vermelhao-lo)]' : 'border-frame hover:border-mut'}" onclick={() => ((especializacao = e.id), (espElemento = null))}>
 								<Icone id={e.icone} /><span class="font-mincho text-sm font-bold">{e.nome}</span><span class="text-xs leading-4 text-mut">{e.niveis[0]?.texto}</span>
 							</button>
 						{/each}
@@ -225,7 +225,7 @@
 					{#if especializacao && ESPECIALIZACOES[especializacao]?.escolheElemento}
 						<div class="flex flex-wrap gap-2" role="radiogroup" aria-label="Elemento da especialização">
 							{#each ELEMENTOS as e (e.id)}
-								<button type="button" role="radio" aria-checked={espElemento === e.id} class="inline-flex h-11 items-center gap-1 border-2 pr-3 pl-1 text-sm font-semibold" style:border-color={espElemento === e.id ? '#C44536' : 'var(--b3)'} onclick={() => (espElemento = e.id)}>
+								<button type="button" role="radio" aria-checked={espElemento === e.id} class="inline-flex h-11 items-center gap-1 border-2 pr-3 pl-1 text-sm font-semibold" style:border-color={espElemento === e.id ? 'var(--vermelhao)' : 'var(--b3)'} onclick={() => (espElemento = e.id)}>
 									<Icone id="elemento/ic-elemento-{e.id}" />{e.nome}
 								</button>
 							{/each}
@@ -246,7 +246,7 @@
 								disabled={meu || ptDepois < plano.elemento.pt}
 								class="flex min-h-[52px] items-center gap-1.5 border-2 pr-4 pl-1.5 text-[15px] font-semibold disabled:opacity-50"
 								style:background="color-mix(in srgb, {e.cor} 12%, transparent)"
-								style:border-color={on ? '#C44536' : `color-mix(in srgb, ${e.cor} 55%, transparent)`}
+								style:border-color={on ? 'var(--vermelhao)' : `color-mix(in srgb, ${e.cor} 55%, transparent)`}
 								onclick={() => (elemento = on ? null : e.id)}
 							>
 								<Icone id="elemento/ic-elemento-{e.id}" />{e.nome}<span class="text-xs font-semibold text-mut">{meu ? 'já tem' : on ? `−${plano.elemento.pt} PT` : ''}</span>
@@ -336,7 +336,7 @@
 
 {#if celebrar}
 	<div class="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(14,11,10,.86)] px-4" role="dialog" aria-modal="true" aria-label="Nível alcançado">
-		<div class="flex w-full max-w-[560px] flex-col items-center gap-3 border-2 border-[#BF9000] bg-b2 p-8 text-center shadow-[8px_8px_0_#5C4600] outline-2 outline-offset-[6px] outline-[#8B2E20]">
+		<div class="flex w-full max-w-[560px] flex-col items-center gap-3 border-2 border-[#BF9000] bg-b2 p-8 text-center shadow-[8px_8px_0_#5C4600] outline-2 outline-offset-[6px] outline-[var(--vermelhao-lo)]">
 			<Icone id="acao/ic-acao-subir-nivel" tamanho={96} class="subir-nivel" />
 			<span class="font-pixel text-[13px] leading-none font-bold tracking-[0.14em] text-title">NÍVEL ALCANÇADO</span>
 			<span class="t-num text-[64px] leading-none">{novo}</span>

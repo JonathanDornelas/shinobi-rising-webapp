@@ -86,7 +86,7 @@
 			{#if dropdownAberto}
 				<div class="camada absolute top-[52px] right-0 z-30 flex max-h-[60vh] w-[300px] flex-col overflow-y-auto py-1.5">
 					{#each secoes as s (s.id)}
-						<a href="#{s.id}" onclick={() => (dropdownAberto = false)} class="flex min-h-11 items-center px-3.5 text-sm hover:bg-b3 {s.id === secaoAtiva?.id ? 'font-semibold shadow-[inset_3px_0_0_#C44536]' : ''}">{s.titulo}</a>
+						<a href="#{s.id}" onclick={() => (dropdownAberto = false)} class="flex min-h-11 items-center px-3.5 text-sm hover:bg-b3 {s.id === secaoAtiva?.id ? 'font-semibold shadow-[inset_3px_0_0_var(--vermelhao)]' : ''}">{s.titulo}</a>
 					{/each}
 				</div>
 			{/if}
@@ -164,7 +164,7 @@
 				<span class="t-rotulo-sm pb-2.5 pl-3.5 text-title">Nesta página</span>
 				{#each secoes as s (s.id)}
 					{@const on = s.id === secaoAtiva?.id}
-					<a href="#{s.id}" class="-ml-0.5 flex min-h-8 items-center py-1 pl-3 text-[13px] leading-[18px] {on ? 'font-semibold text-fg shadow-[inset_2px_0_0_#C44536]' : 'text-mut hover:text-fg'}" aria-current={on ? 'location' : undefined}
+					<a href="#{s.id}" class="-ml-0.5 flex min-h-8 items-center py-1 pl-3 text-[13px] leading-[18px] {on ? 'font-semibold text-fg shadow-[inset_2px_0_0_var(--vermelhao)]' : 'text-mut hover:text-fg'}" aria-current={on ? 'location' : undefined}
 						>{s.titulo}</a
 					>
 				{/each}
@@ -203,7 +203,7 @@
 			<a
 				href="#{s.id}"
 				onclick={() => (nestaPaginaAberta = false)}
-				class="flex min-h-12 items-center border-t-2 border-b3 px-4 text-[15px] leading-5 {on ? 'font-semibold shadow-[inset_3px_0_0_#C44536]' : 'text-mut'}">{s.titulo}</a
+				class="flex min-h-12 items-center border-t-2 border-b3 px-4 text-[15px] leading-5 {on ? 'font-semibold shadow-[inset_3px_0_0_var(--vermelhao)]' : 'text-mut'}">{s.titulo}</a
 			>
 		{/each}
 	</Folha>

@@ -48,7 +48,7 @@
 				<div class="flex flex-col items-center self-stretch">
 					<span
 						class="t-num mt-2 flex h-9 w-9 flex-none items-center justify-center border-2 border-ink text-base"
-						style:background={rank ? 'var(--acc)' : '#C44536'}
+						style:background={rank ? 'var(--acc)' : 'var(--vermelhao)'}
 						style:color={rank ? 'var(--accfg)' : '#FFFFFF'}
 						aria-label="Nível {m.nivel}">{m.nivel}</span
 					>

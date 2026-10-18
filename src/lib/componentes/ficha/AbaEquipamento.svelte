@@ -2,8 +2,11 @@
 	// P3 · Equipamento: inventário por grupo, carga (cap. 11), ryo, comprar (debita) e adicionar (espólio, não debita).
 	import { numero } from '#lib/formatar.ts';
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
-	import type { ItemLoja } from '#lib/personagem/regras.ts';
+	import type { ItemInventario } from '#lib/personagem/progressao.ts';
+	import { linhasPericia, type ItemLoja } from '#lib/personagem/regras.ts';
+	import { somar, teste } from '#lib/rolagens/expressoes.ts';
 	import Icone from '../ui/Icone.svelte';
+	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
 	import Modal from '../ui/Modal.svelte';
 
 	let { f }: { f: FichaJogo } = $props();
@@ -23,6 +26,18 @@
 	let qtds = $state<Record<string, number>>({});
 	const itens = $derived((f.catalogo.loja as ItemLoja[]).filter((i) => i.nome.toLowerCase().includes(filtro.trim().toLowerCase())));
 	let ryoDelta = $state<number | null>(null);
+
+	// arma: ataque de Bukijutsu (FOR corpo a corpo, AGI à distância, cap. 3) e o dano da arma (+1 com proficiência)
+	const buki = $derived(linhasPericia(f.dados).find((p) => p.id === 'bukijutsu'));
+	function arma(i: ItemInventario) {
+		const l = (f.catalogo.loja as ItemLoja[]).find((x) => x.id === i.id || x.nome === i.nome);
+		if (!l?.dano || !buki) return null;
+		const distancia = /Distância/.test(l.grupo) && buki.distancia ? buki.distancia.total : null;
+		const prof = f.calc.proficiencias.some((p) => p.tipo === 'arma' && p.alvo === i.nome) ? 1 : 0;
+		const limpo = l.dano.replace(/\s+/g, '');
+		const dados = /^\d+d\d+([+-]\d+)?$/.test(limpo) ? limpo : null;
+		return { ataque: teste(distancia ?? buki.total), dano: dados ? somar(dados, prof) : null };
+	}
 </script>
 
 <div class="grid items-start gap-5 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
@@ -43,6 +58,15 @@
 								<span class="flex min-w-0 flex-col gap-0.5">
 									<span class="text-sm leading-5 font-semibold">{i.nome}</span>
 									{#if i.nota}<span class="text-xs leading-4 text-mut">{i.nota}</span>{/if}
+									{#if f.editavel && g.id === 'Armas'}
+										{@const a = arma(i)}
+										{#if a}
+											<span class="flex flex-wrap gap-1.5 pb-1">
+												<BotaoRolar texto="ATAQUE {a.ataque}" expressao={a.ataque} rotulo="{i.nome} · ataque" personagem={f.id} d20 />
+												{#if a.dano}<BotaoRolar texto="DANO {a.dano}" expressao={a.dano} rotulo="{i.nome} · dano" personagem={f.id} /><BotaoRolar texto="CRÍTICO" expressao={a.dano} rotulo="{i.nome} · dano crítico" personagem={f.id} critico />{/if}
+											</span>
+										{/if}
+									{/if}
 								</span>
 								<span class="flex items-center gap-1">
 									{#if f.editavel}<button type="button" class="btn-icone h-8 w-8 font-pixel" aria-label="Usar ou descartar 1 {i.nome}" onclick={() => f.alterarQtd(i.id, -1)}>−</button>{/if}

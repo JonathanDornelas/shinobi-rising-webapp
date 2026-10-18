@@ -8,6 +8,7 @@
 	import PassoBackground from '#lib/componentes/personagem/PassoBackground.svelte';
 	import PassoCla from '#lib/componentes/personagem/PassoCla.svelte';
 	import PassoConceito from '#lib/componentes/personagem/PassoConceito.svelte';
+	import ExcluirFicha from '#lib/componentes/personagem/ExcluirFicha.svelte';
 	import PassoEquipamento from '#lib/componentes/personagem/PassoEquipamento.svelte';
 	import PassoEspecializacao from '#lib/componentes/personagem/PassoEspecializacao.svelte';
 	import PassoJutsus from '#lib/componentes/personagem/PassoJutsus.svelte';
@@ -69,10 +70,14 @@
 		c.usarClaCriado(c.ficha.cla.id);
 		c.ficha.cla.escolha = escolha;
 	}
+	// volta do criador de jutsus (passo 9) com ?passo=
+	const passoDaVolta = Number(page.url.searchParams.get('passo'));
+	if (c.editavel && !claDaVolta && Number.isInteger(passoDaVolta) && passoDaVolta >= 1 && passoDaVolta <= 12) c.passo = passoDaVolta;
 	/** O clã mudou ao abrir (volta do K2 ou regras atualizadas): salva já, sem esperar outra edição. */
 	const mudouAoAbrir = JSON.stringify(c.ficha.cla) !== claAntes;
 	// svelte-ignore state_referenced_locally
 	let mensagem = $state(p0.mensagem ?? '');
+	let excluindo = $state(false);
 	const status = $derived(data.personagem.status as StatusFicha);
 	const revisando = $derived(data.papel === 'mestre' && !data.dono && status === 'em_revisao');
 
@@ -219,6 +224,9 @@
 			<span class="inline-flex h-9 items-center gap-0.5 border-2 border-ink pr-2 text-xs leading-none font-semibold {STATUS[status].classe}"><Icone id={STATUS[status].icone} />{STATUS[status].rotulo}</span>
 		{/if}
 		<span class="flex-1"></span>
+		{#if (data.dono || data.papel === 'mestre') && !k.arquivada_em}
+			<button type="button" class="btn-jogo btn-fantasma text-[13px] text-err" onclick={() => (excluindo = true)}>EXCLUIR</button>
+		{/if}
 		{#if data.editavel}
 			<button type="button" class="btn-jogo btn-fantasma text-[13px]" onclick={salvarESair}>SALVAR E SAIR</button>
 		{:else}
@@ -274,7 +282,7 @@
 						<button
 							type="button"
 							aria-current={atual ? 'step' : undefined}
-							class="flex min-h-11 w-full items-center gap-2.5 px-3.5 text-left {atual ? 'bg-grena text-papel shadow-[inset_4px_0_0_#C44536]' : 'text-fg hover:bg-b3'}"
+							class="flex min-h-11 w-full items-center gap-2.5 px-3.5 text-left {atual ? 'bg-grena text-papel shadow-[inset_4px_0_0_var(--vermelhao)]' : 'text-fg hover:bg-b3'}"
 							onclick={() => ir(i + 1)}
 						>
 							<span class="t-num flex h-7 w-7 flex-none items-center justify-center border-2 text-[13px] {atual ? 'border-ink bg-vermelhao text-white' : e.classe}">{atual ? i + 1 : e.marca || i + 1}</span>
@@ -313,7 +321,7 @@
 				{/if}
 				{#if c.aviso}<Alerta tipo="info"><span aria-live="polite">{c.aviso}</span></Alerta>{/if}
 
-				{#if c.passo === 1}<PassoConceito {c} />
+				{#if c.passo === 1}<PassoConceito {c} ficha={data.personagem.id} retrato={data.personagem.retrato} podeFoto={data.dono && !data.campanha.arquivada_em} />
 				{:else if c.passo === 2}<PassoAtributos {c} />
 				{:else if c.passo === 3}<PassoVila {c} />
 				{:else if c.passo === 4}<PassoCla {c} campanhaId={k.id} fichaId={p0.id} eu={data.usuario?.id ?? ''} irPara={salvarEIr} />
@@ -327,7 +335,7 @@
 				{:else}<PassoRevisao {c} bind:mensagem leitura={!data.editavel} />{/if}
 
 				{#if revisando}
-					<section class="mt-2 flex flex-wrap items-center gap-2 border-2 border-[#8B2E20] bg-b2 p-3.5 sombra-painel" aria-label="Decisão do Mestre">
+					<section class="mt-2 flex flex-wrap items-center gap-2 border-2 border-[var(--vermelhao-lo)] bg-b2 p-3.5 sombra-painel" aria-label="Decisão do Mestre">
 						<span class="t-rotulo flex-1">Sua decisão · {c.analise.bloqueios ? `${c.analise.bloqueios} bloqueio${c.analise.bloqueios > 1 ? 's' : ''} nas verificações` : 'sem bloqueios'}</span>
 						<button type="button" class="btn-jogo btn-erro min-h-11" onclick={() => abrirDecisao('rejeitada')}>REJEITAR</button>
 						<button type="button" class="btn-jogo btn-secundario" onclick={() => abrirDecisao('ajustes')}>PEDIR AJUSTES</button>
@@ -337,7 +345,7 @@
 			</main>
 
 			<!-- mobile: orçamento do passo -->
-			<div class="sticky bottom-[128px] z-10 flex min-h-12 items-center gap-2 border-t-2 border-[#8B2E20] bg-grena pr-2 pl-3.5 text-papel md:hidden">
+			<div class="sticky bottom-[128px] z-10 flex min-h-12 items-center gap-2 border-t-2 border-[var(--vermelhao-lo)] bg-grena pr-2 pl-3.5 text-papel md:hidden">
 				<span class="flex-1 font-pixel text-sm leading-none font-bold" aria-live="polite">{orcamentoMobile}</span>
 				<button type="button" class="flex min-h-10 items-center border-2 border-vermelhao px-2.5 font-pixel text-xs font-bold" onclick={() => ir(12)}>VER REVISÃO</button>
 			</div>
@@ -428,3 +436,5 @@
 		</form>
 	</Modal>
 {/if}
+
+{#if excluindo}<ExcluirFicha ficha={{ id: data.personagem.id, nome: c.ficha.conceito.nome || data.personagem.nome, retrato: data.personagem.retrato, campanha_id: k.id }} deOutro={!data.dono} aoFechar={() => (excluindo = false)} />{/if}

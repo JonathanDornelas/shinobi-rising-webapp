@@ -3,7 +3,7 @@ import { clas, equipamentos, especializacoes, jutsus } from '#lib/livro/dados.se
 import type { Bloco, Trecho } from '#lib/livro/tipos.ts';
 import type { JutsuCatalogo } from '#lib/clas/criador.svelte.ts';
 import { claParaFicha, slugCarta, type ClaDados } from '#lib/clas/regras.ts';
-import { paraJutsuLivro } from '#lib/jutsus/regras.ts';
+import { normalizarJutsu, paraJutsuLivro, type JutsuDados } from '#lib/jutsus/regras.ts';
 import type { JutsuCriadoFicha } from '#lib/jutsus/servidor.ts';
 import { slugJutsuCriado } from '#lib/jutsus/status.ts';
 import { CLAS, ESPECIALIZACOES, JUTSUS_ACADEMIA, PESOS } from './dados.ts';
@@ -20,6 +20,18 @@ export interface JutsuResumo extends JutsuOpcao {
 	tipo: string;
 	custo: string;
 	efeito: string;
+}
+
+/** Jutsus originais da ficha (rascunho, em revisão ou aprovados) que servem como escolha inicial de Rank E ou D. */
+export function jutsusCriadosDaCriacao(linhas: { id: string; status: string; dados: unknown; anterior_id: string | null }[]): JutsuResumo[] {
+	const substituidos = new Set(linhas.map((j) => j.anterior_id).filter(Boolean));
+	return linhas
+		.filter((j) => !substituidos.has(j.id) && j.status !== 'rejeitado')
+		.flatMap((j) => {
+			const l = paraJutsuLivro(slugJutsuCriado(j.id), normalizarJutsu(j.dados as Partial<JutsuDados>), 'Criação própria');
+			if (l.rank !== 'E' && l.rank !== 'D') return [];
+			return [{ slug: l.slug, nome: l.nome, rank: l.rank, elemento: l.elemento, tipo: l.tipo, custo: l.custo, efeito: texto(l.efeito).slice(0, 180), criado: { id: j.id, status: j.status } }];
+		});
 }
 
 function jutsuResumo(slug: string): JutsuResumo | null {
@@ -81,7 +93,8 @@ export function catalogoCriacao(clasPermitidos: string[]) {
 			peso: peso(a.peso),
 			conjunto: CONJUNTO_10.includes(a.slug) ? 10 : undefined,
 			grupo: `Armas · ${c.titulo}`,
-			icone: a.icone ?? c.icone
+			icone: a.icone ?? c.icone,
+			dano: a.dano
 		}))
 	);
 

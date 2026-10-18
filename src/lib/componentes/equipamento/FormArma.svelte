@@ -46,7 +46,7 @@
 	<div class="grid grid-cols-2 gap-2 lg:grid-cols-5" role="radiogroup" aria-label="Qualidade">
 		{#each QUALIDADES as q (q.id)}
 			{@const on = d.qualidade === q.id}
-			<button type="button" role="radio" aria-checked={on} disabled={ro} class="flex flex-col gap-1.5 border-2 p-2.5 text-left {on ? 'border-vermelhao bg-grena text-papel shadow-[4px_4px_0_#8B2E20]' : 'border-frame bg-b2'}" onclick={() => (d.qualidade = q.id)}>
+			<button type="button" role="radio" aria-checked={on} disabled={ro} class="flex flex-col gap-1.5 border-2 p-2.5 text-left {on ? 'border-vermelhao bg-grena text-papel shadow-[4px_4px_0_var(--vermelhao-lo)]' : 'border-frame bg-b2'}" onclick={() => (d.qualidade = q.id)}>
 				<span class="font-mincho text-base leading-[22px] font-bold">{q.nome}</span>
 				<span class="t-num text-[13px]">{q.pfo} PFO</span>
 				<span class="text-xs leading-4 opacity-80">{q.ryo ? `+${ryo(q.ryo)} · ${q.tempo}` : 'Arma de mercado'}</span>

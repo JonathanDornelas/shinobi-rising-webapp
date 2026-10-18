@@ -30,7 +30,7 @@
 		: somenteLeitura
 			? 'cursor-default'
 			: ''} {classe}"
-	style:box-shadow={selecionado ? '4px 4px 0 #8B2E20' : sombra ? '4px 4px 0 var(--ink)' : undefined}
+	style:box-shadow={selecionado ? '4px 4px 0 var(--vermelhao-lo)' : sombra ? '4px 4px 0 var(--ink)' : undefined}
 	onclick={() => !inerte && aoEscolher()}
 >
 	{@render children()}

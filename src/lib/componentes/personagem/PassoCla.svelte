@@ -97,8 +97,8 @@
 		{/each}
 	</div>
 	{#if cla && regras}
-		<div class="flex border-2 border-[#8B2E20] bg-b2 sombra-painel max-sm:flex-col">
-			<div class="flex w-28 flex-none items-center justify-center border-r-2 border-[#8B2E20] bg-grena py-3 max-sm:w-full max-sm:border-r-0 max-sm:border-b-2">
+		<div class="flex border-2 border-[var(--vermelhao-lo)] bg-b2 sombra-painel max-sm:flex-col">
+			<div class="flex w-28 flex-none items-center justify-center border-r-2 border-[var(--vermelhao-lo)] bg-grena py-3 max-sm:w-full max-sm:border-r-0 max-sm:border-b-2">
 				<Icone id="cla/ic-cla-{cla.slug}" tamanho={64} />
 			</div>
 			<div class="flex flex-1 flex-col gap-2 p-3.5">

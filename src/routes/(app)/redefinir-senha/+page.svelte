@@ -39,7 +39,7 @@
 	}
 </script>
 
-<PainelConta capa="capa-nevoa">
+<PainelConta capa="capa-taki">
 	{#if pronto}
 		<div class="flex flex-col gap-3 border-2 border-ok bg-b1 p-5" role="status">
 			<img src="/illustrations/il-aprovado-96.png" width="96" height="96" alt="" class="[image-rendering:pixelated]" />

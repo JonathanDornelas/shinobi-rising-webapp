@@ -3,7 +3,9 @@
 	import { ATRIBUTOS, CONDICOES, ELEMENTOS, PROGRESSAO } from '#lib/personagem/dados.ts';
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
 	import { regrasCla, sinal } from '#lib/personagem/regras.ts';
+	import { teste } from '#lib/rolagens/expressoes.ts';
 	import Icone from '../ui/Icone.svelte';
+	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
 
 	let { f, aoAbrirJutsus }: { f: FichaJogo; aoAbrirJutsus: () => void } = $props();
 	const r = $derived(f.calc.recursos);
@@ -21,8 +23,9 @@
 		<div class="grid grid-cols-3 gap-2.5 md:grid-cols-6">
 			{#each ATRIBUTOS as a (a.id)}
 				{@const doCla = f.calc.atributoDoCla === a.id}
-				<div class="flex flex-col gap-1.5 border-2 bg-b2 p-2.5 sombra-painel {doCla ? 'border-[#8B2E20]' : 'border-frame'}" title="{a.nome} · limite atual {doCla ? '+8 (o marco do clã leva a +10)' : `+${PROGRESSAO.atributoMax}`}">
+				<div class="relative flex flex-col gap-1.5 border-2 bg-b2 p-2.5 sombra-painel {doCla ? 'border-[var(--vermelhao-lo)]' : 'border-frame'}" title="{a.nome} · limite atual {doCla ? '+8 (o marco do clã leva a +10)' : `+${PROGRESSAO.atributoMax}`}">
 					<Icone id="atributo/ic-atributo-{a.id.toLowerCase()}" />
+					{#if f.editavel}<BotaoRolar class="absolute top-1.5 right-1.5 w-9" expressao={teste(f.calc.atributos[a.id])} rotulo="Teste de {a.nome}" personagem={f.id} d20 />{/if}
 					<span class="font-pixel text-xs leading-none font-bold tracking-[0.08em] text-mut">{a.id}</span>
 					<span class="t-num text-[32px] leading-none">{sinal(f.calc.atributos[a.id])}</span>
 					{#if doCla}<span class="font-pixel text-xs leading-none font-bold text-title uppercase">+1 {regrasCla(f.dados)?.nome}</span>{/if}
@@ -38,6 +41,7 @@
 						<span class="truncate text-xs leading-4 text-mut">{conta}</span>
 					</div>
 					<span class="t-num text-[26px] leading-none">{valor}</span>
+					{#if rotulo === 'INICIATIVA' && f.editavel}<BotaoRolar class="w-9" expressao={teste(r.iniciativa)} rotulo="Iniciativa" personagem={f.id} d20 />{/if}
 				</div>
 			{/each}
 		</div>

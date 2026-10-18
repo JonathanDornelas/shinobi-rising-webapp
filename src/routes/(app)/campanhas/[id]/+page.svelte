@@ -15,7 +15,7 @@
 	import { numero } from '#lib/formatar.ts';
 	import { hrefEditar, hrefFicha, hrefNivel } from '#lib/personagem/status.ts';
 	import { sinal } from '#lib/personagem/regras.ts';
-	import { nomeEra, rankSugerido } from '#lib/campanhas/dominio.ts';
+	import { nomeEra, rankSugerido, urlCapa } from '#lib/campanhas/dominio.ts';
 	import { regrasEmHtml } from '#lib/campanhas/texto.ts';
 	import { copiarConvite, destinoConvite, reenviarConvite, revogarConvite, validadeConvite } from '#lib/campanhas/convites.ts';
 	import { sessao } from '#lib/estado/sessao.svelte.ts';
@@ -132,7 +132,7 @@
 	<!-- ================================================================ C3 · Mestre -->
 	<main class="flex min-w-0 flex-col gap-5 p-4 md:p-6">
 		<div class="painel-sombra flex items-stretch gap-5 max-md:hidden">
-			<img src="/covers/{c.capa}-256.png" width="512" height="192" alt="" class="flex-none border-r-2 border-ink [image-rendering:pixelated] max-xl:w-[384px] max-xl:object-cover" />
+			<img src={urlCapa(c.capa)} width="512" height="192" alt="" class="flex-none border-r-2 border-ink [image-rendering:pixelated] max-xl:w-[384px] max-xl:object-cover" />
 			<div class="flex flex-1 flex-col gap-2.5 py-[18px] pr-[18px]">
 				<span class="font-mincho text-[30px] leading-[38px] font-bold">{c.nome}</span>
 				<div class="flex flex-wrap gap-x-4 gap-y-1 text-sm leading-5 font-semibold text-mut">
@@ -152,7 +152,7 @@
 
 		<div class="grid items-start gap-5 xl:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
 			<div class="flex min-w-0 flex-col gap-5">
-				<section class="border-2 border-[#8B2E20] bg-b2 sombra-painel" aria-label="Aguardando sua revisão">
+				<section class="border-2 border-[var(--vermelhao-lo)] bg-b2 sombra-painel" aria-label="Aguardando sua revisão">
 					<div class="flex items-center gap-2.5 bg-grena px-3.5 py-2.5 text-papel">
 						<Icone id="nav/ic-nav-aprovacoes" />
 						<h2 class="m-0 flex-1 font-pixel text-sm leading-none font-bold tracking-[0.1em]">AGUARDANDO SUA REVISÃO · {emRevisao.length + data.pedidosPt.length}</h2>
@@ -207,10 +207,10 @@
 										href={f ? hrefFicha(c.id, f.id) : undefined}
 										class="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b-2 border-b3 px-3.5 py-2 text-fg {f ? 'hover:bg-b3' : ''}"
 									>
-										{#if f?.resumo && f.status === 'aprovada' && temIconeCla(f.resumo)}
+										{#if f?.resumo && !f.retrato && f.status === 'aprovada' && temIconeCla(f.resumo)}
 											<IconeCla resumo={f.resumo} />
 										{:else}
-											<Retrato nome={f?.nome || j.nome} tamanho={32} />
+											<Retrato nome={f?.nome || j.nome} foto={f?.retrato} tamanho={32} />
 										{/if}
 										<span class="flex min-w-[140px] flex-1 flex-col">
 											<span class="truncate font-mincho text-[15px] leading-5 font-bold">{f?.nome || 'Sem ficha ainda'}</span>
@@ -314,7 +314,7 @@
 				{:else}
 					{@const r = minha.resumo}
 					<div class="flex items-start gap-[18px] p-4 max-sm:flex-col">
-						<Retrato nome={minha.nome || '?'} tamanho={128} class="max-sm:hidden" />
+						<Retrato nome={minha.nome || '?'} foto={minha.retrato} tamanho={128} class="max-sm:hidden" />
 						<div class="flex min-w-0 flex-1 flex-col gap-2">
 							<div class="flex flex-wrap items-center gap-2.5">
 								<span class="font-mincho text-[28px] leading-9 font-bold max-sm:text-2xl">{minha.nome || 'Personagem sem nome'}</span>
@@ -328,7 +328,7 @@
 							{#if r.pv}
 								{@const est = (minha.estado ?? {}) as { pv?: number; pc?: number; pe?: number }}
 								<div class="mt-1 grid grid-cols-3 gap-3">
-									{#each [barra(r.pv, '#C44536', '#E07A5F'), barra(r.pc, '#2D7FB8', '#7FD3E6'), barra(r.pe, '#D29A1E', '#F2C14E')] as b, i (i)}
+									{#each [barra(r.pv, 'var(--vermelhao)', '#E07A5F'), barra(r.pc, '#2D7FB8', '#7FD3E6'), barra(r.pe, '#D29A1E', '#F2C14E')] as b, i (i)}
 										{@const atual = [est.pv, est.pc, est.pe][i] ?? b.valor}
 										<div class="flex flex-col gap-1">
 											<span class="t-num text-[13px]">{['PV', 'PC', 'PE'][i]} {atual}/{b.valor}</span>
@@ -376,7 +376,7 @@
 					{#each data.membros.filter((m) => m.id !== eu) as m (m.id)}
 						{@const f = m.papel === 'jogador' ? data.grupo.find((g) => g.jogador_id === m.id && g.situacao === 'ativo') : undefined}
 						<li class="flex items-center gap-2.5 border-2 border-b3 bg-b1 p-2.5">
-							<Retrato nome={f?.nome || m.nome} tamanho={40} />
+							<Retrato nome={f?.nome || m.nome} foto={f?.retrato} tamanho={40} />
 							<div class="flex min-w-0 flex-col gap-0.5">
 								<span class="truncate font-mincho text-[15px] leading-5 font-bold">{f?.nome || m.nome}</span>
 								<span class="flex items-center gap-1 text-xs leading-4 text-mut">

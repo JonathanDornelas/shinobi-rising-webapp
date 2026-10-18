@@ -151,7 +151,7 @@
 						</div>
 						<div class="flex flex-col gap-2 px-3.5 py-2.5">
 							<div class="flex flex-wrap gap-1.5">
-								<span class="border-2 border-[#8B2E20] bg-grena px-[7px] py-1.5 font-pixel text-xs leading-none font-bold tracking-[0.06em] text-papel">{nomeRank(n.rank).toUpperCase()}</span>
+								<span class="border-2 border-[var(--vermelhao-lo)] bg-grena px-[7px] py-1.5 font-pixel text-xs leading-none font-bold tracking-[0.06em] text-papel">{nomeRank(n.rank).toUpperCase()}</span>
 								{#each n.tags as t (t)}<span class="border-2 border-b3 px-[7px] py-[5px] text-xs leading-none font-semibold">{t}</span>{/each}
 							</div>
 							<div class="flex gap-3 font-pixel text-[13px] font-bold"><span>PV {n.pv}</span><span class="text-mut">DEF {n.defesa}</span><span class="text-mut">INIC {n.iniciativa >= 0 ? '+' : ''}{n.iniciativa}</span></div>
@@ -193,7 +193,7 @@
 					<span class="text-[13px] leading-[18px] text-mut">{[n.funcao, n.origem].filter(Boolean).join(' · ')}</span>
 					{#if n.aparencia}<span class="text-sm leading-[21px]">{n.aparencia}</span>{/if}
 					<div class="flex flex-wrap gap-1.5">
-						<span class="border-2 border-[#8B2E20] bg-grena px-[7px] py-1.5 font-pixel text-xs leading-none font-bold text-papel">{nomeRank(n.rank).toUpperCase()}</span>
+						<span class="border-2 border-[var(--vermelhao-lo)] bg-grena px-[7px] py-1.5 font-pixel text-xs leading-none font-bold text-papel">{nomeRank(n.rank).toUpperCase()}</span>
 						{#each n.tags as t (t)}<span class="border-2 border-b3 px-[7px] py-[5px] text-xs leading-none font-semibold">{t}</span>{/each}
 					</div>
 				</li>

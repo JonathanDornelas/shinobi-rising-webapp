@@ -50,7 +50,7 @@
 			<nav aria-label="Seções do glossário" class="flex flex-col">
 				{#each data.glossario as s (s.id)}
 					{@const on = espiao.ativa === s.id}
-					<a href="#{s.id}" class="flex min-h-9 items-center px-2.5 text-sm leading-5 {on ? 'bg-grena font-semibold text-papel shadow-[inset_4px_0_0_#C44536]' : 'font-medium hover:bg-b3'}">{s.titulo}</a>
+					<a href="#{s.id}" class="flex min-h-9 items-center px-2.5 text-sm leading-5 {on ? 'bg-grena font-semibold text-papel shadow-[inset_4px_0_0_var(--vermelhao)]' : 'font-medium hover:bg-b3'}">{s.titulo}</a>
 				{/each}
 			</nav>
 			<span class="t-rotulo-sm mt-3 text-title">A–Z</span>
@@ -62,8 +62,8 @@
 						disabled={!tem}
 						aria-pressed={letra === l}
 						class="t-num flex h-8 items-center justify-center border-2 text-[13px]"
-						style:border-color={letra === l ? '#C44536' : tem ? 'var(--b3)' : 'transparent'}
-						style:background={letra === l ? '#C44536' : 'transparent'}
+						style:border-color={letra === l ? 'var(--vermelhao)' : tem ? 'var(--b3)' : 'transparent'}
+						style:background={letra === l ? 'var(--vermelhao)' : 'transparent'}
 						style:color={letra === l ? '#FFFFFF' : tem ? 'var(--fg)' : 'var(--b3)'}
 						onclick={() => (letra = letra === l ? null : l)}>{l}</button
 					>

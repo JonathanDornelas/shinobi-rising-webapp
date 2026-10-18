@@ -1,6 +1,8 @@
-- Adicionar a criação de jutsus na criação de clãs e personagens;
-- Ao criar um item ou jutsu, faltam formas do mestre dar isso ao personagens, seja de forma custosa ou não;
-- Criar log geral de rolagens da campanha. Onde os persoagens e mestre conseguem rolar direto da ficha qualquer cosia, como jutsus, testes de habilidades/pericias e afins; Criar para isso dados de pixel art isometricos e sua animações rolando no pixelab;
-- As imagens de paisagem das vilas estão fora do padrão naruto. Devem refletir realmente a paisagem de todas as vilas (renagado sendo uma do campo ou floresta generica mesmo) como aparecem no anime/manga;
-- Permitir subir imagens na foto do ninja;
-- Criar funcionalidade de mudança de cores, tamanho de fonte e border radius, fazendo com que o jogador/mestre possa criar seus próprios temas;
+- [x] Adicionar a criação de jutsus na criação de clãs e personagens;
+- [x] Ao criar um item ou jutsu, faltam formas do mestre dar isso ao personagens, seja de forma custosa ou não;
+- [x] Criar log geral de rolagens da campanha. Onde os persoagens e mestre conseguem rolar direto da ficha qualquer cosia, como jutsus, testes de habilidades/pericias e afins; Criar para isso dados de pixel art isometricos e sua animações rolando no pixelab;
+- [x] As imagens de paisagem das vilas estão fora do padrão naruto. Devem refletir realmente a paisagem de todas as vilas (renagado sendo uma do campo ou floresta generica mesmo) como aparecem no anime/manga;
+- [x] Permitir subir imagens na foto do ninja;
+- [x] Criar funcionalidade de mudança de cores, tamanho de fonte e border radius, fazendo com que o jogador/mestre possa criar seus próprios temas;
+- [x] Excluir personagens (o dono, em qualquer status; o Mestre, qualquer ficha da campanha);
+- [x] Excluir campanhas (Configurações → Zona de perigo; agora apaga também os retratos das fichas);

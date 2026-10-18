@@ -173,7 +173,7 @@
 				{@const on = atual?.chave === i.chave}
 				{@const dec = i.estado === 'decidido' ? ROTULO_DECISAO[i.status] : null}
 				<li>
-					<button type="button" class="flex w-full items-start gap-2.5 border-b-2 border-b3 px-3 py-2.5 text-left {on ? 'bg-grena text-papel shadow-[inset_4px_0_0_#C44536]' : 'hover:bg-b3'}" aria-current={on || undefined} onclick={() => abrir(i.chave)}>
+					<button type="button" class="flex w-full items-start gap-2.5 border-b-2 border-b3 px-3 py-2.5 text-left {on ? 'bg-grena text-papel shadow-[inset_4px_0_0_var(--vermelhao)]' : 'hover:bg-b3'}" aria-current={on || undefined} onclick={() => abrir(i.chave)}>
 						<Icone id={i.icone} />
 						<span class="flex min-w-0 flex-1 flex-col gap-[3px]">
 							<span class="flex items-center gap-1.5"><span class="truncate text-[15px] leading-5 font-semibold">{i.titulo}</span>{#if i.versao > 1}<span class="border-2 border-b3 px-1 py-0.5 font-pixel text-xs leading-none font-bold">V{i.versao}</span>{/if}</span>
@@ -217,7 +217,7 @@
 			<div class="grid flex-1 items-start gap-5 px-4 py-5 md:px-6 xl:grid-cols-[minmax(0,1fr)_340px]">
 				<div class="flex min-w-0 flex-col gap-4">
 					{#if i.excecao}<Alerta tipo="aviso" titulo="Exceção do Mestre"><span>“{i.excecao}”</span></Alerta>{/if}
-					<article class="flex border-2 border-[#8B2E20] bg-b2 shadow-[4px_4px_0_var(--ink)]">
+					<article class="flex border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[4px_4px_0_var(--ink)]">
 						<div class="w-1 flex-none" style:background={i.cor}></div>
 						<div class="min-w-0 flex-1">
 							<div class="flex items-start gap-2.5 bg-grena px-4 py-3">

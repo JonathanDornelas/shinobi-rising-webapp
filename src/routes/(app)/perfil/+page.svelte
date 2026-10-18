@@ -13,6 +13,7 @@
 	import Retrato from '#lib/componentes/ui/Retrato.svelte';
 	import { emailValido, SENHA_MINIMA } from '#lib/conta/regras.ts';
 	import { preferencias, type Tema, type TamanhoLeitura } from '#lib/estado/preferencias.svelte.ts';
+	import { contraste, ESCALAS, PALETAS, RAIOS, type Visual } from '#lib/estado/visual.ts';
 	import { sessao } from '#lib/estado/sessao.svelte.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 	import { mensagemAuth, supabase } from '#lib/supabase/cliente.ts';
@@ -21,10 +22,11 @@
 
 	let { data }: PageProps = $props();
 
-	type Secao = 'perfil' | 'preferencias' | 'notificacoes' | 'perigo';
+	type Secao = 'perfil' | 'preferencias' | 'aparencia' | 'notificacoes' | 'perigo';
 	const SECOES: { id: Secao; nome: string; icone: string; perigo?: boolean }[] = [
 		{ id: 'perfil', nome: 'Perfil', icone: 'nav/ic-nav-perfil' },
 		{ id: 'preferencias', nome: 'Preferências', icone: 'nav/ic-nav-configuracoes' },
+		{ id: 'aparencia', nome: 'Aparência', icone: 'callout/ic-callout-destaque' },
 		{ id: 'notificacoes', nome: 'Notificações por e-mail', icone: 'nav/ic-nav-notificacoes' },
 		{ id: 'perigo', nome: 'Zona de perigo', icone: 'status/ic-status-rejeitado', perigo: true }
 	];
@@ -124,6 +126,32 @@
 		preferencias.definirLeitura(t);
 		salvar({ leitura: t }, 'pref');
 	}
+
+	// ---------------------------------------------------------------- aparência (tema do usuário)
+	let estadoVisual = $state<EstadoSalvo>({ tipo: 'ocioso' });
+	let salvarVisualTimer: ReturnType<typeof setTimeout> | undefined;
+	const PADRAO = { sumi: { fundo: '#16110f', texto: '#efe3d3' }, washi: { fundo: '#f4e4d6', texto: '#1a1a1a' } } as const;
+	const efetivo = $derived({ fundo: preferencias.visual.fundo ?? PADRAO[preferencias.aplicado].fundo, texto: preferencias.visual.texto ?? PADRAO[preferencias.aplicado].texto });
+	const razao = $derived(contraste(efetivo.fundo, efetivo.texto));
+	const CORES: { k: 'acento' | 'destaque' | 'fundo' | 'texto'; nome: string; ajuda: string }[] = [
+		{ k: 'acento', nome: 'Acento', ajuda: 'Botões principais e abas ativas' },
+		{ k: 'destaque', nome: 'Destaque', ajuda: 'Títulos, ouro e números em destaque' },
+		{ k: 'fundo', nome: 'Fundo', ajuda: 'Fundo das páginas e painéis' },
+		{ k: 'texto', nome: 'Texto', ajuda: 'Texto principal' }
+	];
+	function mudarVisual(parcial: Partial<Visual>) {
+		const novo: Visual = { ...preferencias.visual, ...parcial };
+		for (const k of Object.keys(novo) as (keyof Visual)[]) if (novo[k] === undefined || (k === 'raio' && !novo.raio) || (k === 'escala' && novo.escala === 100)) delete novo[k];
+		preferencias.definirVisual(novo);
+		clearTimeout(salvarVisualTimer);
+		estadoVisual = { tipo: 'salvando' };
+		salvarVisualTimer = setTimeout(async () => {
+			const { error } = await sessao.salvarPreferencias({ visual: $state.snapshot(preferencias.visual) as Visual });
+			estadoVisual = error ? { tipo: 'erro' } : { tipo: 'salvo', em: Date.now() };
+		}, 600);
+	}
+	const corAtual = (k: 'acento' | 'destaque' | 'fundo' | 'texto') =>
+		preferencias.visual[k] ?? (k === 'acento' ? '#c44536' : k === 'destaque' ? (preferencias.aplicado === 'washi' ? '#bf9000' : '#d9a82b') : PADRAO[preferencias.aplicado][k]);
 
 	type ChaveEmail = 'submissoes' | 'decisoes' | 'comentarios' | 'recompensas';
 	const AVISOS: [ChaveEmail, string, boolean][] = [
@@ -305,6 +333,85 @@
 					<span class="text-mut" style:font-size="{preferencias.leitura}px" style:line-height="1.7">Role 1d20 e some a perícia.</span>
 				</div>
 			</div>
+		</div>
+	</section>
+
+	<!-- APARÊNCIA (tema do usuário) -->
+	<section class="painel-sombra {visivel('aparencia')}" aria-labelledby="sec-aparencia">
+		<div id="sec-aparencia">{@render cabecalho('Aparência', estadoVisual)}</div>
+		<div class="flex flex-col gap-5 p-4">
+			<p class="m-0 text-sm text-mut">As mudanças aparecem na hora, no app inteiro, e ficam salvas no seu perfil. O que você não mudar segue o tema {preferencias.aplicado === 'washi' ? 'Washi' : 'Sumi'}.</p>
+			<div class="flex flex-col gap-2">
+				<span class="text-sm leading-5 font-semibold" id="rot-paleta">Paletas</span>
+				<div class="flex flex-wrap gap-2" role="group" aria-labelledby="rot-paleta">
+					{#each PALETAS as pl (pl.id)}
+						{@const on = corAtual('acento') === pl.acento && corAtual('destaque') === (pl.id === 'padrao' && preferencias.aplicado === 'washi' ? '#bf9000' : pl.destaque)}
+						<button
+							type="button"
+							class="flex min-h-11 items-center gap-2 border-2 px-2.5 text-[13px] font-semibold {on ? 'border-vermelhao' : 'border-b3 hover:border-mut'}"
+							aria-pressed={on}
+							onclick={() => mudarVisual(pl.id === 'padrao' ? { acento: undefined, destaque: undefined } : { acento: pl.acento, destaque: pl.destaque })}
+						>
+							<span class="flex"><span class="h-5 w-5 border-2 border-ink" style:background={pl.acento}></span><span class="-ml-0.5 h-5 w-5 border-2 border-ink" style:background={pl.destaque}></span></span>{pl.nome}
+						</button>
+					{/each}
+				</div>
+			</div>
+			<div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+				{#each CORES as cor (cor.k)}
+					<div class="flex items-center gap-3 border-2 border-b3 p-2.5">
+						<input id="cor-{cor.k}" type="color" class="h-11 w-11 flex-none cursor-pointer border-2 border-ink bg-transparent p-0" {@attach (el: HTMLInputElement) => {
+								el.value = corAtual(cor.k);
+							}} oninput={(e) => mudarVisual({ [cor.k]: e.currentTarget.value })} />
+						<label for="cor-{cor.k}" class="flex min-w-0 flex-1 flex-col gap-0.5">
+							<span class="text-sm leading-5 font-semibold">{cor.nome}</span>
+							<span class="text-xs leading-4 text-mut">{cor.ajuda}</span>
+						</label>
+						{#if preferencias.visual[cor.k]}<button type="button" class="link text-xs font-semibold" onclick={() => mudarVisual({ [cor.k]: undefined })}>Padrão</button>{/if}
+					</div>
+				{/each}
+			</div>
+			{#if razao < 4.5}
+				<Alerta tipo="aviso" titulo="Pouco contraste entre texto e fundo ({razao.toFixed(1).replace('.', ',')}:1)">
+					<span>Para leitura confortável, o texto pede pelo menos 4,5:1. Escolha um fundo mais claro ou mais escuro, ou volte ao padrão.</span>
+				</Alerta>
+			{/if}
+			<div class="grid gap-5 md:grid-cols-2">
+				<div class="flex flex-col gap-2">
+					<span class="text-sm leading-5 font-semibold" id="rot-escala">Tamanho da interface</span>
+					<div class="flex self-start border-2 border-frame" role="group" aria-labelledby="rot-escala">
+						{#each ESCALAS as e, i (e)}
+							{@const on = (preferencias.visual.escala ?? 100) === e}
+							<button type="button" class="t-num min-h-11 px-3 text-[13px] {i ? 'border-l-2 border-frame' : ''} {on ? 'bg-vermelhao text-white' : ''}" aria-pressed={on} onclick={() => mudarVisual({ escala: e })}>{e}%</button>
+						{/each}
+					</div>
+				</div>
+				<div class="flex flex-col gap-2">
+					<span class="text-sm leading-5 font-semibold" id="rot-raio">Cantos</span>
+					<div class="flex self-start border-2 border-frame" role="group" aria-labelledby="rot-raio">
+						{#each RAIOS as r, i (r)}
+							{@const on = (preferencias.visual.raio ?? 0) === r}
+							<button type="button" class="flex min-h-11 items-center gap-2 px-3 text-[13px] {i ? 'border-l-2 border-frame' : ''} {on ? 'bg-vermelhao text-white' : ''}" aria-pressed={on} aria-label={r ? `Raio de ${r} px` : 'Cantos retos'} onclick={() => mudarVisual({ raio: r })}>
+								<span class="h-4 w-4 border-2 border-current" style:border-radius="{r}px"></span>{r ? `${r}px` : 'Retos'}
+							</button>
+						{/each}
+					</div>
+				</div>
+			</div>
+			<div class="flex flex-col gap-2">
+				<span class="text-sm leading-5 font-semibold">Prévia</span>
+				<div class="flex flex-wrap items-center gap-3 border-2 border-b3 bg-b1 p-3.5">
+					<span class="font-mincho text-xl font-bold text-title">Konohagakure</span>
+					<span class="text-sm">Role 1d20 e some a perícia.</span>
+					<span class="text-sm text-mut">Texto de apoio.</span>
+					<span class="flex-1"></span>
+					<span class="border-2 border-b3 bg-vermelhao px-2.5 py-2 font-pixel text-xs font-bold text-white">ABA ATIVA</span>
+					<span class="btn-jogo btn-primario min-h-9 text-xs">CONFIRMAR</span>
+				</div>
+			</div>
+			{#if Object.keys(preferencias.visual).length}
+				<button type="button" class="btn-jogo btn-fantasma self-start text-xs" onclick={() => mudarVisual({ acento: undefined, destaque: undefined, fundo: undefined, texto: undefined, escala: undefined, raio: undefined })}>RESTAURAR O PADRÃO</button>
+			{/if}
 		</div>
 	</section>
 

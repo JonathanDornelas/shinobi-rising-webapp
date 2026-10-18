@@ -1,5 +1,5 @@
 <script lang="ts">
-	// Adiciona uma carta ao clã: jutsu do catálogo geral (cap. 10), jutsu original (nome, rank e descrição; números no
+	// Adiciona uma carta ao clã: jutsu do catálogo geral (cap. 10), jutsu original (nome e rank aqui; o resto direto no
 	// criador de jutsus, cap. 20) ou habilidade passiva.
 	import type { CriadorCla } from '#lib/clas/criador.svelte.ts';
 	import type { RankJutsu } from '#lib/clas/dados.ts';
@@ -29,7 +29,10 @@
 			.sort((a, b) => ORDEM_RANK.indexOf(a.rank as RankJutsu) - ORDEM_RANK.indexOf(b.rank as RankJutsu) || a.nome.localeCompare(b.nome))
 	);
 
-	function criar() {
+	const vaiProCriador = $derived(tipo === 'jutsu' && modo === 'original' && !!c.detalharCarta);
+	let abrindo = $state(false);
+
+	async function criar() {
 		let id: string;
 		if (tipo === 'jutsu' && modo === 'livro') {
 			if (!slug) return;
@@ -42,6 +45,12 @@
 		nome = '';
 		descricao = '';
 		aoCriar?.(id);
+		// jutsu original: segue direto para o criador de jutsus (J2), que calcula PJ, custo e efeito
+		if (vaiProCriador) {
+			abrindo = true;
+			await c.detalharCarta!(id);
+			abrindo = false;
+		}
 	}
 </script>
 
@@ -75,8 +84,8 @@
 		</div>
 		<textarea class="campo h-auto min-h-[64px] resize-y py-2 text-sm leading-5" placeholder="Descrição narrativa: o que acontece na cena" aria-label="Descrição" maxlength="800" bind:value={descricao}></textarea>
 		<div class="flex items-center gap-2">
-			<span class="flex-1 text-xs leading-4 text-mut">{tipo === 'jutsu' ? 'PJ, custo e efeitos em números chegam com o criador de jutsus (cap. 20).' : 'Ideias: +1 numa perícia, sentido aprimorado, redução de dano contra um tipo.'}</span>
-			<button type="button" class="btn-jogo btn-contorno min-h-10 text-xs" disabled={!nome.trim() || !descricao.trim()} onclick={criar}>ADICIONAR</button>
+			<span class="flex-1 text-xs leading-4 text-mut">{tipo === 'habilidade' ? 'Ideias: +1 numa perícia, sentido aprimorado, redução de dano contra um tipo.' : vaiProCriador ? 'O clã é salvo e o criador de jutsus abre para os números (PJ, custo, efeito, cap. 20).' : 'PJ, custo e efeitos em números ficam no criador de jutsus (cap. 20).'}</span>
+			<button type="button" class="btn-jogo btn-contorno min-h-10 text-xs" disabled={!nome.trim() || (!vaiProCriador && !descricao.trim()) || abrindo} aria-busy={abrindo} onclick={criar}>{vaiProCriador ? 'CRIAR NO CRIADOR DE JUTSUS' : 'ADICIONAR'}</button>
 		</div>
 	{/if}
 </div>

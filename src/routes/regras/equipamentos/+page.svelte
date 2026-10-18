@@ -82,7 +82,7 @@
 						<table class="sombra-painel w-full min-w-[760px] border-collapse border-2 border-frame text-[15px] leading-[22px]">
 							<thead>
 								<tr class="bg-vermelhao text-left font-pixel text-[13px] leading-[18px] font-bold tracking-[.06em] text-white">
-									<th class="sticky left-0 z-[1] bg-vermelhao px-3 py-2.5 shadow-[2px_0_0_#8B2E20] md:static md:shadow-none">ARMA</th><th class="px-3 py-2.5">DANO</th><th class="px-3 py-2.5">ALCANCE</th><th class="px-3 py-2.5">PESO</th><th class="px-3 py-2.5">PROPRIEDADES</th><th class="px-3 py-2.5 text-right">PREÇO</th>
+									<th class="sticky left-0 z-[1] bg-vermelhao px-3 py-2.5 shadow-[2px_0_0_var(--vermelhao-lo)] md:static md:shadow-none">ARMA</th><th class="px-3 py-2.5">DANO</th><th class="px-3 py-2.5">ALCANCE</th><th class="px-3 py-2.5">PESO</th><th class="px-3 py-2.5">PROPRIEDADES</th><th class="px-3 py-2.5 text-right">PREÇO</th>
 								</tr>
 							</thead>
 							<tbody>

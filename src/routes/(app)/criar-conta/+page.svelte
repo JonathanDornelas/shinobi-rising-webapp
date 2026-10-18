@@ -98,7 +98,7 @@
 	const minutos = $derived(`${Math.floor(espera / 60)}:${String(espera % 60).padStart(2, '0')}`);
 </script>
 
-<PainelConta capa="capa-montanha">
+<PainelConta capa="capa-kumo">
 	{#if enviadoPara}
 		<div class="camada flex flex-col items-center gap-3 px-6 py-8 text-center" role="status">
 			<img src="/illustrations/il-enviado-96.png" width="96" height="96" alt="" class="[image-rendering:pixelated]" />

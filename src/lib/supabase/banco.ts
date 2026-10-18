@@ -12,6 +12,8 @@ export type StatusCriacao = StatusCla;
 
 export type Preferencias = {
 	tema?: 'sumi' | 'washi' | 'sistema';
+	/** Tema do usuário: cores, escala e raio (src/lib/estado/visual.ts). */
+	visual?: import('#lib/estado/visual.ts').Visual;
 	leitura?: 15 | 17 | 18 | 20;
 	email?: Partial<Record<'submissoes' | 'decisoes' | 'comentarios' | 'recompensas', boolean>>;
 }
@@ -113,6 +115,7 @@ export type Personagem = {
 	excecao: string | null;
 	pre_gerado: boolean;
 	entregas: Json;
+	retrato: string | null;
 }
 
 /** Jutsu ou habilidade criada (cap. 20); `dados` é um JutsuDados ou HabilidadeDados (src/lib/jutsus/regras.ts). */
@@ -247,8 +250,31 @@ export type PersonagemPublico = {
 	nivel: number;
 	situacao: SituacaoFicha;
 	pre_gerado: boolean;
+	retrato: string | null;
 	resumo: Json;
 }
+
+export type ModoRolagem = 'normal' | 'vantagem' | 'desvantagem' | 'critico';
+
+/** Termo de uma rolagem: dado (valores sorteados; usados = os que contam, na vantagem/desvantagem fica um) ou modificador. */
+export type TermoRolagem = { sinal: 1 | -1; lados: number; valores: number[]; usados: number[] } | { sinal: 1 | -1; valor: number };
+
+/** Rolagem registrada na campanha; o sorteio é feito no servidor por rolar(). */
+export type Rolagem = {
+	id: string;
+	campanha_id: string;
+	autor_id: string | null;
+	personagem_id: string | null;
+	quem: string;
+	rotulo: string;
+	expressao: string;
+	modo: ModoRolagem;
+	detalhe: TermoRolagem[];
+	total: number;
+	d20: number | null;
+	oculta: boolean;
+	criada_em: string;
+};
 
 export type Notificacao = {
 	id: string;
@@ -357,6 +383,7 @@ export type Database = {
 			jutsus_criados: Tabela<JutsuCriado, 'campanha_id' | 'autor_id', [Rel<'jutsus_criados_campanha_id_fkey', 'campanha_id', 'campanhas'>, Rel<'jutsus_criados_autor_id_fkey', 'autor_id', 'perfis'>]>;
 			equipamentos_criados: Tabela<EquipamentoCriado, 'campanha_id' | 'autor_id' | 'tipo', [Rel<'equipamentos_criados_campanha_id_fkey', 'campanha_id', 'campanhas'>, Rel<'equipamentos_criados_autor_id_fkey', 'autor_id', 'perfis'>]>;
 			npcs: Tabela<Npc, 'campanha_id', [Rel<'npcs_campanha_id_fkey', 'campanha_id', 'campanhas'>]>;
+			rolagens: Tabela<Rolagem, 'campanha_id' | 'quem' | 'rotulo' | 'expressao' | 'detalhe' | 'total', [Rel<'rolagens_campanha_id_fkey', 'campanha_id', 'campanhas'>]>;
 			atividades: Tabela<Atividade, 'campanha_id' | 'tipo' | 'texto', [Rel<'atividades_campanha_id_fkey', 'campanha_id', 'campanhas'>]>;
 		};
 		Views: { [_ in never]: never };
@@ -401,6 +428,12 @@ export type Database = {
 			conceder_jutsu: { Args: { ficha: string; slug: string; nome: string; custo_pt?: number }; Returns: undefined };
 			conceder_item: { Args: { ficha: string; item: Json; custo_ryo?: number }; Returns: undefined };
 			receber_entregas: { Args: { ficha: string; inventario: Json }; Returns: undefined };
+			excluir_ficha: { Args: { ficha: string }; Returns: undefined };
+			definir_retrato: { Args: { ficha: string; caminho: string | null }; Returns: undefined };
+			rolar: {
+				Args: { campanha: string; expressao: string; rotulo: string; personagem?: string | null; modo?: ModoRolagem; oculta?: boolean };
+				Returns: Rolagem;
+			};
 			definir_situacao: { Args: { ficha: string; situacao: SituacaoFicha; epitafio?: string | null }; Returns: undefined };
 		};
 		Enums: { papel: Papel; tipo_convite: TipoConvite; status_convite: StatusConvite; status_ficha: StatusFicha; status_cla: StatusCla; status_criacao: StatusCriacao };

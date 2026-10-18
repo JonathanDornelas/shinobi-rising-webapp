@@ -68,7 +68,7 @@ export class Criador {
 	atributos = $derived.by(() => orcamentoAtributos(this.ficha));
 	pontosPericia = $derived.by(() => pontosPericia(this.ficha));
 	pt = $derived.by(() => ptDisponiveis(this.ficha));
-	analise = $derived.by(() => analisar(this.ficha, this.ctx, { jutsusD: this.catalogo.jutsusD, loja: this.catalogo.loja, statusCla: this.statusCla }));
+	analise = $derived.by(() => analisar(this.ficha, this.ctx, { jutsusD: this.catalogo.jutsusD, loja: this.catalogo.loja, statusCla: this.statusCla, jutsusCriados: [...this.catalogo.jutsusE, ...this.catalogo.jutsusD].filter((j) => j.criado) }));
 	resumo = $derived.by(() => resumoFicha(this.ficha, this.catalogo.loja));
 
 	irPara(p: number) {

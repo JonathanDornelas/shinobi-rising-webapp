@@ -104,7 +104,7 @@
 		{#each ABAS as a (a.id)}
 			{@const on = aba === a.id}
 			<button type="button" role="tab" aria-selected={on} class="flex items-center gap-1.5 px-4 py-[15px] font-pixel text-sm leading-none font-semibold tracking-[0.05em] whitespace-nowrap {on ? 'bg-vermelhao text-white' : 'text-mut hover:text-fg'}" onclick={() => (aba = a.id)}>
-				{on ? '▸ ' : ''}{a.nome}<span class="border-2 px-1 py-0.5 text-xs font-bold {on ? 'border-[#8B2E20]' : 'border-b3'}">{a.n}</span>
+				{on ? '▸ ' : ''}{a.nome}<span class="border-2 px-1 py-0.5 text-xs font-bold {on ? 'border-[var(--vermelhao-lo)]' : 'border-b3'}">{a.n}</span>
 			</button>
 		{/each}
 	</div>

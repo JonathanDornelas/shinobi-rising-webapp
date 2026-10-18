@@ -26,7 +26,7 @@
 		class="block flex-none {classe}"
 		style:width="{tamanho}px"
 		style:height="{tamanho}px"
-		style:background={cor ?? '#C44536'}
+		style:background={cor ?? 'var(--vermelhao)'}
 		style:mask-image="url({src})"
 		style:-webkit-mask-image="url({src})"
 		style:mask-size="{tamanho}px {tamanho}px"

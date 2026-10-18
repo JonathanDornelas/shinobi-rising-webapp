@@ -21,6 +21,10 @@
 				d.dataset.theme = t === 'washi' ? 'washi' : 'sumi';
 				var l = localStorage.getItem('snm:leitura');
 				if (l) d.dataset.leitura = l;
+				var v = JSON.parse(localStorage.getItem('snm:visual-css') || '{}');
+				for (var k in v) if (/^--[a-z0-9-]+$/.test(k)) d.style.setProperty(k, String(v[k]));
+				if (v['--raio']) d.dataset.raio = '';
+				if (v['--escala']) d.dataset.escala = '';
 			} catch (e) {}
 		</script>
 		%sveltekit.head%

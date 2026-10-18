@@ -79,7 +79,7 @@
 <header class="border-b-2 border-carvao bg-grena text-papel">
 	<div class="mx-auto flex max-w-[1280px] flex-col gap-4 px-4 py-[18px] md:px-6 md:py-7 lg:flex-row lg:items-center lg:gap-6">
 		<div class="flex items-center gap-3.5 md:gap-6">
-			<div class="flex h-[72px] w-[72px] flex-none items-center justify-center border-2 border-[#8B2E20] bg-[#16110F] md:h-24 md:w-24 md:shadow-[4px_4px_0_#0E0B0A]">
+			<div class="flex h-[72px] w-[72px] flex-none items-center justify-center border-2 border-[var(--vermelhao-lo)] bg-[#16110F] md:h-24 md:w-24 md:shadow-[4px_4px_0_#0E0B0A]">
 				<Icone id="cla/ic-cla-{cla.slug}" tamanho={64} alt="Kamon do clã {cla.nome}" />
 			</div>
 			<div class="flex min-w-0 flex-1 flex-col gap-1 md:gap-2">
@@ -90,21 +90,21 @@
 				<h1 class="m-0 font-mincho text-[26px] leading-8 font-bold md:text-[40px] md:leading-[48px]">Clã {cla.nome}</h1>
 				<span class="text-sm leading-5 text-papel-2 italic md:text-[17px] md:leading-6">{cla.epiteto}</span>
 				<div class="mt-1 hidden flex-wrap gap-2 md:flex">
-					<span class="chip border-[#8B2E20] {cla.vila.icone ? '' : 'sem-icone'}">{#if cla.vila.icone}<Icone id={cla.vila.icone} />{/if}{cla.vila.nome}{#if cla.vila.nota}<span class="font-normal text-papel-2">· {cla.vila.nota}</span>{/if}</span>
+					<span class="chip border-[var(--vermelhao-lo)] {cla.vila.icone ? '' : 'sem-icone'}">{#if cla.vila.icone}<Icone id={cla.vila.icone} />{/if}{cla.vila.nome}{#if cla.vila.nota}<span class="font-normal text-papel-2">· {cla.vila.nota}</span>{/if}</span>
 					{#if cla.kkg}
-						<span class="chip border-[#C44536] bg-[#16110F]"><Icone id={cla.kkg.icone} />{cla.kkg.nome} · {cla.kkg.tipo}</span>
+						<span class="chip border-[var(--vermelhao)] bg-[#16110F]"><Icone id={cla.kkg.icone} />{cla.kkg.nome} · {cla.kkg.tipo}</span>
 					{:else}
-						<span class="chip sem-icone border-dashed border-[#8B2E20]">Sem Kekkei Genkai</span>
+						<span class="chip sem-icone border-dashed border-[var(--vermelhao-lo)]">Sem Kekkei Genkai</span>
 					{/if}
 					{#if cla.status}
-						<span class="chip border-[#8B2E20]"><Icone id="recurso/ic-recurso-pic" />{cla.status.rotulo}{#if cla.status.pic !== null} · {cla.status.pic} PIC{/if}</span>
+						<span class="chip border-[var(--vermelhao-lo)]"><Icone id="recurso/ic-recurso-pic" />{cla.status.rotulo}{#if cla.status.pic !== null} · {cla.status.pic} PIC{/if}</span>
 					{/if}
 				</div>
 			</div>
 		</div>
 		<div class="flex flex-wrap gap-2 md:hidden">
-			<span class="chip border-[#8B2E20] text-xs {cla.vila.icone ? '' : 'sem-icone'}">{#if cla.vila.icone}<Icone id={cla.vila.icone} />{/if}{cla.vila.nome}</span>
-			{#if cla.kkg}<span class="chip border-[#C44536] bg-[#16110F] text-xs"><Icone id={cla.kkg.icone} />{cla.kkg.nome} · {cla.kkg.tipo}</span>{:else}<span class="chip sem-icone border-dashed border-[#8B2E20] text-xs">Sem Kekkei Genkai</span>{/if}
+			<span class="chip border-[var(--vermelhao-lo)] text-xs {cla.vila.icone ? '' : 'sem-icone'}">{#if cla.vila.icone}<Icone id={cla.vila.icone} />{/if}{cla.vila.nome}</span>
+			{#if cla.kkg}<span class="chip border-[var(--vermelhao)] bg-[#16110F] text-xs"><Icone id={cla.kkg.icone} />{cla.kkg.nome} · {cla.kkg.tipo}</span>{:else}<span class="chip sem-icone border-dashed border-[var(--vermelhao-lo)] text-xs">Sem Kekkei Genkai</span>{/if}
 		</div>
 		{#if cla.epigrafe}
 			<div class="lg:w-[360px] lg:flex-none"><Epigrafe texto={cla.epigrafe.texto} autor={cla.epigrafe.autor} sobreFaixa /></div>
@@ -156,7 +156,7 @@
 					</div>
 				{:else if tipo === 'kkg'}
 					{#if cla.kkg}
-						<span class="chip self-start border-[#8B2E20] bg-grena text-papel"><Icone id={cla.kkg.icone} />{cla.kkg.nome} · {cla.kkg.tipo}</span>
+						<span class="chip self-start border-[var(--vermelhao-lo)] bg-grena text-papel"><Icone id={cla.kkg.icone} />{cla.kkg.nome} · {cla.kkg.tipo}</span>
 						<Blocos blocos={s.blocos} jutsus={data.jutsus} habilidades={data.habilidades} />
 						{#if cla.kkg.tipo === 'Dōjutsu'}
 							<Destaque variante="atencao">

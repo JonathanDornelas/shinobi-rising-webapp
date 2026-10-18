@@ -45,7 +45,7 @@
 		<button
 			type="button"
 			onclick={() => paleta.abrir()}
-			class="mt-1.5 flex h-12 items-center gap-3 border-2 border-[#8B2E20] bg-[#16110F] px-3 text-left text-base text-[#B5A797] md:h-14 md:pr-2 md:pl-4 md:text-[17px] lg:mt-0 lg:shadow-[4px_4px_0_#000]"
+			class="mt-1.5 flex h-12 items-center gap-3 border-2 border-[var(--vermelhao-lo)] bg-[#16110F] px-3 text-left text-base text-[#B5A797] md:h-14 md:pr-2 md:pl-4 md:text-[17px] lg:mt-0 lg:shadow-[4px_4px_0_#000]"
 		>
 			<Traco nome="buscar" />
 			<span class="flex-1">Buscar regras, jutsus, clãs, itens…</span>
@@ -57,7 +57,7 @@
 <main class="mx-auto box-border flex w-full max-w-[1280px] flex-col gap-8 px-4 pt-4 pb-10 md:gap-10 md:px-6 md:pt-10 md:pb-16">
 	<div class="grid grid-cols-[minmax(0,1fr)] gap-3.5 md:gap-5 {progresso ? 'lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_minmax(0,1fr)]' : 'md:grid-cols-2'}">
 		{#if progresso}
-			<a href={progresso.secao ? `${progresso.href}#${progresso.secao}` : progresso.href} class="cartao-link flex flex-col gap-1.5 border-2 border-[#8B2E20] bg-grena p-3.5 text-papel md:gap-2.5 md:p-[18px] md:sombra-painel">
+			<a href={progresso.secao ? `${progresso.href}#${progresso.secao}` : progresso.href} class="cartao-link flex flex-col gap-1.5 border-2 border-[var(--vermelhao-lo)] bg-grena p-3.5 text-papel md:gap-2.5 md:p-[18px] md:sombra-painel">
 				<span class="t-rotulo-sm text-ouro">▸ Continuar leitura</span>
 				<span class="font-mincho text-xl leading-[26px] font-bold md:text-2xl md:leading-8">Cap. {progresso.capitulo} · {progresso.titulo}</span>
 				<span class="text-[13px] leading-[19px] text-papel-2 md:text-sm md:leading-[21px]">{progresso.secaoTitulo ? `Parou em ${progresso.secaoTitulo}` : 'Início do capítulo'}<span class="hidden md:inline"> · salvo neste dispositivo</span></span>

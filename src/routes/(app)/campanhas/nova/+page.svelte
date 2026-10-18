@@ -11,6 +11,7 @@
 	import {
 		APROVACOES,
 		CAPAS,
+		urlCapa,
 		dadosPadrao,
 		nomeCla,
 		nomeEra,
@@ -111,7 +112,7 @@
 {#if criada}
 	<main class="flex flex-1 items-start justify-center px-4 py-10 md:items-center">
 		<div class="camada flex w-full max-w-[560px] flex-col" role="status">
-			<img src="/covers/{criada.capa}-256.png" alt="" class="h-[208px] w-full border-b-2 border-carvao object-cover [image-rendering:pixelated]" />
+			<img src={urlCapa(criada.capa)} alt="" class="h-[208px] w-full border-b-2 border-carvao object-cover [image-rendering:pixelated]" />
 			<div class="flex items-center gap-5 p-6">
 				<img src="/illustrations/il-aprovado-96.png" width="96" height="96" alt="Selo de aprovado" class="carimbo flex-none [image-rendering:pixelated]" />
 				<div class="flex flex-col gap-1.5">
@@ -136,7 +137,7 @@
 					<li>
 						<button
 							type="button"
-							class="flex min-h-12 w-full items-center gap-2.5 px-3.5 text-left {atual ? 'bg-grena text-papel shadow-[inset_4px_0_0_#C44536]' : 'text-fg hover:bg-b3'}"
+							class="flex min-h-12 w-full items-center gap-2.5 px-3.5 text-left {atual ? 'bg-grena text-papel shadow-[inset_4px_0_0_var(--vermelhao)]' : 'text-fg hover:bg-b3'}"
 							aria-current={atual ? 'step' : undefined}
 							onclick={() => irPara(i)}
 						>
@@ -159,7 +160,7 @@
 				<div class="flex flex-col gap-1">
 					<span class="t-rotulo text-mut">Passo {passo + 1} de {PASSOS.length}</span>
 					<div class="flex gap-1 md:hidden" aria-hidden="true">
-						{#each PASSOS as _, i (i)}<span class="h-2 flex-1 border-2 border-ink" style:background={i <= passo ? '#C44536' : 'var(--b3)'}></span>{/each}
+						{#each PASSOS as _, i (i)}<span class="h-2 flex-1 border-2 border-ink" style:background={i <= passo ? 'var(--vermelhao)' : 'var(--b3)'}></span>{/each}
 					</div>
 					<h1 class="m-0 font-mincho text-[30px] leading-[38px] font-bold outline-none max-md:text-2xl" tabindex="-1" bind:this={titulo}>{PASSOS[passo]}</h1>
 				</div>

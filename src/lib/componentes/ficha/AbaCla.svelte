@@ -27,8 +27,8 @@
 {:else}
 	<div class="grid items-start gap-5 lg:grid-cols-2">
 		<div class="flex flex-col gap-4">
-			<div class="flex border-2 border-[#8B2E20] bg-b2 sombra-painel">
-				<div class="flex w-28 flex-none items-center justify-center border-r-2 border-[#8B2E20] bg-grena"><Brasao slug={cla.slug} kamon={cla.brasao?.kamon} cor={cla.brasao?.cor} tamanho={64} /></div>
+			<div class="flex border-2 border-[var(--vermelhao-lo)] bg-b2 sombra-painel">
+				<div class="flex w-28 flex-none items-center justify-center border-r-2 border-[var(--vermelhao-lo)] bg-grena"><Brasao slug={cla.slug} kamon={cla.brasao?.kamon} cor={cla.brasao?.cor} tamanho={64} /></div>
 				<div class="flex flex-col gap-1.5 p-3.5">
 					<span class="font-mincho text-[22px] leading-7 font-bold">Clã {cla.nome}</span>
 					<span class="text-sm leading-5 text-mut italic">{cla.epiteto} · {cla.kkg ? `KKG: ${cla.kkg}` : 'sem KKG'}</span>

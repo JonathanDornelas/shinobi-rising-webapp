@@ -80,7 +80,7 @@
 						href={c.href}
 						onclick={aoNavegar}
 						aria-current={on ? 'page' : undefined}
-						class="flex {altura} items-center gap-2.5 py-1 pr-3.5 pl-[22px] text-sm leading-5 {on ? 'bg-grena font-semibold text-papel shadow-[inset_4px_0_0_#C44536]' : 'font-medium hover:bg-b3'}"
+						class="flex {altura} items-center gap-2.5 py-1 pr-3.5 pl-[22px] text-sm leading-5 {on ? 'bg-grena font-semibold text-papel shadow-[inset_4px_0_0_var(--vermelhao)]' : 'font-medium hover:bg-b3'}"
 					>
 						<span class="t-num w-5 flex-none text-[13px]" style:color={on ? '#F2C14E' : 'var(--mut)'}>{n}</span>{c.titulo}
 					</a>
@@ -91,7 +91,7 @@
 								<a
 									href="#{s.id}"
 									onclick={aoNavegar}
-									class="flex min-h-8 items-center py-1 pr-3.5 pl-[54px] text-[13px] leading-[18px] {ativa ? 'font-semibold text-fg shadow-[inset_2px_0_0_#C44536]' : 'text-mut hover:text-fg'}"
+									class="flex min-h-8 items-center py-1 pr-3.5 pl-[54px] text-[13px] leading-[18px] {ativa ? 'font-semibold text-fg shadow-[inset_2px_0_0_var(--vermelhao)]' : 'text-mut hover:text-fg'}"
 									aria-current={ativa ? 'location' : undefined}>{s.titulo}</a
 								>
 							{/each}

@@ -2,7 +2,11 @@
 	// Passo 9 · Jutsus iniciais: Academia + clã já conhecidos; elemento; 2 de Rank E e 1 de Rank D (cap. 6).
 	import { ELEMENTOS, JUTSUS_ACADEMIA, JUTSUS_INICIAIS } from '#lib/personagem/dados.ts';
 	import type { Criador } from '#lib/personagem/criador.svelte.ts';
+	import { page } from '$app/state';
+	import { STATUS_CRIACAO } from '#lib/jutsus/status.ts';
+	import { hrefJutsu } from '#lib/jutsus/status.ts';
 	import { elementos, regrasCla } from '#lib/personagem/regras.ts';
+	import type { StatusCriacao } from '#lib/supabase/banco.ts';
 	import Icone from '../ui/Icone.svelte';
 
 	let { c }: { c: Criador } = $props();
@@ -21,6 +25,8 @@
 		else if (rank === 'D') c.ficha.jutsus.D = [slug];
 		else if (lista.length < JUTSUS_INICIAIS.E) c.ficha.jutsus.E = [...lista, slug];
 	}
+	// volta do criador de jutsus para este passo
+	const volta = $derived(`/campanhas/${page.params.id}/personagens/${page.params.pid}/editar?passo=9`);
 	const semAfinidade = (el: string | null) => (el && !meus.includes(el) ? `Exige afinidade com ${ELEMENTOS.find((e) => e.id === el)?.nome ?? el}` : '');
 </script>
 
@@ -45,7 +51,7 @@
 			title={fixo && fixo !== e.id ? `O clã ${cla?.nome} começa com ${ELEMENTOS.find((x) => x.id === fixo)?.nome}` : undefined}
 			class="inline-flex h-11 items-center gap-1 border-2 pr-3 pl-1 text-sm font-semibold text-fg disabled:opacity-50"
 			style:background="color-mix(in srgb, {e.cor} 12%, transparent)"
-			style:border-color={on ? '#C44536' : `color-mix(in srgb, ${e.cor} 55%, transparent)`}
+			style:border-color={on ? 'var(--vermelhao)' : `color-mix(in srgb, ${e.cor} 55%, transparent)`}
 			onclick={() => {
 				c.ficha.elemento = e.id;
 				if (c.ficha.segundoElemento === e.id) c.ficha.segundoElemento = null;
@@ -61,7 +67,7 @@
 	<div class="flex flex-wrap gap-2" role="radiogroup" aria-label="Segundo elemento">
 		{#each ELEMENTOS.filter((e) => e.id !== c.ficha.elemento) as e (e.id)}
 			{@const on = c.ficha.segundoElemento === e.id}
-			<button type="button" role="radio" aria-checked={on} disabled={!c.editavel} class="inline-flex h-11 items-center gap-1 border-2 pr-3 pl-1 text-sm font-semibold text-fg" style:border-color={on ? '#C44536' : 'var(--b3)'} onclick={() => (c.ficha.segundoElemento = e.id)}>
+			<button type="button" role="radio" aria-checked={on} disabled={!c.editavel} class="inline-flex h-11 items-center gap-1 border-2 pr-3 pl-1 text-sm font-semibold text-fg" style:border-color={on ? 'var(--vermelhao)' : 'var(--b3)'} onclick={() => (c.ficha.segundoElemento = e.id)}>
 				<Icone id="elemento/ic-elemento-{e.id}" />{e.nome}{on ? ' ✓' : ''}
 			</button>
 		{/each}
@@ -91,15 +97,19 @@
 						onchange={() => alternar(rank, j.slug)}
 					/>
 					<span class="flex min-w-0 flex-1 flex-col">
-						<span class="font-medium">{j.nome}</span>
+						<span class="flex flex-wrap items-center gap-1.5 font-medium">{j.nome}{#if j.criado}{@const st = STATUS_CRIACAO[j.criado.status as StatusCriacao]}<span class="border-2 px-1 py-0.5 font-pixel text-[11px] leading-none font-bold {on ? 'border-papel/60' : 'border-b3 text-mut'}">ORIGINAL · {st?.rotulo ?? j.criado.status}</span><a href={hrefJutsu(page.params.id!, j.criado.id, volta)} class="text-xs underline {on ? 'text-papel' : 'link'}" onclick={(e) => e.stopPropagation()}>abrir</a>{/if}</span>
 						<span class="text-xs leading-4 {on ? 'text-papel/80' : 'text-mut'}">{j.tipo} · {j.custo}{j.elemento ? ` · ${ELEMENTOS.find((e) => e.id === j.elemento)?.nome}` : ''}{motivo ? ` · ${motivo}` : ''}</span>
 					</span>
 				</label>
 			{/each}
-			{#if rank === 'D'}
-				<span class="flex min-h-10 cursor-not-allowed items-center justify-center gap-1.5 border-2 border-dashed border-mut font-pixel text-xs font-bold tracking-[0.06em] text-mut" title="O criador de jutsus chega no lote de Jutsus">
-					<Icone id="acao/ic-acao-criar-jutsu" class="opacity-60" />CRIAR JUTSU RANK D · EM BREVE
-				</span>
+			{#if c.editavel}
+				<form method="POST" action="/campanhas/{page.params.id}/jutsus?/criar">
+					<input type="hidden" name="personagem" value={page.params.pid} />
+					<input type="hidden" name="volta" value={volta} />
+					<button type="submit" class="flex min-h-10 w-full items-center justify-center gap-1.5 border-2 border-dashed border-mut font-pixel text-xs font-bold tracking-[0.06em] text-mut hover:border-fg hover:text-fg" title="Crie um jutsu original (cap. 20). Com {rank === 'E' ? '1 a 2' : '3 a 5'} PJ ele fica no Rank {rank} e aparece aqui; vai para o Mestre junto com a ficha.">
+						<Icone id="acao/ic-acao-criar-jutsu" />CRIAR JUTSU RANK {rank}
+					</button>
+				</form>
 			{/if}
 		</fieldset>
 	{/each}

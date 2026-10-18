@@ -42,7 +42,7 @@
 				aria-checked={on}
 				disabled={!c.editavel}
 				class="inline-flex h-11 items-center gap-1 border-2 pr-3 pl-1 text-sm font-semibold text-fg"
-				style:border-color={on ? '#C44536' : `color-mix(in srgb, ${e.cor} 55%, transparent)`}
+				style:border-color={on ? 'var(--vermelhao)' : `color-mix(in srgb, ${e.cor} 55%, transparent)`}
 				style:background="color-mix(in srgb, {e.cor} 12%, transparent)"
 				onclick={() => (c.ficha.especializacaoElemento = e.id)}><Icone id="elemento/ic-elemento-{e.id}" />{e.nome}{on ? ' ✓' : ''}</button
 			>

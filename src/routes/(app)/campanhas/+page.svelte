@@ -4,7 +4,7 @@
 	import CartaoCampanha from '#lib/componentes/campanha/CartaoCampanha.svelte';
 	import Girando from '#lib/componentes/ui/Girando.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
-	import { nomeEra } from '#lib/campanhas/dominio.ts';
+	import { nomeEra, urlCapa } from '#lib/campanhas/dominio.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
 	import type { PageProps } from './$types';
@@ -112,8 +112,8 @@
 		</div>
 
 		{#each data.convites as cv (cv.token)}
-			<div class="mx-4 flex flex-wrap items-center gap-x-4 gap-y-2 border-2 border-[#8B2E20] bg-grena px-3 py-2.5 text-papel sombra-painel md:mx-0">
-				<img src="/covers/{cv.capa}-256.png" width="128" height="48" alt="" class="h-12 w-32 border-2 border-carvao object-cover [image-rendering:pixelated] max-sm:hidden" />
+			<div class="mx-4 flex flex-wrap items-center gap-x-4 gap-y-2 border-2 border-[var(--vermelhao-lo)] bg-grena px-3 py-2.5 text-papel sombra-painel md:mx-0">
+				<img src={urlCapa(cv.capa)} width="128" height="48" alt="" class="h-12 w-32 border-2 border-carvao object-cover [image-rendering:pixelated] max-sm:hidden" />
 				<div class="flex min-w-[200px] flex-1 flex-col gap-0.5">
 					<span class="font-pixel text-xs leading-none font-bold tracking-[0.1em] text-[#F2C14E]">CONVITE PENDENTE</span>
 					<span class="text-[15px] leading-[22px] font-semibold">{cv.convidado_por ?? 'O Mestre'} convidou você para <b>{cv.campanha}</b> · {nomeEra(cv)}</span>
@@ -141,7 +141,7 @@
 						onclick={() => (escolhida = a.id)}
 					>
 						{on ? '▸ ' : ''}<span class="max-md:hidden">{a.nome}</span><span class="md:hidden">{a.curto}</span>
-						<span class="border-2 px-[5px] py-[3px] text-xs font-bold {on ? 'border-[#8B2E20]' : 'border-b3'}">{grupos[a.id].length}</span>
+						<span class="border-2 px-[5px] py-[3px] text-xs font-bold {on ? 'border-[var(--vermelhao-lo)]' : 'border-b3'}">{grupos[a.id].length}</span>
 					</button>
 				{/each}
 			</div>

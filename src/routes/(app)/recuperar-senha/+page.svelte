@@ -30,7 +30,7 @@
 	}
 </script>
 
-<PainelConta capa="capa-nevoa">
+<PainelConta capa="capa-kiri">
 	{#if enviado}
 		<div class="flex flex-col gap-3" role="status">
 			<img src="/illustrations/il-enviado-96.png" width="96" height="96" alt="" class="[image-rendering:pixelated]" />

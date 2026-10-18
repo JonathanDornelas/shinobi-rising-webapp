@@ -68,7 +68,7 @@ export async function carregarCampanha(locals: App.Locals, id: string, usuarioId
 	const [{ data: fichas }, { data: grupo }, { data: pedidos }, clasPend, jutsusPend, equipPend] = await Promise.all([
 		locals.supabase
 			.from('personagens')
-			.select('id, jogador_id, nome, status, situacao, nivel, xp, pt, resumo, estado, enviada_em, decidida_em, comentario_mestre, atualizada_em, epitafio, pre_gerado, excecao, ryo')
+			.select('id, jogador_id, nome, status, situacao, nivel, xp, pt, resumo, estado, enviada_em, decidida_em, comentario_mestre, atualizada_em, epitafio, pre_gerado, excecao, ryo, retrato')
 			.eq('campanha_id', id)
 			.neq('status', 'rejeitada')
 			.order('criada_em'),

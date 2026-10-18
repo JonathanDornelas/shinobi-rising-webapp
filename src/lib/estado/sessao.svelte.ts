@@ -5,6 +5,7 @@ import { refreshAll } from '$app/navigation';
 import { supabase } from '#lib/supabase/cliente.ts';
 import type { Notificacao, Perfil, Preferencias } from '#lib/supabase/banco.ts';
 import { preferencias } from './preferencias.svelte.ts';
+import { normalizarVisual } from './visual.ts';
 
 export interface UsuarioSessao {
 	id: string;
@@ -69,6 +70,7 @@ class Sessao {
 		const p = data.preferencias;
 		if (p.tema && p.tema !== preferencias.tema) preferencias.definirTema(p.tema);
 		if (p.leitura && p.leitura !== preferencias.leitura) preferencias.definirLeitura(p.leitura);
+		if (p.visual && JSON.stringify(normalizarVisual(p.visual)) !== JSON.stringify(preferencias.visual)) preferencias.definirVisual(normalizarVisual(p.visual));
 	}
 
 	async carregarNotificacoes() {

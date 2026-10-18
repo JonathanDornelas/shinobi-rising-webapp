@@ -39,7 +39,7 @@
 <svelte:window onclick={fora} onkeydown={(e) => e.key === 'Escape' && ((sinoAberto = false), (menuAberto = false))} />
 
 {#snippet item(href: string, rotulo: string, ativo: boolean)}
-	<a {href} class="p-3 {ativo ? 'text-b0fg shadow-[inset_0_-3px_0_#C44536]' : 'text-b0mut hover:text-b0fg'}" aria-current={ativo ? 'page' : undefined}>{rotulo}</a>
+	<a {href} class="p-3 {ativo ? 'text-b0fg shadow-[inset_0_-3px_0_var(--vermelhao)]' : 'text-b0mut hover:text-b0fg'}" aria-current={ativo ? 'page' : undefined}>{rotulo}</a>
 {/snippet}
 
 <header class="relative z-40 flex h-14 items-center gap-2.5 border-b-2 border-ink bg-b0 pr-1.5 pl-3 md:h-16 md:gap-4 md:px-5 lg:gap-6 lg:px-6 print:hidden">

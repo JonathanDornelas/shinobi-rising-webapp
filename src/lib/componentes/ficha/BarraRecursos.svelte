@@ -7,7 +7,7 @@
 	let { f }: { f: FichaJogo } = $props();
 	type K = 'pv' | 'pc' | 'pe';
 	const BARRAS: { k: K; rotulo: string; cor: string; brilho: string }[] = [
-		{ k: 'pv', rotulo: 'PV', cor: '#C44536', brilho: '#E07A5F' },
+		{ k: 'pv', rotulo: 'PV', cor: 'var(--vermelhao)', brilho: '#E07A5F' },
 		{ k: 'pc', rotulo: 'PC', cor: '#2D7FB8', brilho: '#7FD3E6' },
 		{ k: 'pe', rotulo: 'PE', cor: '#D29A1E', brilho: '#F2C14E' }
 	];
@@ -57,7 +57,7 @@
 				</span>
 				<span class="relative h-3.5 border-2 border-ink bg-b3" aria-hidden="true">
 					<span class="absolute inset-y-0 left-0 transition-[width] duration-150 ease-out" style:width={largura(v, m)} style:background={b.cor} style:box-shadow="inset 0 3px 0 {b.brilho}"></span>
-					{#if b.k === 'pv' && v > 0 && v < m / 2}<span class="absolute inset-y-0 left-0" style:width={largura(v, m)} style="background: repeating-linear-gradient(135deg, transparent 0 4px, #8B2E20 4px 8px)"></span>{/if}
+					{#if b.k === 'pv' && v > 0 && v < m / 2}<span class="absolute inset-y-0 left-0" style:width={largura(v, m)} style="background: repeating-linear-gradient(135deg, transparent 0 4px, var(--vermelhao-lo) 4px 8px)"></span>{/if}
 					<span class="absolute inset-0" style="background: repeating-linear-gradient(90deg, transparent 0 calc(10% - 2px), var(--ink) calc(10% - 2px) 10%)"></span>
 				</span>
 			</button>

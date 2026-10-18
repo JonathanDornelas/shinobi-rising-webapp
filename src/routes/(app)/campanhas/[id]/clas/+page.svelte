@@ -43,7 +43,7 @@
 		kkg: c.kkg ? c.resumo.kkg || 'KKG' : null,
 		slug: null,
 		kamon: c.resumo.kamon ?? '01',
-		cor: c.resumo.cor ?? '#C44536',
+		cor: c.resumo.cor ?? 'var(--vermelhao)',
 		status: c.status,
 		rodape: `${nomeMembro(c.autor_id)} · v${c.versao} · ${c.status === 'rascunho' ? 'rascunho' : c.status === 'em_revisao' ? 'enviado' : 'atualizado'} ${tempoRelativo(c.enviado_em && c.status === 'em_revisao' ? c.enviado_em : c.atualizado_em)}`,
 		href: hrefCla(k.id, c.id),
@@ -108,7 +108,7 @@
 				class="flex items-center gap-1.5 px-4 py-[15px] font-pixel text-sm leading-none font-semibold tracking-[0.05em] whitespace-nowrap {on ? 'bg-vermelhao text-white' : 'text-mut hover:text-fg'}"
 				onclick={() => (aba = a.id)}
 			>
-				{on ? '▸ ' : ''}{a.nome}<span class="border-2 px-1 py-0.5 text-xs font-bold {on ? 'border-[#8B2E20]' : 'border-b3'}">{listas[a.id].length}</span>
+				{on ? '▸ ' : ''}{a.nome}<span class="border-2 px-1 py-0.5 text-xs font-bold {on ? 'border-[var(--vermelhao-lo)]' : 'border-b3'}">{listas[a.id].length}</span>
 			</button>
 		{/each}
 	</div>
@@ -133,7 +133,7 @@
 						</span>
 						<span class="flex flex-wrap items-center gap-1.5 px-3 py-2.5">
 							<span class="border-2 border-b3 p-2 text-xs leading-none font-semibold">{c.vila}</span>
-							<span class="border-2 p-2 text-xs leading-none font-semibold {c.kkg ? 'border-[#8B2E20] bg-grena text-papel' : 'border-b3 text-mut'}">{c.kkg ?? 'Sem KKG'}</span>
+							<span class="border-2 p-2 text-xs leading-none font-semibold {c.kkg ? 'border-[var(--vermelhao-lo)] bg-grena text-papel' : 'border-b3 text-mut'}">{c.kkg ?? 'Sem KKG'}</span>
 							{#if st}<span class="inline-flex h-9 items-center gap-0.5 border-2 border-ink pr-2 text-xs leading-none font-semibold {st.classe}"><Icone id={st.icone} />{st.rotulo}</span>{/if}
 						</span>
 						<span class="mt-auto px-3 pb-3 text-xs leading-4 text-mut">{c.rodape}</span>

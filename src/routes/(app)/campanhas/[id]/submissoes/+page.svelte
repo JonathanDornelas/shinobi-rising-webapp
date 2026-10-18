@@ -50,7 +50,7 @@
 					{@const on = atual?.chave === s.chave}
 					{@const b = badge(s)}
 					<li>
-						<button type="button" class="flex w-full items-center gap-2.5 border-b-2 border-b3 px-3 py-2 text-left {on ? 'bg-grena text-papel shadow-[inset_4px_0_0_#C44536]' : 'hover:bg-b3'}" aria-current={on || undefined} onclick={() => (selecionado = s.chave)}>
+						<button type="button" class="flex w-full items-center gap-2.5 border-b-2 border-b3 px-3 py-2 text-left {on ? 'bg-grena text-papel shadow-[inset_4px_0_0_var(--vermelhao)]' : 'hover:bg-b3'}" aria-current={on || undefined} onclick={() => (selecionado = s.chave)}>
 							<Icone id={s.icone} />
 							<span class="flex min-w-0 flex-1 flex-col">
 								<span class="truncate text-[15px] leading-5 font-semibold">{s.titulo}</span>

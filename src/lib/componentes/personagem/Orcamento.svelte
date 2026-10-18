@@ -9,7 +9,7 @@
 	}
 	let { rotulo, usados, limite, extra, fixo = true }: Props = $props();
 	const restantes = $derived(limite - usados);
-	const cor = $derived(restantes === 0 ? 'var(--ok)' : restantes < 0 ? 'var(--err)' : '#C44536');
+	const cor = $derived(restantes === 0 ? 'var(--ok)' : restantes < 0 ? 'var(--err)' : 'var(--vermelhao)');
 	const texto = $derived(
 		restantes > 0 ? `${usados} de ${limite} usados · faltam ${restantes}` : restantes === 0 ? `${limite} de ${limite} usados · completo` : `${usados} de ${limite} · ${-restantes} acima do limite`
 	);

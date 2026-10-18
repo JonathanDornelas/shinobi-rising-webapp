@@ -24,7 +24,7 @@
 		aria-modal="true"
 		aria-label={rotulo}
 		tabindex="-1"
-		class="absolute right-0 bottom-0 left-0 flex max-h-[88vh] flex-col border-t-2 border-[#8B2E20] bg-b2 shadow-[0_-6px_0_#000] outline-none"
+		class="absolute right-0 bottom-0 left-0 flex max-h-[88vh] flex-col border-t-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[0_-6px_0_#000] outline-none"
 		style:top={topo}
 		style:animation="subir 200ms ease-out"
 		{@attach prenderFoco(aoFechar)}
