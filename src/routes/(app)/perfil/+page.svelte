@@ -156,12 +156,12 @@
 		}
 		await supabase().auth.signOut();
 		toasts.mostrar('Conta excluída. Até a próxima missão.', 'info', 6000);
-		await goto('/', { replaceState: true, invalidateAll: true });
+		await goto('/', { replace: true, refreshAll: true });
 	}
 
 	async function sair() {
 		await sessao.sair();
-		await goto('/', { invalidateAll: true });
+		await goto('/', { refreshAll: true });
 	}
 </script>
 

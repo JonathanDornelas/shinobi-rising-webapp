@@ -1,5 +1,5 @@
 // Ações de convite usadas no painel (C3) e em Membros (C5), no navegador.
-import { invalidateAll } from '$app/navigation';
+import { refreshAll } from '$app/navigation';
 import { toasts } from '#lib/estado/toasts.svelte.ts';
 import { expiraEm } from '#lib/formatar.ts';
 import { supabase } from '#lib/supabase/cliente.ts';
@@ -44,12 +44,12 @@ export async function revogarConvite(id: string) {
 	const { error } = await supabase().from('convites').update({ status: 'revogado' }).eq('id', id);
 	if (error) toasts.mostrar('Não foi possível revogar. Tente de novo.', 'erro');
 	else toasts.mostrar('Convite revogado.', 'info');
-	await invalidateAll();
+	await refreshAll();
 }
 
 export async function reenviarConvite(id: string) {
 	const { error } = await supabase().rpc('reenviar_convite', { convite: id });
 	if (error) toasts.mostrar('Não foi possível reenviar. Tente de novo.', 'erro');
 	else toasts.mostrar('Convite renovado por mais 7 dias.', 'sucesso');
-	await invalidateAll();
+	await refreshAll();
 }

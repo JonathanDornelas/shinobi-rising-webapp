@@ -2,7 +2,7 @@
 	// P2 · Criação de personagem em 12 passos (cap. 6). Também é a ficha em leitura (enviada, aprovada) e a tela em que o
 	// Mestre decide sobre a ficha em revisão. Salva sozinho enquanto o jogador edita.
 	import { onDestroy } from 'svelte';
-	import { goto, invalidateAll } from '$app/navigation';
+	import { goto, refreshAll } from '$app/navigation';
 	import PassoAtributos from '#lib/componentes/personagem/PassoAtributos.svelte';
 	import PassoBackground from '#lib/componentes/personagem/PassoBackground.svelte';
 	import PassoCla from '#lib/componentes/personagem/PassoCla.svelte';
@@ -25,7 +25,7 @@
 	import { Criador } from '#lib/personagem/criador.svelte.ts';
 	import { normalizarFicha, PASSOS, sinal, type FichaDados } from '#lib/personagem/regras.ts';
 	import { APROVACAO_PADRAO } from '#lib/campanhas/dominio.ts';
-	import { STATUS_FICHA } from '#lib/personagem/status.ts';
+	import { hrefFicha, STATUS_FICHA } from '#lib/personagem/status.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 	import { dataCurta } from '#lib/formatar.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
@@ -98,7 +98,7 @@
 
 	async function salvarESair() {
 		await garantirSalvo();
-		await goto(`/campanhas/${k.id}`, { invalidateAll: true });
+		await goto(`/campanhas/${k.id}`, { refreshAll: true });
 	}
 
 	// ---------------------------------------------------------------- envio
@@ -124,7 +124,7 @@
 		const { error } = await supabase().rpc('retirar_ficha', { ficha: p0.id });
 		if (error) return toasts.mostrar('Não foi possível retirar. O Mestre pode já ter decidido.', 'erro');
 		toasts.mostrar('Ficha de volta para rascunho.', 'info');
-		await invalidateAll();
+		await refreshAll();
 		location.reload();
 	}
 
@@ -147,7 +147,7 @@
 		if (error) return (erroDecisao = 'Não foi possível registrar a decisão. Tente de novo.');
 		modal = null;
 		toasts.mostrar(decisao === 'aprovada' ? 'Ficha aprovada.' : decisao === 'ajustes' ? 'Ajustes pedidos ao jogador.' : 'Ficha rejeitada.', 'sucesso');
-		await goto(`/campanhas/${k.id}`, { invalidateAll: true });
+		await goto(`/campanhas/${k.id}`, { refreshAll: true });
 	}
 
 	// ---------------------------------------------------------------- navegação
@@ -367,7 +367,7 @@
 				{resultado === 'aprovada' ? 'O grupo já vê o personagem no painel da campanha.' : `${data.mestre} recebe uma notificação. Você é avisado quando ele aprovar ou pedir ajustes.`}
 			</p>
 			<div class="mt-2 flex flex-wrap justify-center gap-2">
-				<button type="button" class="btn-jogo btn-primario min-h-12" onclick={() => location.reload()}>VER FICHA</button>
+				<button type="button" class="btn-jogo btn-primario min-h-12" onclick={() => goto(hrefFicha(k.id, p0.id), { refreshAll: true })}>VER FICHA</button>
 				<a href="/campanhas/{k.id}" class="btn-jogo btn-contorno min-h-12" data-sveltekit-reload>VOLTAR À CAMPANHA</a>
 			</div>
 		</div>

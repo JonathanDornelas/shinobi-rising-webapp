@@ -7,7 +7,7 @@
 
 	// A home é estática; quem já entrou segue direto para as campanhas.
 	$effect(() => {
-		if (sessao.pronta && sessao.usuario) goto('/campanhas', { replaceState: true });
+		if (sessao.pronta && sessao.usuario) goto('/campanhas', { replace: true });
 	});
 
 	const recursos = [

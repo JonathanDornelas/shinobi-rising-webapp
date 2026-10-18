@@ -2,6 +2,7 @@
 import { clas, equipamentos, especializacoes, jutsus } from '#lib/livro/dados.server.ts';
 import type { Bloco, Trecho } from '#lib/livro/tipos.ts';
 import { CLAS, ESPECIALIZACOES, JUTSUS_ACADEMIA, PESOS } from './dados.ts';
+import type { JutsuFicha } from './progressao.ts';
 import type { ItemLoja, JutsuOpcao } from './regras.ts';
 
 const texto = (t: Trecho[] | Trecho[][] | null | undefined): string =>
@@ -104,3 +105,47 @@ export function catalogoCriacao(clasPermitidos: string[]) {
 	return { loja: [...armas, ...itensUtilitarios()], jutsusE, jutsusD, conhecidos, clas: listaClas, especializacoes: esps, armas: armas.map((a) => a.nome) };
 }
 export type CatalogoCriacao = ReturnType<typeof catalogoCriacao>;
+
+function jutsuFicha(j: (typeof jutsus)[number]): JutsuFicha {
+	return {
+		slug: j.slug,
+		nome: j.nome,
+		rank: j.rank,
+		tipo: j.tipo,
+		custo: j.custo,
+		custoNum: j.custoNum,
+		elemento: j.elemento,
+		cla: j.cla,
+		origem: j.origem,
+		efeito: texto(j.efeito),
+		info: j.info
+	};
+}
+
+/** Catálogo da ficha em jogo (P3, P4, P5): jutsus gerais e do clã, marcos e dados do clã, loja e especializações. */
+export function catalogoFicha(claSlug: string | null) {
+	const base = catalogoCriacao(claSlug ? [claSlug] : []);
+	const doCla = claSlug ? jutsus.filter((j) => j.cla === claSlug) : [];
+	const cla = claSlug ? clas.find((c) => c.slug === claSlug) : undefined;
+	return {
+		loja: base.loja,
+		especializacoes: base.especializacoes,
+		armas: base.armas,
+		jutsus: [...jutsus.filter((j) => !j.cla), ...doCla].map(jutsuFicha),
+		jutsusDoCla: doCla.map((j) => ({ slug: j.slug, nome: j.nome })),
+		cla: cla
+			? {
+					slug: cla.slug,
+					nome: cla.nome,
+					epiteto: cla.epiteto,
+					kkg: cla.kkg?.nome ?? null,
+					status: cla.status?.rotulo ?? null,
+					bonus: cla.bonus.map((b) => b.texto),
+					relacoes: cla.relacoes.map((r) => ({ nome: r.nome, relacao: r.relacao })),
+					obrigacao: texto(cla.obrigacao),
+					marcos: cla.marcos
+				}
+			: null
+	};
+}
+export type CatalogoFicha = ReturnType<typeof catalogoFicha>;

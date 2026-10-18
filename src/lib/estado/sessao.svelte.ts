@@ -1,7 +1,7 @@
 // Sessão no navegador: usuário, perfil e notificações (com tempo real).
 // As páginas da documentação são pré-renderizadas sem sessão; aqui ela é lida dos cookies.
 import type { RealtimeChannel } from '@supabase/supabase-js';
-import { invalidateAll } from '$app/navigation';
+import { refreshAll } from '$app/navigation';
 import { supabase } from '#lib/supabase/cliente.ts';
 import type { Notificacao, Perfil, Preferencias } from '#lib/supabase/banco.ts';
 import { preferencias } from './preferencias.svelte.ts';
@@ -42,7 +42,7 @@ class Sessao {
 			const anterior = this.usuario?.id;
 			this.definirUsuario(u ? { id: u.id, email: u.email ?? '', nome: (u.user_metadata?.nome as string) ?? '' } : null);
 			this.pronta = true;
-			if (evento === 'SIGNED_OUT' || (evento === 'SIGNED_IN' && anterior !== u?.id)) invalidateAll();
+			if (evento === 'SIGNED_OUT' || (evento === 'SIGNED_IN' && anterior !== u?.id)) refreshAll();
 		});
 	}
 

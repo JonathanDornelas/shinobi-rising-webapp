@@ -36,7 +36,7 @@
 		falha = null;
 		const { error } = await supabase().auth.signInWithPassword({ email: email.trim(), password: senha });
 		if (!error) {
-			await goto(volta, { replaceState: true, invalidateAll: true });
+			await goto(volta, { replace: true, refreshAll: true });
 			return;
 		}
 		enviando = false;

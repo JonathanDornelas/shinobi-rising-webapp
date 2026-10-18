@@ -81,7 +81,7 @@
 			return;
 		}
 		if (data.session) {
-			await goto(volta, { replaceState: true, invalidateAll: true });
+			await goto(volta, { replace: true, refreshAll: true });
 			return;
 		}
 		enviadoPara = email.trim();

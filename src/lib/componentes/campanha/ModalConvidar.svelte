@@ -1,7 +1,7 @@
 <script lang="ts">
 	// C5 · Modal "Convidar jogadores": abas E-MAIL, LINK e CÓDIGO.
 	// O app ainda não envia e-mails: quem já tem conta recebe o aviso no sino; para os outros, o Mestre manda o link.
-	import { invalidateAll } from '$app/navigation';
+	import { refreshAll } from '$app/navigation';
 	import { GRUPO_SUGERIDO } from '#lib/campanhas/dominio.ts';
 	import { copiar, copiarConvite, linkConvite, situacaoConvite, type ConviteResumo } from '#lib/campanhas/convites.ts';
 	import { emailValido } from '#lib/conta/regras.ts';
@@ -62,7 +62,7 @@
 		enviados = data.map((d) => ({ email: d.email ?? '', token: d.token }));
 		emails = [];
 		mensagem = '';
-		await invalidateAll();
+		await refreshAll();
 	}
 
 	// ---------------------------------------------------------------- link e código
@@ -91,14 +91,14 @@
 		});
 		ocupado = false;
 		if (error) return toasts.mostrar('Não foi possível gerar o convite. Tente de novo.', 'erro');
-		await invalidateAll();
+		await refreshAll();
 	}
 	async function revogar(id: string) {
 		ocupado = true;
 		await supabase().from('convites').update({ status: 'revogado' }).eq('id', id);
 		ocupado = false;
 		toasts.mostrar('Convite revogado. O link antigo deixa de funcionar.', 'info');
-		await invalidateAll();
+		await refreshAll();
 	}
 
 	const acima = $derived(pessoas + (aba === 'email' ? emails.length : 0) - GRUPO_SUGERIDO.max);

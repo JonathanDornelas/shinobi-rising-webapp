@@ -1,6 +1,6 @@
 <script lang="ts">
 	// C7 · Configurações da campanha: seções recolhíveis com salvamento por seção, regras da mesa e zona de perigo.
-	import { goto, invalidateAll } from '$app/navigation';
+	import { goto, refreshAll } from '$app/navigation';
 	import FormAmbientacao from '#lib/componentes/campanha/FormAmbientacao.svelte';
 	import FormAprovacao from '#lib/componentes/campanha/FormAprovacao.svelte';
 	import FormIdentidade from '#lib/componentes/campanha/FormIdentidade.svelte';
@@ -78,7 +78,7 @@
 			return;
 		}
 		estado[s] = { tipo: 'salvo', em: Date.now() };
-		await invalidateAll();
+		await refreshAll();
 	}
 
 	// ---------------------------------------------------------------- regras da mesa
@@ -105,7 +105,7 @@
 		estado.regras = { tipo: 'salvando' };
 		const { error } = await supabase().from('campanhas').update({ regras_mesa: regras }).eq('id', c.id);
 		estado.regras = error ? { tipo: 'erro' } : { tipo: 'salvo', em: Date.now() };
-		if (!error) await invalidateAll();
+		if (!error) await refreshAll();
 	}
 
 	// ---------------------------------------------------------------- zona de perigo
@@ -146,13 +146,13 @@
 		acao = null;
 		if (feita === 'excluir') {
 			toasts.mostrar(`${c.nome} foi excluída.`, 'info');
-			await goto('/campanhas', { invalidateAll: true });
+			await goto('/campanhas', { refreshAll: true });
 		} else if (feita === 'transferir') {
 			toasts.mostrar(`${jogadores.find((j) => j.id === novoMestre)?.nome} agora é o Mestre.`, 'sucesso');
-			await goto(`/campanhas/${c.id}`, { invalidateAll: true });
+			await goto(`/campanhas/${c.id}`, { refreshAll: true });
 		} else {
 			toasts.mostrar(arquivada ? 'Campanha desarquivada.' : 'Campanha arquivada.', 'info');
-			await invalidateAll();
+			await refreshAll();
 		}
 	}
 

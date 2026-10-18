@@ -72,11 +72,12 @@ describe('revisão', () => {
 		expect(n.texto).toBe('Kaito pediu ajustes na ficha de Hana Nara');
 	});
 
-	it('em ajustes o dono edita e reenvia; aprovada fica visível para o grupo', async () => {
+	it('em ajustes o dono edita e reenvia; aprovada aparece no resumo público do grupo', async () => {
 		await banco.como(aiko, `update personagens set dados = '{"versao":1}' where id = $1`, [ficha]);
 		await banco.como(aiko, `select enviar_ficha($1)`, [ficha]);
 		await banco.como(kaito, `select decidir_ficha($1, 'aprovada')`, [ficha]);
-		expect(await banco.como(bruno, `select nome, status from personagens`)).toEqual([{ nome: 'Hana Nara', status: 'aprovada' }]);
+		expect(await banco.como(bruno, `select nome from personagens_do_grupo($1)`, [campanha])).toEqual([{ nome: 'Hana Nara' }]);
+		expect(await banco.como(bruno, `select nome from personagens`)).toEqual([]);
 		await expect(banco.como(aiko, `select enviar_ficha($1)`, [ficha])).rejects.toThrow(/já foi enviada/);
 	});
 

@@ -15,7 +15,7 @@
 	const itens = $derived<Item[]>(
 		([
 			{ chave: 'visao', nome: 'Visão geral', curto: 'VISÃO', icone: 'campanhas', href: base },
-			{ chave: 'personagens', nome: 'Personagens', curto: 'PERSONAGENS', icone: 'personagens' },
+			{ chave: 'personagens', nome: 'Personagens', curto: 'PERSONAGENS', icone: 'personagens', href: `${base}/personagens` },
 			{ grupo: 'BIBLIOTECA' },
 			{ chave: 'clas', nome: 'Clãs', curto: 'CLÃS', icone: 'clas', recuo: true },
 			{ chave: 'jutsus', nome: 'Jutsus', curto: 'JUTSUS', icone: 'jutsus', recuo: true },
@@ -30,7 +30,8 @@
 		] as (Item | null)[]).filter((i): i is Item => !!i)
 	);
 	const links = $derived(itens.filter((i): i is Exclude<Item, { grupo: string }> => !('grupo' in i)));
-	const ativo = (href?: string) => !!href && page.url.pathname === href;
+	// a visão geral só acende na própria página; as outras seções também nas subpáginas (ex.: uma ficha em Personagens)
+	const ativo = (href?: string) => !!href && (page.url.pathname === href || (href !== base && page.url.pathname.startsWith(`${href}/`)));
 	const EM_BREVE = 'Chega em um próximo lote';
 
 	let recolhido = $state(false);

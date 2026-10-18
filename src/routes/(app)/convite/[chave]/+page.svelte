@@ -1,6 +1,6 @@
 <script lang="ts">
 	// C6 · Aceitar convite: válido, visitante, já é membro, outro e-mail, expirado, revogado, esgotado e afins.
-	import { goto, invalidateAll } from '$app/navigation';
+	import { goto, refreshAll } from '$app/navigation';
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
 	import Girando from '#lib/componentes/ui/Girando.svelte';
 	import { rotuloEra } from '#lib/campanhas/dominio.ts';
@@ -26,11 +26,11 @@
 		ocupado = null;
 		if (error || !id) {
 			falha = 'Este convite não está mais disponível.';
-			await invalidateAll();
+			await refreshAll();
 			return;
 		}
 		toasts.mostrar(`Bem-vindo a ${k?.nome}!`, 'sucesso');
-		await goto(`/campanhas/${id}`, { invalidateAll: true });
+		await goto(`/campanhas/${id}`, { refreshAll: true });
 	}
 
 	async function recusar() {
@@ -40,13 +40,13 @@
 		ocupado = null;
 		if (error) return (falha = 'Não foi possível recusar agora. Tente de novo.');
 		toasts.mostrar('Convite recusado. O Mestre fica sabendo.', 'info');
-		await goto('/campanhas', { invalidateAll: true });
+		await goto('/campanhas', { refreshAll: true });
 	}
 
 	async function trocarConta() {
 		ocupado = 'trocar';
 		await sessao.sair();
-		await goto(`/entrar?volta=${volta}`, { invalidateAll: true });
+		await goto(`/entrar?volta=${volta}`, { refreshAll: true });
 	}
 
 	type Estado = { imagem: string; titulo: string; texto: string; borda?: string };

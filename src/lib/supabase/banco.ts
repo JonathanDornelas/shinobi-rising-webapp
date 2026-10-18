@@ -100,6 +100,50 @@ export type Personagem = {
 	decidida_em: string | null;
 	criada_em: string;
 	atualizada_em: string;
+	situacao: SituacaoFicha;
+	estado: Json;
+	inventario: Json | null;
+	ryo: number;
+	pt: number;
+	epitafio: string | null;
+	falecido_em: string | null;
+}
+
+export type SituacaoFicha = 'ativo' | 'falecido' | 'arquivado';
+
+export type RegistroFicha = {
+	id: number;
+	personagem_id: string;
+	ator_id: string | null;
+	tipo: string;
+	texto: string;
+	icone: string;
+	criado_em: string;
+}
+
+export type PedidoPt = {
+	id: string;
+	personagem_id: string;
+	campanha_id: string;
+	autor_id: string | null;
+	sessao: string;
+	semanas: number;
+	pt: number;
+	descricao: string;
+	status: 'pendente' | 'aprovado' | 'recusado';
+	comentario: string | null;
+	criado_em: string;
+	decidido_em: string | null;
+}
+
+/** Linha de personagens_do_grupo(): o que o grupo vê de uma ficha aprovada. */
+export type PersonagemPublico = {
+	id: string;
+	jogador_id: string;
+	nome: string;
+	nivel: number;
+	situacao: SituacaoFicha;
+	resumo: Json;
 }
 
 export type Notificacao = {
@@ -199,6 +243,12 @@ export type Database = {
 				'campanha_id' | 'jogador_id',
 				[Rel<'personagens_campanha_id_fkey', 'campanha_id', 'campanhas'>, Rel<'personagens_jogador_id_fkey', 'jogador_id', 'perfis'>]
 			>;
+			ficha_registros: Tabela<RegistroFicha, 'personagem_id' | 'tipo' | 'texto', [Rel<'ficha_registros_personagem_id_fkey', 'personagem_id', 'personagens'>, Rel<'ficha_registros_ator_id_fkey', 'ator_id', 'perfis'>]>;
+			pedidos_pt: Tabela<
+				PedidoPt,
+				'personagem_id' | 'campanha_id' | 'sessao' | 'semanas' | 'pt' | 'descricao',
+				[Rel<'pedidos_pt_personagem_id_fkey', 'personagem_id', 'personagens'>, Rel<'pedidos_pt_campanha_id_fkey', 'campanha_id', 'campanhas'>]
+			>;
 			atividades: Tabela<Atividade, 'campanha_id' | 'tipo' | 'texto', [Rel<'atividades_campanha_id_fkey', 'campanha_id', 'campanhas'>]>;
 		};
 		Views: { [_ in never]: never };
@@ -213,6 +263,18 @@ export type Database = {
 			enviar_ficha: { Args: { ficha: string }; Returns: StatusFicha };
 			retirar_ficha: { Args: { ficha: string }; Returns: undefined };
 			decidir_ficha: { Args: { ficha: string; decisao: StatusFicha; comentario?: string | null }; Returns: undefined };
+			personagens_do_grupo: { Args: { campanha: string }; Returns: PersonagemPublico[] };
+			atualizar_estado: { Args: { ficha: string; estado: Json; descricao: string }; Returns: undefined };
+			atualizar_inventario: { Args: { ficha: string; inventario: Json; ryo: number; descricao: string }; Returns: undefined };
+			subir_nivel: { Args: { ficha: string; dados: Json; resumo: Json; estado: Json; pt_marcos?: number }; Returns: number };
+			treinar: { Args: { ficha: string; dados: Json; resumo: Json; custo: number; descricao: string }; Returns: number };
+			solicitar_pt: { Args: { ficha: string; sessao: string; semanas: number; descricao: string }; Returns: string };
+			decidir_pedido_pt: { Args: { pedido: string; aprovar: boolean; comentario?: string | null }; Returns: undefined };
+			conceder_recompensa: {
+				Args: { campanha: string; fichas: string[]; xp: number; pt: number; ryo: number; motivo: string; restaurar_pd?: boolean; renovar_pic?: boolean };
+				Returns: number;
+			};
+			definir_situacao: { Args: { ficha: string; situacao: SituacaoFicha; epitafio?: string | null }; Returns: undefined };
 		};
 		Enums: { papel: Papel; tipo_convite: TipoConvite; status_convite: StatusConvite; status_ficha: StatusFicha };
 		CompositeTypes: { [_ in never]: never };

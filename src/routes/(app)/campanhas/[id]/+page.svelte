@@ -1,14 +1,18 @@
 <script lang="ts">
 	// C3 · Painel do Mestre e C4 · Painel do Jogador. Widgets que dependem de fichas, submissões e NPCs
 	// mostram o estado vazio até os próximos lotes.
-	import { goto, invalidateAll } from '$app/navigation';
+	import { goto, refreshAll } from '$app/navigation';
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
 	import Girando from '#lib/componentes/ui/Girando.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import Modal from '#lib/componentes/ui/Modal.svelte';
 	import Retrato from '#lib/componentes/ui/Retrato.svelte';
 	import SeloStatus from '#lib/componentes/personagem/SeloStatus.svelte';
-	import { hrefFicha } from '#lib/personagem/status.ts';
+	import ModalRecompensas from '#lib/componentes/campanha/ModalRecompensas.svelte';
+	import { progressoXp } from '#lib/personagem/progressao.ts';
+	import { SESSOES_TREINO } from '#lib/personagem/dados.ts';
+	import { numero } from '#lib/formatar.ts';
+	import { hrefEditar, hrefFicha, hrefNivel } from '#lib/personagem/status.ts';
 	import { sinal } from '#lib/personagem/regras.ts';
 	import { nomeEra, rankSugerido } from '#lib/campanhas/dominio.ts';
 	import { regrasEmHtml } from '#lib/campanhas/texto.ts';
@@ -25,10 +29,24 @@
 	const mestre = $derived(data.papel === 'mestre');
 	const jogadores = $derived(data.membros.filter((m) => m.papel === 'jogador'));
 	const arquivada = $derived(!!c.arquivada_em);
-	const SEM_FICHAS = 'Chega com a ficha de personagem e o XP, no próximo lote';
-
 	// ---------------------------------------------------------------- fichas
-	const fichaDe = (jogador: string) => data.personagens.find((p) => p.jogador_id === jogador);
+	/** A ficha ativa do jogador (falecidas e arquivadas ficam na lista de Personagens). */
+	const fichaDe = (jogador: string) => data.personagens.find((p) => p.jogador_id === jogador && p.situacao === 'ativo');
+	const ativas = $derived(data.personagens.filter((p) => p.status === 'aprovada' && p.situacao === 'ativo'));
+	let recompensando = $state(false);
+	const SEM_FICHAS = 'Nenhuma ficha aprovada e ativa para receber recompensas';
+
+	// pedidos de PT de treino (cap. 18) esperando o Mestre
+	let decidindo = $state<string | null>(null);
+	async function decidirPedido(id: string, aprovar: boolean) {
+		decidindo = id;
+		const { error } = await supabase().rpc('decidir_pedido_pt', { pedido: id, aprovar });
+		decidindo = null;
+		if (error) return toasts.mostrar('Não foi possível registrar a decisão.', 'erro');
+		toasts.mostrar(aprovar ? 'PT de treino aprovados.' : 'Pedido recusado.', aprovar ? 'sucesso' : 'info');
+		await refreshAll();
+	}
+	const nomeFicha = (id: string) => data.personagens.find((p) => p.id === id)?.nome ?? 'Personagem';
 	const eu = $derived(data.usuario?.id ?? sessao.usuario?.id ?? '');
 	const minha = $derived(fichaDe(eu));
 	const contagem = (s: string) => data.personagens.filter((p) => p.jogador_id === eu && p.status === s).length;
@@ -40,7 +58,7 @@
 		const { data: nova, error } = await supabase().from('personagens').insert({ campanha_id: c.id, jogador_id: sessao.usuario.id }).select('id').single();
 		criando = false;
 		if (error || !nova) return toasts.mostrar('Não foi possível começar a ficha. Tente de novo.', 'erro');
-		await goto(hrefFicha(c.id, nova.id));
+		await goto(hrefEditar(c.id, nova.id));
 	}
 	const barra = (valor: number | undefined, cor: string, brilho: string) => ({ valor: valor ?? 0, cor, brilho });
 	const aprovacaoFichas = $derived({ ...APROVACAO_PADRAO, ...c.aprovacao }.fichas);
@@ -57,7 +75,7 @@
 	let tentando = $state(false);
 	async function tentarDeNovo() {
 		tentando = true;
-		await invalidateAll();
+		await refreshAll();
 		tentando = false;
 	}
 
@@ -71,7 +89,7 @@
 		saindo = false;
 		if (error) return toasts.mostrar('Não foi possível sair agora. Tente de novo.', 'erro');
 		toasts.mostrar(`Você saiu de ${c.nome}.`, 'info');
-		await goto('/campanhas', { invalidateAll: true });
+		await goto('/campanhas', { refreshAll: true });
 	}
 </script>
 
@@ -123,26 +141,40 @@
 				</div>
 				<span class="flex-1"></span>
 				<div class="flex flex-wrap gap-2">
-					<button type="button" class="btn-jogo btn-primario com-icone text-[13px]" disabled title={SEM_FICHAS}><Icone id="acao/ic-acao-conceder" />CONCEDER RECOMPENSAS</button>
+					<button type="button" class="btn-jogo btn-primario com-icone text-[13px]" disabled={arquivada || !ativas.length} title={ativas.length ? undefined : SEM_FICHAS} onclick={() => (recompensando = true)}><Icone id="acao/ic-acao-conceder" />CONCEDER RECOMPENSAS</button>
 					{#if !arquivada}<a href="/campanhas/{c.id}/membros?convidar=1" class="btn-jogo btn-contorno com-icone text-[13px]"><Icone id="acao/ic-acao-convidar" />CONVIDAR</a>{/if}
 					<a href="/campanhas/{c.id}/configuracoes" class="btn-jogo btn-fantasma com-icone text-[13px]"><Icone id="nav/ic-nav-configuracoes" />CONFIGURAÇÕES</a>
 				</div>
 			</div>
 		</div>
-		<button type="button" class="btn-jogo btn-primario com-icone md:hidden" disabled title={SEM_FICHAS}><Icone id="acao/ic-acao-conceder" />CONCEDER RECOMPENSAS</button>
+		<button type="button" class="btn-jogo btn-primario com-icone md:hidden" disabled={arquivada || !ativas.length} title={ativas.length ? undefined : SEM_FICHAS} onclick={() => (recompensando = true)}><Icone id="acao/ic-acao-conceder" />CONCEDER RECOMPENSAS</button>
 
 		<div class="grid items-start gap-5 xl:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
 			<div class="flex min-w-0 flex-col gap-5">
 				<section class="border-2 border-[#8B2E20] bg-b2 sombra-painel" aria-label="Aguardando sua revisão">
 					<div class="flex items-center gap-2.5 bg-grena px-3.5 py-2.5 text-papel">
 						<Icone id="nav/ic-nav-aprovacoes" />
-						<h2 class="m-0 flex-1 font-pixel text-sm leading-none font-bold tracking-[0.1em]">AGUARDANDO SUA REVISÃO · {emRevisao.length}</h2>
+						<h2 class="m-0 flex-1 font-pixel text-sm leading-none font-bold tracking-[0.1em]">AGUARDANDO SUA REVISÃO · {emRevisao.length + data.pedidosPt.length}</h2>
 					</div>
-					{#if emRevisao.length}
+					{#if emRevisao.length || data.pedidosPt.length}
 						<ul class="m-0 flex list-none flex-col p-0">
+							{#each data.pedidosPt as d (d.id)}
+								<li class="flex flex-wrap items-center gap-x-3 gap-y-2 border-b-2 border-b3 px-3.5 py-2">
+									<Icone id="recurso/ic-recurso-pt" />
+									<span class="flex min-w-[200px] flex-1 flex-col gap-0.5">
+										<span class="text-[15px] leading-5 font-semibold">Treino: +{d.pt} PT para {nomeFicha(d.personagem_id)}</span>
+										<span class="text-[13px] leading-[18px] text-mut">{SESSOES_TREINO.find((s) => s.id === d.sessao)?.nome} · {d.semanas} {d.semanas === 1 ? 'semana' : 'semanas'} · {d.descricao}</span>
+									</span>
+									<span class="text-xs leading-4 font-semibold whitespace-nowrap text-mut">{tempoRelativo(d.criado_em)}</span>
+									<span class="flex gap-1.5">
+										<button type="button" class="btn-jogo btn-fantasma min-h-9 px-2.5 text-xs" disabled={decidindo === d.id} onclick={() => decidirPedido(d.id, false)}>RECUSAR</button>
+										<button type="button" class="btn-jogo btn-primario min-h-9 px-2.5 text-xs" disabled={decidindo === d.id} onclick={() => decidirPedido(d.id, true)}>APROVAR</button>
+									</span>
+								</li>
+							{/each}
 							{#each emRevisao as p (p.id)}
 								<li>
-									<a href={hrefFicha(c.id, p.id)} class="flex items-center gap-3 border-b-2 border-b3 px-3.5 py-2 text-fg last:border-b-0 hover:bg-b3">
+									<a href={hrefEditar(c.id, p.id)} class="flex items-center gap-3 border-b-2 border-b3 px-3.5 py-2 text-fg last:border-b-0 hover:bg-b3">
 										<Icone id="acao/ic-acao-criar-personagem" />
 										<span class="flex min-w-0 flex-1 flex-col gap-0.5">
 											<span class="text-[15px] leading-5 font-semibold">Ficha de {p.nome || 'personagem sem nome'}</span>
@@ -157,7 +189,7 @@
 						<div class="flex flex-col items-center gap-2.5 p-6 text-center">
 							<img src="/illustrations/il-cha-96.png" width="96" height="96" alt="" class="[image-rendering:pixelated]" />
 							<span class="text-base leading-[22px] font-semibold">Nada para revisar. Hora do chá, Mestre.</span>
-							<span class="text-[13px] leading-[18px] text-mut">Fichas aparecem aqui quando os jogadores enviarem. Clãs, jutsus e treinos chegam nos próximos lotes.</span>
+							<span class="text-[13px] leading-[18px] text-mut">Fichas e pedidos de PT de treino aparecem aqui. Clãs e jutsus criados chegam nos próximos lotes.</span>
 						</div>
 					{/if}
 				</section>
@@ -293,15 +325,18 @@
 								Nível {minha.nivel} · {rankSugerido(minha.nivel)}
 							</span>
 							{#if r.pv}
+								{@const est = (minha.estado ?? {}) as { pv?: number; pc?: number; pe?: number }}
 								<div class="mt-1 grid grid-cols-3 gap-3">
 									{#each [barra(r.pv, '#C44536', '#E07A5F'), barra(r.pc, '#2D7FB8', '#7FD3E6'), barra(r.pe, '#D29A1E', '#F2C14E')] as b, i (i)}
+										{@const atual = [est.pv, est.pc, est.pe][i] ?? b.valor}
 										<div class="flex flex-col gap-1">
-											<span class="t-num text-[13px]">{['PV', 'PC', 'PE'][i]} {b.valor}/{b.valor}</span>
-											<div class="h-3 border-2 border-ink bg-b3"><div class="h-full w-full" style:background={b.cor} style:box-shadow="inset 0 2px 0 {b.brilho}"></div></div>
+											<span class="t-num text-[13px]">{['PV', 'PC', 'PE'][i]} {atual}/{b.valor}</span>
+											<div class="h-3 border-2 border-ink bg-b3"><div class="h-full" style:width="{Math.max(0, Math.min(100, (atual / Math.max(1, b.valor)) * 100))}%" style:background={b.cor} style:box-shadow="inset 0 2px 0 {b.brilho}"></div></div>
 										</div>
 									{/each}
 								</div>
 							{/if}
+							{#if minha.status === 'aprovada'}<span class="t-num text-[13px] text-mut">{numero(minha.xp)} XP · {minha.pt} PT</span>{/if}
 						</div>
 					</div>
 					{#if minha.status === 'em_revisao'}
@@ -319,9 +354,15 @@
 								{#if minha.comentario_mestre}<span>“{minha.comentario_mestre}”</span>{/if}
 							</Alerta>
 						</div>
+					{:else if minha.status === 'aprovada' && progressoXp(minha.nivel, minha.xp).podeSubir && !arquivada}
+						<div class="mx-4 mb-4 flex flex-wrap items-center gap-3 border-2 border-acc bg-[rgba(217,168,43,.14)] py-2 pr-3 pl-1.5">
+							<Icone id="acao/ic-acao-subir-nivel" />
+							<span class="min-w-[200px] flex-1 text-[15px] leading-[22px] font-semibold">Nível {minha.nivel + 1} disponível · +5 PV, +3 PC, +3 PE, +3 PT</span>
+							<a href={hrefNivel(c.id, minha.id)} class="btn-jogo btn-primario text-[13px]">SUBIR DE NÍVEL</a>
+						</div>
 					{/if}
 					<div class="flex justify-end border-t-2 border-b3 px-4 py-3">
-						<a href={hrefFicha(c.id, minha.id)} class="btn-jogo {minha.status === 'ajustes' ? 'btn-secundario' : 'btn-primario'}">
+						<a href={minha.status === 'rascunho' || minha.status === 'ajustes' ? hrefEditar(c.id, minha.id) : hrefFicha(c.id, minha.id)} class="btn-jogo {minha.status === 'ajustes' ? 'btn-secundario' : 'btn-primario'}">
 							{minha.status === 'rascunho' ? 'CONTINUAR FICHA' : minha.status === 'ajustes' ? 'REVISAR FICHA' : 'ABRIR FICHA'}
 						</a>
 					</div>
@@ -332,7 +373,7 @@
 				{@render cabeca('Grupo')}
 				<ul class="m-0 grid list-none gap-2.5 p-3.5 sm:grid-cols-2 lg:grid-cols-3">
 					{#each data.membros.filter((m) => m.id !== eu) as m (m.id)}
-						{@const f = m.papel === 'jogador' ? fichaDe(m.id) : undefined}
+						{@const f = m.papel === 'jogador' ? data.grupo.find((g) => g.jogador_id === m.id && g.situacao === 'ativo') : undefined}
 						<li class="flex items-center gap-2.5 border-2 border-b3 bg-b1 p-2.5">
 							<Retrato nome={f?.nome || m.nome} tamanho={40} />
 							<div class="flex min-w-0 flex-col gap-0.5">
@@ -393,6 +434,10 @@
 {#snippet marca(feito: boolean)}
 	<span class="t-num flex h-6 w-6 flex-none items-center justify-center border-2 text-[13px] {feito ? 'border-ink bg-ok text-okfg' : 'border-field bg-b1'}" aria-label={feito ? 'Feito' : 'A fazer'}>{feito ? '✓' : ''}</span>
 {/snippet}
+
+{#if recompensando}
+	<ModalRecompensas campanha={c.id} fichas={ativas.map((p) => ({ id: p.id, nome: p.nome, nivel: p.nivel, xp: p.xp, cla: p.resumo.cla }))} aoFechar={() => (recompensando = false)} />
+{/if}
 
 {#if confirmandoSaida}
 	<Modal rotulo="Sair da campanha" largura={480} aoFechar={() => !saindo && (confirmandoSaida = false)}>

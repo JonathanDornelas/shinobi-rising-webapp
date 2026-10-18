@@ -4,13 +4,19 @@ Documentação web e criador de campanhas do RPG de mesa **Shinobi no Michi — 
 
 Stack: SvelteKit 3 (Svelte 5) + Tailwind CSS 4 + DaisyUI 5 + Supabase, publicado no Vercel (`adapter-vercel`): a documentação é pré-renderizada; conta e campanhas rodam no servidor. As telas são desenhadas antes no Claude Design (direção visual 1a "Jogo", temas sumi e washi).
 
-**Fase atual:** Lote 4, criação de personagem (P2) com envio e decisão do Mestre. Feitos antes: documentação do livro (G1–G5, D1–D10), conta (A1–A4) e campanhas (C1–C7). Próximo: ficha, nível e treino.
+**Fase atual:** Lote 5, ficha em jogo (P3), subir de nível (P4), treino (P5), lista de personagens (P1), impressão A4 (P6) e conceder recompensas (C8). Feitos antes: documentação do livro (G1–G5, D1–D10), conta (A1–A4), campanhas (C1–C7) e criação de personagem (P2). Próximo: clãs (criador de clã).
 
 ## Criação de personagem
 
 `src/lib/personagem/regras.ts` é o motor do cap. 6: a partir das escolhas (`FichaDados`) calcula atributos, perícias, PT, recursos, carga e ryo, e gera as verificações da revisão (ok, aviso, bloqueio). Os números do livro que ele usa ficam em `dados.ts` (vilas do cap. 7, bônus de criação e marco do nível 1 dos 13 clãs, backgrounds, efeitos das especializações, custos de proficiência); jutsus, clãs, especializações e itens da loja vêm dos dados gerados do livro, montados no servidor por `catalogo.server.ts`. O motor é testado com os exemplos do próprio livro (`regras.spec.ts`).
 
-A ficha fica na tabela `personagens` (escolhas em `dados`, valores para listas em `resumo`). O status só muda pelas funções `enviar_ficha`, `retirar_ficha` e `decidir_ficha`; uma campanha que não exige aprovação de fichas aprova no envio. O criador de clãs e de jutsus, os retratos e o "Subir de nível" para campanhas que começam acima do nível 1 chegam nos próximos lotes.
+A ficha fica na tabela `personagens` (escolhas em `dados`, valores para listas em `resumo`). O status só muda pelas funções `enviar_ficha`, `retirar_ficha` e `decidir_ficha`; uma campanha que não exige aprovação de fichas aprova no envio. O criador de clãs e de jutsus e os retratos chegam nos próximos lotes.
+
+## Ficha, nível e treino
+
+Depois da aprovação, a progressão fica em `dados.progresso` (as escolhas de cada nível e os treinos) e o nível atual é `1 + progresso.niveis.length`. `src/lib/personagem/progressao.ts` cuida de XP e níveis (cap. 17), lê os marcos de clã (cap. 8.3), monta os passos dinâmicos do Subir de nível, calcula o custo real dos jutsus com as reduções do cap. 9, lista o que dá para treinar com PT (cap. 18) e guarda as regras de descanso, PV 0 e PIC.
+
+No banco, o estado em jogo (PV/PC/PE atuais, fadiga, condições, saves de morte, PD e PIC), o inventário, o ryo e o saldo de PT só mudam pelas funções `atualizar_estado`, `atualizar_inventario`, `subir_nivel`, `treinar`, `solicitar_pt`/`decidir_pedido_pt`, `conceder_recompensa` e `definir_situacao`; cada uma deixa uma linha no registro da ficha. A ficha completa é só do dono e do Mestre; o grupo vê o resumo público por `personagens_do_grupo()`. Quando a campanha começa acima do nível 1, a ficha aprovada recebe o XP do nível inicial e sobe pelo próprio P4.
 
 ## Rodando
 
@@ -56,7 +62,7 @@ Ele também extrai os 13 clãs (cap. 8.3), as 16 especializações (cap. 19), ar
 | Caminho | Conteúdo |
 |---|---|
 | `src/routes/` | Telas: `/` (G5), `/regras` (D1), `/regras/[capitulo]` (D2), `clas` (D3), `jutsus` (D4/D5), `equipamentos` (D6), `especializacoes` (D7), `glossario` (D8), `referencia-rapida` (D10), `/busca` (D9) |
-| `src/routes/(app)/` | Conta: `/entrar` (A1), `/criar-conta` (A2), `/recuperar-senha` e `/redefinir-senha` (A3), `/perfil` (A4), `/notificacoes` (G3). Campanhas: `/campanhas` (C1), `/campanhas/nova` (C2), `/campanhas/[id]` (C3/C4), `membros` (C5), `configuracoes` (C7), `/convite/[chave]` (C6). Personagens: `/campanhas/[id]/personagens/[pid]` (P2, criador e ficha em revisão) |
+| `src/routes/(app)/` | Conta: `/entrar` (A1), `/criar-conta` (A2), `/recuperar-senha` e `/redefinir-senha` (A3), `/perfil` (A4), `/notificacoes` (G3). Campanhas: `/campanhas` (C1), `/campanhas/nova` (C2), `/campanhas/[id]` (C3/C4), `membros` (C5), `configuracoes` (C7), `/convite/[chave]` (C6). Personagens: `/campanhas/[id]/personagens` (P1), `[pid]` (P3 ficha), `[pid]/editar` (P2 criador e revisão do Mestre), `[pid]/nivel` (P4), `[pid]/imprimir` (P6) |
 | `src/lib/personagem/` | Motor e tabelas da criação de personagem, catálogo do servidor e estado do criador |
 | `src/lib/supabase/`, `src/hooks.server.ts` | Clientes do Supabase (navegador e servidor), tipos do banco e a guarda das áreas logadas |
 | `src/lib/campanhas/`, `src/lib/conta/` | Regras de campanha (eras, vilas, clãs, aprovação, tabela de XP), convites e validações de conta |

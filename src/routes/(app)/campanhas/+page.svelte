@@ -1,6 +1,6 @@
 <script lang="ts">
 	// C1 · Minhas campanhas: abas por papel, convites pendentes, código de convite e primeiro uso.
-	import { goto, invalidateAll } from '$app/navigation';
+	import { goto, refreshAll } from '$app/navigation';
 	import CartaoCampanha from '#lib/componentes/campanha/CartaoCampanha.svelte';
 	import Girando from '#lib/componentes/ui/Girando.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
@@ -39,11 +39,11 @@
 		respondendo = null;
 		if (error || !id) {
 			toasts.mostrar('Este convite não está mais disponível.', 'erro');
-			await invalidateAll();
+			await refreshAll();
 			return;
 		}
 		toasts.mostrar('Você entrou na campanha.', 'sucesso');
-		await goto(`/campanhas/${id}`, { invalidateAll: true });
+		await goto(`/campanhas/${id}`, { refreshAll: true });
 	}
 	async function recusar(token: string) {
 		respondendo = token;
@@ -51,7 +51,7 @@
 		respondendo = null;
 		if (error) toasts.mostrar('Não foi possível recusar agora. Tente de novo.', 'erro');
 		else toasts.mostrar('Convite recusado.', 'info');
-		await invalidateAll();
+		await refreshAll();
 	}
 
 	// ---------------------------------------------------------------- código

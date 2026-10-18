@@ -1,5 +1,6 @@
-// Motor da criação de personagem (cap. 6): a partir das escolhas, calcula atributos, perícias, recursos,
-// orçamentos e as verificações da revisão. É puro (sem Svelte nem Supabase) e roda igual no navegador e nos testes.
+// Motor da ficha: a partir das escolhas da criação (cap. 6) e da progressão (cap. 17 e 18), calcula atributos,
+// perícias, recursos, orçamentos e as verificações da revisão. É puro (sem Svelte nem Supabase) e roda igual no
+// navegador e nos testes.
 import {
 	ATRIBUTOS,
 	BACKGROUNDS,
@@ -12,6 +13,7 @@ import {
 	PACOTES,
 	PERICIAS,
 	PERICIAS_COMBATE,
+	PROGRESSAO,
 	RECURSOS,
 	VILAS,
 	nomePericia,
@@ -30,6 +32,33 @@ export interface Proficiencia {
 	nivel: number;
 }
 
+/** Ganhos de um marco de clã, registrados no momento em que o nível é alcançado (cap. 8.3). */
+export interface GanhoMarco {
+	texto: string;
+	atributos?: Partial<Record<Atributo, number>>;
+	limites?: Partial<Record<Atributo, number>>;
+	pericias?: Pericia[];
+	pt?: number;
+	pic?: number;
+	jutsus?: string[];
+}
+
+/** Escolhas feitas ao subir para um nível (cap. 17). */
+export interface EscolhaNivel {
+	nivel: number;
+	atributo?: Atributo;
+	pericia?: Pericia;
+	especializacao?: { id: string; elemento?: string | null };
+	marco?: GanhoMarco;
+}
+
+/** Algo aprendido com PT (cap. 18). */
+export type Treino =
+	| { tipo: 'jutsu'; slug: string; pt: number }
+	| { tipo: 'especializacao'; id: string; pt: number }
+	| { tipo: 'proficiencia'; prof: { tipo: TipoProficiencia; alvo: string }; nivel: number; pt: number }
+	| { tipo: 'elemento'; id: string; pt: number };
+
 export interface FichaDados {
 	versao: 1;
 	conceito: { nome: string; idade: number | null; origem: string; conceito: string; aparencia: string };
@@ -39,6 +68,8 @@ export interface FichaDados {
 	pericias: Partial<Record<Pericia, number>>;
 	proficiencias: Proficiencia[];
 	especializacao: string | null;
+	/** Elemento da especialização Elemento Específico. */
+	especializacaoElemento: string | null;
 	elemento: string | null;
 	segundoElemento: string | null;
 	jutsus: { E: string[]; D: string[] };
@@ -46,6 +77,8 @@ export interface FichaDados {
 	background: { id: string | null; escolha: Pericia | null; proprio: { nome: string; pericia: Pericia | null; traco: string } };
 	time: string;
 	sensei: string;
+	/** Depois da aprovação: níveis alcançados e treinos. O nível atual é 1 + niveis.length. */
+	progresso: { niveis: EscolhaNivel[]; treinos: Treino[] };
 }
 
 export function fichaVazia(): FichaDados {
@@ -58,13 +91,15 @@ export function fichaVazia(): FichaDados {
 		pericias: {},
 		proficiencias: [],
 		especializacao: null,
+		especializacaoElemento: null,
 		elemento: null,
 		segundoElemento: null,
 		jutsus: { E: [], D: [] },
 		equipamento: { pacote: null, compras: [] },
 		background: { id: null, escolha: null, proprio: { nome: '', pericia: null, traco: '' } },
 		time: '',
-		sensei: ''
+		sensei: '',
+		progresso: { niveis: [], treinos: [] }
 	};
 }
 
@@ -81,9 +116,40 @@ export function normalizarFicha(d: Partial<FichaDados> | null | undefined): Fich
 		cla: { ...v.cla, ...d.cla },
 		jutsus: { ...v.jutsus, ...d.jutsus },
 		equipamento: { ...v.equipamento, ...d.equipamento },
-		background: { ...v.background, ...d.background, proprio: { ...v.background.proprio, ...d.background?.proprio } }
+		background: { ...v.background, ...d.background, proprio: { ...v.background.proprio, ...d.background?.proprio } },
+		progresso: { ...v.progresso, ...d.progresso }
 	};
 }
+
+/** Nível atual: 1 + níveis alcançados depois da criação. */
+export const nivelDe = (f: FichaDados) => 1 + f.progresso.niveis.length;
+
+/** Especializações com o nível atual de cada uma (criação, novos níveis 4/7/10… e treinos 1→2→3). */
+export function especializacoes(f: FichaDados): { id: string; nivel: number; elemento: string | null }[] {
+	const lista: { id: string; nivel: number; elemento: string | null }[] = [];
+	if (f.especializacao) lista.push({ id: f.especializacao, nivel: 1, elemento: f.especializacaoElemento });
+	for (const n of f.progresso.niveis) if (n.especializacao) lista.push({ id: n.especializacao.id, nivel: 1, elemento: n.especializacao.elemento ?? null });
+	for (const t of f.progresso.treinos) {
+		if (t.tipo !== 'especializacao') continue;
+		const e = lista.find((x) => x.id === t.id);
+		if (e) e.nivel = Math.min(3, e.nivel + 1);
+	}
+	return lista;
+}
+
+/** Proficiências da criação com os treinos aplicados por cima. */
+export function proficiencias(f: FichaDados): Proficiencia[] {
+	const lista = f.proficiencias.map((p) => ({ ...p }));
+	for (const t of f.progresso.treinos) {
+		if (t.tipo !== 'proficiencia') continue;
+		const p = lista.find((x) => x.tipo === t.prof.tipo && x.alvo === t.prof.alvo);
+		if (p) p.nivel = Math.max(p.nivel, t.nivel);
+		else lista.push({ ...t.prof, nivel: t.nivel });
+	}
+	return lista;
+}
+
+const valorNivel = (v: [number, number, number] | undefined, nivel: number) => (v ? v[Math.min(Math.max(nivel, 1), 3) - 1] : 0);
 
 /** Regras da campanha que afetam a criação. */
 export interface ContextoCampanha {
@@ -172,7 +238,18 @@ export function atributosTotais(f: FichaDados): Record<Atributo, number> {
 	const t = { ...f.atributos };
 	const cla = f.cla.tipo === 'catalogo' && f.cla.slug ? CLAS[f.cla.slug] : null;
 	if (cla?.ganho.atributo) t[cla.ganho.atributo] += 1;
+	for (const n of f.progresso.niveis) {
+		if (n.atributo) t[n.atributo] += 1;
+		for (const [a, v] of Object.entries(n.marco?.atributos ?? {})) t[a as Atributo] += v ?? 0;
+	}
 	return t;
+}
+
+/** Limite atual de cada atributo depois da criação: +8, e o do clã sobe com os marcos (até +10). */
+export function limitesAtributo(f: FichaDados): Record<Atributo, number> {
+	const l = Object.fromEntries(ATRIBUTOS.map((a) => [a.id, PROGRESSAO.atributoMax])) as Record<Atributo, number>;
+	for (const n of f.progresso.niveis) for (const [a, v] of Object.entries(n.marco?.limites ?? {})) l[a as Atributo] = Math.max(l[a as Atributo], v ?? 0);
+	return l;
 }
 
 export function atributoDoCla(f: FichaDados): Atributo | null {
@@ -205,9 +282,17 @@ export function pontosPericia(f: FichaDados) {
 	return { limite, usados, restantes: limite - usados };
 }
 
+/** Pontos de treino numa perícia: criação + 1 por escolha de nível. */
+export const treinoPericia = (f: FichaDados, p: Pericia) => (f.pericias[p] ?? 0) + f.progresso.niveis.filter((n) => n.pericia === p).length;
+
 export function linhasPericia(f: FichaDados): LinhaPericia[] {
 	const at = atributosTotais(f);
 	const fontes = ganhos(f);
+	const nivel = nivelDe(f);
+	const esps = especializacoes(f);
+	const nomeCla = f.cla.slug ? f.cla.slug.charAt(0).toUpperCase() + f.cla.slug.slice(1) : 'Clã';
+	// Treino vai até +3 na criação e +5 depois; clã, vila, background e marcos passam do limite em até +2 (cap. 3).
+	const teto = (nivel === 1 ? CRIACAO.periciaTreinoMax : PROGRESSAO.periciaTreinoMax) + 2;
 	return PERICIAS.map((p) => {
 		const bonus: BonusPericia[] = [];
 		for (const g of fontes) {
@@ -215,8 +300,15 @@ export function linhasPericia(f: FichaDados): LinhaPericia[] {
 			if (fixas.includes(p.id)) bonus.push({ fonte: g.fonte, valor: 1 });
 			if (g.ganho.escolhaPericia && g.escolha === p.id) bonus.push({ fonte: g.fonte, valor: 1 });
 		}
-		const treino = f.pericias[p.id] ?? 0;
-		const valor = Math.min(treino + bonus.reduce((s, b) => s + b.valor, 0), CRIACAO.periciaBonusMax);
+		for (const n of f.progresso.niveis) for (const mp of n.marco?.pericias ?? []) if (mp === p.id) bonus.push({ fonte: `${nomeCla} NV ${n.nivel}`, valor: 1 });
+		const treino = treinoPericia(f, p.id);
+		const valorBase = Math.min(treino + bonus.reduce((s, b) => s + b.valor, 0), teto);
+		// Especializações somam em testes, fora do teto (cap. 19).
+		for (const e of esps) {
+			const v = valorNivel(ESPECIALIZACOES[e.id]?.pericias?.[p.id], e.nivel);
+			if (v) bonus.push({ fonte: `Esp. NV ${e.nivel}`, valor: v });
+		}
+		const valor = valorBase + bonus.filter((b) => b.fonte.startsWith('Esp.')).reduce((s, b) => s + b.valor, 0);
 		const linha: LinhaPericia = {
 			id: p.id,
 			nome: p.nome,
@@ -241,14 +333,17 @@ export function ptDisponiveis(f: FichaDados) {
 
 export function jutsusConhecidos(f: FichaDados): string[] {
 	const cla = f.cla.tipo === 'catalogo' && f.cla.slug ? (CLAS[f.cla.slug]?.jutsus ?? []) : [];
-	return [...JUTSUS_ACADEMIA, ...cla, ...f.jutsus.E, ...f.jutsus.D];
+	const marcos = f.progresso.niveis.flatMap((n) => n.marco?.jutsus ?? []);
+	const treinos = f.progresso.treinos.flatMap((t) => (t.tipo === 'jutsu' ? [t.slug] : []));
+	return [...new Set([...JUTSUS_ACADEMIA, ...cla, ...f.jutsus.E, ...f.jutsus.D, ...marcos, ...treinos])];
 }
 
-/** Elementos do personagem (o clã Uchiha fixa Katon; o Senju ganha um segundo). */
+/** Elementos do personagem (o clã Uchiha fixa Katon; o Senju ganha um segundo; os outros vêm de treino). */
 export function elementos(f: FichaDados): string[] {
 	const cla = f.cla.tipo === 'catalogo' && f.cla.slug ? CLAS[f.cla.slug] : null;
 	const principal = cla?.elemento ?? f.elemento;
-	return [principal, cla?.segundoElemento ? f.segundoElemento : null].filter((e): e is string => !!e);
+	const treinados = f.progresso.treinos.flatMap((t) => (t.tipo === 'elemento' ? [t.id] : []));
+	return [...new Set([principal, cla?.segundoElemento ? f.segundoElemento : null, ...treinados].filter((e): e is string => !!e))];
 }
 
 export function cargaDasCompras(compras: FichaDados['equipamento']['compras'], loja: ItemLoja[]) {
@@ -270,6 +365,7 @@ export interface Recursos {
 	iniciativa: number;
 	defesa: number;
 	defesaMental: number;
+	rd: number;
 	pd: number;
 	cargaMax: number;
 	carga: number;
@@ -283,19 +379,25 @@ export function recursos(f: FichaDados, loja: ItemLoja[] = []): Recursos {
 	const vila = VILAS.find((v) => v.id === f.vila.id);
 	const cla = f.cla.tipo === 'catalogo' && f.cla.slug ? CLAS[f.cla.slug] : null;
 	const claNome = f.cla.slug ? f.cla.slug.charAt(0).toUpperCase() + f.cla.slug.slice(1) : '';
-	const esp = f.especializacao ? ESPECIALIZACOES[f.especializacao]?.recursos : undefined;
+	// Especializações: soma de PV/PC/PE/Iniciativa no nível atual de cada uma; RD não soma, vale a maior (cap. 4).
+	const esps = especializacoes(f);
+	const somaEsp = (k: 'pv' | 'pc' | 'pe' | 'iniciativa') => esps.reduce((t, e) => t + valorNivel(ESPECIALIZACOES[e.id]?.recursos?.[k], e.nivel), 0);
+	const esp = { pv: somaEsp('pv'), pc: somaEsp('pc'), pe: somaEsp('pe'), iniciativa: somaEsp('iniciativa') };
+	const rd = Math.max(0, ...esps.map((e) => valorNivel(ESPECIALIZACOES[e.id]?.recursos?.rd, e.nivel)));
+	const niveis = nivelDe(f) - 1;
+	const porNivel = PROGRESSAO.porNivel;
 	const pericias = linhasPericia(f);
 	const acro = pericias.find((p) => p.id === 'acrobacia')!.total;
 	const perc = pericias.find((p) => p.id === 'percepcao')!.total;
 
 	const extra = (rotulo: string, n?: number) => (n ? ` + ${n} (${rotulo})` : '');
 	const pvVig = RECURSOS.porVig * pos(at.VIG);
-	const pv = RECURSOS.pvBase + pvVig + (vila?.ganho.pv ?? 0) + (cla?.ganho.pv ?? 0) + (esp?.pv ?? 0);
-	const pe = RECURSOS.peBase + pvVig + (esp?.pe ?? 0);
+	const pv = RECURSOS.pvBase + pvVig + (vila?.ganho.pv ?? 0) + (cla?.ganho.pv ?? 0) + esp.pv + porNivel.pv * niveis;
+	const pe = RECURSOS.peBase + pvVig + esp.pe + porNivel.pe * niveis;
 	const pcEsp = RECURSOS.porChakra * pos(at.ESP);
 	const pcCtr = RECURSOS.porChakra * pos(at.CTR);
-	const pc = RECURSOS.pcBase + pcEsp + pcCtr + (cla?.ganho.pc ?? 0) + (esp?.pc ?? 0);
-	const iniciativa = at.AGI + (esp?.iniciativa ?? 0);
+	const pc = RECURSOS.pcBase + pcEsp + pcCtr + (cla?.ganho.pc ?? 0) + esp.pc + porNivel.pc * niveis;
+	const iniciativa = at.AGI + esp.iniciativa;
 	const pacote = f.equipamento.pacote ? PACOTES[f.equipamento.pacote] : null;
 	const compras = f.equipamento.pacote === 'B' ? cargaDasCompras(f.equipamento.compras, loja) : { carga: 0, ryo: 0 };
 	const cargaMax = RECURSOS.cargaBase + RECURSOS.cargaPorFor * pos(at.FOR);
@@ -307,15 +409,16 @@ export function recursos(f: FichaDados, loja: ItemLoja[] = []): Recursos {
 		iniciativa,
 		defesa: 10 + acro,
 		defesaMental: 10 + perc,
+		rd,
 		pd: 1,
 		cargaMax,
 		carga: (pacote?.carga ?? 0) + compras.carga,
 		ryo: (pacote?.ryo ?? 0) - compras.ryo,
 		formulas: {
-			pv: `20 base + ${pvVig} (VIG ${sinal(at.VIG)})${extra(vila?.nome ?? 'vila', vila?.ganho.pv)}${extra(`Clã ${claNome}`, cla?.ganho.pv)}${extra('especialização', esp?.pv)}`,
-			pe: `20 base + ${pvVig} (VIG ${sinal(at.VIG)})${extra('especialização', esp?.pe)}`,
-			pc: `30 base + ${pcEsp} (ESP ${sinal(at.ESP)}) + ${pcCtr} (CTR ${sinal(at.CTR)})${extra(`Clã ${claNome}`, cla?.ganho.pc)}${extra('especialização', esp?.pc)}`,
-			iniciativa: `1d20 + AGI ${sinal(at.AGI)}${extra('Velocidade', esp?.iniciativa)}`,
+			pv: `20 base + ${pvVig} (VIG ${sinal(at.VIG)})${extra(vila?.nome ?? 'vila', vila?.ganho.pv)}${extra(`Clã ${claNome}`, cla?.ganho.pv)}${extra('especialização', esp.pv)}${extra(`${niveis} ${niveis === 1 ? 'nível' : 'níveis'}`, porNivel.pv * niveis)}`,
+			pe: `20 base + ${pvVig} (VIG ${sinal(at.VIG)})${extra('especialização', esp.pe)}${extra(`${niveis} ${niveis === 1 ? 'nível' : 'níveis'}`, porNivel.pe * niveis)}`,
+			pc: `30 base + ${pcEsp} (ESP ${sinal(at.ESP)}) + ${pcCtr} (CTR ${sinal(at.CTR)})${extra(`Clã ${claNome}`, cla?.ganho.pc)}${extra('especialização', esp.pc)}${extra(`${niveis} ${niveis === 1 ? 'nível' : 'níveis'}`, porNivel.pc * niveis)}`,
+			iniciativa: `1d20 + AGI ${sinal(at.AGI)}${extra('Velocidade', esp.iniciativa)}`,
 			defesa: `10 + Acrobacia ${sinal(acro)}`,
 			defesaMental: `10 + Percepção ${sinal(perc)}`,
 			pd: '1 por sessão',
@@ -388,6 +491,7 @@ export function analisar(f: FichaDados, ctx: ContextoCampanha, opcoes: { jutsusD
 	const esp = f.especializacao ? ESPECIALIZACOES[f.especializacao] : null;
 	if (!esp) add('bloqueio', 'Escolha a especialização inicial', 7);
 	else if (esp.bloqueio) add('bloqueio', esp.bloqueio, 7);
+	else if (esp.escolheElemento && !f.especializacaoElemento) add('bloqueio', 'Escolha o elemento da especialização Elemento Específico', 7);
 
 	// 9 · Jutsus
 	const els = elementos(f);
@@ -456,16 +560,23 @@ export function resumoFicha(f: FichaDados, loja: ItemLoja[] = []) {
 	const r = recursos(f, loja);
 	return {
 		nome: f.conceito.nome.trim(),
+		conceito: f.conceito.conceito.trim(),
 		cla: f.cla.tipo === 'catalogo' ? f.cla.slug : f.cla.tipo,
 		vila: f.vila.id,
 		especializacao: f.especializacao,
 		elementos: elementos(f),
 		atributos: atributosTotais(f),
+		nivel: nivelDe(f),
 		pv: r.pv,
 		pe: r.pe,
 		pc: r.pc,
 		defesa: r.defesa,
-		defesaMental: r.defesaMental
+		defesaMental: r.defesaMental,
+		time: f.time.trim(),
+		sensei: f.sensei.trim(),
+		// lidos pela aprovação (inicializar_ficha_aprovada): PT não gastos e ryo da criação
+		ptRestantes: Math.max(0, ptDisponiveis(f).restantes),
+		ryo: Math.max(0, r.ryo)
 	};
 }
 export type ResumoFicha = ReturnType<typeof resumoFicha>;

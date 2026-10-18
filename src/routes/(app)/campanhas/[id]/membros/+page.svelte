@@ -1,7 +1,7 @@
 <script lang="ts">
 	// C5 · Membros e convites: lista do grupo, modal Convidar e tabela de convites (Mestre).
 	import { onMount } from 'svelte';
-	import { invalidateAll, replaceState } from '$app/navigation';
+	import { refreshAll, replaceState } from '$app/navigation';
 	import { page } from '$app/state';
 	import ModalConvidar from '#lib/componentes/campanha/ModalConvidar.svelte';
 	import Girando from '#lib/componentes/ui/Girando.svelte';
@@ -44,7 +44,7 @@
 		if (error) toasts.mostrar('Não foi possível remover. Tente de novo.', 'erro');
 		else toasts.mostrar(`${removendo.nome} saiu da campanha.`, 'info');
 		removendo = null;
-		await invalidateAll();
+		await refreshAll();
 	}
 
 	const ST = {
@@ -55,6 +55,9 @@
 		esgotado: { nome: 'ESGOTADO', classe: 'border-b3 text-mut' },
 		revogado: { nome: 'REVOGADO', classe: 'border-[#5E6B73] text-mut line-through' }
 	} as const;
+	/** Personagem ativo do membro: a ficha completa (Mestre ou dono) ou o resumo público do grupo. */
+	const personagemDe = (id: string) =>
+		data.personagens.find((p) => p.jogador_id === id && p.situacao === 'ativo')?.nome || data.grupo.find((g) => g.jogador_id === id && g.situacao === 'ativo')?.nome;
 	const convites = $derived(data.convites.map((cv) => ({ ...cv, situacao: situacaoConvite(cv) })));
 </script>
 
@@ -81,7 +84,7 @@
 						? 'border-[#8B2E20] bg-grena text-papel'
 						: 'border-mut bg-b2'}"><Icone id={PAPEL[m.papel].icone} />{PAPEL[m.papel].nome}</span
 				>
-				<span class="truncate text-sm leading-5 max-md:hidden {data.personagens.find((p) => p.jogador_id === m.id)?.nome ? '' : 'text-mut'}">{m.papel === 'mestre' ? '—' : data.personagens.find((p) => p.jogador_id === m.id)?.nome || 'Sem personagem'}</span>
+				<span class="truncate text-sm leading-5 max-md:hidden {personagemDe(m.id) ? '' : 'text-mut'}">{m.papel === 'mestre' ? '—' : personagemDe(m.id) || 'Sem personagem'}</span>
 				<span class="text-[13px] leading-[18px] text-mut max-md:hidden">{m.papel === 'mestre' ? 'criou' : 'entrou'} em {dataCurta(m.entrou_em)}</span>
 				<div class="relative justify-self-end" data-menu>
 					{#if mestre && m.papel === 'jogador' && !c.arquivada_em}
