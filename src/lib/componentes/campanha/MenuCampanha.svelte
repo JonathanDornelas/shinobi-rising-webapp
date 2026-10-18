@@ -17,7 +17,7 @@
 			{ chave: 'visao', nome: 'Visão geral', curto: 'VISÃO', icone: 'campanhas', href: base },
 			{ chave: 'personagens', nome: 'Personagens', curto: 'PERSONAGENS', icone: 'personagens', href: `${base}/personagens` },
 			{ grupo: 'BIBLIOTECA' },
-			{ chave: 'clas', nome: 'Clãs', curto: 'CLÃS', icone: 'clas', recuo: true },
+			{ chave: 'clas', nome: 'Clãs', curto: 'CLÃS', icone: 'clas', href: `${base}/clas`, recuo: true },
 			{ chave: 'jutsus', nome: 'Jutsus', curto: 'JUTSUS', icone: 'jutsus', recuo: true },
 			{ chave: 'equip', nome: 'Equipamentos', curto: 'EQUIPAMENTOS', icone: 'equipamentos', recuo: true },
 			{ grupo: 'MESA' },

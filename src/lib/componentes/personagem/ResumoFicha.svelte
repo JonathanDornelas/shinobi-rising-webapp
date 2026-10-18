@@ -3,6 +3,7 @@
 	import { ATRIBUTOS } from '#lib/personagem/dados.ts';
 	import type { Criador } from '#lib/personagem/criador.svelte.ts';
 	import { atributosTotais, sinal } from '#lib/personagem/regras.ts';
+	import Brasao from '../cla/Brasao.svelte';
 	import Icone from '../ui/Icone.svelte';
 	import Retrato from '../ui/Retrato.svelte';
 
@@ -32,7 +33,7 @@
 		<div class="flex min-w-0 flex-col gap-0.5">
 			<span class="truncate font-mincho text-lg leading-6 font-bold">{c.ficha.conceito.nome || 'Sem nome'}</span>
 			<span class="flex items-center gap-1 text-xs leading-4 text-mut">
-				{#if c.ficha.cla.tipo === 'catalogo' && c.ficha.cla.slug}<Icone id="cla/ic-cla-{c.ficha.cla.slug}" alt="Clã {c.ficha.cla.slug}" />{/if}
+				{#if c.ficha.cla.tipo === 'catalogo' && c.ficha.cla.slug}<Icone id="cla/ic-cla-{c.ficha.cla.slug}" alt="Clã {c.ficha.cla.slug}" />{:else if c.ficha.cla.criado}<Brasao kamon={c.ficha.cla.criado.brasao?.kamon} cor={c.ficha.cla.criado.brasao?.cor} alt="Clã {c.ficha.cla.criado.nome}" />{/if}
 				{#if c.ficha.vila.id}<Icone id="vila/ic-vila-{c.ficha.vila.id}" alt="Vila" />{/if}Nível 1
 			</span>
 		</div>

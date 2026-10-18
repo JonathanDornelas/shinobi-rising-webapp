@@ -1,16 +1,16 @@
 <script lang="ts">
 	// Passo 9 · Jutsus iniciais: Academia + clã já conhecidos; elemento; 2 de Rank E e 1 de Rank D (cap. 6).
-	import { CLAS, ELEMENTOS, JUTSUS_ACADEMIA, JUTSUS_INICIAIS } from '#lib/personagem/dados.ts';
+	import { ELEMENTOS, JUTSUS_ACADEMIA, JUTSUS_INICIAIS } from '#lib/personagem/dados.ts';
 	import type { Criador } from '#lib/personagem/criador.svelte.ts';
-	import { elementos } from '#lib/personagem/regras.ts';
+	import { elementos, regrasCla } from '#lib/personagem/regras.ts';
 	import Icone from '../ui/Icone.svelte';
 
 	let { c }: { c: Criador } = $props();
-	const cla = $derived(c.ficha.cla.tipo === 'catalogo' && c.ficha.cla.slug ? CLAS[c.ficha.cla.slug] : null);
-	const nomeCla = $derived(c.ficha.cla.slug ? c.ficha.cla.slug.charAt(0).toUpperCase() + c.ficha.cla.slug.slice(1) : '');
+	const cla = $derived(regrasCla(c.ficha));
+	const info = $derived(c.ficha.cla.criado?.jutsusInfo ?? []);
 	const conhecidos = $derived([
 		...JUTSUS_ACADEMIA.map((s) => ({ j: c.catalogo.conhecidos[s], origem: 'Academia' })),
-		...(cla?.jutsus ?? []).map((s) => ({ j: c.catalogo.conhecidos[s], origem: `Clã ${nomeCla}` }))
+		...(cla?.jutsus ?? []).map((s) => ({ j: c.catalogo.conhecidos[s] ?? info.find((x) => x.slug === s), origem: `Clã ${cla?.nome}` }))
 	].filter((x) => x.j));
 	const meus = $derived(elementos(c.ficha));
 	const fixo = $derived(cla?.elemento ?? null);
@@ -28,7 +28,7 @@
 <div class="flex flex-wrap gap-2">
 	{#each conhecidos as { j, origem } (j.slug)}
 		<span class="inline-flex h-10 items-center gap-1.5 border-2 border-frame bg-b2 pr-2.5 pl-1 text-[13px] leading-none font-semibold">
-			<Icone id="rank/ic-rank-{j.rank.toLowerCase()}" alt="Rank {j.rank}" />{j.nome}<span class="text-xs font-semibold text-mut">{origem}</span>
+			<Icone id="rank/ic-rank-{(j.rank ?? 'c').toLowerCase()}" alt="Rank {j.rank ?? '?'}" />{j.nome}<span class="text-xs font-semibold text-mut">{origem}</span>
 		</span>
 	{/each}
 </div>
@@ -42,7 +42,7 @@
 			role="radio"
 			aria-checked={on}
 			disabled={!c.editavel || (!!fixo && fixo !== e.id)}
-			title={fixo && fixo !== e.id ? `O clã ${nomeCla} começa com ${ELEMENTOS.find((x) => x.id === fixo)?.nome}` : undefined}
+			title={fixo && fixo !== e.id ? `O clã ${cla?.nome} começa com ${ELEMENTOS.find((x) => x.id === fixo)?.nome}` : undefined}
 			class="inline-flex h-11 items-center gap-1 border-2 pr-3 pl-1 text-sm font-semibold text-fg disabled:opacity-50"
 			style:background="color-mix(in srgb, {e.cor} 12%, transparent)"
 			style:border-color={on ? '#C44536' : `color-mix(in srgb, ${e.cor} 55%, transparent)`}
@@ -55,9 +55,9 @@
 		</button>
 	{/each}
 </div>
-{#if fixo}<p class="m-0 text-[13px] text-mut">O clã {nomeCla} fixa {ELEMENTOS.find((x) => x.id === fixo)?.nome} como elemento inicial (cap. 8.3).</p>{/if}
+{#if fixo}<p class="m-0 text-[13px] text-mut">O clã {cla?.nome} fixa {ELEMENTOS.find((x) => x.id === fixo)?.nome} como elemento inicial (cap. 8.3).</p>{/if}
 {#if cla?.segundoElemento}
-	<span class="t-rotulo mt-1.5">Segundo elemento · Clã {nomeCla}</span>
+	<span class="t-rotulo mt-1.5">Segundo elemento · Clã {cla?.nome}</span>
 	<div class="flex flex-wrap gap-2" role="radiogroup" aria-label="Segundo elemento">
 		{#each ELEMENTOS.filter((e) => e.id !== c.ficha.elemento) as e (e.id)}
 			{@const on = c.ficha.segundoElemento === e.id}

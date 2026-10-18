@@ -4,6 +4,7 @@
 	import { goto } from '$app/navigation';
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
 	import Girando from '#lib/componentes/ui/Girando.svelte';
+	import Brasao from '#lib/componentes/cla/Brasao.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import { rankSugerido } from '#lib/campanhas/dominio.ts';
 	import { ATRIBUTOS, CUSTO_JUTSU, ELEMENTOS, ESPECIALIZACOES, PERICIAS, PROGRESSAO, type Atributo, type Pericia } from '#lib/personagem/dados.ts';
@@ -257,7 +258,7 @@
 					<div class="painel-sombra">
 						<div class="flex items-center gap-3 border-b-2 border-b3 px-3.5 py-3">
 							<span class="t-num flex h-9 w-9 items-center justify-center border-2 border-ink bg-vermelhao text-base text-white">{novo}</span>
-							{#if cat.cla}<Icone id="cla/ic-cla-{cat.cla.slug}" />{/if}
+							{#if cat.cla}<Brasao slug={cat.cla.slug} kamon={cat.cla.brasao?.kamon} cor={cat.cla.brasao?.cor} />{/if}
 							<span class="flex-1 text-[15px] leading-[22px] font-medium">{plano.marco.texto}</span>
 						</div>
 						<ul class="m-0 flex list-none flex-col gap-1 px-3.5 py-3 text-sm">

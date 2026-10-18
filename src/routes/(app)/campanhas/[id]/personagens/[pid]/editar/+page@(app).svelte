@@ -3,6 +3,7 @@
 	// Mestre decide sobre a ficha em revisão. Salva sozinho enquanto o jogador edita.
 	import { onDestroy } from 'svelte';
 	import { goto, refreshAll } from '$app/navigation';
+	import { page } from '$app/state';
 	import PassoAtributos from '#lib/componentes/personagem/PassoAtributos.svelte';
 	import PassoBackground from '#lib/componentes/personagem/PassoBackground.svelte';
 	import PassoCla from '#lib/componentes/personagem/PassoCla.svelte';
@@ -53,8 +54,23 @@
 			nivelInicial: k.nivel_inicial
 		},
 		data.editavel,
-		data.editavel ? 1 : 12
+		data.editavel ? 1 : 12,
+		data.clasCriados
 	);
+	// volta do criador de clã (K2) com ?cla=: escolhe o clã criado e abre o passo 4
+	const claDaVolta = page.url.searchParams.get('cla');
+	const claAntes = JSON.stringify(c.ficha.cla);
+	if (c.editavel && claDaVolta && c.clasCriados.some((x) => x.id === claDaVolta)) {
+		c.usarClaCriado(claDaVolta);
+		c.passo = 4;
+	} else if (c.editavel && c.ficha.cla.id && c.clasCriados.some((x) => x.id === c.ficha.cla.id)) {
+		// o clã pode ter mudado desde o último salvamento: atualiza a cópia das regras
+		const escolha = c.ficha.cla.escolha;
+		c.usarClaCriado(c.ficha.cla.id);
+		c.ficha.cla.escolha = escolha;
+	}
+	/** O clã mudou ao abrir (volta do K2 ou regras atualizadas): salva já, sem esperar outra edição. */
+	const mudouAoAbrir = JSON.stringify(c.ficha.cla) !== claAntes;
 	// svelte-ignore state_referenced_locally
 	let mensagem = $state(p0.mensagem ?? '');
 	const status = $derived(data.personagem.status as StatusFicha);
@@ -74,7 +90,13 @@
 		const dados = $state.snapshot(c.ficha) as FichaDados;
 		const { error } = await supabase()
 			.from('personagens')
-			.update({ nome: dados.conceito.nome.trim(), dados: dados as unknown as Json, resumo: c.resumo as unknown as Json, mensagem: mensagem.trim() || null })
+			.update({
+				nome: dados.conceito.nome.trim(),
+				dados: dados as unknown as Json,
+				resumo: c.resumo as unknown as Json,
+				mensagem: mensagem.trim() || null,
+				cla_id: dados.cla.tipo === 'novo-sem-kkg' || dados.cla.tipo === 'novo-com-kkg' ? (dados.cla.id ?? null) : null
+			})
 			.eq('id', p0.id);
 		salvo = error ? { tipo: 'erro', texto: 'Não foi possível salvar. Tentando de novo…' } : { tipo: 'salvo', em: Date.now() };
 		if (error) temporizador = setTimeout(salvar, 4000);
@@ -84,7 +106,7 @@
 		void mensagem;
 		if (primeira) {
 			primeira = false;
-			return;
+			if (!mudouAoAbrir) return;
 		}
 		if (!data.editavel) return;
 		clearTimeout(temporizador);
@@ -99,6 +121,11 @@
 	async function salvarESair() {
 		await garantirSalvo();
 		await goto(`/campanhas/${k.id}`, { refreshAll: true });
+	}
+	/** Sai para outra tela (o criador de clã) sem perder a última edição. */
+	async function salvarEIr(destino: string) {
+		await garantirSalvo();
+		await goto(destino);
 	}
 
 	// ---------------------------------------------------------------- envio
@@ -289,7 +316,7 @@
 				{#if c.passo === 1}<PassoConceito {c} />
 				{:else if c.passo === 2}<PassoAtributos {c} />
 				{:else if c.passo === 3}<PassoVila {c} />
-				{:else if c.passo === 4}<PassoCla {c} />
+				{:else if c.passo === 4}<PassoCla {c} campanhaId={k.id} fichaId={p0.id} eu={data.usuario?.id ?? ''} irPara={salvarEIr} />
 				{:else if c.passo === 5}<PassoPericias {c} />
 				{:else if c.passo === 6}<PassoProficiencias {c} />
 				{:else if c.passo === 7}<PassoEspecializacao {c} />

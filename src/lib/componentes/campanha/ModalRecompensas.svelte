@@ -6,6 +6,7 @@
 	import { numero } from '#lib/formatar.ts';
 	import { xpDoNivel } from '#lib/personagem/progressao.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
+	import IconeCla from '../cla/IconeCla.svelte';
 	import Campo from '../ui/Campo.svelte';
 	import Girando from '../ui/Girando.svelte';
 	import Icone from '../ui/Icone.svelte';
@@ -17,6 +18,8 @@
 		nivel: number;
 		xp: number;
 		cla: string | null | undefined;
+		claNome?: string | null;
+		claBrasao?: { kamon: string; cor: string } | null;
 	}
 	let { campanha, fichas, aoFechar }: { campanha: string; fichas: Ficha[]; aoFechar: () => void } = $props();
 
@@ -102,7 +105,7 @@
 					{@const on = selecionadas.includes(f.id)}
 					<label class="flex min-h-12 cursor-pointer items-center gap-2.5 border-2 bg-b1 px-2.5 {on ? 'border-vermelhao' : 'border-b3'}">
 						<input type="checkbox" class="caixa" checked={on} onchange={() => alternar(f.id)} />
-						{#if f.cla && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(f.cla)}<Icone id="cla/ic-cla-{f.cla}" />{/if}
+						<IconeCla resumo={f} />
 						<span class="flex-1 text-[15px] leading-5 font-semibold">{f.nome}</span>
 						<span class="t-num text-[13px] text-mut">NV {f.nivel}</span>
 					</label>

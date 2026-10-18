@@ -15,6 +15,8 @@
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
 	import Campo from '#lib/componentes/ui/Campo.svelte';
 	import Girando from '#lib/componentes/ui/Girando.svelte';
+	import Brasao from '#lib/componentes/cla/Brasao.svelte';
+	import IconeCla from '#lib/componentes/cla/IconeCla.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import Modal from '#lib/componentes/ui/Modal.svelte';
 	import Retrato from '#lib/componentes/ui/Retrato.svelte';
@@ -109,7 +111,7 @@
 				<h1 class="m-0 font-mincho text-4xl leading-[44px] font-bold max-md:text-[28px]">{g.nome}</h1>
 				{#if g.resumo.conceito}<span class="text-base leading-6 text-mut">{g.resumo.conceito}</span>{/if}
 				<span class="flex items-center gap-2 text-sm font-semibold">
-					{#if g.resumo.cla && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(g.resumo.cla)}<Icone id="cla/ic-cla-{g.resumo.cla}" />{/if}
+					<IconeCla resumo={g.resumo} />
 					{#if g.resumo.vila}<Icone id="vila/ic-vila-{g.resumo.vila}" />{/if}Nível {g.nivel} · {rankSugerido(g.nivel)}{g.situacao === 'falecido' ? ' · Memorial' : ''}
 				</span>
 			</div>
@@ -159,7 +161,7 @@
 				</div>
 				{#if f.dados.conceito.conceito}<span class="text-base leading-6 text-mut">{f.dados.conceito.conceito}</span>{/if}
 				<div class="flex flex-wrap gap-2">
-					{#if data.catalogo?.cla}<span class="inline-flex h-9 items-center gap-1 border-2 border-b3 pr-2.5 text-[13px] font-semibold"><Icone id="cla/ic-cla-{data.catalogo.cla.slug}" />Clã {data.catalogo.cla.nome}</span>{/if}
+					{#if data.catalogo?.cla}<span class="inline-flex h-9 items-center gap-1 border-2 border-b3 pr-2.5 text-[13px] font-semibold"><Brasao slug={data.catalogo.cla.slug} kamon={data.catalogo.cla.brasao?.kamon} cor={data.catalogo.cla.brasao?.cor} />Clã {data.catalogo.cla.nome}</span>{/if}
 					{#if vila}<span class="inline-flex h-9 items-center gap-1 border-2 border-b3 pr-2.5 text-[13px] font-semibold"><Icone id="vila/ic-vila-{vila.id}" />{vila.nome.replace(/gakure$/, '')}</span>{/if}
 					<span class="inline-flex h-9 items-center border-2 border-[#8B2E20] bg-grena px-2.5 font-pixel text-xs font-bold tracking-[0.06em] text-papel uppercase">{rankSugerido(p.nivel).split(' ')[0]}</span>
 				</div>

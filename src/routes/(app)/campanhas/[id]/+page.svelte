@@ -4,6 +4,7 @@
 	import { goto, refreshAll } from '$app/navigation';
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
 	import Girando from '#lib/componentes/ui/Girando.svelte';
+	import IconeCla, { temIconeCla } from '#lib/componentes/cla/IconeCla.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import Modal from '#lib/componentes/ui/Modal.svelte';
 	import Retrato from '#lib/componentes/ui/Retrato.svelte';
@@ -206,8 +207,8 @@
 										href={f ? hrefFicha(c.id, f.id) : undefined}
 										class="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b-2 border-b3 px-3.5 py-2 text-fg {f ? 'hover:bg-b3' : ''}"
 									>
-										{#if f?.resumo?.cla && f.status === 'aprovada' && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(f.resumo.cla)}
-											<Icone id="cla/ic-cla-{f.resumo.cla}" />
+										{#if f?.resumo && f.status === 'aprovada' && temIconeCla(f.resumo)}
+											<IconeCla resumo={f.resumo} />
 										{:else}
 											<Retrato nome={f?.nome || j.nome} tamanho={32} />
 										{/if}
@@ -320,7 +321,7 @@
 								<SeloStatus status={minha.status} />
 							</div>
 							<span class="flex items-center gap-2 text-sm leading-5 font-semibold">
-								{#if r.cla && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(r.cla)}<Icone id="cla/ic-cla-{r.cla}" alt="Clã {r.cla}" />{/if}
+								<IconeCla resumo={r} />
 								{#if r.vila}<Icone id="vila/ic-vila-{r.vila}" alt="Vila" />{/if}
 								Nível {minha.nivel} · {rankSugerido(minha.nivel)}
 							</span>
@@ -380,7 +381,7 @@
 								<span class="truncate font-mincho text-[15px] leading-5 font-bold">{f?.nome || m.nome}</span>
 								<span class="flex items-center gap-1 text-xs leading-4 text-mut">
 									{#if m.papel === 'mestre'}Mestre · {m.nome}{:else if f}
-										{#if f.resumo.cla && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(f.resumo.cla)}<Icone id="cla/ic-cla-{f.resumo.cla}" />{/if}NV {f.nivel} · {m.nome}
+										<IconeCla resumo={f.resumo} />NV {f.nivel} · {m.nome}
 									{:else}{m.nome} · sem ficha aprovada{/if}
 								</span>
 							</div>
@@ -436,7 +437,7 @@
 {/snippet}
 
 {#if recompensando}
-	<ModalRecompensas campanha={c.id} fichas={ativas.map((p) => ({ id: p.id, nome: p.nome, nivel: p.nivel, xp: p.xp, cla: p.resumo.cla }))} aoFechar={() => (recompensando = false)} />
+	<ModalRecompensas campanha={c.id} fichas={ativas.map((p) => ({ id: p.id, nome: p.nome, nivel: p.nivel, xp: p.xp, cla: p.resumo.cla, claNome: p.resumo.claNome, claBrasao: p.resumo.claBrasao }))} aoFechar={() => (recompensando = false)} />
 {/if}
 
 {#if confirmandoSaida}

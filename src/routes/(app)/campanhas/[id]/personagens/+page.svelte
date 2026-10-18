@@ -1,8 +1,8 @@
 <script lang="ts">
 	// P1 · Personagens da campanha. O Mestre vê todas as fichas; o jogador vê as próprias e o resumo público do grupo.
+	import IconeCla, { nomeClaFicha, temIconeCla, type ResumoClaFicha } from '#lib/componentes/cla/IconeCla.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import Retrato from '#lib/componentes/ui/Retrato.svelte';
-	import { nomeCla } from '#lib/campanhas/dominio.ts';
 	import { hrefEditar, hrefFicha, STATUS_FICHA } from '#lib/personagem/status.ts';
 	import type { StatusFicha } from '#lib/supabase/banco.ts';
 	import type { PageProps } from './$types';
@@ -17,7 +17,7 @@
 		nome: string;
 		jogador: string;
 		nivel: number;
-		cla: string | null | undefined;
+		cla: ResumoClaFicha;
 		grupo: Exclude<Filtro, 'Todos'>;
 		status: StatusFicha | null;
 		situacao: string;
@@ -38,7 +38,7 @@
 				nome: p.nome || 'Sem nome',
 				jogador: nomeJogador(p.jogador_id),
 				nivel: p.nivel,
-				cla: p.resumo.cla,
+				cla: p.resumo,
 				grupo,
 				status: p.status,
 				situacao: p.situacao,
@@ -53,7 +53,7 @@
 				nome: g.nome,
 				jogador: nomeJogador(g.jogador_id),
 				nivel: g.nivel,
-				cla: g.resumo.cla,
+				cla: g.resumo,
 				grupo: g.situacao === 'falecido' ? 'Falecido' : g.situacao === 'arquivado' ? 'Arquivado' : 'Ativo',
 				status: 'aprovada',
 				situacao: g.situacao,
@@ -74,7 +74,6 @@
 		Falecido: { classe: 'border-[#5E6B73] text-fg', icone: 'status/ic-status-revogado' },
 		Arquivado: { classe: 'border-b3 text-mut', icone: 'status/ic-status-rascunho' }
 	};
-	const temCla = (s: string | null | undefined) => !!s && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(s);
 </script>
 
 <main class="flex min-w-0 flex-col gap-4 p-4 md:p-6">
@@ -97,14 +96,14 @@
 				{#each visiveis as x (x.id)}
 					<li>
 						<a href={x.href} class="painel-sombra cartao-link relative flex items-start gap-3 overflow-hidden p-3.5 text-fg" class:grayscale={x.grupo === 'Falecido'}>
-							{#if temCla(x.cla)}
-								<span class="flex h-16 w-16 flex-none items-center justify-center border-2 border-[#8B2E20] bg-grena"><Icone id="cla/ic-cla-{x.cla}" tamanho={32} /></span>
+							{#if temIconeCla(x.cla)}
+								<span class="flex h-16 w-16 flex-none items-center justify-center border-2 border-[#8B2E20] bg-grena"><IconeCla resumo={x.cla} /></span>
 							{:else}
 								<Retrato nome={x.nome} tamanho={64} />
 							{/if}
 							<span class="flex min-w-0 flex-1 flex-col gap-1.5">
 								<span class="truncate font-mincho text-lg leading-6 font-bold">{x.nome}{x.meu ? ' (sua)' : ''}</span>
-								<span class="text-[13px] leading-[18px] text-mut">{x.jogador} · Nível {x.nivel}{temCla(x.cla) ? ` · Clã ${nomeCla(x.cla!)}` : ''}</span>
+								<span class="text-[13px] leading-[18px] text-mut">{x.jogador} · Nível {x.nivel}{nomeClaFicha(x.cla) ? ` · Clã ${nomeClaFicha(x.cla)}` : ''}</span>
 								<span class="inline-flex h-9 items-center gap-0.5 self-start border-2 pr-2 text-xs leading-none font-semibold {ROTULO[x.grupo].classe}">
 									<Icone id={ROTULO[x.grupo].icone} />{x.grupo === 'Em criação' && x.status ? STATUS_FICHA[x.status].rotulo : x.grupo}
 								</span>

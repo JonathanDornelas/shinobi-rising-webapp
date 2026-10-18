@@ -2,13 +2,13 @@
 	// Passo 2 · Atributos: 8 pontos, de −2 a +4 (+5 no atributo do clã), até 2 reduções.
 	import { ATRIBUTOS } from '#lib/personagem/dados.ts';
 	import type { Criador } from '#lib/personagem/criador.svelte.ts';
-	import { atributoDoCla, sinal } from '#lib/personagem/regras.ts';
+	import { atributoDoCla, regrasCla, sinal } from '#lib/personagem/regras.ts';
 	import Icone from '../ui/Icone.svelte';
 	import Orcamento from './Orcamento.svelte';
 
 	let { c }: { c: Criador } = $props();
 	const doCla = $derived(atributoDoCla(c.ficha));
-	const nomeCla = $derived(c.ficha.cla.slug ? c.ficha.cla.slug.toUpperCase() : '');
+	const nomeCla = $derived(regrasCla(c.ficha)?.nome.toUpperCase() ?? '');
 
 	function teclar(e: KeyboardEvent, a: (typeof ATRIBUTOS)[number]['id']) {
 		if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {

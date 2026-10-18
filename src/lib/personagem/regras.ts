@@ -23,6 +23,7 @@ import {
 	type Pericia,
 	type TipoProficiencia
 } from './dados.ts';
+import type { RegrasClaCriado } from '../clas/regras.ts';
 
 export type TipoCla = 'catalogo' | 'sem' | 'novo-sem-kkg' | 'novo-com-kkg';
 
@@ -64,7 +65,8 @@ export interface FichaDados {
 	conceito: { nome: string; idade: number | null; origem: string; conceito: string; aparencia: string };
 	atributos: Record<Atributo, number>;
 	vila: { id: string | null; escolha: Pericia | null };
-	cla: { tipo: TipoCla | null; slug: string | null; escolha: Pericia | null };
+	/** Clã criado: `id` aponta para a tabela clas e `criado` guarda a cópia das regras que a ficha usa. */
+	cla: { tipo: TipoCla | null; slug: string | null; escolha: Pericia | null; id?: string | null; criado?: RegrasClaCriado | null };
 	pericias: Partial<Record<Pericia, number>>;
 	proficiencias: Proficiencia[];
 	especializacao: string | null;
@@ -87,7 +89,7 @@ export function fichaVazia(): FichaDados {
 		conceito: { nome: '', idade: null, origem: '', conceito: '', aparencia: '' },
 		atributos: { FOR: 0, AGI: 0, VIG: 0, INT: 0, CTR: 0, ESP: 0 },
 		vila: { id: null, escolha: null },
-		cla: { tipo: null, slug: null, escolha: null },
+		cla: { tipo: null, slug: null, escolha: null, id: null, criado: null },
 		pericias: {},
 		proficiencias: [],
 		especializacao: null,
@@ -214,15 +216,21 @@ export interface LinhaPericia {
 	combate: boolean;
 }
 
+/** Regras do clã da ficha: do catálogo (CLAS) ou a cópia guardada do clã criado. */
+export type RegrasCla = Omit<RegrasClaCriado, 'id' | 'kkg' | 'brasao' | 'extras'> & { extras?: string[]; segundoElemento?: boolean };
+export function regrasCla(f: FichaDados): RegrasCla | null {
+	if (f.cla.tipo === 'catalogo') return f.cla.slug && CLAS[f.cla.slug] ? { nome: f.cla.slug.charAt(0).toUpperCase() + f.cla.slug.slice(1), ...CLAS[f.cla.slug] } : null;
+	if (f.cla.tipo === 'novo-sem-kkg' || f.cla.tipo === 'novo-com-kkg') return f.cla.criado ?? null;
+	return null;
+}
+
 /** Ganhos que vêm da vila, do clã e do background (com as escolhas do jogador). */
 function ganhos(f: FichaDados) {
 	const lista: { fonte: string; ganho: Ganho; escolha: Pericia | null }[] = [];
 	const vila = VILAS.find((v) => v.id === f.vila.id);
 	if (vila) lista.push({ fonte: vila.nome.replace(/gakure$/, ''), ganho: vila.ganho, escolha: f.vila.escolha });
-	if (f.cla.tipo === 'catalogo' && f.cla.slug && CLAS[f.cla.slug]) {
-		const nome = f.cla.slug.charAt(0).toUpperCase() + f.cla.slug.slice(1);
-		lista.push({ fonte: nome, ganho: CLAS[f.cla.slug].ganho, escolha: f.cla.escolha });
-	}
+	const cla = regrasCla(f);
+	if (cla) lista.push({ fonte: cla.nome, ganho: cla.ganho, escolha: f.cla.escolha });
 	if (f.background.id === 'proprio') {
 		const p = f.background.proprio;
 		if (p.pericia) lista.push({ fonte: p.nome.trim() || 'Background', ganho: { pericias: [p.pericia] }, escolha: null });
@@ -236,7 +244,7 @@ function ganhos(f: FichaDados) {
 /** Valor do atributo com o bônus do clã (o limite de criação sobe para +5 nesse atributo). */
 export function atributosTotais(f: FichaDados): Record<Atributo, number> {
 	const t = { ...f.atributos };
-	const cla = f.cla.tipo === 'catalogo' && f.cla.slug ? CLAS[f.cla.slug] : null;
+	const cla = regrasCla(f);
 	if (cla?.ganho.atributo) t[cla.ganho.atributo] += 1;
 	for (const n of f.progresso.niveis) {
 		if (n.atributo) t[n.atributo] += 1;
@@ -253,7 +261,7 @@ export function limitesAtributo(f: FichaDados): Record<Atributo, number> {
 }
 
 export function atributoDoCla(f: FichaDados): Atributo | null {
-	return f.cla.tipo === 'catalogo' && f.cla.slug ? (CLAS[f.cla.slug]?.ganho.atributo ?? null) : null;
+	return regrasCla(f)?.ganho.atributo ?? null;
 }
 
 export function orcamentoAtributos(f: FichaDados) {
@@ -290,7 +298,7 @@ export function linhasPericia(f: FichaDados): LinhaPericia[] {
 	const fontes = ganhos(f);
 	const nivel = nivelDe(f);
 	const esps = especializacoes(f);
-	const nomeCla = f.cla.slug ? f.cla.slug.charAt(0).toUpperCase() + f.cla.slug.slice(1) : 'Clã';
+	const nomeCla = regrasCla(f)?.nome ?? 'Clã';
 	// Treino vai até +3 na criação e +5 depois; clã, vila, background e marcos passam do limite em até +2 (cap. 3).
 	const teto = (nivel === 1 ? CRIACAO.periciaTreinoMax : PROGRESSAO.periciaTreinoMax) + 2;
 	return PERICIAS.map((p) => {
@@ -326,24 +334,25 @@ export function linhasPericia(f: FichaDados): LinhaPericia[] {
 }
 
 export function ptDisponiveis(f: FichaDados) {
-	const total = CRIACAO.ptIniciais + (f.cla.tipo === 'sem' ? CRIACAO.semCla.pt : 0) + (f.background.id === 'perdedor' ? 2 : 0);
+	const total = CRIACAO.ptIniciais + (f.cla.tipo === 'sem' ? CRIACAO.semCla.pt : 0) + (regrasCla(f)?.ganho.pt ?? 0) + (f.background.id === 'perdedor' ? 2 : 0);
 	const gastos = f.proficiencias.reduce((s, p) => s + custoProficiencia(p.tipo, p.nivel), 0);
 	return { total, gastos, restantes: total - gastos };
 }
 
 export function jutsusConhecidos(f: FichaDados): string[] {
-	const cla = f.cla.tipo === 'catalogo' && f.cla.slug ? (CLAS[f.cla.slug]?.jutsus ?? []) : [];
+	const cla = regrasCla(f)?.jutsus ?? [];
 	const marcos = f.progresso.niveis.flatMap((n) => n.marco?.jutsus ?? []);
 	const treinos = f.progresso.treinos.flatMap((t) => (t.tipo === 'jutsu' ? [t.slug] : []));
 	return [...new Set([...JUTSUS_ACADEMIA, ...cla, ...f.jutsus.E, ...f.jutsus.D, ...marcos, ...treinos])];
 }
 
-/** Elementos do personagem (o clã Uchiha fixa Katon; o Senju ganha um segundo; os outros vêm de treino). */
+/** Elementos do personagem (o Uchiha fixa Katon; o Senju ganha um segundo; clãs criados fixam até 2; os outros vêm de treino). */
 export function elementos(f: FichaDados): string[] {
-	const cla = f.cla.tipo === 'catalogo' && f.cla.slug ? CLAS[f.cla.slug] : null;
+	const cla = regrasCla(f);
 	const principal = cla?.elemento ?? f.elemento;
+	const segundo = cla?.segundoElemento ? f.segundoElemento : (cla?.elementoExtra ?? null);
 	const treinados = f.progresso.treinos.flatMap((t) => (t.tipo === 'elemento' ? [t.id] : []));
-	return [...new Set([principal, cla?.segundoElemento ? f.segundoElemento : null, ...treinados].filter((e): e is string => !!e))];
+	return [...new Set([principal, segundo, ...treinados].filter((e): e is string => !!e))];
 }
 
 export function cargaDasCompras(compras: FichaDados['equipamento']['compras'], loja: ItemLoja[]) {
@@ -377,8 +386,8 @@ export function recursos(f: FichaDados, loja: ItemLoja[] = []): Recursos {
 	const at = atributosTotais(f);
 	const pos = (n: number) => Math.max(0, n);
 	const vila = VILAS.find((v) => v.id === f.vila.id);
-	const cla = f.cla.tipo === 'catalogo' && f.cla.slug ? CLAS[f.cla.slug] : null;
-	const claNome = f.cla.slug ? f.cla.slug.charAt(0).toUpperCase() + f.cla.slug.slice(1) : '';
+	const cla = regrasCla(f);
+	const claNome = cla?.nome ?? '';
 	// Especializações: soma de PV/PC/PE/Iniciativa no nível atual de cada uma; RD não soma, vale a maior (cap. 4).
 	const esps = especializacoes(f);
 	const somaEsp = (k: 'pv' | 'pc' | 'pe' | 'iniciativa') => esps.reduce((t, e) => t + valorNivel(ESPECIALIZACOES[e.id]?.recursos?.[k], e.nivel), 0);
@@ -436,7 +445,7 @@ export interface Analise {
 }
 
 /** Verificações da revisão (passo 12) e o estado de cada passo na navegação. */
-export function analisar(f: FichaDados, ctx: ContextoCampanha, opcoes: { jutsusD: JutsuOpcao[]; loja: ItemLoja[] }): Analise {
+export function analisar(f: FichaDados, ctx: ContextoCampanha, opcoes: { jutsusD: JutsuOpcao[]; loja: ItemLoja[]; statusCla?: string | null }): Analise {
 	const v: Verificacao[] = [];
 	const add = (nivel: Nivel, texto: string, passo: number) => v.push({ nivel, texto, passo, ref: `cap. 6, Passo ${passo}` });
 
@@ -465,7 +474,17 @@ export function analisar(f: FichaDados, ctx: ContextoCampanha, opcoes: { jutsusD
 		else if (!ctx.clas.includes(f.cla.slug)) add('bloqueio', 'Este clã não é permitido nesta campanha', 4);
 		else if (CLAS[f.cla.slug].ganho.escolhaPericia && !f.cla.escolha) add('bloqueio', 'Escolha a perícia do bônus do clã', 4);
 	} else if (f.cla.tipo === 'novo-sem-kkg' || f.cla.tipo === 'novo-com-kkg') {
-		add('bloqueio', 'O criador de clãs chega em um próximo lote; por enquanto, escolha um clã do catálogo ou siga sem clã', 4);
+		const kkg = f.cla.tipo === 'novo-com-kkg';
+		const status = opcoes.statusCla ?? null;
+		if (!(kkg ? ctx.clasComKkg : ctx.clasSemKkg)) add('bloqueio', `A campanha não permite clãs personalizados ${kkg ? 'com' : 'sem'} KKG`, 4);
+		else if (!f.cla.id || !f.cla.criado) add('bloqueio', 'Escolha ou crie o clã', 4);
+		else if (f.cla.criado.kkg !== kkg) add('bloqueio', `O clã ${f.cla.criado.nome} ${f.cla.criado.kkg ? 'tem' : 'não tem'} KKG; troque a opção ou o clã`, 4);
+		else if (!status || status === 'rejeitado') add('bloqueio', `O clã ${f.cla.criado.nome} não está disponível; escolha outro`, 4);
+		else if (status === 'rascunho' || status === 'ajustes') add('bloqueio', `Envie o clã ${f.cla.criado.nome} para a revisão do Mestre antes da ficha`, 4);
+		else if (status === 'em_revisao') {
+			add('aviso', `O clã ${f.cla.criado.nome} ainda está em revisão; a ficha só é aprovada depois dele`, 4);
+			dependencias.push(`Clã ${f.cla.criado.nome}${kkg ? ' (com KKG)' : ''}`);
+		}
 	}
 
 	// 5 · Perícias
@@ -495,7 +514,7 @@ export function analisar(f: FichaDados, ctx: ContextoCampanha, opcoes: { jutsusD
 
 	// 9 · Jutsus
 	const els = elementos(f);
-	const cla = f.cla.tipo === 'catalogo' && f.cla.slug ? CLAS[f.cla.slug] : null;
+	const cla = regrasCla(f);
 	if (!els[0]) add('bloqueio', 'Escolha o elemento principal', 9);
 	if (cla?.segundoElemento && (!f.segundoElemento || f.segundoElemento === els[0])) add('bloqueio', 'Escolha o segundo elemento do clã Senju (diferente do principal)', 9);
 	if (f.jutsus.E.length < JUTSUS_INICIAIS.E) add('bloqueio', `Falta escolher ${JUTSUS_INICIAIS.E - f.jutsus.E.length} jutsu Rank E`, 9);
@@ -562,6 +581,9 @@ export function resumoFicha(f: FichaDados, loja: ItemLoja[] = []) {
 		nome: f.conceito.nome.trim(),
 		conceito: f.conceito.conceito.trim(),
 		cla: f.cla.tipo === 'catalogo' ? f.cla.slug : f.cla.tipo,
+		claId: f.cla.tipo === 'catalogo' ? null : (f.cla.id ?? null),
+		claNome: regrasCla(f)?.nome ?? null,
+		claBrasao: f.cla.criado?.brasao ?? null,
 		vila: f.vila.id,
 		especializacao: f.especializacao,
 		elementos: elementos(f),

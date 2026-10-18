@@ -2,7 +2,7 @@
 	// P3 · Visão geral: atributos, valores derivados, condições ativas, elemento e especialização, jutsus e arma em mãos.
 	import { ATRIBUTOS, CONDICOES, ELEMENTOS, PROGRESSAO } from '#lib/personagem/dados.ts';
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
-	import { sinal } from '#lib/personagem/regras.ts';
+	import { regrasCla, sinal } from '#lib/personagem/regras.ts';
 	import Icone from '../ui/Icone.svelte';
 
 	let { f, aoAbrirJutsus }: { f: FichaJogo; aoAbrirJutsus: () => void } = $props();
@@ -25,7 +25,7 @@
 					<Icone id="atributo/ic-atributo-{a.id.toLowerCase()}" />
 					<span class="font-pixel text-xs leading-none font-bold tracking-[0.08em] text-mut">{a.id}</span>
 					<span class="t-num text-[32px] leading-none">{sinal(f.calc.atributos[a.id])}</span>
-					{#if doCla}<span class="font-pixel text-xs leading-none font-bold text-title uppercase">+1 {f.dados.cla.slug}</span>{/if}
+					{#if doCla}<span class="font-pixel text-xs leading-none font-bold text-title uppercase">+1 {regrasCla(f.dados)?.nome}</span>{/if}
 				</div>
 			{/each}
 		</div>

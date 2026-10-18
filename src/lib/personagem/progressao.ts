@@ -2,7 +2,6 @@
 // custo real dos jutsus (cap. 9), PIC, estado em jogo (cap. 4) e inventário (cap. 11). Puro, como regras.ts.
 import {
 	ATRIBUTOS,
-	CLAS,
 	CUSTO_ELEMENTO,
 	CUSTO_ESPECIALIZACAO,
 	CUSTO_JUTSU,
@@ -28,6 +27,7 @@ import {
 	nivelDe,
 	proficiencias,
 	recursos,
+	regrasCla,
 	treinoPericia,
 	type EscolhaNivel,
 	type FichaDados,
@@ -300,11 +300,12 @@ export function rotuloAlvo(tipo: string, alvo: string, jutsus: { slug: string; n
 
 /** PIC por arco: status do clã + marcos + background (Herdeiro +1, Renegado −1). */
 export function picMaximo(f: FichaDados): number {
-	if (f.cla.tipo !== 'catalogo' || !f.cla.slug || !CLAS[f.cla.slug]) return 0;
-	const marco1 = /\+(\d+) PIC/.exec(CLAS[f.cla.slug].marco);
+	const cla = regrasCla(f);
+	if (!cla) return 0;
+	const marco1 = /\+(\d+) PIC/.exec(cla.marco);
 	const marcos = f.progresso.niveis.reduce((t, n) => t + (n.marco?.pic ?? 0), 0);
 	const bg = f.background.id === 'herdeiro' ? 1 : f.background.id === 'renegado' ? -1 : 0;
-	return Math.max(0, CLAS[f.cla.slug].pic + Number(marco1?.[1] ?? 0) + marcos + bg);
+	return Math.max(0, cla.pic + Number(marco1?.[1] ?? 0) + marcos + bg);
 }
 
 // ------------------------------------------------------------------ estado em jogo (cap. 4 e 9)

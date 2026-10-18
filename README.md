@@ -4,15 +4,17 @@ Documentação web e criador de campanhas do RPG de mesa **Shinobi no Michi — 
 
 Stack: SvelteKit 3 (Svelte 5) + Tailwind CSS 4 + DaisyUI 5 + Supabase, publicado no Vercel (`adapter-vercel`): a documentação é pré-renderizada; conta e campanhas rodam no servidor. As telas são desenhadas antes no Claude Design (direção visual 1a "Jogo", temas sumi e washi).
 
-**Fase atual:** Lote 5, ficha em jogo (P3), subir de nível (P4), treino (P5), lista de personagens (P1), impressão A4 (P6) e conceder recompensas (C8). Feitos antes: documentação do livro (G1–G5, D1–D10), conta (A1–A4), campanhas (C1–C7) e criação de personagem (P2). Próximo: clãs (criador de clã).
+**Fase atual:** Lote 6, biblioteca de clãs (K1) e criador de clã com e sem KKG (K2), ligado ao passo 4 da criação de personagem. Feitos antes: documentação do livro (G1–G5, D1–D10), conta (A1–A4), campanhas (C1–C7), criação de personagem (P2) e ficha em jogo, nível, treino e recompensas (P1, P3–P6, C8). Próximo: jutsus (criador de jutsus).
 
 ## Criação de personagem
 
 `src/lib/personagem/regras.ts` é o motor do cap. 6: a partir das escolhas (`FichaDados`) calcula atributos, perícias, PT, recursos, carga e ryo, e gera as verificações da revisão (ok, aviso, bloqueio). Os números do livro que ele usa ficam em `dados.ts` (vilas do cap. 7, bônus de criação e marco do nível 1 dos 13 clãs, backgrounds, efeitos das especializações, custos de proficiência); jutsus, clãs, especializações e itens da loja vêm dos dados gerados do livro, montados no servidor por `catalogo.server.ts`. O motor é testado com os exemplos do próprio livro (`regras.spec.ts`).
 
-A ficha fica na tabela `personagens` (escolhas em `dados`, valores para listas em `resumo`). O status só muda pelas funções `enviar_ficha`, `retirar_ficha` e `decidir_ficha`; uma campanha que não exige aprovação de fichas aprova no envio. O criador de clãs e de jutsus e os retratos chegam nos próximos lotes.
+A ficha fica na tabela `personagens` (escolhas em `dados`, valores para listas em `resumo`). O status só muda pelas funções `enviar_ficha`, `retirar_ficha` e `decidir_ficha`; uma campanha que não exige aprovação de fichas aprova no envio. O criador de jutsus e os retratos chegam nos próximos lotes.
 
 ## Ficha, nível e treino
+
+Clãs criados (cap. 8.4) ficam na tabela `clas`, com as escolhas em `dados` e o mesmo fluxo de revisão (`enviar_cla`, `retirar_cla`, `decidir_cla`; clã aprovado só muda por `nova_versao_cla`). `src/lib/clas/regras.ts` calcula o orçamento de PB, a balança de PKG (5 + limitações = benefícios), as 20 linhas do Esqueleto Padrão e as verificações; `regrasParaFicha` copia para a ficha o que ela usa (bônus, jutsus do nível 1, elementos, PIC), e `regrasCla` em `personagem/regras.ts` trata igual os clãs do catálogo e os criados. A ficha aponta para o clã em `cla_id`: só envia com o clã enviado e só é aprovada com o clã aprovado. Os jutsus originais do clã têm nome, rank e descrição; números e custo chegam com o criador de jutsus.
 
 Depois da aprovação, a progressão fica em `dados.progresso` (as escolhas de cada nível e os treinos) e o nível atual é `1 + progresso.niveis.length`. `src/lib/personagem/progressao.ts` cuida de XP e níveis (cap. 17), lê os marcos de clã (cap. 8.3), monta os passos dinâmicos do Subir de nível, calcula o custo real dos jutsus com as reduções do cap. 9, lista o que dá para treinar com PT (cap. 18) e guarda as regras de descanso, PV 0 e PIC.
 

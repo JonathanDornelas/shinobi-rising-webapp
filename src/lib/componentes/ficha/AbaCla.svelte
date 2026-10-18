@@ -1,6 +1,9 @@
 <script lang="ts">
 	// P3 · Clã: PIC, política (relações e obrigação) e a linha do tempo de marcos com "você está aqui".
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
+	import { page } from '$app/state';
+	import { hrefCla } from '#lib/clas/status.ts';
+	import Brasao from '../cla/Brasao.svelte';
 	import Icone from '../ui/Icone.svelte';
 
 	let { f }: { f: FichaJogo } = $props();
@@ -19,17 +22,17 @@
 	<div class="painel flex flex-col items-center gap-2 p-8 text-center">
 		<Icone id="vila/ic-vila-sem" tamanho={64} />
 		<span class="text-[15px] font-semibold">{f.dados.cla.tipo === 'sem' ? 'Sem clã' : 'Clã personalizado'}</span>
-		<span class="text-sm text-mut">{f.dados.cla.tipo === 'sem' ? 'Quem não tem clã ganhou +2 pontos de perícia e +5 PT na criação.' : 'Os clãs criados chegam no lote de Clãs.'}</span>
+		<span class="text-sm text-mut">{f.dados.cla.tipo === 'sem' ? 'Quem não tem clã ganhou +2 pontos de perícia e +5 PT na criação.' : 'O clã criado desta ficha não está disponível para você.'}</span>
 	</div>
 {:else}
 	<div class="grid items-start gap-5 lg:grid-cols-2">
 		<div class="flex flex-col gap-4">
 			<div class="flex border-2 border-[#8B2E20] bg-b2 sombra-painel">
-				<div class="flex w-28 flex-none items-center justify-center border-r-2 border-[#8B2E20] bg-grena"><Icone id="cla/ic-cla-{cla.slug}" tamanho={64} /></div>
+				<div class="flex w-28 flex-none items-center justify-center border-r-2 border-[#8B2E20] bg-grena"><Brasao slug={cla.slug} kamon={cla.brasao?.kamon} cor={cla.brasao?.cor} tamanho={64} /></div>
 				<div class="flex flex-col gap-1.5 p-3.5">
 					<span class="font-mincho text-[22px] leading-7 font-bold">Clã {cla.nome}</span>
 					<span class="text-sm leading-5 text-mut italic">{cla.epiteto} · {cla.kkg ? `KKG: ${cla.kkg}` : 'sem KKG'}</span>
-					<a href="/regras/clas/{cla.slug}" class="link self-start text-[13px] font-semibold">Ver página do clã</a>
+					<a href={cla.slug ? `/regras/clas/${cla.slug}` : hrefCla(page.params.id ?? '', cla.id ?? '')} class="link self-start text-[13px] font-semibold">Ver página do clã</a>
 				</div>
 			</div>
 			<div class="grid grid-cols-2 gap-3">

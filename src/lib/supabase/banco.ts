@@ -7,6 +7,7 @@ export type Papel = 'mestre' | 'jogador';
 export type TipoConvite = 'email' | 'link' | 'codigo';
 export type StatusConvite = 'pendente' | 'aceito' | 'recusado' | 'revogado';
 export type StatusFicha = 'rascunho' | 'em_revisao' | 'ajustes' | 'aprovada' | 'rejeitada';
+export type StatusCla = 'rascunho' | 'em_revisao' | 'ajustes' | 'aprovado' | 'rejeitado';
 
 export type Preferencias = {
 	tema?: 'sumi' | 'washi' | 'sistema';
@@ -107,7 +108,28 @@ export type Personagem = {
 	pt: number;
 	epitafio: string | null;
 	falecido_em: string | null;
+	cla_id: string | null;
 }
+
+/** Clã criado por um jogador (cap. 8.4); `dados` é um ClaDados (src/lib/clas/regras.ts). */
+export type Cla = {
+	id: string;
+	campanha_id: string;
+	autor_id: string;
+	nome: string;
+	kkg: boolean;
+	status: StatusCla;
+	versao: number;
+	anterior_id: string | null;
+	dados: Json;
+	resumo: Json;
+	mensagem: string | null;
+	comentario_mestre: string | null;
+	enviado_em: string | null;
+	decidido_em: string | null;
+	criado_em: string;
+	atualizado_em: string;
+};
 
 export type SituacaoFicha = 'ativo' | 'falecido' | 'arquivado';
 
@@ -249,6 +271,7 @@ export type Database = {
 				'personagem_id' | 'campanha_id' | 'sessao' | 'semanas' | 'pt' | 'descricao',
 				[Rel<'pedidos_pt_personagem_id_fkey', 'personagem_id', 'personagens'>, Rel<'pedidos_pt_campanha_id_fkey', 'campanha_id', 'campanhas'>]
 			>;
+			clas: Tabela<Cla, 'campanha_id' | 'autor_id', [Rel<'clas_campanha_id_fkey', 'campanha_id', 'campanhas'>, Rel<'clas_autor_id_fkey', 'autor_id', 'perfis'>]>;
 			atividades: Tabela<Atividade, 'campanha_id' | 'tipo' | 'texto', [Rel<'atividades_campanha_id_fkey', 'campanha_id', 'campanhas'>]>;
 		};
 		Views: { [_ in never]: never };
@@ -274,9 +297,13 @@ export type Database = {
 				Args: { campanha: string; fichas: string[]; xp: number; pt: number; ryo: number; motivo: string; restaurar_pd?: boolean; renovar_pic?: boolean };
 				Returns: number;
 			};
+			enviar_cla: { Args: { cla: string }; Returns: StatusCla };
+			retirar_cla: { Args: { cla: string }; Returns: undefined };
+			decidir_cla: { Args: { cla: string; decisao: StatusCla; comentario?: string | null }; Returns: undefined };
+			nova_versao_cla: { Args: { cla: string }; Returns: string };
 			definir_situacao: { Args: { ficha: string; situacao: SituacaoFicha; epitafio?: string | null }; Returns: undefined };
 		};
-		Enums: { papel: Papel; tipo_convite: TipoConvite; status_convite: StatusConvite; status_ficha: StatusFicha };
+		Enums: { papel: Papel; tipo_convite: TipoConvite; status_convite: StatusConvite; status_ficha: StatusFicha; status_cla: StatusCla };
 		CompositeTypes: { [_ in never]: never };
 	};
 };

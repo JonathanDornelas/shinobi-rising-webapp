@@ -27,11 +27,11 @@
 	};
 </script>
 
-<div role={tipo === 'erro' ? 'alert' : 'status'} class="flex items-start gap-2.5 border-2 py-1.5 pr-3 pl-1.5" style:border-color={COR[tipo]} style:background={FUNDO[tipo]}>
+<div role={tipo === 'erro' ? 'alert' : 'status'} class="flex flex-wrap items-start gap-x-2.5 gap-y-1 border-2 py-1.5 pr-3 pl-1.5" style:border-color={COR[tipo]} style:background={FUNDO[tipo]}>
 	<Icone id={ICONE[tipo]} />
-	<div class="flex min-w-0 flex-1 flex-col gap-1 py-1.5 text-sm leading-5">
+	<div class="flex min-w-[min(220px,100%)] flex-1 flex-col gap-1 py-1.5 text-sm leading-5">
 		{#if titulo}<b class="font-semibold">{titulo}</b>{/if}
 		{#if children}{@render children()}{/if}
 	</div>
-	{#if acao}<div class="self-center">{@render acao()}</div>{/if}
+	{#if acao}<div class="self-center max-sm:w-full max-sm:pb-1 max-sm:pl-[42px]">{@render acao()}</div>{/if}
 </div>
