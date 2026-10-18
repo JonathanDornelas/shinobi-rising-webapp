@@ -181,6 +181,32 @@ export class FichaJogo {
 		await this.salvarInventario(`${comprar ? 'Comprou' : 'Recebeu'} ${qtd}× ${item.nome}${comprar ? ` (−${preco.toLocaleString('pt-BR')} ryo)` : ''}`);
 	}
 
+	/** Encomendas aprovadas (armas forjadas, marionetes): vão para o inventário; o ryo já saiu na aprovação. */
+	async receberEntregas(entregas: { id: string; tipo: string; nome: string; resumo: unknown }[]) {
+		if (!this.editavel || !entregas.length) return;
+		for (const e of entregas) {
+			const r = e.resumo as { carga?: number; icone?: string; categoria?: string; qualidade?: string; dano?: string };
+			const id = `eq-${e.id}`;
+			if (this.inventario.some((i) => i.id === id)) continue;
+			this.inventario.push({
+				id,
+				nome: e.nome,
+				qtd: 1,
+				peso: e.tipo === 'arma' ? (r.carga ?? 1) : 0,
+				grupo: e.tipo === 'arma' ? 'Armas' : 'Outros',
+				icone: r.icone ?? 'equip/ic-equip-ferramenta',
+				nota: [r.categoria, r.qualidade && r.qualidade !== 'Comum' ? r.qualidade : '', r.dano].filter(Boolean).join(' · ')
+			});
+		}
+		const { error } = await supabase().rpc('receber_equipamentos', {
+			ficha: this.id,
+			inventario: $state.snapshot(this.inventario) as unknown as Json,
+			equipamentos: entregas.map((e) => e.id)
+		});
+		if (error) return toasts.mostrar('Não foi possível receber as encomendas no inventário.', 'erro');
+		toasts.mostrar(`Chegou ao inventário: ${entregas.map((e) => e.nome).join(', ')}.`, 'sucesso', 6000);
+	}
+
 	async alterarQtd(id: string, delta: number) {
 		const i = this.inventario.find((x) => x.id === id);
 		if (!i || !this.editavel) return;

@@ -1,6 +1,7 @@
 <script lang="ts">
 	// P3 · Ficha do personagem: cabeçalho com nível e XP, barra de recursos, abas e ações (subir de nível, treinar,
 	// imprimir, memorial). Dono e Mestre ajustam o estado em jogo; os outros membros veem só o resumo público.
+	import { untrack } from 'svelte';
 	import { goto, refreshAll } from '$app/navigation';
 	import { page } from '$app/state';
 	import AbaCla from '#lib/componentes/ficha/AbaCla.svelte';
@@ -46,6 +47,14 @@
 				)
 			: null
 	);
+	// encomendas aprovadas (armas, marionetes) entram no inventário assim que a ficha abre
+	const entregues = new Set<string>();
+	$effect(() => {
+		const pendentes = (data.entregas ?? []).filter((e) => !entregues.has(e.id));
+		if (!f?.editavel || !pendentes.length) return;
+		for (const e of pendentes) entregues.add(e.id);
+		untrack(() => f.receberEntregas(pendentes));
+	});
 	const xp = $derived(p ? progressoXp(p.nivel, p.xp) : null);
 	const vila = $derived(f ? VILAS.find((v) => v.id === f.dados.vila.id) : null);
 	const falecido = $derived(p?.situacao === 'falecido');

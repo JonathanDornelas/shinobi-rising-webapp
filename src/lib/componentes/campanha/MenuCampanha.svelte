@@ -19,7 +19,7 @@
 			{ grupo: 'BIBLIOTECA' },
 			{ chave: 'clas', nome: 'Clãs', curto: 'CLÃS', icone: 'clas', href: `${base}/clas`, recuo: true },
 			{ chave: 'jutsus', nome: 'Jutsus', curto: 'JUTSUS', icone: 'jutsus', href: `${base}/jutsus`, recuo: true },
-			{ chave: 'equip', nome: 'Equipamentos', curto: 'EQUIPAMENTOS', icone: 'equipamentos', recuo: true },
+			{ chave: 'equip', nome: 'Equipamentos', curto: 'EQUIPAMENTOS', icone: 'equipamentos', href: `${base}/equipamentos`, recuo: true },
 			{ grupo: 'MESA' },
 			mestre ? { chave: 'npcs', nome: 'NPCs', curto: 'NPCS', icone: 'npcs' } : null,
 			mestre
