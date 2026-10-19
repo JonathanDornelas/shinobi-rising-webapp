@@ -296,7 +296,7 @@
 			{/each}
 		</div>
 
-		{#if f.editavel}<div class="mx-4 mt-3 md:mx-6"><BarraRolagem registro="/rolagens?campanha={k.id}" /></div>{/if}
+		{#if f.editavel}<div class="mx-4 mt-3 md:mx-6"><BarraRolagem registro="/campanhas/{k.id}/rolagens" /></div>{/if}
 
 		<div class="flex flex-col gap-5 px-4 pt-5 pb-8 md:px-6" role="tabpanel">
 			{#if aba === 'visao'}<AbaVisao {f} aoAbrirJutsus={() => (aba = 'jutsus')} />

@@ -44,5 +44,7 @@ describe('registro de rolagens', () => {
 			r({ tipo: 'iniciativa', campanha_id: 'outra', quem: 'X', total: 30, criada_em: min(5) })
 		];
 		expect(ordemIniciativa(rs, 'k', 6, agora).map((o) => `${o.quem} ${o.total}`)).toEqual(['Ren 19', 'Hana 14', 'Ninja da Névoa 12']);
+		// limpar a ordem: só contam as rolagens feitas depois
+		expect(ordemIniciativa(rs, 'k', 6, agora, agora.toISOString())).toEqual([]);
 	});
 });

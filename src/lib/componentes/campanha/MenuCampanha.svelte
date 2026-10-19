@@ -21,7 +21,7 @@
 			{ chave: 'jutsus', nome: 'Jutsus', curto: 'JUTSUS', icone: 'jutsus', href: `${base}/jutsus`, recuo: true },
 			{ chave: 'equip', nome: 'Equipamentos', curto: 'EQUIPAMENTOS', icone: 'equipamentos', href: `${base}/equipamentos`, recuo: true },
 			{ grupo: 'MESA' },
-			{ chave: 'rolagens', nome: 'Rolagens', curto: 'ROLAGENS', icone: 'rolagens', href: `/rolagens?campanha=${id}` },
+			{ chave: 'rolagens', nome: 'Rolagens', curto: 'ROLAGENS', icone: 'rolagens', href: `${base}/rolagens` },
 			{ chave: 'npcs', nome: mestre ? 'NPCs' : 'NPCs conhecidos', curto: 'NPCS', icone: 'npcs', href: `${base}/npcs` },
 			mestre
 				? { chave: 'aprovacoes', nome: 'Aprovações', curto: 'APROVAÇÕES', icone: 'aprovacoes', href: `${base}/aprovacoes`, contagem: pendentes }

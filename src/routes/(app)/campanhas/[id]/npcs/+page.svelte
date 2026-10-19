@@ -146,7 +146,7 @@
 			<button type="button" class="btn-jogo btn-primario com-icone text-[13px]" aria-haspopup="dialog" onclick={() => (escolhendo = true)}><Icone id="acao/ic-acao-novo-npc" />NOVO NPC</button>
 		{/if}
 	</div>
-	{#if mestre && ativa && (npcs.length || fichasNpc.length)}<BarraRolagem registro="/rolagens?campanha={k.id}" />{/if}
+	{#if mestre && ativa && (npcs.length || fichasNpc.length)}<BarraRolagem registro="/campanhas/{k.id}/rolagens" />{/if}
 
 	{#if mestre && fichasNpc.length}
 		<section class="flex flex-col gap-2" aria-labelledby="npc-fichas">

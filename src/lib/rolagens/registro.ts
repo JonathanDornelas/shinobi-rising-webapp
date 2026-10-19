@@ -1,5 +1,16 @@
 // Registro de rolagens (L10 · R1/R2): separadores de dia, filtros, marcas e ordem de iniciativa. Funções puras.
+import type { AvatarRolagem } from '#lib/componentes/rolagens/EntradaRegistro.svelte';
 import type { Rolagem, TipoRolagem } from '#lib/supabase/banco.ts';
+
+/** O que o servidor manda para o registro (registro.server.ts). */
+export interface DadosRegistro {
+	eu: string;
+	campanhas: { id: string; nome: string; mestreId: string | null; arquivada: boolean }[];
+	rolagens: Rolagem[];
+	ocultas: { id: string; campanha_id: string; criada_em: string; mestre: string }[];
+	avatares: Record<string, AvatarRolagem>;
+	campanhaInicial: string | null;
+}
 
 const MES = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
 const MES_MIN = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
@@ -92,8 +103,9 @@ export const iniciaisQuem = (nome: string) => {
  * Ordem montada pela última rolagem de iniciativa de cada um (personagem, NPC ou pessoa) na campanha, dentro da janela
  * de horas (o combate atual); maior primeiro.
  */
-export function ordemIniciativa(rs: Rolagem[], campanha: string, horas = 6, agora = new Date()): { chave: string; quem: string; total: number }[] {
-	const desde = agora.getTime() - horas * 3600_000;
+export function ordemIniciativa(rs: Rolagem[], campanha: string, horas = 6, agora = new Date(), limpaEm: string | null = null): { chave: string; quem: string; total: number }[] {
+	// só as rolagens das últimas horas e, se a ordem foi limpa, as feitas depois disso
+	const desde = Math.max(agora.getTime() - horas * 3600_000, limpaEm ? new Date(limpaEm).getTime() : 0);
 	const ultima = new Map<string, Rolagem>();
 	for (const r of rs) {
 		if (r.campanha_id !== campanha || r.tipo !== 'iniciativa' || r.substituida || new Date(r.criada_em).getTime() < desde) continue;

@@ -11,6 +11,8 @@
 	import RoladorDados from './RoladorDados.svelte';
 
 	const j = $derived(rolador.janela);
+	// o registro completo abre na campanha da mesa (com o menu lateral); sem campanha, na página geral
+	const registro = $derived(rolador.mesa ? `/campanhas/${rolador.mesa.id}/rolagens` : '/rolagens');
 	let largura = $state(1440);
 	let altura = $state(900);
 	const desktop = $derived(largura >= 768);
@@ -156,7 +158,7 @@
 			{#if j.minimizada && rolador.naoVistas}<span class="bg-vermelhao px-[5px] py-[3px] font-pixel text-xs leading-none font-bold text-white">{rolador.naoVistas} NOVA{rolador.naoVistas > 1 ? 'S' : ''}</span>{/if}
 			<span class="flex-1"></span>
 			<button type="button" class="h-9 w-9 font-pixel text-base text-b0fg hover:bg-[#2E2420]" aria-label={j.minimizada ? 'Restaurar' : 'Minimizar'} title={j.minimizada ? 'Restaurar' : 'Minimizar'} onpointerdown={naoArrastar} onclick={() => rolador.alternarMinimizada()}>{j.minimizada ? '▢' : '—'}</button>
-			<a href="/rolagens" class="flex h-9 w-9 items-center justify-center font-pixel text-base text-b0fg no-underline hover:bg-[#2E2420]" aria-label="Abrir a página do registro" title="Abrir a página do registro" onpointerdown={naoArrastar}>↗</a>
+			<a href={registro} class="flex h-9 w-9 items-center justify-center font-pixel text-base text-b0fg no-underline hover:bg-[#2E2420]" aria-label="Abrir a página do registro" title="Abrir a página do registro" onpointerdown={naoArrastar}>↗</a>
 			<button type="button" class="h-9 w-9 font-pixel text-base text-b0fg hover:bg-[#2E2420]" aria-label="Fechar (R)" title="Fechar (R)" onpointerdown={naoArrastar} onclick={() => rolador.alternarJanela(false)}>✕</button>
 		</div>
 		{#if !j.minimizada}
@@ -183,7 +185,7 @@
 			</div>
 			<div class="flex flex-none items-center gap-2 border-t-2 border-b3 bg-b1 py-1.5 pr-7 pl-2.5">
 				<span class="flex-1 text-xs leading-4 text-mut">{desktop ? 'Arraste pela barra · R abre e fecha' : 'Arraste a alça para mudar a altura'}</span>
-				<a href="/rolagens" class="link text-xs font-semibold">Ver registro completo</a>
+				<a href={registro} class="link text-xs font-semibold">Ver registro completo</a>
 			</div>
 			{#if desktop}
 				<div role="presentation" title="Redimensionar" class="absolute right-0 bottom-0 flex h-[22px] w-[22px] cursor-nwse-resize touch-none items-end justify-end p-[3px]" onpointerdown={(e) => pegar(e, 'tamanho')}>
