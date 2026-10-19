@@ -1,4 +1,4 @@
-- Criar aba de antoações na ficha do personagem
-- Modal para mudança de paisagem sendo sobreposto e não consigo dar scroll ou ver o resto das opções
-- Na página de npcs tem unifique os botões de "novo npc", "gerar npc", "npc com ficha completa" em um apenas chamado "novo npc" ele irá abrir um modal para escolher entre qual modalidade será aberta dentro estas 3.
-- As fontes que mostram as rolagens e números no geral, as vezes ficam ilegiveis não da para entender muito bem qual número em questão. Porém eu gostei do estilo da fonte, altere para uma fonte no mesmo estilo porém mais legivel
+- [x] Criar aba de antoações na ficha do personagem
+- [x] Modal para mudança de paisagem sendo sobreposto e não consigo dar scroll ou ver o resto das opções
+- [x] Na página de npcs tem unifique os botões de "novo npc", "gerar npc", "npc com ficha completa" em um apenas chamado "novo npc" ele irá abrir um modal para escolher entre qual modalidade será aberta dentro estas 3.
+- [x] As fontes que mostram as rolagens e números no geral, as vezes ficam ilegiveis não da para entender muito bem qual número em questão. Porém eu gostei do estilo da fonte, altere para uma fonte no mesmo estilo porém mais legivel → letras continuam no Pixelify Sans; dígitos e sinais (+ − / =) vêm do VT323, outra fonte de pixel.

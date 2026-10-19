@@ -7,6 +7,7 @@
 	import BotaoRolar from '#lib/componentes/rolagens/BotaoRolar.svelte';
 	import SeloStatus from '#lib/componentes/personagem/SeloStatus.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
+	import Modal from '#lib/componentes/ui/Modal.svelte';
 	import Retrato from '#lib/componentes/ui/Retrato.svelte';
 	import { nomeRank, pvDosMembros, RANKS_NPC, TAGS_NPC } from '#lib/npcs/dados.ts';
 	import { ataqueNpc, gerarNpc } from '#lib/npcs/gerador.ts';
@@ -41,6 +42,7 @@
 	let editando = $state<Npc | null>(null);
 	let salvando = $state(false);
 	async function novo(tropa: boolean) {
+		escolhendo = false;
 		const r = RANKS_NPC.find((x) => x.id === (tropa ? 'genin' : 'chunin'))!;
 		const { data: criado, error } = await supabase()
 			.from('npcs')
@@ -53,7 +55,10 @@
 	}
 	// gerador rápido: um NPC completo (nome, função, combate, tags e ganchos), já salvo e aberto no editor
 	let rankGerado = $state<Npc['rank'] | ''>('');
+	/** Modal do NOVO NPC: ficha resumida, gerada ou completa. */
+	let escolhendo = $state(false);
 	async function gerar() {
+		escolhendo = false;
 		const g = gerarNpc(rankGerado || undefined);
 		const { data: criado, error } = await supabase()
 			.from('npcs')
@@ -137,16 +142,8 @@
 	<div class="flex flex-wrap items-center gap-2">
 		<h1 class="m-0 flex-1 font-mincho text-[30px] leading-[38px] font-bold max-md:text-2xl">{mestre ? 'NPCs' : 'NPCs conhecidos'}</h1>
 		{#if mestre && ativa}
-			<div class="flex border-2 border-mut" role="group" aria-label="Gerador rápido">
-				<select class="h-10 border-0 bg-transparent pr-7 pl-2 text-[13px] font-semibold" aria-label="Rank do NPC gerado" bind:value={rankGerado}>
-					<option value="">Rank aleatório</option>
-					{#each RANKS_NPC as r (r.id)}<option value={r.id}>{r.nome}</option>{/each}
-				</select>
-				<button type="button" class="btn-jogo min-h-10 border-l-2 border-mut text-[13px]" title="Gera nome, função, origem, aparência, combate, tags e ganchos" onclick={gerar}>GERAR NPC</button>
-			</div>
 			<button type="button" class="btn-jogo btn-contorno text-[13px]" onclick={() => novo(true)}>NOVA TROPA GENÉRICA</button>
-			<button type="button" class="btn-jogo btn-contorno text-[13px]" disabled={criandoFicha} title="Uma ficha completa, como a de um jogador, no criador de personagem" onclick={novaFichaNpc}>NPC COM FICHA COMPLETA</button>
-			<button type="button" class="btn-jogo btn-primario com-icone text-[13px]" onclick={() => novo(false)}><Icone id="acao/ic-acao-novo-npc" />NOVO NPC</button>
+			<button type="button" class="btn-jogo btn-primario com-icone text-[13px]" aria-haspopup="dialog" onclick={() => (escolhendo = true)}><Icone id="acao/ic-acao-novo-npc" />NOVO NPC</button>
 		{/if}
 	</div>
 	{#if mestre && ativa && (npcs.length || fichasNpc.length)}<BarraRolagem registro="/campanhas/{k.id}/rolagens" />{/if}
@@ -279,6 +276,47 @@
 		</div>
 	{/if}
 </main>
+
+{#if escolhendo}
+	<Modal rotulo="Novo NPC" largura={760} aoFechar={() => !criandoFicha && (escolhendo = false)}>
+		<div class="flex flex-col gap-4 p-5 md:p-6">
+			<div class="flex items-start gap-3">
+				<div class="flex flex-1 flex-col gap-1">
+					<h2 class="t-h3 m-0">Novo NPC</h2>
+					<p class="m-0 text-sm text-mut">Escolha como criar. Dá para editar tudo depois.</p>
+				</div>
+				<button type="button" class="btn-icone h-10 w-10 flex-none" aria-label="Fechar" disabled={criandoFicha} onclick={() => (escolhendo = false)}>
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" /></svg>
+				</button>
+			</div>
+			<div class="grid gap-3 md:grid-cols-3">
+				<button type="button" class="painel-sombra cartao-link flex flex-col items-start gap-2 p-3.5 text-left text-fg" onclick={() => novo(false)}>
+					<Icone id="acao/ic-acao-novo-npc" tamanho={64} />
+					<span class="font-mincho text-lg leading-6 font-bold">Ficha resumida</span>
+					<span class="text-[13px] leading-[19px] text-mut">Você preenche identidade, combate, tags e ganchos em 2 minutos (cap. 23.2).</span>
+				</button>
+				<div class="painel-sombra flex flex-col items-start gap-2 p-3.5">
+					<Icone id="dado/ic-dado-d20" tamanho={64} />
+					<span class="font-mincho text-lg leading-6 font-bold">Gerar automaticamente</span>
+					<span class="text-[13px] leading-[19px] text-mut">Nome, função, origem, aparência, combate, tags e ganchos sorteados. Abre no editor para ajustar.</span>
+					<label class="mt-auto flex w-full flex-col gap-1 text-xs font-semibold">
+						Rank
+						<select class="campo h-10 text-[13px]" bind:value={rankGerado}>
+							<option value="">Aleatório</option>
+							{#each RANKS_NPC as r (r.id)}<option value={r.id}>{r.nome}</option>{/each}
+						</select>
+					</label>
+					<button type="button" class="btn-jogo btn-primario w-full text-[13px]" onclick={gerar}>GERAR NPC</button>
+				</div>
+				<button type="button" class="painel-sombra cartao-link flex flex-col items-start gap-2 p-3.5 text-left text-fg disabled:opacity-60" disabled={criandoFicha} aria-busy={criandoFicha} onclick={novaFichaNpc}>
+					<Icone id="acao/ic-acao-criar-personagem" tamanho={64} />
+					<span class="font-mincho text-lg leading-6 font-bold">Ficha completa</span>
+					<span class="text-[13px] leading-[19px] text-mut">Uma ficha como a de um jogador, no criador de personagem: atributos, perícias, jutsus e inventário. Para vilões e aliados centrais.</span>
+				</button>
+			</div>
+		</div>
+	</Modal>
+{/if}
 
 {#if editando}
 	<EditorNpc npc={editando} {salvando} aoSalvar={salvar} aoExcluir={excluir} aoFechar={() => (editando = null)} />

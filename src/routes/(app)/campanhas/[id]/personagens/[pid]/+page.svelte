@@ -4,6 +4,7 @@
 	import { untrack } from 'svelte';
 	import { goto, refreshAll } from '$app/navigation';
 	import { page } from '$app/state';
+	import AbaAnotacoes from '#lib/componentes/ficha/AbaAnotacoes.svelte';
 	import AbaCla from '#lib/componentes/ficha/AbaCla.svelte';
 	import AbaEquipamento from '#lib/componentes/ficha/AbaEquipamento.svelte';
 	import AbaJutsus from '#lib/componentes/ficha/AbaJutsus.svelte';
@@ -72,7 +73,7 @@
 	const vila = $derived(f ? VILAS.find((v) => v.id === f.dados.vila.id) : null);
 	const falecido = $derived(p?.situacao === 'falecido');
 
-	type Aba = 'visao' | 'pericias' | 'jutsus' | 'cla' | 'equip' | 'prog' | 'hist' | 'log';
+	type Aba = 'visao' | 'pericias' | 'jutsus' | 'cla' | 'equip' | 'prog' | 'hist' | 'notas' | 'log';
 	const ABAS: { id: Aba; nome: string }[] = [
 		{ id: 'visao', nome: 'VISÃO GERAL' },
 		{ id: 'pericias', nome: 'PERÍCIAS' },
@@ -81,6 +82,7 @@
 		{ id: 'equip', nome: 'EQUIPAMENTO' },
 		{ id: 'prog', nome: 'PROGRESSÃO' },
 		{ id: 'hist', nome: 'HISTÓRIA' },
+		{ id: 'notas', nome: 'ANOTAÇÕES' },
 		{ id: 'log', nome: 'REGISTRO' }
 	];
 	let aba = $state<Aba>('visao');
@@ -297,6 +299,8 @@
 						<div class="painel flex flex-col gap-1 px-3.5 py-3"><span class="t-rotulo text-xs">Sensei</span><span class="text-[15px] font-semibold">{f.dados.sensei || '—'}</span></div>
 					</div>
 				</div>
+			{:else if aba === 'notas'}
+				<AbaAnotacoes ficha={p.id} inicial={p.anotacoes ?? ''} editavel={p.dono && !data.arquivada} />
 			{:else}
 				<ul class="painel-sombra m-0 list-none p-0">
 					{#each data.registros as r (r.id)}

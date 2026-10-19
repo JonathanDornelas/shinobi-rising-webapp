@@ -1,0 +1,2 @@
+vt323-digitos.woff2: VT323, de Peter Hull (Google Fonts), licença SIL Open Font License 1.1.
+Usada só para os dígitos e sinais das contas (ver @font-face 'Digitos Shinobi' em src/routes/layout.css).

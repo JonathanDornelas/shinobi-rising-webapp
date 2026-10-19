@@ -120,6 +120,8 @@ export type Personagem = {
 	npc: boolean;
 	/** Paisagem do topo da ficha; null = a da vila. */
 	capa: string | null;
+	/** Caderno do dono (o Mestre lê). */
+	anotacoes: string;
 }
 
 /** Jutsu ou habilidade criada (cap. 20); `dados` é um JutsuDados ou HabilidadeDados (src/lib/jutsus/regras.ts). */
@@ -436,6 +438,7 @@ export type Database = {
 			conceder_jutsu: { Args: { ficha: string; slug: string; nome: string; custo_pt?: number }; Returns: undefined };
 			conceder_item: { Args: { ficha: string; item: Json; custo_ryo?: number }; Returns: undefined };
 			receber_entregas: { Args: { ficha: string; inventario: Json }; Returns: undefined };
+			salvar_anotacoes: { Args: { ficha: string; texto: string }; Returns: undefined };
 			definir_capa_ficha: { Args: { ficha: string; capa: string | null }; Returns: undefined };
 			excluir_ficha: { Args: { ficha: string }; Returns: undefined };
 			definir_retrato: { Args: { ficha: string; caminho: string | null }; Returns: undefined };

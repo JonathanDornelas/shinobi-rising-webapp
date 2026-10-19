@@ -170,9 +170,19 @@
 	--leitura-linha: 33px;
 }
 
+/* Os dígitos do Pixelify Sans se confundem em tamanho pequeno (2 vira 8, 5 vira S). Só os números e os sinais
+   das contas (+ − / =) vêm do VT323, fonte de pixel com dígitos bem distintos; as letras continuam no Pixelify. */
+@font-face {
+	font-family: 'Digitos Shinobi';
+	src: url('/fonts/vt323-digitos.woff2') format('woff2');
+	font-display: swap;
+	unicode-range: U+0030-0039, U+002B, U+002D, U+002F, U+003D, U+2212;
+	size-adjust: 135%;
+}
+
 @theme inline {
 	--font-mincho: 'Shippori Mincho B1', 'Noto Sans JP', serif;
-	--font-pixel: 'Pixelify Sans', 'Noto Sans', sans-serif;
+	--font-pixel: 'Digitos Shinobi', 'Pixelify Sans', 'Noto Sans', sans-serif;
 	--font-sans: 'Noto Sans', system-ui, sans-serif;
 	--font-jp: 'Shippori Mincho B1', 'Noto Sans JP', serif;
 
