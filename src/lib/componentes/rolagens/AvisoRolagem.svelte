@@ -1,32 +1,14 @@
 <script lang="ts">
 	// Aviso de rolagem no canto inferior esquerdo: o dado gira enquanto o servidor sorteia, depois mostra o total.
-	// Também assina as rolagens da campanha ao vivo, para a mesa ver as rolagens umas das outras.
+	// As rolagens da mesa chegam ao vivo pelo rolador (rolador.conectar); as dos outros só aparecem aqui com a janela fechada.
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 	import { conta, destaque } from '#lib/rolagens/expressoes.ts';
-	import { sessao } from '#lib/estado/sessao.svelte.ts';
-	import { supabase } from '#lib/supabase/cliente.ts';
-	import type { Rolagem } from '#lib/supabase/banco.ts';
 	import DadoGirando from './DadoGirando.svelte';
 
-	let { campanha }: { campanha: string } = $props();
 	const r = $derived(rolador.aviso);
 	const d = $derived(r ? destaque(r) : null);
 	const MODO = { normal: '', vantagem: 'VANTAGEM', desvantagem: 'DESVANTAGEM', critico: 'CRÍTICO · DADOS DOBRADOS' } as const;
 
-	$effect(() => {
-		const eu = sessao.usuario?.id;
-		if (!eu) return;
-		const canal = supabase()
-			.channel(`rolagens:${campanha}`)
-			.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'rolagens', filter: `campanha_id=eq.${campanha}` }, (p) => {
-				const nova = p.new as Rolagem;
-				rolador.receber(nova, nova.autor_id !== eu);
-			})
-			.subscribe();
-		return () => {
-			supabase().removeChannel(canal);
-		};
-	});
 </script>
 
 {#if rolador.rolando || r}
@@ -34,7 +16,7 @@
 		role="status"
 		aria-live="polite"
 		data-aviso-rolagem
-		class="fixed right-4 bottom-20 left-4 z-[55] flex items-center gap-3 border-2 border-frame bg-b2 py-2 pr-2 pl-2 sombra-painel md:right-auto md:bottom-6 md:left-6 md:w-[400px]"
+		class="fixed right-4 bottom-[136px] left-4 z-[55] flex items-center gap-3 border-2 border-frame bg-b2 py-2 pr-2 pl-2 sombra-painel md:right-auto md:bottom-6 md:left-6 md:w-[400px]"
 		style:border-color={d === 'critico' ? 'var(--acc)' : d === 'falha' ? 'var(--err)' : undefined}
 	>
 		<DadoGirando girando={!!rolador.rolando} lados={rolador.rolando ? rolador.ladosRolando : (r?.detalhe.find((t) => 'lados' in t) as { lados: number } | undefined)?.lados} />

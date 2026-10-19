@@ -9,6 +9,7 @@
 	import Toaster from '#lib/componentes/ui/Toaster.svelte';
 	import MesaRolagens from '#lib/componentes/rolagens/MesaRolagens.svelte';
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
+	import { favoritos } from '#lib/estado/favoritos.svelte.ts';
 	import { paleta } from '#lib/estado/paleta.svelte.ts';
 	import { preferencias } from '#lib/estado/preferencias.svelte.ts';
 	import { sessao } from '#lib/estado/sessao.svelte.ts';
@@ -19,8 +20,9 @@
 	onMount(() => {
 		preferencias.iniciar();
 		paleta.iniciar();
+		favoritos.iniciar();
 		sessao.iniciar(data.usuario);
-		rolador.iniciarMesa();
+		rolador.iniciar();
 	});
 
 	function atalho(e: KeyboardEvent) {

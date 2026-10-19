@@ -47,7 +47,7 @@ export function conta(detalhe: TermoRolagem[]): string {
 	const partes = detalhe.map((t, i) => {
 		const sinal = i === 0 ? (t.sinal < 0 ? '−' : '') : t.sinal < 0 ? ' − ' : ' + ';
 		if ('valor' in t) return `${sinal}${t.valor}`;
-		const usados = t.usados.join(' + ');
+		const usados = t.usados.join(' + ') || '0';
 		const descartados = t.valores.length > t.usados.length ? `[${t.valores.join(', ')}] → ` : '';
 		return `${sinal}${descartados}${t.usados.length > 1 ? `(${usados})` : usados}`;
 	});
@@ -65,12 +65,99 @@ export const MODOS = [
 	{ id: 'desvantagem', nome: 'Desvantagem' }
 ] as const;
 
-/** Validação local antes de mandar (o servidor confere de novo). */
-export function expressaoValida(e: string): boolean {
-	const s = e.replace(/\s+/g, '').toLowerCase();
-	if (!s.length || s.length > 60 || !/^[+-]?(\d{1,2}d\d{1,3}|\d{1,3})([+-](\d{1,2}d\d{1,3}|\d{1,3}))*$/.test(s)) return false;
-	const dados = [...s.matchAll(/(\d+)d(\d+)/g)].map((m) => ({ n: Number(m[1]), lados: Number(m[2]) }));
-	return dados.length > 0 && dados.every((d) => d.n >= 1 && LADOS.includes(d.lados)) && dados.reduce((t, d) => t + d.n, 0) <= 60;
+// ---------------------------------------------------------------- expressões livres (rolador do registro)
+
+/** Um termo da expressão: dados (com kh/kl opcional) ou um número. */
+export type Termo = { sinal: 1 | -1; n: number; lados: number; manter?: 'h' | 'l'; k?: number } | { sinal: 1 | -1; valor: number };
+
+/** Forma que vai para o servidor: sem espaços, sinal de menos comum (− vira -). */
+export const normalizar = (e: string) => e.replace(/−/g, '-').replace(/\s+/g, '').toLowerCase();
+
+/** Termos de uma expressão ("2d6 + 1d4 − 1", "4d6kh3"); null se não for válida; [] se vazia. "d20" vale como 1d20. */
+export function termos(e: string): Termo[] | null {
+	const s = normalizar(e);
+	if (!s) return [];
+	if (!/^[+-]?(\d*d\d+(k[hl]\d+)?|\d+)([+-](\d*d\d+(k[hl]\d+)?|\d+))*$/.test(s)) return null;
+	const saida: Termo[] = [];
+	for (const m of s.matchAll(/([+-]?)(?:(\d*)d(\d+)(?:k([hl])(\d+))?|(\d+))/g)) {
+		if (!m[0]) continue;
+		const sinal = m[1] === '-' ? -1 : 1;
+		if (m[6]) saida.push({ sinal, valor: Number(m[6]) });
+		else saida.push({ sinal, n: m[2] ? Number(m[2]) : 1, lados: Number(m[3]), ...(m[4] ? { manter: m[4] as 'h' | 'l', k: Number(m[5]) } : {}) });
+	}
+	return saida;
 }
-/** Dados aceitos pelo servidor (rolar). */
-const LADOS = [2, 3, 4, 6, 8, 10, 12, 20, 100];
+
+/** Texto legível de volta ("2d6 + 1d4 − 1"). */
+export function serializar(t: Termo[]): string {
+	return t
+		.map((x, i) => (i ? (x.sinal < 0 ? ' − ' : ' + ') : x.sinal < 0 ? '−' : '') + ('valor' in x ? x.valor : `${x.n}d${x.lados}${x.manter ? `k${x.manter}${x.k}` : ''}`))
+		.join('');
+}
+
+/** Problema da expressão em palavras (o servidor confere de novo); null se pode rolar. */
+export function erroExpressao(e: string): string | null {
+	const t = termos(e);
+	if (t && !t.length) return 'Digite uma expressão, por exemplo 1d20 + 5.';
+	if (!t || normalizar(e).length > 60) return 'Expressão inválida. Use dados e números somados, como 2d6 + 3 ou 1d20 − 1.';
+	let dados = 0;
+	for (const x of t) {
+		if ('valor' in x) {
+			if (x.valor > 9999) return 'Número grande demais.';
+			continue;
+		}
+		if (x.n < 1 || x.n > 50) return 'Use de 1 a 50 dados por termo.';
+		if (x.lados < 2 || x.lados > 1000) return 'O dado precisa ter de 2 a 1000 lados.';
+		if (x.manter && (x.k! < 1 || x.k! > x.n)) return `kh/kl precisa manter entre 1 e ${x.n} dados.`;
+		dados += x.n;
+	}
+	if (!dados) return 'Inclua pelo menos um dado, como 1d20.';
+	if (dados > 100) return 'Dados demais numa rolagem só (máximo 100).';
+	return null;
+}
+
+/** Validação local antes de mandar (o servidor confere de novo). */
+export const expressaoValida = (e: string) => erroExpressao(e) === null;
+
+/** Para o servidor: "d20" vira "1d20" e o resto fica normalizado. */
+export function paraServidor(e: string): string {
+	const t = termos(e);
+	return t ? serializar(t).replace(/\s+/g, '').replace(/−/g, '-') : normalizar(e);
+}
+
+/** Quantos dados de `lados` (somando os positivos, sem kh/kl) a expressão tem; usado nos contadores dos botões. */
+export function contarDados(e: string, lados: number): number {
+	return (termos(e) ?? []).reduce((s, x) => s + ('lados' in x && x.lados === lados && !x.manter ? x.n * x.sinal : 0), 0);
+}
+
+/** Clique no dado: +1 dado de `lados` (botão direito: −1). Os números ficam no fim da expressão. */
+export function ajustarDado(e: string, lados: number, delta: 1 | -1): string {
+	let t = termos(e);
+	if (!t) return delta > 0 ? `${e.trim() ? `${e.trim()} + ` : ''}1d${lados}` : e;
+	const i = t.findIndex((x) => 'lados' in x && x.lados === lados && x.sinal > 0 && !x.manter);
+	if (i >= 0) {
+		const atual = t[i] as Extract<Termo, { n: number }>;
+		const n = atual.n + delta;
+		t = n > 0 ? t.map((x, j) => (j === i ? { ...atual, n: Math.min(50, n) } : x)) : t.filter((_, j) => j !== i);
+	} else if (delta > 0) {
+		const novo: Termo = { sinal: 1, n: 1, lados };
+		const num = t.findIndex((x) => 'valor' in x);
+		t = num >= 0 ? [...t.slice(0, num), novo, ...t.slice(num)] : [...t, novo];
+	}
+	// um número sozinho na frente vai para depois dos dados
+	if (t.length && 'valor' in t[0] && t[0].sinal > 0 && t.some((x) => 'lados' in x)) {
+		const d = t.findIndex((x) => 'lados' in x);
+		t = [t[d], ...t.filter((_, j) => j !== d)];
+	}
+	return serializar(t);
+}
+
+/** Botões de modificador (−1, +1, +2, +5): somam um número no fim. */
+export function somarModificador(e: string, mod: number): string {
+	const base = e.trim();
+	if (!base) return String(mod);
+	return `${base} ${mod < 0 ? '−' : '+'} ${Math.abs(mod)}`;
+}
+
+/** Os 7 dados com arte e botão no rolador. */
+export const DADOS = [4, 6, 8, 10, 12, 20, 100] as const;

@@ -67,9 +67,10 @@ describe('rolar', () => {
 
 	it('recusa expressões inválidas e quem não é da campanha', async () => {
 		await expect(rolar(bruno, '5')).rejects.toThrow(/pelo menos um dado/);
-		await expect(rolar(bruno, '1d7')).rejects.toThrow(/lados/);
+		await expect(rolar(bruno, '1d1001')).rejects.toThrow(/lados/);
 		await expect(rolar(bruno, 'drop table')).rejects.toThrow(/Expressão inválida/);
-		await expect(rolar(bruno, '40d6+40d6')).rejects.toThrow(/máximo 60/);
+		await expect(rolar(bruno, '51d6')).rejects.toThrow(/1 a 50 dados/);
+		await expect(rolar(bruno, '50d6+50d6+1d4')).rejects.toThrow(/máximo 100/);
 		await expect(rolar(intruso, '1d20')).rejects.toThrow(/está na campanha/);
 		await expect(banco.como(bruno, `insert into rolagens (campanha_id, quem, rotulo, expressao, detalhe, total) values ($1, 'x', 'x', '1d20', '[]', 20)`, [campanha])).rejects.toThrow(/permission denied/);
 	});

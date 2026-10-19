@@ -170,14 +170,18 @@
 	--leitura-linha: 33px;
 }
 
-/* Os dígitos do Pixelify Sans se confundem em tamanho pequeno (2 vira 8, 5 vira S). Só os números e os sinais
-   das contas (+ − / =) vêm do VT323, fonte de pixel com dígitos bem distintos; as letras continuam no Pixelify. */
+/* Os dígitos do Pixelify Sans se confundem em tamanho pequeno (2 vira 8, 5 vira S). Os números e os sinais das
+   contas (+ - / =) vêm do Stairs n Slabs (Jason Suydam), recortado em static/fonts/digitos-shinobi.otf com os
+   contornos subidos para a linha de base; as letras continuam no Pixelify. 64% iguala a altura das maiúsculas. */
 @font-face {
 	font-family: 'Digitos Shinobi';
-	src: url('/fonts/vt323-digitos.woff2') format('woff2');
+	src: url('/fonts/digitos-shinobi.otf') format('opentype');
 	font-display: swap;
-	unicode-range: U+0030-0039, U+002B, U+002D, U+002F, U+003D, U+2212;
-	size-adjust: 135%;
+	unicode-range: U+0030-0039, U+002B, U+002D, U+002F, U+003D;
+	size-adjust: 64%;
+	ascent-override: 100%;
+	descent-override: 0%;
+	line-gap-override: 0%;
 }
 
 @theme inline {
@@ -525,6 +529,16 @@
 	}
 
 	/* grupo de alternância (join) */
+	/* estrela de favorito marcada (Traco "estrela"): ouro cheio; no washi, contorno escuro para não sumir no papel */
+	.estrela-on {
+		fill: var(--color-ouro) !important;
+		stroke: var(--color-ouro) !important;
+	}
+	[data-theme='washi'] .estrela-on {
+		fill: #e0a82e !important;
+		stroke: #7a4f00 !important;
+	}
+
 	.alternancia {
 		display: flex;
 		border: 2px solid var(--mut);

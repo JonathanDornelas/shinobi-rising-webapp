@@ -7,7 +7,7 @@
 	import Girando from '../ui/Girando.svelte';
 	import Modal from '../ui/Modal.svelte';
 
-	let { ficha, atual, aoMudar }: { ficha: string; atual: string | null; aoMudar?: (caminho: string | null) => void } = $props();
+	let { ficha, atual, aoMudar, compacto = false }: { ficha: string; atual: string | null; aoMudar?: (caminho: string | null) => void; /** Rótulos curtos no celular (cabeçalho da ficha). */ compacto?: boolean } = $props();
 
 	const VISOR = 256;
 	let entrada = $state<HTMLInputElement>();
@@ -82,9 +82,11 @@
 	}
 </script>
 
-<div class="flex flex-wrap gap-2">
-	<button type="button" class="btn-jogo btn-contorno min-h-9 text-xs" onclick={() => entrada?.click()}>{atual ? 'TROCAR FOTO' : 'ENVIAR FOTO'}</button>
-	{#if atual}<button type="button" class="btn-jogo btn-fantasma min-h-9 text-xs" onclick={remover}>REMOVER</button>{/if}
+<div class="flex flex-wrap gap-2 {compacto ? 'max-sm:gap-1' : ''}">
+	<button type="button" class="btn-jogo btn-contorno min-h-9 text-xs {compacto ? 'max-sm:min-h-8 max-sm:px-2' : ''}" aria-label={atual ? 'Trocar foto' : 'Enviar foto'} onclick={() => entrada?.click()}>
+		{#if compacto}<span class="sm:hidden">{atual ? 'TROCAR' : 'FOTO'}</span><span class="max-sm:hidden">{atual ? 'TROCAR FOTO' : 'ENVIAR FOTO'}</span>{:else}{atual ? 'TROCAR FOTO' : 'ENVIAR FOTO'}{/if}
+	</button>
+	{#if atual}<button type="button" class="btn-jogo btn-fantasma min-h-9 text-xs {compacto ? 'max-sm:min-h-8 max-sm:px-2' : ''}" aria-label="Remover foto" onclick={remover}>{#if compacto}<span class="sm:hidden">✕</span><span class="max-sm:hidden">REMOVER</span>{:else}REMOVER{/if}</button>{/if}
 	<input bind:this={entrada} type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="sr-only" tabindex="-1" aria-hidden="true" onchange={escolher} />
 </div>
 

@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Card de jutsu (CMP-01): faixa grená, borda na cor do tipo, linha de info 3×2, Efeito e conta de PJ.
 	// Idêntico em todas as telas.
+	import type { Snippet } from 'svelte';
 	import type { Jutsu } from '#lib/livro/tipos.ts';
 	import { TIPO_JUTSU } from '#lib/livro/dominio.ts';
 	import Texto from '../leitura/Texto.svelte';
@@ -13,8 +14,10 @@
 		/** Mostra a origem (livro, capítulo) no rodapé do card. */
 		rodape?: boolean;
 		semSombra?: boolean;
+		/** Botões no fim da faixa (favorito, abrir). */
+		acoes?: Snippet;
 	}
-	let { jutsu, rodape = true, semSombra = false }: Props = $props();
+	let { jutsu, rodape = true, semSombra = false, acoes }: Props = $props();
 	const cor = $derived(TIPO_JUTSU[jutsu.tipo].cor);
 </script>
 
@@ -31,6 +34,7 @@
 				<SeloRank rank={jutsu.rank} />
 				<span class="flex-1 @[520px]:hidden"></span>
 				<span class="t-num text-[22px] leading-none whitespace-nowrap text-papel @[520px]:text-2xl">{jutsu.custo}</span>
+				{#if acoes}<span class="-my-2 -mr-2 flex">{@render acoes()}</span>{/if}
 			</div>
 		</header>
 		<div class="flex flex-col gap-3 p-3.5 @[520px]:gap-3.5 @[520px]:p-4">

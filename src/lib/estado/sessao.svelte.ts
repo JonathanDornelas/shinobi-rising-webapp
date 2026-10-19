@@ -4,6 +4,7 @@ import type { RealtimeChannel } from '@supabase/supabase-js';
 import { refreshAll } from '$app/navigation';
 import { supabase } from '#lib/supabase/cliente.ts';
 import type { Notificacao, Perfil, Preferencias } from '#lib/supabase/banco.ts';
+import { favoritos } from './favoritos.svelte.ts';
 import { preferencias } from './preferencias.svelte.ts';
 import { normalizarVisual } from './visual.ts';
 
@@ -55,6 +56,7 @@ class Sessao {
 		this.notificacoes = [];
 		this.canal?.unsubscribe();
 		this.canal = null;
+		if (!u) favoritos.conectar(null, null);
 		if (u) {
 			this.carregarPerfil();
 			this.carregarNotificacoes();
@@ -71,6 +73,7 @@ class Sessao {
 		if (p.tema && p.tema !== preferencias.tema) preferencias.definirTema(p.tema);
 		if (p.leitura && p.leitura !== preferencias.leitura) preferencias.definirLeitura(p.leitura);
 		if (p.visual && JSON.stringify(normalizarVisual(p.visual)) !== JSON.stringify(preferencias.visual)) preferencias.definirVisual(normalizarVisual(p.visual));
+		favoritos.conectar(p.favoritos?.jutsus, (jutsus) => this.salvarPreferencias({ favoritos: { ...this.perfil?.preferencias.favoritos, jutsus } }));
 	}
 
 	async carregarNotificacoes() {

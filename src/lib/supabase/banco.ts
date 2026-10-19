@@ -16,6 +16,8 @@ export type Preferencias = {
 	visual?: import('#lib/estado/visual.ts').Visual;
 	leitura?: 15 | 17 | 18 | 20;
 	email?: Partial<Record<'submissoes' | 'decisoes' | 'comentarios' | 'recompensas', boolean>>;
+	/** Favoritos (slugs), em src/lib/estado/favoritos.svelte.ts. */
+	favoritos?: { jutsus?: string[] };
 }
 
 export type VilaCampanha = {
@@ -264,7 +266,9 @@ export type PersonagemPublico = {
 export type ModoRolagem = 'normal' | 'vantagem' | 'desvantagem' | 'critico';
 
 /** Termo de uma rolagem: dado (valores sorteados; usados = os que contam, na vantagem/desvantagem fica um) ou modificador. */
-export type TermoRolagem = { sinal: 1 | -1; lados: number; valores: number[]; usados: number[] } | { sinal: 1 | -1; valor: number };
+export type TermoRolagem = { sinal: 1 | -1; lados: number; valores: number[]; usados: number[]; manter?: 'h' | 'l'; k?: number } | { sinal: 1 | -1; valor: number };
+
+export type TipoRolagem = 'teste' | 'ataque' | 'dano' | 'cura' | 'iniciativa' | 'save' | 'livre';
 
 /** Rolagem registrada na campanha; o sorteio é feito no servidor por rolar(). */
 export type Rolagem = {
@@ -284,6 +288,16 @@ export type Rolagem = {
 	d20: number | null;
 	oculta: boolean;
 	criada_em: string;
+	tipo: TipoRolagem;
+	/** De onde veio ("Ficha · Perícias", "Rolar dados"). */
+	origem: string | null;
+	/** Parcelas do modificador: [["ESP (atributo)", "+1"], …]. */
+	partes: [string, string][];
+	/** Ponto de Destino gasto nesta rolagem. */
+	pd: 'rerrolar' | 'mais5' | null;
+	anterior_total: number | null;
+	/** Re-rolada com PD (a nova rolagem a substitui). */
+	substituida: boolean;
 };
 
 export type Notificacao = {
@@ -439,11 +453,13 @@ export type Database = {
 			conceder_item: { Args: { ficha: string; item: Json; custo_ryo?: number }; Returns: undefined };
 			receber_entregas: { Args: { ficha: string; inventario: Json }; Returns: undefined };
 			salvar_anotacoes: { Args: { ficha: string; texto: string }; Returns: undefined };
+			usar_pd: { Args: { rolagem: string; acao: 'rerrolar' | 'mais5' }; Returns: Rolagem };
+			rolagens_ocultas_do_mestre: { Args: { desde?: string | null }; Returns: { id: string; campanha_id: string; criada_em: string; mestre: string }[] };
 			definir_capa_ficha: { Args: { ficha: string; capa: string | null }; Returns: undefined };
 			excluir_ficha: { Args: { ficha: string }; Returns: undefined };
 			definir_retrato: { Args: { ficha: string; caminho: string | null }; Returns: undefined };
 			rolar: {
-				Args: { campanha: string; expressao: string; rotulo: string; personagem?: string | null; modo?: ModoRolagem; oculta?: boolean; npc?: string | null };
+				Args: { campanha: string; expressao: string; rotulo: string; personagem?: string | null; modo?: ModoRolagem; oculta?: boolean; npc?: string | null; tipo?: TipoRolagem; origem?: string | null; partes?: Json };
 				Returns: Rolagem;
 			};
 			definir_situacao: { Args: { ficha: string; situacao: SituacaoFicha; epitafio?: string | null }; Returns: undefined };

@@ -1,4 +1,3 @@
-- [x] Criar aba de antoações na ficha do personagem
-- [x] Modal para mudança de paisagem sendo sobreposto e não consigo dar scroll ou ver o resto das opções
-- [x] Na página de npcs tem unifique os botões de "novo npc", "gerar npc", "npc com ficha completa" em um apenas chamado "novo npc" ele irá abrir um modal para escolher entre qual modalidade será aberta dentro estas 3.
-- [x] As fontes que mostram as rolagens e números no geral, as vezes ficam ilegiveis não da para entender muito bem qual número em questão. Porém eu gostei do estilo da fonte, altere para uma fonte no mesmo estilo porém mais legivel → letras continuam no Pixelify Sans; dígitos e sinais (+ − / =) vêm do VT323, outra fonte de pixel.
+- [x] Melhorar filtros de jutsu → no catálogo, grupos novos "O que faz" (dano, controle e condições, penalidades, dreno, cura, suporte, barreiras, movimento, clones, sensorial, selamento; lido do texto do efeito), rolagem de ataque, resistência do alvo e duração, grupos recolhíveis, busca também no efeito (+ EFEITO) e "Só favoritos". Na aba Jutsus da ficha: busca, tipo, rank, o que faz, ação, ordem e "só os que dá para usar agora".
+- [x] Multiplas visualizações de jutus (ex: lista, card, etc...) → catálogo: Lista, Cards, Livro (card completo) e Tabela, também no celular (a escolha fica salva no navegador); ficha: Lista e Cards.
+- [x] Favoritar jutsus → estrela no catálogo, no detalhe do jutsu e na ficha. Com conta, os favoritos ficam no perfil e valem em qualquer aparelho; sem conta, neste navegador. Na ficha, os favoritos ficam no topo da lista.

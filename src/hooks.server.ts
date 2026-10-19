@@ -33,7 +33,7 @@ const supabase: Handle = async ({ event, resolve }) => {
 };
 
 /** Áreas que exigem conta: sem sessão, vai para o login e volta depois. */
-const PROTEGIDAS = ['/campanhas', '/perfil', '/notificacoes'];
+const PROTEGIDAS = ['/campanhas', '/perfil', '/notificacoes', '/rolagens'];
 const guarda: Handle = async ({ event, resolve }) => {
 	// No prerender não há sessão (e url.search é proibido); as páginas do app não são pré-renderizadas.
 	if (building) return resolve(event);

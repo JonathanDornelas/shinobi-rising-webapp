@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { conta, curaDoEfeito, danoDoEfeito, destaque, expressaoValida, periciaDoAtaque, somar, teste, totalPericia } from './expressoes.ts';
+import { ajustarDado, contarDados, conta, curaDoEfeito, danoDoEfeito, destaque, erroExpressao, expressaoValida, paraServidor, periciaDoAtaque, somar, somarModificador, teste, totalPericia } from './expressoes.ts';
 
 describe('expressões', () => {
 	it('monta testes e somas', () => {
@@ -39,14 +39,45 @@ describe('expressões', () => {
 		expect(destaque({ d20: null })).toBeNull();
 	});
 
+	it('monta a expressão pelos botões de dado e de modificador', () => {
+		let e = '';
+		e = ajustarDado(e, 20, 1);
+		expect(e).toBe('1d20');
+		e = somarModificador(e, 5);
+		expect(e).toBe('1d20 + 5');
+		e = ajustarDado(e, 6, 1);
+		e = ajustarDado(e, 6, 1);
+		expect(e).toBe('1d20 + 2d6 + 5');
+		expect(contarDados(e, 6)).toBe(2);
+		e = ajustarDado(e, 20, -1);
+		expect(e).toBe('2d6 + 5');
+		e = somarModificador(e, -1);
+		expect(e).toBe('2d6 + 5 − 1');
+		expect(paraServidor(e)).toBe('2d6+5-1');
+		expect(paraServidor('d20 + 3')).toBe('1d20+3');
+		expect(ajustarDado('4d6kh3', 6, 1)).toBe('4d6kh3 + 1d6');
+	});
+
+	it('explica o que está errado na expressão', () => {
+		expect(erroExpressao('')).toMatch(/Digite/);
+		expect(erroExpressao('5')).toMatch(/pelo menos um dado/);
+		expect(erroExpressao('1d2000')).toMatch(/2 a 1000/);
+		expect(erroExpressao('3d6kh4')).toMatch(/entre 1 e 3/);
+		expect(erroExpressao('1d20; drop')).toMatch(/inválida/);
+		expect(erroExpressao('2d20kh1 + 3')).toBeNull();
+	});
+
 	it('valida antes de enviar', () => {
 		expect(expressaoValida('1d20 + 5')).toBe(true);
 		expect(expressaoValida('2d6+1d4-2')).toBe(true);
 		expect(expressaoValida('5')).toBe(false);
-		expect(expressaoValida('d20')).toBe(false);
+		expect(expressaoValida('d20')).toBe(true);
 		expect(expressaoValida('1d20; drop')).toBe(false);
-		expect(expressaoValida('1d7')).toBe(false);
-		expect(expressaoValida('40d6+40d6')).toBe(false);
+		expect(expressaoValida('1d7')).toBe(true);
+		expect(expressaoValida('51d6')).toBe(false);
+		expect(expressaoValida('50d6+50d6+1d4')).toBe(false);
+		expect(expressaoValida('4d6kh3 − 1')).toBe(true);
+		expect(expressaoValida('3d6kh4')).toBe(false);
 		expect(expressaoValida('1d100')).toBe(true);
 	});
 });

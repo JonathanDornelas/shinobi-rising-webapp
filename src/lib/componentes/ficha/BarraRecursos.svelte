@@ -35,7 +35,7 @@
 
 <svelte:window onkeydown={(e) => e.key === 'Escape' && (aberto = null)} onclick={(e) => aberto && !(e.target as HTMLElement).closest('[data-recursos]') && (aberto = null)} />
 
-<div data-recursos class="sticky top-0 z-20 grid grid-cols-3 items-center gap-x-4 gap-y-3 border-b-2 border-ink bg-b2 px-4 py-2.5 md:px-6 lg:grid-cols-[repeat(3,minmax(0,1fr))_auto_auto_auto_auto]">
+<div data-recursos class="sticky top-0 z-20 grid grid-cols-3 items-center gap-x-4 gap-y-2 border-b-2 max-md:py-2 border-ink bg-b2 px-4 py-2.5 md:px-6 lg:grid-cols-[repeat(3,minmax(0,1fr))_auto_auto_auto_auto]">
 	{#each BARRAS as b (b.k)}
 		{@const v = f.atual[b.k]}
 		{@const m = f.max[b.k]}
@@ -86,14 +86,14 @@
 	{/each}
 
 	<!-- no mobile e tablet, Fadiga, PD, PIC e RD ficam numa linha; no desktop entram na grade -->
-	<div class="col-span-3 flex flex-wrap gap-x-6 gap-y-2 lg:contents">
+	<div class="col-span-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 lg:contents [&>div]:max-lg:flex-row [&>div]:max-lg:items-center [&>div]:max-lg:gap-1.5">
 	<div class="flex flex-col gap-[5px]" title={f.atual.fadiga ? `${FADIGA[f.atual.fadiga - 1].nome}: ${FADIGA[f.atual.fadiga - 1].efeito}` : 'Sem fadiga'}>
 		<span class="font-pixel text-xs font-bold tracking-[0.06em] text-mut">FADIGA{f.atual.fadiga ? ` · ${FADIGA[f.atual.fadiga - 1].nome.toUpperCase()}` : ''}</span>
 		<div class="flex gap-[3px]" role="group" aria-label="Fadiga {f.atual.fadiga} de 5">
 			{#each cores as cor, i (i)}
 				<button
 					type="button"
-					class="h-4 w-4 border-2"
+					class="h-4 w-4 border-2 max-lg:h-3.5 max-lg:w-3.5"
 					style:background={i < f.atual.fadiga ? cor : 'transparent'}
 					style:border-color={i < f.atual.fadiga ? 'var(--ink)' : 'var(--b3)'}
 					aria-label="Fadiga nível {i + 1}: {FADIGA[i].nome}"
@@ -106,21 +106,21 @@
 	</div>
 	<div class="flex flex-col gap-[5px]">
 		<span class="font-pixel text-xs font-bold tracking-[0.06em] text-mut">PD</span>
-		<button type="button" class="flex h-8 items-center gap-1 disabled:cursor-default" disabled={!f.editavel || f.atual.pd <= 0} title={f.atual.pd ? 'Usar o Ponto de Destino da sessão' : 'PD da sessão já usado'} onclick={() => f.usarPd()}>
-			<Icone id="recurso/ic-recurso-pd" alt="Ponto de Destino" class={f.atual.pd ? '' : 'opacity-30'} /><span class="t-num text-sm">{f.atual.pd}</span>
+		<button type="button" class="flex h-8 items-center gap-1 disabled:cursor-default max-lg:h-7" disabled={!f.editavel || f.atual.pd <= 0} title={f.atual.pd ? 'Usar o Ponto de Destino da sessão' : 'PD da sessão já usado'} onclick={() => f.usarPd()}>
+			<Icone id="recurso/ic-recurso-pd" alt="Ponto de Destino" class="max-lg:h-6! max-lg:w-6! {f.atual.pd ? '' : 'opacity-30'}" /><span class="t-num text-sm">{f.atual.pd}</span>
 		</button>
 	</div>
 	{#if f.max.pic}
 		<div class="flex flex-col gap-[5px]">
 			<span class="font-pixel text-xs font-bold tracking-[0.06em] text-mut">PIC</span>
-			<button type="button" class="flex h-8 items-center gap-1 disabled:cursor-default" disabled={!f.editavel || f.atual.pic <= 0} title="Usar 1 PIC (favor do clã)" onclick={() => f.usarPic()}>
-				<Icone id="recurso/ic-recurso-pic" alt="Pontos de Influência do Clã" /><span class="t-num text-sm">{f.atual.pic}/{f.max.pic}</span>
+			<button type="button" class="flex h-8 items-center gap-1 disabled:cursor-default max-lg:h-7" disabled={!f.editavel || f.atual.pic <= 0} title="Usar 1 PIC (favor do clã)" onclick={() => f.usarPic()}>
+				<Icone id="recurso/ic-recurso-pic" alt="Pontos de Influência do Clã" class="max-lg:h-6! max-lg:w-6!" /><span class="t-num text-sm">{f.atual.pic}/{f.max.pic}</span>
 			</button>
 		</div>
 	{/if}
 	<div class="flex flex-col gap-[5px]">
 		<span class="font-pixel text-xs font-bold tracking-[0.06em] text-mut">RD</span>
-		<span class="t-num text-[22px] leading-8">{f.calc.recursos.rd}</span>
+		<span class="t-num text-[22px] leading-8 max-lg:text-base max-lg:leading-7">{f.calc.recursos.rd}</span>
 	</div>
 	</div>
 </div>

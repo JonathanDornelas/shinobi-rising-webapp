@@ -16,6 +16,7 @@
 	import BarraRolagem from '#lib/componentes/rolagens/BarraRolagem.svelte';
 	import BotaoRolar from '#lib/componentes/rolagens/BotaoRolar.svelte';
 	import { teste } from '#lib/rolagens/expressoes.ts';
+	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 	import SeloStatus from '#lib/componentes/personagem/SeloStatus.svelte';
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
 	import Campo from '#lib/componentes/ui/Campo.svelte';
@@ -54,6 +55,15 @@
 				)
 			: null
 	);
+	// PD gasto no registro de rolagens (re-rolar ou +5) aparece aqui sem recarregar
+	$effect(() => {
+		const ficha = f;
+		if (!ficha) return;
+		rolador.fichaAberta = { id: ficha.id, aoGastarPd: (pd) => (ficha.estado = { ...ficha.estado, pd }) };
+		return () => {
+			if (rolador.fichaAberta?.id === ficha.id) rolador.fichaAberta = null;
+		};
+	});
 	// encomendas aprovadas (armas, marionetes) entram no inventário assim que a ficha abre
 	const entregues = new Set<string>();
 	$effect(() => {
@@ -86,6 +96,18 @@
 		{ id: 'log', nome: 'REGISTRO' }
 	];
 	let aba = $state<Aba>('visao');
+	// no celular a barra de abas rola na horizontal: a aba escolhida (também por "Ver todos") fica à vista
+	let barraAbas = $state<HTMLElement>();
+	$effect(() => {
+		void aba;
+		const b = barraAbas;
+		const el = b?.querySelector<HTMLElement>('[aria-selected="true"]');
+		if (!b || !el) return;
+		const r = el.getBoundingClientRect();
+		const rb = b.getBoundingClientRect();
+		if (r.left < rb.left) b.scrollLeft += r.left - rb.left - 24;
+		else if (r.right > rb.right) b.scrollLeft += r.right - rb.right + 24;
+	});
 	// "IR PARA O TREINO" (P4) abre a gaveta direto
 	// svelte-ignore state_referenced_locally
 	let treinando = $state(page.url.searchParams.get('treino') === '1' && !!data.completa?.dono);
@@ -172,14 +194,14 @@
 		{/if}
 
 		<div class:grayscale={falecido}><CapaFicha ficha={p.id} capa={p.capa} vila={f.dados.vila.id} podeTrocar={p.dono && !data.arquivada} /></div>
-		<header class="flex flex-wrap items-start gap-5 border-b-2 border-b3 px-4 py-5 md:px-6" class:grayscale={falecido}>
-			<div class="relative flex flex-none flex-col items-start gap-2">
+		<header class="flex flex-wrap items-start gap-5 border-b-2 border-b3 px-4 py-5 max-sm:gap-x-3 max-sm:gap-y-4 max-sm:py-4 md:px-6" class:grayscale={falecido}>
+			<div class="relative flex flex-none flex-col items-start gap-2 max-sm:w-16 max-sm:items-center max-sm:gap-1.5">
 				<Retrato nome={p.nome || '?'} foto={p.retrato} tamanho={128} class="max-sm:h-16! max-sm:w-16!" />
 				{#if falecido}<span class="absolute inset-x-[-2px] bottom-3 border-y-2 border-[#5E6B73] bg-[#1A1A1A] py-[5px] text-center font-pixel text-xs font-bold tracking-[0.1em] text-papel">MEMORIAL</span>{/if}
-				{#if p.dono && !data.arquivada && !falecido}<EnviarRetrato ficha={p.id} atual={p.retrato} />{/if}
+				{#if p.dono && !data.arquivada && !falecido}<EnviarRetrato ficha={p.id} atual={p.retrato} compacto />{/if}
 			</div>
-			<div class="flex min-w-[240px] flex-1 flex-col gap-2">
-				<div class="flex flex-wrap items-center gap-3">
+			<div class="flex min-w-[240px] flex-1 flex-col gap-2 max-sm:min-w-0">
+				<div class="flex flex-wrap items-center gap-3 max-sm:gap-2">
 					<h1 class="m-0 font-mincho text-4xl leading-[44px] font-bold max-md:text-[28px] max-md:leading-9">{p.nome}</h1>
 					{#if falecido}
 						<span class="inline-flex h-9 items-center gap-1 border-2 border-[#5E6B73] pr-2.5 text-[13px] font-semibold"><Icone id="status/ic-status-revogado" />Falecido</span>
@@ -195,7 +217,7 @@
 				</div>
 				{#if falecido && p.epitafio}<span class="font-mincho text-base leading-6 font-semibold text-mut italic">“{p.epitafio}”{p.falecido_em ? ` · ${dataCurta(p.falecido_em)}` : ''}</span>{/if}
 			</div>
-			<div class="flex w-full flex-col gap-2.5 sm:w-[300px] sm:flex-none">
+			<div class="flex w-full flex-col gap-2.5 xl:w-[300px] xl:flex-none">
 				<div class="flex items-baseline gap-2">
 					<span class="t-rotulo text-mut">Nível</span><span class="t-num text-4xl leading-none">{p.nivel}</span><span class="flex-1"></span>
 					<span class="t-num text-sm">{numero(p.xp)} / {numero(xp.alvo)} XP</span>
@@ -203,20 +225,21 @@
 				<div class="h-3 border-2 border-ink bg-b3" role="progressbar" aria-label="XP até o próximo nível" aria-valuenow={Math.round(xp.fracao * 100)} aria-valuemin={0} aria-valuemax={100}>
 					<div class="h-full" style:width="{xp.fracao * 100}%" style="background: var(--acc); box-shadow: inset 0 2px 0 #F2C14E"></div>
 				</div>
-				<div class="flex flex-wrap justify-end gap-2" data-menu>
+				<div class="flex flex-wrap justify-end gap-2 max-sm:[&>a]:flex-1 max-sm:[&>button]:flex-1" data-menu>
 					{#if f.editavel && p.dono}
 						{#if xp.podeSubir}
 							<a href={hrefNivel(k.id, p.id)} class="btn-jogo btn-primario com-icone pulso-nivel text-[13px]"><Icone id="acao/ic-acao-subir-nivel" />SUBIR DE NÍVEL</a>
 						{/if}
 						<button type="button" class="btn-jogo btn-contorno com-icone text-[13px]" onclick={() => (treinando = true)}><Icone id="recurso/ic-recurso-pt" />TREINAR · {p.pt} PT</button>
 					{/if}
-					<a href="/campanhas/{k.id}/personagens/{p.id}/imprimir" class="btn-jogo border-2 border-b3 text-[13px] hover:border-mut">IMPRIMIR</a>
+					<a href="/campanhas/{k.id}/personagens/{p.id}/imprimir" class="btn-jogo border-2 border-b3 text-[13px] hover:border-mut max-sm:hidden">IMPRIMIR</a>
 					<div class="relative">
 						<button type="button" class="btn-icone" aria-label="Mais ações" aria-haspopup="menu" aria-expanded={menu} onclick={() => (menu = !menu)}>
 							<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="10" width="4" height="4" /><rect x="10" y="10" width="4" height="4" /><rect x="17" y="10" width="4" height="4" /></svg>
 						</button>
 						{#if menu}
 							<div role="menu" class="camada absolute top-12 right-0 z-30 flex w-64 flex-col py-1.5">
+								<a role="menuitem" href="/campanhas/{k.id}/personagens/{p.id}/imprimir" class="flex min-h-11 items-center px-3.5 text-[15px] hover:bg-b3 sm:hidden">Imprimir</a>
 								<a role="menuitem" href={hrefEditar(k.id, p.id)} class="flex min-h-11 items-center px-3.5 text-[15px] hover:bg-b3">Ver a criação passo a passo</a>
 								{#if p.status === 'aprovada' && !data.arquivada}
 									{#if p.situacao === 'ativo'}
@@ -246,7 +269,7 @@
 					{#if f.atual.situacao === 'morte'}PV na metade negativa do máximo: morte imediata (cap. 4). O Mestre decide o desfecho.{:else}Inconsciente · Save de Morte por turno: 1d20{f.calc.atributos.ESP > 0 ? ` + ${f.calc.atributos.ESP} (ESP)` : ''} ≥ 10.{/if}
 				</span>
 				{#if f.atual.situacao === 'caido'}
-					<BotaoRolar texto="SAVE" expressao={teste(Math.max(0, f.calc.atributos.ESP))} rotulo="Save de Morte (DT 10)" personagem={f.id} d20 />
+					<BotaoRolar texto="SAVE" expressao={teste(Math.max(0, f.calc.atributos.ESP))} rotulo="Save de Morte (DT 10)" personagem={f.id} d20 tipo="save" origem="Ficha · PV 0" partes={f.calc.atributos.ESP > 0 ? [['ESP (só positivo)', `+${f.calc.atributos.ESP}`]] : []} />
 					{#each [['sucessos', 'SUCESSOS', 'var(--ok)'], ['falhas', 'FALHAS', 'var(--err)']] as const as [t, rotulo, cor] (t)}
 						<div class="flex items-center gap-1 font-pixel text-xs font-bold" role="group" aria-label="{rotulo}: {f.atual.saves[t]} de 3">
 							<span class="mr-1">{rotulo}</span>
@@ -259,7 +282,7 @@
 			</div>
 		{/if}
 
-		<div role="tablist" aria-label="Seções da ficha" class="mx-4 mt-4 flex overflow-x-auto border-y-2 border-ink bg-b2 md:mx-6">
+		<div bind:this={barraAbas} role="tablist" aria-label="Seções da ficha" class="mx-4 mt-4 flex overflow-x-auto border-y-2 border-ink bg-b2 md:mx-6">
 			{#each ABAS as a (a.id)}
 				<button
 					type="button"
@@ -273,7 +296,7 @@
 			{/each}
 		</div>
 
-		{#if f.editavel}<div class="mx-4 mt-3 md:mx-6"><BarraRolagem registro="/campanhas/{k.id}/rolagens" /></div>{/if}
+		{#if f.editavel}<div class="mx-4 mt-3 md:mx-6"><BarraRolagem registro="/rolagens?campanha={k.id}" /></div>{/if}
 
 		<div class="flex flex-col gap-5 px-4 pt-5 pb-8 md:px-6" role="tabpanel">
 			{#if aba === 'visao'}<AbaVisao {f} aoAbrirJutsus={() => (aba = 'jutsus')} />

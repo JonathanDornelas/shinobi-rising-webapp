@@ -5,7 +5,6 @@
 	import { page } from '$app/state';
 	import { paleta } from '#lib/estado/paleta.svelte.ts';
 	import { preferencias } from '#lib/estado/preferencias.svelte.ts';
-	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 	import { sessao } from '#lib/estado/sessao.svelte.ts';
 	import Icone from '../ui/Icone.svelte';
 	import Retrato from '../ui/Retrato.svelte';
@@ -75,21 +74,6 @@
 	<button type="button" class="flex h-11 w-11 items-center justify-center text-b0fg hover:bg-[#2E2420]" onclick={() => preferencias.alternarTema()} aria-label={rotuloTema} title={rotuloTema}>
 		<Traco nome={preferencias.aplicado === 'sumi' ? 'sumi' : 'washi'} />
 	</button>
-
-	{#if sessao.usuario && rolador.mesa}
-		<button
-			type="button"
-			class="relative flex h-11 w-11 items-center justify-center hover:bg-[#2E2420]"
-			style:background={rolador.painel ? '#2E2420' : undefined}
-			aria-label={rolador.naoVistas ? `Rolagens de ${rolador.mesa.nome}, ${rolador.naoVistas} novas` : `Rolagens de ${rolador.mesa.nome}`}
-			title="Rolagens de {rolador.mesa.nome}"
-			aria-expanded={rolador.painel}
-			onclick={() => rolador.alternarPainel()}
-		>
-			<Icone id="dado/ic-dado-d20" />
-			{#if rolador.naoVistas}<span class="absolute top-0.5 right-0 h-5 min-w-5 bg-vermelhao px-1 text-center font-pixel text-xs leading-5 font-bold text-white">{rolador.naoVistas > 9 ? '9+' : rolador.naoVistas}</span>{/if}
-		</button>
-	{/if}
 
 	{#if sessao.usuario}
 		<div class="relative hidden md:block" bind:this={raizSino}>

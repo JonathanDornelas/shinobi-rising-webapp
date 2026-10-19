@@ -146,7 +146,7 @@
 			<button type="button" class="btn-jogo btn-primario com-icone text-[13px]" aria-haspopup="dialog" onclick={() => (escolhendo = true)}><Icone id="acao/ic-acao-novo-npc" />NOVO NPC</button>
 		{/if}
 	</div>
-	{#if mestre && ativa && (npcs.length || fichasNpc.length)}<BarraRolagem registro="/campanhas/{k.id}/rolagens" />{/if}
+	{#if mestre && ativa && (npcs.length || fichasNpc.length)}<BarraRolagem registro="/rolagens?campanha={k.id}" />{/if}
 
 	{#if mestre && fichasNpc.length}
 		<section class="flex flex-col gap-2" aria-labelledby="npc-fichas">
@@ -221,9 +221,9 @@
 							{#if ativa}
 								{@const atk = ataqueNpc(n.ataque)}
 								<div class="flex flex-wrap gap-1.5" aria-label="Rolagens de {n.nome}">
-									<BotaoRolar texto="INICIATIVA" expressao={teste(n.iniciativa)} rotulo="Iniciativa" npc={n.id} d20 />
-									{#if atk.acerto}<BotaoRolar texto="ATAQUE" expressao={atk.acerto} rotulo="Ataque" npc={n.id} d20 />{/if}
-									{#if atk.dano}<BotaoRolar texto="DANO" expressao={atk.dano} rotulo="Dano" npc={n.id} /><BotaoRolar texto="CRÍTICO" expressao={atk.dano} rotulo="Dano crítico" npc={n.id} critico />{/if}
+									<BotaoRolar texto="INICIATIVA" expressao={teste(n.iniciativa)} rotulo="Iniciativa" npc={n.id} d20 tipo="iniciativa" origem="Ficha de NPC" />
+									{#if atk.acerto}<BotaoRolar texto="ATAQUE" expressao={atk.acerto} rotulo="Ataque" npc={n.id} d20 tipo="ataque" origem="Ficha de NPC" />{/if}
+									{#if atk.dano}<BotaoRolar texto="DANO" expressao={atk.dano} rotulo="Dano" npc={n.id} tipo="dano" origem="Ficha de NPC" /><BotaoRolar texto="CRÍTICO" expressao={atk.dano} rotulo="Dano crítico" npc={n.id} critico tipo="dano" origem="Ficha de NPC" />{/if}
 								</div>
 							{/if}
 							<div class="flex flex-col gap-1.5" aria-label="PV em combate">

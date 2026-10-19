@@ -64,7 +64,7 @@
 								<span class="flex items-center gap-1">
 									{#if f.editavel && g.id === 'Armas'}
 										{@const dano = danoArma(i)}
-										{#if dano}<BotaoRolar class="mr-1 w-9" expressao={dano} rotulo="{i.nome} · dano" personagem={f.id} />{/if}
+										{#if dano}<BotaoRolar class="mr-1 w-9" expressao={dano} rotulo="Dano · {i.nome}" personagem={f.id} tipo="dano" origem="Ficha · Equipamento" partes={f.calc.proficiencias.some((p) => p.tipo === 'arma' && p.alvo === i.nome) ? [['Proficiência', '+1']] : []} />{/if}
 									{/if}
 									{#if f.editavel}<button type="button" class="btn-icone h-8 w-8 font-pixel" aria-label="Usar ou descartar 1 {i.nome}" onclick={() => f.alterarQtd(i.id, -1)}>−</button>{/if}
 									<span class="t-num w-9 text-center text-[15px]">×{i.qtd}</span>

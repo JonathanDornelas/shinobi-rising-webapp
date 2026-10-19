@@ -1,2 +1,4 @@
-vt323-digitos.woff2: VT323, de Peter Hull (Google Fonts), licença SIL Open Font License 1.1.
-Usada só para os dígitos e sinais das contas (ver @font-face 'Digitos Shinobi' em src/routes/layout.css).
+digitos-shinobi.otf: recorte do Stairs n Slabs, de Jason Suydam (dafont.com/pt/jason-suydam.d11576, marcada como
+"100% grátis"; Copyright (c) 2024, Jason Suydam). Só os dígitos 0-9 e os sinais + - / =, com os contornos subidos
+para a linha de base e a folga lateral um pouco menor. Usada nos números do app (ver @font-face 'Digitos Shinobi'
+em src/routes/layout.css). Gerada com opentype.js a partir do .ttf original.
