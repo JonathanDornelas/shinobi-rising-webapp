@@ -16,7 +16,7 @@
 	const v = $derived(DESTAQUE[variante]);
 </script>
 
-<aside class="sombra-painel border-2 bg-b2" style:border-color={v.cor}>
+<aside class="sombra-painel border-2" style:border-color={v.cor} style:background="color-mix(in srgb, {v.cor} 9%, var(--b2))">
 	<div class="flex items-center gap-1.5 py-0.5 pr-3 pl-1" style:background={v.cor} style:color={v.texto}>
 		<Icone id={v.icone} />
 		<span class="t-rotulo-sm">{rotulo ?? v.rotulo}</span>

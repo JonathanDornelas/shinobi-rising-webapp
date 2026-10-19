@@ -2,6 +2,7 @@
 	// Rolar dados (L10): expressão livre (2d6 + 1d4 − 1, 4d6kh3), botões dos 7 dados (clique soma um; botão direito ou o
 	// contador tira um), modificadores rápidos, quem pode ver e a campanha onde a rolagem entra. Sai no nome da ficha
 	// ativa da pessoa naquela campanha (o Mestre rola como Mestre).
+	import { untrack } from 'svelte';
 	import { sessao } from '#lib/estado/sessao.svelte.ts';
 	import { ajustarDado, contarDados, DADOS, erroExpressao, serializar, somarModificador, termos } from '#lib/rolagens/expressoes.ts';
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
@@ -18,6 +19,11 @@
 	const comoQuem = $derived(!campanha ? '' : mestre ? `como ${sessao.nome || 'Mestre'} · Mestre` : `como ${campanha.ficha?.nome ?? sessao.nome}`);
 
 	let expressao = $state('1d20');
+	// dado clicado no texto das regras
+	$effect(() => {
+		const s = rolador.sugestao;
+		if (s) untrack(() => trocar(s.expr));
+	});
 	let erro = $state('');
 	let oculta = $state(false);
 	const ultima = $derived(rolador.ultima && (!campanha || rolador.ultima.campanha_id === campanha.id) ? rolador.ultima : null);

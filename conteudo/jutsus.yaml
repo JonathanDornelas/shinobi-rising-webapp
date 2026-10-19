@@ -1,0 +1,3875 @@
+# Jutsus do livro, na ordem em que aparecem. descricao/efeito/notas são Markdown de uma linha.
+- slug: kage-mane-no-jutsu
+  nome: Kage Mane no Jutsu
+  traducao: Técnica de Imitação da Sombra
+  origem: Clã Nara
+  tipo: Ninjutsu
+  rank: C
+  custo: 8 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (2 PC/turno por alvo)
+    - k: Área
+      v: Alvo único (+2 PC por alvo adicional, máx. 3)
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - O usuário expande a própria sombra até alcançar a sombra dos alvos, que passam a reproduzir todos os movimentos do Nara — passo a passo, gesto por gesto. Não pode ser usada em áreas sem sombras.
+  efeito: "Os alvos atingidos ficam Controlados: repetem os movimentos do usuário e não agem por conta própria. Ao fim de cada turno, cada alvo pode tentar se libertar com Resistência de FOR."
+  notas:
+    - Enquanto mantém a técnica, o usuário só se move junto com os alvos e faz ações secundárias.
+  pj: controle por imitação (4) + Médio (2) + sustentado (2) = 8 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla
+  cla: nara
+  elemento: null
+- slug: kage-yose-no-jutsu
+  nome: Kage Yose no Jutsu
+  traducao: Técnica do Puxão pela Sombra
+  origem: Clã Nara
+  tipo: Ninjutsu
+  rank: D
+  custo: 5 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) contra o puxão
+    - k: Ação
+      v: Secundária
+  descricao:
+    - O Nara materializa a sombra em até dois filamentos negros controlados com precisão. Não pode ser usada em áreas sem sombras.
+  efeito: Os filamentos manipulam, seguram ou recolhem pequenos objetos como extensões do corpo. Também podem puxar uma criatura até 5 m na direção do usuário, se ela falhar na Resistência.
+  notas: []
+  pj: Médio (2) + ação secundária (2) + puxa (1) = 5 → Rank D.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla
+  cla: nara
+  elemento: null
+- slug: kage-kubishibari-no-jutsu
+  nome: Kage Kubishibari no Jutsu
+  traducao: Técnica de Enforcamento pela Sombra
+  origem: Clã Nara
+  tipo: Ninjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (3 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Versão letal do Kage Mane: a sombra assume a forma de mãos espectrais que envolvem e apertam o pescoço do alvo. Não pode ser usada em áreas sem sombras."
+  efeito: O alvo fica Imobilizado e sofre 2d8 de dano no início de cada um dos seus turnos enquanto a técnica for mantida. Ao fim de cada turno, pode tentar escapar com Resistência de FOR.
+  notas: []
+  pj: imobiliza (3) + dano por turno 2d8 (5) + Médio (2) + sustentado (2) = 12 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla
+  cla: nara
+  elemento: null
+- slug: kage-nui-no-jutsu
+  nome: Kage Nui no Jutsu
+  traducao: Técnica da Costura pelas Sombras
+  origem: Clã Nara
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Sombras se erguem do chão na forma de dezenas de lanças afiadas, perfurando o alvo de múltiplas direções. Não pode ser usada em áreas sem sombras.
+  efeito: "4d8 de dano perfurante. As lanças contornam obstáculos: ignora cobertura."
+  notas: []
+  pj: dano 4d8 (9) + Médio (2) + ignora cobertura (2) = 13 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla
+  cla: nara
+  elemento: null
+- slug: kagemane-shuriken-no-jutsu
+  nome: Kagemane Shuriken no Jutsu
+  traducao: Técnica de Imitação de Shuriken pela Sombra
+  origem: Clã Nara
+  tipo: Bukijutsu
+  rank: B
+  custo: 8 PC + 8 PE
+  info:
+    - k: Alcance
+      v: Alcance da arma
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Até 3 alvos (1 arma por alvo)
+    - k: Ataque
+      v: 1d20 + Bukijutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) no início de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - O usuário arremessa armas de longo alcance marcadas com um selo especial, infundido com chakra, em direção à sombra dos alvos. Não pode ser usada em áreas sem sombras.
+  efeito: "Componente: selo especial do clã + uma arma de distância por alvo."
+  notas:
+    - Cada alvo atingido fica Controlado por até 3 turnos, repetindo os movimentos do usuário. Se os inimigos não conhecem a técnica, a rolagem de ataque tem vantagem. Se um alvo for deslocado de onde a arma caiu, o efeito termina para ele.
+  pj: controle por imitação (4) + alcance da arma (2) + 2 alvos adicionais (4) + 2 turnos extras (2) + canalizado em arma (3) + vantagem contra quem não conhece (2) − componente (−1) = 16 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla
+  cla: nara
+  elemento: null
+- slug: kagetsukami-no-jutsu
+  nome: Kagetsukami no Jutsu
+  traducao: Técnica da Captura pela Sombra
+  origem: Clã Nara
+  tipo: Ninjutsu
+  rank: A
+  custo: 19 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (5 PC/turno)
+    - k: Área
+      v: 1 aliado
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O usuário conecta sua sombra à de um aliado sem restringir os próprios movimentos; ambos passam a agir em perfeita coordenação. Não pode ser usada em áreas sem sombras.
+  efeito: Enquanto conectado, o aliado recebe +2 nas rolagens de ataque e +2 na Defesa e, uma vez por turno, uma ação secundária extra. O Nara pode gastar a própria Reação para que o aliado faça uma Esquiva Ativa.
+  notas: []
+  pj: +2 em ataques (4) + +2 na Defesa (4) + ação secundária extra (4) + Médio (2) + sustentado (2) + reação compartilhada (3) = 19 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla
+  cla: nara
+  elemento: null
+- slug: baika-no-jutsu
+  nome: Baika no Jutsu
+  traducao: Técnica da Multiplicação Corporal
+  origem: Clã Akimichi
+  tipo: Ninjutsu
+  rank: D
+  custo: 4 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Os membros do Clã Akimichi usam chakra para expandir partes do corpo ou toda a estrutura física.
+  efeito: +2 na Defesa enquanto durar. Pré-requisito das técnicas avançadas do clã (Nikudan Sensha e outras).
+  notas: []
+  pj: +2 na Defesa por 3 turnos (4) = 4 → Rank D.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-2
+  cla: akimichi
+  elemento: null
+- slug: nikudan-sensha
+  nome: Nikudan Sensha
+  traducao: Tanque da Bala Humana
+  origem: Clã Akimichi
+  tipo: Taijutsu
+  rank: C
+  custo: 10 PE
+  info:
+    - k: Alcance
+      v: Linha de 30m
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Linha reta (30m)
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade e não cai
+    - k: Ação
+      v: Primária
+  descricao:
+    - Após expandir o corpo, o usuário se encolhe numa esfera e gira em alta velocidade, avançando como um projétil humano que atravessa obstáculos e dispersa formações.
+  efeito: "Exige Baika no Jutsu ativo. Rola em linha reta até 30 m: 3d6 + FOR de dano em todos no caminho; quem falhar cai."
+  notas: []
+  pj: dano 3d6 (5) + Linha 30m (2) + atravessa alvos (3) + derruba (1) − exige técnica ativa (−1) = 10 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-2
+  cla: akimichi
+  elemento: null
+- slug: karori-kontororu
+  nome: Karori Kontororu
+  traducao: Controle de Calorias
+  origem: Clã Akimichi
+  tipo: Ninjutsu
+  rank: D
+  custo: Calorias
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Secundária
+  descricao:
+    - Os Akimichi convertem as calorias armazenadas diretamente em chakra e energia física, acelerando o próprio metabolismo.
+  efeito: Até 3 vezes por descanso longo, role 2d8 e recupere esse valor em PC ou PE (à sua escolha). Depois das 3 cargas, só volta a usar após um descanso longo com uma refeição farta.
+  notas: []
+  pj: recuperação equivalente a 2d8 (5), paga com calorias em vez de PC → Rank D.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-2
+  cla: akimichi
+  elemento: null
+- slug: bubun-baika-no-jutsu
+  nome: Bubun Baika no Jutsu
+  traducao: Técnica do Tamanho Múltiplo Parcial
+  origem: Clã Akimichi
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Secundária
+  descricao:
+    - "O usuário concentra chakra numa região do corpo e aumenta drasticamente o tamanho de um membro: braços, pernas ou punhos gigantes."
+  efeito: "Escolha ao ativar: +2 FOR ou +2 na Defesa. Seus ataques corpo a corpo passam a alcançar 3 m."
+  notas: []
+  pj: +2 em FOR ou Defesa (4) + ação secundária (2) + alcance de 3m (1) = 7 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-2
+  cla: akimichi
+  elemento: null
+- slug: chou-baika-no-jutsu
+  nome: Chou Baika no Jutsu
+  traducao: Técnica do Super Tamanho Múltiplo
+  origem: Clã Akimichi
+  tipo: Ninjutsu
+  rank: B
+  custo: 14 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Secundária
+  descricao:
+    - Levando o Baika ao extremo, o usuário expande o corpo a proporções colossais, dominando o campo apenas com a presença.
+  efeito: "Enquanto ativo: +3 na Defesa, +2 FOR e 10 PV temporários. Os bônus podem ultrapassar os limites normais de atributo."
+  notas: []
+  pj: +3 na Defesa (6) + +2 FOR (4) + 10 PV temporários (2) + ação secundária (2) = 14 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-2
+  cla: akimichi
+  elemento: null
+- slug: hari-jizou-akimichi-hen
+  nome: "Hari Jizou: Akimichi Hen"
+  traducao: "Agulhas Jizou: Variante Akimichi"
+  origem: Clã Akimichi
+  tipo: Ninjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Secundária
+  descricao:
+    - O usuário endurece e alonga os cabelos com chakra, transformando-os numa camada densa de agulhas que protege e fere.
+  efeito: "Por 3 turnos: +2 na Defesa; seus ataques corpo a corpo causam +2d4 de dano; quem te atacar corpo a corpo sofre 2d4 de dano."
+  notas: []
+  pj: +2 na Defesa (4) + dano extra 2d4 (2) + retaliação 2d4 (2) + 2 turnos extras (2) + ação secundária (2) = 12 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-2
+  cla: akimichi
+  elemento: null
+- slug: choudan-bakugeki
+  nome: Choudan Bakugeki
+  traducao: Bombardeio da Borboleta
+  origem: Clã Akimichi
+  tipo: Taijutsu
+  rank: B
+  custo: 17 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: VIG (DT do Jutsu) contra o atordoamento
+    - k: Ação
+      v: Primária
+  descricao:
+    - Convertendo as reservas calóricas numa quantidade avassaladora de chakra, o usuário libera toda a energia acumulada num único golpe.
+  efeito: Exige o efeito da Pílula de Pimenta (Tongarashigan). 5d10 + FOR de dano que ignora RD; se falhar na Resistência, o alvo fica Atordoado.
+  notas: []
+  pj: dano 5d10 (15) + atordoa (1) + ignora RD (2) − exige pílula ativa (−1) = 17 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-2
+  cla: akimichi
+  elemento: null
+- slug: shintenshin-no-jutsu
+  nome: Shintenshin no Jutsu
+  traducao: Técnica de Transferência de Mente
+  origem: Clã Yamanaka
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Até 3 turnos
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: ESP (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - "A técnica mais emblemática do clã: o usuário projeta a consciência para dentro da mente do alvo e age através do corpo dele. O corpo do usuário fica vulnerável enquanto isso."
+  efeito: Em acerto, o usuário controla o corpo do alvo (estado Controlado) por até 3 turnos. O corpo original fica inconsciente e indefeso, e todo dano sofrido pelo corpo invadido também atinge o usuário.
+  notas: []
+  pj: controla (6) + Curto (1) + 2 turnos extras (2) − corpo indefeso e dano refletido (−2) = 7 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-3
+  cla: yamanaka
+  elemento: null
+- slug: kanchi-denden
+  nome: Kanchi Denden
+  traducao: Transmissão de Sensoriamento
+  origem: Clã Yamanaka
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: 3 turnos (renovável por 2 PC/turno)
+    - k: Área
+      v: Até 3 aliados
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O usuário estende a percepção além do próprio corpo e conecta a mente dos aliados, compartilhando estratégias e percepções em tempo real.
+  efeito: Os participantes conversam mentalmente, compartilham o que percebem e recebem +1 em Percepção e +1 nas rolagens de ataque enquanto conectados.
+  notas: []
+  pj: buff em aliados (3) + Médio (2) + 2 aliados adicionais (4) = 9 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-3
+  cla: yamanaka
+  elemento: null
+- slug: shindenshin-no-jutsu
+  nome: Shindenshin no Jutsu
+  traducao: Técnica de Transmissão de Mentes
+  origem: Clã Yamanaka
+  tipo: Ninjutsu
+  rank: B
+  custo: 14 PC
+  info:
+    - k: Alcance
+      v: Muito Distante (100m)
+    - k: Duração
+      v: 2 horas
+    - k: Área
+      v: Até 5 criaturas voluntárias
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Voltada à comunicação: conecta consciências e transmite mensagens, imagens, emoções e lembranças simples de uma mente para outra."
+  efeito: Os participantes trocam mensagens, imagens mentais, sensações e informações simples instantaneamente. A comunicação ignora barreiras sonoras e não pode ser ouvida por terceiros.
+  notas: []
+  pj: Muito Distante (8) + participantes extras (4) + duração longa (2) = 14 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-3
+  cla: yamanaka
+  elemento: null
+- slug: shinten-bunshin-no-jutsu
+  nome: Shinten Bunshin no Jutsu
+  traducao: Técnica dos Clones de Transferência de Mente
+  origem: Clã Yamanaka
+  tipo: Ninjutsu
+  rank: B
+  custo: 14 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Até 3 alvos
+    - k: Ataque
+      v: 1d20 + Ninjutsu (um por alvo)
+    - k: Resistência
+      v: ESP (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Uma evolução do Shintenshin: o usuário fragmenta a consciência e envia pedaços da mente para vários indivíduos ao mesmo tempo, interferindo em suas ações."
+  efeito: "Os alvos atingidos têm a mente parcialmente invadida: −2 em ataques e testes de perícia."
+  notas:
+    - Uma vez por turno, com sua ação secundária ou primária, force um alvo afetado a uma ação simples (sacar ou largar um item, deslocar-se) ou a um ataque corporal simples / técnica de Taijutsu de até Rank C contra uma criatura à sua escolha, usando a sua rolagem de Taijutsu.
+    - O corpo do usuário fica inconsciente e indefeso; metade do dano sofrido pelos alvos (arredondado para baixo) é refletida nele.
+  pj: controle parcial (4) + penalidade (2) + ataque forçado (3) + Curto (1) + 2 alvos adicionais (4) + 2 turnos extras (2) − corpo indefeso (−2) = 14 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-3
+  cla: yamanaka
+  elemento: null
+- slug: shinranshin-no-jutsu
+  nome: Shinranshin no Jutsu
+  traducao: Técnica de Destruição de Mente
+  origem: Clã Yamanaka
+  tipo: Ninjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: ESP (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - Por meio de uma poderosa interferência psíquica, o usuário semeia confusão nos pensamentos do alvo — não para controlar o corpo, mas para embaralhar percepção e instintos.
+    - Especialmente eficaz para desorganizar formações e provocar conflitos entre aliados inimigos.
+  efeito: "O alvo fica confuso por até 3 turnos: −2 em ataques e Resistências. Com sua ação secundária, você pode forçá-lo a uma ação simples ou a um ataque corporal simples / técnica de Taijutsu de até Rank C contra uma criatura à sua escolha (com a sua rolagem de Taijutsu). Diferente do Shintenshin, seu corpo continua ativo."
+  notas: []
+  pj: controle parcial (4) + penalidade (2) + Médio (2) + 2 turnos extras (2) + corpo livre (2) = 12 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-3
+  cla: yamanaka
+  elemento: null
+- slug: saiko-denshin
+  nome: Saiko Denshin
+  traducao: Transmissão da Mente Psicótica
+  origem: Clã Yamanaka
+  tipo: Ninjutsu
+  rank: A
+  custo: 20 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: ESP (disputa)
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Uma conexão mental profunda para buscar informações específicas: memórias, emoções e conhecimentos da vítima. Principal ferramenta de interrogatório do clã."
+  efeito: Escolha uma informação. A cada turno, faça um teste de Ninjutsu contra a DT do Mestre; em sucesso, você e o alvo disputam ESP — se você vencer, obtém a informação; se o alvo vencer, ela continua oculta, mas a técnica segue ativa. Um sucesso crítico do alvo, ou duas vitórias dele, rompe a conexão.
+  notas:
+    - "DTs sugeridas: informação simples 12 · importante 15 · segredo relevante 18 · segredo muito bem guardado 21 · informação crítica para a campanha 24+. Treinamento mental avançado, barreiras ou selos podem aumentar a DT ou impedir o acesso."
+  pj: invasão de memórias, efeito narrativo de grande peso (20) = 20 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-3
+  cla: yamanaka
+  elemento: null
+- slug: kanchi-kekkai
+  nome: Kanchi Kekkai
+  traducao: Barreira Sensorial
+  origem: Clã Yamanaka
+  tipo: Ninjutsu
+  rank: A
+  custo: 21 PC
+  info:
+    - k: Alcance
+      v: Toque / Pessoal
+    - k: Duração
+      v: 3 horas
+    - k: Área
+      v: Massiva (100m)
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O usuário espalha uma rede invisível de chakra sensorial ao redor de si ou de um ponto tocado. Qualquer presença que a atravesse é sentida imediatamente pela mente do Yamanaka.
+  efeito: Detecta automaticamente qualquer criatura que entre ou saia da área, mesmo escondida, invisível ou atrás de obstáculos comuns. Dentro da área, +2 em Percepção relacionada a essas criaturas, e você não pode ser surpreendido por elas.
+  notas:
+    - Técnicas específicas de ocultação de chakra e barreiras avançadas podem exigir testes adicionais (a critério do Mestre).
+  pj: Massiva (15) + duração longa (2) + detecção automática (4) = 21 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-3
+  cla: yamanaka
+  elemento: null
+- slug: shikyaku-no-jutsu
+  nome: Shikyaku no Jutsu
+  traducao: Técnica das Quatro Patas
+  origem: Clã Inuzuka
+  tipo: Ninjutsu
+  rank: D
+  custo: 5 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 1 hora
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Canalizando chakra por todo o corpo, o usuário assume uma postura bestial semelhante à do seu cão: instintos aguçados, movimentos mais rápidos e mãos e pés usados como garras."
+  efeito: "O usuário entra em postura bestial: +1 nas rolagens de ataque de Taijutsu e +1 em Rastreamento pelo olfato; seus ataques desarmados viram garras (+1d4 de dano)."
+  notas:
+    - Libera as técnicas que exigem a postura bestial do Clã Inuzuka.
+  pj: +1 em ataques (2) + dano +1d4 (1) + duração longa (2) = 5 → Rank D.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-4
+  cla: inuzuka
+  elemento: null
+- slug: tsuuga
+  nome: Tsuuga
+  traducao: Sobre Presa
+  origem: Clã Inuzuka
+  tipo: Taijutsu
+  rank: D
+  custo: 4 PE
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) ou cai
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Em postura bestial, o usuário gira o corpo em alta velocidade enquanto avança: uma broca humana de garras. Uma das técnicas mais icônicas do clã."
+  efeito: "Exige Shikyaku no Jutsu ativo. Ataque giratório em investida: 2d6 + FOR de dano (+1d4 das garras); se falhar na Resistência, o alvo cai."
+  notas: []
+  pj: dano 2d6 (3) + Curto (1) + derruba (1) − exige técnica ativa (−1) = 4 → Rank D.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-4
+  cla: inuzuka
+  elemento: null
+- slug: juujin-bunshin
+  nome: Juujin Bunshin
+  traducao: Clone da Besta Humana
+  origem: Clã Inuzuka
+  tipo: Ninjutsu
+  rank: D
+  custo: 5 PC
+  info:
+    - k: Alcance
+      v: Toque (o cão)
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: O cão ninja
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O cão ninja assume a aparência do parceiro humano. Cada corpo mantém a própria consciência, agindo em sincronia graças ao vínculo entre os dois.
+  efeito: "O cão assume a aparência do parceiro até o fim da cena: +1 na Defesa e +1 nas rolagens de ataque de Taijutsu, e conta como segundo usuário das técnicas do clã."
+  notas:
+    - Pré-requisito das formações de combate que exigem dois Inuzuka.
+  pj: buff no companheiro (3) + duração de 1 cena (2) = 5 → Rank D.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-4
+  cla: inuzuka
+  elemento: null
+- slug: gatsuuga
+  nome: Gatsuuga
+  traducao: Presa Sobre Presa
+  origem: Clã Inuzuka
+  tipo: Taijutsu
+  rank: C
+  custo: 7 PE
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu (uma do usuário e uma do cão)
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Em perfeita sintonia, usuário e cão avançam juntos girando em alta velocidade: duas brocas vivas. Evolução direta do Tsuuga."
+  efeito: Exige Shikyaku no Jutsu e Juujin Bunshin ativos. Usuário e cão atacam o mesmo alvo, cada um com 2d6 + FOR (o cão usa o próprio bônus de dano).
+  notas: []
+  pj: dano combinado 4d6 (7) + Curto (1) − exige 2 técnicas ativas (−1) = 7 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-4
+  cla: inuzuka
+  elemento: null
+- slug: jinjuu-konbi-henge-soutourou
+  nome: "Jinjuu Konbi Henge: Soutourou"
+  traducao: "Transformação Combinada da Besta Humana: Lobo de Duas Cabeças"
+  origem: Clã Inuzuka
+  tipo: Ninjutsu
+  rank: B
+  custo: 15 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Usuário e cão
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Levando a cooperação ao auge, humano e cão fundem suas formas numa única criatura bestial de duas cabeças.
+  efeito: "Usuário e cão se fundem num lobo gigante de duas cabeças (uma única criatura, com os PV do usuário + metade dos PV do cão): +2 na Defesa, +2 FOR e +2 nas rolagens de ataque de Taijutsu."
+  notas:
+    - "As técnicas do clã que exigem usuário e cão são executadas pela forma fundida e causam +1 dado de dano da mesma categoria (ex.: 3d8 → 4d8). Pré-requisito das técnicas avançadas."
+  pj: +2 na Defesa (4) + +2 FOR (4) + +2 em ataques (4) + +1 dado nas técnicas (3) = 15 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-4
+  cla: inuzuka
+  elemento: null
+- slug: garouga
+  nome: Garouga
+  traducao: Presa de Lobo Sobre Presa
+  origem: Clã Inuzuka
+  tipo: Taijutsu
+  rank: B
+  custo: 17 PE
+  info:
+    - k: Alcance
+      v: Linha de 30m
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Linha reta (30m)
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade e não é empurrado
+    - k: Ação
+      v: Primária
+  descricao:
+    - Na forma do Lobo de Duas Cabeças, o usuário vira uma broca gigante de presas e garras que destrói tudo no caminho.
+  efeito: "Exige o Lobo de Duas Cabeças. Avança em linha reta: 5d8 + FOR de dano em todos no caminho (6d8 com o bônus da forma); quem falhar é empurrado 3 m."
+  notas: []
+  pj: dano 5d8 (12) + Linha 30m (2) + atravessa alvos (3) + empurra (1) − exige técnica ativa (−1) = 17 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-4
+  cla: inuzuka
+  elemento: null
+- slug: gatenga
+  nome: Gatenga
+  traducao: Presas Rotativas
+  origem: Clã Inuzuka
+  tipo: Taijutsu
+  rank: B
+  custo: 11 PE
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Até 2 alvos
+    - k: Ataque
+      v: 1d20 + Taijutsu (duas rolagens)
+    - k: Resistência
+      v: VIG (DT do Jutsu) contra o atordoamento
+    - k: Ação
+      v: Primária
+  descricao:
+    - Usuário e cão se lançam em rotações violentas, mas atacam separadamente, cercando o alvo por ângulos diferentes.
+  efeito: "Exige Shikyaku no Jutsu e Juujin Bunshin ativos. Cada um ataca o mesmo alvo ou um alvo diferente: cada acerto causa 2d8 + FOR. Se os dois acertarem o mesmo alvo, ele faz a Resistência ou fica Atordoado até o início do seu próximo turno."
+  notas: []
+  pj: dois ataques de 2d8 (9) + alvo adicional (2) + atordoa (1) − exige 2 técnicas ativas (−1) = 11 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-4
+  cla: inuzuka
+  elemento: null
+- slug: jinjuu-kongou-henge-santourou
+  nome: Jinjuu Kongou Henge — Santourou
+  traducao: Transformação Misturada da Besta Humana — Lobo de Três Cabeças
+  origem: Clã Inuzuka
+  tipo: Ninjutsu
+  rank: A
+  custo: 23 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Usuário e dois cães
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Evolução rara da transformação combinada: o Inuzuka e dois cães se fundem numa criatura colossal de três cabeças, com instintos e sentidos unificados."
+  efeito: "Exige Inuzuka Ryu no Kizuna (dois cães) ou um Kage Bunshin no lugar do segundo cão. Os três se fundem num lobo colossal: +3 FOR, +3 na Defesa e +2 nas rolagens de ataque de Taijutsu."
+  notas:
+    - "As técnicas do clã que causam dano recebem +2 dados da mesma categoria (ex.: 3d8 → 5d8), e o usuário tem vantagem em Percepção e Rastreamento."
+  pj: +3 FOR (6) + +3 na Defesa (6) + +2 em ataques (4) + +2 dados nas técnicas (5) + vantagem em percepção (2) = 23 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-4
+  cla: inuzuka
+  elemento: null
+- slug: ooiga-gatenga
+  nome: Ooiga Gatenga
+  traducao: Cauda Perseguidora de Presa da Presa Giratória de Presa
+  origem: Clã Inuzuka
+  tipo: Taijutsu
+  rank: A
+  custo: 20 PE
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Até 3 alvos
+    - k: Ataque
+      v: 1d20 + Taijutsu (uma por alvo)
+    - k: Resistência
+      v: VIG (DT do Jutsu) contra o atordoamento
+    - k: Ação
+      v: Primária
+  descricao:
+    - Na forma de três cabeças, os corpos viram massas giratórias de chakra e presas que mudam de trajetória no meio da investida. O auge do estilo ofensivo Inuzuka.
+  efeito: "Exige o Lobo de Três Cabeças. Escolha até 3 alvos: cada acerto causa 4d8 + FOR (6d8 com o bônus da forma). Se dois ou mais ataques acertarem, os alvos atingidos fazem a Resistência ou ficam Atordoados até o início do seu próximo turno."
+  notas: []
+  pj: dano 4d8 por alvo (9) + 2 alvos adicionais (4) + Longo (4) + persegue (3) + atordoa (1) − exige técnica ativa (−1) = 20 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-4
+  cla: inuzuka
+  elemento: null
+- slug: dainamikku-makingu
+  nome: Dainamikku Mākingu
+  traducao: Marcação Dinâmica
+  origem: Clã Inuzuka
+  tipo: Taijutsu
+  rank: D
+  custo: 3 PE
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: 1 dia
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu (do cão)
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária (comando ao cão)
+  descricao:
+    - "O cão salta sobre o alvo e o marca com o próprio odor. Técnica clássica de rastreamento da dupla Inuzuka (canônica, sem marco: aprendida com PT — cap. 8.2)."
+  efeito: Por 1 dia, testes de Rastreamento e Percepção para localizar o alvo têm vantagem, e ele não pode usar Furtividade contra o olfato do usuário e do cão.
+  notas: []
+  pj: marca de rastreio (2) + Curto (1) = 3 → Rank D.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-4
+  cla: inuzuka
+  elemento: null
+- slug: kikaichu-no-jutsu
+  nome: Kikaichū no Jutsu
+  traducao: Técnica dos Insetos Parasitas Destrutivos
+  origem: Clã Aburame
+  tipo: Ninjutsu
+  rank: D
+  custo: 5 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "A base do estilo Aburame: o usuário libera parte da colônia para atacar e sugar o chakra do inimigo."
+  efeito: O enxame causa 1d6 de dano e drena 1d6 PC do alvo (metade vai para o usuário).
+  notas:
+    - "**Passivo do clã:** uma vez por turno, ao acertar ou ser acertado corpo a corpo, os insetos drenam 1d4 PC do oponente."
+  pj: dano 1d6 (1) + Curto (1) + dreno 1d6 transferido (3) = 5 → Rank D.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-5
+  cla: aburame
+  elemento: null
+- slug: hijutsu-mushiyose
+  nome: "Hijutsu: Mushiyose"
+  traducao: Invocação de Insetos
+  origem: Clã Aburame
+  tipo: Ninjutsu
+  rank: D
+  custo: 5 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Sustentado (2 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: VIG (DT do Jutsu) ao fim de cada turno encerra
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um pequeno enxame envolve o alvo, útil para enfraquecer usuários de ninjutsu antes do combate principal.
+  efeito: Enquanto mantido, o enxame drena 1d6 PC do alvo por turno e impõe −1 em ataques (zumbido e mordidas).
+  notas: []
+  pj: dreno 1d6 (2) + Curto (1) + sustentado (2) = 5 → Rank D.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-5
+  cla: aburame
+  elemento: null
+- slug: mushi-bunshin-no-jutsu
+  nome: Mushi Bunshin no Jutsu
+  traducao: Técnica dos Clones de Insetos
+  origem: Clã Aburame
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: 1 clone a até 5m
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um clone formado por insetos compactados. Parece sólido, mas, ao ser atingido, explode em milhares de insetos que atacam o agressor.
+  efeito: "Cria um clone com 1 PV que imita o usuário (Percepção contra a DT do Jutsu para perceber). Quando é atingido, explode: o agressor sofre 1d6 de dano e perde 2d6 PC."
+  notas: []
+  pj: clone autônomo (4) + dreno (2) + dano 1d6 (1) = 7 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-5
+  cla: aburame
+  elemento: null
+- slug: hijutsu-mushidama
+  nome: "Hijutsu: Mushidama"
+  traducao: Esfera de Insetos
+  origem: Clã Aburame
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (4 PC/turno)
+    - k: Área
+      v: Alvo único (esfera de 2m)
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - O alvo é aprisionado dentro de uma esfera densa de insetos. Costuma terminar o combate antes de ser quebrada.
+  efeito: O alvo fica Imobilizado dentro da esfera; no início de cada turno dele, sofre 2d6 de dano e perde 2d6 PC.
+  notas: []
+  pj: imobiliza (3) + dano 2d6 (3) + dreno (3) + Médio (2) + sustentado (2) = 13 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-5
+  cla: aburame
+  elemento: null
+- slug: mushi-jamingu-no-jutsu
+  nome: Mushi Jamingu no Jutsu
+  traducao: Técnica de Encravamento de Inseto
+  origem: Clã Aburame
+  tipo: Ninjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Esfera 15m
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Os insetos espalham partículas de chakra que embaralham sentidos sensoriais e comunicações à distância.
+  efeito: Dentro da área, sensores de chakra (Especialização Sensor, Byakugan, Kanchi Kekkai) não funcionam, comunicações telepáticas falham e Furtividade recebe +2.
+  notas: []
+  pj: Esfera 15m (8) + 1 cena (2) + bloqueio sensorial (2) = 12 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-5
+  cla: aburame
+  elemento: null
+- slug: kidaichu-mushikui
+  nome: "Kidaichū: Mushikui"
+  traducao: Inseto Parasita Gigante — Mordida de Inseto
+  origem: Clã Aburame
+  tipo: Ninjutsu
+  rank: A
+  custo: 19 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (5 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno para arrancá-lo
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um inseto parasita gigante que devora chakra e se multiplica enquanto se alimenta.
+  efeito: "O inseto morde e se fixa: 3d8 de dano e, a cada turno mantido, drena 2d6 PC (+1d6 por turno seguido, até 5d6). Enquanto ele estiver preso, os jutsus do alvo custam o dobro."
+  notas: []
+  pj: dano 3d8 (7) + dreno crescente (4) + penalidade de chakra (2) + Médio (2) + sustentado (2) + multiplicação (2) = 19 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-5
+  cla: aburame
+  elemento: null
+- slug: hijutsu-mushitatsumaki
+  nome: "Hijutsu: Mushitatsumaki"
+  traducao: Tornado de Insetos
+  origem: Clã Aburame
+  tipo: Ninjutsu
+  rank: A
+  custo: 20 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade e não fica Cego
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um tornado de insetos gira em torno dos inimigos, mordendo e drenando tudo o que alcança (anime).
+  efeito: 4d8 de dano e dreno de 2d6 PC em cada alvo na área; quem falhar fica Cego por 1 turno.
+  notas: []
+  pj: dano 4d8 (9) + Esfera 6m (4) + Médio (2) + dreno (3) + cega (2) = 20 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-5
+  cla: aburame
+  elemento: null
+- slug: hijutsu-mushiheki
+  nome: "Hijutsu: Mushiheki"
+  traducao: Parede de Insetos
+  origem: Clã Aburame
+  tipo: Ninjutsu
+  rank: C
+  custo: 8 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Parede de 3m × 3m
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Uma parede defensiva de insetos compactados, útil para proteger aliados (anime; sem marco: aprendida com PT — cap. 8.2)."
+  efeito: A parede tem 30 PV. Quem a tocar ou atacar corpo a corpo perde 1d4 PC por contato.
+  notas: []
+  pj: barreira de 30 PV (6) + dreno ao contato (2) = 8 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-5
+  cla: aburame
+  elemento: null
+- slug: juuken-tenketsushin
+  nome: "Juuken: Tenketsushin"
+  traducao: "Punho Suave: Agulha de Tenketsu"
+  origem: Clã Hyuuga
+  tipo: Taijutsu
+  rank: D
+  custo: 3 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu (com CTR)
+    - k: Resistência
+      v: VIG (DT do Jutsu) contra o selamento
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um golpe de palma direcionado a um tenketsu específico; o alvo sente como se um nervo tivesse sido pressionado.
+  efeito: Ataque de Juuken com dano normal. Se falhar na Resistência, o alvo não pode lançar jutsus no próximo turno (chakra selado).
+  notas: []
+  pj: sela chakra (2) + golpe de Juuken (1) = 3 → Rank D.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-6
+  cla: hyuuga
+  elemento: null
+- slug: shotei
+  nome: Shōtei
+  traducao: Palma Inferior
+  origem: Clã Hyuuga
+  tipo: Taijutsu
+  rank: C
+  custo: 6 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu (com CTR)
+    - k: Resistência
+      v: FOR (DT do Jutsu) para não cair
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma palma carregada de chakra que arremessa o adversário para longe.
+  efeito: 2d8 + CTR de dano; o alvo é empurrado 5 m e, se falhar na Resistência, cai.
+  notas: []
+  pj: dano 2d8 (5) + empurra/derruba (1) = 6 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-6
+  cla: hyuuga
+  elemento: null
+- slug: hakkesho-kaiten
+  nome: Hakkeshō Kaiten
+  traducao: "Oito Trigramas: Palma Rotativa"
+  origem: Clã Hyuuga
+  tipo: Taijutsu
+  rank: B
+  custo: 14 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m em torno de si
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: FOR (DT do Jutsu) contra o empurrão
+    - k: Ação
+      v: Reação
+  descricao:
+    - O Hyuuga libera chakra por todos os tenketsu enquanto gira como um pião, criando uma esfera de chakra. Símbolo definitivo da defesa Hyuuga.
+  efeito: Bloqueia completamente um ataque físico ou jutsu de Rank C ou inferior (contra Rank B ou superior, reduz o dano à metade). Quem estiver a até 3 m sofre 2d6 de dano e, se falhar na Resistência, é arremessado 5 m.
+  notas: []
+  pj: reação (3) + bloqueio (6) + dano 2d6 em área (5) = 14 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-6
+  cla: hyuuga
+  elemento: null
+- slug: hakke-rokujuyon-sho
+  nome: Hakke Rokujūyon Shō
+  traducao: "Oito Trigramas: Sessenta e Quatro Palmas"
+  origem: Clã Hyuuga
+  tipo: Taijutsu
+  rank: B
+  custo: 15 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu (com CTR)
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Completa
+  descricao:
+    - Sequência ritualística de golpes duplicados (2, 4, 8… 64) que fecha os tenketsu do alvo um a um.
+  efeito: "Exige Byakugan ativo. Uma única rolagem de ataque: em acerto, 6d6 de dano e o alvo perde 2d6 PC; se ficar sem PC, fica Paralisado por 1 turno."
+  notas: []
+  pj: dano 6d6 (12) + dreno 2d6 (4) − ação completa (−1) = 15 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-6
+  cla: hyuuga
+  elemento: null
+- slug: hakke-kusho
+  nome: Hakke Kūshō
+  traducao: "Oito Trigramas: Palma de Vácuo"
+  origem: Clã Hyuuga
+  tipo: Taijutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu (com CTR)
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um golpe de palma que dispara uma rajada de chakra, atingindo o alvo à distância como um Juuken.
+  efeito: 3d10 + CTR de dano e o alvo é empurrado 5 m.
+  notas: []
+  pj: dano 3d10 (9) + Médio (2) + empurra (1) = 12 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-6
+  cla: hyuuga
+  elemento: null
+- slug: hakke-hyaku-nijuhassho
+  nome: Hakke Hyaku Nijūhasshō
+  traducao: "Oito Trigramas: Cento e Vinte e Oito Palmas"
+  origem: Clã Hyuuga
+  tipo: Taijutsu
+  rank: A
+  custo: 24 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu (com CTR)
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Completa
+  descricao:
+    - "Versão evoluída das 64 Palmas: a velocidade é tal que se totalizam 128 toques contra o alvo."
+  efeito: "Exige Byakugan ativo. Uma única rolagem de ataque: em acerto, 10d6 de dano e o alvo perde 3d6 PC; se ficar sem PC, fica Paralisado por 2 turnos. Depois, o usuário recebe 1 nível de Fadiga."
+  notas: []
+  pj: dano 10d6 (20) + dreno 3d6 (6) − ação completa (−1) − Fadiga (−1) = 24 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-6
+  cla: hyuuga
+  elemento: null
+- slug: juho-soshiken
+  nome: Jūho Sōshiken
+  traducao: "Passo Suave: Punhos dos Leões Gêmeos"
+  origem: Clã Hyuuga
+  tipo: Taijutsu
+  rank: A
+  custo: 21 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Sustentado (6 PC/turno)
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Secundária
+  descricao:
+    - O chakra toma a forma de dois leões envolvendo as mãos, aumentando o alcance e a força de cada golpe de Juuken.
+  efeito: "Enquanto ativo: seus golpes de Juuken causam +3d8 de dano e drenam +2d6 PC, ignoram RD, e você recebe +2 na Defesa."
+  notas: []
+  pj: dano extra 3d8 (7) + dreno (4) + ignora RD (2) + +2 na Defesa (4) + sustentado (2) + ação secundária (2) = 21 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-6
+  cla: hyuuga
+  elemento: null
+- slug: hakke-kuhekisho
+  nome: Hakke Kūhekishō
+  traducao: "Oito Trigramas: Palma da Parede de Vácuo"
+  origem: Clã Hyuuga
+  tipo: Taijutsu
+  rank: A
+  custo: 20 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Cone médio (10m)
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade e não cai
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma onda de choque de Juuken disparada de ambas as palmas, capaz de derrubar tudo à frente.
+  efeito: 6d8 de dano; quem falhar é empurrado 10 m e cai. Destrói barreiras de Rank B ou inferior na área.
+  notas: []
+  pj: dano 6d8 (15) + cone médio (2) + empurra/derruba (1) + destrói barreiras (2) = 20 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-6
+  cla: hyuuga
+  elemento: null
+- slug: katon-goukakyu-no-jutsu
+  nome: "Katon: Goukakyu no Jutsu"
+  traducao: Grande Bola de Fogo
+  origem: Clã Uchiha
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade do dano
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Técnica de iniciação do clã: um Uchiha só é considerado adulto depois de dominá-la. O ninja inspira fundo, faz selos rápidos e exala fogo como um dragão."
+  efeito: 2d6+2 de dano de fogo em área; incendeia madeira, papel e tecido.
+  notas: []
+  pj: dano 2d6+2 (5) + Médio (2) + Esfera 3m (2) = 9 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-7
+  cla: uchiha
+  elemento: katon
+- slug: katon-hosenka-no-jutsu
+  nome: "Katon: Hōsenka no Jutsu"
+  traducao: Chamas das Flores de Fênix
+  origem: Clã Uchiha
+  tipo: Ninjutsu
+  rank: C
+  custo: 8 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Até 3 alvos
+    - k: Ataque
+      v: 1d20 + Ninjutsu (uma por alvo)
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Várias pequenas chamas saltam da boca como pétalas perseguidoras. Muitas vezes escondem shuriken ou kunai.
+  efeito: 1d6+1 de dano de fogo por alvo. Se kunai ou shuriken forem escondidas nas chamas (declare antes), cada acerto causa +1d4 contra alvo Desprevenido.
+  notas: []
+  pj: dano 1d6+1 (2) + Médio (2) + 2 alvos adicionais (4) = 8 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-7
+  cla: uchiha
+  elemento: katon
+- slug: sofushasan-no-tachi
+  nome: Sōfūshasan no Tachi
+  traducao: Manipulação do Moinho de Vento de Lâminas Triplas
+  origem: Clã Uchiha
+  tipo: Bukijutsu
+  rank: C
+  custo: 8 PE
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Bukijutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - Três lâminas presas a fios de chakra contornam o alvo e o amarram contra uma superfície.
+  efeito: 2d6 + AGI de dano e o alvo fica Imobilizado pelos fios até vencer a Resistência. Combina bem com Katon (o fogo percorre os fios).
+  notas: []
+  pj: dano 2d6 (3) + Médio (2) + imobiliza (3) = 8 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-7
+  cla: uchiha
+  elemento: null
+- slug: uchihagaeshi
+  nome: Uchihagaeshi
+  traducao: Retorno Uchiha
+  origem: Clã Uchiha
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Reação
+  descricao:
+    - Com um leque de guerra (gunbai) ou escudo largo, o Uchiha absorve um jutsu e o devolve contra o lançador.
+  efeito: "Componente: gunbai ou escudo largo empunhado. Absorve um jutsu de Rank B ou inferior que te atingiria e o devolve contra o lançador (acerto automático, mesmo dano)."
+  notas: []
+  pj: reação (3) + devolução de jutsu (9) − componente durável (−1) = 11 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-7
+  cla: uchiha
+  elemento: null
+- slug: katon-ryuka-no-jutsu
+  nome: "Katon: Ryūka no Jutsu"
+  traducao: Dragão de Fogo
+  origem: Clã Uchiha
+  tipo: Ninjutsu
+  rank: B
+  custo: 15 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático (o fio guia)
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma chama em forma de dragão sobe por um fio de chakra até o alvo amarrado na outra ponta. Combinação favorita com armadilhas de fio.
+  efeito: Exige um fio de chakra preso ao alvo (Sōfūshasan no Tachi ou kunai com fio). 4d8 de dano de fogo que ignora cobertura.
+  notas: []
+  pj: dano 4d8 (9) + Médio (2) + ignora cobertura (2) + persegue pelo fio (3) − exige fio preso ao alvo (−1) = 15 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-7
+  cla: uchiha
+  elemento: katon
+- slug: uchiha-kaenjin
+  nome: Uchiha Kaenjin
+  traducao: Formação da Chama Uchiha
+  origem: Clã Uchiha
+  tipo: Ninjutsu
+  rank: B
+  custo: 17 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (4 PC/turno)
+    - k: Área
+      v: Esfera 15m
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade ao atravessar
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma barreira de chamas que isola o campo de batalha. Tradicionalmente erguida por quatro Uchiha nos cantos da área.
+  efeito: Ninguém entra ou sai sem atravessar as chamas (4d6 de dano ao cruzar). Com outros usuários (até 4), o custo é dividido entre eles.
+  notas: []
+  pj: Esfera 15m (8) + dano 4d6 (7) + sustentado (2) = 17 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-7
+  cla: uchiha
+  elemento: null
+- slug: genjutsu-sharingan
+  nome: "Genjutsu: Sharingan"
+  traducao: Genjutsu do Sharingan
+  origem: Clã Uchiha
+  tipo: Genjutsu
+  rank: B
+  custo: 14 PC
+  info:
+    - k: Alcance
+      v: Médio (30m, contato visual)
+    - k: Duração
+      v: Até 3 turnos
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Genjutsu vs Defesa Mental
+    - k: Resistência
+      v: ESP (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Secundária
+  descricao:
+    - "Basta um olhar: o Sharingan projeta uma ilusão direto na mente de quem cruza os olhos com o Uchiha."
+  efeito: Exige Sharingan de 3 tomoe. Sem selos. Em acerto, o alvo fica Paralisado ou Controlado (à sua escolha) por até 3 turnos.
+  notas: []
+  pj: controla (6) + Médio (2) + ação secundária (2) + sem selos (2) + 2 turnos extras (2) = 14 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-7
+  cla: uchiha
+  elemento: null
+- slug: mokuton-mokujoheki
+  nome: "Mokuton: Mokujōheki"
+  traducao: "Liberação de Madeira: Bloqueio da Parede de Madeira"
+  origem: Clã Senju
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Até o início do seu próximo turno
+    - k: Área
+      v: Esfera 3m em torno de si
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Reação
+  descricao:
+    - Exige Mokuton. Uma cúpula de madeira brota do chão em volta do usuário num instante.
+  efeito: Cria uma barreira de 40 PV que protege você e quem estiver a até 3 m.
+  notas: []
+  pj: barreira de 40 PV (8) + reação (3) = 11 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-8
+  cla: senju
+  elemento: mokuton
+- slug: mokuton-shichuro-no-jutsu
+  nome: "Mokuton: Shichūrō no Jutsu"
+  traducao: "Liberação de Madeira: Técnica da Prisão de Quatro Pilares"
+  origem: Clã Senju
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (4 PC/turno)
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) para escapar antes de fechar
+    - k: Ação
+      v: Primária
+  descricao:
+    - Exige Mokuton. Uma jaula de madeira brota da terra e prende quem estiver dentro.
+  efeito: Quem falhar fica Imobilizado dentro da jaula (40 PV) enquanto ela for mantida.
+  notas: []
+  pj: imobiliza (3) + Esfera 6m (4) + Médio (2) + sustentado (2) + jaula resistente (2) = 13 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-8
+  cla: senju
+  elemento: mokuton
+- slug: mokuton-hijutsu-jukai-kotan
+  nome: "Mokuton Hijutsu: Jukai Kōtan"
+  traducao: "Arte Secreta da Liberação de Madeira: Nascimento do Mundo de Árvores"
+  origem: Clã Senju
+  tipo: Ninjutsu
+  rank: A
+  custo: 30 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 15m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade e não fica preso
+    - k: Ação
+      v: Primária
+  descricao:
+    - Exige Mokuton. Uma floresta inteira brota em segundos, esmagando e prendendo tudo.
+  efeito: 6d8 de dano; quem falhar fica Imobilizado pelas raízes até vencer FOR (DT do Jutsu). A área vira terreno difícil por 1 cena.
+  notas: []
+  pj: dano 6d8 (15) + Esfera 15m (8) + imobiliza (3) + Longo (4) = 30 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-8
+  cla: senju
+  elemento: mokuton
+- slug: uzumaki-fuin-kaiso
+  nome: "Uzumaki Fūin: Kaisō"
+  traducao: Selo Espiral de Contenção
+  origem: Clã Uzumaki
+  tipo: Fuuinjutsu
+  rank: D
+  custo: 4 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo ou objeto tocado
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: ESP (DT do Jutsu) do dono do efeito
+    - k: Ação
+      v: Primária
+  descricao:
+    - O selo espiral básico que toda criança Uzumaki aprende (técnica criada para o livro).
+  efeito: Anula um efeito contínuo de chakra de Rank D ou inferior (técnica sustentada, selo ou condição de jutsu) ou guarda um objeto Médio num selo na pele.
+  notas: []
+  pj: remove condição (3) + toque (0) + armazenamento (1) = 4 → Rank D.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-9
+  cla: uzumaki
+  elemento: null
+- slug: tairyoku-kaifuku
+  nome: Tairyoku Kaifuku
+  traducao: Regeneração de Vigor
+  origem: Clã Uzumaki
+  tipo: Ninjutsu
+  rank: C
+  custo: 8 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: 1 aliado
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O chakra vital dos Uzumaki é tão denso que um aliado pode se curar mordendo o usuário ou tocando seu selo.
+  efeito: O aliado recupera 3d6 PV e 5 PC. O usuário perde 5 PC adicionais.
+  notas: []
+  pj: cura 3d6 (5) + transferência de chakra (4) − custo extra ao usuário (−1) = 8 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-9
+  cla: uzumaki
+  elemento: null
+- slug: shisho-fuin
+  nome: Shishō Fūin
+  traducao: Selo de Quatro Símbolos
+  origem: Clã Uzumaki
+  tipo: Fuuinjutsu
+  rank: B
+  custo: 15 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Permanente (selo)
+    - k: Área
+      v: 1 criatura, espírito ou jutsu residual
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: ESP (DT do Jutsu) se o alvo estiver consciente
+    - k: Ação
+      v: Completa (10 turnos)
+  descricao:
+    - "Ritual que sela uma entidade espiritual ou corporal num recipiente preparado: pergaminho, objeto ou pessoa."
+  efeito: Exige kit de selamento. Sela um espírito, um jutsu residual ou uma criatura incapacitada (0 PV, Paralisada ou Imobilizada). Depois, o usuário recebe 1 nível de Fadiga.
+  notas: []
+  pj: selamento permanente (18) − preparação longa (−2) − componente (−1) = 15 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-9
+  cla: uzumaki
+  elemento: null
+- slug: uzumaki-kekkai
+  nome: Uzumaki Kekkai
+  traducao: Barreira de Redemoinho
+  origem: Clã Uzumaki
+  tipo: Fuuinjutsu
+  rank: B
+  custo: 14 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Sustentado (4 PC/turno)
+    - k: Área
+      v: Esfera 6m em torno de si
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma barreira espiral de chakra que protege uma área.
+  efeito: A barreira tem 40 PV e impede a passagem de criaturas e projéteis até ser destruída.
+  notas: []
+  pj: barreira de 40 PV (8) + Esfera 6m (4) + sustentado (2) = 14 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-9
+  cla: uzumaki
+  elemento: null
+- slug: kongo-fusa
+  nome: Kongō Fūsa
+  traducao: Correntes de Selamento Adamantinas
+  origem: Clã Uzumaki
+  tipo: Fuuinjutsu
+  rank: A
+  custo: 19 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (5 PC/turno)
+    - k: Área
+      v: Até 4 alvos
+    - k: Ataque
+      v: 1d20 + Ninjutsu (um por alvo)
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - Correntes de chakra douradas surgem do corpo do Uzumaki e se enroscam nos alvos. Símbolo da família.
+  efeito: Os alvos atingidos ficam Imobilizados e não podem lançar jutsus enquanto presos. As correntes atravessam barreiras de chakra de Rank B ou inferior. Sem selos.
+  notas: []
+  pj: imobiliza (3) + 3 alvos adicionais (6) + Médio (2) + sustentado (2) + sela chakra (2) + atravessa barreiras (2) + sem selos (2) = 19 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-9
+  cla: uzumaki
+  elemento: null
+- slug: hakke-no-fuin-shiki
+  nome: Hakke no Fūin Shiki
+  traducao: Fórmula do Selo de Oito Trigramas
+  origem: Clã Uzumaki
+  tipo: Fuuinjutsu
+  rank: A
+  custo: 26 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Permanente (selo)
+    - k: Área
+      v: 1 receptáculo
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Completa (ritual)
+  descricao:
+    - "O selo supremo de contenção: capaz de prender uma Besta com Cauda e filtrar seu chakra para o receptáculo."
+  efeito: Exige um receptáculo (pessoa ou objeto), um aliado dedicado ou outro Uzumaki, e um momento narrativo extremo. Sela uma massa enorme de chakra (Bijuu ou técnica de Rank A+ em curso); o receptáculo pode acessar parte desse chakra com treino. Reservado para arcos climáticos.
+  notas: []
+  pj: selamento supremo (28) − preparação (−2) = 26 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-9
+  cla: uzumaki
+  elemento: null
+- slug: shiki-fujin
+  nome: Shiki Fūjin
+  traducao: Selo do Ceifeiro da Morte
+  origem: Clã Uzumaki
+  tipo: Fuuinjutsu
+  rank: S
+  custo: Metade dos PC máximos
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: ESP (DT do Jutsu)
+    - k: Ação
+      v: Completa
+  descricao:
+    - "Kinjutsu: invoca o Shinigami para selar a alma do alvo — e cobra a do usuário (canônica, sem marco: exige aprovação do Mestre)."
+  efeito: Se o alvo falhar na Resistência, morre e sua alma é selada; em sucesso, perde apenas a parte selada (um braço, uma técnica, um Bijuu). O usuário morre ao fim da técnica, em qualquer caso.
+  notas: []
+  pj: efeito de morte (avaliado em 35+) → Rank S; custo especial.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-9
+  cla: uzumaki
+  elemento: null
+- slug: teshi-sendan
+  nome: Teshi Sendan
+  traducao: Dez Dedos Perfuradores
+  origem: Clã Kaguya
+  tipo: Taijutsu
+  rank: D
+  custo: 4 PE
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O Kaguya dispara as falanges dos dedos como projéteis; elas se regeneram na hora.
+  efeito: Exige o Shikotsumyaku ativo. 2d6 de dano perfurante.
+  notas: []
+  pj: dano 2d6 (3) + Curto (1) = 4 → Rank D.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-10
+  cla: kaguya
+  elemento: null
+- slug: yanagi-no-mai
+  nome: Yanagi no Mai
+  traducao: Dança do Salgueiro
+  origem: Clã Kaguya
+  tipo: Taijutsu
+  rank: C
+  custo: 6 PE
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Espadas de osso brotam dos antebraços, cotovelos e joelhos; leves e flexíveis.
+  efeito: Exige o Shikotsumyaku ativo. Seus ataques desarmados causam +1d6 de dano e você pode atacar dois alvos adjacentes com a mesma rolagem (−2 contra o segundo).
+  notas: []
+  pj: dano extra (2) + varredura (2) + 1 cena (2) = 6 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-10
+  cla: kaguya
+  elemento: null
+- slug: karamatsu-no-mai
+  nome: Karamatsu no Mai
+  traducao: Dança do Lariço
+  origem: Clã Kaguya
+  tipo: Taijutsu
+  rank: C
+  custo: 8 PE
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Até o início do seu próximo turno
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Secundária
+  descricao:
+    - Espinhos de osso brotam do corpo inteiro em todas as direções. Defensiva por natureza.
+  efeito: Exige o Shikotsumyaku ativo. +2 na Defesa; quem te atacar corpo a corpo ou te agarrar sofre 2d6 de dano.
+  notas: []
+  pj: +2 na Defesa (4) + retaliação 2d6 (3) + ação secundária (2) − duração curta (−1) = 8 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-10
+  cla: kaguya
+  elemento: null
+- slug: tsubaki-no-mai
+  nome: Tsubaki no Mai
+  traducao: Dança das Camélias
+  origem: Clã Kaguya
+  tipo: Taijutsu
+  rank: B
+  custo: 14 PE
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O Kaguya arranca o úmero e o empunha como uma espada de osso duríssima, em movimentos fluidos e imprevisíveis.
+  efeito: Exige o Shikotsumyaku ativo. Por 3 turnos, ataques com a espada de osso ganham +2 no acerto e causam 3d8 + FOR; uma vez por turno, você pode fazer uma Esquiva Ativa sem gastar a Reação.
+  notas: []
+  pj: arma 3d8 (7) + +2 em ataques (4) + esquiva extra (3) = 14 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-10
+  cla: kaguya
+  elemento: null
+- slug: tessenka-no-mai-tsuru
+  nome: "Tessenka no Mai: Tsuru"
+  traducao: "Dança da Clematis: Vinha"
+  origem: Clã Kaguya
+  tipo: Taijutsu
+  rank: B
+  custo: 11 PE
+  info:
+    - k: Alcance
+      v: Curto (6m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - A coluna vertebral sai do corpo como um chicote ósseo articulado. Visualmente pavoroso.
+  efeito: Exige o Shikotsumyaku ativo. 4d6 + FOR de dano e o alvo fica Imobilizado pelo chicote até vencer a Resistência.
+  notas: []
+  pj: dano 4d6 (7) + Curto (1) + imobiliza (3) = 11 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-10
+  cla: kaguya
+  elemento: null
+- slug: tessenka-no-mai-hana
+  nome: "Tessenka no Mai: Hana"
+  traducao: "Dança da Clematis: Flor"
+  origem: Clã Kaguya
+  tipo: Taijutsu
+  rank: A
+  custo: 23 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma broca de osso ultradensa reveste o braço — o ataque mais perfurante dos Kaguya.
+  efeito: Exige o Shikotsumyaku ativo. 7d8 + FOR de dano que ignora RD e atravessa barreiras de Rank B ou inferior.
+  notas: []
+  pj: dano 7d8 (20) + ignora RD (2) + atravessa barreiras (2) − exige técnica anterior (−1) = 23 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-10
+  cla: kaguya
+  elemento: null
+- slug: sawarabi-no-mai
+  nome: Sawarabi no Mai
+  traducao: Dança do Broto de Samambaia
+  origem: Clã Kaguya
+  tipo: Taijutsu
+  rank: A
+  custo: 24 PE
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 15m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade e não fica preso
+    - k: Ação
+      v: Primária
+  descricao:
+    - O Kaguya toca o chão e ossos colossais emergem numa área enorme, formando uma floresta de pontas.
+  efeito: Exige o Shikotsumyaku ativo. 6d8 de dano; quem falhar fica Imobilizado entre os ossos. O terreno vira difícil por 1 cena. Depois, o Kaguya recebe 2 níveis de Fadiga.
+  notas: []
+  pj: dano 6d8 (15) + Esfera 15m (8) + imobiliza (3) − Fadiga (−2) = 24 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-10
+  cla: kaguya
+  elemento: null
+- slug: suika-no-jutsu
+  nome: Suika no Jutsu
+  traducao: Técnica de Hidratação
+  origem: Clã Hozuki
+  tipo: Ninjutsu
+  rank: C
+  custo: 5 PC (Reação) ou 10 PC (cena)
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Instantâneo (Reação) ou 1 cena
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Reação ou Primária
+  descricao:
+    - O usuário liquefaz parte do corpo ou o corpo inteiro, virando água viva por instantes.
+  efeito: "Reação: reduz à metade o dano de um ataque físico (a zero, se desarmado ou de arma sem chakra). Forma contínua: RD 5 contra dano físico e fuga automática de prisões físicas por 1 cena."
+  notas:
+    - Enquanto líquido, Raiton causa dano dobrado; Doton que absorve água ainda funciona.
+  pj: "Reação: reação (3) + redução à metade (2) = 5. Forma contínua: RD 5 (6) + escapa de prisões (2) + 1 cena (2) = 10 → Rank C."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-11
+  cla: hozuki
+  elemento: null
+- slug: mizudeppo-no-jutsu
+  nome: Mizudeppō no Jutsu
+  traducao: Técnica do Revólver de Água
+  origem: Clã Hozuki
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O Hozuki aponta o dedo como uma pistola e dispara gotas de água comprimida.
+  efeito: 2d8 de dano perfurante. Pode disparar uma segunda vez no mesmo turno pagando +3 PC.
+  notas: []
+  pj: dano 2d8 (5) + Médio (2) = 7 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-11
+  cla: hozuki
+  elemento: null
+- slug: suiton-mizu-bunshin
+  nome: "Suiton: Mizu Bunshin"
+  traducao: Clone de Água
+  origem: Clã Hozuki
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: 1 clone a até 5m
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um clone idêntico feito de água viva. O Hozuki pode usar a água do próprio corpo, sem fonte externa.
+  efeito: O clone tem metade dos seus PV e pode atacar. Quando destruído, vira uma poça. Sem fonte de água por perto, o usuário perde 1d6 PV ao criá-lo.
+  notas: []
+  pj: clone autônomo por 3 turnos (7) = 7 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-11
+  cla: hozuki
+  elemento: suiton
+- slug: suiton-gosuiwan-no-jutsu
+  nome: "Suiton: Gōsuiwan no Jutsu"
+  traducao: Técnica do Grande Braço de Água
+  origem: Clã Hozuki
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O braço incha com a água do corpo e desfere um soco esmagador.
+  efeito: 5d8 + FOR de dano e o alvo é empurrado 5 m.
+  notas: []
+  pj: dano 5d8 (12) + empurra (1) = 13 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-11
+  cla: hozuki
+  elemento: suiton
+- slug: suiton-tate-eboshi
+  nome: "Suiton: Tate Eboshi"
+  traducao: "Liberação de Água: Tate Eboshi"
+  origem: Clã Hozuki
+  tipo: Ninjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Linha de 30m
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Linha reta (30m)
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade e não é arrastado
+    - k: Ação
+      v: Primária
+  descricao:
+    - O corpo se expande numa onda gigante de água que avança e arrasta tudo.
+  efeito: 4d8 de dano; quem falhar cai e é arrastado 10 m.
+  notas: []
+  pj: dano 4d8 (9) + Linha 30m (2) + derruba (1) = 12 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-11
+  cla: hozuki
+  elemento: suiton
+- slug: suiton-bolha-afogadora
+  nome: "Suiton: Bolha Afogadora"
+  traducao: "Liberação de Água: Bolha Afogadora"
+  origem: Clã Hozuki
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Sustentado (4 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - A água do corpo do Hozuki envolve a cabeça do alvo e o afoga.
+  efeito: "O alvo fica Imobilizado e sem ar: sofre 3d6 de dano por turno, que ignora RD."
+  notas: []
+  pj: imobiliza (3) + dano por turno 3d6 (5) + ignora RD (2) + Curto (1) + sustentado (2) = 13 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-11
+  cla: hozuki
+  elemento: suiton
+- slug: joki-boi
+  nome: Jōki Bōi
+  traducao: Tirania Fumegante Perigosa
+  origem: Clã Hozuki
+  tipo: Ninjutsu
+  rank: A
+  custo: 22 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: 1 clone; explosão em esfera de 6m
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) contra a explosão — metade
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um clone de vapor fervente que persegue o inimigo e explode — técnica de Gengetsu Hozuki.
+  efeito: "O clone tem 40 PV e a sua Defesa; na sua vez, ele se move e ataca (3d8 de dano de vapor que ignora RD). Quando destruído, ou ao seu comando, explode: 6d8 de dano numa esfera de 6 m."
+  notas: []
+  pj: clone autônomo (8) + dano 3d8 (7) + explosão em área (7) = 22 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-11
+  cla: hozuki
+  elemento: null
+- slug: suna-no-tate
+  nome: Suna no Tate
+  traducao: Escudo de Areia
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Sustentado (3 PC/turno)
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária (o bloqueio é automático)
+  descricao:
+    - A areia se ergue sozinha e bloqueia ataques, mesmo que o usuário não reaja. A defesa absoluta de Gaara.
+  efeito: Enquanto mantido, uma vez por turno, a areia bloqueia sozinha um ataque físico ou jutsu de Rank C ou inferior, sem gastar a sua Reação (contra ataques maiores, absorve até 20 de dano). Não funciona contra ataques que você não percebe se a areia estiver a mais de 5 m.
+  notas: []
+  pj: barreira de 20 PV (4) + bloqueio como reação (3) + sustentado (2) = 9 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: suna-shuriken
+  nome: Suna Shuriken
+  traducao: Shuriken de Areia
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: D
+  custo: 5 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único (+2 PC por alvo adicional)
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - A areia toma forma de shuriken e é disparada contra o alvo.
+  efeito: 2d6 de dano.
+  notas: []
+  pj: dano 2d6 (3) + Médio (2) = 5 → Rank D.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: sabaku-kyu
+  nome: Sabaku Kyū
+  traducao: Caixão de Areia
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (3 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - A areia envolve completamente o alvo, formando uma esfera apertada.
+  efeito: O alvo fica Imobilizado e não pode fazer selos de mão enquanto preso.
+  notas: []
+  pj: imobiliza (3) + Médio (2) + sustentado (2) + impede selos (2) = 9 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: sabaku-soso
+  nome: Sabaku Sōsō
+  traducao: Enterro de Areia
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo preso no Sabaku Kyū
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: VIG (DT do Jutsu) — metade
+    - k: Ação
+      v: Primária
+  descricao:
+    - Com o caixão formado, o usuário fecha o punho e a areia comprime o alvo violentamente.
+  efeito: Exige um alvo preso no Sabaku Kyū. 5d8 de dano que ignora RD. Deixa marca psicológica em quem assiste.
+  notas: []
+  pj: dano 5d8 (12) + ignora RD (2) − exige técnica ativa (−1) = 13 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: sabaku-ro
+  nome: Sabaku Rō
+  traducao: Prisão de Areia
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (3 PC/turno)
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) para escapar antes de fechar
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma prisão de areia se fecha sobre vários inimigos de uma vez.
+  efeito: Quem falhar fica Imobilizado enquanto a prisão for mantida (FOR contra a DT do Jutsu ao fim de cada turno para se soltar).
+  notas: []
+  pj: imobiliza (3) + Esfera 6m (4) + Médio (2) + sustentado (2) = 11 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: ryusa-bakuryu
+  nome: Ryūsa Bakuryū
+  traducao: Cachoeira de Areia Movediça
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: A
+  custo: 26 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 15m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade e não fica soterrado
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um tsunami de areia engole a região, soterrando tudo.
+  efeito: Exige grande quantidade de areia (deserto, ou cabaça + solo). 6d8 de dano; quem falhar fica Caído e soterrado (Imobilizado até vencer FOR contra a DT do Jutsu). O terreno fica enterrado por 1 cena.
+  notas: []
+  pj: dano 6d8 (15) + Esfera 15m (8) + imobiliza (3) + Médio (2) − condição (−2) = 26 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: sabaku-taiso
+  nome: Sabaku Taisō
+  traducao: Enterro de Areia Gigante
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: A
+  custo: 27 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 15m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: VIG (DT do Jutsu) — metade
+    - k: Ação
+      v: Primária
+  descricao:
+    - A areia de toda a área comprime de uma só vez, como um gigantesco Sabaku Sōsō.
+  efeito: Exige uma área de areia preparada (Ryūsa Bakuryū ou deserto). 8d8 de dano que ignora RD em todos na área.
+  notas: []
+  pj: dano 8d8 (20) + Esfera 15m (8) + ignora RD (2) − exige área preparada (−2) − exige técnica anterior (−1) = 27 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: sensatsu-suisho
+  nome: Sensatsu Suishō
+  traducao: Mil Agulhas Voadoras de Água da Morte
+  origem: Clã Yuki
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Cone médio (10m)
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade e não sangra
+    - k: Ação
+      v: Primária
+  descricao:
+    - Mil agulhas de gelo surgem no ar e caem sobre os alvos. Parece uma nevasca cortante.
+  efeito: Exige o Hyōton ativo. 2d6+2 de dano; quem falhar fica Sangrando.
+  notas: []
+  pj: dano 2d6+2 (5) + cone médio (2) + sangramento (2) = 9 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-13
+  cla: yuki
+  elemento: null
+- slug: hyoton-suishoheki
+  nome: "Hyōton: Suishōheki"
+  traducao: "Liberação de Gelo: Parede de Cristal"
+  origem: Clã Yuki
+  tipo: Ninjutsu
+  rank: C
+  custo: 6 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Parede de 3m × 3m
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma parede de cristal de gelo se ergue instantaneamente.
+  efeito: Exige o Hyōton ativo. A parede tem 30 PV, é transparente (não bloqueia a visão) e sofre dano dobrado de Katon.
+  notas: []
+  pj: barreira de 30 PV (6) = 6 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-13
+  cla: yuki
+  elemento: hyoton
+- slug: hyoton-tsubame-fubuki
+  nome: "Hyōton: Tsubame Fubuki"
+  traducao: "Liberação de Gelo: Nevasca de Andorinhas"
+  origem: Clã Yuki
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade
+    - k: Ação
+      v: Primária
+  descricao:
+    - Andorinhas de gelo saem do corpo do usuário e voam em cardume sobre os alvos (técnica fora da lista canônica do clã).
+  efeito: Exige o Hyōton ativo. 3d6 de dano. Alvos Cegos ou Desprevenidos não podem reduzir o dano à metade.
+  notas: []
+  pj: dano 3d6 (5) + Esfera 3m (2) + Médio (2) = 9 → Rank C.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-13
+  cla: yuki
+  elemento: hyoton
+- slug: hyoton-makyo-hyosho
+  nome: "Hyōton: Makyō Hyōshō"
+  traducao: "Liberação de Gelo: Espelhos Demoníacos de Cristais de Gelo"
+  origem: Clã Yuki
+  tipo: Ninjutsu
+  rank: B
+  custo: 18 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Sustentado (5 PC/turno)
+    - k: Área
+      v: 1 ou 2 alvos (cúpula de 6m)
+    - k: Ataque
+      v: 1d20 + Ninjutsu (até 3 por turno)
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O Yuki cria 21 espelhos de gelo numa cúpula em volta dos alvos e se move entre eles à velocidade da luz. A técnica de assinatura de Haku.
+  efeito: Exige o Hyōton ativo. Enquanto a cúpula existir, na sua vez você faz até 3 ataques de agulhas (1d6+2 cada). Os alvos não podem usar Esquiva Ativa contra eles, e sair da cúpula exige destruir um espelho (20 PV, Katon dobrado).
+  notas: []
+  pj: três ataques (9) + Esfera 6m (4) + sustentado (2) + prende na cúpula (3) = 18 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-13
+  cla: yuki
+  elemento: hyoton
+- slug: hyoton-hyogan-domu
+  nome: "Hyōton: Hyōgan Dōmu"
+  traducao: "Liberação de Gelo: Domo de Iceberg"
+  origem: Clã Yuki
+  tipo: Ninjutsu
+  rank: B
+  custo: 14 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Sustentado (4 PC/turno)
+    - k: Área
+      v: Esfera 3m em torno de si
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um domo de gelo espesso protege o usuário e quem está ao seu lado.
+  efeito: Exige o Hyōton ativo. Barreira de 50 PV (dano dobrado de Katon). Dentro dela, você e os aliados têm cobertura total.
+  notas: []
+  pj: barreira de 50 PV (10) + Esfera 3m (2) + sustentado (2) = 14 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-13
+  cla: yuki
+  elemento: hyoton
+- slug: hyoton-mangehyo
+  nome: "Hyōton: Mangehyō"
+  traducao: "Liberação de Gelo: Dez Mil Pétalas de Gelo"
+  origem: Clã Yuki
+  tipo: Ninjutsu
+  rank: A
+  custo: 23 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 15m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade e não congela
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma tempestade de pétalas de gelo cobre o campo de batalha.
+  efeito: Exige o Hyōton ativo. 5d8 de dano; quem falhar fica Imobilizado (congelado) até vencer FOR contra a DT do Jutsu.
+  notas: []
+  pj: dano 5d8 (12) + Esfera 15m (8) + imobiliza (3) = 23 → Rank A.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-13
+  cla: yuki
+  elemento: hyoton
+- slug: makyo-hakuhyo
+  nome: Makyō Hakuhyō
+  traducao: Espelho Demoníaco de Gelo Fino
+  origem: Clã Yuki
+  tipo: Ninjutsu
+  rank: B
+  custo: 15 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Sustentado (4 PC/turno)
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Secundária
+  descricao:
+    - Um único espelho de gelo fino reflete a imagem do usuário, permitindo saltar entre superfícies de gelo e água.
+  efeito: Exige o Hyōton ativo. Como ação secundária, teleporte-se para qualquer superfície de gelo ou água a até 60 m e ataque a partir dela (agulhas 3d6, ignoram cobertura).
+  notas: []
+  pj: teleporte a longa distância (4) + ação secundária (2) + ataque 3d6 (5) + ignora cobertura (2) + sustentado (2) = 15 → Rank B.
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-13
+  cla: yuki
+  elemento: null
+- slug: henge-no-jutsu
+  nome: Henge no Jutsu
+  traducao: Técnica da Transformação
+  origem: Academia
+  tipo: Ninjutsu
+  rank: E
+  custo: 2 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 1 hora (ou até sofrer 5+ de dano)
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: Percepção do observador (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Técnica básica de infiltração e fuga ensinada na Academia.
+  efeito: "Assume a aparência e a voz de outra pessoa, animal ou objeto pequeno. Sentidos especiais (Byakugan, Sharingan, sensores) têm vantagem para perceber o disfarce. Selos: Carneiro → Javali → Cão."
+  notas: []
+  pj: null
+  capitulo: 10
+  ancora: tecnicas-da-academia-todos-sabem
+  cla: null
+  elemento: null
+- slug: bunshin-no-jutsu
+  nome: Bunshin no Jutsu
+  traducao: Técnica do Clone
+  origem: Academia
+  tipo: Ninjutsu
+  rank: E
+  custo: 2 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Até serem atingidos
+    - k: Área
+      v: 1d4 clones a até 5m
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: Percepção do atacante (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Clones ilusórios sem corpo, usados para distrair e confundir.
+  efeito: "Cria 1d4 clones ilusórios. Quem atacar o usuário precisa vencer a Resistência ou acerta um clone, que some em fumaça. Não substitui o Kage Bunshin. Selo: Tigre."
+  notas: []
+  pj: null
+  capitulo: 10
+  ancora: tecnicas-da-academia-todos-sabem
+  cla: null
+  elemento: null
+- slug: kawarimi-no-jutsu
+  nome: Kawarimi no Jutsu
+  traducao: Técnica da Substituição
+  origem: Academia
+  tipo: Ninjutsu
+  rank: E
+  custo: 3/5/8 PC
+  info:
+    - k: Alcance
+      v: Até 5m
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: 1d20 + Percepção vs rolagem de ataque
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Reação
+  descricao:
+    - Marca registrada de qualquer Genin competente — mas só funciona com o ninja atento.
+  efeito: "Troca de lugar com um objeto próximo quando um ataque te atinge. O custo cresce na mesma cena (3, 5 e 8 PC; máximo de 3 usos). Regra completa e restrições: cap. 4 (Selo de Substituição)."
+  notas: []
+  pj: null
+  capitulo: 10
+  ancora: tecnicas-da-academia-todos-sabem
+  cla: null
+  elemento: null
+- slug: shunshin-no-jutsu
+  nome: Shunshin no Jutsu
+  traducao: Técnica do Deslocamento Instantâneo
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: D
+  custo: 4 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Pessoal
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Secundária
+  descricao:
+    - Movimento em altíssima velocidade, muitas vezes disfarçado por fumaça ou folhas.
+  efeito: Desloca-se até 30m para um ponto visível, sem provocar reações. Não atravessa paredes.
+  notas: []
+  pj: Médio (2) + ação secundária (2) = 4 → Rank D.
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: kage-bunshin-no-jutsu
+  nome: Kage Bunshin no Jutsu
+  traducao: Técnica dos Clones das Sombras
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Até 3 clones a até 5m
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Clones sólidos que dividem o chakra do usuário. Técnica proibida pelo risco de esgotamento.
+  efeito: Cria até 3 clones sólidos (+4 PC por clone adicional, com aprovação do Mestre). Cada clone tem 1 PV, a sua Defesa e os seus valores, e some ao sofrer qualquer dano.
+  notas:
+    - Na sua vez, cada clone pode fazer uma ação secundária e um ataque básico (desarmado ou com arma). Clones só lançam jutsus se você pagar o custo.
+    - Ao se desfazer, o clone transmite ao usuário o que viu e aprendeu.
+  pj: clones autônomos (8) + duração de 1 cena (2) + até 5m (2) = 12 → Rank B.
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: rasengan
+  nome: Rasengan
+  traducao: Esfera Espiral
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: A
+  custo: 20 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Chakra em rotação e compressão máximas, sem natureza elemental, formando uma esfera na palma.
+  efeito: 6d8 de dano que ignora RD; o alvo é arremessado 5m e cai. Sem selos.
+  notas: []
+  pj: dano 6d8 (15) + empurra/derruba (1) + ignora RD (2) + sem selos (2) = 20 → Rank A.
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: hi-no-tama
+  nome: Hi no Tama
+  traducao: Bola de Fogo Pequena
+  origem: Katon
+  tipo: Ninjutsu
+  rank: D
+  custo: 4 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O usuário concentra chakra na boca e expele uma bola de fogo do tamanho de uma cabeça.
+  efeito: 1d6+1 de dano de fogo.
+  notas: []
+  pj: dano 1d6+1 (2) + Médio (2) = 4 → Rank D.
+  capitulo: 10
+  ancora: katon-liberacao-de-fogo
+  cla: null
+  elemento: katon
+- slug: goukakyu-no-jutsu
+  nome: Goukakyu no Jutsu
+  traducao: Grande Bola de Fogo
+  origem: Katon
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade do dano
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja inspira profundamente e exala uma bola de fogo do tamanho de uma carroça. Marca de iniciação Uchiha.
+  efeito: "2d6+2 de dano de fogo em área. Pode incendiar madeira, papel e tecido. Selos: Tigre → Cavalo → Macaco → Tigre."
+  notas: []
+  pj: dano 2d6+2 (5) + Médio (2) + Esfera 3m (2) = 9 → Rank C.
+  capitulo: 10
+  ancora: katon-liberacao-de-fogo
+  cla: null
+  elemento: katon
+- slug: karyuu-endan
+  nome: Karyuu Endan
+  traducao: Míssil de Dragão Flamejante
+  origem: Katon
+  tipo: Ninjutsu
+  rank: B
+  custo: 15 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Disparo concentrado em forma de dragão de fogo, navegando pelo ar até o alvo.
+  efeito: 3d8+3 de dano de fogo. Ignora cobertura leve (madeira, panos) e deixa um rastro de chamas por 2 turnos.
+  notas: []
+  pj: dano 3d8+3 (9) + Longo (4) + ignora cobertura (2) = 15 → Rank B.
+  capitulo: 10
+  ancora: katon-liberacao-de-fogo
+  cla: null
+  elemento: katon
+- slug: mizu-teppou
+  nome: Mizu Teppou
+  traducao: Bala de Água
+  origem: Suiton
+  tipo: Ninjutsu
+  rank: D
+  custo: 3 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja cospe uma bala compacta de água em alta velocidade. Funciona melhor perto de fontes de água, mas não as exige.
+  efeito: "1d6+1 de dano. Rajada: +2 PC por alvo adicional (máximo 2), com uma rolagem por alvo."
+  notas: []
+  pj: dano 1d6+1 (2) + Curto (1) = 3 → Rank D.
+  capitulo: 10
+  ancora: suiton-liberacao-de-agua
+  cla: null
+  elemento: suiton
+- slug: suijinheki
+  nome: Suijinheki
+  traducao: Muralha de Água
+  origem: Suiton
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Até o início do seu próximo turno
+    - k: Área
+      v: Esfera 3m em torno de si
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Reação
+  descricao:
+    - O ninja conjura uma onda circular de água em torno de si, formando uma muralha.
+  efeito: Absorve até 20 de dano de um ataque ou jutsu (o excedente passa). Contra Katon, absorve o dobro.
+  notas: []
+  pj: barreira de 20 PV (4) + Reação (3) = 7 → Rank C.
+  capitulo: 10
+  ancora: suiton-liberacao-de-agua
+  cla: null
+  elemento: suiton
+- slug: suiryuudan-no-jutsu
+  nome: Suiryuudan no Jutsu
+  traducao: Dragão de Água
+  origem: Suiton
+  tipo: Ninjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu (+2 com fonte de água próxima)
+    - k: Resistência
+      v: FOR (DT do Jutsu) ou cai
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um dragão imenso de água ataca o alvo com força esmagadora.
+  efeito: 4d8 de dano. Se falhar na Resistência, o alvo é empurrado 5m e cai.
+  notas: []
+  pj: dano 4d8 (9) + Médio (2) + empurra/derruba (1) = 12 → Rank B.
+  capitulo: 10
+  ancora: suiton-liberacao-de-agua
+  cla: null
+  elemento: suiton
+- slug: doryuuheki
+  nome: Doryuuheki
+  traducao: Muralha de Terra
+  origem: Doton
+  tipo: Ninjutsu
+  rank: D
+  custo: 4 PC
+  info:
+    - k: Alcance
+      v: Toque (solo)
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Parede de 3m × 3m
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja toca o solo e ergue uma parede de terra compactada.
+  efeito: Cria uma parede com 20 PV que bloqueia a linha de visão. +10 PV por +2 PC gastos no lançamento.
+  notas: []
+  pj: barreira de 20 PV (4) = 4 → Rank D.
+  capitulo: 10
+  ancora: doton-liberacao-de-terra
+  cla: null
+  elemento: doton
+- slug: doryuudan
+  nome: Doryuudan
+  traducao: Dragão de Terra
+  origem: Doton
+  tipo: Ninjutsu
+  rank: C
+  custo: 8 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: VIG (DT do Jutsu) contra o atordoamento
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um dragão de pedra surge do solo e cospe projéteis de rocha. Combina bem com jutsus de fogo.
+  efeito: 2d6+2 de dano; se falhar na Resistência, o alvo fica Atordoado.
+  notas: []
+  pj: dano 2d6+2 (5) + Médio (2) + atordoa (1) = 8 → Rank C.
+  capitulo: 10
+  ancora: doton-liberacao-de-terra
+  cla: null
+  elemento: doton
+- slug: iwa-yado-kuzushi
+  nome: Iwa Yado Kuzushi
+  traducao: Demolição da Pousada de Pedra
+  origem: Doton
+  tipo: Ninjutsu
+  rank: B
+  custo: 15 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade do dano
+    - k: Ação
+      v: Primária
+  descricao:
+    - A terra ao redor de uma estrutura ou área se contrai violentamente. Excelente para sabotagem.
+  efeito: 3d8+3 de dano em todos na área; pode derrubar prédios pequenos ou pontes.
+  notas: []
+  pj: dano 3d8+3 (9) + Esfera 6m (4) + Médio (2) = 15 → Rank B.
+  capitulo: 10
+  ancora: doton-liberacao-de-terra
+  cla: null
+  elemento: doton
+- slug: jibashi
+  nome: Jibashi
+  traducao: Choque Elétrico
+  origem: Raiton
+  tipo: Ninjutsu
+  rank: D
+  custo: 4 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: VIG (DT do Jutsu) contra a paralisia
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja libera uma carga elétrica pelas mãos contra um alvo próximo.
+  efeito: 1d6 de dano elétrico; se falhar na Resistência, o alvo fica Paralisado por 1 turno. Perigoso para aliados na água.
+  notas: []
+  pj: dano 1d6 (1) + Curto (1) + paralisa (2) = 4 → Rank D.
+  capitulo: 10
+  ancora: raiton-liberacao-de-raio
+  cla: null
+  elemento: raiton
+- slug: chidori
+  nome: Chidori
+  traducao: Mil Pássaros
+  origem: Raiton
+  tipo: Ninjutsu
+  rank: A
+  custo: 19 PC
+  info:
+    - k: Alcance
+      v: Curto (investida de até 10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: VIG (DT do Jutsu) contra a paralisia
+    - k: Ação
+      v: Primária
+  descricao:
+    - Chakra de raio concentrado na mão, com o som de mil pássaros. Exige velocidade para a investida.
+  efeito: 6d8 de dano elétrico perfurante que ignora RD; se falhar na Resistência, o alvo fica Paralisado por 1 turno. Após o uso, 1 nível de Fadiga.
+  notas: []
+  pj: dano 6d8 (15) + Curto (1) + ignora RD (2) + paralisa (2) − Fadiga (−1) = 19 → Rank A.
+  capitulo: 10
+  ancora: raiton-liberacao-de-raio
+  cla: null
+  elemento: raiton
+- slug: raikiri
+  nome: Raikiri
+  traducao: Lâmina de Raio
+  origem: Raiton
+  tipo: Ninjutsu
+  rank: A
+  custo: 22 PC
+  info:
+    - k: Alcance
+      v: Curto (investida de até 10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Versão refinada do Chidori desenvolvida por Kakashi: o raio vira uma lâmina visível."
+  efeito: 7d8 de dano elétrico perfurante que ignora RD. O som de mil pássaros alerta sensores próximos. Após o uso, 1 nível de Fadiga.
+  notas: []
+  pj: dano 7d8 (20) + Curto (1) + ignora RD (2) − Fadiga (−1) = 22 → Rank A.
+  capitulo: 10
+  ancora: raiton-liberacao-de-raio
+  cla: null
+  elemento: raiton
+- slug: kirin
+  nome: Kirin
+  traducao: Cervo do Trovão
+  origem: Raiton
+  tipo: Ninjutsu
+  rank: S
+  custo: 34 PC
+  info:
+    - k: Alcance
+      v: Visão (Muito Distante)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja redireciona um relâmpago natural em forma de cervo. Uma das técnicas mais letais do livro.
+  efeito: Exige tempestade ativa no céu, preparada nos turnos anteriores, e 9 selos complexos. 8d10 de dano elétrico que ignora RD. Só Kawarimi, Susanoo ou barreira equivalente evitam.
+  notas:
+    - Um alvo levado a 0 PV pode ser salvo por médico com Ninjutsu Médico nível 3, se estabilizado em até 1 turno.
+  pj: dano 8d10 (25) + Muito Distante (8) + ignora RD (2) + persegue (3) − condição rara (−2) − preparação de 3+ turnos (−2) = 34 → Rank S.
+  capitulo: 10
+  ancora: raiton-liberacao-de-raio
+  cla: null
+  elemento: raiton
+- slug: daitoppa
+  nome: Daitoppa
+  traducao: Grande Avanço
+  origem: Fuuton
+  tipo: Ninjutsu
+  rank: C
+  custo: 6 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Cone médio (10m)
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade e não é empurrado
+    - k: Ação
+      v: Primária
+  descricao:
+    - Rajada poderosa de vento em cone. Excelente para criar espaço ou desequilibrar grupos.
+  efeito: 2d6 de dano de vento; quem falhar é empurrado 5m.
+  notas: []
+  pj: dano 2d6 (3) + cone médio (2) + empurra (1) = 6 → Rank C.
+  capitulo: 10
+  ancora: fuuton-liberacao-de-vento
+  cla: null
+  elemento: fuuton
+- slug: kazekiri-no-jutsu
+  nome: Kazekiri no Jutsu
+  traducao: Lâmina de Vento
+  origem: Fuuton
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Chakra de vento moldado em lâminas finas e praticamente invisíveis.
+  efeito: 2d6+2 de dano cortante. Alvos sem sentidos especiais não podem usar Esquiva Ativa contra ela.
+  notas: []
+  pj: dano 2d6+2 (5) + Médio (2) + quase invisível (2) = 9 → Rank C.
+  capitulo: 10
+  ancora: fuuton-liberacao-de-vento
+  cla: null
+  elemento: fuuton
+- slug: rasenshuriken
+  nome: Rasenshuriken
+  traducao: Shuriken Espiral
+  origem: Fuuton
+  tipo: Ninjutsu
+  rank: S
+  custo: 31 PC
+  info:
+    - k: Alcance
+      v: Curto (arremesso até 15m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade do dano
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Rasengan com natureza de vento: uma esfera espiralada com lâminas de vento como pétalas."
+  efeito: Exige Rasengan e afinidade Fuuton. 8d10 de dano cortante que ignora RD; quem falhar perde 1d6 PC por turno durante 3 turnos.
+  notas:
+    - Sem Modo Sennin, o usuário sofre 1d8 de dano nas mãos.
+  pj: dano 8d10 (25) + Curto (1) + Esfera 3m (2) + ignora RD (2) + dreno contínuo (2) − dano ao usuário (−1) = 31 → Rank S.
+  capitulo: 10
+  ancora: fuuton-liberacao-de-vento
+  cla: null
+  elemento: fuuton
+- slug: shosen-jutsu
+  nome: Shōsen Jutsu
+  traducao: Técnica da Palma Mística
+  origem: Ninjutsu Médico
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: 1 aliado
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Mãos do médico envoltas em chakra verde-claro. Cura ferimentos físicos e estabiliza venenos.
+  efeito: Cura 3d6 PV de um aliado tocado e remove 1 condição negativa (paralisia, veneno ou sangramento).
+  notas: []
+  pj: cura 3d6 (5) + remove condição (3) − mãos descobertas (−1) = 7 → Rank C.
+  capitulo: 10
+  ancora: ninjutsu-medico
+  cla: null
+  elemento: null
+- slug: chakra-no-mesu
+  nome: Chakra no Mesu
+  traducao: Bisturi de Chakra
+  origem: Ninjutsu Médico
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Sustentado (2 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Lâminas de chakra nas mãos cortam músculos e tendões sem ferir a pele.
+  efeito: 2d6 de dano interno que ignora RD; cada acerto reduz o deslocamento do alvo à metade até o fim do seu próximo turno. Também serve como bisturi em cirurgias.
+  notas: []
+  pj: dano 2d6 (3) + ignora RD (2) + sustentado (2) = 7 → Rank C.
+  capitulo: 10
+  ancora: ninjutsu-medico
+  cla: null
+  elemento: null
+- slug: kai
+  nome: Kai
+  traducao: Liberação
+  origem: Genjutsu
+  tipo: Genjutsu
+  rank: E
+  custo: 2 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Você ou um aliado adjacente
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Interromper o próprio fluxo de chakra para romper uma ilusão.
+  efeito: O alvo repete a Resistência contra o Genjutsu que o afeta, com vantagem.
+  notas: []
+  pj: null
+  capitulo: 10
+  ancora: genjutsu-comuns
+  cla: null
+  elemento: null
+- slug: magen-narakumi-no-jutsu
+  nome: "Magen: Narakumi no Jutsu"
+  traducao: Visão do Inferno
+  origem: Genjutsu
+  tipo: Genjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: 2 turnos
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Genjutsu vs Defesa Mental
+    - k: Resistência
+      v: ESP (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - O alvo vê seu pior medo materializado de forma realista.
+  efeito: O alvo fica Paralisado por 1 turno e Amedrontado por 2. Vítimas com traumas profundos podem ficar mais tempo (o Mestre decide).
+  notas: []
+  pj: paralisa (2) + amedronta 2 turnos (3) + Médio (2) = 7 → Rank C.
+  capitulo: 10
+  ancora: genjutsu-comuns
+  cla: null
+  elemento: null
+- slug: magen-jubaku-satsu
+  nome: "Magen: Jubaku Satsu"
+  traducao: Prisão das Árvores
+  origem: Genjutsu
+  tipo: Genjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (2 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Genjutsu vs Defesa Mental
+    - k: Resistência
+      v: ESP (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - O alvo se vê amarrado por raízes e galhos contra um tronco.
+  efeito: O alvo fica Imobilizado enquanto o usuário mantiver o jutsu e o alvo não vencer a Resistência.
+  notas: []
+  pj: imobiliza (3) + Médio (2) + sustentado (2) = 7 → Rank C.
+  capitulo: 10
+  ancora: genjutsu-comuns
+  cla: null
+  elemento: null
+- slug: kirigakure-no-jutsu-ilusorio
+  nome: Kirigakure no Jutsu Ilusório
+  traducao: Névoa Oculta Mental
+  origem: Genjutsu
+  tipo: Genjutsu
+  rank: D
+  custo: 5 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: ESP (DT do Jutsu) anula
+    - k: Ação
+      v: Primária
+  descricao:
+    - Os alvos sentem uma névoa densa, embora o ar esteja limpo. Boa abertura para emboscadas.
+  efeito: Quem falhar sofre −3 em Percepção e −2 em ataques por 3 turnos.
+  notas: []
+  pj: Esfera 6m (4) + penalidade leve (1) = 5 → Rank D.
+  capitulo: 10
+  ancora: genjutsu-comuns
+  cla: null
+  elemento: null
+- slug: magen-kyouten-chiten
+  nome: "Magen: Kyouten Chiten"
+  traducao: "Ilusão: Inversão Céu-Terra"
+  origem: Genjutsu
+  tipo: Genjutsu
+  rank: C
+  custo: 8 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Genjutsu vs Defesa Mental
+    - k: Resistência
+      v: ESP (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - "A percepção espacial do alvo se inverte: chão e teto trocam de lugar."
+  efeito: O alvo sofre −3 em ataques e em Acrobacia (inclusive na Defesa) por 3 turnos.
+  notas: []
+  pj: penalidade de −3 (4) + 2 turnos extras (2) + Médio (2) = 8 → Rank C.
+  capitulo: 10
+  ancora: genjutsu-comuns
+  cla: null
+  elemento: null
+- slug: kokuangyou-no-jutsu
+  nome: Kokuangyou no Jutsu
+  traducao: Caminho da Escuridão
+  origem: Genjutsu
+  tipo: Genjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (3 PC/turno)
+    - k: Área
+      v: Até 3 alvos
+    - k: Ataque
+      v: 1d20 + Genjutsu vs Defesa Mental (um por alvo)
+    - k: Resistência
+      v: ESP (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - Os alvos são envolvidos por uma escuridão total ilusória.
+  efeito: Os alvos ficam Cegos e Amedrontados enquanto o jutsu for mantido e eles não vencerem a Resistência.
+  notas: []
+  pj: cega (2) + amedronta (2) + sustentado (2) + Médio (2) + 2 alvos adicionais (4) = 12 → Rank B.
+  capitulo: 10
+  ancora: genjutsu-comuns
+  cla: null
+  elemento: null
+- slug: sairento-kiringu
+  nome: Sairento Kiringu
+  traducao: Som Letal Ilusório
+  origem: Genjutsu
+  tipo: Genjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Genjutsu vs Defesa Mental
+    - k: Resistência
+      v: ESP (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - "O alvo ouve um som agonizante só na mente: grito de família, choro de criança, voz de um morto."
+  efeito: 1d6 de dano mental que ignora RD; o alvo fica Amedrontado e com −3 em todos os testes por 3 turnos.
+  notas: []
+  pj: dano 1d6 (1) + ignora RD (2) + amedronta 3 turnos (4) + penalidade (2) + Médio (2) = 11 → Rank B.
+  capitulo: 10
+  ancora: genjutsu-comuns
+  cla: null
+  elemento: null
+- slug: konoha-reppuu
+  nome: Konoha Reppuu
+  traducao: Vendaval da Folha
+  origem: Taijutsu
+  tipo: Taijutsu
+  rank: E
+  custo: 2 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Varredura baixa com a perna estendida e o tornozelo reforçado por chakra.
+  efeito: 1d6 + FOR de dano e o alvo cai (Caído).
+  notas: []
+  pj: dano 1d6 (1) + derruba (1) = 2 → Rank E.
+  capitulo: 10
+  ancora: tecnicas-de-taijutsu-combate-corporal
+  cla: null
+  elemento: null
+- slug: konoha-senpuu
+  nome: Konoha Senpuu
+  traducao: Furacão da Folha
+  origem: Taijutsu
+  tipo: Taijutsu
+  rank: D
+  custo: 3 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) ou cai
+    - k: Ação
+      v: Primária
+  descricao:
+    - Dois chutes giratórios encadeados, um alto e um baixo. Estilo clássico de Konoha.
+  efeito: 1d8 + FOR de dano; se falhar na Resistência, o alvo cai.
+  notas: []
+  pj: dano 1d8 (2) + derruba (1) = 3 → Rank D.
+  capitulo: 10
+  ancora: tecnicas-de-taijutsu-combate-corporal
+  cla: null
+  elemento: null
+- slug: dynamic-entry
+  nome: Dynamic Entry
+  traducao: Entrada Dinâmica
+  origem: Taijutsu
+  tipo: Taijutsu
+  rank: D
+  custo: 5 PE
+  info:
+    - k: Alcance
+      v: Curto (salto de até 10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Voadora dramática em alta velocidade. Rock Lee adora entrar em cena assim.
+  efeito: 2d6 + FOR de dano e o alvo recua 5m. Se estiver Desprevenido, perde também a próxima Reação.
+  notas: []
+  pj: dano 2d6 (3) + Curto (1) + empurra (1) = 5 → Rank D.
+  capitulo: 10
+  ancora: tecnicas-de-taijutsu-combate-corporal
+  cla: null
+  elemento: null
+- slug: konoha-daisenpuu
+  nome: Konoha Daisenpuu
+  traducao: Grande Furacão da Folha
+  origem: Taijutsu
+  tipo: Taijutsu
+  rank: C
+  custo: 7 PE
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade do dano
+    - k: Ação
+      v: Primária
+  descricao:
+    - Cinco chutes em sequência rápida, cobrindo 360° ao redor do ninja. Bom para escapar de cerco.
+  efeito: 2d8 + FOR de dano em todos ao redor.
+  notas: []
+  pj: dano 2d8 (5) + Esfera 3m (2) = 7 → Rank C.
+  capitulo: 10
+  ancora: tecnicas-de-taijutsu-combate-corporal
+  cla: null
+  elemento: null
+- slug: omote-renge
+  nome: Omote Renge
+  traducao: Lótus Frontal
+  origem: Taijutsu
+  tipo: Taijutsu
+  rank: C
+  custo: 7 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: VIG (DT do Jutsu) contra o atordoamento
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja envolve o alvo em ataduras e mergulha com ele contra o chão em alta velocidade.
+  efeito: Exige o 1º Portão aberto (cap. 16). 4d6 + FOR de dano; o alvo cai e, se falhar na Resistência, fica Atordoado. O usuário sofre 1d6 de dano de recuo.
+  notas: []
+  pj: dano 4d6 (7) + atordoa (1) + derruba (1) − dano ao usuário (−1) − exige portão (−1) = 7 → Rank C.
+  capitulo: 10
+  ancora: tecnicas-de-taijutsu-combate-corporal
+  cla: null
+  elemento: null
+- slug: goukakyu-no-jutsu-2
+  nome: Goukakyu no Jutsu
+  traducao: Grande Bola de Fogo
+  origem: Katon
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu) — metade do dano
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja inspira profundamente e exala uma bola de fogo do tamanho de uma carroça. Marca de iniciação Uchiha.
+  efeito: 2d6+2 de dano de fogo em área. Pode incendiar madeira, papel e tecido.
+  notas: []
+  pj: dano 2d6+2 (5) + Médio (2) + Esfera 3m (2) = 9 PJ → Rank C, 9 PC.
+  capitulo: 20
+  ancora: exemplo-de-ficha-pronta
+  cla: null
+  elemento: katon
+- slug: hyousenkou-no-mai
+  nome: Hyousenkou no Mai
+  traducao: Dança das Mil Agulhas Geladas
+  origem: Hyouton
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Agulhas de gelo cristalino orbitam o usuário e disparam em padrão de cardume. Marca registrada do clã Yuki.
+  efeito: 2d6 de dano de gelo em área (metade em sucesso na Resistência). Quem falhar fica Sangrando (1d4/turno) por 3 turnos.
+  notas: []
+  pj: null
+  capitulo: 20
+  ancora: exemplo-1-hyousenkou-no-mai-yuki-rank-c
+  cla: null
+  elemento: null
+- slug: konoha-daikaiten
+  nome: Konoha Daikaiten
+  traducao: Grande Giro da Folha
+  origem: Taijutsu
+  tipo: Taijutsu
+  rank: D
+  custo: 4 PE
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m em torno de si
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Sequência clássica de Konoha. O ninja gira sobre a perna de apoio executando um chute giratório que atinge todos no perímetro.
+  efeito: 1d6 + FOR de dano físico em todos a 3m (metade em sucesso). Quem falhar é empurrado 1m.
+  notas: []
+  pj: null
+  capitulo: 20
+  ancora: exemplo-2-konoha-daikaiten-taijutsu-rank-d
+  cla: null
+  elemento: null
+- slug: yami-no-rasengan
+  nome: Yami no Rasengan
+  traducao: Rasengan Sombrio
+  origem: Yin
+  tipo: Ninjutsu
+  rank: A
+  custo: 19 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Variante negra do Rasengan, esfera de chakra espiral com coloração violeta-negra. Queima a essência espiritual do alvo, não a carne.
+  efeito: 6d8 de dano espiritual. Drena 1d6 PC do alvo. O usuário sofre 1d6 de dano de recuo. Não pode ser copiado por Sharingan.
+  notas: []
+  pj: null
+  capitulo: 20
+  ancora: exemplo-3-rasengan-sombrio-ninjutsu-rank-a
+  cla: null
+  elemento: null
+- slug: suiton-mizurappa
+  nome: "Suiton: Mizurappa"
+  traducao: Jato de Água Violenta
+  origem: Suiton
+  tipo: Ninjutsu
+  rank: D
+  custo: 3 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) contra o empurrão
+    - k: Ação
+      v: Primária
+  descricao:
+    - Jato concentrado de água sob pressão. Útil contra inimigos perto de precipícios ou para apagar chamas.
+  efeito: 1d6 de dano de água. Se o alvo falhar na Resistência, é empurrado 2m.
+  notas: []
+  pj: null
+  capitulo: 20
+  ancora: exemplo-4-suiton-mizurappa-ninjutsu-rank-d
+  cla: null
+  elemento: suiton
+- slug: shosen-jutsu-2
+  nome: Shōsen Jutsu
+  traducao: Técnica da Palma Mística
+  origem: Ninjutsu Médico
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: 1 aliado
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Mãos do médico envoltas em chakra verde-claro. Cura ferimentos físicos e estabiliza venenos.
+  efeito: Cura 3d6 PV de um aliado tocado e remove 1 condição negativa (paralisia, veneno ou sangramento).
+  notas: []
+  pj: null
+  capitulo: 20
+  ancora: exemplo-5-shosen-jutsu-cura-rank-c
+  cla: null
+  elemento: null

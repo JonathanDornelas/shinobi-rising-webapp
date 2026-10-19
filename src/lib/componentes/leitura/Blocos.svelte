@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Renderiza os blocos de conteúdo do livro (D2 e trechos em catálogos e clãs).
-	import type { Bloco, ClaResumo, Habilidade, ItemLista, Jutsu } from '#lib/livro/tipos.ts';
+	import type { Bloco, ClaResumo, Habilidade, ItemLista, Jutsu, Trecho } from '#lib/livro/tipos.ts';
 	import CardHabilidade from '../regras/CardHabilidade.svelte';
 	import CardJutsu from '../regras/CardJutsu.svelte';
 	import CardCla from '../regras/CardCla.svelte';
@@ -21,8 +21,38 @@
 		compacto?: boolean;
 		/** Títulos viram texto simples, sem âncora (blocos dentro de cards). */
 		semAncoras?: boolean;
+		/** Capitular no 1º parágrafo (abertura do capítulo). */
+		capitular?: boolean;
 	}
-	let { blocos, jutsus = {}, habilidades = {}, clas = [], compacto = false, semAncoras = false }: Props = $props();
+	let { blocos, jutsus = {}, habilidades = {}, clas = [], compacto = false, semAncoras = false, capitular = false }: Props = $props();
+
+	const primeiroP = $derived(capitular ? blocos.findIndex((b) => b.tipo === 'p') : -1);
+	/** Verbete: o parágrafo abre com um termo em negrito terminado em ponto ou dois-pontos ("**DT do Jutsu.** …"). */
+	function verbete(c: Trecho[]): number {
+		let n = 0;
+		while (n < c.length && c[n].b) n++;
+		const lead = c.slice(0, n).map((t) => t.t).join('').trim();
+		return n && n < c.length && lead.length <= 60 && /[.:]$/.test(lead) ? n : 0;
+	}
+	/** Item de lista "Rótulo: texto" ("1 Ação Primária: atacar…"): separa o rótulo, que vai em negrito. */
+	function rotulo(c: Trecho[]): [Trecho[], Trecho[]] | null {
+		if (c[0]?.b) return null;
+		const m = /^([^:.;()]{2,40}):\s/.exec(c.map((t) => t.t).join(''));
+		if (!m) return null;
+		const k = m[1].length + 1;
+		const lead: Trecho[] = [];
+		const resto: Trecho[] = [];
+		let pos = 0;
+		for (const t of c) {
+			const fim = pos + t.t.length;
+			if (fim <= k) lead.push(t);
+			else if (pos >= k) resto.push(t);
+			else if (t.termo || t.href || t.dado) return null;
+			else lead.push({ ...t, t: t.t.slice(0, k - pos) }), resto.push({ ...t, t: t.t.slice(k - pos) });
+			pos = fim;
+		}
+		return [lead, resto];
+	}
 
 	const corpo = $derived(compacto ? 'text-[15px] leading-[23px]' : 'text-[length:var(--leitura)] leading-[var(--leitura-linha)]');
 </script>
@@ -30,6 +60,7 @@
 {#snippet itens(lista: ItemLista[], ordenada: boolean)}
 	<svelte:element this={ordenada ? 'ol' : 'ul'} class="m-0 flex list-none flex-col gap-1.5 p-0 {corpo}">
 		{#each lista as it, i (i)}
+			{@const r = compacto ? null : rotulo(it.c)}
 			<li class="relative pl-6 text-pretty">
 				{#if ordenada}
 					<span class="t-num absolute top-0 left-0 text-[0.85em] text-mut">{i + 1}.</span>
@@ -40,7 +71,7 @@
 						aria-hidden="true"
 					></span>
 				{/if}
-				<Texto trechos={it.c} />
+				{#if r}<b class="font-bold"><Texto trechos={r[0]} /></b><Texto trechos={r[1]} />{:else}<Texto trechos={it.c} />{/if}
 				{#if it.sub}<div class="mt-1.5">{@render itens(it.sub, false)}</div>{/if}
 			</li>
 		{/each}
@@ -49,7 +80,14 @@
 
 {#each blocos as b, i (i)}
 	{#if b.tipo === 'p'}
-		<p class="m-0 text-pretty {corpo}"><Texto trechos={b.c} /></p>
+		{@const n = compacto ? 0 : verbete(b.c)}
+		{#if n}
+			<p class="m-0 border-l-[3px] border-[var(--vermelhao-lo)] pl-3 text-pretty {corpo}">
+				<span class="font-mincho font-bold text-title"><Texto trechos={b.c.slice(0, n).map((t) => ({ ...t, b: undefined }))} /></span><Texto trechos={b.c.slice(n)} />
+			</p>
+		{:else}
+			<p class="m-0 text-pretty {corpo} {i === primeiroP ? 'capitular' : ''}"><Texto trechos={b.c} /></p>
+		{/if}
 	{:else if b.tipo === 'h'}
 		{#if semAncoras}
 			<h4 class="m-0 mt-1 text-sm leading-5 font-bold tracking-[.06em] uppercase">{b.texto}</h4>
@@ -70,7 +108,7 @@
 			<Blocos blocos={b.blocos} {jutsus} {habilidades} compacto semAncoras />
 		</Destaque>
 	{:else if b.tipo === 'tabela'}
-		<Tabela cab={b.cab} linhas={b.linhas} />
+		<Tabela cab={b.cab} linhas={b.linhas} titulo={compacto ? undefined : b.titulo} ids={b.ids} />
 	{:else if b.tipo === 'jutsu' && jutsus[b.slug]}
 		<CardJutsu jutsu={jutsus[b.slug]} rodape={false} />
 	{:else if b.tipo === 'habilidade' && habilidades[b.slug]}

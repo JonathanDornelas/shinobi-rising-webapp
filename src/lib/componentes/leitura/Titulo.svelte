@@ -22,13 +22,14 @@
 	}
 
 	const CLASSE = {
-		2: 'mt-3 font-mincho text-2xl leading-8 font-bold md:text-[28px] md:leading-9',
+		2: 'mt-4 border-b-2 border-b3 pb-2 font-mincho text-2xl leading-8 font-bold md:text-[28px] md:leading-9',
 		3: 'mt-2 font-mincho text-xl leading-7 font-semibold md:text-[22px] md:leading-[30px]',
 		4: 'mt-1 text-sm leading-5 font-bold tracking-[.06em] uppercase'
 	};
 </script>
 
 <svelte:element this={`h${nivel}`} {id} class="group m-0 flex scroll-mt-20 items-baseline gap-2.5 {CLASSE[nivel]}" data-secao={nivel}>
+	{#if nivel === 2}<span aria-hidden="true" class="h-2.5 w-2.5 flex-none rotate-45 self-center border-2 border-ink bg-[var(--vermelhao)]"></span>{/if}
 	<span>{texto}</span>
 	<a
 		href="#{id}"

@@ -4,7 +4,7 @@ Documentação web e criador de campanhas do RPG de mesa **Shinobi no Michi — 
 
 Stack: SvelteKit 3 (Svelte 5) + Tailwind CSS 4 + DaisyUI 5 + Supabase, publicado no Vercel (`adapter-vercel`): a documentação é pré-renderizada; conta e campanhas rodam no servidor. As telas são desenhadas antes no Claude Design (direção visual 1a "Jogo", temas sumi e washi).
 
-**Fase atual:** itens do `todo.md`: registro de rolagens L10 (página `/rolagens` e janela flutuante), filtros, visualizações e favoritos de jutsus, fonte dos números e a ficha no celular. Feitos antes: rolagens ao vivo, retrato do ninja, temas do usuário, paisagens das vilas, jutsus originais na criação de personagem e de clã, exclusão de fichas, aprovações, submissões, NPCs, pré-gerados e concessões do Mestre (R1–R3, N1, N2), equipamentos (E1–E4), jutsus (J1–J3), documentação do livro (G1–G5, D1–D10), conta (A1–A4), campanhas (C1–C7), criação de personagem (P2), ficha em jogo, nível, treino e recompensas (P1, P3–P6, C8) e clãs (K1, K2). Todas as telas do brief estão implementadas; o que vem depois está em `todo.md`.
+**Fase atual:** regras com cara de compêndio (estilo D&D Beyond): o livro saiu do .docx para `conteudo/` (Markdown e YAML), com termos destacados e cartão no hover, dados clicáveis, tabelas e aberturas de capítulo novas; aplicado ao livro todo, com o compêndio de termos no glossário e as artes de abertura dos 23 capítulos. Feitos antes: registro de rolagens L10, filtros, visualizações e favoritos de jutsus, fonte dos números, a ficha no celular, rolagens ao vivo, retrato do ninja, temas do usuário, paisagens das vilas, jutsus originais na criação de personagem e de clã, exclusão de fichas, aprovações, submissões, NPCs, pré-gerados e concessões do Mestre (R1–R3, N1, N2), equipamentos (E1–E4), jutsus (J1–J3), documentação do livro (G1–G5, D1–D10), conta (A1–A4), campanhas (C1–C7), criação de personagem (P2), ficha em jogo, nível, treino e recompensas (P1, P3–P6, C8) e clãs (K1, K2). Todas as telas do brief estão implementadas; o que vem depois está em `todo.md`.
 
 ## Criação de personagem
 
@@ -43,7 +43,7 @@ npm run build        # gera o site estático em build/ (valida links e âncoras 
 npm run preview      # serve o build
 npm run check        # svelte-check
 npm test             # testes (vitest), incluindo RLS e funções do banco em PGlite
-npm run livro:gerar  # reconverte o .docx (rode depois de editar o livro)
+npm run livro:gerar  # compila conteudo/ (rode depois de editar as regras)
 ```
 
 ## Supabase
@@ -58,20 +58,33 @@ Os testes em `supabase/testes/` rodam a migração num Postgres em memória (PGl
 
 ## Como o livro vira site
 
-`scripts/livro/converter.ts` lê `shinobi_no_michi_v18.docx` e gera os dados em `src/lib/livro/gerado/*.json` (versionados, para os diffs mostrarem o que mudou no conteúdo). O conversor reconhece a formatação do livro:
+As regras moram em `conteudo/`, em Markdown e YAML, e são editadas ali (o `.docx` v18 foi exportado uma vez e ficou em `legado/`, só como histórico):
 
-| No .docx | Vira |
+| Arquivo | Conteúdo |
 |---|---|
-| Heading 1 / 2 / 3 / 4 | capítulo, seções com âncora |
-| Tabela de 1 célula com fundo `f0ebe0` | epígrafe |
-| Tabela com fundo `fff4e6` | caixa de destaque (Destaque, Exemplo, Atenção, Dica do Mestre, Pré-requisito, pelo título) |
-| Cabeçalho `c44536` | tabela de regras |
-| Tabela com faixa `5c1e15` | card de jutsu ou de habilidade (cor do tipo na borda) |
-| Parágrafo centralizado em vermelhão negrito | bloco de fórmula |
-| "cap. 6", "Capítulo 18", "cap. 8.4" | referência cruzada com prévia |
-| Siglas de Atributos e Recursos do glossário (PC, PV, AGI…) | termo com verbete (1ª ocorrência por seção) |
+| `conteudo/regras/NN-slug.md` | um capítulo por arquivo (frontmatter com número, slug, título e parte) |
+| `conteudo/clas/NN-slug.md` | os 13 clãs do cap. 8.3 (frontmatter com número, nome, epíteto e origem; seções em `####`) |
+| `conteudo/jutsus.yaml`, `conteudo/habilidades.yaml` | os cards (descrição, efeito e notas em Markdown de uma linha) |
+| `conteudo/termos.yaml` | o léxico curado: recursos, atributos e termos de regra que viram destaque no texto |
+| `conteudo/livro.yaml` | as partes do livro |
 
-Ele também extrai os 13 clãs (cap. 8.3), as 16 especializações (cap. 19), armas e Sete Espadas (cap. 12), o glossário (cap. 22), os cards da referência rápida e o índice de busca. Os avisos no fim da execução apontam o que não foi reconhecido.
+`npm run livro:gerar` roda `scripts/livro/compilar.ts`, que gera `src/lib/livro/gerado/*.json` (versionados, para os diffs mostrarem o que mudou). Um teste confere que os JSON estão em dia com `conteudo/`. A sintaxe (em `scripts/livro/md.ts`) é Markdown com tabelas GFM e diretivas:
+
+| No Markdown | Vira |
+|---|---|
+| `## Título {#id}` | seção com âncora fixa |
+| `:::dica{titulo="…"}` … `:::` (também `destaque`, `exemplo`, `atencao`, `requisito`) | caixa de destaque |
+| `:::epigrafe{autor="…"}` | epígrafe |
+| `::formula[1d20 + Perícia ≥ DT]` | bloco de fórmula |
+| `:::tabela{titulo="…"}` em volta de uma tabela | tabela com título (sem ele, o título vem da seção) |
+| `::jutsu{slug="…"}`, `::habilidade{slug="…"}`, `::clas` | cards do catálogo |
+| `**Termo.** texto` | verbete de regra |
+| "cap. 6", "Capítulo 18", "cap. 8.4" | referência cruzada com prévia |
+| termos do léxico (PC, Atordoado, Esquiva Ativa, Rasengan, Kunai…) | destaque colorido com cartão no hover e link para a regra (recursos e atributos sempre; os demais na 1ª vez de cada seção) |
+| `1d20`, `2d6+3` | dado: hover mostra a faixa; clique abre a janela de rolagens com a expressão |
+| `:t[texto]{#jutsu:slug}` / `:sem[texto]` | força / impede um termo |
+
+O léxico (`gerado/termos.json`) junta `conteudo/termos.yaml` com o que vem do próprio livro: condições (tabela Estados Especiais, com âncora `#cond-…` por linha), perícias (`#pericia-…`), jutsus, habilidades, clãs, armas, elementos e ranks. O compilador também extrai as 16 especializações (cap. 19), armas e Sete Espadas (cap. 12), o glossário (cap. 22), os cards da referência rápida e o índice de busca. As artes de abertura dos capítulos ficam em `static/capitulos/cap-NN.png` (PixelLab, ninjas originais no visual do anime; cenas em `pixellab/capitulos.json`) e aparecem no cabeçalho de cada capítulo e na galeria do índice `/regras`. O glossário (D8) termina com o compêndio de todos os termos do léxico, filtrável por tipo. Os avisos no fim da execução apontam o que não foi reconhecido.
 
 ## Onde está cada coisa
 
@@ -89,7 +102,8 @@ Ele também extrai os 13 clãs (cap. 8.3), as 16 especializações (cap. 19), ar
 | `src/lib/estado/` | sessão, tema e preferências, paleta de busca, toasts e jutsus favoritos (no perfil em `preferencias.favoritos.jutsus`, ou no navegador sem conta) |
 | `src/routes/layout.css` | tokens dos temas sumi/washi, tema DaisyUI e classes da direção 1a |
 | `instrucoes-claude-design.md` | Especificação de todas as telas, identidade visual, componentes, fluxos e estados |
-| `shinobi_no_michi_v18.docx` | Livro de regras (fonte de todo o conteúdo) |
+| `conteudo/` | Livro de regras em Markdown e YAML (fonte de todo o conteúdo) |
+| `legado/shinobi_no_michi_v18.docx`, `scripts/livro/legado/` | O livro v18 em Word e o conversor antigo (histórico) |
 | `static/icons/`, `static/illustrations/`, `static/covers/`, `static/dados/` | Ícones, paisagens das vilas e dados PixelLab servidos pelo site |
 | `pixellab/` | Inventário, prompts e pipeline de geração dos ícones; pacote para o Claude Design |
 

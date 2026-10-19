@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import PaletaBusca from '#lib/componentes/busca/PaletaBusca.svelte';
+	import CartaoTermo from '#lib/componentes/leitura/CartaoTermo.svelte';
 	import Dock from '#lib/componentes/shell/Dock.svelte';
 	import FaixaOffline from '#lib/componentes/shell/FaixaOffline.svelte';
 	import Navbar from '#lib/componentes/shell/Navbar.svelte';
@@ -55,4 +56,5 @@
 <Dock />
 <Toaster />
 <MesaRolagens />
+<CartaoTermo />
 {#if paleta.aberta}<PaletaBusca />{/if}

@@ -7,6 +7,7 @@
 	import { paleta } from '#lib/estado/paleta.svelte.ts';
 	import { lerProgresso, type Progresso } from '#lib/estado/progresso.ts';
 	import indiceJson from '#lib/livro/gerado/indice.json';
+	import { kanji } from '#lib/livro/texto.ts';
 	import type { IndiceLivro } from '#lib/livro/tipos.ts';
 
 	const indice = indiceJson as IndiceLivro;
@@ -74,6 +75,24 @@
 			</div>
 		{/each}
 	</div>
+
+	<!-- capítulos com a arte de abertura (PixelLab), como o índice de um livro de regras -->
+	<section class="flex flex-col gap-3.5 md:gap-4" aria-labelledby="galeria-capitulos">
+		<h2 id="galeria-capitulos" class="t-rotulo m-0 md:text-sm">Capítulos</h2>
+		<ul class="-mx-4 m-0 flex list-none snap-x gap-3 overflow-x-auto px-4 pb-1 md:mx-0 md:grid md:grid-cols-3 md:overflow-visible md:px-0 lg:grid-cols-4">
+			{#each indice.capitulos as c (c.numero)}
+				<li class="w-[220px] flex-none snap-start md:w-auto">
+					<a href={c.href} class="cartao-link group flex h-full flex-col border-2 border-frame bg-b2 sombra-painel">
+						<span class="relative block h-[84px] overflow-hidden border-b-2 border-ink bg-b0">
+							{#if c.arte}<img src={c.arte} alt="" loading="lazy" class="h-full w-full object-cover [image-rendering:pixelated]" />{:else}<span class="flex h-full items-center justify-end pr-3 font-jp text-5xl leading-none font-extrabold text-[rgba(244,228,214,.16)]" style="background: radial-gradient(120% 90% at 85% 10%, rgba(196,69,54,.35), transparent 60%), repeating-linear-gradient(135deg, #24150f 0 10px, #1b100c 10px 20px)" aria-hidden="true">{kanji(c.numero)}</span>{/if}
+							<span class="absolute top-1 left-1.5 font-pixel text-xs leading-none font-bold text-[#D9A82B] [text-shadow:1px_1px_0_#0e0b0a]">{String(c.numero).padStart(2, '0')}</span>
+						</span>
+						<span class="px-2.5 py-2 font-mincho text-[15px] leading-5 font-bold group-hover:text-link">{c.titulo}</span>
+					</a>
+				</li>
+			{/each}
+		</ul>
+	</section>
 
 	<section class="flex flex-col gap-3.5 md:gap-4">
 		<h2 class="t-rotulo m-0 md:text-sm">Partes do livro</h2>

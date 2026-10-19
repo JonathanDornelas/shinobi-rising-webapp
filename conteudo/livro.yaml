@@ -1,0 +1,60 @@
+# Partes do livro (o título vem do Sumário do v18) e os capítulos de cada uma.
+partes:
+  - numero: 1
+    rotulo: PARTE I
+    titulo: Fundamentos, Combate e Sombra
+    icone: parte/ic-parte-1
+    capitulos:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+  - numero: 2
+    rotulo: PARTE II
+    titulo: Criando seu Personagem
+    icone: parte/ic-parte-2
+    capitulos:
+      - 6
+      - 7
+      - 8
+  - numero: 3
+    rotulo: PARTE III
+    titulo: Recursos do Ninja
+    icone: parte/ic-parte-3
+    capitulos:
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+      - 14
+      - 15
+  - numero: 4
+    rotulo: PARTE IV
+    titulo: Avanços de Poder
+    icone: parte/ic-parte-4
+    capitulos:
+      - 16
+  - numero: 5
+    rotulo: PARTE V
+    titulo: Crescimento e Customização
+    icone: parte/ic-parte-5
+    capitulos:
+      - 17
+      - 18
+      - 19
+  - numero: 6
+    rotulo: PARTE VI
+    titulo: Criação Avançada
+    icone: parte/ic-parte-6
+    capitulos:
+      - 20
+      - 21
+  - numero: 7
+    rotulo: REFERÊNCIA
+    titulo: Referência e Apêndice
+    icone: parte/ic-parte-referencia
+    capitulos:
+      - 22
+      - 23

@@ -1,12 +1,32 @@
-// Modelo de dados do livro, gerado por scripts/livro/converter.js a partir do .docx.
+// Modelo de dados do livro, gerado por scripts/livro/compilar.ts a partir de conteudo/ (Markdown + YAML).
 
-/** Trecho de texto com formatação. `href` = referência cruzada; `termo` = id no glossário. */
+/**
+ * Trecho de texto com formatação. `href` = referência cruzada; `termo` = id no léxico ("tipo:slug", ver TermoLexico);
+ * `def` = é a definição do termo (1ª coluna da tabela que o define: sem link); `dado` = expressão de dados ("2d6+3").
+ */
 export interface Trecho {
 	t: string;
 	b?: 1;
 	i?: 1;
 	href?: string;
 	termo?: string;
+	def?: 1;
+	dado?: string;
+}
+
+export type TipoTermo = 'recurso' | 'atributo' | 'condicao' | 'regra' | 'pericia' | 'jutsu' | 'habilidade' | 'cla' | 'arma' | 'elemento' | 'rank';
+
+/** Verbete do léxico (gerado/termos.json): o cartão que abre no hover de um termo no texto. */
+export interface TermoLexico {
+	id: string;
+	tipo: TipoTermo;
+	rotulo: string;
+	nome: string;
+	resumo: string;
+	href: string;
+	icone: string | null;
+	/** Dados extras do cartão (jutsu: rank, tipo, custo, ação; arma: dano, alcance). */
+	extra?: Record<string, string>;
 }
 
 /** Célula de tabela: um ou mais parágrafos. */
@@ -26,7 +46,7 @@ export type Bloco =
 	| { tipo: 'formula'; texto: string }
 	| { tipo: 'epigrafe'; texto: string; autor: string }
 	| { tipo: 'destaque'; variante: VarianteDestaque; titulo: string; blocos: Bloco[] }
-	| { tipo: 'tabela'; cab: string[] | null; linhas: Celula[][] }
+	| { tipo: 'tabela'; cab: string[] | null; linhas: Celula[][]; titulo?: string; ids?: (string | null)[] }
 	| { tipo: 'jutsu'; slug: string }
 	| { tipo: 'habilidade'; slug: string }
 	| { tipo: 'clas' };
@@ -92,6 +112,10 @@ export interface Capitulo {
 	blocos: Bloco[];
 	secoes: SecaoIndice[];
 	resumo: string;
+	/** Tempo de leitura estimado. */
+	minutos?: number;
+	/** Arte de abertura (static/capitulos/cap-NN.png), se houver. */
+	arte?: string | null;
 }
 
 export interface CapituloIndice {
@@ -102,6 +126,7 @@ export interface CapituloIndice {
 	parte: number;
 	resumo: string;
 	secoes: SecaoIndice[];
+	arte?: string | null;
 }
 
 export interface Parte {

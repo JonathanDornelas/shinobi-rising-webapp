@@ -6,7 +6,7 @@
 	import AjustesLeitura from '#lib/componentes/leitura/AjustesLeitura.svelte';
 	import Blocos from '#lib/componentes/leitura/Blocos.svelte';
 	import Epigrafe from '#lib/componentes/leitura/Epigrafe.svelte';
-	import { EspiaoSecoes, realcar } from '#lib/componentes/leitura/espiao.svelte.ts';
+	import { EspiaoSecoes, irPara } from '#lib/componentes/leitura/espiao.svelte.ts';
 	import Sumario from '#lib/componentes/leitura/Sumario.svelte';
 	import Rodape from '#lib/componentes/shell/Rodape.svelte';
 	import Folha from '#lib/componentes/ui/Folha.svelte';
@@ -52,9 +52,7 @@
 	afterNavigate(() => {
 		const hash = decodeURIComponent(location.hash.slice(1));
 		if (!hash) return;
-		const el = document.getElementById(hash);
-		if (el) realcar(el);
-		else {
+		if (!irPara(hash, false)) {
 			scrollTo({ top: 0 });
 			toasts.mostrar('Seção não encontrada.', 'aviso');
 		}
@@ -123,13 +121,30 @@
 				<AjustesLeitura />
 			</div>
 
-			<header class="relative pt-1 pb-2 md:pt-7">
-				<span aria-hidden="true" class="pointer-events-none absolute top-[-4px] right-0 font-jp text-[112px] leading-none font-extrabold text-b3 select-none md:top-[-8px] md:text-[168px]">{cap.kanji}</span>
-				<div class="relative flex flex-col gap-1.5">
-					<span class="font-pixel text-[13px] leading-none font-bold tracking-[.12em] text-title md:text-sm">CAPÍTULO {cap.numero}</span>
-					<h1 id="titulo-capitulo" class="m-0 font-mincho text-[32px] leading-10 font-bold md:text-[44px] md:leading-[52px]">{cap.titulo}</h1>
+			<!-- abertura do capítulo: arte (PixelLab) ou faixa com o kanji, como a abertura de capítulo de um livro de regras -->
+			<header class="relative -mx-4 overflow-hidden border-y-2 border-ink bg-b0 md:mx-0 md:mt-4 md:border-2 md:shadow-[4px_4px_0_var(--ink)]">
+				{#if cap.arte}
+					<img src={cap.arte} alt="" class="block h-[170px] w-full object-cover [image-rendering:pixelated] md:h-[230px]" />
+				{:else}
+					<div class="h-[132px] md:h-[172px]" style="background: radial-gradient(120% 90% at 85% 10%, rgba(196,69,54,.35), transparent 60%), repeating-linear-gradient(135deg, #24150f 0 14px, #1b100c 14px 28px)"></div>
+				{/if}
+				<div class="absolute inset-0 bg-[linear-gradient(to_top,rgba(14,11,10,.94)_8%,rgba(14,11,10,.45)_55%,transparent)]" aria-hidden="true"></div>
+				<span aria-hidden="true" class="pointer-events-none absolute top-1 right-3 font-jp text-[92px] leading-none font-extrabold text-[rgba(244,228,214,.13)] select-none md:top-0 md:right-5 md:text-[150px]">{cap.kanji}</span>
+				<div class="absolute inset-x-0 bottom-0 flex flex-col gap-1.5 px-4 pb-3.5 md:px-6 md:pb-5">
+					<span class="font-pixel text-[13px] leading-none font-bold tracking-[.12em] text-[#D9A82B]">CAPÍTULO {cap.numero} · {parte.rotulo}</span>
+					<h1 id="titulo-capitulo" class="m-0 font-mincho text-[30px] leading-9 font-bold text-papel md:text-[44px] md:leading-[52px]">{cap.titulo}</h1>
 				</div>
 			</header>
+			<div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] leading-[18px] font-semibold text-mut">
+				{#if cap.minutos}<span>{cap.minutos} min de leitura</span>{/if}
+				{#if secoes.length}<span>{secoes.length} {secoes.length === 1 ? 'seção' : 'seções'}</span>{/if}
+				<span class="hidden sm:inline">Passe o mouse nos termos destacados para ver a regra</span>
+			</div>
+			{#if secoes.length > 1}
+				<nav aria-label="Neste capítulo" class="flex flex-wrap gap-1.5 lg:hidden">
+					{#each secoes.slice(0, 10) as s (s.id)}<a href="#{s.id}" class="border-2 border-b3 bg-b2 px-2.5 py-1 text-[13px] leading-[18px] font-semibold hover:border-mut">{s.titulo}</a>{/each}
+				</nav>
+			{/if}
 
 			{#if cap.epigrafe}
 				<Epigrafe texto={cap.epigrafe.texto} autor={cap.epigrafe.autor} grande />
@@ -139,7 +154,7 @@
 				</div>
 			{/if}
 
-			<Blocos blocos={cap.blocos} jutsus={data.jutsus} habilidades={data.habilidades} clas={data.clas} />
+			<Blocos blocos={cap.blocos} jutsus={data.jutsus} habilidades={data.habilidades} clas={data.clas} capitular />
 
 			<nav aria-label="Capítulos vizinhos" class="mt-6 grid grid-cols-[minmax(0,1fr)] gap-3 border-t-2 border-b3 pt-5 sm:grid-cols-2">
 				{#if data.anterior}

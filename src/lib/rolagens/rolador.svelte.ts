@@ -73,6 +73,8 @@ class Rolador {
 	janela = $state<Janela>({ ...JANELA_PADRAO });
 	/** Rolagens que chegaram com a janela fechada ou minimizada. */
 	naoVistas = $state(0);
+	/** Expressão vinda de um dado no texto das regras (n muda a cada pedido): o rolador da janela a recebe. */
+	sugestao = $state<{ expr: string; n: number } | null>(null);
 	/** Ficha aberta agora (para o PD gasto no registro aparecer nela sem recarregar). */
 	fichaAberta: { id: string; aoGastarPd: (pd: number) => void } | null = null;
 
@@ -216,6 +218,12 @@ class Rolador {
 	definirMesa(m: { id: string; nome: string }) {
 		this.mesa = m;
 		gravar('mesa', m);
+	}
+
+	/** Dado clicado no texto das regras: abre a janela de rolagens com a expressão pronta. */
+	sugerir(expr: string) {
+		this.sugestao = { expr, n: (this.sugestao?.n ?? 0) + 1 };
+		this.alternarJanela(true);
 	}
 
 	// ---------------------------------------------------------------- janela (R2)

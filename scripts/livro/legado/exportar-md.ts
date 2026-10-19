@@ -1,11 +1,14 @@
-// Converte shinobi_no_michi_v18.docx nos dados estruturados da documentação web.
-// Uso: npm run livro:gerar   (gera src/lib/livro/gerado/*.json)
+// USO ÚNICO: exportou o livro do docx v18 para conteudo/ (Markdown + YAML), a nova fonte das regras.
+// É o conversor antigo até a extração dos clãs; o resto (especializações, glossário, ligações, busca) agora fica em
+// scripts/livro/compilar.ts, que lê conteudo/. Uso: node scripts/livro/legado/exportar-md.ts
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { stringify as yaml } from 'yaml';
+import { escreverDoc, mdDeTrechos } from '../md.ts';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { lerBlocos, lerDocx, lerNumeracao, paragrafosDaTabela } from './docx.ts';
 import type { No, Paragrafo, Run, Tabela } from './docx.ts';
-import { kanji, normalizar, slug } from '../../src/lib/livro/texto.ts';
+import { kanji, normalizar, slug } from '../../../src/lib/livro/texto.ts';
 import type {
 	Bloco,
 	CardReferencia,
@@ -29,9 +32,9 @@ import type {
 	TipoJutsu,
 	Trecho,
 	VarianteDestaque
-} from '../../src/lib/livro/tipos.ts';
+} from '../../../src/lib/livro/tipos.ts';
 
-const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const SAIDA = join(RAIZ, 'src', 'lib', 'livro', 'gerado');
 const avisos: string[] = [];
 const avisar = (m: string) => avisos.push(m);
@@ -393,7 +396,7 @@ function converter(nos: No[], ctx: Contexto, ids: Set<string>): Bloco[] {
 }
 
 // ---------------------------------------------------------------- leitura do livro
-const { documento, numeracao } = lerDocx(join(RAIZ, 'shinobi_no_michi_v18.docx'));
+const { documento, numeracao } = lerDocx(join(RAIZ, 'legado', 'shinobi_no_michi_v18.docx'));
 const nos = lerBlocos(documento.slice(documento.indexOf('<w:body>')), lerNumeracao(numeracao));
 
 // separa por capítulo (Heading1)
@@ -465,6 +468,7 @@ const celTexto = (c: Celula) => c.map(textoDe).join(' ').trim();
 
 // ---------------------------------------------------------------- clãs (cap. 8.3)
 const clas: Cla[] = [];
+const brutosCla = new Map<string, { numero: string; nome: string; epiteto: string; origem: string }>();
 {
 	const c8 = cap(8);
 	const reCla = /^8\.3\.\d+\s+Clã\s+/;
@@ -478,6 +482,7 @@ const clas: Cla[] = [];
 		const nomeCompleto = m[2].trim();
 		const nome = nomeCompleto.split('/')[0].trim();
 		const s = slug(nome);
+		brutosCla.set(s, { numero: m[1], nome: nomeCompleto, epiteto: m[3].trim(), origem: m[4] });
 		const corpo = c8.blocos.slice(ini + 1, fim);
 		const iSec = corpo.findIndex((b) => b.tipo === 'h');
 		const intro = iSec < 0 ? corpo : corpo.slice(0, iSec);
@@ -566,362 +571,49 @@ const clas: Cla[] = [];
 	c8.blocos.splice(inicios[0], fimCatalogo - inicios[0], { tipo: 'clas' });
 }
 
-// ---------------------------------------------------------------- especializações (cap. 19)
-const especializacoes: Especializacoes = { intro: [], quando: null, lista: [], extras: [] };
-{
-	const c19 = cap(19);
-	const iCatalogo = c19.blocos.findIndex((b) => b.tipo === 'h' && b.nivel === 2);
-	for (const b of c19.blocos.slice(0, iCatalogo < 0 ? undefined : iCatalogo)) {
-		if (b.tipo === 'destaque' && /quando se ganha/i.test(b.titulo)) {
-			const texto = b.blocos.map((x) => (x.tipo === 'p' ? textoDe(x.c) : '')).join(' ');
-			const niveis = [...new Set([...texto.matchAll(/\b(4|7|10|13|16|19)\b/g)].map((x) => +x[1]))];
-			especializacoes.quando = { titulo: b.titulo, blocos: b.blocos, niveis };
-		} else especializacoes.intro.push(b);
-	}
-	let atual: Especializacao | null = null;
-	for (const b of c19.blocos.slice(iCatalogo + 1)) {
-		if (b.tipo === 'h' && b.nivel === 3 && /^Especialização:/.test(b.texto)) {
-			let nome = b.texto.replace(/^Especialização:\s*/, '').trim();
-			// "Sennin (pré-requisitos no cap. 15)": o requisito sai do nome
-			const req = nome.match(/\s*\((pr[ée]-?requisitos?[^)]*)\)\s*$/i);
-			if (req) nome = nome.slice(0, req.index).trim();
-			const icone = ICONE_ESPECIALIZACAO.find(([re]) => re.test(nome))?.[1];
-			if (!icone) avisar(`Especialização sem ícone: ${nome}`);
-			atual = { slug: b.id, nome, icone: `esp/ic-esp-${icone ?? 'elemento'}`, niveis: [], extras: [], requisito: req ? req[1].replace(/^./, (l) => l.toUpperCase()) : null };
-			especializacoes.lista.push(atual);
-		} else if (b.tipo === 'h' && b.nivel <= 3) {
-			atual = null;
-			especializacoes.extras.push(b);
-		} else if (atual && !atual.niveis.length && b.tipo === 'tabela' && b.cab?.[0] === 'Nível') {
-			atual.niveis = b.linhas.map((l) => ({ nivel: +celTexto(l[0]), beneficio: l[1] ?? [] }));
-		} else if (atual) {
-			atual.extras.push(b);
-			const tx = b.tipo === 'p' ? textoDe(b.c) : b.tipo === 'destaque' ? b.titulo + ' ' + b.blocos.map((x) => (x.tipo === 'p' ? textoDe(x.c) : '')).join(' ') : '';
-			const req = tx.match(/Pr[ée]-?requisitos?\s*:?\s*([^.]+)/i);
-			if (req && !atual.requisito) atual.requisito = req[1].trim();
-		} else especializacoes.extras.push(b);
-	}
-}
+// ---------------------------------------------------------------- exportação para conteudo/
+const CONTEUDO = join(RAIZ, 'conteudo');
+for (const d of ['regras', 'clas']) mkdirSync(join(CONTEUDO, d), { recursive: true });
+const opcoesYaml = { lineWidth: 0 };
 
-// ---------------------------------------------------------------- glossário (cap. 22)
-const glossario: SecaoGlossario[] = [];
-{
-	const c22 = cap(22);
-	let atual: SecaoGlossario | null = null;
-	for (const b of c22.blocos) {
-		if (b.tipo === 'h' && b.nivel === 2) {
-			atual = { id: b.id, titulo: b.texto, intro: [], colunas: [], termos: [] };
-			glossario.push(atual);
-		} else if (atual && b.tipo === 'tabela' && b.cab) {
-			atual.colunas = b.cab;
-			for (const l of b.linhas) {
-				const termo = celTexto(l[0]);
-				const n = normalizar(termo);
-				let icone: string | null = null;
-				if (/^atributos/.test(normalizar(atual.titulo))) icone = iconeSe(`atributo/ic-atributo-${n}`);
-				else if (/^recursos/.test(normalizar(atual.titulo))) icone = iconeSe(`recurso/ic-recurso-${n}`);
-				else if (/^elementos/.test(normalizar(atual.titulo))) icone = ELEMENTOS[n] ? `elemento/ic-elemento-${ELEMENTOS[n]}` : null;
-				else if (/^ranks de jutsu/.test(normalizar(atual.titulo))) icone = iconeSe(`rank/ic-rank-${n}`);
-				atual.termos.push({ id: `termo-${slug(termo)}`, termo, campos: l.slice(1).map(celTexto), icone });
-			}
-		} else if (atual) atual.intro.push(b);
-	}
-}
-// siglas que viram tooltip de glossário no texto corrido (CMP-22)
-const termosTooltip = new Map<string, string>();
-for (const s of glossario.filter((g) => /^(atributos|recursos)/.test(normalizar(g.titulo))))
-	for (const t of s.termos) if (/^[A-Z][A-Za-z]{1,3}$/.test(t.termo) && t.termo === t.termo.toUpperCase()) termosTooltip.set(t.termo, t.id);
+writeFileSync(join(CONTEUDO, 'livro.yaml'), '# Partes do livro (o título vem do Sumário do v18) e os capítulos de cada uma.\n' + yaml({ partes }, opcoesYaml));
 
-// ---------------------------------------------------------------- equipamentos (caps. 11, 12, 13)
-const equipamentos: Equipamentos = { categorias: [], espadas: [], propriedades: [], abas: [] };
-{
-	const c11 = cap(11);
-	const c12 = cap(12);
-	const c13 = cap(13);
-	const ICONE_CATEGORIA: [RegExp, string, string][] = [
-		[/dist[âa]ncia/i, 'distancia', 'equip/ic-equip-arma-distancia'],
-		[/curtas/i, 'curtas', 'equip/ic-equip-arma-curta'],
-		[/longas/i, 'longas', 'equip/ic-equip-arma-longa'],
-		[/ex[óo]ticas/i, 'exoticas', 'equip/ic-equip-arma-exotica']
-	];
-	for (const b of c12.blocos) {
-		if (b.tipo !== 'h' || b.nivel !== 3) continue;
-		const cat = ICONE_CATEGORIA.find(([re]) => re.test(b.texto));
-		const tab = tabelaEm(secao(c12.blocos, (t) => t === b.texto).blocos);
-		if (cat && tab) {
-			const col = (nome: string) => tab.cab?.findIndex((c) => normalizar(c).startsWith(nome)) ?? -1;
-			const [iA, iD, iR, iP, iV, iPr] = ['arma', 'dano', 'alcance', 'peso', 'preco', 'propriedade'].map(col);
-			const categoria: CategoriaArmas = {
-				id: cat[1],
-				titulo: b.texto.replace(/^Armas Brancas — /, '').replace(/^Armas de /, ''),
-				icone: cat[2],
-				ancora: `${c12.href}#${b.id}`,
-				armas: tab.linhas.map((l) => {
-					const nome = celTexto(l[iA]);
-					const iconeArma = iconeSe(`arma/ic-arma-${slug(nome)}`) ?? iconeSe(`arma/ic-arma-${slug(nome.split(/[\s(/]/)[0])}`);
-					return {
-						slug: `arma-${slug(nome)}`,
-						nome,
-						dano: iD >= 0 ? celTexto(l[iD]) : '',
-						alcance: iR >= 0 ? celTexto(l[iR]) : '',
-						peso: iP >= 0 ? celTexto(l[iP]) : '',
-						preco: iV >= 0 ? celTexto(l[iV]) : '',
-						propriedades: iPr >= 0 ? celTexto(l[iPr]).split(/\s*[,;]\s*/).filter((x) => x && x !== '—' && x !== '-') : [],
-						icone: iconeArma ?? cat[2]
-					};
-				})
-			};
-			equipamentos.categorias.push(categoria);
-		} else if (/sete espadas/i.test(b.texto) && tab) {
-			equipamentos.espadas = tab.linhas.map((l) => {
-				const nome = celTexto(l[0]);
-				return {
-					slug: `espada-${slug(nome)}`,
-					nome,
-					traducao: celTexto(l[1] ?? []),
-					dano: celTexto(l[2] ?? []),
-					peso: celTexto(l[3] ?? []),
-					habilidade: celTexto(l[4] ?? []),
-					icone: iconeSe(`espada/ic-espada-${slug(nome)}`) ?? 'equip/ic-equip-sete-espadas'
-				} satisfies Espada;
-			});
-		}
-	}
-	const props = tabelaEm(secao(c12.blocos, (t) => /^Propriedades Especiais/.test(t)).blocos);
-	equipamentos.propriedades = (props?.linhas ?? []).map((l) => ({ nome: celTexto(l[0]), efeito: celTexto(l[1] ?? []) }));
-
-	const trecho = (c: Capitulo, re: RegExp, titulo?: string) => {
-		const s = secao(c.blocos, (t) => re.test(t), 2);
-		if (!s.titulo) avisar(`Seção não encontrada no cap. ${c.numero}: ${re}`);
-		return { titulo: titulo ?? s.titulo?.texto ?? '', href: `${c.href}#${s.titulo?.id ?? ''}`, blocos: s.blocos };
-	};
-	const iVenenos = c11.blocos.findIndex((b) => b.tipo === 'h');
-	equipamentos.abas = [
-		{
-			id: 'itens',
-			titulo: 'Itens utilitários',
-			secoes: [{ titulo: 'Itens utilitários', href: c11.href, blocos: c11.blocos.slice(0, iVenenos) }, trecho(c11, /^Sistema de Carga/)]
-		},
-		{ id: 'venenos', titulo: 'Venenos', secoes: [trecho(c11, /^Tabela de Venenos/)] },
-		{ id: 'pergaminhos', titulo: 'Pergaminhos', secoes: [trecho(c11, /^Sistema de Pergaminhos/)] },
-		{ id: 'marionetes', titulo: 'Marionetes', secoes: [trecho(c13, /^Construindo uma Marionete/)] },
-		{ id: 'qualidade', titulo: 'Qualidade e propriedades', secoes: [trecho(c12, /^Qualidade das Armas/), trecho(c12, /^Propriedades Especiais/)] }
-	];
-}
-
-// ---------------------------------------------------------------- referências cruzadas e glossário no texto
-function ligar(c: Trecho[], comGlossario: Set<string> | null): Trecho[] {
-	const out: Trecho[] = [];
-	const reRef = /\b(?:cap(?:ítulo|\.)\s*|Capítulo\s+)(\d{1,2})((?:\.\d+)*)/g;
-	for (const t of c) {
-		if (t.href || t.termo) {
-			out.push(t);
-			continue;
-		}
-		const pedacos: Trecho[] = [];
-		let pos = 0;
-		const marcas: { ini: number; fim: number; extra: Partial<Trecho> }[] = [];
-		for (const m of t.t.matchAll(reRef)) {
-			const n = +m[1];
-			const c = capitulos.find((x) => x.numero === n);
-			if (!c) continue;
-			let ancora = '';
-			if (m[2]) {
-				const h = c.blocos.find((b) => b.tipo === 'h' && b.texto.startsWith(`${n}${m[2]} `)) as { id: string } | undefined;
-				const cl = clas.find((x) => x.numero === `${n}${m[2]}`);
-				if (cl) {
-					marcas.push({ ini: m.index!, fim: m.index! + m[0].length, extra: { href: `/regras/clas/${cl.slug}` } });
-					continue;
-				}
-				if (h) ancora = `#${h.id}`;
-			}
-			marcas.push({ ini: m.index!, fim: m.index! + m[0].length, extra: { href: c.href + ancora } });
-		}
-		if (comGlossario) {
-			for (const [sigla, id] of termosTooltip) {
-				if (comGlossario.has(sigla)) continue;
-				const m = new RegExp(`(?<![\\wÀ-ÿ])${sigla}(?![\\wÀ-ÿ])`).exec(t.t);
-				if (m && !marcas.some((x) => m.index < x.fim && m.index + sigla.length > x.ini)) {
-					marcas.push({ ini: m.index, fim: m.index + sigla.length, extra: { termo: id } });
-					comGlossario.add(sigla);
-				}
-			}
-		}
-		marcas.sort((a, b) => a.ini - b.ini);
-		for (const mk of marcas) {
-			if (mk.ini < pos) continue;
-			if (mk.ini > pos) pedacos.push({ ...t, t: t.t.slice(pos, mk.ini) });
-			pedacos.push({ ...t, t: t.t.slice(mk.ini, mk.fim), ...mk.extra });
-			pos = mk.fim;
-		}
-		if (pos < t.t.length) pedacos.push({ ...t, t: t.t.slice(pos) });
-		out.push(...pedacos);
-	}
-	return out;
-}
-function ligarBlocos(bs: Bloco[], estado: { vistos: Set<string> }) {
-	for (const b of bs) {
-		if (b.tipo === 'h' && b.nivel === 2) estado.vistos = new Set();
-		if (b.tipo === 'p') b.c = ligar(b.c, estado.vistos);
-		else if (b.tipo === 'lista') {
-			const andar = (its: ItemLista[]) => its.forEach((it) => ((it.c = ligar(it.c, estado.vistos)), it.sub && andar(it.sub)));
-			andar(b.itens);
-		} else if (b.tipo === 'destaque') ligarBlocos(b.blocos, estado);
-		else if (b.tipo === 'tabela') b.linhas = b.linhas.map((l) => l.map((cel) => cel.map((p) => ligar(p, null))));
-	}
-}
-for (const c of capitulos) if (c.numero !== 22) ligarBlocos(c.blocos, { vistos: new Set() });
-for (const cl of clas) {
-	ligarBlocos(cl.descricao, { vistos: new Set() });
-	for (const s of cl.secoes) ligarBlocos(s.blocos, { vistos: new Set() });
-}
-for (const e of especializacoes.lista) ligarBlocos(e.extras, { vistos: new Set() });
-for (const j of [...jutsus, ...habilidades]) {
-	j.efeito = j.efeito && ligar(j.efeito, null);
-	j.notas = j.notas.map((n) => ligar(n, null));
-}
-
-// ---------------------------------------------------------------- índices de seção e resumos
 for (const c of capitulos) {
-	c.secoes = c.blocos.filter((b): b is Bloco & { tipo: 'h' } => b.tipo === 'h').map(({ id, texto, nivel }) => ({ id, titulo: texto, nivel }));
-	const p = c.blocos.find((b) => b.tipo === 'p') as { c: Trecho[] } | undefined;
-	const r = p ? textoDe(p.c) : '';
-	c.resumo = r.length > 200 ? r.slice(0, r.lastIndexOf(' ', 197)) + '…' : r;
+	const blocos: Bloco[] = c.epigrafe ? [{ tipo: 'epigrafe', ...c.epigrafe }, ...c.blocos] : c.blocos;
+	const nome = `${String(c.numero).padStart(2, '0')}-${c.slug}.md`;
+	writeFileSync(join(CONTEUDO, 'regras', nome), escreverDoc({ numero: c.numero, slug: c.slug, href: c.href, titulo: c.titulo, parte: c.parte }, blocos));
 }
 
-// ---------------------------------------------------------------- referência rápida (D10)
-const referencia: CardReferencia[] = [];
-{
-	const linhasDe = (t: (Bloco & { tipo: 'tabela' }) | undefined, f: (l: string[]) => [string, string]) => (t ? t.linhas.map((l) => f(l.map(celTexto))) : []);
-	const tabelaComCab = (c: Capitulo, inicioCab: string) => c.blocos.find((b): b is Bloco & { tipo: 'tabela' } => b.tipo === 'tabela' && normalizar(b.cab?.[0] ?? '').startsWith(normalizar(inicioCab)));
-	const add = (id: string, titulo: string, icone: string, c: Capitulo, ancora: string, linhas: [string, string][]) => {
-		if (!linhas.length) avisar(`Referência rápida vazia: ${titulo}`);
-		referencia.push({ id, titulo, icone, capitulo: { numero: c.numero, href: `${c.href}${ancora ? '#' + ancora : ''}` }, linhas });
-	};
-	const id = (c: Capitulo, re: RegExp) => (c.blocos.find((b) => b.tipo === 'h' && re.test(b.texto)) as { id: string } | undefined)?.id ?? '';
-	const c2 = cap(2), c4 = cap(4), c9 = cap(9), c10 = cap(10), c20 = cap(20);
-	add('dt', 'DIFICULDADES (DT)', 'dado/ic-dado-d20', c2, '', linhasDe(tabelaComCab(c2, 'Dificuldade'), (l) => [l[0], l[1]]));
-	add('testes', 'TIPOS DE TESTE', 'callout/ic-callout-destaque', c2, id(c2, /^Tipos de Teste/), linhasDe(tabelaComCab(c2, 'Tipo de teste'), (l) => [l[0], l[1]]));
-	const acoes = secao(c4.blocos, (t) => /^Ações por Turno/.test(t)).blocos.find((b) => b.tipo === 'lista') as { itens: ItemLista[] } | undefined;
-	add('acoes', 'AÇÕES POR TURNO', 'recurso/ic-recurso-iniciativa', c4, id(c4, /^Ações por Turno/), (acoes?.itens ?? []).map((it) => {
-		const t = textoDe(it.c);
-		const k = t.indexOf(':');
-		return [t.slice(0, k).trim(), t.slice(k + 1).trim()] as [string, string];
-	}).filter(([k]) => k.length < 40));
-	add('ataque', 'ATAQUE E DEFESA', 'recurso/ic-recurso-defesa', c4, id(c4, /^Ataque e Defesa/), linhasDe(tabelaComCab(c4, 'Tipo'), (l) => [l[0], `${l[1]} vs ${l[2]}`]));
-	add('vida', 'ESTADOS DE VIDA', 'estado/ic-estado-caido', c4, id(c4, /^Estados de Vida/), linhasDe(tabelaComCab(c4, 'PV atual'), (l) => [l[0], l[1]]));
-	add('saves', 'SAVES DE MORTE', 'illustrations/il-memorial', c4, id(c4, /^Saves de Morte/), linhasDe(tabelaComCab(c4, 'Resultado'), (l) => [l[0], l[1]]));
-	add('fadiga', 'FADIGA', 'recurso/ic-recurso-fadiga', c4, id(c4, /^Fadiga/), linhasDe(secao(c4.blocos, (t) => t === 'Fadiga').blocos.find((b) => b.tipo === 'tabela') as Bloco & { tipo: 'tabela' }, (l) => [l[0], l[1]]));
-	add('estados', 'ESTADOS ESPECIAIS', 'estado/ic-estado-atordoado', c4, id(c4, /^Estados Especiais/), linhasDe(tabelaComCab(c4, 'Estado'), (l) => [l[0], l[1]]));
-	add('visibilidade', 'VISIBILIDADE', 'estado/ic-estado-cego', c4, id(c4, /^Categorias de Visibilidade/), linhasDe(tabelaComCab(c4, 'Categoria'), (l) => [l[0], l[1]]));
-	const rec = secao(c9.blocos, (t) => /^Recuperação/.test(t), 2);
-	add('recuperacao', 'RECUPERAÇÃO', 'item/ic-item-kit-medico', c9, rec.titulo?.id ?? '', linhasDe(tabelaEm(rec.blocos), (l) => [l[0], l.slice(1).join(' · ')]));
-	// a DT do jutsu é definida em texto corrido no cap. 2
-	const iDt = c2.blocos.findIndex((b) => b.tipo === 'p' && /^DT do Jutsu\./.test(textoDe(b.c)));
-	const txDt = iDt >= 0 ? textoDe((c2.blocos[iDt] as { c: Trecho[] }).c) : '';
-	const mDt = txDt.match(/a DT é (\d+) \+ bônus de Rank \(([^)]+)\) \+ atributo-chave do lançador: ([^.]+)\./);
-	const ancoraDt = [...c2.blocos.slice(0, iDt)].reverse().find((b) => b.tipo === 'h') as { id: string } | undefined;
-	add('dt-jutsu', 'DT DO JUTSU', 'rank/ic-rank-c', c2, ancoraDt?.id ?? '', mDt ? [
-		['Base', mDt[1]],
-		['Bônus de rank', mDt[2]],
-		...mDt[3].split(/;\s*/).map((s) => {
-			const [attr, ...resto] = s.split(/\s+para\s+/);
-			return [resto.join(' para ').replace(/^\s*/, ''), attr.trim()] as [string, string];
-		})
-	] : []);
-	add('pj-rank', 'PJ → RANK', 'rank/ic-rank-b', c20, id(c20, /^Passo 3 — Verificar o Rank/), linhasDe(tabelaComCab(c20, 'Soma de PJ'), (l) => [`${l[0]} PJ`, `Rank ${l[1]} · ${l[2]}`]));
-	const c18 = cap(18);
-	add('custos-pt', 'CUSTOS DE PT', 'recurso/ic-recurso-pt', c18, id(c18, /^Gastando Pontos de Treino/), linhasDe(tabelaComCab(c18, 'Aplicação'), (l) => [l[0], l[1]]));
-	add('elementos', 'VANTAGEM ELEMENTAL', 'elemento/ic-elemento-katon', c10, id(c10, /^Os Cinco Elementos/), linhasDe(tabelaComCab(c10, 'Elemento'), (l) => [l[0], `forte contra ${l[1]} · fraco contra ${l[2]}`]));
-}
+clas.forEach((cl, i) => {
+	const b = brutosCla.get(cl.slug)!;
+	const blocos: Bloco[] = [
+		...(cl.epigrafe ? [{ tipo: 'epigrafe' as const, ...cl.epigrafe }] : []),
+		...cl.descricao,
+		...cl.secoes.flatMap((x): Bloco[] => [{ tipo: 'h', nivel: 4, id: x.id, texto: x.titulo }, ...x.blocos])
+	];
+	writeFileSync(join(CONTEUDO, 'clas', `${String(i + 1).padStart(2, '0')}-${cl.slug}.md`), escreverDoc(b, blocos));
+});
 
-// ---------------------------------------------------------------- busca
-const busca: DocBusca[] = [];
-{
-	const textoBlocos = (bs: Bloco[]): string =>
-		bs
-			.map((b) => {
-				if (b.tipo === 'p') return textoDe(b.c);
-				if (b.tipo === 'lista') return b.itens.map((it) => textoDe(it.c)).join(' ');
-				if (b.tipo === 'formula') return b.texto;
-				if (b.tipo === 'destaque') return b.titulo + ' ' + textoBlocos(b.blocos);
-				if (b.tipo === 'tabela') return [...(b.cab ?? []), ...b.linhas.flat().map(celTexto)].join(' ');
-				return '';
-			})
-			.join(' ')
-			.replace(/\s+/g, ' ');
-	for (const c of capitulos) {
-		if (c.numero === 22) continue;
-		const pilha: string[] = [];
-		const iconeParte = ICONE_PARTE[c.parte - 1];
-		c.blocos.forEach((b, i) => {
-			if (b.tipo !== 'h') return;
-			pilha.length = b.nivel - 2;
-			pilha.push(b.texto);
-			let fim = c.blocos.findIndex((x, k) => k > i && x.tipo === 'h');
-			if (fim < 0) fim = c.blocos.length;
-			busca.push({
-				id: `s:${c.numero}:${b.id}`,
-				tipo: 'secao',
-				titulo: b.texto,
-				caminho: `Cap. ${c.numero} · ${c.titulo} › ${pilha.join(' › ')}`,
-				texto: textoBlocos(c.blocos.slice(i + 1, fim)).slice(0, 4000),
-				href: `${c.href}#${b.id}`,
-				icone: iconeParte
-			});
-		});
-		busca.push({ id: `c:${c.numero}`, tipo: 'secao', titulo: c.titulo, caminho: `Cap. ${c.numero} · ${ROTULO_PARTE[c.parte - 1]}`, texto: c.resumo, href: c.href, icone: iconeParte });
-	}
-	for (const j of jutsus) {
-		const icone = j.cla ? `cla/ic-cla-${j.cla}` : j.elemento ? `elemento/ic-elemento-${j.elemento}` : `pericia/ic-pericia-${j.tipo === 'Fuuinjutsu' ? 'selamento' : slug(j.tipo)}`;
-		busca.push({ id: `j:${j.slug}`, tipo: 'jutsu', titulo: j.nome, caminho: `${j.tipo} · ${j.origem} · Rank ${j.rank}`, texto: [j.traducao, ...j.descricao.map(textoDe), j.efeito ? textoDe(j.efeito) : ''].filter(Boolean).join(' — '), href: `/regras/jutsus/${j.slug}`, icone, rank: j.rank });
-	}
-	for (const h of habilidades) {
-		const cl = clas.find((c) => c.slug === h.cla);
-		busca.push({ id: `h:${h.slug}`, tipo: 'jutsu', titulo: h.nome, caminho: `Habilidade · ${h.origem}`, texto: [h.traducao, ...h.descricao.map(textoDe), h.efeito ? textoDe(h.efeito) : ''].filter(Boolean).join(' — '), href: cl ? `/regras/clas/${cl.slug}#${slug('Jutsus e Habilidades do Clã')}` : `${hrefCapitulo(h.capitulo)}#${h.ancora}`, icone: h.cla ? `cla/ic-cla-${h.cla}` : 'acao/ic-acao-criar-personagem' });
-	}
-	for (const cl of clas) busca.push({ id: `k:${cl.slug}`, tipo: 'cla', titulo: `Clã ${cl.nome}`, caminho: `Clã · ${cl.epiteto} · ${cl.vila.nome}`, texto: [cl.epigrafe?.texto ?? '', textoBlocos(cl.descricao)].join(' '), href: `/regras/clas/${cl.slug}`, icone: `cla/ic-cla-${cl.slug}` });
-	for (const cat of equipamentos.categorias)
-		for (const a of cat.armas) busca.push({ id: `a:${a.slug}`, tipo: 'item', titulo: a.nome, caminho: `Arma · ${cat.titulo} · ${a.dano} · ${a.preco}`, texto: a.propriedades.join(' '), href: `/regras/equipamentos?aba=armas&categoria=${cat.id}#${a.slug}`, icone: a.icone });
-	for (const e of equipamentos.espadas) busca.push({ id: `e:${e.slug}`, tipo: 'item', titulo: e.nome, caminho: `Sete Espadas da Névoa · ${e.traducao}`, texto: e.habilidade, href: `/regras/equipamentos?aba=armas&categoria=espadas#${e.slug}`, icone: e.icone });
-	for (const aba of equipamentos.abas)
-		for (const s of aba.secoes)
-			for (const b of s.blocos)
-				if (b.tipo === 'tabela')
-					for (const l of b.linhas) {
-						const nome = celTexto(l[0]);
-						if (nome) busca.push({ id: `i:${aba.id}:${slug(nome)}`, tipo: 'item', titulo: nome, caminho: `${aba.titulo} · ${l.slice(1, 3).map(celTexto).join(' · ')}`, texto: l.slice(1).map(celTexto).join(' '), href: `/regras/equipamentos?aba=${aba.id}`, icone: 'equip/ic-equip-kit' });
-					}
-	for (const s of glossario) for (const t of s.termos) busca.push({ id: `g:${t.id}`, tipo: 'termo', titulo: t.termo, caminho: `Glossário · ${s.titulo}`, texto: t.campos.join(' · '), href: `/regras/glossario#${t.id}`, icone: t.icone ?? 'nav/ic-nav-referencia' });
-	const ids = new Set<string>();
-	for (const d of busca) {
-		while (ids.has(d.id)) d.id += "'";
-		ids.add(d.id);
-	}
-}
-
-// ---------------------------------------------------------------- saída
-const indice: IndiceLivro = {
-	partes,
-	capitulos: capitulos.map(({ numero, slug: s, href, titulo, parte, resumo, secoes }) => ({ numero, slug: s, href, titulo, parte, resumo, secoes }))
-};
-mkdirSync(SAIDA, { recursive: true });
-const gravar = (nome: string, dados: unknown) => writeFileSync(join(SAIDA, `${nome}.json`), JSON.stringify(dados));
-gravar('indice', indice);
-gravar('capitulos', capitulos);
-gravar('jutsus', jutsus);
-gravar('habilidades', habilidades);
-gravar('clas', clas);
-gravar('equipamentos', equipamentos);
-gravar('especializacoes', especializacoes);
-gravar('glossario', glossario);
-gravar('referencia', referencia);
-gravar('busca', busca);
-
-console.log(`Capítulos: ${capitulos.length} · Jutsus: ${jutsus.length} · Habilidades: ${habilidades.length} · Clãs: ${clas.length}`);
-console.log(`Armas: ${equipamentos.categorias.reduce((n, c) => n + c.armas.length, 0)} em ${equipamentos.categorias.length} categorias · Espadas: ${equipamentos.espadas.length} · Propriedades: ${equipamentos.propriedades.length}`);
-console.log(`Especializações: ${especializacoes.lista.length} · Glossário: ${glossario.reduce((n, s) => n + s.termos.length, 0)} termos · Referência: ${referencia.length} cards · Busca: ${busca.length} documentos`);
-if (avisos.length) {
-	console.log(`\n${avisos.length} aviso(s):`);
-	for (const a of avisos) console.log(' - ' + a);
-}
+const textoJ = (j: Jutsu | Habilidade) => ({
+	descricao: j.descricao.map(mdDeTrechos),
+	efeito: j.efeito ? mdDeTrechos(j.efeito) : null,
+	notas: j.notas.map(mdDeTrechos)
+});
+writeFileSync(
+	join(CONTEUDO, 'jutsus.yaml'),
+	'# Jutsus do livro, na ordem em que aparecem. descricao/efeito/notas são Markdown de uma linha.\n' +
+		yaml(
+			jutsus.map((j) => ({ slug: j.slug, nome: j.nome, traducao: j.traducao, origem: j.origem, tipo: j.tipo, rank: j.rank, custo: j.custo, info: j.info, ...textoJ(j), pj: j.pj, capitulo: j.capitulo, ancora: j.ancora, cla: j.cla, elemento: j.elemento })),
+			opcoesYaml
+		)
+);
+writeFileSync(
+	join(CONTEUDO, 'habilidades.yaml'),
+	'# Habilidades do livro (cards sem rank nem custo). descricao/efeito/notas são Markdown de uma linha.\n' +
+		yaml(
+			habilidades.map((h) => ({ slug: h.slug, nome: h.nome, traducao: h.traducao, origem: h.origem, ...textoJ(h), capitulo: h.capitulo, ancora: h.ancora, cla: h.cla })),
+			opcoesYaml
+		)
+);
+console.log(`Exportados: ${capitulos.length} capítulos, ${clas.length} clãs, ${jutsus.length} jutsus, ${habilidades.length} habilidades`);
+if (avisos.length) for (const a of avisos) console.log(' - ' + a);

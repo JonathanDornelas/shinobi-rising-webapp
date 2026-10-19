@@ -35,6 +35,19 @@ export class EspiaoSecoes {
 	}
 }
 
+/**
+ * Leva ao destino de uma âncora e o realça. No celular, as tabelas curtas viram cartões e a linha da tabela (escondida)
+ * tem um par visível com o sufixo "-m" (ex.: #cond-atordoado-m).
+ */
+export function irPara(id: string, rolar = true): HTMLElement | null {
+	let el = document.getElementById(id);
+	if (el && !el.offsetParent) el = document.getElementById(`${id}-m`) ?? el;
+	if (!el) return null;
+	if (rolar || !el.offsetParent || el.id.endsWith("-m")) el.scrollIntoView({ block: "start" });
+	realcar(el);
+	return el;
+}
+
 /** Destaca rapidamente a seção de destino ao chegar por âncora (1s). */
 export function realcar(el: HTMLElement) {
 	el.animate([{ backgroundColor: 'rgba(217,168,43,.28)' }, { backgroundColor: 'transparent' }], { duration: 1000, easing: 'ease-out' });

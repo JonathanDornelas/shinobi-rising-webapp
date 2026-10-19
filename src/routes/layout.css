@@ -103,6 +103,20 @@
 	--focus: #e8806f;
 	--fundo: #0a0807;
 	--hero-sub: #d9c2a7;
+	/* termos do livro (léxico): recursos com a cor da barra de recursos, os outros tipos com tons próprios */
+	--termo-pv: #e8806f;
+	--termo-pc: #7fb8e6;
+	--termo-pe: #f2c14e;
+	--termo-pt: #8fd18a;
+	--termo-pd: #f2a65a;
+	--termo-xp: #c9a0f0;
+	--termo-pic: #e8a0c0;
+	--termo-recurso: #d9c2a7;
+	--termo-condicao: #c9a0f0;
+	--termo-pericia: #7fd3c3;
+	--termo-arma: #a9bccf;
+	--termo-jutsu: #e8806f;
+	--termo-cla: #d9a82b;
 }
 
 [data-theme='washi'] {
@@ -132,6 +146,19 @@
 	--focus: #c44536;
 	--fundo: #e6d2bf;
 	--hero-sub: #d9c2a7;
+	--termo-pv: #a8342a;
+	--termo-pc: #1f5f8f;
+	--termo-pe: #8a6200;
+	--termo-pt: #2f6b2a;
+	--termo-pd: #a0521d;
+	--termo-xp: #6a3fa0;
+	--termo-pic: #9b3a63;
+	--termo-recurso: #5c524a;
+	--termo-condicao: #6a3fa0;
+	--termo-pericia: #1f6b5e;
+	--termo-arma: #44576b;
+	--termo-jutsu: #8b2e20;
+	--termo-cla: #7f6000;
 }
 
 /* Cores de marca, iguais nos dois temas; o tema do usuário (perfil) pode trocar o acento e o raio. */
@@ -529,6 +556,14 @@
 	}
 
 	/* grupo de alternância (join) */
+	/* capitular da abertura do capítulo (estilo livro de regras) */
+	.capitular::first-letter {
+		float: left;
+		margin: 0.06em 0.12em 0 0;
+		font: 800 3.3em/0.82 var(--font-mincho);
+		color: var(--vermelhao);
+	}
+
 	/* estrela de favorito marcada (Traco "estrela"): ouro cheio; no washi, contorno escuro para não sumir no papel */
 	.estrela-on {
 		fill: var(--color-ouro) !important;

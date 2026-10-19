@@ -9,6 +9,7 @@ import especializacoesJson from './gerado/especializacoes.json';
 import glossarioJson from './gerado/glossario.json';
 import referenciaJson from './gerado/referencia.json';
 import buscaJson from './gerado/busca.json';
+import termosJson from './gerado/termos.json';
 import type {
 	Bloco,
 	CardReferencia,
@@ -20,7 +21,8 @@ import type {
 	Especializacoes,
 	Habilidade,
 	Jutsu,
-	SecaoGlossario
+	SecaoGlossario,
+	TermoLexico
 } from './tipos';
 
 export const capitulos = capitulosJson as Capitulo[];
@@ -32,6 +34,8 @@ export const especializacoes = especializacoesJson as Especializacoes;
 export const glossario = glossarioJson as SecaoGlossario[];
 export const referencia = referenciaJson as CardReferencia[];
 export const busca = buscaJson as DocBusca[];
+/** Léxico: os termos destacados no texto das regras (compêndio no glossário). */
+export const termos = termosJson as TermoLexico[];
 
 export const resumoCla = ({ slug, nome, epiteto, vila, kkg, bonus, status }: Cla): ClaResumo => ({ slug, nome, epiteto, vila, kkg, bonus, status });
 

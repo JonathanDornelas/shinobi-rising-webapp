@@ -1,0 +1,264 @@
+# Léxico do livro: termos que viram destaque no texto, com cartão no hover e link para a regra (estilo D&D Beyond).
+# Aqui ficam só os termos curados à mão. O compilador (scripts/livro/compilar.ts) acrescenta sozinho, a partir do
+# próprio livro: condições (cap. 4, Estados Especiais), perícias (cap. 3), jutsus e habilidades, clãs, armas,
+# elementos e ranks.
+#
+# Campos: id ("tipo:slug"; o tipo define o visual), rotulo (como aparece no cartão), nome, padroes (como aparece no
+# texto; expressões regulares, sensíveis a maiúsculas), resumo (até ~200 caracteres), href (a regra), icone.
+# Recursos e atributos são marcados em todas as ocorrências; os demais, só na primeira de cada seção.
+# Para forçar um termo no texto: :t[texto]{#id}. Para impedir: :sem[texto].
+
+- id: recurso:pv
+  rotulo: PV
+  nome: Pontos de Vida
+  padroes: [PV, PVs]
+  resumo: Quanto dano o ninja aguenta. Em 0 PV fica Inconsciente e faz Saves de Morte; na metade negativa do máximo, morre.
+  href: /regras/combate#dano-inconsciencia-e-morte
+  icone: recurso/ic-recurso-pv
+- id: recurso:pc
+  rotulo: PC
+  nome: Pontos de Chakra
+  padroes: [PC, PCs, Pontos de Chakra]
+  resumo: A energia dos jutsus de Ninjutsu, Genjutsu e Fuuinjutsu. Cada jutsu gasta PC; sem PC, sem técnica. Recupera com descanso.
+  href: /regras/sistema-de-chakra#pontos-de-chakra-pc
+  icone: recurso/ic-recurso-pc
+- id: recurso:pe
+  rotulo: PE
+  nome: Pontos de Estamina
+  padroes: [PE, PEs, Pontos de Estamina]
+  resumo: Energia física. Paga técnicas de Taijutsu e Bukijutsu e a abertura dos Portões Internos.
+  href: /regras/sistema-de-chakra#pontos-de-estamina-pe
+  icone: recurso/ic-recurso-pe
+- id: recurso:pt
+  rotulo: PT
+  nome: Pontos de Treino
+  padroes: [PT, Pontos de Treino]
+  resumo: A moeda do treino. Compra jutsus novos, especializações, proficiências e pontos em perícias.
+  href: /regras/treino#gastando-pontos-de-treino
+  icone: recurso/ic-recurso-pt
+- id: recurso:pd
+  rotulo: PD
+  nome: Pontos de Destino
+  padroes: [PD, Pontos? de Destino]
+  resumo: 1 por sessão. Gaste para re-rolar um teste falho, somar +5 a uma rolagem ou sobreviver a um golpe fatal com 1 PV.
+  href: /regras/mecanica-basica#pontos-de-destino-pd
+  icone: recurso/ic-recurso-pd
+- id: recurso:xp
+  rotulo: XP
+  nome: Pontos de Experiência
+  padroes: [XP]
+  resumo: Ganhos em missões e combates. Ao juntar o XP do próximo nível, o ninja sobe de nível.
+  href: /regras/progressao-e-ranks#pontos-de-experiencia-xp
+  icone: recurso/ic-recurso-xp
+- id: recurso:pic
+  rotulo: PIC
+  nome: Pontos de Influência do Clã
+  padroes: [PIC]
+  resumo: Favores que o ninja pode pedir ao próprio clã. Cada clã define quantos dá e quando renovam.
+  href: /regras/clas-e-kekkei-genkai
+  icone: recurso/ic-recurso-pic
+- id: recurso:pj
+  rotulo: PJ
+  nome: Pontos de Jutsu
+  padroes: [PJ]
+  resumo: A medida do poder de um jutsu na criação de jutsus. A soma dos PJ define o rank, o custo e os PT para aprender.
+  href: /regras/criacao-de-jutsus
+- id: recurso:pfo
+  rotulo: PFo
+  nome: Pontos de Forja
+  padroes: [PFo]
+  resumo: O orçamento para criar armas na Forja Ninja.
+  href: /regras/forja-ninja
+- id: recurso:pb
+  rotulo: PB
+  nome: Pontos de Bônus
+  padroes: [PB]
+  resumo: O orçamento de benefícios na criação de um clã.
+  href: /regras/clas-e-kekkei-genkai
+- id: recurso:pkg
+  rotulo: PKG
+  nome: Pontos de Kekkei Genkai
+  padroes: [PKG]
+  resumo: O orçamento para criar uma Kekkei Genkai. As limitações dão PKG; os benefícios gastam.
+  href: /regras/clas-e-kekkei-genkai
+
+- id: atributo:for
+  rotulo: FOR
+  nome: Força
+  padroes: [FOR]
+  resumo: Potência física. Taijutsu, armas corpo a corpo, Atletismo, escalar e carga.
+  href: /regras/atributos-pericias-e-proficiencias#atributos
+  icone: atributo/ic-atributo-for
+- id: atributo:agi
+  rotulo: AGI
+  nome: Agilidade
+  padroes: [AGI]
+  resumo: Velocidade e reflexos. Acrobacia (e com ela a Defesa), Iniciativa, armas à distância, Kugutsu e Furtividade.
+  href: /regras/atributos-pericias-e-proficiencias#atributos
+  icone: atributo/ic-atributo-agi
+- id: atributo:vig
+  rotulo: VIG
+  nome: Vigor
+  padroes: [VIG]
+  resumo: Resistência corporal. Pontos de Vida e de Estamina, Sobrevivência, resistir a venenos e fadiga.
+  href: /regras/atributos-pericias-e-proficiencias#atributos
+  icone: atributo/ic-atributo-vig
+- id: atributo:int
+  rotulo: INT
+  nome: Inteligência
+  padroes: [INT]
+  resumo: Raciocínio e estudo. Investigação, Medicina, Rastreamento e Selamento.
+  href: /regras/atributos-pericias-e-proficiencias#atributos
+  icone: atributo/ic-atributo-int
+- id: atributo:ctr
+  rotulo: CTR
+  nome: Controle
+  padroes: [CTR]
+  resumo: Precisão de chakra. Ninjutsu, Genjutsu, Pontos de Chakra e a DT dos jutsus.
+  href: /regras/atributos-pericias-e-proficiencias#atributos
+  icone: atributo/ic-atributo-ctr
+- id: atributo:esp
+  rotulo: ESP
+  nome: Espírito
+  padroes: [ESP]
+  resumo: Vontade e percepção. Pontos de Chakra, Percepção (e a Defesa Mental), Persuasão e resistir a Genjutsu.
+  href: /regras/atributos-pericias-e-proficiencias#atributos
+  icone: atributo/ic-atributo-esp
+
+- id: regra:vantagem
+  rotulo: Vantagem
+  nome: Vantagem
+  padroes: ['[Vv]antagem(?! [Ee]lemental)']
+  resumo: Role o d20 duas vezes e fique com o maior resultado.
+  href: /regras/mecanica-basica#vantagem-e-desvantagem
+  icone: dado/ic-dado-d20
+- id: regra:desvantagem
+  rotulo: Desvantagem
+  nome: Desvantagem
+  padroes: ['[Dd]esvantagem(?! [Ee]lemental)']
+  resumo: Role o d20 duas vezes e fique com o menor resultado.
+  href: /regras/mecanica-basica#vantagem-e-desvantagem
+  icone: dado/ic-dado-d20
+- id: regra:critico
+  rotulo: Acerto Crítico
+  nome: Acerto Crítico
+  padroes: ['[Aa]certos? [Cc]ríticos?', '(?<=(?:for|é|seja|ataque|dano|sucesso|golpe|Endan) )críticos?', '20 natural']
+  resumo: 20 natural no d20. Sucesso espetacular; em ataques, os dados de dano dobram (os bônus fixos não).
+  href: /regras/mecanica-basica#criticos-e-falhas
+  icone: dado/ic-dado-d20
+- id: regra:falha-critica
+  rotulo: Falha Crítica
+  nome: Falha Crítica
+  padroes: ['[Ff]alhas? [Cc]ríticas?', '1 natural']
+  resumo: 1 natural no d20. O ataque erra; fora de combate, o Mestre narra uma complicação.
+  href: /regras/mecanica-basica#criticos-e-falhas
+  icone: dado/ic-dado-d20
+- id: regra:dt
+  rotulo: DT
+  nome: Dificuldade do Teste
+  padroes: [DT]
+  resumo: 'O alvo do d20: Fácil 10, Média 15, Difícil 20, Muito Difícil 25, Heroica 30.'
+  href: /regras/mecanica-basica#rolagem-padrao
+- id: regra:dt-do-jutsu
+  rotulo: DT do Jutsu
+  nome: DT do Jutsu
+  padroes: [DT do Jutsu, DT dos jutsus]
+  resumo: 10 + bônus de Rank (E +0 … S +5) + atributo-chave do lançador (CTR, FOR ou AGI, conforme o tipo).
+  href: /regras/mecanica-basica#tipos-de-teste-como-o-mestre-escolhe-o-que-rolar
+- id: regra:resistencia
+  rotulo: Resistência
+  nome: Resistência
+  padroes: [Resistências?]
+  resumo: 'Teste do alvo contra a DT de um efeito (ex.: 1d20 + VIG contra veneno). Em sucesso, evita a condição; em área, sofre metade do dano.'
+  href: /regras/mecanica-basica#tipos-de-teste-como-o-mestre-escolhe-o-que-rolar
+- id: regra:rd
+  rotulo: RD
+  nome: Redução de Dano
+  padroes: [RD, Redução de Dano]
+  resumo: Subtraída de cada dano sofrido. Fontes diferentes não se somam (vale a maior); efeitos que "ignoram RD" passam direto.
+  href: /regras/combate#ataque-e-defesa
+  icone: recurso/ic-recurso-rd
+- id: regra:defesa
+  rotulo: Defesa
+  nome: Defesa
+  padroes: [Defesa]
+  resumo: 10 + Acrobacia. O alvo das rolagens de ataque de Taijutsu, armas, Ninjutsu e Kugutsu.
+  href: /regras/combate#ataque-e-defesa
+  icone: recurso/ic-recurso-defesa
+- id: regra:defesa-mental
+  rotulo: Defesa Mental
+  nome: Defesa Mental
+  padroes: [Defesa Mental]
+  resumo: 10 + Percepção. O alvo das rolagens de ataque de Genjutsu.
+  href: /regras/combate#ataque-e-defesa
+  icone: recurso/ic-recurso-defesa-mental
+- id: regra:defesa-total
+  rotulo: Defesa Total
+  nome: Defesa Total
+  padroes: [Defesa Total]
+  resumo: Usa a ação primária. +5 em Defesa e em Defesa Mental até o início do seu próximo turno.
+  href: /regras/combate#defesa-total
+  icone: recurso/ic-recurso-defesa
+- id: regra:iniciativa
+  rotulo: Iniciativa
+  nome: Iniciativa
+  padroes: [Iniciativa]
+  resumo: 1d20 + AGI no início do combate. Define a ordem dos turnos.
+  href: /regras/combate#estrutura-do-turno
+  icone: recurso/ic-recurso-iniciativa
+- id: regra:acao-primaria
+  rotulo: Ação Primária
+  nome: Ação Primária
+  padroes: ['[Aa](?:ção|ções) [Pp]rimárias?', '[Aa]ção [Pp]rincipal']
+  resumo: 1 por turno. Atacar, lançar jutsu, sprintar, comandar marionete em manobra completa.
+  href: /regras/combate#acoes-por-turno
+- id: regra:acao-secundaria
+  rotulo: Ação Secundária
+  nome: Ação Secundária
+  padroes: ['[Aa](?:ção|ções) [Ss]ecundárias?']
+  resumo: 1 por turno. Mover até 10 m, sacar item, dar um comando simples a aliado ou marionete.
+  href: /regras/combate#acoes-por-turno
+- id: regra:acao-livre
+  rotulo: Ação Livre
+  nome: Ação Livre
+  padroes: ['[Aa](?:ção|ções) [Ll]ivres?']
+  resumo: Falar uma frase curta, soltar um item, ativar um efeito descrito como livre (no máximo um efeito livre de jutsu por turno).
+  href: /regras/combate#acoes-por-turno
+- id: regra:acao-completa
+  rotulo: Ação Completa
+  nome: Ação Completa
+  padroes: ['[Aa](?:ção|ções) [Cc]ompletas?']
+  resumo: Usa a ação primária e a secundária do mesmo turno.
+  href: /regras/combate#acoes-por-turno
+- id: regra:reacao
+  rotulo: Reação
+  nome: Reação
+  padroes: [Reação, Reações]
+  resumo: 1 por rodada, fora do seu turno. Esquivar, defender, jutsus de reação como o Kawarimi.
+  href: /regras/combate#acoes-por-turno
+- id: regra:esquiva-ativa
+  rotulo: Esquiva Ativa
+  nome: Esquiva Ativa
+  padroes: [Esquiva Ativa]
+  resumo: 'Reação: role 1d20 + Acrobacia; o resultado substitui a Defesa contra aquele ataque (mesmo que seja menor).'
+  href: /regras/combate#esquiva-ativa-reacao
+- id: regra:cena
+  rotulo: Cena
+  nome: Cena
+  padroes: [Cena, Cenas]
+  resumo: Trecho contínuo de ação com o mesmo objetivo e local. Efeitos "por cena" se renovam quando ela termina.
+  href: /regras/combate#acoes-por-turno
+- id: regra:fadiga
+  rotulo: Fadiga
+  nome: Fadiga
+  padroes: [Fadiga]
+  resumo: '5 níveis acumulativos: Cansado, Exausto, Esgotado, Colapso e Risco de morte. Cada nível piora as penalidades.'
+  href: /regras/combate#fadiga
+  icone: recurso/ic-recurso-fadiga
+- id: regra:save-de-morte
+  rotulo: Save de Morte
+  nome: Save de Morte
+  padroes: ['[Ss]aves? de [Mm]orte']
+  resumo: 'Em 0 PV, a cada turno: 1d20 + ESP (só positivo) contra DT 10. Três sucessos estabilizam; três falhas, morte.'
+  href: /regras/combate#saves-de-morte-testes-de-salvaguarda
+  icone: estado/ic-estado-caido
