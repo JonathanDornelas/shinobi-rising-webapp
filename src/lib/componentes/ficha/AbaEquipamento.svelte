@@ -3,8 +3,9 @@
 	import { numero } from '#lib/formatar.ts';
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
 	import type { ItemInventario } from '#lib/personagem/progressao.ts';
-	import { linhasPericia, type ItemLoja } from '#lib/personagem/regras.ts';
-	import { somar, teste } from '#lib/rolagens/expressoes.ts';
+	import type { ItemLoja } from '#lib/personagem/regras.ts';
+	import { corQualidade } from '#lib/equipamentos/dados.ts';
+	import { somar } from '#lib/rolagens/expressoes.ts';
 	import Icone from '../ui/Icone.svelte';
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
 	import Modal from '../ui/Modal.svelte';
@@ -27,17 +28,18 @@
 	const itens = $derived((f.catalogo.loja as ItemLoja[]).filter((i) => i.nome.toLowerCase().includes(filtro.trim().toLowerCase())));
 	let ryoDelta = $state<number | null>(null);
 
-	// arma: ataque de Bukijutsu (FOR corpo a corpo, AGI à distância, cap. 3) e o dano da arma (+1 com proficiência)
-	const buki = $derived(linhasPericia(f.dados).find((p) => p.id === 'bukijutsu'));
-	function arma(i: ItemInventario) {
-		const l = (f.catalogo.loja as ItemLoja[]).find((x) => x.id === i.id || x.nome === i.nome);
-		if (!l?.dano || !buki) return null;
-		const distancia = /Distância/.test(l.grupo) && buki.distancia ? buki.distancia.total : null;
-		const prof = f.calc.proficiencias.some((p) => p.tipo === 'arma' && p.alvo === i.nome) ? 1 : 0;
-		const limpo = l.dano.replace(/\s+/g, '');
-		const dados = /^\d+d\d+([+-]\d+)?$/.test(limpo) ? limpo : null;
-		return { ataque: teste(distancia ?? buki.total), dano: dados ? somar(dados, prof) : null };
+	// arma: só o dano (cap. 11/12; arma forjada já traz a qualidade no dano) e +1 com proficiência
+	function danoArma(i: ItemInventario): string | null {
+		const base = i.dano ?? (f.catalogo.loja as ItemLoja[]).find((x) => x.id === i.id || x.nome === i.nome)?.dano;
+		const limpo = base?.replace(/\s+/g, '') ?? '';
+		if (!/^\d+d\d+([+-]\d+)?$/.test(limpo)) return null;
+		return f.calc.proficiencias.some((p) => p.tipo === 'arma' && p.alvo === i.nome) ? somarDano(limpo, 1) : limpo;
 	}
+	// soma no modificador que já existe (1d8+1 com +1 → 1d8+2)
+	const somarDano = (e: string, n: number) => {
+		const m = /^(\d+d\d+)([+-]\d+)?$/.exec(e)!;
+		return somar(m[1], Number(m[2] ?? 0) + n);
+	};
 </script>
 
 <div class="grid items-start gap-5 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
@@ -53,22 +55,17 @@
 					</div>
 					<ul class="m-0 list-none p-0">
 						{#each lista as i (i.id)}
-							<li class="grid grid-cols-[32px_minmax(0,1fr)_auto_56px] items-center gap-3 border-b-2 border-b3 px-3.5 py-1 last:border-b-0">
+							<li class="grid grid-cols-[32px_minmax(0,1fr)_auto_56px] items-center gap-3 border-b-2 border-b3 px-3.5 py-1 last:border-b-0" style:box-shadow={corQualidade(i.qualidade) ? `inset 4px 0 0 ${corQualidade(i.qualidade)}` : undefined} title={i.qualidade && i.qualidade !== 'Comum' ? `Qualidade ${i.qualidade}` : undefined}>
 								<Icone id={i.icone} />
 								<span class="flex min-w-0 flex-col gap-0.5">
 									<span class="text-sm leading-5 font-semibold">{i.nome}</span>
 									{#if i.nota}<span class="text-xs leading-4 text-mut">{i.nota}</span>{/if}
-									{#if f.editavel && g.id === 'Armas'}
-										{@const a = arma(i)}
-										{#if a}
-											<span class="flex flex-wrap gap-1.5 pb-1">
-												<BotaoRolar texto="ATAQUE {a.ataque}" expressao={a.ataque} rotulo="{i.nome} · ataque" personagem={f.id} d20 />
-												{#if a.dano}<BotaoRolar texto="DANO {a.dano}" expressao={a.dano} rotulo="{i.nome} · dano" personagem={f.id} /><BotaoRolar texto="CRÍTICO" expressao={a.dano} rotulo="{i.nome} · dano crítico" personagem={f.id} critico />{/if}
-											</span>
-										{/if}
-									{/if}
 								</span>
 								<span class="flex items-center gap-1">
+									{#if f.editavel && g.id === 'Armas'}
+										{@const dano = danoArma(i)}
+										{#if dano}<BotaoRolar class="mr-1 w-9" expressao={dano} rotulo="{i.nome} · dano" personagem={f.id} />{/if}
+									{/if}
 									{#if f.editavel}<button type="button" class="btn-icone h-8 w-8 font-pixel" aria-label="Usar ou descartar 1 {i.nome}" onclick={() => f.alterarQtd(i.id, -1)}>−</button>{/if}
 									<span class="t-num w-9 text-center text-[15px]">×{i.qtd}</span>
 									{#if f.editavel}<button type="button" class="btn-icone h-8 w-8 font-pixel" aria-label="Mais 1 {i.nome} (sem custo)" onclick={() => f.alterarQtd(i.id, 1)}>+</button>{/if}

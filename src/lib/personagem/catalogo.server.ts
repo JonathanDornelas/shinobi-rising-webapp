@@ -3,7 +3,7 @@ import { clas, equipamentos, especializacoes, jutsus } from '#lib/livro/dados.se
 import type { Bloco, Trecho } from '#lib/livro/tipos.ts';
 import type { JutsuCatalogo } from '#lib/clas/criador.svelte.ts';
 import { claParaFicha, slugCarta, type ClaDados } from '#lib/clas/regras.ts';
-import { normalizarJutsu, paraJutsuLivro, type JutsuDados } from '#lib/jutsus/regras.ts';
+import { normalizarJutsu, paraJutsuLivro, rolagemDoJutsu, type JutsuDados } from '#lib/jutsus/regras.ts';
 import type { JutsuCriadoFicha } from '#lib/jutsus/servidor.ts';
 import { slugJutsuCriado } from '#lib/jutsus/status.ts';
 import { CLAS, ESPECIALIZACOES, JUTSUS_ACADEMIA, PESOS } from './dados.ts';
@@ -153,7 +153,7 @@ function jutsusOriginais(id: string, d: ClaDados, criados: JutsuCriadoFicha[]): 
 		.filter((c) => c.tipo === 'jutsu' && !c.slug)
 		.map((c) => {
 			const feito = criados.find((j) => j.cla_id === id && j.carta_id === c.id);
-			if (feito) return { ...jutsuFicha(paraJutsuLivro(slugCarta(id, c), feito.dados, `Clã ${d.conceito.nome.trim()}`)), cla: id };
+			if (feito) return { ...jutsuFicha(paraJutsuLivro(slugCarta(id, c), feito.dados, `Clã ${d.conceito.nome.trim()}`)), cla: id, rolagem: rolagemDoJutsu(feito.dados) };
 			return {
 			slug: slugCarta(id, c),
 			nome: c.nome,
@@ -173,7 +173,7 @@ function jutsusOriginais(id: string, d: ClaDados, criados: JutsuCriadoFicha[]): 
 /** Catálogo da ficha em jogo (P3, P4, P5): jutsus gerais e do clã, marcos e dados do clã, loja e especializações. */
 export function catalogoFicha(claSlug: string | null, criado?: { id: string; dados: ClaDados } | null, jutsusCriados: JutsuCriadoFicha[] = []) {
 	// jutsus criados para o personagem: entram como jutsus gerais, aprendidos com PT no treino
-	const proprios = jutsusCriados.filter((j) => j.personagem_id).map((j) => jutsuFicha(paraJutsuLivro(slugJutsuCriado(j.id), j.dados, 'Criação própria')));
+	const proprios = jutsusCriados.filter((j) => j.personagem_id).map((j) => ({ ...jutsuFicha(paraJutsuLivro(slugJutsuCriado(j.id), j.dados, 'Criação própria')), rolagem: rolagemDoJutsu(j.dados) }));
 	const base = catalogoCriacao(claSlug ? [claSlug] : []);
 	const doCla = claSlug ? jutsus.filter((j) => j.cla === claSlug) : [];
 	const cla = claSlug ? clas.find((c) => c.slug === claSlug) : undefined;

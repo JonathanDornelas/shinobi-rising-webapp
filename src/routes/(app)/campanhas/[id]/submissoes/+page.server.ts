@@ -34,7 +34,7 @@ export const load: PageServerLoad = async ({ locals, params, parent }) => {
 	const eu = (await locals.usuarioAtual())!.id;
 	const k = params.id;
 	const [fichas, clas, jutsus, equipamentos, pedidos, notificacoes] = await Promise.all([
-		locals.supabase.from('personagens').select('id, nome, status, criada_em, enviada_em, decidida_em, comentario_mestre, excecao').eq('campanha_id', k).eq('jogador_id', eu).eq('pre_gerado', false),
+		locals.supabase.from('personagens').select('id, nome, status, criada_em, enviada_em, decidida_em, comentario_mestre, excecao').eq('campanha_id', k).eq('jogador_id', eu).eq('pre_gerado', false).eq('npc', false),
 		locals.supabase.from('clas').select('id, nome, status, versao, criado_em, enviado_em, decidido_em, comentario_mestre, excecao').eq('campanha_id', k).eq('autor_id', eu),
 		locals.supabase.from('jutsus_criados').select('id, tipo, nome, status, versao, criado_em, enviado_em, decidido_em, comentario_mestre, excecao').eq('campanha_id', k).eq('autor_id', eu),
 		locals.supabase.from('equipamentos_criados').select('id, tipo, nome, status, versao, criado_em, enviado_em, decidido_em, comentario_mestre, excecao').eq('campanha_id', k).eq('autor_id', eu),

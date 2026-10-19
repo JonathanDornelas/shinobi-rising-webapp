@@ -10,6 +10,7 @@
 	import { curaDoEfeito, danoDoEfeito, periciaDoAtaque, somar, teste, totalPericia } from '#lib/rolagens/expressoes.ts';
 	import Icone from '../ui/Icone.svelte';
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
+	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 
 	let { f }: { f: FichaJogo } = $props();
 	const lista = $derived(f.calc.jutsus.map((s) => f.catalogo.jutsus.find((j) => j.slug === s)).filter((j) => !!j));
@@ -28,13 +29,24 @@
 		const base = pericia ? totalPericia(linhas, pericia) : null;
 		const prof = f.calc.proficiencias.find((p) => p.tipo === 'jutsu' && p.alvo === j.slug);
 		const bonusProf = prof ? NIVEIS_PROFICIENCIA[prof.nivel - 1].bonus : 0;
-		const dano = danoDoEfeito(j.efeito);
+		// jutsu criado: os dados vêm do criador; do livro: lidos do texto do efeito
+		const dano = j.rolagem ? (j.rolagem.modo === 'dano' ? j.rolagem : null) : danoDoEfeito(j.efeito);
 		const atributo = dano?.atributo as keyof typeof f.calc.atributos | null | undefined;
 		return {
 			ataque: base === null ? null : { expr: teste(base + bonusProf), rotulo: `${j.nome} · ataque (${pericia}${bonusProf ? ` + ${bonusProf} prof.` : ''})` },
 			dano: dano ? { expr: somar(dano.dados, atributo ? f.calc.atributos[atributo] : 0), rotulo: `${j.nome} · dano${atributo ? ` (${dano.dados} + ${atributo})` : ''}` } : null,
-			cura: curaDoEfeito(j.efeito)
+			cura: j.rolagem ? (j.rolagem.modo === 'cura' ? j.rolagem.dados : null) : curaDoEfeito(j.efeito)
 		};
+	}
+
+	// usar o jutsu: debita PC/PE e já rola o ataque e o dano (ou a cura)
+	async function usar(j: JutsuFicha) {
+		f.gastarJutsu(j);
+		const r = rolagens(j);
+		const campanha = page.params.id!;
+		if (r.ataque) await rolador.rolar({ campanha, expressao: r.ataque.expr, rotulo: r.ataque.rotulo, personagem: f.id, d20: true });
+		if (r.dano) await rolador.rolar({ campanha, expressao: r.dano.expr, rotulo: r.dano.rotulo, personagem: f.id });
+		else if (r.cura) await rolador.rolar({ campanha, expressao: r.cura, rotulo: `${j.nome} · cura`, personagem: f.id });
 	}
 </script>
 
@@ -80,8 +92,8 @@
 					type="button"
 					class="btn-jogo min-h-9 px-3 text-xs max-md:col-span-2 max-md:col-start-3 {!f.editavel || falta > 0 || bloqueadoRank ? 'bg-b3 text-mut' : 'btn-primario'}"
 					disabled={!f.editavel || falta > 0 || bloqueadoRank}
-					title={bloqueadoRank ? 'Esgotado: sem jutsus de Rank B ou superior' : falta > 0 ? `Faltam ${falta} ${c.unidade}` : !f.editavel ? 'Ficha somente leitura' : undefined}
-					onclick={() => f.gastarJutsu(j!)}>GASTAR {c.final} {c.unidade}</button
+					title={bloqueadoRank ? 'Esgotado: sem jutsus de Rank B ou superior' : falta > 0 ? `Faltam ${falta} ${c.unidade}` : !f.editavel ? 'Ficha somente leitura' : 'Gasta o custo e já rola o ataque e o dano'}
+					onclick={() => usar(j!)}>USAR · {c.final} {c.unidade}</button
 				>
 			</div>
 			{#if aberta}

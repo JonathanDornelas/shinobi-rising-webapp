@@ -1,8 +1,11 @@
-- [x] Adicionar a criação de jutsus na criação de clãs e personagens;
-- [x] Ao criar um item ou jutsu, faltam formas do mestre dar isso ao personagens, seja de forma custosa ou não;
-- [x] Criar log geral de rolagens da campanha. Onde os persoagens e mestre conseguem rolar direto da ficha qualquer cosia, como jutsus, testes de habilidades/pericias e afins; Criar para isso dados de pixel art isometricos e sua animações rolando no pixelab;
-- [x] As imagens de paisagem das vilas estão fora do padrão naruto. Devem refletir realmente a paisagem de todas as vilas (renagado sendo uma do campo ou floresta generica mesmo) como aparecem no anime/manga;
-- [x] Permitir subir imagens na foto do ninja;
-- [x] Criar funcionalidade de mudança de cores, tamanho de fonte e border radius, fazendo com que o jogador/mestre possa criar seus próprios temas;
-- [x] Excluir personagens (o dono, em qualquer status; o Mestre, qualquer ficha da campanha);
-- [x] Excluir campanhas (Configurações → Zona de perigo; agora apaga também os retratos das fichas);
+- [x] Muda cor de molduras de equipamentos conforme a qualidade for melhor
+- [x] Os logs de rolagem devem ser separados por data (igual discord apenas uma data e depois as msgs). Também deve mostrar qual usupario rolou além do persoagem.
+- [x] Os logs devem poder ser aberto em modo popup dentro do site inteiro, assim é possivel acompanhar as rolagens em qualquer tela.
+- [x] Falta as rolagens automaticas no dano dos jutus;
+- [x] Nas armas deixe apenas a rolagem do dano, e deixe apenas o icone do dado.
+- [x] Não está aparecendo os covers na ficha de personagens (pelo menos os já criados). Exibir de acordo com a vila, mas deixar a opção para o jogador mudar caso queira dentro da ficha.
+- [x] Avaliar se vale a pena utilizar a lib rpg-dice-roller (https://github.com/dice-roller/rpg-dice-roller) para as rolagens; → não vale agora: ela sorteia no navegador, e o sorteio no banco (rolar) é o que impede resultado forjado; a notação que o livro usa (NdM±K, vantagem/desvantagem, crítico) já está coberta.
+- [x] Falta rolagens nos NPC';
+- [x] Possibilidade de gerar um npc com ficha completa como um player mesmo;
+- [x] Gerador de npc rápido e automatico;
+- [x] Gerar as artes de cada tipo de dado e os seus sprites rolando (d4, d6, d8, etc....).

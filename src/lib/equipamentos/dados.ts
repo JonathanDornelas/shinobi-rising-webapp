@@ -10,6 +10,15 @@ export const QUALIDADES = [
 ] as const;
 export type Qualidade = (typeof QUALIDADES)[number]['id'];
 
+/** Cor da moldura por qualidade (como raridade em jogo): quanto melhor, mais chamativa. */
+export const COR_QUALIDADE: Record<Qualidade, string> = { comum: 'var(--frame)', boa: '#4fa373', excelente: '#5b9bd5', mestre: '#9b6fd6', lendaria: '#d9a82b' };
+/** Cor da moldura a partir do id ou do nome da qualidade (o resumo guarda o nome). */
+export function corQualidade(q: string | null | undefined): string | null {
+	if (!q) return null;
+	const x = QUALIDADES.find((k) => k.id === q || k.nome === q);
+	return x && x.id !== 'comum' ? COR_QUALIDADE[x.id] : null;
+}
+
 /** Propriedades compradas com PFo (cap. 21, Passo 4). `detalhe`: o que o jogador define. */
 export const PROPRIEDADES_FORJA = [
 	{ id: 'Afiada', pfo: 1, efeito: 'Ignora 1 ponto de RD do alvo' },

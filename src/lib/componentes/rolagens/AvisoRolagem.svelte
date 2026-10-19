@@ -33,10 +33,11 @@
 	<div
 		role="status"
 		aria-live="polite"
+		data-aviso-rolagem
 		class="fixed right-4 bottom-20 left-4 z-[55] flex items-center gap-3 border-2 border-frame bg-b2 py-2 pr-2 pl-2 sombra-painel md:right-auto md:bottom-6 md:left-6 md:w-[400px]"
 		style:border-color={d === 'critico' ? 'var(--acc)' : d === 'falha' ? 'var(--err)' : undefined}
 	>
-		<DadoGirando girando={!!rolador.rolando} />
+		<DadoGirando girando={!!rolador.rolando} lados={rolador.rolando ? rolador.ladosRolando : (r?.detalhe.find((t) => 'lados' in t) as { lados: number } | undefined)?.lados} />
 		{#if rolador.rolando}
 			<span class="flex-1 text-[15px] leading-5 font-semibold">Rolando {rolador.rolando}…</span>
 		{:else if r}

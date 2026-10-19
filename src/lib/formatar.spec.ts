@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dataCurta, expiraEm, iniciais, tempoRelativo } from './formatar';
+import { dataCurta, expiraEm, iniciais, porDia, rotuloDia, tempoRelativo } from './formatar';
 
 const agora = new Date('2026-10-17T12:00:00');
 
@@ -26,5 +26,22 @@ describe('formatar', () => {
 	it('iniciais', () => {
 		expect(iniciais('Kaito')).toBe('K');
 		expect(iniciais('Hana Nara')).toBe('HN');
+	});
+});
+
+describe('separadores de dia', () => {
+	const hoje = new Date(2026, 9, 18, 15, 0);
+	it('rotula hoje, ontem e datas longas', () => {
+		expect(rotuloDia(new Date(2026, 9, 18, 1, 0), hoje)).toBe('Hoje');
+		expect(rotuloDia(new Date(2026, 9, 17, 23, 59), hoje)).toBe('Ontem');
+		expect(rotuloDia(new Date(2026, 9, 1), hoje)).toBe('1 de outubro de 2026');
+	});
+	it('agrupa em ordem', () => {
+		const itens = [new Date(2026, 9, 18, 10), new Date(2026, 9, 18, 9), new Date(2026, 9, 17, 9), new Date(2026, 8, 3)];
+		expect(porDia(itens, (d) => d.toISOString(), hoje).map((g) => [g.dia, g.itens.length])).toEqual([
+			['Hoje', 2],
+			['Ontem', 1],
+			['3 de setembro de 2026', 1]
+		]);
 	});
 });

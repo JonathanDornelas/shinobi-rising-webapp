@@ -7,6 +7,8 @@
 	import FaixaOffline from '#lib/componentes/shell/FaixaOffline.svelte';
 	import Navbar from '#lib/componentes/shell/Navbar.svelte';
 	import Toaster from '#lib/componentes/ui/Toaster.svelte';
+	import MesaRolagens from '#lib/componentes/rolagens/MesaRolagens.svelte';
+	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 	import { paleta } from '#lib/estado/paleta.svelte.ts';
 	import { preferencias } from '#lib/estado/preferencias.svelte.ts';
 	import { sessao } from '#lib/estado/sessao.svelte.ts';
@@ -18,6 +20,7 @@
 		preferencias.iniciar();
 		paleta.iniciar();
 		sessao.iniciar(data.usuario);
+		rolador.iniciarMesa();
 	});
 
 	function atalho(e: KeyboardEvent) {
@@ -49,4 +52,5 @@
 
 <Dock />
 <Toaster />
+<MesaRolagens />
 {#if paleta.aberta}<PaletaBusca />{/if}

@@ -1,7 +1,8 @@
 <script lang="ts">
 	// Moldura da campanha: sub-cabeçalho (nome, era, papel), menu lateral e abas no mobile.
 	import MenuCampanha from '#lib/componentes/campanha/MenuCampanha.svelte';
-	import AvisoRolagem from '#lib/componentes/rolagens/AvisoRolagem.svelte';
+	import { untrack } from 'svelte';
+	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import { PAPEL, rotuloEra } from '#lib/campanhas/dominio.ts';
@@ -10,6 +11,11 @@
 
 	let { data, children }: LayoutProps = $props();
 	const c = $derived(data.campanha);
+	// o painel de rolagens (em qualquer tela) acompanha a última campanha aberta
+	$effect(() => {
+		const mesa = { id: c.id, nome: c.nome };
+		untrack(() => rolador.definirMesa(mesa));
+	});
 </script>
 
 <div class="flex min-h-14 items-center gap-3 border-b-2 border-ink bg-b2 px-4 md:px-6">
@@ -39,4 +45,3 @@
 		{@render children()}
 	</div>
 </div>
-<AvisoRolagem campanha={c.id} />

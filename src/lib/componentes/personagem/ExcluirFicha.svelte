@@ -9,7 +9,7 @@
 	import Modal from '../ui/Modal.svelte';
 
 	interface Props {
-		ficha: { id: string; nome: string; retrato: string | null; campanha_id: string };
+		ficha: { id: string; nome: string; retrato: string | null; campanha_id: string; npc?: boolean };
 		/** A ficha é de outro jogador (o Mestre excluindo). */
 		deOutro?: boolean;
 		aoFechar: () => void;
@@ -35,7 +35,7 @@
 			return;
 		}
 		toasts.mostrar(`Ficha de ${nome} excluída.`, 'info');
-		await goto(`/campanhas/${ficha.campanha_id}/personagens`, { refreshAll: true });
+		await goto(`/campanhas/${ficha.campanha_id}/${ficha.npc ? 'npcs' : 'personagens'}`, { refreshAll: true });
 	}
 </script>
 

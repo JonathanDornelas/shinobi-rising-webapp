@@ -23,7 +23,7 @@ export async function montarFila(supabase: SupabaseClient<Database>, campanha: C
 	const k = campanha.id;
 	const STATUS = ['em_revisao', 'ajustes', 'aprovado', 'rejeitado'] as const;
 	const [fichas, clas, jutsus, equipamentos, pedidos] = await Promise.all([
-		supabase.from('personagens').select('*').eq('campanha_id', k).in('status', ['em_revisao', 'ajustes', 'aprovada', 'rejeitada']).eq('pre_gerado', false).order('enviada_em', { ascending: true }),
+		supabase.from('personagens').select('*').eq('campanha_id', k).in('status', ['em_revisao', 'ajustes', 'aprovada', 'rejeitada']).eq('pre_gerado', false).eq('npc', false).order('enviada_em', { ascending: true }),
 		supabase.from('clas').select('*').eq('campanha_id', k).in('status', STATUS),
 		supabase.from('jutsus_criados').select('*').eq('campanha_id', k).in('status', STATUS),
 		supabase.from('equipamentos_criados').select('*').eq('campanha_id', k).in('status', STATUS),

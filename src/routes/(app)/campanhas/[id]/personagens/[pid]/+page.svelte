@@ -26,6 +26,7 @@
 	import Retrato from '#lib/componentes/ui/Retrato.svelte';
 	import EnviarRetrato from '#lib/componentes/personagem/EnviarRetrato.svelte';
 	import ExcluirFicha from '#lib/componentes/personagem/ExcluirFicha.svelte';
+	import CapaFicha from '#lib/componentes/personagem/CapaFicha.svelte';
 	import { APROVACAO_PADRAO, rankSugerido } from '#lib/campanhas/dominio.ts';
 	import { BACKGROUNDS, ELEMENTOS, VILAS } from '#lib/personagem/dados.ts';
 	import { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
@@ -127,6 +128,7 @@
 {#if data.publico}
 	{@const g = data.publico}
 	<main class="flex flex-col gap-5 p-4 md:p-6">
+		<div class="-mx-4 -mt-4 md:-mx-6 md:-mt-6"><CapaFicha ficha={g.id} capa={g.capa} vila={g.resumo.vila} /></div>
 		<header class="flex items-start gap-5 border-b-2 border-b3 pb-5">
 			<Retrato nome={g.nome} foto={g.retrato} tamanho={128} class="max-sm:hidden" />
 			<div class="flex flex-col gap-2">
@@ -167,6 +169,7 @@
 			</div>
 		{/if}
 
+		<div class:grayscale={falecido}><CapaFicha ficha={p.id} capa={p.capa} vila={f.dados.vila.id} podeTrocar={p.dono && !data.arquivada} /></div>
 		<header class="flex flex-wrap items-start gap-5 border-b-2 border-b3 px-4 py-5 md:px-6" class:grayscale={falecido}>
 			<div class="relative flex flex-none flex-col items-start gap-2">
 				<Retrato nome={p.nome || '?'} foto={p.retrato} tamanho={128} class="max-sm:h-16! max-sm:w-16!" />
@@ -319,7 +322,7 @@
 		</div>
 	{/if}
 
-	{#if excluindo}<ExcluirFicha ficha={{ id: p.id, nome: p.nome, retrato: p.retrato, campanha_id: k.id }} deOutro={!p.dono} aoFechar={() => (excluindo = false)} />{/if}
+	{#if excluindo}<ExcluirFicha ficha={{ id: p.id, nome: p.nome, retrato: p.retrato, campanha_id: k.id, npc: p.npc }} deOutro={!p.dono} aoFechar={() => (excluindo = false)} />{/if}
 	{#if treinando}<GavetaTreino {f} pt={p.pt} aprovacaoTreino={aprovacao.treino} aoFechar={() => (treinando = false)} />{/if}
 
 	{#if situacao}

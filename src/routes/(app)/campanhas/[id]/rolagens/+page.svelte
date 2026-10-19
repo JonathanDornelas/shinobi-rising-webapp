@@ -2,7 +2,7 @@
 	// Registro de rolagens da campanha, ao vivo, e o rolador livre (qualquer expressão: 1d20+5, 2d6+1d4+3).
 	import BarraRolagem from '#lib/componentes/rolagens/BarraRolagem.svelte';
 	import DadoGirando from '#lib/componentes/rolagens/DadoGirando.svelte';
-	import LinhaRolagem from '#lib/componentes/rolagens/LinhaRolagem.svelte';
+	import ListaRolagens from '#lib/componentes/rolagens/ListaRolagens.svelte';
 	import Campo from '#lib/componentes/ui/Campo.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import { expressaoValida } from '#lib/rolagens/expressoes.ts';
@@ -54,11 +54,7 @@
 			<span class="flex items-center gap-1.5 text-[13px] text-mut"><span class="h-2.5 w-2.5 bg-ok" aria-hidden="true"></span>Ao vivo</span>
 		</div>
 		{#if lista.length}
-			<ul class="painel-sombra m-0 list-none p-0" aria-label="Rolagens recentes">
-				{#each lista as r (r.id)}
-					<LinhaRolagem {r} aoApagar={mestre ? () => apagar(r.id) : undefined} />
-				{/each}
-			</ul>
+			<ListaRolagens {lista} aoApagar={mestre ? apagar : undefined} />
 		{:else}
 			<div class="painel flex flex-col items-center gap-3 px-6 py-8 text-center">
 				<DadoGirando tamanho={96} />
@@ -75,7 +71,7 @@
 		{:else}
 			<div class="grid grid-cols-7 gap-1.5" role="group" aria-label="Dados rápidos">
 				{#each [4, 6, 8, 10, 12, 20, 100] as l (l)}
-					<button type="button" class="min-h-10 border-2 border-b3 bg-b1 font-pixel text-[13px] font-bold hover:border-mut disabled:opacity-60" disabled={!!rolador.rolando} onclick={() => dado(l)}>d{l}</button>
+					<button type="button" class="flex min-h-10 flex-col items-center justify-center gap-0.5 border-2 border-b3 bg-b1 py-1 font-pixel text-xs font-bold hover:border-mut disabled:opacity-60" disabled={!!rolador.rolando} aria-label="Rolar 1d{l}" onclick={() => dado(l)}><DadoGirando tamanho={32} lados={l} />d{l}</button>
 				{/each}
 			</div>
 			<form

@@ -150,6 +150,8 @@ export interface JutsuFicha {
 	origem: string;
 	efeito: string;
 	info: { k: string; v: string }[];
+	/** Jutsu criado: dano ou cura em dados vindos do criador (os do livro são lidos do texto do efeito). */
+	rolagem?: { modo: 'dano' | 'cura'; dados: string; atributo: string | null } | null;
 }
 
 export interface CustoJutsu {
@@ -368,6 +370,9 @@ export interface ItemInventario {
 	grupo: 'Armas' | 'Itens' | 'Pergaminhos' | 'Outros';
 	icone: string;
 	nota?: string;
+	/** Arma forjada: nome da qualidade (moldura) e o dano já com a qualidade. */
+	qualidade?: string;
+	dano?: string;
 }
 
 const grupoDe = (i: Pick<ItemLoja, 'grupo' | 'nome'>): ItemInventario['grupo'] =>

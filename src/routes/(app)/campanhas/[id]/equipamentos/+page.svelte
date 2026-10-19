@@ -9,6 +9,7 @@
 	import Modal from '#lib/componentes/ui/Modal.svelte';
 	import { APROVACAO_PADRAO } from '#lib/campanhas/dominio.ts';
 	import type { ResumoEquipamento } from '#lib/equipamentos/regras.ts';
+	import { corQualidade } from '#lib/equipamentos/dados.ts';
 	import { STATUS_CRIACAO } from '#lib/jutsus/status.ts';
 	import { tempoRelativo } from '#lib/formatar.ts';
 	import type { StatusCriacao } from '#lib/supabase/banco.ts';
@@ -38,6 +39,8 @@
 		href: string | null;
 		externo: boolean;
 		conceder?: Concessao;
+		/** Moldura pela qualidade da arma (Boa, Excelente, Mestre, Lendária). */
+		cor?: string | null;
 	}
 	const ryo = (n: number) => `${n.toLocaleString('pt-BR')} ryo`;
 	const criados = $derived(data.criados.map((c) => ({ ...c, resumo: c.resumo as Partial<ResumoEquipamento> })));
@@ -54,6 +57,7 @@
 			.filter(Boolean)
 			.join(' · '),
 		status: c.status,
+		cor: corQualidade(c.resumo.qualidade),
 		href: `/campanhas/${k.id}/equipamentos/${c.id}`,
 		externo: false,
 		// o que foi aprovado sem dono (itens, armas e marionetes da biblioteca) o Mestre pode conceder
@@ -62,7 +66,7 @@
 				? {
 						tipo: 'item',
 						custo: c.custo,
-						item: { id: c.tipo === 'item' ? `eqi-${c.id}` : `eq-${c.id}`, nome: c.nome, qtd: 1, peso: c.tipo === 'marionete' ? 0 : (c.resumo.carga ?? 0.5), conjunto: c.resumo.consumivel ? 5 : undefined, grupo: c.tipo === 'arma' ? 'Armas' : c.tipo === 'item' ? 'Itens' : 'Outros', icone: c.resumo.icone ?? 'equip/ic-equip-ferramenta', nota: c.tipo === 'item' ? undefined : [c.resumo.categoria, c.resumo.dano].filter(Boolean).join(' · ') }
+						item: { id: c.tipo === 'item' ? `eqi-${c.id}` : `eq-${c.id}`, nome: c.nome, qtd: 1, peso: c.tipo === 'marionete' ? 0 : (c.resumo.carga ?? 0.5), conjunto: c.resumo.consumivel ? 5 : undefined, grupo: c.tipo === 'arma' ? 'Armas' : c.tipo === 'item' ? 'Itens' : 'Outros', icone: c.resumo.icone ?? 'equip/ic-equip-ferramenta', nota: c.tipo === 'item' ? undefined : [c.resumo.categoria, c.resumo.dano].filter(Boolean).join(' · '), qualidade: c.resumo.qualidade || undefined, dano: c.resumo.dano || undefined }
 					}
 				: undefined
 	});
@@ -170,9 +174,11 @@
 							target={c.externo ? '_blank' : undefined}
 							rel={c.externo ? 'noopener' : undefined}
 							class="flex h-full flex-col border-2 bg-b2 text-fg shadow-[4px_4px_0_var(--ink)] {c.href ? 'cartao-link' : ''} {c.status === 'rascunho' ? 'border-dashed border-frame' : c.status === 'em_revisao' ? 'border-warn' : 'border-frame'}"
+							style:border-color={c.cor && c.status !== 'rascunho' && c.status !== 'em_revisao' ? c.cor : undefined}
+							style:box-shadow={c.cor ? `4px 4px 0 var(--ink), inset 0 0 0 1px ${c.cor}` : undefined}
 						>
 							<span class="flex items-center gap-3 border-b-2 border-b3 p-3">
-								<span class="flex h-[72px] w-[72px] flex-none items-center justify-center border-2 border-b3 bg-b1"><Icone id={c.icone} tamanho={64} /></span>
+								<span class="flex h-[72px] w-[72px] flex-none items-center justify-center border-2 border-b3 bg-b1" style:border-color={c.cor ?? undefined} style:background={c.cor ? `color-mix(in srgb, ${c.cor} 14%, var(--b1))` : undefined}><Icone id={c.icone} tamanho={64} /></span>
 								<span class="flex min-w-0 flex-col gap-[3px]">
 									<span class="font-pixel text-xs leading-none font-bold tracking-[0.1em] text-mut">{c.categoria}</span>
 									<span class="font-mincho text-lg leading-6 font-bold">{c.nome}</span>

@@ -13,7 +13,7 @@
 	import IndicadorSalvo, { type EstadoSalvo } from '#lib/componentes/ui/IndicadorSalvo.svelte';
 	import Modal from '#lib/componentes/ui/Modal.svelte';
 	import { APROVACAO_PADRAO } from '#lib/campanhas/dominio.ts';
-	import { APROVACAO_DO_TIPO, PASSOS_FORJA } from '#lib/equipamentos/dados.ts';
+	import { APROVACAO_DO_TIPO, corQualidade, PASSOS_FORJA } from '#lib/equipamentos/dados.ts';
 	import {
 		analisarArma,
 		analisarItem,
@@ -300,7 +300,7 @@
 
 		<aside class="flex flex-col gap-3 border-l-2 border-b3 bg-b2 p-4 max-lg:border-t-2 max-lg:border-l-0" aria-label="Prévia">
 			<span class="font-pixel text-[13px] leading-none font-bold tracking-[0.1em] text-title">PRÉVIA</span>
-			<article class="border-2 bg-b1 shadow-[4px_4px_0_var(--ink)]" style:border-color={tipo === 'arma' && arma.qualidade === 'lendaria' ? '#BF9000' : 'var(--frame)'}>
+			<article class="border-2 bg-b1 shadow-[4px_4px_0_var(--ink)]" style:border-color={tipo === 'arma' ? (corQualidade(arma.qualidade) ?? 'var(--frame)') : 'var(--frame)'}>
 				<div class="flex items-center gap-3 border-b-2 border-b3 p-3">
 					<span class="flex h-[72px] w-[72px] flex-none items-center justify-center border-2 border-b3 bg-b2"><Icone id={resumo.icone} tamanho={64} /></span>
 					<span class="flex min-w-0 flex-col gap-[3px]">

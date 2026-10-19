@@ -7,7 +7,8 @@
 	interface Props {
 		expressao: string;
 		rotulo: string;
-		personagem: string;
+		personagem?: string | null;
+		npc?: string | null;
 		/** Teste com d20 (perícia, atributo, iniciativa, ataque). */
 		d20?: boolean;
 		critico?: boolean;
@@ -15,7 +16,7 @@
 		texto?: string;
 		class?: string;
 	}
-	let { expressao, rotulo, personagem, d20 = false, critico = false, texto, class: classe = '' }: Props = $props();
+	let { expressao, rotulo, personagem = null, npc = null, d20 = false, critico = false, texto, class: classe = '' }: Props = $props();
 	const titulo = $derived(`Rolar ${rotulo}: ${expressao}${critico ? ' (crítico: dados dobrados)' : d20 && rolador.modo !== 'normal' ? ` com ${rolador.modo}` : ''}`);
 </script>
 
@@ -25,7 +26,7 @@
 	title={titulo}
 	aria-label={titulo}
 	disabled={!!rolador.rolando}
-	onclick={() => rolador.rolar({ campanha: page.params.id!, expressao, rotulo, personagem, d20, critico })}
+	onclick={() => rolador.rolar({ campanha: page.params.id!, expressao, rotulo, personagem, npc, d20, critico })}
 >
 	<Icone id="dado/ic-dado-d20" />{#if texto}<span>{texto}</span>{/if}
 </button>

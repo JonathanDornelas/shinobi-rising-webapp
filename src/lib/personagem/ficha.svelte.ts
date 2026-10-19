@@ -195,7 +195,9 @@ export class FichaJogo {
 				peso: e.tipo === 'arma' ? (r.carga ?? 1) : 0,
 				grupo: e.tipo === 'arma' ? 'Armas' : 'Outros',
 				icone: r.icone ?? 'equip/ic-equip-ferramenta',
-				nota: [r.categoria, r.qualidade && r.qualidade !== 'Comum' ? r.qualidade : '', r.dano].filter(Boolean).join(' · ')
+				nota: [r.categoria, r.qualidade && r.qualidade !== 'Comum' ? r.qualidade : '', r.dano].filter(Boolean).join(' · '),
+				qualidade: r.qualidade || undefined,
+				dano: r.dano || undefined
 			});
 		}
 		const { error } = await supabase().rpc('receber_equipamentos', {

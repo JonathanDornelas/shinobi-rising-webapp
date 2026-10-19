@@ -116,6 +116,10 @@ export type Personagem = {
 	pre_gerado: boolean;
 	entregas: Json;
 	retrato: string | null;
+	/** NPC com ficha completa (do Mestre, fora do grupo). */
+	npc: boolean;
+	/** Paisagem do topo da ficha; null = a da vila. */
+	capa: string | null;
 }
 
 /** Jutsu ou habilidade criada (cap. 20); `dados` é um JutsuDados ou HabilidadeDados (src/lib/jutsus/regras.ts). */
@@ -251,6 +255,7 @@ export type PersonagemPublico = {
 	situacao: SituacaoFicha;
 	pre_gerado: boolean;
 	retrato: string | null;
+	capa: string | null;
 	resumo: Json;
 }
 
@@ -266,6 +271,9 @@ export type Rolagem = {
 	autor_id: string | null;
 	personagem_id: string | null;
 	quem: string;
+	/** Nome de quem rolou (jogador ou Mestre), congelado. */
+	jogador: string | null;
+	npc_id: string | null;
 	rotulo: string;
 	expressao: string;
 	modo: ModoRolagem;
@@ -428,10 +436,11 @@ export type Database = {
 			conceder_jutsu: { Args: { ficha: string; slug: string; nome: string; custo_pt?: number }; Returns: undefined };
 			conceder_item: { Args: { ficha: string; item: Json; custo_ryo?: number }; Returns: undefined };
 			receber_entregas: { Args: { ficha: string; inventario: Json }; Returns: undefined };
+			definir_capa_ficha: { Args: { ficha: string; capa: string | null }; Returns: undefined };
 			excluir_ficha: { Args: { ficha: string }; Returns: undefined };
 			definir_retrato: { Args: { ficha: string; caminho: string | null }; Returns: undefined };
 			rolar: {
-				Args: { campanha: string; expressao: string; rotulo: string; personagem?: string | null; modo?: ModoRolagem; oculta?: boolean };
+				Args: { campanha: string; expressao: string; rotulo: string; personagem?: string | null; modo?: ModoRolagem; oculta?: boolean; npc?: string | null };
 				Returns: Rolagem;
 			};
 			definir_situacao: { Args: { ficha: string; situacao: SituacaoFicha; epitafio?: string | null }; Returns: undefined };

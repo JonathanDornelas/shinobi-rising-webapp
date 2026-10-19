@@ -437,4 +437,4 @@
 	</Modal>
 {/if}
 
-{#if excluindo}<ExcluirFicha ficha={{ id: data.personagem.id, nome: c.ficha.conceito.nome || data.personagem.nome, retrato: data.personagem.retrato, campanha_id: k.id }} deOutro={!data.dono} aoFechar={() => (excluindo = false)} />{/if}
+{#if excluindo}<ExcluirFicha ficha={{ id: data.personagem.id, nome: c.ficha.conceito.nome || data.personagem.nome, retrato: data.personagem.retrato, campanha_id: k.id, npc: data.personagem.npc }} deOutro={!data.dono} aoFechar={() => (excluindo = false)} />{/if}

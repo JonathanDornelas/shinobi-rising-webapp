@@ -68,7 +68,7 @@ export async function carregarCampanha(locals: App.Locals, id: string, usuarioId
 	const [{ data: fichas }, { data: grupo }, { data: pedidos }, clasPend, jutsusPend, equipPend] = await Promise.all([
 		locals.supabase
 			.from('personagens')
-			.select('id, jogador_id, nome, status, situacao, nivel, xp, pt, resumo, estado, enviada_em, decidida_em, comentario_mestre, atualizada_em, epitafio, pre_gerado, excecao, ryo, retrato')
+			.select('id, jogador_id, nome, status, situacao, nivel, xp, pt, resumo, estado, enviada_em, decidida_em, comentario_mestre, atualizada_em, epitafio, pre_gerado, excecao, ryo, retrato, capa, npc')
 			.eq('campanha_id', id)
 			.neq('status', 'rejeitada')
 			.order('criada_em'),
@@ -80,12 +80,15 @@ export async function carregarCampanha(locals: App.Locals, id: string, usuarioId
 		conta('jutsus_criados'),
 		conta('equipamentos_criados')
 	]);
-	const personagens = (fichas ?? []).map((f) => ({ ...f, resumo: f.resumo as Partial<ResumoFicha> }));
+	// NPCs com ficha completa ficam fora das listas do grupo (aparecem na página de NPCs)
+	const todas = (fichas ?? []).map((f) => ({ ...f, resumo: f.resumo as Partial<ResumoFicha> }));
+	const personagens = todas.filter((f) => !f.npc);
+	const npcFichas = todas.filter((f) => f.npc);
 	const publicos = (grupo ?? []).map((g) => ({ ...g, resumo: g.resumo as Partial<ResumoFicha> }));
 	// fila do Mestre: fichas, clãs, jutsus, equipamentos e pedidos de PT esperando decisão
 	const pendentes =
 		papel === 'mestre'
 			? personagens.filter((p) => p.status === 'em_revisao').length + (pedidos ?? []).length + (clasPend.count ?? 0) + (jutsusPend.count ?? 0) + (equipPend.count ?? 0)
 			: 0;
-	return { campanha, membros: lista, papel, personagens, grupo: publicos, pedidosPt: pedidos ?? [], pendentes };
+	return { campanha, membros: lista, papel, personagens, npcFichas, grupo: publicos, pedidosPt: pedidos ?? [], pendentes };
 }

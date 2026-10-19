@@ -112,6 +112,13 @@ export const mediaDano = (d: JutsuDados) => (d.dano.modo === 'nenhum' ? 0 : d.da
 const sinalPj = (n: number) => (n > 0 ? `+${n}` : n < 0 ? `−${Math.abs(n)}` : '0');
 export const textoDado = (d: JutsuDados) => `${d.dano.qtd}d${d.dano.dado}${d.dano.bonus ? (d.dano.bonus > 0 ? `+${d.dano.bonus}` : `${d.dano.bonus}`) : ''}`;
 
+/** Dados de dano ou cura do jutsu criado para a rolagem na ficha (Taijutsu e Bukijutsu somam o atributo, cap. 20). */
+export function rolagemDoJutsu(d: JutsuDados): { modo: 'dano' | 'cura'; dados: string; atributo: string | null } | null {
+	if (d.dano.modo === 'nenhum') return null;
+	const fisico = d.dano.modo === 'dano' && !!d.tipo && TIPOS_FISICOS.includes(d.tipo);
+	return { modo: d.dano.modo, dados: textoDado(d), atributo: fisico ? ATRIBUTO_DO_TIPO[d.tipo!] : null };
+}
+
 export interface LinhaPj {
 	rotulo: string;
 	pj: number;
