@@ -1,11 +1,4 @@
-- [x] Muda cor de molduras de equipamentos conforme a qualidade for melhor
-- [x] Os logs de rolagem devem ser separados por data (igual discord apenas uma data e depois as msgs). Também deve mostrar qual usupario rolou além do persoagem.
-- [x] Os logs devem poder ser aberto em modo popup dentro do site inteiro, assim é possivel acompanhar as rolagens em qualquer tela.
-- [x] Falta as rolagens automaticas no dano dos jutus;
-- [x] Nas armas deixe apenas a rolagem do dano, e deixe apenas o icone do dado.
-- [x] Não está aparecendo os covers na ficha de personagens (pelo menos os já criados). Exibir de acordo com a vila, mas deixar a opção para o jogador mudar caso queira dentro da ficha.
-- [x] Avaliar se vale a pena utilizar a lib rpg-dice-roller (https://github.com/dice-roller/rpg-dice-roller) para as rolagens; → não vale agora: ela sorteia no navegador, e o sorteio no banco (rolar) é o que impede resultado forjado; a notação que o livro usa (NdM±K, vantagem/desvantagem, crítico) já está coberta.
-- [x] Falta rolagens nos NPC';
-- [x] Possibilidade de gerar um npc com ficha completa como um player mesmo;
-- [x] Gerador de npc rápido e automatico;
-- [x] Gerar as artes de cada tipo de dado e os seus sprites rolando (d4, d6, d8, etc....).
+- Criar aba de antoações na ficha do personagem
+- Modal para mudança de paisagem sendo sobreposto e não consigo dar scroll ou ver o resto das opções
+- Na página de npcs tem unifique os botões de "novo npc", "gerar npc", "npc com ficha completa" em um apenas chamado "novo npc" ele irá abrir um modal para escolher entre qual modalidade será aberta dentro estas 3.
+- As fontes que mostram as rolagens e números no geral, as vezes ficam ilegiveis não da para entender muito bem qual número em questão. Porém eu gostei do estilo da fonte, altere para uma fonte no mesmo estilo porém mais legivel
