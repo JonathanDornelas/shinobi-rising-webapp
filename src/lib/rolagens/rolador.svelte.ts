@@ -19,6 +19,8 @@ export interface PedidoRolagem {
 	d20?: boolean;
 	/** Dano de acerto crítico: os dados dobram (cap. 4). */
 	critico?: boolean;
+	/** Modo escolhido no próprio rolador (rolagem livre): vale no lugar do da barra "Próximo teste". */
+	modo?: Exclude<ModoRolagem, 'critico'>;
 	tipo?: TipoRolagem;
 	/** De onde veio ("Ficha · Perícias"), para o registro. */
 	origem?: string;
@@ -136,7 +138,7 @@ class Rolador {
 		this.rolando = p.rotulo;
 		this.ladosRolando = Number(/\d+d(\d+)/i.exec(expressao)?.[1] ?? 20);
 		this.aviso = null;
-		const modo: ModoRolagem = p.critico ? 'critico' : p.d20 ? this.modo : 'normal';
+		const modo: ModoRolagem = p.critico ? 'critico' : (p.modo ?? (p.d20 ? this.modo : 'normal'));
 		const [{ data, error }] = await Promise.all([
 			supabase().rpc('rolar', {
 				campanha: p.campanha,
@@ -157,7 +159,7 @@ class Rolador {
 			toasts.mostrar(error?.message && !/^[A-Z_]+$/.test(error.message) ? error.message : 'Não foi possível rolar. Confira a conexão.', 'erro');
 			return null;
 		}
-		if (p.d20) this.modo = 'normal';
+		if (p.d20 && !p.modo) this.modo = 'normal';
 		this.ultima = data;
 		this.receber(data, true);
 		return data;

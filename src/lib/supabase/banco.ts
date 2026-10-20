@@ -38,6 +38,7 @@ export type Aprovacao = {
 export type Perfil = {
 	id: string;
 	nome: string;
+	/** Foto da conta no bucket de retratos (retratos/<id do usuário>/…). */
 	avatar: string | null;
 	preferencias: Preferencias;
 	criado_em: string;
@@ -197,10 +198,12 @@ export type Npc = {
 	revelado: boolean;
 	membros: number;
 	pv_atual: number[];
+	/** Foto no bucket de retratos (retratos/<id do NPC>/…). */
+	retrato: string | null;
 	criado_em: string;
 	atualizado_em: string;
 };
-export type NpcRevelado = Pick<Npc, 'id' | 'nome' | 'funcao' | 'origem' | 'aparencia' | 'rank' | 'tags'>;
+export type NpcRevelado = Pick<Npc, 'id' | 'nome' | 'funcao' | 'origem' | 'aparencia' | 'rank' | 'tags' | 'retrato'>;
 
 /** Clã criado por um jogador (cap. 8.4); `dados` é um ClaDados (src/lib/clas/regras.ts). */
 export type Cla = {

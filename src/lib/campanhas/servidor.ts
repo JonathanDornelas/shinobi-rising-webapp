@@ -60,7 +60,7 @@ export async function carregarCampanha(locals: App.Locals, id: string, usuarioId
 		.select('usuario_id, papel, entrou_em, perfil:perfis!membros_usuario_id_fkey(nome, avatar)')
 		.eq('campanha_id', id)
 		.order('entrou_em');
-	const lista = (membros ?? []).map((m) => ({ id: m.usuario_id, papel: m.papel, entrou_em: m.entrou_em, nome: m.perfil?.nome ?? '?' }));
+	const lista = (membros ?? []).map((m) => ({ id: m.usuario_id, papel: m.papel, entrou_em: m.entrou_em, nome: m.perfil?.nome ?? '?', avatar: m.perfil?.avatar ?? null }));
 	const papel: Papel = campanha.mestre_id === usuarioId ? 'mestre' : 'jogador';
 	// RLS: o Mestre vê todas as fichas; o jogador, só as próprias. O grupo aparece pelo resumo público.
 	const conta = (tabela: 'clas' | 'jutsus_criados' | 'equipamentos_criados') =>

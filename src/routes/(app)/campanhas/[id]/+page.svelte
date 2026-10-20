@@ -210,7 +210,7 @@
 										{#if f?.resumo && !f.retrato && f.status === 'aprovada' && temIconeCla(f.resumo)}
 											<IconeCla resumo={f.resumo} />
 										{:else}
-											<Retrato nome={f?.nome || j.nome} foto={f?.retrato} tamanho={32} />
+											<Retrato nome={f?.nome || j.nome} foto={f?.retrato ?? j.avatar} tamanho={32} />
 										{/if}
 										<span class="flex min-w-[140px] flex-1 flex-col">
 											<span class="truncate font-mincho text-[15px] leading-5 font-bold">{f?.nome || 'Sem ficha ainda'}</span>
@@ -376,7 +376,7 @@
 					{#each data.membros.filter((m) => m.id !== eu) as m (m.id)}
 						{@const f = m.papel === 'jogador' ? data.grupo.find((g) => g.jogador_id === m.id && g.situacao === 'ativo') : undefined}
 						<li class="flex items-center gap-2.5 border-2 border-b3 bg-b1 p-2.5">
-							<Retrato nome={f?.nome || m.nome} foto={f?.retrato} tamanho={40} />
+							<Retrato nome={f?.nome || m.nome} foto={f?.retrato ?? m.avatar} tamanho={40} />
 							<div class="flex min-w-0 flex-col gap-0.5">
 								<span class="truncate font-mincho text-[15px] leading-5 font-bold">{f?.nome || m.nome}</span>
 								<span class="flex items-center gap-1 text-xs leading-4 text-mut">

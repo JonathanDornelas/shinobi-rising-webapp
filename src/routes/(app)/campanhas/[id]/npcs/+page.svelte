@@ -101,6 +101,9 @@
 	}
 	async function excluir() {
 		if (!editando) return;
+		// a foto sai do Storage antes (depois, a política não acha mais o NPC)
+		const foto = npcs.find((x) => x.id === editando!.id)?.retrato;
+		if (foto) await supabase().storage.from('retratos').remove([foto]);
 		const { error } = await supabase().from('npcs').delete().eq('id', editando.id);
 		if (error) return toasts.mostrar('Não foi possível excluir.', 'erro');
 		editando = null;
@@ -192,6 +195,7 @@
 					{@const pvs = pvDosMembros(n)}
 					<li class="flex flex-col border-2 border-frame bg-b2 shadow-[4px_4px_0_var(--ink)]">
 						<div class="flex items-start gap-2.5 border-b-2 border-b3 px-3.5 py-3">
+							<Retrato nome={n.nome || '?'} foto={n.retrato} tamanho={40} />
 							<button type="button" class="flex min-w-0 flex-1 flex-col gap-0.5 text-left" onclick={() => (editando = n)}>
 								<span class="font-mincho text-lg leading-6 font-bold">{n.nome || 'Sem nome'}{n.membros > 1 ? ` · ${n.membros}` : ''}</span>
 								<span class="truncate text-[13px] leading-[18px] text-mut">{n.funcao || 'Sem função definida'}</span>
@@ -259,8 +263,13 @@
 		<ul class="m-0 grid list-none gap-3.5 p-0 md:grid-cols-2 xl:grid-cols-3">
 			{#each data.revelados as n (n.id)}
 				<li class="flex flex-col gap-2 border-2 border-frame bg-b2 px-3.5 py-3 shadow-[4px_4px_0_var(--ink)]">
-					<span class="font-mincho text-lg leading-6 font-bold">{n.nome}</span>
-					<span class="text-[13px] leading-[18px] text-mut">{[n.funcao, n.origem].filter(Boolean).join(' · ')}</span>
+					<span class="flex items-center gap-3">
+						<Retrato nome={n.nome || '?'} foto={n.retrato} tamanho={64} />
+						<span class="flex min-w-0 flex-col gap-0.5">
+							<span class="font-mincho text-lg leading-6 font-bold">{n.nome}</span>
+							<span class="text-[13px] leading-[18px] text-mut">{[n.funcao, n.origem].filter(Boolean).join(' · ')}</span>
+						</span>
+					</span>
 					{#if n.aparencia}<span class="text-sm leading-[21px]">{n.aparencia}</span>{/if}
 					<div class="flex flex-wrap gap-1.5">
 						<span class="border-2 border-[var(--vermelhao-lo)] bg-grena px-[7px] py-1.5 font-pixel text-xs leading-none font-bold text-papel">{nomeRank(n.rank).toUpperCase()}</span>

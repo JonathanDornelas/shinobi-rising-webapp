@@ -176,7 +176,7 @@
 						vis={!r.oculta ? 'todos' : campanhas.find((k) => k.id === r.campanha_id)?.mestreId === r.autor_id ? 'mestre' : 'eu'}
 						minha={minha(r)}
 						doMestre={!!r.npc_id || campanhas.find((k) => k.id === r.campanha_id)?.mestreId === r.autor_id}
-						avatar={r.personagem_id ? (data.avatares[r.personagem_id] ?? null) : null}
+						avatar={r.personagem_id ? (data.avatares[r.personagem_id] ?? null) : r.npc_id ? (data.avatares[r.npc_id] ?? null) : r.autor_id ? (data.avatares[`u:${r.autor_id}`] ?? null) : null}
 						aberta={aberta === r.id}
 						aoAlternar={() => (aberta = aberta === r.id ? null : r.id)}
 						aoPd={podePd(r) ? (acao) => rolador.usarPd(r, acao) : null}

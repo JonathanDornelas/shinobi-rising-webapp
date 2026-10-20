@@ -7,6 +7,9 @@
 	import Girando from '../ui/Girando.svelte';
 	import Icone from '../ui/Icone.svelte';
 	import Modal from '../ui/Modal.svelte';
+	import Retrato from '../ui/Retrato.svelte';
+	import EnviarRetrato from '../personagem/EnviarRetrato.svelte';
+	import { supabase } from '#lib/supabase/cliente.ts';
 
 	interface Props {
 		npc: Npc;
@@ -40,6 +43,13 @@
 			<label class="flex items-center gap-2 text-[13px] font-semibold"><input type="checkbox" role="switch" class="interruptor" bind:checked={n.revelado} />{n.revelado ? 'Revelado ao grupo' : 'Privado'}</label>
 		</div>
 		<div class="flex flex-col gap-3.5 px-[18px] py-4">
+			<div class="flex items-center gap-3">
+				<Retrato nome={n.nome || '?'} foto={n.retrato} tamanho={64} />
+				<div class="flex flex-col gap-1.5">
+					<span class="text-sm font-semibold">Foto do NPC</span>
+					<EnviarRetrato ficha={n.id} atual={n.retrato} salvar={(caminho) => supabase().from('npcs').update({ retrato: caminho }).eq('id', n.id)} aoMudar={(c) => (n.retrato = c)} />
+				</div>
+			</div>
 			<span class="font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">IDENTIDADE RÁPIDA</span>
 			<div class="grid gap-2.5 sm:grid-cols-2">
 				<Campo id="npc-nome" rotulo="Nome" obrigatorio><input id="npc-nome" class="campo" maxlength="60" bind:value={n.nome} /></Campo>

@@ -19,6 +19,15 @@ export async function carregarRegistro(locals: App.Locals, campanhaInicial: stri
 	const grupos = await Promise.all(ks.map((k) => locals.supabase.rpc('personagens_do_grupo', { campanha: k.id })));
 	const avatares: Record<string, AvatarRolagem> = {};
 	for (const g of grupos) for (const p of g.data ?? []) avatares[p.id] = { retrato: p.retrato, resumo: p.resumo as ResumoClaFicha };
+	// NPCs: o Mestre vê todos os seus (RLS); os outros, os revelados. Quem rola sem ficha (o Mestre) aparece com o avatar da conta.
+	const ids = ks.map((k) => k.id);
+	const [{ data: npcs }, revelados, { data: membros }] = await Promise.all([
+		ids.length ? locals.supabase.from('npcs').select('id, retrato').in('campanha_id', ids).not('retrato', 'is', null) : Promise.resolve({ data: [] as { id: string; retrato: string | null }[] }),
+		Promise.all(ks.filter((k) => k.mestre_id !== eu).map((k) => locals.supabase.rpc('npcs_revelados', { campanha: k.id }))),
+		ids.length ? locals.supabase.from('membros').select('usuario_id, perfil:perfis!membros_usuario_id_fkey(avatar)').in('campanha_id', ids) : Promise.resolve({ data: [] as { usuario_id: string; perfil: { avatar: string | null } | null }[] })
+	]);
+	for (const n of [...(npcs ?? []), ...revelados.flatMap((r) => r.data ?? [])]) if (n.retrato) avatares[n.id] = { retrato: n.retrato, resumo: null };
+	for (const m of membros ?? []) if (m.perfil?.avatar) avatares[`u:${m.usuario_id}`] = { retrato: m.perfil.avatar, resumo: null };
 	return {
 		eu,
 		campanhas: ks.map((k) => ({ id: k.id, nome: k.nome, mestreId: k.mestre_id, arquivada: !!k.arquivada_em })),

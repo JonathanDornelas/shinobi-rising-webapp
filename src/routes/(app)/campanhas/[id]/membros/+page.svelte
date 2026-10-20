@@ -74,7 +74,7 @@
 	<ul class="painel m-0 flex list-none flex-col p-0" aria-label="Membros">
 		{#each data.membros as m (m.id)}
 			<li class="grid grid-cols-[40px_minmax(0,1fr)_auto] items-center gap-3 border-b-2 border-b3 px-3.5 py-2 last:border-b-0 md:grid-cols-[40px_minmax(0,1fr)_140px_200px_150px_44px]">
-				<Retrato nome={m.nome} tamanho={40} />
+				<Retrato nome={m.nome} foto={m.avatar} tamanho={40} />
 				<span class="flex min-w-0 flex-col">
 					<span class="truncate text-[15px] leading-5 font-semibold">{m.nome}{m.id === sessao.usuario?.id ? ' (você)' : ''}</span>
 					<span class="text-xs leading-4 text-mut md:hidden">{PAPEL[m.papel].nome} · {m.papel === 'mestre' ? 'criou' : 'entrou'} em {dataCurta(m.entrou_em)}</span>

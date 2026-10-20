@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Rolar dados (L10): expressão livre (2d6 + 1d4 − 1, 4d6kh3), botões dos 7 dados (clique soma um; botão direito ou o
-	// contador tira um), modificadores rápidos, quem pode ver e a campanha onde a rolagem entra. Sai no nome da ficha
+	// contador tira um), vantagem/desvantagem (com 1d20), modificadores rápidos, quem pode ver e a campanha onde a rolagem entra. Sai no nome da ficha
 	// ativa da pessoa naquela campanha (o Mestre rola como Mestre).
 	import { untrack } from 'svelte';
 	import { sessao } from '#lib/estado/sessao.svelte.ts';
@@ -26,6 +26,19 @@
 	});
 	let erro = $state('');
 	let oculta = $state(false);
+	/** Vantagem ou desvantagem (cap. 2): o d20 duas vezes, fica o maior ou o menor. Volta para Normal depois de rolar. */
+	let modo = $state<'normal' | 'vantagem' | 'desvantagem'>('normal');
+	/** Um único 1d20 (sem kh/kl) na expressão: é nele que a vantagem vale. */
+	const umD20 = (e: string) => {
+		const dados = (termos(e) ?? []).filter((x) => 'lados' in x);
+		return dados.length === 1 && 'lados' in dados[0] && dados[0].lados === 20 && dados[0].n === 1 && !dados[0].manter;
+	};
+	const temD20 = $derived(umD20(expressao));
+	const MODOS_LIVRE = [
+		['normal', 'NORMAL'],
+		['vantagem', 'VANTAGEM'],
+		['desvantagem', 'DESVANT.']
+	] as const;
 	const ultima = $derived(rolador.ultima && (!campanha || rolador.ultima.campanha_id === campanha.id) ? rolador.ultima : null);
 
 	function trocar(e: string) {
@@ -36,20 +49,22 @@
 		const problema = erroExpressao(expressao);
 		if (problema) return (erro = problema);
 		if (!campanha) return (erro = 'Entre numa campanha para rolar dados.');
-		const t = termos(expressao)!;
-		const dados = t.filter((x) => 'lados' in x);
-		const d20 = dados.length === 1 && 'lados' in dados[0] && dados[0].lados === 20 && dados[0].n === 1 && !dados[0].manter;
+		const d20 = umD20(expressao);
 		const r = await rolador.rolar({
 			campanha: campanha.id,
 			expressao,
 			rotulo: 'Rolagem livre',
 			personagem: mestre ? null : (campanha.ficha?.id ?? null),
 			d20,
+			modo: d20 ? modo : 'normal',
 			tipo: 'livre',
 			origem: compacto ? 'Janela de rolagens' : 'Registro · Rolar dados',
 			oculta
 		});
-		if (r) erro = '';
+		if (r) {
+			erro = '';
+			modo = 'normal';
+		}
 	}
 	const MODS = [-1, 1, 2, 5];
 </script>
@@ -120,6 +135,13 @@
 					>
 				{/if}
 			</button>
+		{/each}
+	</div>
+
+	<div class="flex border-2 border-frame" role="radiogroup" aria-label="Modo da rolagem" title={temD20 ? 'Vantagem: o d20 duas vezes, fica o maior. Desvantagem: fica o menor.' : 'Vantagem e desvantagem valem numa rolagem com 1d20'}>
+		{#each MODOS_LIVRE as [m, n] (m)}
+			{@const on = (temD20 ? modo : 'normal') === m}
+			<button type="button" role="radio" aria-checked={on} disabled={!temD20 && m !== 'normal'} class="flex-1 border-r-2 border-frame font-pixel text-xs font-bold tracking-[0.04em] last:border-r-0 disabled:cursor-not-allowed disabled:opacity-40 {compacto ? 'min-h-8' : 'min-h-9'} {on ? 'bg-grena text-papel' : 'text-mut hover:bg-b3'}" onclick={() => (modo = m)}>{n}</button>
 		{/each}
 	</div>
 

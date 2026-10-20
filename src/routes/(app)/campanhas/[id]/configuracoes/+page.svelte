@@ -135,8 +135,9 @@
 		} else if (acao === 'transferir') {
 			erro = (await sb.rpc('transferir_mestre', { campanha: c.id, novo_mestre: novoMestre })).error;
 		} else if (acao === 'excluir') {
-			// os retratos das fichas saem do Storage antes (depois, a política não acha mais as fichas)
-			const fotos = data.personagens.map((p) => p.retrato).filter((r): r is string => !!r);
+			// os retratos das fichas e dos NPCs saem do Storage antes (depois, a política não acha mais os donos)
+			const { data: ns } = await sb.from('npcs').select('retrato').eq('campanha_id', c.id).not('retrato', 'is', null);
+			const fotos = [...data.personagens.map((p) => p.retrato), ...(ns ?? []).map((n) => n.retrato)].filter((r): r is string => !!r);
 			if (fotos.length) await sb.storage.from('retratos').remove(fotos);
 			erro = (await sb.from('campanhas').delete().eq('id', c.id)).error;
 		}

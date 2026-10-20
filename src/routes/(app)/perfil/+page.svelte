@@ -11,6 +11,7 @@
 	import IndicadorSalvo, { type EstadoSalvo } from '#lib/componentes/ui/IndicadorSalvo.svelte';
 	import Modal from '#lib/componentes/ui/Modal.svelte';
 	import Retrato from '#lib/componentes/ui/Retrato.svelte';
+	import EnviarRetrato from '#lib/componentes/personagem/EnviarRetrato.svelte';
 	import { emailValido, SENHA_MINIMA } from '#lib/conta/regras.ts';
 	import { preferencias, type Tema, type TamanhoLeitura } from '#lib/estado/preferencias.svelte.ts';
 	import { contraste, ESCALAS, PALETAS, RAIOS, type Visual } from '#lib/estado/visual.ts';
@@ -174,6 +175,7 @@
 	async function excluir() {
 		excluindo = true;
 		erroExclusao = '';
+		if (sessao.perfil?.avatar) await supabase().storage.from('retratos').remove([sessao.perfil.avatar]);
 		const { error } = await supabase().rpc('excluir_conta');
 		if (error) {
 			excluindo = false;
@@ -211,7 +213,7 @@
 	{#if !secao}
 		<div class="flex flex-col gap-3.5 md:hidden">
 			<div class="flex items-center gap-3.5">
-				<Retrato nome={sessao.nome} tamanho={64} />
+				<Retrato nome={sessao.nome} foto={sessao.perfil?.avatar} tamanho={64} />
 				<div class="flex min-w-0 flex-col gap-0.5">
 					<span class="truncate font-mincho text-xl leading-[26px] font-bold">{sessao.nome}</span>
 					<span class="truncate text-[13px] leading-[18px] text-mut">{sessao.usuario?.email}</span>
@@ -238,9 +240,11 @@
 		<div id="sec-perfil">{@render cabecalho('Perfil', estadoPerfil)}</div>
 		<div class="grid gap-6 p-4 md:grid-cols-[auto_minmax(0,1fr)]">
 			<div class="flex flex-col items-center gap-2.5">
-				<Retrato nome={nome || sessao.nome} tamanho={128} />
-				<button type="button" class="btn-jogo btn-contorno min-h-10 px-3 text-xs" disabled aria-describedby="retrato-breve">TROCAR RETRATO</button>
-				<span id="retrato-breve" class="text-xs text-mut">Retratos chegam em breve.</span>
+				<Retrato nome={nome || sessao.nome} foto={sessao.perfil?.avatar} tamanho={128} />
+				{#if sessao.usuario && sessao.perfil}
+					<EnviarRetrato ficha={sessao.usuario.id} atual={sessao.perfil.avatar} salvar={(caminho) => sessao.salvarAvatar(caminho)} />
+					<span class="max-w-[180px] text-center text-xs text-mut">Aparece na barra, nos membros da campanha e nas suas rolagens de Mestre.</span>
+				{/if}
 			</div>
 			<div class="grid content-start gap-x-4 gap-y-3.5 md:grid-cols-2">
 				<Campo id="pf-nome" rotulo="Nome de exibição" ajuda="É o nome que o grupo vê." erro={erroNome}>

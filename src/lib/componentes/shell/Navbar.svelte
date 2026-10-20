@@ -107,7 +107,7 @@
 				aria-expanded={menuAberto}
 				onclick={() => ((menuAberto = !menuAberto), (sinoAberto = false))}
 			>
-				<Retrato nome={sessao.nome} />
+				<Retrato nome={sessao.nome} foto={sessao.perfil?.avatar} />
 				<Traco nome="baixo" />
 			</button>
 			{#if menuAberto}

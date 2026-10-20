@@ -113,6 +113,14 @@ class Sessao {
 		return supabase().from('perfis').update({ preferencias: nova }).eq('id', this.perfil.id);
 	}
 
+	/** Avatar da conta (caminho no bucket de retratos, ou null). */
+	async salvarAvatar(avatar: string | null) {
+		if (!this.perfil) return { error: new Error('Perfil não carregado') };
+		const r = await supabase().from('perfis').update({ avatar }).eq('id', this.perfil.id);
+		if (!r.error) this.perfil = { ...this.perfil, avatar };
+		return r;
+	}
+
 	async salvarNome(nome: string) {
 		if (!this.perfil) return { error: new Error('Perfil não carregado') };
 		const r = await supabase().from('perfis').update({ nome }).eq('id', this.perfil.id);
