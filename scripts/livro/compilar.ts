@@ -109,9 +109,9 @@ function semRotulo(c: Trecho[], rotulo: RegExp): Trecho[] {
 	if (copia[0]) copia[0].t = copia[0].t.replace(/^\s+/, '');
 	return copia.filter((t) => t.t);
 }
-/** Blocos de uma seção: do título (exclusive) até o próximo título de nível igual ou maior. */
-function secao(blocos: Bloco[], teste: (texto: string) => boolean, nivelMax = 4) {
-	const i = blocos.findIndex((b) => b.tipo === 'h' && b.nivel <= nivelMax && teste(b.texto));
+/** Blocos de uma seção: do título (exclusive) até o próximo título de nível igual ou maior. O teste recebe o texto e a âncora. */
+function secao(blocos: Bloco[], teste: (texto: string, id: string) => boolean, nivelMax = 4) {
+	const i = blocos.findIndex((b) => b.tipo === 'h' && b.nivel <= nivelMax && teste(b.texto, b.id));
 	if (i < 0) return { inicio: -1, fim: -1, titulo: null as null | (Bloco & { tipo: 'h' }), blocos: [] as Bloco[] };
 	const titulo = blocos[i] as Bloco & { tipo: 'h' };
 	let fim = blocos.findIndex((b, k) => k > i && b.tipo === 'h' && b.nivel <= titulo.nivel);
@@ -356,13 +356,13 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 		for (const b of c12.blocos) {
 			if (b.tipo !== 'h' || b.nivel !== 3) continue;
 			const cat = ICONE_CATEGORIA.find(([re]) => re.test(b.texto));
-			const tab = tabelaEm(secao(c12.blocos, (t) => t === b.texto).blocos);
+			const tab = tabelaEm(secao(c12.blocos, (_, id) => id === b.id).blocos);
 			if (cat && tab) {
 				const col = (nome: string) => tab.cab?.findIndex((c) => normalizar(c).startsWith(nome)) ?? -1;
 				const [iA, iD, iR, iP, iV, iPr] = ['arma', 'dano', 'alcance', 'peso', 'preco', 'propriedade'].map(col);
 				const categoria: CategoriaArmas = {
 					id: cat[1],
-					titulo: b.texto.replace(/^Armas Brancas — /, '').replace(/^Armas de /, ''),
+					titulo: b.texto.replace(/^Armas Brancas\s*(?:[—:·-]\s*)?/, '').replace(/^Armas de /, ''),
 					icone: cat[2],
 					ancora: `${c12.href}#${b.id}`,
 					armas: tab.linhas.map((l) => {
@@ -396,21 +396,20 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 				});
 			}
 		}
-		const props = tabelaEm(secao(c12.blocos, (t) => /^Propriedades Especiais/.test(t)).blocos);
+		const props = tabelaEm(secao(c12.blocos, (_, id) => id === 'propriedades-especiais').blocos);
 		equipamentos.propriedades = (props?.linhas ?? []).map((l) => ({ nome: celTexto(l[0]), efeito: celTexto(l[1] ?? []) }));
 
-		const trecho = (c: Capitulo, re: RegExp, titulo?: string) => {
-			const s = secao(c.blocos, (t) => re.test(t), 2);
-			if (!s.titulo) avisar(`Seção não encontrada no cap. ${c.numero}: ${re}`);
-			return { titulo: titulo ?? s.titulo?.texto ?? '', href: `${c.href}#${s.titulo?.id ?? ''}`, blocos: s.blocos };
+		const trecho = (c: Capitulo, ancora: string, titulo?: string) => {
+			const s = secao(c.blocos, (_, id) => id === ancora, 2);
+			if (!s.titulo) avisar(`Seção não encontrada no cap. ${c.numero}: #${ancora}`);
+			return { titulo: titulo ?? s.titulo?.texto ?? '', href: `${c.href}#${ancora}`, blocos: s.blocos };
 		};
-		const iVenenos = c11.blocos.findIndex((b) => b.tipo === 'h');
 		equipamentos.abas = [
-			{ id: 'itens', titulo: 'Itens utilitários', secoes: [{ titulo: 'Itens utilitários', href: c11.href, blocos: c11.blocos.slice(0, iVenenos) }, trecho(c11, /^Sistema de Carga/)] },
-			{ id: 'venenos', titulo: 'Venenos', secoes: [trecho(c11, /^Tabela de Venenos/)] },
-			{ id: 'pergaminhos', titulo: 'Pergaminhos', secoes: [trecho(c11, /^Sistema de Pergaminhos/)] },
-			{ id: 'marionetes', titulo: 'Marionetes', secoes: [trecho(c13, /^Construindo uma Marionete/)] },
-			{ id: 'qualidade', titulo: 'Qualidade e propriedades', secoes: [trecho(c12, /^Qualidade das Armas/), trecho(c12, /^Propriedades Especiais/)] }
+			{ id: 'itens', titulo: 'Itens utilitários', secoes: [trecho(c11, 'itens-utilitarios', 'Itens utilitários'), trecho(c11, 'sistema-de-carga-inventario')] },
+			{ id: 'venenos', titulo: 'Venenos', secoes: [trecho(c11, 'tabela-de-venenos')] },
+			{ id: 'pergaminhos', titulo: 'Pergaminhos', secoes: [trecho(c11, 'sistema-de-pergaminhos-fuuinjutsu-basico')] },
+			{ id: 'marionetes', titulo: 'Marionetes', secoes: [trecho(c13, 'construindo-uma-marionete-passo-a-passo')] },
+			{ id: 'qualidade', titulo: 'Qualidade e propriedades', secoes: [trecho(c12, 'qualidade-das-armas'), trecho(c12, 'propriedades-especiais')] }
 		];
 	}
 
@@ -434,7 +433,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 
 		// condições: a tabela "Estados Especiais" do cap. 4; cada linha ganha a âncora #cond-<slug>
 		const c4 = cap(4);
-		const estados = tabelaEm(secao(c4.blocos, (t) => /^Estados Especiais/.test(t)).blocos);
+		const estados = tabelaEm(secao(c4.blocos, (_, id) => id === 'estados-especiais').blocos);
 		if (!estados) avisar('Tabela de Estados Especiais não encontrada no cap. 4');
 		for (const l of estados?.linhas ?? []) {
 			const nome = celTexto(l[0]).replace(/\s*\(.*\)\s*$/, '');
@@ -509,8 +508,11 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 	const comLinha = lexico.filter((e) => e.linha);
 
 	// ---------------------------------------------------------------- ligações no texto: "cap. N", termos e dados
-	/** vistos: termos já marcados na seção (os que não são siglas só ganham destaque na 1ª vez); proprio: não marca o próprio verbete. */
-	type Contexto = { vistos: Set<string>; proprio?: string | null };
+	/**
+	 * vistos: termos já marcados na seção (os que não são siglas só ganham destaque na 1ª vez); proprio: não marca o próprio
+	 * verbete; dadoSolto: "d20" sem quantidade também vira chip (tabelas e quadros Na mesa; na prosa é só o nome do dado).
+	 */
+	type Contexto = { vistos: Set<string>; proprio?: string | null; dadoSolto?: boolean };
 	const reRef = /\b(?:cap(?:ítulo|\.)\s*|Capítulo\s+)(\d{1,2})((?:\.\d+)*)/g;
 	const reDado = /(?<![\p{L}\p{N}_])(\d{0,3})d(4|6|8|10|12|20|100)(?:\s*([+\-−])\s*(\d{1,3})(?![\p{L}\p{N}_]))?(?![\p{L}\p{N}_])/gu;
 	function ligar(c: Trecho[], ctx: Contexto | null): Trecho[] {
@@ -541,6 +543,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			if (ctx) {
 				for (const m of t.t.matchAll(reDado)) {
 					const [, n, lados, sinal, mod] = m;
+					if (!n && !mod && !ctx.dadoSolto) continue;
 					if (livre(m.index, m.index + m[0].length)) marcas.push({ ini: m.index, fim: m.index + m[0].length, extra: { dado: `${n || 1}d${lados}${mod ? (sinal === '+' ? '+' : '-') + mod : ''}` } });
 				}
 				// termos: entre os que se sobrepõem fica o mais longo; depois, na ordem do texto, a regra da 1ª ocorrência
@@ -586,7 +589,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 		return { trechos: p, ancora: null };
 	}
 	function ligarTabela(b: Bloco & { tipo: 'tabela' }, numero: number | null, proprio: string | null, usadas: Set<string>) {
-		const ctx: Contexto = { vistos: new Set(), proprio };
+		const ctx: Contexto = { vistos: new Set(), proprio, dadoSolto: true };
 		const ids: (string | null)[] = [];
 		b.linhas = b.linhas.map((l, r) =>
 			l.map((cel, ci) =>
@@ -612,6 +615,12 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 				andar(b.itens);
 			} else if (b.tipo === 'destaque') ligarBlocos(b.blocos, estado, numero, proprio, usadas);
 			else if (b.tipo === 'tabela') ligarTabela(b, numero, proprio, usadas);
+			else if (b.tipo === 'mesa') {
+				const ctx: Contexto = { vistos: estado.vistos, proprio, dadoSolto: true };
+				b.linhas = b.linhas.map((l) => ({ rotulo: ligar(l.rotulo, ctx), valor: ligar(l.valor, ctx) }));
+				b.notas = b.notas.map((p) => ligar(p, ctx));
+			}
+			// a cena fica sem marcação: é narrativa
 		}
 	}
 	for (const c of capitulos) if (c.numero !== 22) ligarBlocos(c.blocos, { vistos: new Set() }, c.numero);
@@ -661,7 +670,18 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 	// ---------------------------------------------------------------- índices de seção e resumos
 	const palavras = (bs: Bloco[]): number =>
 		bs.reduce((n, b) => {
-			const ts: Trecho[][] = b.tipo === 'p' ? [b.c] : b.tipo === 'lista' ? b.itens.map((i) => i.c) : b.tipo === 'tabela' ? b.linhas.flat(2) : [];
+			const ts: Trecho[][] =
+				b.tipo === 'p'
+					? [b.c]
+					: b.tipo === 'lista'
+						? b.itens.map((i) => i.c)
+						: b.tipo === 'tabela'
+							? b.linhas.flat(2)
+							: b.tipo === 'cena'
+								? b.c
+								: b.tipo === 'mesa'
+									? [...b.linhas.flatMap((l) => [l.rotulo, l.valor]), ...b.notas]
+									: [];
 			return n + ts.reduce((m, t) => m + textoDe(t).split(/\s+/).filter(Boolean).length, 0) + (b.tipo === 'destaque' ? palavras(b.blocos) : 0);
 		}, 0);
 	for (const c of capitulos) {
@@ -683,63 +703,48 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			if (!linhas.length) avisar(`Referência rápida vazia: ${titulo}`);
 			referencia.push({ id, titulo, icone, capitulo: { numero: c.numero, href: `${c.href}${ancora ? '#' + ancora : ''}` }, linhas });
 		};
-		const id = (c: Capitulo, re: RegExp) => (c.blocos.find((b) => b.tipo === 'h' && re.test(b.texto)) as { id: string } | undefined)?.id ?? '';
+		/** A âncora de uma seção (os títulos podem mudar de texto; a âncora, não). */
+		const ancora = (c: Capitulo, id: string) => {
+			if (c.blocos.some((b) => b.tipo === 'h' && b.id === id)) return id;
+			avisar(`Seção #${id} não encontrada no cap. ${c.numero}`);
+			return '';
+		};
+		const tabelaDaSecao = (c: Capitulo, id: string, nivelMax = 4) => tabelaEm(secao(c.blocos, (_, i) => i === id, nivelMax).blocos);
+		/** Linhas do quadro "Na mesa" com essa ref e a âncora da seção onde ele está. */
+		const mesa = (c: Capitulo, ref: string) => {
+			let ancora = '';
+			for (const b of c.blocos) {
+				if (b.tipo === 'h') ancora = b.id;
+				else if (b.tipo === 'mesa' && b.ref === ref) return { ancora, linhas: b.linhas.map((l) => [textoDe(l.rotulo), textoDe(l.valor)] as [string, string]) };
+			}
+			avisar(`Quadro Na mesa "${ref}" não encontrado no cap. ${c.numero}`);
+			return { ancora: '', linhas: [] };
+		};
 		const c2 = cap(2),
 			c4 = cap(4),
 			c9 = cap(9),
 			c10 = cap(10),
 			c20 = cap(20);
 		add('dt', 'DIFICULDADES (DT)', 'dado/ic-dado-d20', c2, '', linhasDe(tabelaComCab(c2, 'Dificuldade'), (l) => [l[0], l[1]]));
-		add('testes', 'TIPOS DE TESTE', 'callout/ic-callout-destaque', c2, id(c2, /^Tipos de Teste/), linhasDe(tabelaComCab(c2, 'Tipo de teste'), (l) => [l[0], l[1]]));
-		const acoes = secao(c4.blocos, (t) => /^Ações por Turno/.test(t)).blocos.find((b) => b.tipo === 'lista') as { itens: ItemLista[] } | undefined;
-		add(
-			'acoes',
-			'AÇÕES POR TURNO',
-			'recurso/ic-recurso-iniciativa',
-			c4,
-			id(c4, /^Ações por Turno/),
-			(acoes?.itens ?? [])
-				.map((it) => {
-					const t = textoDe(it.c);
-					const k = t.indexOf(':');
-					return [t.slice(0, k).trim(), t.slice(k + 1).trim()] as [string, string];
-				})
-				.filter(([k]) => k.length < 40)
-		);
-		add('ataque', 'ATAQUE E DEFESA', 'recurso/ic-recurso-defesa', c4, id(c4, /^Ataque e Defesa/), linhasDe(tabelaComCab(c4, 'Tipo'), (l) => [l[0], `${l[1]} vs ${l[2]}`]));
-		add('vida', 'ESTADOS DE VIDA', 'estado/ic-estado-caido', c4, id(c4, /^Estados de Vida/), linhasDe(tabelaComCab(c4, 'PV atual'), (l) => [l[0], l[1]]));
-		add('saves', 'SAVES DE MORTE', 'illustrations/il-memorial', c4, id(c4, /^Saves de Morte/), linhasDe(tabelaComCab(c4, 'Resultado'), (l) => [l[0], l[1]]));
-		add('fadiga', 'FADIGA', 'recurso/ic-recurso-fadiga', c4, id(c4, /^Fadiga/), linhasDe(secao(c4.blocos, (t) => t === 'Fadiga').blocos.find((b) => b.tipo === 'tabela') as Bloco & { tipo: 'tabela' }, (l) => [l[0], l[1]]));
-		add('estados', 'ESTADOS ESPECIAIS', 'estado/ic-estado-atordoado', c4, id(c4, /^Estados Especiais/), linhasDe(tabelaComCab(c4, 'Estado'), (l) => [l[0], l[1]]));
-		add('visibilidade', 'VISIBILIDADE', 'estado/ic-estado-cego', c4, id(c4, /^Categorias de Visibilidade/), linhasDe(tabelaComCab(c4, 'Categoria'), (l) => [l[0], l[1]]));
-		const rec = secao(c9.blocos, (t) => /^Recuperação/.test(t), 2);
-		add('recuperacao', 'RECUPERAÇÃO', 'item/ic-item-kit-medico', c9, rec.titulo?.id ?? '', linhasDe(tabelaEm(rec.blocos), (l) => [l[0], l.slice(1).join(' · ')]));
-		// a DT do jutsu é definida em texto corrido no cap. 2
-		const iDt = c2.blocos.findIndex((b) => b.tipo === 'p' && /^DT do Jutsu\./.test(textoDe(b.c)));
-		const txDt = iDt >= 0 ? textoDe((c2.blocos[iDt] as { c: Trecho[] }).c) : '';
-		const mDt = txDt.match(/a DT é (\d+) \+ bônus de Rank \(([^)]+)\) \+ atributo-chave do lançador: ([^.]+)\./);
-		const ancoraDt = [...c2.blocos.slice(0, iDt)].reverse().find((b) => b.tipo === 'h') as { id: string } | undefined;
-		add(
-			'dt-jutsu',
-			'DT DO JUTSU',
-			'rank/ic-rank-c',
-			c2,
-			ancoraDt?.id ?? '',
-			mDt
-				? [
-						['Base', mDt[1]],
-						['Bônus de rank', mDt[2]],
-						...mDt[3].split(/;\s*/).map((s) => {
-							const [attr, ...resto] = s.split(/\s+para\s+/);
-							return [resto.join(' para ').replace(/^\s*/, ''), attr.trim()] as [string, string];
-						})
-					]
-				: []
-		);
-		add('pj-rank', 'PJ → RANK', 'rank/ic-rank-b', c20, id(c20, /^Passo 3 — Verificar o Rank/), linhasDe(tabelaComCab(c20, 'Soma de PJ'), (l) => [`${l[0]} PJ`, `Rank ${l[1]} · ${l[2]}`]));
+		add('testes', 'TIPOS DE TESTE', 'callout/ic-callout-destaque', c2, ancora(c2, 'tipos-de-teste-como-o-mestre-escolhe-o-que-rolar'), linhasDe(tabelaComCab(c2, 'Tipo de teste'), (l) => [l[0], l[1]]));
+		// ações por turno e saves de morte: quadros "Na mesa" do cap. 4
+		const acoes = mesa(c4, 'acoes');
+		add('acoes', 'AÇÕES POR TURNO', 'recurso/ic-recurso-iniciativa', c4, acoes.ancora, acoes.linhas);
+		add('ataque', 'ATAQUE E DEFESA', 'recurso/ic-recurso-defesa', c4, ancora(c4, 'ataque-e-defesa'), linhasDe(tabelaComCab(c4, 'Tipo'), (l) => [l[0], `${l[1]} contra ${l[2]}`]));
+		add('vida', 'ESTADOS DE VIDA', 'estado/ic-estado-caido', c4, ancora(c4, 'estados-de-vida'), linhasDe(tabelaComCab(c4, 'PV atual'), (l) => [l[0], l[1]]));
+		const saves = mesa(c4, 'saves');
+		add('saves', 'SAVES DE MORTE', 'illustrations/il-memorial', c4, saves.ancora, saves.linhas);
+		add('fadiga', 'FADIGA', 'recurso/ic-recurso-fadiga', c4, ancora(c4, 'fadiga'), linhasDe(tabelaDaSecao(c4, 'fadiga'), (l) => [l[0], l[1]]));
+		add('estados', 'ESTADOS ESPECIAIS', 'estado/ic-estado-atordoado', c4, ancora(c4, 'estados-especiais'), linhasDe(tabelaComCab(c4, 'Estado'), (l) => [l[0], l[1]]));
+		add('visibilidade', 'VISIBILIDADE', 'estado/ic-estado-cego', c4, ancora(c4, 'categorias-de-visibilidade'), linhasDe(tabelaComCab(c4, 'Categoria'), (l) => [l[0], l[1]]));
+		add('recuperacao', 'RECUPERAÇÃO', 'item/ic-item-kit-medico', c9, ancora(c9, 'recuperacao-pv-pc-e-pe'), linhasDe(tabelaDaSecao(c9, 'recuperacao-pv-pc-e-pe', 2), (l) => [l[0], l.slice(1).join(' · ')]));
+		// a DT do jutsu está no quadro "Na mesa" do cap. 2 (ref="dt-jutsu")
+		const dtJutsu = mesa(c2, 'dt-jutsu');
+		add('dt-jutsu', 'DT DO JUTSU', 'rank/ic-rank-c', c2, dtJutsu.ancora, dtJutsu.linhas);
+		add('pj-rank', 'PJ → RANK', 'rank/ic-rank-b', c20, ancora(c20, 'passo-3-verificar-o-rank'), linhasDe(tabelaComCab(c20, 'Soma de PJ'), (l) => [`${l[0]} PJ`, `Rank ${l[1]} · ${l[2]}`]));
 		const c18 = cap(18);
-		add('custos-pt', 'CUSTOS DE PT', 'recurso/ic-recurso-pt', c18, id(c18, /^Gastando Pontos de Treino/), linhasDe(tabelaComCab(c18, 'Aplicação'), (l) => [l[0], l[1]]));
-		add('elementos', 'VANTAGEM ELEMENTAL', 'elemento/ic-elemento-katon', c10, id(c10, /^Os Cinco Elementos/), linhasDe(tabelaComCab(c10, 'Elemento'), (l) => [l[0], `forte contra ${l[1]} · fraco contra ${l[2]}`]));
+		add('custos-pt', 'CUSTOS DE PT', 'recurso/ic-recurso-pt', c18, ancora(c18, 'gastando-pontos-de-treino'), linhasDe(tabelaComCab(c18, 'Aplicação'), (l) => [l[0], l[1]]));
+		add('elementos', 'VANTAGEM ELEMENTAL', 'elemento/ic-elemento-katon', c10, ancora(c10, 'os-cinco-elementos-basicos'), linhasDe(tabelaComCab(c10, 'Elemento'), (l) => [l[0], `forte contra ${l[1]} · fraco contra ${l[2]}`]));
 	}
 
 	// ---------------------------------------------------------------- busca
@@ -754,6 +759,8 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 					if (b.tipo === 'formula') return b.texto;
 					if (b.tipo === 'destaque') return b.titulo + ' ' + textoBlocos(b.blocos);
 					if (b.tipo === 'tabela') return [...(b.cab ?? []), ...b.linhas.flat().map(celTexto)].join(' ');
+					if (b.tipo === 'cena') return b.c.map(textoDe).join(' ');
+					if (b.tipo === 'mesa') return [b.titulo ?? '', ...b.linhas.map((l) => `${textoDe(l.rotulo)} ${textoDe(l.valor)}`), ...b.notas.map(textoDe)].join(' ');
 					return '';
 				})
 				.join(' ')

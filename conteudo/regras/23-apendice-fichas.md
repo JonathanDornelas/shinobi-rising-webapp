@@ -2,13 +2,19 @@
 numero: 23
 slug: apendice-fichas
 href: /regras/apendice-fichas
-titulo: Apêndice — Fichas (Personagem e NPC)
+titulo: 'Apêndice: Fichas de Personagem e NPC'
 parte: 7
 ---
 
+:::cena
+Uma folha em branco, um lápis bem apontado. Tudo o que o seu ninja é cabe aqui, por enquanto.
+:::
+
+Modelos de ficha para fotocopiar ou copiar à mão: a do personagem do jogador e uma versão rápida para os NPCs do Mestre.
+
 ## 23.1 Ficha de Personagem (jogador) {#ficha-de-personagem-jogador}
 
-Modelo de ficha para fotocopiar ou recriar à mão. Veja também o Glossário (cap. 22) para todas as abreviações e termos.
+Para as abreviações e os termos, consulte o Glossário (cap. 22).
 
 ### Identidade {#identidade}
 
@@ -42,7 +48,7 @@ XP atual: \_\_\_\_\_\_\_\_\_\_\_\_ PT (Pontos de Treino) disponíveis: \_\_\_\_
 
 ### Perícias {#pericias}
 
-(Anote o valor de cada perícia treinada)
+(Anote o valor de cada perícia treinada.)
 
 Acrobacia \_\_\_\_ Atletismo \_\_\_\_ Bukijutsu \_\_\_\_ Furtividade \_\_\_\_
 
@@ -54,7 +60,7 @@ Selamento \_\_\_\_ Sobrevivência \_\_\_\_ Taijutsu \_\_\_\_
 
 ### Proficiências {#proficiencias}
 
-(Liste cada item, jutsu, estilo ou ferramenta com proficiência e o nível)
+(Liste cada item, jutsu, estilo ou ferramenta em que tem proficiência, com o nível.)
 
 \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
@@ -86,7 +92,7 @@ Afinidade Principal: \_\_\_\_\_\_\_\_\_\_ Secundária: \_\_\_\_\_\_\_\_\_\_ Terc
 
 ### Jutsus Conhecidos {#jutsus-conhecidos}
 
-(Lista com nome, rank, custo e efeito resumido)
+(Nome, rank, custo e um resumo do efeito.)
 
 \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
@@ -148,15 +154,15 @@ Pacto de Invocação (se aplicável): \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ### Marionetes (apenas com Especialização Marionete) {#marionetes-apenas-com-especializacao-marionete}
 
-Marionete 1 — Nome: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ Tamanho: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Marionete 1 · Nome: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ Tamanho: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 PV: \_\_\_\_ / \_\_\_\_ Defesa: \_\_\_\_ Slots usados: \_\_\_\_ / \_\_\_\_
 
 Mecanismos: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-Marionete 2 (se nível 2+) — Nome: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Marionete 2 (nível 2+) · Nome: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
-Hitokugutsu? Sim/Não — Origem do corpo: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Hitokugutsu? Sim/Não · Origem do corpo: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ### Portões Internos (1º Portão: Taijutsu +5; demais: Especialização Taijutsu) {#portoes-internos-1-portao-taijutsu-5-demais-especializacao-taijutsu}
 
@@ -202,7 +208,7 @@ Outros itens: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ## 23.2 Ficha Resumida de NPC (uso do Mestre) {#ficha-resumida-de-npc-uso-do-mestre}
 
-Para Mestres que precisam de NPCs prontos durante a sessão sem montar fichas completas. Esta ficha foca apenas no essencial para conduzir um encontro: identidade, função na cena, estatísticas de combate e 1 ou 2 ganchos narrativos. Pode ser preenchida em 2 minutos para qualquer NPC menor (guardas, mercadores, ninjas inimigos genéricos).
+Nem todo NPC merece uma ficha completa. Esta versão traz só o essencial para conduzir um encontro: identidade, papel na cena, números de combate e um ou dois ganchos narrativos. Ela se preenche em 2 minutos, para qualquer NPC menor: guardas, mercadores, ninjas inimigos genéricos.
 
 ### Modelo da Ficha {#modelo-da-ficha}
 
@@ -222,16 +228,16 @@ Aparência marcante (1 frase): \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\
 | PC | \_\_\_\_ (sugestão: Genin 25, Chunin 40, Jounin 70, Anbu 90, Lendário 130+) |
 | Defesa | \_\_\_\_ (sugestão: Genin 12, Chunin 14, Jounin 16, Anbu 17, Lendário 19+) |
 | Iniciativa | 1d20 + \_\_\_\_ |
-| Ataque principal | 1d20 + \_\_\_\_ → dano \_\_\_\_ |
+| Ataque principal | 1d20 + \_\_\_\_; dano \_\_\_\_ |
 | Habilidade especial / jutsu marcante | \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |
 
 #### Tags Comportamentais (1-3 tags) {#tags-comportamentais-1-3-tags}
 
-Marque tags que descrevem como o NPC age em combate e fora dele:
+Marque as tags que descrevem como o NPC age, em combate e fora dele.
 
 ☐ Agressivo (entra na briga primeiro) ☐ Cauteloso (espera abertura)
 
-☐ Tático (foca jogador mais frágil) ☐ Brutal (não recua)
+☐ Tático (foca o jogador mais frágil) ☐ Brutal (não recua)
 
 ☐ Diplomata (tenta conversar antes) ☐ Covarde (foge se machucado)
 
@@ -251,19 +257,15 @@ Gancho 2 (segredo ou conexão útil): \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 ### Exemplo de Ficha Resumida Preenchida {#exemplo-de-ficha-resumida-preenchida}
 
-:::exemplo{titulo="NPC: Hideo, ronin contratado pelo daimyō (Chunin)"}
-Aparência: cicatriz vertical no olho direito, vestimenta cinza-escuro. PV 45 / PC 35. Defesa 14. Iniciativa 1d20 + 3. Ataque: katana 1d20 + 7 → 1d8 + 4 dano. Jutsu marcante: Kirigakure no Jutsu (Técnica da Névoa Oculta) — encobre área 20m em névoa, 6 PC. Tags: Tático + Cauteloso + Leal. Gancho 1: foi pago para entregar pergaminho selado ao daimyō rival. Gancho 2: conhece o assassino de um aliado dos PCs (informação valiosa se subornado/capturado).
+:::exemplo{titulo="Três fichas resumidas"}
+**Hideo, ronin contratado pelo daimyō (Chunin).** Cicatriz vertical no olho direito, roupas cinza-escuro. PV 45, PC 35, Defesa 14, Iniciativa 1d20 + 3. Ataca de katana: 1d20 + 7, dano 1d8 + 4. Jutsu marcante: Kirigakure no Jutsu (Técnica da Névoa Oculta), que encobre uma área de 20 m em névoa por 6 PC. Tags: Tático, Cauteloso e Leal. Gancho 1: foi pago para entregar um pergaminho selado ao daimyō rival. Gancho 2: conhece o assassino de um aliado dos personagens dos jogadores, uma informação valiosa se ele for subornado ou capturado.
 
-**NPC: Ayame Sasaki, mestra de Genjutsu (Jounin)**
+**Ayame Sasaki, mestra de Genjutsu (Jounin).** Cabelo prateado, óculos redondos. PV 70, PC 110, Defesa 16, Iniciativa 1d20 + 4. Corpo a corpo, é fraca: 1d20 + 4, dano 1d6 + 2. Jutsus marcantes: Magen: Kyouten Chiten (Inversão Céu-Terra), por 8 PC, e Sairento Kiringu (Som Letal Ilusório), por 14 PC. Tags: Tática e Diplomata. Gancho 1: investiga uma série de assassinatos de jovens Yamanaka. Gancho 2: pode oferecer treino :sem[em Genjutsu] (1 nível de proficiência) em troca de ajuda na investigação.
 
-Aparência: cabelo prateado, óculos redondos. PV 70 / PC 110. Defesa 16. Iniciativa 1d20 + 4. Ataque corpo a corpo fraco: 1d20 + 4 → 1d6 + 2. Jutsu marcante: Magen: Kyouten Chiten (Inversão Céu-Terra), 8 PC; Sairento Kiringu (Som Letal Ilusório), 14 PC. Tags: Tática + Diplomata. Gancho 1: investiga uma cadeia de assassinatos de jovens Yamanaka. Gancho 2: pode oferecer treino :sem[em Genjutsu] (1 nível de proficiência) em troca de ajuda na investigação.
-
-**Tropa Genérica: 4 bandidos comuns (não-ninjas)**
-
-Use estatísticas idênticas para grupo: PV 15 cada, Defesa 11, Iniciativa 1d20 + 1, Ataque 1d20 + 3 → 1d6 + 1 (faca/clava). Tags: Agressivos + Covardes (fogem se 50% do grupo cair). Gancho: trabalham para um chefe maior — interrogá-los pode levar ao verdadeiro vilão.
+**Tropa genérica: 4 bandidos comuns (não ninjas).** Use os mesmos números para o grupo todo: PV 15 cada, Defesa 11, Iniciativa 1d20 + 1, ataque 1d20 + 3, dano 1d6 + 1 (faca ou clava). Tags: Agressivos e Covardes (fogem se 50% do grupo cair). Gancho: trabalham para um chefe maior, e interrogá-los pode levar ao verdadeiro vilão.
 :::
 
-Use a Ficha Resumida quando precisar de NPCs rápidos, encontros aleatórios, ou personagens secundários. Para vilões importantes ou aliados centrais, ainda vale construir ficha completa (a do jogador acima).
+Use a Ficha Resumida para NPCs rápidos, encontros aleatórios e personagens secundários. Para vilões importantes ou aliados centrais, ainda vale montar a ficha completa, a mesma do jogador.
 
 *Shinobi no Michi*
 

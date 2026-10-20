@@ -2,6 +2,9 @@
 // O texto do livro mora em conteudo/ como Markdown + GFM com diretivas:
 //   :::dica{titulo="…"} … :::        caixas (destaque, exemplo, atencao, dica, requisito)
 //   :::epigrafe{autor="…"} … :::     epígrafe
+//   :::cena … :::                    cena narrada (parágrafos em itálico) que abre uma regra ou um capítulo
+//   :::na-mesa{titulo="…" ref="…"}   quadro com os números da regra: itens "- **Rótulo:** valor" e notas em parágrafo;
+//                                    ref = id usado pela referência rápida
 //   ::formula[1d20 + atributo]       fórmula em destaque
 //   ::jutsu{slug="…"} / ::habilidade{slug="…"} / ::clas   cartas do catálogo
 //   :::tabela{titulo="…" cabecalho="nao"} | … | :::  título da tabela; sem cabeçalho, a 1ª linha é de dados
@@ -17,7 +20,7 @@ import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import remarkStringify from 'remark-stringify';
 import { parse as lerYaml, stringify as escreverYaml } from 'yaml';
-import type { Bloco, Celula, ItemLista, Trecho, VarianteDestaque } from '../../src/lib/livro/tipos.ts';
+import type { Bloco, Celula, ItemLista, LinhaMesa, Trecho, VarianteDestaque } from '../../src/lib/livro/tipos.ts';
 
 const VARIANTES: VarianteDestaque[] = ['destaque', 'exemplo', 'atencao', 'dica', 'requisito'];
 
@@ -137,6 +140,24 @@ export function blocosParaMdast(blocos: Bloco[]): RootContent[] {
 				if (cab && !b.titulo) return tabela;
 				return { type: 'containerDirective', name: 'tabela', attributes: { ...(b.titulo ? { titulo: b.titulo } : {}), ...(cab ? {} : { cabecalho: 'nao' }) }, children: [tabela] };
 			}
+			case 'cena':
+				return { type: 'containerDirective', name: 'cena', attributes: {}, children: b.c.map((p): Paragraph => ({ type: 'paragraph', children: trechosParaMdast(p) })) };
+			case 'mesa': {
+				const lista: List = {
+					type: 'list',
+					ordered: false,
+					spread: false,
+					children: b.linhas.map(
+						(l): ListItem => ({
+							type: 'listItem',
+							spread: false,
+							children: [{ type: 'paragraph', children: [{ type: 'strong', children: [{ type: 'text', value: `${l.rotulo.map((t) => t.t).join('')}:` }] }, { type: 'text', value: ' ' }, ...trechosParaMdast(l.valor)] }]
+						})
+					)
+				};
+				const notas = b.notas.map((p): Paragraph => ({ type: 'paragraph', children: trechosParaMdast(p) }));
+				return { type: 'containerDirective', name: 'na-mesa', attributes: { ...(b.titulo ? { titulo: b.titulo } : {}), ...(b.ref ? { ref: b.ref } : {}) }, children: [lista, ...notas] };
+			}
 			case 'jutsu':
 			case 'habilidade':
 				return { type: 'leafDirective', name: b.tipo, attributes: { slug: b.slug }, children: [] };
@@ -175,6 +196,37 @@ function tabelaDeMdast(t: Table, comCabecalho: boolean, titulo?: string): Bloco 
 	return b;
 }
 
+/** Quadro "Na mesa": cada item da lista é "**Rótulo:** valor"; os parágrafos soltos viram notas. */
+function mesaDeMdast(ns: RootContent[], attrs: Record<string, string | null | undefined>): Bloco {
+	const linhas: LinhaMesa[] = [];
+	const notas: Trecho[][] = [];
+	for (const n of ns) {
+		if (n.type === 'list') {
+			for (const li of n.children) {
+				const p = li.children.find((x): x is Paragraph => x.type === 'paragraph');
+				const ts = p ? trechosDeMdast(p.children).map((t) => ({ ...t })) : [];
+				let k = 0;
+				while (k < ts.length && ts[k].b) k++;
+				const rotulo = ts.slice(0, k).map(({ b: _, ...t }) => t);
+				const valor = ts.slice(k);
+				const ultimo = rotulo[rotulo.length - 1];
+				// aceita "**Rótulo:** valor" e "**Rótulo**: valor"
+				if (ultimo && !/:\s*$/.test(ultimo.t) && valor[0] && /^\s*:/.test(valor[0].t)) valor[0].t = valor[0].t.replace(/^\s*:/, '');
+				else if (ultimo && /:\s*$/.test(ultimo.t)) ultimo.t = ultimo.t.replace(/\s*:\s*$/, '');
+				else throw new Error(`Item do quadro Na mesa sem "**Rótulo:** valor": ${ts.map((t) => t.t).join('')}`);
+				if (valor[0]) valor[0].t = valor[0].t.replace(/^\s+/, '');
+				if (!juntar(valor).length) throw new Error(`Item do quadro Na mesa sem valor: ${ts.map((t) => t.t).join('')}`);
+				linhas.push({ rotulo: juntar(rotulo), valor: juntar(valor) });
+			}
+		} else if (n.type === 'paragraph') notas.push(trechosDeMdast(n.children));
+		else throw new Error(`Nó não suportado no quadro Na mesa: ${n.type}`);
+	}
+	const b: Bloco = { tipo: 'mesa', linhas, notas };
+	if (attrs.titulo) b.titulo = attrs.titulo;
+	if (attrs.ref) b.ref = attrs.ref;
+	return b;
+}
+
 export function blocosDeMdast(ns: RootContent[]): Bloco[] {
 	const out: Bloco[] = [];
 	for (const n of ns) {
@@ -199,6 +251,10 @@ export function blocosDeMdast(ns: RootContent[]): Bloco[] {
 				const t = n.children.find((x): x is Table => x.type === 'table');
 				if (!t) throw new Error(':::tabela sem tabela dentro');
 				out.push(tabelaDeMdast(t, n.attributes?.cabecalho !== 'nao', n.attributes?.titulo ?? undefined));
+			} else if (n.name === 'cena') {
+				out.push({ tipo: 'cena', c: n.children.filter((x): x is Paragraph => x.type === 'paragraph').map((p) => trechosDeMdast(p.children)) });
+			} else if (n.name === 'na-mesa') {
+				out.push(mesaDeMdast(n.children as RootContent[], n.attributes ?? {}));
 			} else if ((VARIANTES as string[]).includes(n.name)) {
 				out.push({ tipo: 'destaque', variante: n.name as VarianteDestaque, titulo: n.attributes?.titulo ?? '', blocos: blocosDeMdast(n.children as RootContent[]) });
 			} else throw new Error(`Diretiva desconhecida: :::${n.name}`);

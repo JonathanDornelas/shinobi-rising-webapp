@@ -75,16 +75,20 @@ As regras moram em `conteudo/`, em Markdown e YAML, e são editadas ali (o `.doc
 | `## Título {#id}` | seção com âncora fixa |
 | `:::dica{titulo="…"}` … `:::` (também `destaque`, `exemplo`, `atencao`, `requisito`) | caixa de destaque |
 | `:::epigrafe{autor="…"}` | epígrafe |
+| `:::cena` … `:::` | cena narrada em itálico, que abre um capítulo ou uma regra |
+| `:::na-mesa{titulo="…" ref="…"}` com itens `- **Rótulo:** valor` | quadro "Na mesa" com os números da regra (parágrafos soltos viram notas; `ref` alimenta a referência rápida) |
 | `::formula[1d20 + Perícia ≥ DT]` | bloco de fórmula |
 | `:::tabela{titulo="…"}` em volta de uma tabela | tabela com título (sem ele, o título vem da seção) |
 | `::jutsu{slug="…"}`, `::habilidade{slug="…"}`, `::clas` | cards do catálogo |
 | `**Termo.** texto` | verbete de regra |
 | "cap. 6", "Capítulo 18", "cap. 8.4" | referência cruzada com prévia |
 | termos do léxico (PC, Atordoado, Esquiva Ativa, Rasengan, Kunai…) | destaque colorido com cartão no hover e link para a regra (recursos e atributos sempre; os demais na 1ª vez de cada seção) |
-| `1d20`, `2d6+3` | dado: hover mostra a faixa; clique abre a janela de rolagens com a expressão |
+| `1d20`, `2d6+3` | dado: hover mostra a faixa; clique abre a janela de rolagens com a expressão (um "d20" solto só vira dado em tabelas e quadros; na prosa é o nome do dado) |
 | `:t[texto]{#jutsu:slug}` / `:sem[texto]` | força / impede um termo |
 
 O léxico (`gerado/termos.json`) junta `conteudo/termos.yaml` com o que vem do próprio livro: condições (tabela Estados Especiais, com âncora `#cond-…` por linha), perícias (`#pericia-…`), jutsus, habilidades, clãs, armas, elementos e ranks. O compilador também extrai as 16 especializações (cap. 19), armas e Sete Espadas (cap. 12), o glossário (cap. 22), os cards da referência rápida e o índice de busca. As artes de abertura dos capítulos ficam em `static/capitulos/cap-NN.png` (PixelLab, ninjas originais no visual do anime; cenas em `pixellab/capitulos.json`) e aparecem no cabeçalho de cada capítulo e na galeria do índice `/regras`. O glossário (D8) termina com o compêndio de todos os termos do léxico, filtrável por tipo. Os avisos no fim da execução apontam o que não foi reconhecido.
+
+O texto das regras foi reescrito para ler como livro, sem mudar regra nenhuma: prosa em 2ª pessoa, uma cena curta abrindo cada capítulo e as regras marcantes, e os números no quadro "Na mesa" (os de Ações por Turno, Saves de Morte e DT do Jutsu alimentam a referência rápida, pela `ref`). O compilador acha as seções pela âncora, não pelo texto do título, então dá para mudar um título sem quebrar a referência, os equipamentos ou o léxico. A voz e os achados ficam em `voz-do-livro.md`. Depois de reescrever um capítulo, `node scripts/livro/conferir.ts 03 04` compara números, dados e siglas com a versão do git e lista o que sumiu ou apareceu, para conferir se a regra ficou a mesma.
 
 ## Onde está cada coisa
 

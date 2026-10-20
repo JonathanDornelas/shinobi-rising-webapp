@@ -39,6 +39,12 @@ export interface ItemLista {
 
 export type VarianteDestaque = 'destaque' | 'exemplo' | 'atencao' | 'dica' | 'requisito';
 
+/** Linha do quadro "Na mesa": um rótulo curto e o valor da regra. */
+export interface LinhaMesa {
+	rotulo: Trecho[];
+	valor: Trecho[];
+}
+
 export type Bloco =
 	| { tipo: 'p'; c: Trecho[] }
 	| { tipo: 'h'; nivel: 2 | 3 | 4; id: string; texto: string }
@@ -47,6 +53,10 @@ export type Bloco =
 	| { tipo: 'epigrafe'; texto: string; autor: string }
 	| { tipo: 'destaque'; variante: VarianteDestaque; titulo: string; blocos: Bloco[] }
 	| { tipo: 'tabela'; cab: string[] | null; linhas: Celula[][]; titulo?: string; ids?: (string | null)[] }
+	/** Cena narrada que abre uma regra ou um capítulo (parágrafos em itálico). */
+	| { tipo: 'cena'; c: Trecho[][] }
+	/** Quadro "Na mesa": os números da regra juntos para consulta; `ref` alimenta a referência rápida. */
+	| { tipo: 'mesa'; titulo?: string; ref?: string; linhas: LinhaMesa[]; notas: Trecho[][] }
 	| { tipo: 'jutsu'; slug: string }
 	| { tipo: 'habilidade'; slug: string }
 	| { tipo: 'clas' };

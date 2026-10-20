@@ -6,56 +6,62 @@ titulo: Sistema de Invocação e Companheiros em Batalha
 parte: 3
 ---
 
-Personagens podem ter aliados em combate — companheiros animais permanentes (como os cães Inuzuka), criaturas místicas convocadas via pacto de invocação (Kuchiyose no Jutsu), entre outros. Este capítulo unifica as regras gerais.
+:::cena
+Uma gota de sangue no pergaminho, cinco selos rápidos, a mão espalmada no chão. A fumaça sobe, e de dentro dela uma voz grossa resmunga, querendo saber quem ousou chamá-la àquela hora.
+:::
+
+Nem todo ninja luta sozinho. Cães de clã, criaturas de pacto e invocações de emergência seguem as mesmas regras gerais, reunidas neste capítulo.
 
 ## Tipos de Companheiros {#tipos-de-companheiros}
 
 | Tipo | Origem | Como obter |
 | - | - | - |
-| Companheiro de Clã | Vínculo hereditário (Inuzuka, etc.) | Marco hereditário do clã (cap. 8) |
-| Invocação Permanente | Pacto pessoal com espécie | Especialização Invocação (cap. 19) |
-| Invocação Temporária | Convocação rápida em combate | Conhecer Kuchiyose no Jutsu + Especialização |
-| Marionete | Construída pelo personagem | Especialização Marionete (cap. 19); regras em cap. 13 |
+| Companheiro de Clã | Vínculo hereditário (Inuzuka etc.) | Marco hereditário do clã (cap. 8) |
+| Invocação Permanente | Pacto pessoal com uma espécie | Especialização Invocação (cap. 19) |
+| Invocação Temporária | Convocação rápida em combate | Conhecer o Kuchiyose no Jutsu e ter a Especialização |
+| Marionete | Construída pelo personagem | Especialização Marionete (cap. 19); regras no cap. 13 |
 
 ## Regras Gerais de Companheiros (Animais e Invocações) {#regras-gerais-de-companheiros-animais-e-invocacoes}
 
-Estas regras se aplicam a companheiros animais e invocações. Marionetes têm regras próprias (cap. 13).
+Estas regras valem para companheiros animais e invocações. Marionetes seguem as suas (cap. 13).
 
 ### Iniciativa e Ações {#iniciativa-e-acoes}
 
-Companheiros agem na iniciativa do dono. O dono escolhe o que fazer no turno, gastando uma de suas próprias ações para comandar:
+Companheiros agem na Iniciativa do dono, e o dono decide o que eles fazem no turno, gastando uma das próprias ações para dar a ordem. Com a ação secundária, ele dá um comando simples: atacar um alvo, mover-se, defender. Com a ação primária, um comando complexo: um jutsu coordenado, uma manobra especial. Sem comando, o companheiro age sozinho, de forma básica, com o ataque mais óbvio ou defendendo o dono.
 
-- Ação Secundária do dono: comando simples (atacar alvo, mover, defender).
-- Ação Principal do dono: comando complexo (jutsu coordenado, manobra especial).
-- Sem comando: o companheiro age por conta própria de forma básica (ataque mais óbvio ou defesa do dono).
+Essa é a grande diferença em relação às marionetes: companheiros têm uma autonomia razoável e agem mesmo sem ordem explícita, enquanto as marionetes ficam inertes sem comando.
 
-Diferença em relação a marionetes: companheiros TÊM autonomia razoável e podem agir sem comando explícito. Marionetes ficam inertes sem comando ativo.
+:::na-mesa{titulo="Comandar um companheiro"}
+- **Ação secundária do dono:** comando simples (atacar um alvo, mover, defender)
+- **Ação primária do dono:** comando complexo (jutsu coordenado, manobra especial)
+- **Sem comando:** age sozinho, de forma básica (o ataque mais óbvio ou a defesa do dono)
+:::
 
 ### Estatísticas Padrão {#estatisticas-padrao}
 
-Cada companheiro tem ficha simplificada: PV, Defesa, Iniciativa, dano de ataque básico e habilidades especiais. Companheiros NÃO têm pontos de chakra próprios — drenam do dono quando usam jutsus, ou têm número limitado de habilidades por cena.
+Cada companheiro tem uma ficha simplificada: PV, Defesa, Iniciativa, dano do ataque básico e habilidades especiais. Companheiros não têm chakra próprio: drenam o do dono quando usam jutsus, ou têm um número limitado de habilidades por cena.
 
-Técnicas conjuntas (como as do Clã Inuzuka) têm o custo pago pelo dono, e o companheiro age dentro da ação do dono.
+Nas técnicas conjuntas, como as do clã Inuzuka, o dono paga o custo, e o companheiro age dentro da ação dele.
 
 ### Quando o Companheiro é Derrotado {#quando-o-companheiro-e-derrotado}
 
-- Companheiro de Clã / Invocação Permanente: ao chegar a 0 PV, fica inconsciente e segue as mesmas regras de Save de Morte do cap. 4. Aliados podem estabilizá-lo com Medicina DT 12 (DT 10 com kit). Se sofrer dano massivo (golpe que jogue para abaixo de -metade dos PV máximos), morre instantaneamente — perda emocional pesada.
-- Invocação Temporária: ao chegar a 0 PV, é desinvocada e volta ao mundo de origem para se recuperar. Não pode ser invocada novamente por 24 horas.
+O destino de um companheiro derrotado depende do vínculo. Um companheiro de clã ou uma invocação permanente que chega a 0 PV fica inconsciente e segue as mesmas regras de Save de Morte do cap. 4, e os aliados podem estabilizá-lo com Medicina (DT 12, ou DT 10 com kit). Se ele sofrer dano massivo, um golpe que o jogue abaixo da metade negativa dos PV máximos, morre na hora, e a perda emocional é pesada.
+
+Uma invocação temporária que chega a 0 PV é desinvocada e volta ao seu mundo para se recuperar. Ela não pode ser invocada de novo por 24 horas.
 
 ## Pactos de Invocação (Kuchiyose no Jutsu) {#pactos-de-invocacao-kuchiyose-no-jutsu}
 
-Kuchiyose (Convocação) é o jutsu que permite invocar criaturas que assinaram um contrato com o ninja (ou com sua linhagem). Os contratos mais famosos são os Sapos do Monte Myōboku (Jiraiya, Naruto), as Cobras de Ryūchi (Orochimaru, Sasuke) e as Lesmas (Tsunade).
+O Kuchiyose (Convocação) é o jutsu que invoca criaturas que assinaram um contrato com o ninja ou com a sua linhagem. Os contratos mais famosos são os Sapos do Monte Myōboku (Jiraiya, Naruto), as Cobras de Ryūchi (Orochimaru, Sasuke) e as Lesmas (Tsunade).
 
 ### Adquirindo um Contrato {#adquirindo-um-contrato}
 
-- Ter a Especialização Invocação nível 1 (cap. 19).
-- Encontrar o pergaminho de contrato (busca narrativa) ou ser apresentado por mentor.
-- Assinar o pergaminho com sangue (compromisso permanente).
-- Realizar Kuchiyose no Jutsu pela primeira vez (teste de Selamento DT 18) — falha pode trazer criatura aleatória ou recusa.
+Um contrato não se compra. Primeiro, o ninja precisa da Especialização Invocação no nível 1 (cap. 19). Depois, precisa encontrar o pergaminho do contrato, numa busca narrativa, ou ser apresentado a ele por um mentor. Então assina o pergaminho com o próprio sangue, um compromisso permanente, e faz o Kuchiyose no Jutsu pela primeira vez, com um teste de Selamento (DT 18). Uma falha pode trazer uma criatura aleatória, ou uma recusa.
 
-Cada personagem pode ter apenas UM contrato ativo. Tentar firmar um segundo exige quebrar o primeiro. Além disso, um vínculo narrativo é necessário para invocar.
+Cada personagem só pode ter um contrato ativo; firmar um segundo exige quebrar o primeiro. E, para invocar, é preciso também um vínculo narrativo.
 
 ### Custo de Invocação {#custo-de-invocacao}
+
+Quanto maior a criatura, mais chakra ela cobra para atravessar.
 
 | Tamanho da invocação | Custo PC |
 | - | - |
@@ -65,6 +71,8 @@ Cada personagem pode ter apenas UM contrato ativo. Tentar firmar um segundo exig
 | Chefe da espécie (Gamabunta, Manda) | 40 PC |
 
 ### Estatísticas de Invocações Comuns {#estatisticas-de-invocacoes-comuns}
+
+As fichas abaixo valem para as invocações comuns de cada tamanho.
 
 #### Invocação Pequena (Especialização nível 1) {#invocacao-pequena-especializacao-nivel-1}
 
@@ -96,7 +104,7 @@ Cada personagem pode ter apenas UM contrato ativo. Tentar firmar um segundo exig
 | Ataque básico | +8 para acertar · 3d8 + 4 |
 | Jutsus | 2 usos de Rank B e 1 de Rank A (ataque +8, DT 17) |
 
-#### Chefe da Espécie (Especialização nível 3 + Aprovação do Chefe) {#chefe-da-especie-especializacao-nivel-3-aprovacao-do-chefe}
+#### Chefe da Espécie (Especialização nível 3 e aprovação do chefe) {#chefe-da-especie-especializacao-nivel-3-aprovacao-do-chefe}
 
 | Atributo | Valor |
 | - | - |
@@ -105,7 +113,7 @@ Cada personagem pode ter apenas UM contrato ativo. Tentar firmar um segundo exig
 | Iniciativa | 1d20 + 4 |
 | Ataque básico | +12 para acertar · 5d10 + 6 |
 | Jutsus | 2 usos de Rank A e 1 de Rank S (ataque +12, DT 21) |
-| Restrição | 1 invocação por sessão. Exige consentimento (chefes têm personalidade própria). |
+| Restrição | 1 invocação por sessão. Exige consentimento (os chefes têm personalidade própria) |
 
 ### Espécies de Contrato Famosas {#especies-de-contrato-famosas}
 
@@ -122,13 +130,13 @@ Cada personagem pode ter apenas UM contrato ativo. Tentar firmar um segundo exig
 
 ### Jutsus Elementais {#jutsus-elementais}
 
-As invocações utilizam, por padrão, jutsus elementais. No entanto, é possível aplicar as regras de criação de jutsus para desenvolver invocações personalizadas ou adaptar invocações já existentes para outros tipos de técnicas, de acordo com a preferência do jogador. Para isso, consulte o capítulo “20. Criação de Jutsus”.
+Por padrão, as invocações usam jutsus elementais. Mas dá para usar as regras de criação de jutsus (cap. 20) para criar invocações personalizadas ou adaptar as existentes a outros tipos de técnica, como o jogador preferir.
 
 ## Companheiro Mensageiro {#companheiro-mensageiro}
 
-Alguns companheiros podem ser utilizados para transportar mensagens, pergaminhos ou pequenos objetos entre localidades. O alcance e o tempo de entrega dependem do tamanho da criatura.
+Alguns companheiros levam mensagens, pergaminhos ou pequenos objetos de um lugar a outro. O tempo de entrega depende do tamanho da criatura.
 
-| Tamanho | Tempo de Entrega por KM |
+| Tamanho | Tempo de entrega por km |
 | - | - |
 | Pequena | 10 minutos |
 | Média | 5 minutos |
@@ -136,9 +144,6 @@ Alguns companheiros podem ser utilizados para transportar mensagens, pergaminhos
 
 ### Regras Gerais {#regras-gerais}
 
-- A invocação deve conhecer o destino ou possuir alguma forma de rastrear o alvo.
-- Objetos maiores aumentam o tempo de entrega.
-- O mestre pode aumentar o tempo em situações adversas, como tempestades, combate ou terrenos difíceis.
-- Companheiros que voam reduzem pela metade o tempo de entrega.
+A invocação precisa conhecer o destino, ou ter algum jeito de rastrear o alvo. Objetos maiores atrasam a entrega, e o Mestre pode aumentar o tempo em situações difíceis, como tempestades, combate ou terreno ruim. Companheiros que voam entregam na metade do tempo.
 
-Para acesso ao Modo Sennin via invocação, ver capítulo 15.
+O caminho para o Modo Sennin pelas invocações está no cap. 15.

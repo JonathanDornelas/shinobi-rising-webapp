@@ -18,7 +18,8 @@
 - id: recurso:pc
   rotulo: PC
   nome: Pontos de Chakra
-  padroes: [PC, PCs, Pontos de Chakra]
+  # sem "PCs": no livro, "PCs" são os personagens dos jogadores (o plural de Pontos de Chakra é "PC")
+  padroes: [PC, Pontos de Chakra]
   resumo: A energia dos jutsus de Ninjutsu, Genjutsu e Fuuinjutsu. Cada jutsu gasta PC; sem PC, sem técnica. Recupera com descanso.
   href: /regras/sistema-de-chakra#pontos-de-chakra-pc
   icone: recurso/ic-recurso-pc
@@ -163,7 +164,7 @@
   rotulo: DT do Jutsu
   nome: DT do Jutsu
   padroes: [DT do Jutsu, DT dos jutsus]
-  resumo: 10 + bônus de Rank (E +0 … S +5) + atributo-chave do lançador (CTR, FOR ou AGI, conforme o tipo).
+  resumo: 10 + bônus de Rank (E +0 … S +5) + atributo-chave do lançador (CTR, FOR ou AGI, conforme o tipo), mais a proficiência no jutsu, se houver.
   href: /regras/mecanica-basica#tipos-de-teste-como-o-mestre-escolhe-o-que-rolar
 - id: regra:resistencia
   rotulo: Resistência

@@ -10,172 +10,172 @@ parte: 2
 O seu próprio caminho ninja... Você é quem decide qual vai ser!
 :::
 
-Antes de começar, defina com o Mestre o período da campanha (era Sannin, clássica, Shippuden, Boruto, alternativa) e o nível inicial. Personagens iniciantes geralmente começam como Genin (ninja iniciante) recém-formados (nível 1).
-
-### Passo 1 — Conceito {#passo-1-conceito}
-
-Defina nome, idade, aparência e origem. É interessante pensar num conceito curto: "a herdeira do clã que quer ser reconhecida", "o órfão que sonha ser Hokage (Sombra de Fogo)", "o renegado que perdeu sua vila".
-
-### Passo 2 — Distribuir Atributos {#passo-2-distribuir-atributos}
-
-Você possui 8 pontos para distribuir entre os seis atributos. Todos os atributos começam em 0, e o limite máximo durante a criação do personagem é +4 (+5 se o clã conceder bônus nesse atributo).
-
-Também é possível reduzir até dois atributos para obter pontos adicionais:
-
-- -1 concede +1 ponto
-- -2 concede +2 pontos
-
-### Passo 3 — Escolher Vila {#passo-3-escolher-vila}
-
-Veja o capítulo 7. A vila concede dois bônus iniciais (perícias ou um traço cultural).
-
-### Passo 4 — Escolher (ou Criar) o Clã {#passo-4-escolher-ou-criar-o-cla}
-
-Veja o capítulo 8. Você tem três opções:
-
-- Escolher um clã canônico do catálogo (cap. 8.3).
-- Criar um clã original sem Kekkei Genkai — KKG (cap. 8.4).
-- Criar um clã original com Kekkei Genkai (cap. 8.4) — exige aprovação do Mestre.
-- Não pertencer a clã algum — recebe +2 perícia adicional e +5 PT iniciais como compensação.
-
-:::atencao{titulo="KKG é Recurso de Criação"}
-A criação de Kekkei Genkai (cap. 8.4) é projetada para ser usada quase exclusivamente na criação do personagem, no momento em que você define seu clã. Despertar um KKG no meio da campanha é raro e fruto de um arco narrativo significativo, conduzido pelo Mestre.
+:::cena
+O instrutor amarra a bandana na testa do aluno e dá um passo atrás. O metal ainda está frio. A partir de hoje, ele é um ninja. Quem ele vai ser, ainda ninguém sabe.
 :::
 
-### Passo 5 — Distribuir Perícias {#passo-5-distribuir-pericias}
+Este capítulo leva você, passo a passo, da ideia de um ninja à ficha pronta para jogar: conceito, atributos, vila, clã, perícias, recursos, jutsus, equipamento e história.
 
-Você tem 12 pontos. Nenhuma perícia pode passar de +3 na criação. Recomenda-se ter pelo menos uma perícia de combate em +2.
+Antes de começar, combine com o Mestre a época da campanha (era dos Sannin, clássica, Shippuden, Boruto ou alternativa) e o nível inicial. Em geral, os personagens começam como genin (ninja iniciante) recém-formados, no nível 1.
 
-### Passo 6 — Proficiências Iniciais {#passo-6-proficiencias-iniciais}
+### Passo 1 · Conceito {#passo-1-conceito}
 
-Você começa com 4 PT (Pontos de Treino) para distribuir em até 5 proficiências (Familiar = 1 PT, Treinado = 3 PT). Sugestões: arma principal, 1 jutsu favorito do clã, ferramenta especial. Lembre-se: o limite total é 5 proficiências; máximo 3 podem chegar a Mestre (+4) e apenas 1 a Lendário (+5).
+Defina nome, idade, aparência e origem. Ajuda pensar num conceito curto, uma frase que diga quem é o personagem: “a herdeira do clã que quer ser reconhecida”, “o órfão que sonha ser Hokage (Sombra de Fogo)”, “o renegado que perdeu a sua vila”.
 
-### Passo 7 — Especialização Inicial {#passo-7-especializacao-inicial}
+### Passo 2 · Distribuir Atributos {#passo-2-distribuir-atributos}
 
-Personagens começam com 1 Especialização Nível 1 (cap. 19).
+Os seis atributos começam em 0, e você distribui um punhado de pontos entre eles. Quem quiser mais pontos pode aceitar uma fraqueza: baixar um ou dois atributos para menos de zero devolve pontos para gastar nos outros.
 
-### Passo 8 — Calcular Recursos {#passo-8-calcular-recursos}
+:::na-mesa{titulo="Atributos na criação"}
+- **Pontos:** 8, com todos os atributos começando em 0
+- **Máximo:** +4 (+5 se o clã der bônus naquele atributo)
+- **Reduzir (até dois atributos):** -1 dá +1 ponto; -2 dá +2 pontos
+:::
 
-Para evitar multiplicações confusas, os recursos do personagem são calculados por SOMA. Você tem um valor base e adiciona bônus conforme seus atributos, consultando as tabelas abaixo. Atributos negativos não somam nada (não reduzem o total).
+### Passo 3 · Escolher Vila {#passo-3-escolher-vila}
+
+A vila em que o ninja cresceu molda o que ele sabe. Ela concede dois bônus iniciais, em perícias ou num traço cultural (cap. 7).
+
+### Passo 4 · Escolher (ou Criar) o Clã {#passo-4-escolher-ou-criar-o-cla}
+
+O clã é o sangue e a herança do personagem (cap. 8). Há quatro caminhos:
+
+- Escolher um clã canônico do catálogo (cap. 8.3).
+- Criar um clã original sem Kekkei Genkai, a KKG (cap. 8.4).
+- Criar um clã original com Kekkei Genkai (cap. 8.4), com a aprovação do Mestre.
+- Não pertencer a clã nenhum e receber, como compensação, +2 pontos de perícia e +5 PT iniciais.
+
+:::atencao{titulo="A KKG nasce com o personagem"}
+A criação de Kekkei Genkai (cap. 8.4) foi pensada para ser usada quase só na criação do personagem, no momento em que você define o clã. Despertar uma KKG no meio da campanha é raro e fruto de um arco narrativo importante, conduzido pelo Mestre.
+:::
+
+### Passo 5 · Distribuir Perícias {#passo-5-distribuir-pericias}
+
+Você tem 12 pontos para as perícias, e nenhuma pode passar de +3 na criação. Vale ter pelo menos uma perícia de combate em +2: cedo ou tarde, a missão vai exigir.
+
+### Passo 6 · Proficiências Iniciais {#passo-6-proficiencias-iniciais}
+
+Você começa com 4 PT (Pontos de Treino) para distribuir em até 5 proficiências; Familiar custa 1 PT, e Treinado, 3 PT. Boas escolhas são a arma principal, um jutsu favorito do clã ou uma ferramenta especial. O limite geral continua valendo: 5 proficiências no total, no máximo 3 no nível Mestre (+4) e só 1 no Lendário (+5).
+
+### Passo 7 · Especialização Inicial {#passo-7-especializacao-inicial}
+
+Todo personagem começa com 1 Especialização no nível 1 (cap. 19). É a primeira grande escolha de estilo: sensor, médico, marionetista, mestre de Taijutsu.
+
+### Passo 8 · Calcular Recursos {#passo-8-calcular-recursos}
+
+Nada de multiplicações: os recursos do personagem são calculados por soma. Cada um tem um valor base, e os atributos acrescentam bônus, conforme as tabelas abaixo. Atributos negativos não somam nada, mas também não tiram.
 
 #### Pontos de Vida (PV) e Pontos de Estamina (PE) {#pontos-de-vida-pv-e-pontos-de-estamina-pe}
 
-Os Pontos de Vida representam a vitalidade do personagem, enquanto os Pontos de Estamina indicam sua capacidade de esforço e execução de ações físicas. Ambos começam com 20 pontos base, acrescidos do bônus conforme a tabela abaixo.
+Os Pontos de Vida medem a vitalidade do personagem; os Pontos de Estamina, a sua capacidade de esforço físico. Os dois partem de 20 e ganham o mesmo bônus, que vem do Vigor.
 
-| Vigor (VIG) | Bônus de PV/PE |
+| Vigor (VIG) | Bônus de PV e de PE |
 | - | - |
 | -2 a 0 | +0 |
-| +1 | +5 PV |
-| +2 | +10 PV |
-| +3 | +15 PV |
-| +4 | +20 PV |
-| +5 | +25 PV |
-| +6 | +30 PV |
-| +7 | +35 PV |
-| +8 | +40 PV |
+| +1 | +5 |
+| +2 | +10 |
+| +3 | +15 |
+| +4 | +20 |
+| +5 | +25 |
+| +6 | +30 |
+| +7 | +35 |
+| +8 | +40 |
 
-**Exemplo**:
-
-VIG = +3 → +15 PV e +15 PE
-
-**Cálculo:**
-
-PV inicial = 20 + 15 = 35 PV
-
-PE inicial = 20 + 15 = 35 PE
+Com VIG +3, o bônus é +15: o personagem começa com 35 PV (20 + 15) e 35 PE (20 + 15).
 
 A cada nível depois do 1º, o personagem ganha +5 PV e +3 PE (cap. 17). Se o VIG mudar, recalcule pela tabela.
 
 #### Pontos de Chakra (PC) {#pontos-de-chakra-pc}
 
-Os Pontos de Chakra representam a reserva de energia espiritual do personagem, utilizada para executar Jutsus e Habilidades. Todo personagem começa com 30 PC base, acrescidos dos bônus de Espírito (ESP) e Controle (CTR).
+Os Pontos de Chakra são a reserva de energia espiritual, gasta em jutsus e habilidades. Todo personagem parte de 30 PC e soma dois bônus, um pelo Espírito (ESP) e outro pelo Controle (CTR), ambos pela mesma tabela.
 
 | Atributo (ESP ou CTR) | Bônus de PC por atributo |
 | - | - |
 | -2 a 0 | +0 |
-| +1 | +4 PC |
-| +2 | +8 PC |
-| +3 | +12 PC |
-| +4 | +16 PC |
-| +5 | +20 PC |
-| +6 | +24 PC |
-| +7 | +28 PC |
-| +8 | +32 PC |
+| +1 | +4 |
+| +2 | +8 |
+| +3 | +12 |
+| +4 | +16 |
+| +5 | +20 |
+| +6 | +24 |
+| +7 | +28 |
+| +8 | +32 |
 
-**Exemplo**:
-
-ESP = +2 → +8 PC
-
-CTR = +3 → +12 PC
-
-**Cálculo:**
-
-PC inicial = 30 + 8 + 12 = 50 PC
+Com ESP +2 (+8) e CTR +3 (+12), o personagem começa com 50 PC: 30 + 8 + 12.
 
 A cada nível depois do 1º, ganha +3 PC. Se ESP ou CTR mudarem, recalcule pela tabela.
 
-#### Outros recursos {#outros-recursos}
+#### Outros Recursos {#outros-recursos}
 
+Iniciativa, Defesa e Defesa Mental saem direto dos atributos e das perícias, e os Pontos de Destino são fixos. O quadro abaixo junta todos os recursos do personagem.
+
+:::na-mesa{titulo="Recursos"}
+- **PV:** 20 + bônus de VIG; +5 por nível depois do 1º
+- **PE:** 20 + bônus de VIG; +3 por nível depois do 1º
+- **PC:** 30 + bônus de ESP + bônus de CTR; +3 por nível depois do 1º
 - **Iniciativa:** 1d20 + AGI
-- **Defesa:** 10 + Acrobacia · **Defesa Mental:** 10 + Percepção
-- **Pontos de Destino: 1 por sessão**
+- **Defesa:** 10 + Acrobacia
+- **Defesa Mental:** 10 + Percepção
+- **Pontos de Destino:** 1 por sessão
+:::
 
-### Passo 9 — Jutsus Iniciais {#passo-9-jutsus-iniciais}
+### Passo 9 · Jutsus Iniciais {#passo-9-jutsus-iniciais}
 
-- 3 técnicas da Academia: Henge (Transformação), Bunshin (Clone) e Kawarimi (Substituição).
-- 1 elemento de chakra principal.
-- 2 jutsus de Rank E e 1 jutsu de Rank D (pode ser criado).
-- Jutsus específicos do clã (se aplicável).
+Todo ninja sai da Academia sabendo as três técnicas básicas: Henge (Transformação), Bunshin (Clone) e Kawarimi (Substituição). Além delas, recebe um elemento de chakra e os seus primeiros jutsus, e o clã pode acrescentar os dele.
 
-### Passo 10 — Equipamento Inicial {#passo-10-equipamento-inicial}
+:::na-mesa{titulo="Jutsus iniciais"}
+- **Da Academia:** Henge, Bunshin e Kawarimi
+- **Elemento:** 1 elemento de chakra principal
+- **Jutsus:** 2 de rank E e 1 de rank D (este pode ser criado, cap. 20)
+- **Do clã:** os jutsus específicos, se houver
+:::
 
-Você pode escolher uma das duas opções abaixo, conforme o estilo do seu personagem e a preferência da mesa:
+### Passo 10 · Equipamento Inicial {#passo-10-equipamento-inicial}
 
-#### Opção A — Pacote Padrão (recomendado para iniciantes) {#opcao-a-pacote-padrao-recomendado-para-iniciantes}
+Escolha uma das duas opções abaixo, de acordo com o estilo do personagem e a preferência da mesa.
 
-O equipamento é entregue pronto pela vila ao recém-formado:
+#### Opção A · Pacote Padrão (recomendado para iniciantes) {#opcao-a-pacote-padrao-recomendado-para-iniciantes}
 
-- Hitaiate (bandana da vila com símbolo).
+A vila entrega tudo pronto ao recém-formado:
+
+- Hitaiate (a bandana com o símbolo da vila).
 - 10 shuriken e 10 kunai.
 - 3 papéis explosivos.
 - Kit médico (5 usos).
-- Roupas ninja em cores da vila.
+- Roupas ninja nas cores da vila.
 - 1000 ryo.
 
-#### Opção B — Pacote Reduzido + Dinheiro Extra {#opcao-b-pacote-reduzido-dinheiro-extra}
+#### Opção B · Pacote Reduzido e Dinheiro Extra {#opcao-b-pacote-reduzido-dinheiro-extra}
 
-Para personagens que querem comprar o próprio equipamento (ronins, renegados, herdeiros excêntricos):
+Para quem prefere comprar o próprio equipamento, como ronins, renegados e herdeiros excêntricos, a vila entrega só a hitaiate e roupas ninja básicas, mais 14.000 ryo para gastar como quiser (os preços estão no cap. 11 e no cap. 12).
 
-- Hitaiate (bandana da vila com símbolo).
-- Roupas ninja básicas.
-- 14.000 ryo para gastar como quiser (consulte cap. 11 e 12 para preços).
-- Marionetistas: quem começa com a Especialização Marionete pode trocar o Pacote A por hitaiate, roupas, kit de marionetista e 1 marionete Pequena com 1 mecanismo de até 5.000 ryo.
+Marionetistas têm uma terceira saída. Quem começa com a Especialização Marionete pode trocar o Pacote A por uma hitaiate, roupas, um kit de marionetista e uma marionete Pequena com um mecanismo de até 5.000 ryo.
 
-### Passo 11 — Background (História de Vida) {#passo-11-background-historia-de-vida}
+### Passo 11 · Background (História de Vida) {#passo-11-background-historia-de-vida}
 
-O background é a marca que o personagem carrega antes de começar a campanha — como ele era visto na infância, na Academia, em missões anteriores. É um elemento narrativo e mecânico.
+O background é a marca que o personagem carrega antes de a campanha começar: como era visto na infância, na Academia, nas primeiras missões. É, ao mesmo tempo, narrativa e regra.
 
-Escolha um dos backgrounds abaixo, ou crie um novo em diálogo com o Mestre seguindo o mesmo padrão (1 perícia ou bônus pequeno + 1 traço narrativo).
+Escolha um dos backgrounds abaixo ou crie outro com o Mestre, seguindo o mesmo padrão: uma perícia ou um bônus pequeno, mais um traço de interpretação.
 
 | Background | Bônus mecânico | Traço de interpretação |
 | - | - | - |
-| Prodígio | +1 em uma perícia à escolha (representando talento natural) | Recebeu elogios precoces — luta com expectativas pesadas. NPCs frequentemente comparam com 'a antiga geração' ou rivalidades. |
-| Perdedor (Underdog) | +2 PT extras na criação (treinou dobrado para compensar) | Foi o último da turma na Academia. Subestima-se em público mas surpreende sob pressão. Ganha simpatia natural de outros excluídos. |
-| Determinado | +1 em Resistências de VIG e em Saves de Morte | Não desiste — mesmo quando deveria. Continua um plano após ele claramente falhar; precisa de aliados para forçar recuo. Inspirador em momentos críticos. |
-| Misterioso | +1 em Furtividade | Pouco se sabe sobre seu passado. Outros personagens ficam curiosos; o jogador e Mestre podem revelar detalhes gradualmente. NPCs desconfiam por princípio. |
-| Herdeiro | +1 PIC por arco (recursos familiares acessíveis) | Sobrenome importante (ainda que pequeno clã ou linhagem militar). Pessoas reagem ao nome antes de te conhecer. Tem responsabilidades familiares que cobram em momentos inconvenientes. |
-| Órfão da Guerra | +1 em uma perícia de combate à escolha (Taijutsu, Bukijutsu ou Ninjutsu) | Perdeu a família em conflito. Conhece o peso real do combate. Tem dificuldade com perdas próximas, mas é maduro emocionalmente em comparação aos pares. Pode ter rancor específico contra uma vila/pessoa. |
-| Veterano de Missão Trágica | +1 em Percepção (aprendeu a ler problemas) | Sobreviveu a uma missão em que aliados ou civis morreram. Cuidadoso, às vezes hesitante. Memória traumática pode ser gatilho narrativo (Mestre pode usar). |
-| Estudioso | +1 em Investigação | Devorou pergaminhos antigos, técnicas raras, biografias. Conhece nomes de jutsus obscuros, mestres históricos e tradições. NPCs eruditos respeitam; ninjas práticos zombam ("você lê demais"). |
-| Carismático | +1 em Persuasão | Tem facilidade com palavras e expressão. Líder informal de grupo ou aliado social favorito. Em interações sociais delicadas, é o spokesperson natural. |
-| Renegado em Reabilitação | +1 em uma perícia de combate à escolha e +1 em Furtividade; -1 PIC por arco | Foi marcado como renegado no passado (motivo definido com Mestre) e aceito de volta. Carrega o estigma — alguns shinobi não confiam, alguns vilões antigos podem reaparecer. |
-| Filho da Fronteira | +1 em Sobrevivência | Cresceu em vilarejo distante, fora da estrutura central da vila. Conhece terreno selvagem, costumes locais, contatos não-oficiais. Sotaque pode ser zombado. Tem rede informal de favores em vilarejos. |
-| Atleta Marcial | +1 em Atletismo | Treinou em torneios e competições antes de entrar na Academia. Boa forma física, instinto competitivo. Aceita desafios de forma quase compulsiva — pode ser provocado a duelos por inimigos espertos. |
-| Aprendiz Tardio | +1 em Investigação ou Medicina (estudou intensamente para alcançar) | Entrou na Academia mais velho que o normal (15-18 anos em vez de 11-12). Maturidade emocional acima da média; falta dos vínculos de infância com colegas. Frequentemente subestimado por idade. |
-| Médico de Vilarejo | +1 em Medicina | Ajudou a curar gente desde criança (parente médico ou aldeia sem acesso a hospital). Tem instinto de cuidador, evita matar quando há alternativa. Reconhece doenças e ferimentos rapidamente. |
+| Prodígio | +1 em uma perícia à escolha (o talento natural) | Recebeu elogios cedo e luta com expectativas pesadas. NPCs vivem comparando com “a antiga geração” ou com rivais. |
+| Perdedor (Underdog) | +2 PT extras na criação (treinou dobrado para compensar) | Foi o último da turma na Academia. Se subestima em público, mas surpreende sob pressão. Ganha a simpatia natural de outros excluídos. |
+| Determinado | +1 em Resistências de VIG e em Saves de Morte | Não desiste, mesmo quando deveria. Insiste num plano depois que ele claramente falhou e precisa dos aliados para recuar. Inspira nos momentos críticos. |
+| Misterioso | +1 em Furtividade | Pouco se sabe do seu passado. Os outros personagens ficam curiosos, e jogador e Mestre podem revelar detalhes aos poucos. NPCs desconfiam por princípio. |
+| Herdeiro | +1 PIC por arco (recursos da família) | Tem um sobrenome importante, ainda que de um clã pequeno ou de uma linhagem militar. As pessoas reagem ao nome antes de conhecê-lo, e as responsabilidades da família cobram nos momentos mais inconvenientes. |
+| Órfão da Guerra | +1 em uma perícia de combate à escolha (Taijutsu, Bukijutsu ou Ninjutsu) | Perdeu a família num conflito e conhece o peso real do combate. Sofre com perdas próximas, mas é mais maduro que os colegas. Pode guardar rancor de uma vila ou de uma pessoa. |
+| Veterano de Missão Trágica | +1 em Percepção (aprendeu a ler problemas) | Sobreviveu a uma missão em que aliados ou civis morreram. Cuidadoso, às vezes hesitante. A memória pode virar um gatilho narrativo, que o Mestre pode usar. |
+| Estudioso | +1 em Investigação | Devorou pergaminhos antigos, técnicas raras e biografias. Conhece jutsus obscuros, mestres históricos e tradições. NPCs eruditos respeitam; ninjas práticos zombam (“você lê demais”). |
+| Carismático | +1 em Persuasão | Tem facilidade com as palavras. É o líder informal do grupo ou o aliado social favorito; nas conversas delicadas, é o porta-voz natural. |
+| Renegado em Reabilitação | +1 em uma perícia de combate à escolha e +1 em Furtividade; -1 PIC por arco | Foi marcado como renegado (o motivo se define com o Mestre) e aceito de volta. Carrega o estigma: alguns shinobi não confiam nele, e velhos vilões podem reaparecer. |
+| Filho da Fronteira | +1 em Sobrevivência | Cresceu num vilarejo distante, fora da estrutura central da vila. Conhece o terreno selvagem, os costumes locais e contatos não oficiais. O sotaque pode virar piada. Tem uma rede informal de favores nos vilarejos. |
+| Atleta Marcial | +1 em Atletismo | Disputou torneios antes de entrar na Academia. Boa forma física, instinto competitivo. Aceita desafios quase por compulsão, e inimigos espertos podem provocá-lo para um duelo. |
+| Aprendiz Tardio | +1 em Investigação ou Medicina (estudou muito para alcançar os outros) | Entrou na Academia mais velho que o normal (com 15 a 18 anos, e não com 11 ou 12). Tem maturidade emocional acima da média, mas não tem os laços de infância com os colegas. Costuma ser subestimado pela idade. |
+| Médico de Vilarejo | +1 em Medicina | Ajuda a curar gente desde criança (um parente médico, uma aldeia sem hospital). Tem instinto de cuidador e evita matar quando há alternativa. Reconhece doenças e ferimentos rapidamente. |
 
-Backgrounds podem ser combinados com vila e clã para criar arcos pessoais únicos. Por exemplo: um Hyuuga Prodígio carrega expectativas dobradas (clã nobre + reputação de talento); um Uchiha Misterioso após o massacre tem motivações naturais de campanha; um Senju Aprendiz Tardio é alguém que descobriu o sangue raro tarde demais para o treino tradicional.
+Background, vila e clã se combinam em arcos pessoais únicos. Um Hyuuga Prodígio carrega expectativas em dobro (clã nobre e fama de talento); um Uchiha Misterioso depois do massacre já traz motivações de campanha; um Senju Aprendiz Tardio descobriu o sangue raro tarde demais para o treino tradicional.
 
-:::dica{titulo="Use o Background ao Mestre"}
-Mestres devem usar o background como gancho regular: quando o personagem entra em situação que toca o tema, faça referência narrativa. Um Determinado vai se ver enfrentando momentos onde "recuar é o sensato". Um Misterioso vai encontrar pessoas tentando descobrir seu passado. Um Veterano de Missão Trágica pode ser perseguido por flashbacks em cenas-chave. Não force, mas ofereça oportunidades para o personagem viver seu background.
+:::dica{titulo="Use o background"}
+O Mestre deve usar o background como gancho frequente: quando o personagem entra numa situação que toca o tema, faça uma referência na narrativa. Um Determinado vai se ver diante de momentos em que “recuar é o sensato”. Um Misterioso vai encontrar gente tentando descobrir o seu passado. Um Veterano de Missão Trágica pode ser perseguido por lembranças em cenas-chave. Não force, mas ofereça oportunidades para o personagem viver o seu background.
 :::

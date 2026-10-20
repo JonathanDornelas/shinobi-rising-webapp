@@ -283,7 +283,10 @@ export function analisarHabilidade(d: HabilidadeDados) {
 	return { verificacoes: v, bloqueios: v.filter((x) => x.nivel === 'bloqueio').length };
 }
 
-/** DT do jutsu = 10 + bônus do rank + atributo-chave do lançador. */
+/**
+ * DT do jutsu = 10 + bônus do rank + atributo-chave do lançador (cap. 2). A proficiência no jutsu também soma, mas
+ * quem cria ainda não pode tê-la (só se treina proficiência num jutsu já conhecido), então aqui ela fica de fora.
+ */
 export const dtDoJutsu = (calc: CalculoJutsu, atributo: number) => 10 + calc.bonusDt + atributo;
 
 /** O jutsu criado no formato dos cards do livro (para o CardJutsu e o catálogo da ficha). */

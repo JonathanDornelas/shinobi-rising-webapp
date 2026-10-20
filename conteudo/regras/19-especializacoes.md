@@ -6,10 +6,16 @@ titulo: Especializações
 parte: 5
 ---
 
-Especializações representam o foco profundo de um ninja em uma área. Cada especialização tem 3 níveis. Benefícios de níveis anteriores continuam valendo; quando um nível muda um número que já existia (como uma redução de custo), o novo valor substitui o anterior — as tabelas já mostram o valor total. Reduções de custo de especializações diferentes não se somam (use a maior).
+:::cena
+Dois ninjas aprendem o mesmo jutsu de fogo no mesmo dia. Dez anos depois, um deles acende fogueiras com ele. O outro incendeia florestas.
+:::
 
-:::destaque{titulo="Quando se Ganha Especializações"}
-Personagens começam com 1 Especialização Nível 1 na criação. Ganham especializações novas nos níveis 4, 7, 10, 13, 16 e 19 (totalizando até 7 especializações no nível 19+). Para subir uma especialização que já possuem, gastam Pontos de Treino conforme cap. 18.
+Especializações são o foco profundo de um ninja numa área: o sensor que sente chakra a quilômetros, o médico que traz um aliado de volta, o mestre de um elemento.
+
+Cada especialização tem 3 níveis. Os benefícios dos níveis anteriores continuam valendo, mas, quando um nível muda um número que já existia, como uma redução de custo, o valor novo substitui o antigo; as tabelas já mostram o total. E reduções de custo de especializações diferentes não se somam: vale a maior.
+
+:::destaque{titulo="Quando se ganha uma especialização"}
+Todo personagem começa com 1 Especialização no nível 1, na criação. Ganha especializações novas nos níveis 4, 7, 10, 13, 16 e 19, chegando a até 7 no nível 19 ou acima. Para subir uma especialização que já tem, gasta Pontos de Treino (cap. 18).
 :::
 
 ## Catálogo de Especializações {#catalogo-de-especializacoes}
@@ -30,13 +36,13 @@ Personagens começam com 1 Especialização Nível 1 na criação. Ganham especi
 | 2 | +20 PC máximos (total); recupera 1 PC por turno em combate |
 | 3 | +30 PC máximos (total); a Sobrecarga não causa Fadiga |
 
-### Especialização: Elemento Específico (Katon, Suiton, etc.) {#especializacao-elemento-especifico-katon-suiton-etc}
+### Especialização: Elemento Específico (Katon, Suiton etc.) {#especializacao-elemento-especifico-katon-suiton-etc}
 
 | Nível | Benefício |
 | - | - |
 | 1 | +1 de dano e -2 PC nos jutsus do elemento |
 | 2 | +1d6 de dano (substitui o +1) e -2 PC; os jutsus do elemento ignoram 2 de RD |
-| 3 | +1d8 de dano; -3 PC; 1×/turno, pode lançar um jutsu de Rank C ou inferior do elemento como ação secundária |
+| 3 | +1d8 de dano; -3 PC; uma vez por turno, pode lançar um jutsu de Rank C ou inferior do elemento como ação secundária |
 
 ### Especialização: Velocidade {#especializacao-velocidade}
 
@@ -44,7 +50,7 @@ Personagens começam com 1 Especialização Nível 1 na criação. Ganham especi
 | - | - |
 | 1 | +2 Iniciativa; +5 m de deslocamento |
 | 2 | +2 Iniciativa; 2 ações secundárias por turno; +2 em testes de Acrobacia e Atletismo |
-| 3 | +4 Iniciativa (total); 1× por combate, ganha uma ação primária extra no primeiro turno |
+| 3 | +4 Iniciativa (total); uma vez por combate, ganha uma ação primária extra no primeiro turno |
 
 ### Especialização: Resistência Física {#especializacao-resistencia-fisica}
 
@@ -75,7 +81,7 @@ Personagens começam com 1 Especialização Nível 1 na criação. Ganham especi
 | Nível | Benefício |
 | - | - |
 | 1 | +1 nas rolagens de Bukijutsu; saca qualquer arma como ação livre |
-| 2 | +1 dado de dano da arma (ex.: 1d6 → 2d6); em um acerto crítico, faz um ataque bônus (1×/turno) |
+| 2 | +1 dado de dano da arma (1d6 vira 2d6); num acerto crítico, faz um ataque bônus (uma vez por turno) |
 | 3 | +2 nas rolagens de Bukijutsu; +2 dados de dano da arma (total) |
 
 ### Especialização: Selamento (Fuuinjutsu) {#especializacao-selamento-fuuinjutsu}
@@ -108,7 +114,7 @@ Personagens começam com 1 Especialização Nível 1 na criação. Ganham especi
 | - | - |
 | 1 | Controla 1 marionete em combate; +3 em testes de manipulação fina; saca os fios como ação livre |
 | 2 | Controla 2 marionetes ao mesmo tempo; +3 de dano com armas embutidas; saca a 2ª marionete como ação livre |
-| 3 | Controla até 10 marionetes (2 PC/turno cada); pode criar Hitokugutsu (cap. 13) |
+| 3 | Controla até 10 marionetes (2 PC por turno cada); pode criar Hitokugutsu (cap. 13) |
 
 ### Especialização: Invocação (Kuchiyose) {#especializacao-invocacao-kuchiyose}
 
@@ -116,7 +122,7 @@ Personagens começam com 1 Especialização Nível 1 na criação. Ganham especi
 | - | - |
 | 1 | Invocação Pequena (cap. 14) |
 | 2 | Invocação Média |
-| 3 | Invocação Grande; Chefe da espécie com aprovação do próprio chefe |
+| 3 | Invocação Grande; Chefe da espécie, com a aprovação do próprio chefe |
 
 ### Especialização: Sensor de Chakra {#especializacao-sensor-de-chakra}
 

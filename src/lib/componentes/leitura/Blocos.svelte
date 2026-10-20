@@ -6,8 +6,10 @@
 	import CardCla from '../regras/CardCla.svelte';
 	import Icone from '../ui/Icone.svelte';
 	import Blocos from './Blocos.svelte';
+	import Cena from './Cena.svelte';
 	import Destaque from './Destaque.svelte';
 	import Epigrafe from './Epigrafe.svelte';
+	import NaMesa from './NaMesa.svelte';
 	import Tabela from './Tabela.svelte';
 	import Texto from './Texto.svelte';
 	import Titulo from './Titulo.svelte';
@@ -109,6 +111,10 @@
 		</Destaque>
 	{:else if b.tipo === 'tabela'}
 		<Tabela cab={b.cab} linhas={b.linhas} titulo={compacto ? undefined : b.titulo} ids={b.ids} />
+	{:else if b.tipo === 'cena'}
+		<Cena c={b.c} />
+	{:else if b.tipo === 'mesa'}
+		<NaMesa titulo={b.titulo} linhas={b.linhas} notas={b.notas} />
 	{:else if b.tipo === 'jutsu' && jutsus[b.slug]}
 		<CardJutsu jutsu={jutsus[b.slug]} rodape={false} />
 	{:else if b.tipo === 'habilidade' && habilidades[b.slug]}

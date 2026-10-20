@@ -6,7 +6,13 @@ titulo: Vilas Ocultas
 parte: 2
 ---
 
-Cada Vila Oculta tem uma cultura militar e uma especialização. Personagens originários daquela vila recebem o bônus listado. A relevância de cada vila varia conforme o período da campanha.
+:::cena
+Na Folha, as crianças aprendem a confiar umas nas outras. Na Névoa, aprendem a não fazer barulho. Na Areia, aprendem que o deserto não perdoa.
+
+Toda vila ensina primeiro aquilo que ela tem medo de perder.
+:::
+
+Cada Vila Oculta tem uma cultura militar e uma especialidade, e quem nasceu nela leva consigo um bônus. A importância de cada vila muda com a época da campanha.
 
 | Vila | País | Características | Bônus |
 | - | - | - | - |
@@ -18,6 +24,6 @@ Cada Vila Oculta tem uma cultura militar e uma especialização. Personagens ori
 | Amegakure (Vila Oculta da Chuva) | — | Espionagem e jutsus de água | +1 em Investigação e +1 em Furtividade |
 | Takigakure (Vila Oculta da Cachoeira) | — | Emboscadas e infiltração | +1 em Percepção e +1 em Rastreamento |
 | Otogakure (Vila Oculta do Som) | Arroz | Pesquisa proibida e experimentação | +1 em Medicina e +1 em Investigação |
-| Sem Vila (Errante / Renegado) | — | Liberdade e adaptação | +1 em Sobrevivência e +1 em uma perícia à escolha |
+| Sem Vila (Errante ou Renegado) | — | Liberdade e adaptação | +1 em Sobrevivência e +1 em uma perícia à escolha |
 
-Para campanhas em períodos específicos, o Mestre pode ajustar o status político (em guerra, alianças, etc.) e adicionar vilas relevantes do período.
+Em campanhas de uma época específica, o Mestre pode ajustar a situação política, com guerras e alianças, e acrescentar as vilas importantes daquele período.

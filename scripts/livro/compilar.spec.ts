@@ -27,6 +27,18 @@ describe('Markdown das regras', () => {
 			{ tipo: 'tabela', cab: ['Estado', 'Efeito'], linhas: [[[[{ t: 'Caído' }]], [[{ t: '-2 em ataques' }], [{ t: 'Levantar', b: 1 }, { t: ' custa a secundária' }]]]] },
 			{ tipo: 'tabela', cab: null, linhas: [[[[{ t: 'a' }]], [[{ t: 'b' }]]]] },
 			{ tipo: 'destaque', variante: 'dica', titulo: 'Use "isto"', blocos: [{ tipo: 'p', c: [{ t: 'Dentro' }] }] },
+			{ tipo: 'cena', c: [[{ t: 'A kunai entra fundo.' }], [{ t: 'Sobra só um ' }, { t: 'tronco', i: 1 }, { t: '.' }]] },
+			{
+				tipo: 'mesa',
+				titulo: 'Kawarimi',
+				ref: 'kawarimi',
+				linhas: [
+					{ rotulo: [{ t: 'Custo' }], valor: [{ t: '3 PC, depois 5, depois 8' }] },
+					{ rotulo: [{ t: 'Teste' }], valor: [{ t: '1d20 + Percepção ' }, { t: 'contra', i: 1 }, { t: ' o ataque' }] }
+				],
+				notas: [[{ t: 'Não combina com a Esquiva Ativa.' }]]
+			},
+			{ tipo: 'mesa', linhas: [{ rotulo: [{ t: 'Dados' }], valor: [{ t: 'd4 a d20' }] }], notas: [] },
 			{ tipo: 'jutsu', slug: 'rasengan' },
 			{ tipo: 'clas' }
 		];
@@ -34,6 +46,22 @@ describe('Markdown das regras', () => {
 		const volta = lerDoc(md);
 		expect(volta.frente).toEqual({ numero: 4 });
 		expect(volta.blocos).toEqual(blocos);
+	});
+
+	it('lê o quadro Na mesa com o rótulo em negrito, com os dois-pontos dentro ou fora dele', () => {
+		const { blocos } = lerDoc(':::na-mesa{ref="x"}\n- **Rolagem:** 1d20 + ESP\n- **20 natural**: volta com 1 PV\n\nAs marcas zeram.\n:::\n');
+		expect(blocos).toEqual([
+			{
+				tipo: 'mesa',
+				ref: 'x',
+				linhas: [
+					{ rotulo: [{ t: 'Rolagem' }], valor: [{ t: '1d20 + ESP' }] },
+					{ rotulo: [{ t: '20 natural' }], valor: [{ t: 'volta com 1 PV' }] }
+				],
+				notas: [[{ t: 'As marcas zeram.' }]]
+			}
+		]);
+		expect(() => lerDoc(':::na-mesa\n- sem rótulo\n:::\n')).toThrow(/Rótulo/);
 	});
 
 	it('tira os espaços de dentro do negrito', () => {
@@ -55,10 +83,10 @@ describe('léxico e marcação no texto', () => {
 	};
 	const cap = (n: number) => saida.capitulos.find((c) => c.numero === n)!;
 
-	it('marca recursos em todas as ocorrências, inclusive no plural', () => {
+	it('marca recursos em todas as ocorrências, sem confundir "PCs" (personagens) com Pontos de Chakra', () => {
 		const ts = trechos(saida.capitulos);
-		expect(ts.some((t) => t.t === 'PCs' && t.termo === 'recurso:pc')).toBe(true);
 		expect(ts.filter((t) => t.termo === 'recurso:pc').length).toBeGreaterThan(20);
+		expect(trechos([saida.capitulos, saida.clas]).some((t) => t.t === 'PCs' && t.termo === 'recurso:pc')).toBe(false);
 		expect(ts.every((t) => !t.termo || t.def || t.href)).toBe(true);
 	});
 
