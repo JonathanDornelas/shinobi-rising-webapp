@@ -305,7 +305,7 @@ export function paraJutsuLivro(slug: string, d: JutsuDados, origem: string, calc
 		info: CAMPOS_INFO.map(({ id, rotulo }) => ({ k: rotulo, v: info[id] }) as InfoJutsu),
 		efeito: d.efeito.trim() ? [{ t: d.efeito.trim() }] : null,
 		notas: d.selos.length && !(d.componentes['sem-selos'] ?? 0) ? [[{ t: `Selos: ${d.selos.join(' · ')}.` }]] : [],
-		pj: calc.linhas.some((l) => l.pj) ? `${calc.linhas.filter((l) => l.pj).map((l) => `${l.rotulo} (${sinalPj(l.pj)})`).join(' · ')} = ${calc.pj} PJ` : `${calc.pj} PJ (mínimo)`,
+		pj: calc.linhas.some((l) => l.pj) ? `${calc.linhas.filter((l) => l.pj).map((l) => `${l.rotulo} (${sinalPj(l.pj)})`).join(' · ')}: ${calc.pj} PJ, rank ${calc.rank}.` : `${calc.pj} PJ (mínimo), rank ${calc.rank}.`,
 		capitulo: 20,
 		ancora: '',
 		cla: null,

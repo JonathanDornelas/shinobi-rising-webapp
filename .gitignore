@@ -27,3 +27,6 @@ desktop.ini
 !.env.example
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Jobs do PixelLab (guardam o começo do token da conta que gerou)
+pixellab/gerados/**/jobs.json

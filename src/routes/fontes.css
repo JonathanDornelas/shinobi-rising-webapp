@@ -1,0 +1,271 @@
+/* Gerado por scripts/fontes/baixar.ts (Google Fonts, OFL). Japonês: 「」一七三九二五八六十四忍道 */
+
+/* Noto Sans 400 italic, latin */
+@font-face {
+	font-family: 'Noto Sans';
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/google/noto-sans-latin-italic-400.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Noto Sans 400 normal, latin */
+@font-face {
+	font-family: 'Noto Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/google/noto-sans-latin-normal-400.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Noto Sans 500 normal, latin */
+@font-face {
+	font-family: 'Noto Sans';
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url('/fonts/google/noto-sans-latin-normal-400.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Noto Sans 600 normal, latin */
+@font-face {
+	font-family: 'Noto Sans';
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url('/fonts/google/noto-sans-latin-normal-400.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Noto Sans 700 normal, latin */
+@font-face {
+	font-family: 'Noto Sans';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url('/fonts/google/noto-sans-latin-normal-400.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Noto Sans 400 italic, macron */
+@font-face {
+	font-family: 'Noto Sans';
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/google/noto-sans-macron-italic-400.woff2') format('woff2');
+	unicode-range: U+101, U+100, U+14D, U+14C, U+16B, U+16A;
+}
+
+/* Noto Sans 400 normal, macron */
+@font-face {
+	font-family: 'Noto Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/google/noto-sans-macron-normal-400.woff2') format('woff2');
+	unicode-range: U+101, U+100, U+14D, U+14C, U+16B, U+16A;
+}
+
+/* Noto Sans 500 normal, macron */
+@font-face {
+	font-family: 'Noto Sans';
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url('/fonts/google/noto-sans-macron-normal-400.woff2') format('woff2');
+	unicode-range: U+101, U+100, U+14D, U+14C, U+16B, U+16A;
+}
+
+/* Noto Sans 600 normal, macron */
+@font-face {
+	font-family: 'Noto Sans';
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url('/fonts/google/noto-sans-macron-normal-400.woff2') format('woff2');
+	unicode-range: U+101, U+100, U+14D, U+14C, U+16B, U+16A;
+}
+
+/* Noto Sans 700 normal, macron */
+@font-face {
+	font-family: 'Noto Sans';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url('/fonts/google/noto-sans-macron-normal-400.woff2') format('woff2');
+	unicode-range: U+101, U+100, U+14D, U+14C, U+16B, U+16A;
+}
+
+/* Pixelify Sans 400 normal, latin */
+@font-face {
+	font-family: 'Pixelify Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/google/pixelify-sans-latin-normal-400.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Pixelify Sans 500 normal, latin */
+@font-face {
+	font-family: 'Pixelify Sans';
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url('/fonts/google/pixelify-sans-latin-normal-400.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Pixelify Sans 600 normal, latin */
+@font-face {
+	font-family: 'Pixelify Sans';
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url('/fonts/google/pixelify-sans-latin-normal-400.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Pixelify Sans 700 normal, latin */
+@font-face {
+	font-family: 'Pixelify Sans';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url('/fonts/google/pixelify-sans-latin-normal-400.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Pixelify Sans 400 normal, macron */
+@font-face {
+	font-family: 'Pixelify Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/google/pixelify-sans-macron-normal-400.woff2') format('woff2');
+	unicode-range: U+101, U+100, U+14D, U+14C, U+16B, U+16A;
+}
+
+/* Pixelify Sans 500 normal, macron */
+@font-face {
+	font-family: 'Pixelify Sans';
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url('/fonts/google/pixelify-sans-macron-normal-400.woff2') format('woff2');
+	unicode-range: U+101, U+100, U+14D, U+14C, U+16B, U+16A;
+}
+
+/* Pixelify Sans 600 normal, macron */
+@font-face {
+	font-family: 'Pixelify Sans';
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url('/fonts/google/pixelify-sans-macron-normal-400.woff2') format('woff2');
+	unicode-range: U+101, U+100, U+14D, U+14C, U+16B, U+16A;
+}
+
+/* Pixelify Sans 700 normal, macron */
+@font-face {
+	font-family: 'Pixelify Sans';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url('/fonts/google/pixelify-sans-macron-normal-400.woff2') format('woff2');
+	unicode-range: U+101, U+100, U+14D, U+14C, U+16B, U+16A;
+}
+
+/* Shippori Mincho B1 600 normal, latin */
+@font-face {
+	font-family: 'Shippori Mincho B1';
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url('/fonts/google/shippori-mincho-b1-latin-normal-600.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Shippori Mincho B1 700 normal, latin */
+@font-face {
+	font-family: 'Shippori Mincho B1';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url('/fonts/google/shippori-mincho-b1-latin-normal-700.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Shippori Mincho B1 800 normal, latin */
+@font-face {
+	font-family: 'Shippori Mincho B1';
+	font-style: normal;
+	font-weight: 800;
+	font-display: swap;
+	src: url('/fonts/google/shippori-mincho-b1-latin-normal-800.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Shippori Mincho B1 600 normal, macron */
+@font-face {
+	font-family: 'Shippori Mincho B1';
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url('/fonts/google/shippori-mincho-b1-macron-normal-600.woff2') format('woff2');
+	unicode-range: U+101, U+100, U+14D, U+14C, U+16B, U+16A;
+}
+
+/* Shippori Mincho B1 700 normal, macron */
+@font-face {
+	font-family: 'Shippori Mincho B1';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url('/fonts/google/shippori-mincho-b1-macron-normal-700.woff2') format('woff2');
+	unicode-range: U+101, U+100, U+14D, U+14C, U+16B, U+16A;
+}
+
+/* Shippori Mincho B1 800 normal, macron */
+@font-face {
+	font-family: 'Shippori Mincho B1';
+	font-style: normal;
+	font-weight: 800;
+	font-display: swap;
+	src: url('/fonts/google/shippori-mincho-b1-macron-normal-800.woff2') format('woff2');
+	unicode-range: U+101, U+100, U+14D, U+14C, U+16B, U+16A;
+}
+
+/* Shippori Mincho B1 600 normal, jp */
+@font-face {
+	font-family: 'Shippori Mincho B1';
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url('/fonts/google/shippori-mincho-b1-jp-normal-600.woff2') format('woff2');
+	unicode-range: U+300C, U+300D, U+4E00, U+4E03, U+4E09, U+4E5D, U+4E8C, U+4E94, U+516B, U+516D, U+5341, U+56DB, U+5FCD, U+9053;
+}
+
+/* Shippori Mincho B1 700 normal, jp */
+@font-face {
+	font-family: 'Shippori Mincho B1';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url('/fonts/google/shippori-mincho-b1-jp-normal-700.woff2') format('woff2');
+	unicode-range: U+300C, U+300D, U+4E00, U+4E03, U+4E09, U+4E5D, U+4E8C, U+4E94, U+516B, U+516D, U+5341, U+56DB, U+5FCD, U+9053;
+}
+
+/* Shippori Mincho B1 800 normal, jp */
+@font-face {
+	font-family: 'Shippori Mincho B1';
+	font-style: normal;
+	font-weight: 800;
+	font-display: swap;
+	src: url('/fonts/google/shippori-mincho-b1-jp-normal-800.woff2') format('woff2');
+	unicode-range: U+300C, U+300D, U+4E00, U+4E03, U+4E09, U+4E5D, U+4E8C, U+4E94, U+516B, U+516D, U+5341, U+56DB, U+5FCD, U+9053;
+}

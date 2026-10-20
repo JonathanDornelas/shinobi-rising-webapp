@@ -52,34 +52,38 @@ export async function listarCampanhas(locals: App.Locals, usuarioId: string) {
 /** Campanha aberta (layout de /campanhas/[id]): 404 se não existe ou a conta não é membro. */
 export async function carregarCampanha(locals: App.Locals, id: string, usuarioId: string) {
 	if (!/^[0-9a-f-]{36}$/i.test(id)) error(404, 'Campanha não encontrada.');
-	const { data: campanha, error: e } = await locals.supabase.from('campanhas').select('*').eq('id', id).maybeSingle();
-	if (e) falhou('carregar campanha', e, 'Não foi possível carregar a campanha.');
-	if (!campanha) error(404, 'Campanha não encontrada.');
-	const { data: membros } = await locals.supabase
-		.from('membros')
-		.select('usuario_id, papel, entrou_em, perfil:perfis!membros_usuario_id_fkey(nome, avatar)')
-		.eq('campanha_id', id)
-		.order('entrou_em');
-	const lista = (membros ?? []).map((m) => ({ id: m.usuario_id, papel: m.papel, entrou_em: m.entrou_em, nome: m.perfil?.nome ?? '?', avatar: m.perfil?.avatar ?? null }));
-	const papel: Papel = campanha.mestre_id === usuarioId ? 'mestre' : 'jogador';
-	// RLS: o Mestre vê todas as fichas; o jogador, só as próprias. O grupo aparece pelo resumo público.
-	const conta = (tabela: 'clas' | 'jutsus_criados' | 'equipamentos_criados') =>
-		papel === 'mestre' ? locals.supabase.from(tabela).select('id', { count: 'exact', head: true }).eq('campanha_id', id).eq('status', 'em_revisao') : Promise.resolve({ count: 0 });
-	const [{ data: fichas }, { data: grupo }, { data: pedidos }, clasPend, jutsusPend, equipPend] = await Promise.all([
+	// Uma ida ao banco para o que não depende do papel (o servidor fica longe do banco: cada ida conta); a fila do
+	// Mestre vem numa segunda, só para ele. RLS: o Mestre vê todas as fichas; o jogador, só as próprias.
+	const [{ data: campanha, error: e }, { data: membros }, { data: fichas }, { data: grupo }] = await Promise.all([
+		locals.supabase.from('campanhas').select('*').eq('id', id).maybeSingle(),
+		locals.supabase
+			.from('membros')
+			.select('usuario_id, papel, entrou_em, perfil:perfis!membros_usuario_id_fkey(nome, avatar)')
+			.eq('campanha_id', id)
+			.order('entrou_em'),
 		locals.supabase
 			.from('personagens')
 			.select('id, jogador_id, nome, status, situacao, nivel, xp, pt, resumo, estado, enviada_em, decidida_em, comentario_mestre, atualizada_em, epitafio, pre_gerado, excecao, ryo, retrato, capa, npc')
 			.eq('campanha_id', id)
 			.neq('status', 'rejeitada')
 			.order('criada_em'),
-		locals.supabase.rpc('personagens_do_grupo', { campanha: id }),
-		papel === 'mestre'
-			? locals.supabase.from('pedidos_pt').select('id, personagem_id, sessao, semanas, pt, descricao, criado_em').eq('campanha_id', id).eq('status', 'pendente').order('criado_em')
-			: Promise.resolve({ data: [] }),
-		conta('clas'),
-		conta('jutsus_criados'),
-		conta('equipamentos_criados')
+		locals.supabase.rpc('personagens_do_grupo', { campanha: id })
 	]);
+	if (e) falhou('carregar campanha', e, 'Não foi possível carregar a campanha.');
+	if (!campanha) error(404, 'Campanha não encontrada.');
+	const lista = (membros ?? []).map((m) => ({ id: m.usuario_id, papel: m.papel, entrou_em: m.entrou_em, nome: m.perfil?.nome ?? '?', avatar: m.perfil?.avatar ?? null }));
+	const papel: Papel = campanha.mestre_id === usuarioId ? 'mestre' : 'jogador';
+	const conta = (tabela: 'clas' | 'jutsus_criados' | 'equipamentos_criados') =>
+		locals.supabase.from(tabela).select('id', { count: 'exact', head: true }).eq('campanha_id', id).eq('status', 'em_revisao');
+	const [{ data: pedidos }, clasPend, jutsusPend, equipPend] =
+		papel === 'mestre'
+			? await Promise.all([
+					locals.supabase.from('pedidos_pt').select('id, personagem_id, sessao, semanas, pt, descricao, criado_em').eq('campanha_id', id).eq('status', 'pendente').order('criado_em'),
+					conta('clas'),
+					conta('jutsus_criados'),
+					conta('equipamentos_criados')
+				])
+			: [{ data: [] }, { count: 0 }, { count: 0 }, { count: 0 }];
 	// NPCs com ficha completa ficam fora das listas do grupo (aparecem na página de NPCs)
 	const todas = (fichas ?? []).map((f) => ({ ...f, resumo: f.resumo as Partial<ResumoFicha> }));
 	const personagens = todas.filter((f) => !f.npc);

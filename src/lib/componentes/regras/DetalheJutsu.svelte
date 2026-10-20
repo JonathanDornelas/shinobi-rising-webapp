@@ -25,7 +25,7 @@
 		Bukijutsu: 'FOR ou AGI',
 		Kugutsu: 'AGI'
 	};
-	const dt = $derived(`DT = 10 + ${RANK[jutsu.rank].dt} (Rank ${jutsu.rank}) + ${ATRIBUTO[jutsu.tipo]} do lançador`);
+	const dt = $derived(`10 + ${RANK[jutsu.rank].dt} (rank ${jutsu.rank}) + ${ATRIBUTO[jutsu.tipo]} do lançador`);
 </script>
 
 <div class="flex flex-col gap-4">
@@ -46,6 +46,7 @@
 		<div class="flex flex-col gap-1.5 border-2 border-b3 bg-b1 p-3">
 			<span class="t-rotulo-sm text-title">DT de referência</span>
 			<span class="text-sm leading-5 font-semibold">{dt}</span>
+			<span class="text-xs leading-4 text-mut">Quem tem proficiência no jutsu soma o bônus dela também.</span>
 			<a href="/regras/mecanica-basica#tipos-de-teste-como-o-mestre-escolhe-o-que-rolar" class="link self-start text-xs leading-4">Regra da DT do Jutsu (cap. 2)</a>
 		</div>
 	</div>

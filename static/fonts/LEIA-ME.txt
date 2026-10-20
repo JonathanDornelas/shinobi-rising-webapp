@@ -2,3 +2,8 @@ digitos-shinobi.otf: recorte do Stairs n Slabs, de Jason Suydam (dafont.com/pt/j
 "100% grátis"; Copyright (c) 2024, Jason Suydam). Só os dígitos 0-9 e os sinais + - / =, com os contornos subidos
 para a linha de base e a folga lateral um pouco menor. Usada nos números do app (ver @font-face 'Digitos Shinobi'
 em src/routes/layout.css). Gerada com opentype.js a partir do .ttf original.
+
+google/: Noto Sans, Pixelify Sans e Shippori Mincho B1, do Google Fonts (SIL Open Font License 1.1), servidas
+pelo próprio site. Só o alfabeto latino, um recorte com as letras com mácron (ā ō ū) e, da Shippori Mincho, um
+recorte com os caracteres japoneses usados no site. Regenere com node scripts/fontes/baixar.ts (que também escreve
+src/routes/fontes.css) se o texto passar a usar outros caracteres japoneses.

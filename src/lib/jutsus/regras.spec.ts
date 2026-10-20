@@ -69,6 +69,6 @@ describe('regras de ouro e verificações', () => {
 	it('linha de info automática', () => {
 		const d = jutsu({ tipo: 'Ninjutsu', dano: { modo: 'dano', qtd: 2, dado: 6, bonus: 0 }, alcance: 'medio', area: 'esfera3', componentes: { continuo: 1, sustentado: 1 } });
 		expect(infoAutomatica(d)).toEqual({ alcance: 'Médio (30m)', duracao: 'Sustentado (3 PC/turno)', area: 'Esfera 3m', ataque: '— (área)', resistencia: 'Acrobacia (DT do Jutsu)', acao: 'Primária' });
-		expect(paraJutsuLivro('x', d, 'Clã').pj).toContain('= 11 PJ');
+		expect(paraJutsuLivro('x', d, 'Clã').pj).toContain(': 11 PJ, rank B.');
 	});
 });

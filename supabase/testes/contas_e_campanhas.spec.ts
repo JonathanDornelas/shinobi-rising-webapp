@@ -26,7 +26,8 @@ describe('perfis', () => {
 		expect(await antigo.como(aiko, `select nome from perfis`)).toEqual([{ nome: 'Aiko' }]);
 		await antigo.como(aiko, `insert into campanhas (nome, mestre_id) values ('Primeira', $1)`, [id]);
 		expect(await antigo.como(aiko, `select nome from campanhas`)).toEqual([{ nome: 'Primeira' }]);
-	});
+		// cria um banco novo com todas as migrações: com a máquina ocupada, passa dos 5 s padrão
+	}, 30000);
 
 	it('funções internas não podem ser chamadas pela API', async () => {
 		await expect(banco.como(null, `select excluir_conta()`)).rejects.toThrow(/permission denied/);

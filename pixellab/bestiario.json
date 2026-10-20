@@ -1,0 +1,294 @@
+{
+	"_sobre": "Artes do bestiário (PixelLab create_image_pixflux, 1 geração cada): cada verbete numa cena com fundo, no estilo dos covers das vilas (mesma paleta e acabamento). Como no Monster Manual de D&D, onde cada página tem uma composição própria, cada verbete tem o seu formato (faixa, retrato, quadro, página) e o seu plano de câmera (close, médio, inteiro, aberto, de baixo, de cima, de costas, por trás). O prompt final é plano + prompt + formato + estilo. Criaturas canônicas seguem o desenho do anime; arquétipos usam o uniforme real da vila e do rank, com rosto original. \"fiel\" lista o que a arte precisa ter para passar na revisão; \"escolhida\" é a melhor tentativa, que entra no site depois da aprovação do usuário. As primeiras tentativas sem fundo ficaram em gerados/bestiario/sem-fundo/.",
+	"estilo": ", Naruto anime style, faithful to the anime design, pixel art scene, ninja world inspired by feudal Japan, warm muted palette, crisp pixels",
+	"paleta": ["#1a1a1a", "#2b1a14", "#5c1e15", "#8b2e20", "#c44536", "#e07a5f", "#fbf7f0", "#f4e4d6", "#d9c2a7", "#a88b6a", "#bf9000", "#f2c14e", "#069bbd", "#7fd3e6", "#38761d", "#7fb069", "#674ea7", "#a895d6", "#7f6000", "#8d6e3f", "#5e6b73", "#a7b4bc", "#e8692e", "#2e6fd1", "#ffffff"],
+	"paleta_nota": "A paleta dos covers das vilas (static/covers; a mesma imagem de cores de scripts/args/seed-capa-nevoa.json). Cada verbete pode somar cores_extras quando o uniforme ou a criatura precisa de uma cor que ela não tem (o azul-marinho e o verde-oliva de Konoha, que sem isso saíam cinza).",
+	"parametros": { "no_background": false, "shading": "medium shading", "detail": "medium detail" },
+	"formatos": {
+		"faixa": { "width": 256, "height": 96, "uso": "criaturas compridas, bandos, emboscadas, paisagens; o formato dos covers", "prompt": "wide panoramic scene" },
+		"retrato": { "width": 128, "height": 192, "uso": "shinobi e humanoides; ao lado do texto", "prompt": "tall vertical composition" },
+		"quadro": { "width": 176, "height": 176, "uso": "criaturas grandes, invocações, feras, cenas de ação; o texto contorna", "prompt": "square composition" },
+		"pagina": { "width": 192, "height": 256, "uso": "Lendas, chefes e Bestas com Cauda: página inteira", "prompt": "tall full page illustration" }
+	},
+	"planos": {
+		"close": { "nome": "close", "prompt": "extreme close-up shot, the face and shoulders fill the frame" },
+		"medio": { "nome": "plano médio", "prompt": "medium shot from the waist up" },
+		"inteiro": { "nome": "corpo inteiro", "prompt": "full body shot from head to feet" },
+		"aberto": { "nome": "plano aberto", "prompt": "wide establishing shot from far away, the subject small in a vast landscape" },
+		"de-baixo": { "nome": "de baixo", "prompt": "low angle shot from below, the subject towering over the viewer" },
+		"de-cima": { "nome": "de cima", "prompt": "high angle shot looking down from above" },
+		"costas": { "nome": "de costas", "prompt": "the subject seen from behind, looking into the distance" },
+		"por-tras": { "nome": "por trás de alguém", "prompt": "over-the-shoulder shot from behind a ninja in the foreground who faces the creature, showing its huge scale" }
+	},
+	"verbetes": [
+		{
+			"slug": "sapo-guerreiro",
+			"nome": "Sapo guerreiro de Myōboku",
+			"tipo": "invocação",
+			"formato": "quadro",
+			"plano": ["close", "de-baixo"],
+			"escolhida": "sapo-guerreiro-7701.png",
+			"fiel": [
+				"sapo grande, como os guerreiros do Monte Myōboku; sapos de Myōboku não têm rabo",
+				"pele laranja-avermelhada com verrugas e marcas escuras em volta dos olhos e da boca",
+				"olhos amarelos com pupila horizontal",
+				"colete curto (happi) amarrado com faixa na cintura",
+				"lâmina longa (dosu) na bainha presa à cintura"
+			],
+			"prompt": "a giant warrior toad summon from Mount Myoboku, head and chest filling the frame, warty orange-red skin with dark purple markings around the eyes and lips, pale yellow throat, big yellow eyes with horizontal black pupils, fierce frown, short dark blue happi vest, one webbed hand gripping the hilt of a long tanto sword tucked into a white sash, giant curling leaves and rock spires of Mount Myoboku behind, misty sky",
+			"cores_extras": ["#1c2541", "#2e3c63"]
+		},
+		{
+			"slug": "centopeia-gigante",
+			"nome": "Centopeia gigante da Floresta da Morte",
+			"tipo": "fauna",
+			"formato": "faixa",
+			"plano": ["inteiro"],
+			"escolhida": "centopeia-gigante-7502.png",
+			"fiel": [
+				"centopeia do tamanho de uma árvore, como as feras da Floresta da Morte (Área de Treino 44)",
+				"corpo segmentado com placas de carapaça escuras e brilhantes",
+				"dezenas de patas laranja",
+				"pinças curvas grandes e antenas longas"
+			],
+			"prompt": "a huge giant centipede from the Forest of Death coiled in an S around enormous gnarled tree roots, glossy dark purple-red armored segments, dozens of sharp orange legs, the front of the body reared up high with curved black pincers and long antennae, the Forest of Death of Training Ground 44 behind it: colossal ancient tree trunks, thick dark green canopy blocking the sun, roots as big as bridges, shafts of light through mist"
+		},
+		{
+			"slug": "chunin-konoha",
+			"nome": "Chunin de Konoha",
+			"tipo": "arquétipo",
+			"formato": "retrato",
+			"plano": ["inteiro"],
+			"escolhida": "chunin-konoha-7602.png",
+			"fiel": [
+				"colete tático verde-oliva de Konoha com bolsas de pergaminho no peito e ombreiras",
+				"camisa e calça azul-marinho de manga longa, espiral vermelha no ombro",
+				"bandana com a placa de metal e o símbolo da folha de Konoha",
+				"bolsa de kunai na coxa direita com bandagem, sandálias ninja azuis",
+				"rosto original, sem copiar personagem do anime"
+			],
+			"prompt": "an adult Konoha chunin ninja standing on a red tiled rooftop in a ready stance, seen from the side, original character with short spiky brown hair, olive green Hidden Leaf flak jacket with scroll pouches on the chest, dark navy blue long-sleeved shirt and dark navy blue pants with a small red swirl emblem on the shoulder, dark blue cloth forehead protector with a shiny steel plate engraved with the leaf village symbol, white bandages and a kunai holster on the right thigh, blue ninja sandals, holding a kunai, Konohagakure houses with red roofs below and the Hokage Rock with four carved faces in the background, clear blue sky",
+			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a"]
+		},
+		{
+			"slug": "genin-batedor",
+			"nome": "Genin batedor de Konoha",
+			"tipo": "arquétipo",
+			"formato": "retrato",
+			"plano": ["de-cima"],
+			"escolhida": "genin-batedor-7801.png",
+			"fiel": [
+				"genin jovem, sem colete (genin usa roupa própria)",
+				"bandana com o símbolo da folha de Konoha",
+				"porta-shuriken na coxa",
+				"no alto de um galho, a floresta lá embaixo"
+			],
+			"prompt": "a teen genin ninja crouching on a thick tree branch high above the ground, looking down, original character with short black hair, casual ninja outfit with a dark grey short-sleeved shirt and tan shorts, blue cloth forehead protector with a steel plate engraved with the leaf village symbol, shuriken holster on the thigh, the forest floor of giant tree trunks far below"
+		},
+		{
+			"slug": "anbu-cacador",
+			"nome": "Caçador Anbu",
+			"tipo": "arquétipo",
+			"formato": "retrato",
+			"plano": ["close"],
+			"escolhida": "anbu-cacador-7801.png",
+			"fiel": [
+				"máscara de porcelana branca de animal com marcas vermelhas, como as da Anbu",
+				"armadura de peito cinza sobre roupa preta sem mangas",
+				"tatuagem da espiral vermelha no braço esquerdo",
+				"cabo da tantō por cima do ombro"
+			],
+			"prompt": "an ANBU black ops ninja wearing a white porcelain fox mask with red markings, long dark hair, grey metal chest armor over a black sleeveless shirt, red swirl tattoo on the upper left arm, the hilt of a tanto sword over the shoulder, full moon behind, night sky, dark rooftops"
+		},
+		{
+			"slug": "medico-ninja",
+			"nome": "Ninja médico de campo",
+			"tipo": "arquétipo",
+			"formato": "quadro",
+			"plano": ["medio"],
+			"escolhida": "medico-ninja-7801.png",
+			"fiel": [
+				"uniforme de Konoha: colete verde-oliva, roupa azul-marinho, bandana com a folha",
+				"mãos com o brilho verde do chakra médico sobre um ferido",
+				"rosto original"
+			],
+			"prompt": "a Konoha medical ninja kneeling over a wounded ally on a battlefield, both hands glowing with green healing chakra over the wound, original character with short dark hair tied back, olive green Hidden Leaf flak jacket, dark navy blue uniform, forehead protector with the leaf village symbol, focused expression, smoke and broken trees behind",
+			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a"]
+		},
+		{
+			"slug": "kunoichi-kiri",
+			"nome": "Kunoichi de Kiri",
+			"tipo": "arquétipo",
+			"formato": "quadro",
+			"plano": ["medio"],
+			"escolhida": "kunoichi-kiri-7801.png",
+			"fiel": [
+				"colete de Kirigakure, cinza-esverdeado com bolsos verticais",
+				"bandana com o símbolo de Kiri (quatro traços ondulados)",
+				"senbon entre os dedos",
+				"névoa espessa e o lago da vila"
+			],
+			"prompt": "a Kirigakure kunoichi emerging from thick white mist, original character with long dark blue hair, dark grey-green Hidden Mist flak vest with vertical pockets, forehead protector with the Hidden Mist symbol of four wavy lines, holding senbon needles between her fingers, calm deadly expression, misty lake and wooden walkways behind"
+		},
+		{
+			"slug": "shinobi-suna",
+			"nome": "Patrulha de Suna",
+			"tipo": "arquétipo",
+			"formato": "faixa",
+			"plano": ["aberto"],
+			"escolhida": "shinobi-suna-7801.png",
+			"fiel": [
+				"coletes bege de Sunagakure, com tecido enrolado contra a areia",
+				"bandanas com o símbolo de Suna",
+				"as cúpulas de arenito da vila entre os paredões"
+			],
+			"prompt": "three Sunagakure ninjas walking in single file across huge golden sand dunes, beige Hidden Sand flak vests with cloth wraps, forehead protectors with the Hidden Sand symbol, the round sandstone domes of the Hidden Sand Village far away inside tall cliffs, harsh sun, heat haze"
+		},
+		{
+			"slug": "shinobi-iwa",
+			"nome": "Shinobi de Iwa",
+			"tipo": "arquétipo",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"escolhida": "shinobi-iwa-7801.png",
+			"fiel": [
+				"uniforme vermelho-escuro de Iwagakure com uma manga só",
+				"colete marrom com ombreira de um lado",
+				"bandana com o símbolo de Iwa",
+				"mãos num selo, cânion de pedra atrás"
+			],
+			"prompt": "a burly Iwagakure ninja standing on top of a rock pillar, original character with short brown hair, dark red uniform with a single sleeve, brown Hidden Stone flak vest with one shoulder guard, forehead protector with the Hidden Stone symbol, hands forming a hand seal, rocky brown canyon and stone bridges behind"
+		},
+		{
+			"slug": "shinobi-kumo",
+			"nome": "Shinobi de Kumo",
+			"tipo": "arquétipo",
+			"formato": "quadro",
+			"plano": ["inteiro"],
+			"escolhida": "shinobi-kumo-7801.png",
+			"fiel": [
+				"colete branco de Kumogakure com uma alça só",
+				"bandana com o símbolo de Kumo",
+				"chakra de raio em volta do corpo",
+				"picos acima de um mar de nuvens"
+			],
+			"prompt": "a Kumogakure ninja dashing forward wrapped in crackling blue lightning chakra, original character with dark skin and short white hair, white one-shoulder Hidden Cloud flak vest over a dark sleeveless shirt, forehead protector with the Hidden Cloud symbol, rocky mountain peaks above a sea of clouds behind, thunderstorm"
+		},
+		{
+			"slug": "ninja-renegado",
+			"nome": "Ninja renegado",
+			"tipo": "fora da lei",
+			"formato": "faixa",
+			"plano": ["costas"],
+			"escolhida": "ninja-renegado-7801.png",
+			"fiel": [
+				"bandana com um risco atravessando o símbolo da vila (marca do renegado)",
+				"capa de viagem rasgada",
+				"olhando de longe as luzes de uma vila oculta"
+			],
+			"prompt": "a rogue ninja standing on a cliff at night looking down at the distant lights of a hidden village, tattered dark traveling cloak blowing in the wind, a forehead protector with a deep horizontal scratch across the village symbol, katana on the back, full moon, drifting clouds"
+		},
+		{
+			"slug": "ronin-mercenario",
+			"nome": "Rōnin mercenário",
+			"tipo": "fora da lei",
+			"formato": "retrato",
+			"plano": ["close"],
+			"escolhida": "ronin-mercenario-7801.png",
+			"fiel": [
+				"chapéu de palha largo (sandogasa) fazendo sombra nos olhos",
+				"quimono gasto, mão no cabo da katana",
+				"chuva, estrada e torii ao fundo"
+			],
+			"prompt": "a rough ronin mercenary under a wide straw sandogasa hat shadowing the eyes, stubble, scar across the cheek, worn grey kimono, one hand on the hilt of a katana, heavy rain, muddy road and an old torii gate behind"
+		},
+		{
+			"slug": "alcateia-lobos",
+			"nome": "Alcateia de lobos",
+			"tipo": "fauna",
+			"formato": "faixa",
+			"plano": ["aberto"],
+			"escolhida": "alcateia-lobos-7801.png",
+			"fiel": [
+				"bando de lobos cinzentos correndo",
+				"olhos amarelos, vapor da respiração",
+				"floresta de pinheiros na neve, ao entardecer"
+			],
+			"prompt": "a pack of grey wolves running through a snowy pine forest at dusk, glowing yellow eyes, breath vapor, snowy mountains far away, cold blue light"
+		},
+		{
+			"slug": "urso-gigante",
+			"nome": "Urso gigante",
+			"tipo": "fauna",
+			"formato": "quadro",
+			"plano": ["de-baixo"],
+			"escolhida": "urso-gigante-7801.png",
+			"fiel": [
+				"urso marrom enorme de pé nas patas de trás, rugindo",
+				"garras à mostra, cicatrizes no focinho",
+				"floresta de montanha no outono"
+			],
+			"prompt": "an enormous brown bear rearing up on its hind legs and roaring, claws out, scars on its snout, dense autumn mountain forest with falling red leaves"
+		},
+		{
+			"slug": "serpente-ryuchi",
+			"nome": "Serpente de Ryūchi",
+			"tipo": "invocação",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"escolhida": "serpente-ryuchi-7802.png",
+			"fiel": [
+				"cobra colossal invocada, como as da Caverna Ryūchi",
+				"escamas roxo-acinzentadas, ventre amarelo-claro, olhos amarelos de pupila fina",
+				"um ninja pequeno na frente, para dar a escala",
+				"fumaça da invocação"
+			],
+			"prompt": "a colossal summoned snake from Ryuchi Cave rising high and coiling, dark purple scales with darker violet markings and a pale yellow underside, yellow slit eyes, forked tongue, a small ninja standing on the ground in front of it for scale, white summoning smoke, dark misty rocky mountains, cracked ground",
+			"cores_extras": ["#3b2a5a", "#5a3f86", "#7d5fb0"]
+		},
+		{
+			"slug": "lesma-shikkotsu",
+			"nome": "Lesma de Shikkotsu",
+			"tipo": "invocação",
+			"formato": "faixa",
+			"plano": ["por-tras"],
+			"escolhida": "lesma-shikkotsu-7801.png",
+			"fiel": [
+				"lesma gigante branca com listras azuis nas costas, como as da Floresta Shikkotsu",
+				"dois olhos em antenas, expressão serena",
+				"floresta úmida com cogumelos gigantes"
+			],
+			"prompt": "a giant white slug summon from Shikkotsu Forest with blue stripes along its back and two eye stalks, gentle expression, looming over a medical ninja seen from behind in the foreground, damp green forest with giant mushrooms"
+		},
+		{
+			"slug": "marionete-abandonada",
+			"nome": "Marionete abandonada",
+			"tipo": "criatura",
+			"formato": "retrato",
+			"plano": ["close", "de-cima"],
+			"escolhida": "marionete-abandonada-7801.png",
+			"fiel": [
+				"marionete de combate de madeira no estilo de Suna",
+				"rosto de madeira rachado, mandíbula articulada com dentes, três olhos de vidro",
+				"lâminas escondidas saindo dos braços",
+				"fios de chakra cortados, um brilho azul voltando aos olhos"
+			],
+			"prompt": "an abandoned wooden combat puppet lying in a dusty workshop, cracked dark wooden face with a hinged jaw full of teeth, three glass eyes, messy dark hair, hidden blades sliding out of its arms, cut chakra threads hanging from its joints, a faint blue glow returning in its eyes"
+		},
+		{
+			"slug": "cadaver-edo-tensei",
+			"nome": "Cadáver de Edo Tensei",
+			"tipo": "criatura",
+			"formato": "retrato",
+			"plano": ["close"],
+			"pendente": "6 tentativas sem o visual do Edo Tensei (rachaduras, pele cinza, esclera preta). O nome da técnica puxa revividos famosos (saiu um Hashirama). Próxima tentativa: editar a 7806, que tem um bom rosto original, pedindo a pele rachada e o olho preto.",
+			"fiel": [
+				"pele cinza rachada como papel seco, cinzas se soltando",
+				"esclera preta, como os revividos pela Edo Tensei",
+				"uniforme shinobi velho e rasgado, rosto original",
+				"campo de batalha com armas cravadas no chão"
+			],
+			"prompt": "the face of an undead ninja soldier raised from the grave, a stocky middle-aged man with short spiky grey hair, a square jaw and stubble, his skin dusty grey and covered in a web of thin black cracks like dry cracked clay, black eyeballs with small white pupils, pieces of his cheek crumbling into ash, cold empty stare, collar of an old torn green flak vest, swirling ash, battlefield with broken weapons stuck in the ground, grey sky"
+		}
+	]
+}

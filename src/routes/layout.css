@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './fontes.css';
 
 /* DaisyUI fica disponível para as próximas fases; os temas seguem a direção 1a (cantos retos, borda 2px, sem profundidade). */
 @plugin 'daisyui' {
@@ -212,10 +213,10 @@
 }
 
 @theme inline {
-	--font-mincho: 'Shippori Mincho B1', 'Noto Sans JP', serif;
+	--font-mincho: 'Shippori Mincho B1', serif;
 	--font-pixel: 'Digitos Shinobi', 'Pixelify Sans', 'Noto Sans', sans-serif;
 	--font-sans: 'Noto Sans', system-ui, sans-serif;
-	--font-jp: 'Shippori Mincho B1', 'Noto Sans JP', serif;
+	--font-jp: 'Shippori Mincho B1', serif;
 
 	--color-b0: var(--b0);
 	--color-b0fg: var(--b0fg);
