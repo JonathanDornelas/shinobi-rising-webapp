@@ -255,7 +255,84 @@ export interface CardReferencia {
 	linhas: [string, string][];
 }
 
-export type TipoDocBusca = 'secao' | 'jutsu' | 'cla' | 'item' | 'termo';
+// ---------------------------------------------------------------- bestiário (conteudo/bestiario.yaml)
+export type TipoCriatura = 'shinobi' | 'fora da lei' | 'guerreiro' | 'fauna' | 'invocação' | 'criatura';
+export type PapelCriatura = 'lutador' | 'atirador' | 'controlador' | 'suporte' | 'assassino' | 'bando' | 'chefe';
+/** Formato da arte do verbete: a página muda de diagramação conforme ele (faixa no topo, retrato ao lado etc.). */
+export type FormatoArte = 'faixa' | 'retrato' | 'quadro' | 'pagina';
+export type RankNpc = 'genin' | 'chunin' | 'jounin' | 'anbu' | 'lendario';
+
+export interface AtaqueCriatura {
+	nome: string;
+	acerto: number;
+	dano: string;
+	alcance: string;
+	efeito: Trecho[] | null;
+}
+
+/** Jutsu do verbete: do catálogo (slug, rank e custo vêm do card) ou descrito só pela nota. */
+export interface JutsuCriatura {
+	slug: string | null;
+	nome: string;
+	rank: Rank | null;
+	custo: string | null;
+	nota: string | null;
+}
+
+/** Um estágio do adversário (como as idades de um dragão): cada um com a sua ameaça e a sua ficha de combate. */
+export interface EstagioCriatura {
+	nome: string;
+	ameaca: number;
+	/** "1/2", "1/4" ou o número. */
+	ameacaRotulo: string;
+	papel: PapelCriatura;
+	/** Rank da ficha resumida (cap. 23.2) equivalente à ameaça, para criar o NPC na campanha. */
+	rank: RankNpc;
+	membros: number;
+	/** O que muda neste estágio, em uma frase. */
+	resumo: Trecho[] | null;
+	combate: {
+		pv: number;
+		pc: number | null;
+		defesa: number;
+		iniciativa: number;
+		dt: number;
+		rd: number | null;
+		nota: string | null;
+		ataques: AtaqueCriatura[];
+		jutsus: JutsuCriatura[];
+		tracos: { nome: string; efeito: Trecho[] }[];
+	};
+}
+
+/** Verbete do bestiário: uma página, com a arte, o texto e um ou mais estágios. */
+export interface Criatura {
+	slug: string;
+	nome: string;
+	/** Letra do índice alfabético (sem acento). */
+	letra: string;
+	tipo: TipoCriatura;
+	origem: string;
+	vila: { nome: string; icone: string } | null;
+	arte: { arquivo: string | null; formato: FormatoArte; plano: string; largura: number; altura: number };
+	cena: Trecho[][];
+	descricao: Trecho[][];
+	estagios: EstagioCriatura[];
+	/** Faixa de ameaça dos estágios ("2 a 16" ou só "6"). */
+	ameacaFaixa: string;
+	ameacaMin: number;
+	ameacaMax: number;
+	taticas: Trecho[][];
+	ganchos: Trecho[][];
+	tags: string[];
+}
+
+export interface Bestiario {
+	comoUsar: { titulo: string; resumo: string; blocos: Bloco[]; secoes: SecaoIndice[] };
+	criaturas: Criatura[];
+}
+
+export type TipoDocBusca = 'secao' | 'jutsu' | 'cla' | 'item' | 'criatura' | 'termo';
 
 export interface DocBusca {
 	id: string;

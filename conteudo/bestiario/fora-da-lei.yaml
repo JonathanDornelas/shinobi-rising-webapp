@@ -1,0 +1,211 @@
+# Bestiário · fora da lei e guerreiros: renegados, mercenários, bandidos, caçadores e quem luta sem ser ninja
+# (samurai, monges). Formato de cada verbete: veja o cabeçalho de shinobi.yaml.
+- slug: ninja-renegado
+  nome: Ninja renegado
+  tipo: fora da lei
+  ameaca: 8
+  papel: assassino
+  origem: Sem vila
+  vila: null
+  arte: { formato: faixa, plano: de costas }
+  cena:
+    - "Do alto do penhasco, as luzes da vila parecem pequenas. Ele as olha por muito tempo, a capa batendo no vento, antes de virar as costas de vez. Na bandana, um risco fundo atravessa o símbolo de casa."
+  descricao:
+    - "Todo renegado traiu alguma coisa: uma vila, um mestre, uma ordem que não quis cumprir. O risco na bandana diz isso a quem souber ler. Eles sabem os segredos da vila de onde saíram e vivem de vendê-los, ou de fugir de quem quer calá-los."
+  ataques:
+    - { nome: Katana, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+  jutsus:
+    - { slug: kage-bunshin-no-jutsu }
+    - { slug: kawarimi-no-jutsu }
+    - { slug: kirigakure-no-jutsu-ilusorio }
+  tracos:
+    - { nome: O caminho de casa, efeito: "Conhece as senhas, as rotas e os pontos cegos da vila que abandonou." }
+    - { nome: Fuga preparada, efeito: "Na primeira vez que cai abaixo da metade dos PV, um clone fica no lugar dele e ele foge, sem gastar ação." }
+  taticas:
+    - "Evita lutas longas. Ataca de surpresa, testa o grupo e some quando a conta não fecha."
+  ganchos:
+    - "Tem a cabeça a prêmio no livro bingo, e o prêmio paga a dívida de alguém do grupo."
+    - "Diz que foi traído pela própria vila, e tem provas."
+  tags: [Cauteloso, Covarde]
+
+- slug: ronin-mercenario
+  nome: Rōnin mercenário
+  tipo: fora da lei
+  ameaca: 5
+  papel: lutador
+  pc: 20
+  origem: Estradas do continente
+  vila: null
+  arte: { formato: retrato, plano: close }
+  cena:
+    - "A chuva escorre pela aba do chapéu de palha e esconde os olhos dele. Debaixo do torii velho, ele espera, uma mão no cabo da espada, a outra estendida para receber o pagamento antes de qualquer conversa."
+  descricao:
+    - "Nem todo espadachim é ninja. Os rōnin são samurais sem mestre, ou que fingem ter sido, e vendem a espada pela estrada a quem pagar. Têm pouco chakra e muita técnica, e alguns ainda guardam um resto de honra. Outros só guardam a conta."
+  ataques:
+    - { nome: Katana, alcance: Corpo a corpo }
+  tracos:
+    - { nome: Iaijutsu, efeito: "O primeiro ataque da cena saca e corta numa só ação, com vantagem." }
+    - { nome: Sem mestre, efeito: "Luta pelo pagamento. Uma oferta melhor, com um teste de Persuasão contra a DT 15, o faz trocar de lado." }
+  taticas:
+    - "Prefere o duelo: desafia o mais forte e espera os outros ficarem de fora. Se o contratante não paga, vai embora no meio da luta."
+  ganchos:
+    - "Foi contratado para proteger o mesmo cliente que o grupo veio buscar."
+    - "Carrega uma espada roubada de uma das Sete Espadas da Névoa, sem saber o que ela é."
+  tags: [Diplomata, Covarde]
+
+- slug: bandidos-de-estrada
+  nome: Bandidos de estrada
+  tipo: fora da lei
+  ameaca: 1/2
+  papel: bando
+  membros: 4
+  pc: 0
+  origem: Estradas e florestas
+  vila: null
+  arte: { formato: faixa, plano: plano aberto }
+  cena:
+    - "A árvore caída bloqueia a estrada bem na curva. Do mato dos dois lados saem homens com facas, clavas e sorrisos de dentes faltando. O mais alto bate a clava na palma da mão e pede, educado, tudo o que o grupo tiver."
+  descricao:
+    - "Onde a vila não alcança, a estrada é dos bandidos. Não são ninjas: são camponeses sem terra, desertores de guerra e valentões que descobriram que assustar viajante dá mais dinheiro que plantar. Contra ninjas, quase sempre perdem. Mas nem sempre sabem disso a tempo."
+  nota: "Ficha de cada bandido; o bando age na mesma iniciativa. É a tropa genérica do cap. 23.2."
+  ataques:
+    - { nome: Faca ou clava, alcance: Corpo a corpo }
+  tracos:
+    - { nome: Valentia de bando, efeito: "Quando metade do bando cai, o resto foge." }
+  taticas:
+    - "Cercam o grupo, ameaçam e só atacam quem parecer fraco. Na primeira demonstração de jutsu, metade já pensa em correr."
+  ganchos:
+    - "Trabalham para um chefe maior, e interrogá-los leva ao verdadeiro vilão."
+    - "Estão roubando para pagar um ninja que ameaça a aldeia deles."
+  tags: [Agressivo, Covarde]
+
+- slug: chefe-de-bandidos
+  nome: Chefe de bandidos
+  tipo: fora da lei
+  ameaca: 3
+  papel: chefe
+  pc: 0
+  origem: Estradas e florestas
+  vila: null
+  arte: { formato: quadro, plano: de baixo }
+  cena:
+    - "O acampamento fica em silêncio quando ele se levanta do trono feito de caixas roubadas. É grande, cheio de cicatrizes e carrega um machado que já foi de alguém importante. Ele não ameaça ninguém. Só aponta."
+  descricao:
+    - "Todo bando tem alguém que manda, e quase sempre é o mais forte e o mais esperto do grupo. O chefe de bandidos não tem chakra, mas tem experiência de sobra em brigas sujas, e conhece a floresta melhor que qualquer ninja de fora."
+  ataques:
+    - { nome: Machado, alcance: Corpo a corpo }
+    - { nome: Faca arremessada, alcance: Curto, dano: 1d6+2 }
+  tracos:
+    - { nome: Truque sujo, efeito: "Uma vez por cena, joga areia ou cinza no rosto de um inimigo ao lado: ele resiste com Acrobacia contra a DT 13 ou fica **Cego** até o fim do próximo turno." }
+    - { nome: Quem manda aqui, efeito: "Enquanto o chefe estiver de pé, os bandidos do bando dele não fogem." }
+  taticas:
+    - "Manda o bando na frente e espera o grupo se cansar. Quando entra na luta, procura o ninja mais jovem."
+  ganchos:
+    - "Já foi um soldado de daimyō e guarda um mapa que interessa a muita gente."
+    - "Aceita se render se alguém o vencer num combate de homem para homem, sem jutsus."
+  tags: [Brutal, Tático]
+
+- slug: cacador-de-recompensas
+  nome: Caçador de recompensas
+  tipo: fora da lei
+  ameaca: 6
+  papel: atirador
+  origem: Postos de troca do livro bingo
+  vila: null
+  arte: { formato: retrato, plano: plano médio }
+  cena:
+    - "Ele abre o livro bingo no balcão da casa de troca, molha o dedo e vira as páginas devagar. Para numa delas, olha para o grupo do outro lado da sala e sorri. Depois fecha o livro e paga a conta."
+  descricao:
+    - "Quando um ninja vira renegado, a cabeça dele ganha preço. Os caçadores de recompensas vivem disso: rastreiam, preparam armadilhas e entregam o corpo nos postos de troca, onde ninguém pergunta nada. Alguns já foram ninjas de vila. Todos sabem fazer conta."
+  ataques:
+    - { nome: Corrente com peso, alcance: Médio, efeito: "O alvo resiste com FOR contra a DT 15 ou fica **Caído**." }
+    - { nome: Faca curva, alcance: Corpo a corpo }
+  jutsus:
+    - { slug: kawarimi-no-jutsu }
+    - { slug: shunshin-no-jutsu }
+  tracos:
+    - { nome: Armadilhas, efeito: "Antes da luta, prepara o terreno: quem pisa numa armadilha resiste com Percepção contra a DT 15 ou fica **Imobilizado**." }
+    - { nome: Faro para dinheiro, efeito: "Tem vantagem em Rastreamento contra quem tem a cabeça a prêmio." }
+  taticas:
+    - "Escolhe o lugar, espera o alvo ficar sozinho e ataca de longe. Corpo vale menos se estiver muito estragado: prefere prender a matar."
+  ganchos:
+    - "Alguém do grupo acaba de entrar no livro bingo, por um crime que não cometeu."
+    - "Propõe dividir uma recompensa grande demais para caçar sozinho."
+  tags: [Tático, Cauteloso]
+
+- slug: espiao-infiltrado
+  nome: Espião infiltrado
+  tipo: fora da lei
+  ameaca: 4
+  papel: assassino
+  origem: Qualquer lugar
+  vila: null
+  arte: { formato: quadro, plano: close }
+  cena:
+    - "A criada serve o chá ao daimyō com as duas mãos e uma reverência perfeita. Ninguém repara que ela não tem sombra embaixo da bandeja. Quando o daimyō leva a xícara à boca, o grupo é o único que ainda pode gritar."
+  descricao:
+    - "O espião vive dentro da casa do inimigo, às vezes por anos. Muda de rosto, de nome e de voz, ganha a confiança de todos e espera a ordem. Quando ela chega, mata sem barulho e some antes de alguém perceber que faltava alguém."
+  ataques:
+    - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 14 ou sofre o Veneno Sonífero (cap. 11)." }
+  jutsus:
+    - { slug: henge-no-jutsu }
+    - { slug: kawarimi-no-jutsu }
+  tracos:
+    - { nome: Mil rostos, efeito: "Tem vantagem em Persuasão para mentir e em Furtividade para se misturar à multidão." }
+  taticas:
+    - "Não luta se puder evitar. Se for descoberto, foge pelo caminho que preparou na primeira semana."
+  ganchos:
+    - "O espião está infiltrado na vila do grupo há anos, e é alguém de quem todos gostam."
+    - "Ele quer desertar e oferece a lista dos outros espiões em troca de proteção."
+  tags: [Cauteloso, Covarde]
+
+- slug: samurai-do-pais-do-ferro
+  nome: Samurai do País do Ferro
+  tipo: guerreiro
+  ameaca: 5
+  papel: lutador
+  origem: País do Ferro
+  vila: null
+  arte: { formato: retrato, plano: corpo inteiro }
+  cena:
+    - "A neve cai sobre a armadura pesada sem que ele se mexa. A mão está no cabo da espada, e o rosto atrás da máscara de metal não diz nada. Quando o grupo dá mais um passo, a lâmina já está fora da bainha, e de volta."
+  descricao:
+    - "No País do Ferro, os samurais nunca deixaram o lugar para os ninjas. Lutam com espada e armadura, seguem um código rígido e passam chakra pela lâmina para cortar o que aço nenhum cortaria. Não aceitam truques e desprezam quem foge de um duelo."
+  ataques:
+    - { nome: Katana com chakra, alcance: Corpo a corpo, efeito: "Ignora a RD do alvo." }
+  tracos:
+    - { nome: Armadura de placas, efeito: "RD 2." }
+    - { nome: Código, efeito: "Não ataca um inimigo caído nem pelas costas. Contra quem quebra o código diante dele, o ataque tem vantagem." }
+  rd: 2
+  taticas:
+    - "Avança em linha com os outros samurais, escudo humano contra jutsus, e procura o duelo com o líder do grupo."
+  ganchos:
+    - "O País do Ferro é neutro, e o grupo precisa pedir abrigo numa guerra que não é dos samurais."
+    - "Um samurai jovem quer provar que a espada vence o jutsu, e escolheu um personagem para isso."
+  tags: [Leal, Brutal]
+
+- slug: monge-guerreiro
+  nome: Monge guerreiro
+  tipo: guerreiro
+  ameaca: 4
+  papel: lutador
+  origem: Templos das montanhas
+  vila: null
+  arte: { formato: quadro, plano: de baixo }
+  cena:
+    - "O sino do templo toca uma vez, e o monge de cabeça raspada abre os olhos no alto da escadaria. Ele não pega arma nenhuma. Junta as mãos numa prece, e o ar em volta dele começa a vibrar."
+  descricao:
+    - "Nos templos das montanhas, os monges guerreiros treinam o corpo e o espírito em lugares que as vilas respeitam e evitam. Guardam relíquias, selos antigos e segredos que ninguém deve abrir. Não querem guerra, mas sabem fazer uma."
+  ataques:
+    - { nome: Palma do templo, alcance: Corpo a corpo }
+  jutsus:
+    - { slug: kai }
+  tracos:
+    - { nome: Espírito firme, efeito: "Tem vantagem para resistir a genjutsu e não pode ficar **Amedrontado**." }
+    - { nome: Contas de prece, efeito: "Uma vez por cena, como ação secundária, recupera 2d6 PV." }
+  taticas:
+    - "Defende a escadaria e não persegue. Tenta derrubar sem matar e pede que os invasores vão embora."
+  ganchos:
+    - "O templo guarda um selo que um vilão quer quebrar, e os monges não confiam em ninjas de vila."
+    - "Um monge desapareceu, e a relíquia que ele guardava sumiu com ele."
+  tags: [Diplomata, Leal]

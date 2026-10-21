@@ -9,8 +9,15 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { kanji, normalizar, semAcentos, slug } from '../../src/lib/livro/texto.ts';
 import type {
+	Bestiario,
 	Bloco,
 	CardReferencia,
+	Criatura,
+	EstagioCriatura,
+	FormatoArte,
+	PapelCriatura,
+	RankNpc,
+	TipoCriatura,
 	Capitulo,
 	Celula,
 	CategoriaArmas,
@@ -134,6 +141,7 @@ export interface Saida {
 	referencia: CardReferencia[];
 	busca: DocBusca[];
 	termos: TermoLexico[];
+	bestiario: Bestiario;
 }
 
 export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
@@ -258,6 +266,197 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			habilidades: slugsH
 		});
 	}
+	// ---------------------------------------------------------------- bestiário: conteudo/bestiario/como-usar.md + conteudo/bestiario.yaml
+	// Os números de cada estágio saem da regra: a tabela "Números por ameaça" do Como usar, ajustada pelo papel, ou a
+	// ficha de invocação do cap. 14. O YAML traz o que é do verbete e, raramente, um número de exceção (pc, rd...).
+	const bestiario: Bestiario = (() => {
+		const { frente, blocos } = lerDoc<{ titulo: string; resumo: string }>(readFileSync(join(CONTEUDO, 'bestiario', 'como-usar.md'), 'utf8'));
+		const secoes = blocos.filter((b): b is Bloco & { tipo: 'h' } => b.tipo === 'h').map(({ id, texto, nivel }) => ({ id, titulo: texto, nivel }));
+
+		const tab = blocos.find((b): b is Bloco & { tipo: 'tabela' } => b.tipo === 'tabela' && b.titulo === 'Números por ameaça');
+		if (!tab) throw new Error('Bestiário: tabela "Números por ameaça" não encontrada no Como usar');
+		type Linha = { pv: number; pc: number; defesa: number; ataque: number; dano: string; dt: number; iniciativa: number };
+		const num = (s: string) => +s.replace('+', '');
+		const ordem: string[] = [];
+		const linhas = new Map<string, Linha>();
+		for (const l of tab.linhas.map((l) => l.map(celTexto))) {
+			ordem.push(l[0]);
+			linhas.set(l[0], { pv: num(l[1]), pc: num(l[2]), defesa: num(l[3]), ataque: num(l[4]), dano: l[5].replace(/\s+/g, ''), dt: num(l[6]), iniciativa: num(l[7]) });
+		}
+		/** Linha da tabela de uma ameaça; `abaixo` desce linhas (controlador e suporte usam o dano de duas ameaças abaixo). */
+		const linha = (rotulo: string, abaixo = 0) => {
+			const i = ordem.indexOf(rotulo);
+			if (i < 0) throw new Error(`Bestiário: ameaça fora da tabela: ${rotulo}`);
+			return linhas.get(ordem[Math.max(0, i - abaixo)])!;
+		};
+
+		// fichas de invocação do cap. 14; a ameaça de cada tamanho é a que o Como usar dá (Pequena 2, Média 5, Grande 10, Chefe 16)
+		type Ficha = { titulo: string; ameaca: number; pv: number; defesa: number; iniciativa: number; acerto: number; dano: string; dt: number; jutsus: string; restricao: string | null };
+		const ficha = (id: string, ameaca: number): Ficha => {
+			const s = secao(cap(14).blocos, (_, i) => i === id);
+			const t = tabelaEm(s.blocos);
+			if (!s.titulo || !t) throw new Error(`Bestiário: ficha de invocação não encontrada no cap. 14: ${id}`);
+			const v = Object.fromEntries(t.linhas.map((l) => [celTexto(l[0]), celTexto(l[1])]));
+			const atq = (v['Ataque básico'] ?? '').match(/\+(\d+)\s*para acertar\s*·\s*(.+)$/);
+			if (!atq) throw new Error(`Bestiário: ataque básico ilegível na ficha ${id}`);
+			return {
+				titulo: s.titulo.texto.replace(/\s*\(.*\)\s*$/, ''),
+				ameaca,
+				pv: +v.PV,
+				defesa: +v.Defesa,
+				iniciativa: +v.Iniciativa.replace(/^1d20\s*\+\s*/, ''),
+				acerto: +atq[1],
+				dano: atq[2].replace(/\s+/g, ''),
+				dt: +(v.Jutsus.match(/DT (\d+)/)?.[1] ?? 0),
+				jutsus: v.Jutsus,
+				restricao: v['Restrição'] ?? null
+			};
+		};
+		const FICHAS = {
+			pequena: ficha('invocacao-pequena-especializacao-nivel-1', 2),
+			media: ficha('invocacao-media-especializacao-nivel-2', 5),
+			grande: ficha('invocacao-grande-especializacao-nivel-3', 10),
+			chefe: ficha('chefe-da-especie-especializacao-nivel-3-aprovacao-do-chefe', 16)
+		};
+
+		type JutsuYaml = { slug?: string; nome?: string; nota?: string };
+		type AtaqueYaml = { nome: string; alcance: string; acerto?: number; dano?: string; efeito?: string };
+		type EstagioYaml = {
+			nome: string;
+			ameaca?: number | string;
+			papel: PapelCriatura;
+			ficha?: keyof typeof FICHAS;
+			membros?: number;
+			resumo?: string;
+			pv?: number;
+			pc?: number | null;
+			defesa?: number;
+			iniciativa?: number;
+			dt?: number;
+			rd?: number;
+			nota?: string;
+			ataques: AtaqueYaml[];
+			jutsus?: JutsuYaml[];
+			tracos?: { nome: string; efeito: string }[];
+		};
+		/** Verbete com estágios (invocações, feras que crescem, transformações) ou com a ficha direto nele (os demais). */
+		type CriaturaYaml = Partial<Omit<EstagioYaml, 'nome'>> & {
+			slug: string;
+			nome: string;
+			tipo: TipoCriatura;
+			origem: string;
+			vila: string | null;
+			arte: { formato: FormatoArte; plano: string };
+			cena: string[];
+			descricao: string[];
+			estagios?: EstagioYaml[];
+			taticas: string[];
+			ganchos: string[];
+			tags: string[];
+		};
+		const TAMANHO: Record<FormatoArte, [number, number]> = { faixa: [256, 96], retrato: [128, 192], quadro: [176, 176], pagina: [192, 256] };
+		const NOME_VILA: Record<string, string> = { konoha: 'Konohagakure', suna: 'Sunagakure', kiri: 'Kirigakure', kumo: 'Kumogakure', iwa: 'Iwagakure', ame: 'Amegakure', taki: 'Takigakure', oto: 'Otogakure' };
+		const FATOR_PV: Partial<Record<PapelCriatura, number>> = { lutador: 1.25, atirador: 0.75, assassino: 0.75, chefe: 2 };
+		const BONUS_ATAQUE: Partial<Record<PapelCriatura, number>> = { atirador: 1, assassino: 2 };
+		const rankDe = (a: number): RankNpc => (a >= 13 ? 'lendario' : a >= 9 ? 'anbu' : a >= 7 ? 'jounin' : a >= 4 ? 'chunin' : 'genin');
+		const valor = (rotulo: string) => {
+			const m = rotulo.match(/^(\d+)\/(\d+)$/);
+			return m ? +m[1] / +m[2] : +rotulo;
+		};
+
+		const estagioDe = (y: CriaturaYaml, e: EstagioYaml): EstagioCriatura => {
+			const f = e.ficha ? FICHAS[e.ficha] : null;
+			if (e.ficha && !f) avisar(`Bestiário: ficha de invocação desconhecida em ${y.slug}: ${e.ficha}`);
+			const rotulo = f ? String(f.ameaca) : String(e.ameaca);
+			let base: { pv: number; pc: number | null; defesa: number; iniciativa: number; dt: number; acerto: number; dano: string; nota: string | null };
+			if (f) base = { pv: f.pv, pc: null, defesa: f.defesa, iniciativa: f.iniciativa, dt: f.dt, acerto: f.acerto, dano: f.dano, nota: [`Usa a ficha ${/^Chefe/.test(f.titulo) ? 'do' : 'da'} ${f.titulo} (cap. 14).`, f.restricao && `${f.restricao.replace(/\.$/, '')}.`].filter(Boolean).join(' ') };
+			else {
+				const l = linha(rotulo);
+				const fraco = e.papel === 'controlador' || e.papel === 'suporte';
+				base = {
+					pv: Math.round(l.pv * (FATOR_PV[e.papel] ?? 1)),
+					pc: y.tipo === 'fauna' ? null : l.pc,
+					defesa: l.defesa,
+					iniciativa: l.iniciativa,
+					dt: l.dt + (e.papel === 'controlador' ? 1 : 0),
+					acerto: l.ataque + (BONUS_ATAQUE[e.papel] ?? 0),
+					dano: fraco ? linha(rotulo, 2).dano : l.dano,
+					nota: null
+				};
+			}
+			const js = (e.jutsus ?? []).map((j) => {
+				const card = j.slug ? jutsus.find((x) => x.slug === j.slug) : undefined;
+				if (j.slug && !card) avisar(`Bestiário: jutsu desconhecido em ${y.slug}: ${j.slug}`);
+				return { slug: card?.slug ?? null, nome: card?.nome ?? j.nome ?? j.slug ?? '', rank: card?.rank ?? null, custo: card?.custo ?? null, nota: j.nota ?? null };
+			});
+			if (f) js.push({ slug: null, nome: 'Usos de jutsu', rank: null, custo: null, nota: f.jutsus });
+			const ameaca = valor(rotulo);
+			return {
+				nome: e.nome,
+				ameaca,
+				ameacaRotulo: rotulo,
+				papel: e.papel,
+				rank: rankDe(ameaca),
+				membros: e.membros ?? 1,
+				resumo: e.resumo ? trechosDeMd(e.resumo) : null,
+				combate: {
+					pv: e.pv ?? base.pv,
+					pc: e.pc !== undefined ? e.pc : base.pc,
+					defesa: e.defesa ?? base.defesa,
+					iniciativa: e.iniciativa ?? base.iniciativa,
+					dt: e.dt ?? base.dt,
+					rd: e.rd ?? null,
+					nota: [base.nota, e.nota].filter(Boolean).join(' ') || null,
+					ataques: e.ataques.map((a) => ({ nome: a.nome, alcance: a.alcance, acerto: a.acerto ?? base.acerto, dano: (a.dano ?? base.dano).replace(/\s+/g, ''), efeito: a.efeito ? trechosDeMd(a.efeito) : null })),
+					jutsus: js,
+					tracos: (e.tracos ?? []).map((t) => ({ nome: t.nome, efeito: trechosDeMd(t.efeito) }))
+				}
+			};
+		};
+
+		// um arquivo por categoria (invocacoes.yaml, shinobi.yaml...); a ordem do livro é a alfabética, não a dos arquivos
+		const criaturas = readdirSync(join(CONTEUDO, 'bestiario'))
+			.filter((a) => a.endsWith('.yaml'))
+			.sort()
+			.flatMap((a) => lerYaml(readFileSync(join(CONTEUDO, 'bestiario', a), 'utf8')) as CriaturaYaml[])
+			.map((y): Criatura => {
+				if (y.vila && !NOME_VILA[y.vila]) avisar(`Bestiário: vila desconhecida em ${y.slug}: ${y.vila}`);
+				const { slug: _s, tipo: _t, origem: _o, vila: _v, arte: _a, cena: _c, descricao: _d, estagios: lista, taticas: _ta, ganchos: _g, tags: _tg, ...ficha } = y;
+				const estagios = (lista ?? [{ ...ficha, papel: ficha.papel!, ataques: ficha.ataques ?? [] } as EstagioYaml]).map((e) => estagioDe(y, e));
+				const min = Math.min(...estagios.map((e) => e.ameaca));
+				const max = Math.max(...estagios.map((e) => e.ameaca));
+				const rotulo = (n: number) => estagios.find((e) => e.ameaca === n)!.ameacaRotulo;
+				const arquivo = `bestiario/${y.slug}.png`;
+				const [largura, altura] = TAMANHO[y.arte.formato];
+				return {
+					slug: y.slug,
+					nome: y.nome,
+					letra: semAcentos(y.nome[0]).toUpperCase(),
+					tipo: y.tipo,
+					origem: y.origem,
+					vila: y.vila && NOME_VILA[y.vila] ? { nome: NOME_VILA[y.vila], icone: `vila/ic-vila-${y.vila}` } : null,
+					arte: { arquivo: existsSync(join(raiz, 'static', arquivo)) ? `/${arquivo}` : null, formato: y.arte.formato, plano: y.arte.plano, largura, altura },
+					cena: y.cena.map(trechosDeMd),
+					descricao: y.descricao.map(trechosDeMd),
+					estagios,
+					ameacaFaixa: min === max ? rotulo(min) : `${rotulo(min)} a ${rotulo(max)}`,
+					ameacaMin: min,
+					ameacaMax: max,
+					taticas: y.taticas.map(trechosDeMd),
+					ganchos: y.ganchos.map(trechosDeMd),
+					tags: y.tags
+				};
+			})
+			// o livro de monstros é em ordem alfabética
+			.sort((a, b) => a.nome.localeCompare(b.nome, 'pt'));
+		const slugs = new Set<string>();
+		for (const c of criaturas) {
+			if (slugs.has(c.slug) || c.slug === 'como-usar' || c.slug === 'por-ameaca') avisar(`Bestiário: slug repetido ou reservado: ${c.slug}`);
+			slugs.add(c.slug);
+		}
+		return { comoUsar: { titulo: frente.titulo, resumo: frente.resumo, blocos, secoes }, criaturas };
+	})();
+
 	// relações entre clãs, extraídas das frases de "Política e Obrigação"
 	for (const cl of clas) {
 		const textos = (cl.secoes.find((x) => /^politica/.test(normalizar(x.titulo)))?.blocos ?? [])
@@ -653,7 +852,18 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			}
 		}
 	};
-	acabar([capitulos, clas, jutsus, habilidades]);
+	// bestiário: o "Como usar" é texto de regra como um capítulo; nos verbetes, só os efeitos e as táticas
+	ligarBlocos(bestiario.comoUsar.blocos, { vistos: new Set() });
+	for (const cr of bestiario.criaturas) {
+		for (const e of cr.estagios) {
+			const ctx: Contexto = { vistos: new Set(), proprio: null, dadoSolto: true };
+			e.resumo = e.resumo && ligar(e.resumo, { vistos: new Set(), proprio: null });
+			for (const a of e.combate.ataques) a.efeito = a.efeito && ligar(a.efeito, ctx);
+			for (const t of e.combate.tracos) t.efeito = ligar(t.efeito, ctx);
+		}
+		cr.taticas = cr.taticas.map((p) => ligar(p, { vistos: new Set(), proprio: null }));
+	}
+	acabar([capitulos, clas, jutsus, habilidades, bestiario]);
 
 	// título das tabelas: o título da seção em que ela é a primeira tabela ("TABELA · Estados Especiais")
 	for (const c of capitulos) {
@@ -803,6 +1013,11 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 				icone: h.cla ? `cla/ic-cla-${h.cla}` : 'acao/ic-acao-criar-personagem'
 			});
 		}
+		busca.push({ id: 'b:como-usar', tipo: 'secao', titulo: bestiario.comoUsar.titulo, caminho: 'Bestiário', texto: bestiario.comoUsar.resumo, href: '/regras/bestiario/como-usar', icone: 'nav/ic-nav-npcs' });
+		for (const s of bestiario.comoUsar.secoes)
+			busca.push({ id: `b:${s.id}`, tipo: 'secao', titulo: s.titulo, caminho: `Bestiário · ${bestiario.comoUsar.titulo}`, texto: '', href: `/regras/bestiario/como-usar#${s.id}`, icone: 'nav/ic-nav-npcs' });
+		for (const cr of bestiario.criaturas)
+			busca.push({ id: `b:${cr.slug}`, tipo: 'criatura', titulo: cr.nome, caminho: `Bestiário · ${cr.tipo} · ameaça ${cr.ameacaFaixa}`, texto: [cr.origem, ...cr.estagios.map((e) => e.nome), ...cr.descricao.map(textoDe)].join(' '), href: `/regras/bestiario/${cr.slug}`, icone: cr.vila?.icone ?? (cr.tipo === 'invocação' ? 'esp/ic-esp-invocacao' : 'nav/ic-nav-npcs') });
 		for (const cl of clas) busca.push({ id: `k:${cl.slug}`, tipo: 'cla', titulo: `Clã ${cl.nome}`, caminho: `Clã · ${cl.epiteto} · ${cl.vila.nome}`, texto: [cl.epigrafe?.texto ?? '', textoBlocos(cl.descricao)].join(' '), href: `/regras/clas/${cl.slug}`, icone: `cla/ic-cla-${cl.slug}` });
 		for (const cat of equipamentos.categorias)
 			for (const a of cat.armas) busca.push({ id: `a:${a.slug}`, tipo: 'item', titulo: a.nome, caminho: `Arma · ${cat.titulo} · ${a.dano} · ${a.preco}`, texto: a.propriedades.join(' '), href: `/regras/equipamentos?aba=armas&categoria=${cat.id}#${a.slug}`, icone: a.icone });
@@ -828,7 +1043,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 		capitulos: capitulos.map(({ numero, slug: s, href, titulo, parte, resumo, secoes, arte }) => ({ numero, slug: s, href, titulo, parte, resumo, secoes, arte }))
 	};
 	const termos: TermoLexico[] = lexico.map(({ padroes: _p, sigla: _s, linha: _l, ...e }) => e);
-	return { saida: { indice, capitulos, jutsus, habilidades, clas, equipamentos, especializacoes, glossario, referencia, busca, termos }, avisos };
+	return { saida: { indice, capitulos, jutsus, habilidades, clas, equipamentos, especializacoes, glossario, referencia, busca, termos, bestiario }, avisos };
 }
 
 // ---------------------------------------------------------------- linha de comando

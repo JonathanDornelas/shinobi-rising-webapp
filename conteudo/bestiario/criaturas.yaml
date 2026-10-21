@@ -1,0 +1,210 @@
+# Bestiário · criaturas: o sobrenatural e o que foi feito por jutsu (marionetes sem dono, mortos revividos, as Bestas
+# com Cauda do anime, experimentos, golems). Formato: veja o cabeçalho de shinobi.yaml.
+- slug: marionete-abandonada
+  nome: Marionete abandonada
+  tipo: criatura
+  ameaca: 4
+  papel: assassino
+  pc: null
+  origem: Oficinas esquecidas de Suna
+  vila: suna
+  arte: { formato: retrato, plano: close de cima }
+  cena:
+    - "Na oficina cheia de pó, a marionete está largada no chão, os fios cortados soltos das juntas. Uma luz azul fraca acende num dos olhos de vidro. A mandíbula se mexe, com um estalo seco, e as lâminas começam a sair dos braços."
+  descricao:
+    - "Marionetes de combate guardam chakra do dono nas juntas. Às vezes, quando o marionetista morre de repente, esse resto de chakra não se apaga: a marionete continua repetindo o último combate, sozinha, contra qualquer um que entre no lugar."
+  ataques:
+    - { nome: Lâminas ocultas, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 14 ou sofre o Veneno Forte (cap. 11)." }
+  tracos:
+    - { nome: Sem dono, efeito: "Não sente dor nem medo: é imune a **Amedrontado**, **Em Genjutsu** e venenos." }
+    - { nome: Nuvem de agulhas, efeito: "Uma vez por cena, solta agulhas em volta de si: cada um a até 3 m faz uma Resistência de Acrobacia contra a DT 14 e sofre 1d8+2 de dano, ou metade se passar." }
+  taticas:
+    - "Fica imóvel até alguém chegar perto, como se fosse só uma peça velha. Então ataca quem estiver de costas."
+  ganchos:
+    - "Os fios cortados levam até o corpo de um marionetista que ninguém sabia que tinha morrido."
+    - "Um colecionador quer a marionete inteira, e paga melhor se ela ainda se mexer."
+  tags: [Agressivo, Fanático]
+
+- slug: cadaver-edo-tensei
+  nome: Cadáver de Edo Tensei
+  tipo: criatura
+  ameaca: 9
+  papel: lutador
+  origem: Campos de batalha
+  vila: null
+  arte: { formato: retrato, plano: close }
+  cena:
+    - "O caixão se abre sozinho. Quem sai dele tem um rosto conhecido, mas a pele é cinza e rachada como barro seco, e o branco dos olhos ficou preto. Ele olha para o grupo sem nenhuma pressa. Mortos não têm pressa."
+  descricao:
+    - "A Edo Tensei traz os mortos de volta presos a um corpo de cinzas e à vontade de quem os chamou. O corpo não cansa, não sangra e se refaz depois de qualquer golpe. Feri-lo não adianta: a única saída é selá-lo, ou encontrar quem o invocou."
+  ataques:
+    - { nome: Golpe, alcance: Corpo a corpo }
+  jutsus:
+    - { nome: "Os jutsus que sabia em vida", nota: "O Mestre escolhe até três, de rank B ou menor" }
+  tracos:
+    - { nome: Corpo de cinzas, efeito: "Ao chegar a 0 PV, se desfaz em cinzas e se refaz no começo do turno seguinte, com metade dos PV. Só para de vez quando é selado." }
+    - { nome: Selar, efeito: "Com o cadáver caído ou **Imobilizado**, um personagem ao lado dele pode selá-lo com um teste de Selamento contra a DT 17, como ação primária." }
+    - { nome: Sem fôlego, efeito: "Não sofre Fadiga e é imune a **Amedrontado**." }
+  taticas:
+    - "Luta sem medo e sem cuidado, porque não precisa. Obedece ao invocador e protege a posição dele."
+  ganchos:
+    - "O rosto do cadáver é de alguém que o grupo enterrou."
+    - "Por um instante, entre dois golpes, o morto fala com a própria voz e pede para ser selado."
+  tags: [Fanático, Brutal]
+
+- slug: bestas-com-cauda
+  nome: Bestas com Cauda
+  tipo: criatura
+  origem: Seladas nas vilas ocultas
+  vila: null
+  arte: { formato: pagina, plano: de baixo }
+  cena:
+    - "O céu fica vermelho de uma hora para outra. No horizonte, acima das árvores, aparecem as caudas, uma depois da outra, balançando devagar como bandeiras de guerra. O chão treme a cada passo, e todo ninja que já ouviu as histórias sabe contar até nove."
+  descricao:
+    - "As nove Bestas com Cauda são massas de chakra com forma e vontade, mais antigas que as vilas ocultas. Cada uma tem um nome, um temperamento e um poder próprio, e quanto mais caudas, mais forte. As grandes vilas as caçaram e selaram dentro de pessoas, os jinchuuriki, para usá-las como armas e como garantia de paz."
+    - "Uma besta não morre. Derrotada, ela se desfaz em chakra e volta a se formar com o tempo, e só um selamento a contém. Enfrentar uma delas é coisa para o fim de uma campanha, e quase sempre é o jinchuuriki que perdeu o controle quem a solta."
+  estagios:
+    - nome: Shukaku, o Uma Cauda
+      ameaca: 12
+      papel: chefe
+      resumo: "O tanuki de areia, de marcas azuis pelo corpo, barulhento e imprevisível."
+      ataques:
+        - { nome: Patada de areia, alcance: Médio }
+      tracos:
+        - { nome: Areia, efeito: "Controla a areia em volta: como reação, ergue um escudo de areia que reduz um ataque à metade." }
+        - { nome: Bala de ar, efeito: "Uma vez por rodada, dispara uma rajada de Fuuton: Resistência de Acrobacia contra a DT 18 ou fica **Caído**." }
+        - { nome: Bijūdama, efeito: "Uma vez por cena, a esfera de chakra das bestas: cada um numa área de 10 m faz uma Resistência de Acrobacia contra a DT 18 e sofre 6d10 de dano, ou metade se passar." }
+    - nome: Matatabi, o Duas Caudas
+      ameaca: 13
+      papel: chefe
+      resumo: "O gato de chamas azuis, de olhos de cores diferentes, rápido e orgulhoso."
+      ataques:
+        - { nome: Garras de fogo azul, alcance: Corpo a corpo, efeito: "O alvo fica **Em chamas**." }
+      tracos:
+        - { nome: Corpo de chamas, efeito: "Quem o toca ou o acerta corpo a corpo fica **Em chamas**." }
+        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 10 m faz uma Resistência de Acrobacia contra a DT 19 e sofre 6d10 de dano, ou metade se passar." }
+    - nome: Isobu, o Três Caudas
+      ameaca: 14
+      papel: chefe
+      resumo: "A tartaruga de casco espinhoso, que vive no fundo de lagos e cria corais."
+      rd: 4
+      ataques:
+        - { nome: Investida de casco, alcance: Corpo a corpo }
+      tracos:
+        - { nome: Casco espinhoso, efeito: "RD 4." }
+        - { nome: Névoa de ilusão, efeito: "Uma vez por cena, cobre o lago de névoa: quem está nela resiste com ESP contra a DT 19 ou fica **Em Genjutsu**." }
+        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 10 m faz uma Resistência de Acrobacia contra a DT 19 e sofre 6d10 de dano, ou metade se passar." }
+    - nome: Son Gokū, o Quatro Caudas
+      ameaca: 15
+      papel: chefe
+      resumo: "O grande macaco de pelo vermelho, orgulhoso, que cospe lava."
+      ataques:
+        - { nome: Punho de lava, alcance: Corpo a corpo, efeito: "O alvo fica **Em chamas**." }
+      tracos:
+        - { nome: Yōton, efeito: "Uma vez por rodada, cospe lava numa linha: Resistência de Acrobacia contra a DT 20 ou 3d10 de dano e **Em chamas**." }
+        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 10 m faz uma Resistência de Acrobacia contra a DT 20 e sofre 8d10 de dano, ou metade se passar." }
+    - nome: Kokuō, o Cinco Caudas
+      ameaca: 16
+      papel: chefe
+      resumo: "Meio cavalo, meio golfinho, de chifres longos e corpo envolto em vapor."
+      ataques:
+        - { nome: Chifrada, alcance: Corpo a corpo, efeito: "Se correu até o alvo, ele resiste com FOR contra a DT 20 ou é jogado longe e fica **Caído**." }
+      tracos:
+        - { nome: Futton, efeito: "O vapor fervente em volta do corpo causa 2d6 de dano em quem termina o turno ao lado dele." }
+        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 10 m faz uma Resistência de Acrobacia contra a DT 20 e sofre 8d10 de dano, ou metade se passar." }
+    - nome: Saiken, o Seis Caudas
+      ameaca: 17
+      papel: chefe
+      resumo: "A lesma branca gigante, de gosma corrosiva e bolhas de ácido."
+      ataques:
+        - { nome: Gosma corrosiva, alcance: Médio, efeito: "Corrói armas e armaduras: o alvo perde a RD até o fim da cena." }
+      tracos:
+        - { nome: Bolhas de ácido, efeito: "Uma vez por rodada, solta bolhas que estouram numa área de 6 m: Resistência de Acrobacia contra a DT 21 ou 3d10 de dano." }
+        - { nome: Corpo macio, efeito: "Não fica **Caído** nem **Atordoado**." }
+        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 10 m faz uma Resistência de Acrobacia contra a DT 21 e sofre 8d10 de dano, ou metade se passar." }
+    - nome: Chōmei, o Sete Caudas
+      ameaca: 18
+      papel: chefe
+      resumo: "O besouro gigante de asas brilhantes, que voa e cega com o pó das escamas."
+      ataques:
+        - { nome: Chifre de besouro, alcance: Corpo a corpo }
+      tracos:
+        - { nome: Voo, efeito: "Voa. Quem está no chão sem alcance não consegue atacá-lo." }
+        - { nome: Pó de escamas, efeito: "Uma vez por cena, espalha um pó brilhante: cada um numa área de 10 m resiste com VIG contra a DT 21 ou fica **Cego** até o fim do próximo turno." }
+        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 10 m faz uma Resistência de Acrobacia contra a DT 21 e sofre 10d10 de dano, ou metade se passar." }
+    - nome: Gyūki, o Oito Caudas
+      ameaca: 19
+      papel: chefe
+      resumo: "O touro de chifres curvos e caudas de polvo, de uma força que derruba montanhas."
+      ataques:
+        - { nome: Tentáculos, alcance: Médio, efeito: "O alvo resiste com FOR contra a DT 22 ou fica **Imobilizado**." }
+      tracos:
+        - { nome: Tinta, efeito: "Uma vez por cena, cospe tinta numa área de 10 m: quem estiver nela resiste com Acrobacia contra a DT 22 ou fica **Cego** e **Imobilizado** até se limpar (ação primária)." }
+        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 10 m faz uma Resistência de Acrobacia contra a DT 22 e sofre 10d10 de dano, ou metade se passar." }
+    - nome: Kurama, o Nove Caudas
+      ameaca: 20
+      papel: chefe
+      resumo: "A raposa de nove caudas, a mais forte das bestas, que sente o ódio no coração das pessoas."
+      ataques:
+        - { nome: Garras da raposa, alcance: Médio }
+      tracos:
+        - { nome: Sentir o ódio, efeito: "Percebe a presença e as emoções negativas de qualquer um num raio enorme. Ninguém com raiva ou medo se esconde dele." }
+        - { nome: Rugido, efeito: "Uma vez por cena: cada um numa área de 20 m resiste com ESP contra a DT 23 ou fica **Amedrontado**." }
+        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 20 m faz uma Resistência de Acrobacia contra a DT 23 e sofre 10d10 de dano, ou metade se passar." }
+  taticas:
+    - "Uma besta solta não tem tática: destrói o que a irrita e tudo o que estiver perto. As que conversam querem quase sempre a mesma coisa, que é não voltar a ser selada."
+    - "O caminho para vencer é o selamento: imobilizar a besta tempo o bastante para um mestre do selo trabalhar."
+  ganchos:
+    - "O selo de um jinchuuriki está enfraquecendo, e a vila esconde isso de todo mundo, inclusive dele."
+    - "Uma organização de renegados caça as bestas uma por uma, e a próxima da lista está perto do grupo."
+  tags: [Brutal, Fanático]
+
+- slug: experimento-proibido
+  nome: Experimento proibido
+  tipo: criatura
+  ameaca: 6
+  papel: lutador
+  origem: Laboratórios escondidos
+  vila: null
+  arte: { formato: retrato, plano: plano médio }
+  cena:
+    - "A jaula está aberta por dentro, as barras dobradas para fora. No fundo do laboratório, alguma coisa que já foi um ninja levanta a cabeça. Um dos braços é grande demais para o corpo, e a pele nele tem a cor errada."
+  descricao:
+    - "Em algum esconderijo, alguém tenta criar o ninja perfeito misturando Kekkei Genkai, células de outros corpos e selos que não deveriam existir. A maioria das cobaias morre. As que sobrevivem saem com poderes que não controlam, dor o tempo todo e uma raiva enorme de quem as prendeu."
+  ataques:
+    - { nome: Braço deformado, alcance: Curto }
+  tracos:
+    - { nome: Regeneração instável, efeito: "No começo de cada turno, recupera 1d10 PV. Se rolar 1, perde esse tanto em vez de recuperar." }
+    - { nome: Kekkei Genkai roubada, efeito: "Tem uma técnica hereditária de um clã à escolha do Mestre (cap. 8), sem controle: uma vez por cena, ela dispara sozinha no alvo mais perto." }
+  taticas:
+    - "Ataca quem estiver de jaleco ou uniforme do laboratório primeiro. Contra os outros, luta assustado, e às vezes para no meio do golpe."
+  ganchos:
+    - "O experimento carrega a técnica de um clã que o grupo conhece, e o clã quer o corpo de volta."
+    - "Ainda lembra o próprio nome, e o nome está na lista de genin desaparecidos de uma vila."
+  tags: [Agressivo, Covarde]
+
+- slug: golem-de-terra
+  nome: Golem de terra
+  tipo: criatura
+  ameaca: 5
+  papel: lutador
+  pc: null
+  rd: 2
+  origem: Feito por Doton
+  vila: null
+  arte: { formato: quadro, plano: de baixo }
+  cena:
+    - "O ninja de Iwa bate as palmas no chão, e a encosta inteira se levanta. Pedra, raiz e barro tomam a forma de um gigante sem rosto, com dois buracos onde deveriam estar os olhos. Ele dá o primeiro passo, e o vale treme."
+  descricao:
+    - "Alguns ninjas de Doton aprendem a dar forma e vontade à terra. O golem obedece a quem o criou, não sente dor e não para enquanto o chakra que o anima durar. Quebrá-lo é possível; mais fácil é achar quem o controla."
+  ataques:
+    - { nome: Punho de pedra, alcance: Corpo a corpo }
+  tracos:
+    - { nome: Corpo de pedra, efeito: "RD 2. Imune a venenos, a **Amedrontado** e a **Em Genjutsu**." }
+    - { nome: Ligado ao criador, efeito: "Se o criador cair ou se afastar demais, o golem desmorona no fim do turno." }
+  taticas:
+    - "Anda devagar, protege o criador e esmaga o que estiver no caminho. Não pensa: obedece."
+  ganchos:
+    - "Um golem antigo, sem criador, guarda as ruínas de uma vila destruída na guerra."
+    - "Uma pedreira foi abandonada porque as pedras começaram a andar."
+  tags: [Leal, Brutal]

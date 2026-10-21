@@ -1,7 +1,10 @@
 <script lang="ts">
 	// N1 · NPCs da campanha. Mestre: cards com visibilidade, bloco de combate com PV clicável (tropas por membro) e o
 	// editor da ficha resumida (N2). Jogadores: os NPCs que o Mestre revelou.
-	import { goto, refreshAll } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { goto, refreshAll, replaceState } from '$app/navigation';
+	import { page } from '$app/state';
+	import { npcDoVerbete } from '#lib/bestiario/npc.ts';
 	import EditorNpc from '#lib/componentes/npc/EditorNpc.svelte';
 	import BarraRolagem from '#lib/componentes/rolagens/BarraRolagem.svelte';
 	import BotaoRolar from '#lib/componentes/rolagens/BotaoRolar.svelte';
@@ -17,6 +20,7 @@
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
 	import type { Json, Npc } from '#lib/supabase/banco.ts';
+	import type { Bestiario } from '#lib/livro/tipos.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -69,6 +73,30 @@
 		npcs = [...npcs, criado as Npc];
 		editando = criado as Npc;
 	}
+	// "Usar na campanha" no bestiário: ?bestiario=<verbete> cria o NPC com os números do verbete e abre o editor.
+	// O parâmetro sai da URL antes de criar, para recarregar a página não duplicar o NPC.
+	onMount(async () => {
+		const slug = page.url.searchParams.get('bestiario');
+		if (!slug) return;
+		const estagio = +(page.url.searchParams.get('estagio') ?? 0) || 0;
+		const url = new URL(page.url.href);
+		url.searchParams.delete('bestiario');
+		url.searchParams.delete('estagio');
+		replaceState(url, {});
+		if (!mestre || !ativa) return toasts.mostrar('Só o Mestre de uma campanha ativa cria NPCs do bestiário.', 'aviso');
+		const { default: b } = await import('#lib/livro/gerado/bestiario.json');
+		const verbete = (b as Bestiario).criaturas.find((c) => c.slug === slug);
+		if (!verbete) return toasts.mostrar('Verbete do bestiário não encontrado.', 'erro');
+		const { data: criado, error } = await supabase()
+			.from('npcs')
+			.insert({ campanha_id: k.id, ...npcDoVerbete(verbete, estagio) })
+			.select('*')
+			.single();
+		if (error || !criado) return toasts.mostrar('Não foi possível criar o NPC.', 'erro');
+		npcs = [...npcs, criado as Npc];
+		editando = criado as Npc;
+		toasts.mostrar(`${verbete.nome} entrou na lista de NPCs.`, 'sucesso');
+	});
 	// NPC com ficha completa: uma ficha do Mestre no mesmo criador dos jogadores, fora do grupo
 	let criandoFicha = $state(false);
 	async function novaFichaNpc() {
@@ -323,6 +351,14 @@
 					<span class="text-[13px] leading-[19px] text-mut">Uma ficha como a de um jogador, no criador de personagem: atributos, perícias, jutsus e inventário. Para vilões e aliados centrais.</span>
 				</button>
 			</div>
+			<a href="/regras/bestiario" class="painel cartao-link flex items-center gap-3 p-3 text-fg">
+				<Icone id="nav/ic-nav-npcs" />
+				<span class="flex min-w-0 flex-1 flex-col">
+					<span class="font-mincho text-[17px] leading-6 font-bold">Do bestiário</span>
+					<span class="text-[13px] leading-[19px] text-mut">Escolha um adversário pronto, com ameaça, táticas e ganchos, e use o botão Usar na campanha.</span>
+				</span>
+				<span class="font-pixel text-sm font-bold text-mut">▸</span>
+			</a>
 		</div>
 	</Modal>
 {/if}

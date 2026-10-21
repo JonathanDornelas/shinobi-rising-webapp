@@ -20,6 +20,7 @@
 				<a class="link text-[#D9C2A7]" href="/regras/introducao">Parte I · Fundamentos</a>
 				<a class="link text-[#D9C2A7]" href="/regras/criacao-de-personagem">Criação de Personagem</a>
 				<a class="link text-[#D9C2A7]" href="/regras/glossario">Glossário</a>
+				<a class="link text-[#D9C2A7]" href="/regras/bestiario">Bestiário</a>
 				<a class="link text-[#D9C2A7]" href="/regras/referencia-rapida">Referência rápida</a>
 			</nav>
 			<span class="hidden flex-1 md:block"></span>

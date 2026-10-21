@@ -79,6 +79,8 @@ async function gerar(conta, v, seed, jobs) {
   if (!job) {
     const { width, height } = LISTA.formatos[v.formato];
     const args = { description: descricao(v), width, height, ...LISTA.parametros, color_image_base64: paleta([...LISTA.paleta, ...(v.cores_extras || [])]), seed };
+    // "partir_de": refaz uma tentativa anterior (img2img), guardando "forca" dela (500 quase não muda, 150 é uma edição visível)
+    if (v.partir_de) Object.assign(args, { init_image_base64: fs.readFileSync(path.join(OUT, v.partir_de.arquivo)).toString("base64"), init_image_strength: v.partir_de.forca });
     let r;
     for (let t = 0; t < 6; t++) {
       r = await call(conta, "create_image_pixflux", args);

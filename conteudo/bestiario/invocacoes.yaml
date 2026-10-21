@@ -1,0 +1,386 @@
+# Invocações: as sete espécies de contrato do cap. 14, cada uma com os quatro tamanhos (Pequena, Média, Grande e Chefe
+# da Espécie). Os números de cada estágio vêm da ficha do cap. 14 (campo ficha); aqui ficam o texto e os traços.
+# Formato de cada verbete: veja o cabeçalho de shinobi.yaml.
+- slug: sapos-de-myoboku
+  nome: Sapos de Myōboku
+  tipo: invocação
+  origem: Monte Myōboku
+  vila: null
+  arte: { formato: quadro, plano: close de baixo }
+  cena:
+    - "A fumaça da invocação ainda não baixou quando a lâmina sai da bainha. O sapo olha de cima para os ninjas, piscando devagar, e cospe para o lado. Pelo jeito, alguém o chamou para uma briga que valesse a viagem."
+  descricao:
+    - "Os sapos do Monte Myōboku guardam a montanha sagrada e servem a quem assina o contrato deles com sangue. Os pequenos levam recados e brincam de espião; os guerreiros vestem colete e faixa na cintura e carregam lâminas do tamanho de uma árvore. Todos têm pouca paciência com invocadores fracos."
+  estagios:
+    - nome: Sapo pequeno
+      papel: suporte
+      ficha: pequena
+      resumo: "Mensageiro e espião, mais esperto do que parece."
+      ataques:
+        - { nome: Língua, alcance: Curto }
+      jutsus:
+        - { slug: mizu-teppou }
+      tracos:
+        - { nome: Mensageiro, efeito: "Leva recados e pergaminhos, no tempo de uma invocação pequena (cap. 14)." }
+    - nome: Sapo de batalha
+      papel: lutador
+      ficha: media
+      resumo: "Do tamanho de um cavalo, luta ao lado do invocador."
+      ataques:
+        - { nome: Cabeçada, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: mizu-teppou }
+        - { slug: suijinheki }
+      tracos:
+        - { nome: Salto do pântano, efeito: "Um salto o leva por cima de inimigos e obstáculos. Conta como o deslocamento do turno." }
+    - nome: Sapo guerreiro
+      papel: lutador
+      ficha: grande
+      resumo: "Colete, faixa e uma lâmina do tamanho de uma árvore."
+      ataques:
+        - { nome: "Lâmina (dosu)", alcance: Corpo a corpo }
+      jutsus:
+        - { slug: suiryuudan-no-jutsu }
+      tracos:
+        - { nome: Salto do pântano, efeito: "Um salto o leva por cima de inimigos e obstáculos. Conta como o deslocamento do turno." }
+        - { nome: Invocado, efeito: "Ao chegar a 0 PV, é desinvocado e volta a Myōboku. Não pode ser invocado de novo por 24 horas (cap. 14)." }
+    - nome: Chefe dos sapos
+      papel: chefe
+      ficha: chefe
+      resumo: "O velho chefe da montanha, que fuma, bebe e só aparece para guerras."
+      ataques:
+        - { nome: Lâmina colossal, alcance: Corpo a corpo, efeito: "O alvo resiste com FOR contra a DT 21 ou fica **Caído**." }
+      tracos:
+        - { nome: Peso da montanha, efeito: "Quando cai sobre o campo, cada um ao redor faz uma Resistência de Acrobacia contra a DT 21 ou fica **Caído**." }
+        - { nome: Senjutsu, efeito: "Os sapos guardam o caminho para o Modo Sennin (cap. 15). O chefe pode ensinar, se achar que vale a pena." }
+  taticas:
+    - "Os pequenos fogem e avisam. Os guerreiros ficam entre o invocador e o perigo e trocam golpes com quem estiver mais perto, preferindo um adversário à altura."
+    - "Se o invocador cai, o sapo cobre a retirada dele em vez de continuar a luta."
+  ganchos:
+    - "Um sapo aparece sozinho, sem invocador, com um pergaminho preso à faixa e pressa de entregá-lo."
+    - "O invocador inimigo assinou o contrato roubando o pergaminho, e os sapos sabem disso."
+  tags: [Leal, Agressivo]
+
+- slug: cobras-de-ryuchi
+  nome: Cobras de Ryūchi
+  tipo: invocação
+  origem: Caverna Ryūchi
+  vila: null
+  arte: { formato: pagina, plano: de baixo }
+  cena:
+    - "A fumaça branca sobe, e no meio dela alguma coisa continua subindo depois que a fumaça para. As escamas roxas fecham o céu do desfiladeiro. Lá embaixo, pequeno, o invocador sorri."
+  descricao:
+    - "As cobras da Caverna Ryūchi servem a quem tem o contrato, mas não por lealdade: cobram oferendas e mordem a mão que as alimenta mal. Infiltram-se pelo chão, envenenam e enrolam a presa até ela parar de lutar. Também guardam um caminho para o Senjutsu."
+  estagios:
+    - nome: Cobra pequena
+      papel: assassino
+      ficha: pequena
+      resumo: "Some no meio da grama e morde o tornozelo."
+      ataques:
+        - { nome: Presas, alcance: Corpo a corpo, efeito: "O alvo resiste com VIG contra a DT 13 ou sofre o Veneno Comum (cap. 11)." }
+      tracos:
+        - { nome: Infiltração, efeito: "Passa por frestas e por baixo da terra solta sem ser vista: vantagem em Furtividade." }
+    - nome: Cobra de bote
+      papel: lutador
+      ficha: media
+      resumo: "Grossa como um tronco, rápida como um chicote."
+      ataques:
+        - { nome: Bote, alcance: Curto, efeito: "O alvo resiste com VIG contra a DT 15 ou fica **Envenenado** (1d4 de dano por turno, por 3 turnos)." }
+      tracos:
+        - { nome: Constrição, efeito: "Quando o bote acerta, pode enrolar o alvo, que fica **Imobilizado** até se libertar com uma Resistência de FOR contra a DT 15." }
+    - nome: Serpente gigante
+      papel: lutador
+      ficha: grande
+      resumo: "Fecha o céu de um desfiladeiro e engole um ninja inteiro."
+      ataques:
+        - { nome: Bote, alcance: Curto, efeito: "O alvo resiste com VIG contra a DT 17 ou fica **Envenenado** (1d4 de dano por turno, por 3 turnos)." }
+      tracos:
+        - { nome: Constrição, efeito: "Quando o bote acerta, pode enrolar o alvo, que fica **Imobilizado** até se libertar com uma Resistência de FOR contra a DT 17." }
+        - { nome: Invocada, efeito: "Ao chegar a 0 PV, é desinvocada e volta a Ryūchi. Não pode ser invocada de novo por 24 horas (cap. 14)." }
+    - nome: Chefe das serpentes
+      papel: chefe
+      ficha: chefe
+      resumo: "Arrogante, faminta e mais velha que qualquer vila."
+      ataques:
+        - { nome: Bote colossal, alcance: Médio, efeito: "O alvo resiste com VIG contra a DT 21 ou fica **Envenenado** pelo Veneno Forte (cap. 11)." }
+      tracos:
+        - { nome: Troca de pele, efeito: "Uma vez por invocação, quando cairia abaixo da metade dos PV, sai da pele velha e recupera 40 PV." }
+        - { nome: Oferenda, efeito: "Exige um sacrifício para aparecer. Sem ele, pode atacar o próprio invocador." }
+  taticas:
+    - "Morde o alvo mais perto e enrola quem tentar ajudar. Obedece ao invocador só enquanto ele parecer forte."
+  ganchos:
+    - "Foi invocada sem oferenda e está com fome. Talvez aceite um acordo."
+    - "O invocador usa um contrato que deveria estar selado nas ruínas de um esconderijo abandonado."
+  tags: [Brutal, Cauteloso]
+
+- slug: lesmas-de-shikkotsu
+  nome: Lesmas de Shikkotsu
+  tipo: invocação
+  origem: Floresta Shikkotsu
+  vila: null
+  arte: { formato: faixa, plano: por trás de alguém }
+  cena:
+    - "Entre os cogumelos gigantes, uma forma branca e macia se ergue sem pressa, com listras azuis nas costas. Os olhos na ponta das antenas se voltam para o médico ferido aos pés dela, com uma calma que não combina com o tamanho."
+  descricao:
+    - "As lesmas da Floresta Shikkotsu são o contrato dos ninjas médicos. Não gostam de briga, mas sabem se defender: cospem um ácido que corrói pedra e se dividem em pedaços pequenos que grudam nos aliados e fecham as feridas deles."
+  estagios:
+    - nome: Lesma pequena
+      papel: suporte
+      ficha: pequena
+      resumo: "Cabe na palma da mão e gruda numa ferida até ela fechar."
+      ataques:
+        - { nome: Ácido, alcance: Curto }
+      tracos:
+        - { nome: Curativo vivo, efeito: "Como ação primária, gruda num aliado ao alcance, que recupera 1d6 PV. Duas vezes por invocação." }
+    - nome: Lesma de cura
+      papel: suporte
+      ficha: media
+      resumo: "Do tamanho de um boi, carrega feridos nas costas."
+      ataques:
+        - { nome: Ácido, alcance: Curto }
+      jutsus:
+        - { slug: shosen-jutsu }
+      tracos:
+        - { nome: Corpo macio, efeito: "Não fica **Caído** nem **Atordoado** por golpes de impacto." }
+    - nome: Lesma gigante
+      papel: suporte
+      ficha: grande
+      resumo: "Protege um acampamento inteiro com o próprio corpo."
+      ataques:
+        - { nome: Ácido, alcance: Curto }
+      tracos:
+        - { nome: Dividir-se, efeito: "Como ação primária, solta pedaços de si que grudam nos aliados do invocador ao alcance. Cada um recupera 2d6 PV. Uma vez por cena." }
+        - { nome: Corpo macio, efeito: "Não fica **Caído** nem **Atordoado** por golpes de impacto." }
+    - nome: Rainha das lesmas
+      papel: chefe
+      ficha: chefe
+      resumo: "Grande como uma colina, se divide em milhares para curar um exército."
+      ataques:
+        - { nome: Ácido corrosivo, alcance: Médio, efeito: "Corrói armas e armaduras: o alvo perde a RD até o fim da cena." }
+      tracos:
+        - { nome: Mil pedaços, efeito: "Como ação primária, se divide e gruda em todos os aliados que estiverem na cena. Cada um recupera 3d6 PV. Uma vez por cena." }
+  taticas:
+    - "Protege o invocador com o próprio corpo e cura antes de atacar. Só cospe ácido quando alguém ameaça um ferido."
+  ganchos:
+    - "Apareceu sozinha, para buscar o corpo de um médico que tinha o contrato."
+    - "Recusa-se a lutar contra quem carrega o mesmo contrato, mesmo do lado inimigo."
+  tags: [Leal, Diplomata]
+
+- slug: caes-ninja
+  nome: Cães ninja
+  tipo: invocação
+  origem: Vários lugares
+  vila: null
+  arte: { formato: faixa, plano: plano aberto }
+  cena:
+    - "Primeiro vem o latido, depois o silêncio. Então o chão se abre em fumaça em volta do grupo, e de cada nuvem sai um cão de bandana na testa, rosnando baixo, o focinho já colado no rastro."
+  descricao:
+    - "O contrato dos cães é o mais comum entre os ninjas: rastreadores incansáveis, que trabalham em matilha e nunca perdem um cheiro. Os pequenos falam, reclamam e farejam; os grandes derrubam um homem com um salto. Todos usam a bandana do invocador com orgulho."
+  estagios:
+    - nome: Filhote farejador
+      papel: suporte
+      ficha: pequena
+      resumo: "Fala, reclama e acha qualquer um pelo cheiro."
+      ataques:
+        - { nome: Mordida, alcance: Corpo a corpo }
+      tracos:
+        - { nome: Faro, efeito: "Tem vantagem em Rastreamento e acha alvos escondidos pelo cheiro, mesmo sob Henge." }
+    - nome: Cão de caça
+      papel: lutador
+      ficha: media
+      resumo: "Trabalha em dupla com o invocador e morde para prender."
+      membros: 1
+      ataques:
+        - { nome: Mordida, alcance: Corpo a corpo, efeito: "O alvo resiste com FOR contra a DT 15 ou fica **Imobilizado** pela mordida." }
+      tracos:
+        - { nome: Faro, efeito: "Tem vantagem em Rastreamento e acha alvos escondidos pelo cheiro, mesmo sob Henge." }
+    - nome: Cão de guerra
+      papel: lutador
+      ficha: grande
+      resumo: "Do tamanho de uma casa, carrega o invocador nas costas."
+      ataques:
+        - { nome: Mordida, alcance: Corpo a corpo, efeito: "O alvo resiste com FOR contra a DT 17 ou fica **Caído**." }
+      tracos:
+        - { nome: Montaria, efeito: "Leva até dois ninjas nas costas sem perder deslocamento." }
+    - nome: Chefe da matilha
+      papel: chefe
+      ficha: chefe
+      resumo: "Velho, cego de um olho e ainda o melhor nariz de todos."
+      ataques:
+        - { nome: Presas do líder, alcance: Corpo a corpo, efeito: "O alvo resiste com FOR contra a DT 21 ou fica **Caído** e **Imobilizado**." }
+      tracos:
+        - { nome: Uivo da matilha, efeito: "Uma vez por cena, chama a matilha: aparecem quatro cães de caça, que agem na iniciativa dele." }
+  taticas:
+    - "Cercam, latem para assustar e mordem para prender, enquanto o invocador ataca o alvo preso."
+  ganchos:
+    - "Um cão ferido chega sozinho ao acampamento e guia o grupo até o dono, caído numa emboscada."
+    - "A matilha de um ninja morto não aceita outro invocador sem uma prova de lealdade."
+  tags: [Leal, Tático]
+
+- slug: macacos-guerreiros
+  nome: Macacos guerreiros
+  tipo: invocação
+  origem: Florestas montanhosas
+  vila: null
+  arte: { formato: retrato, plano: de baixo }
+  cena:
+    - "Ele cai do galho de cabeça para baixo, agarrado pelo rabo, e encara o grupo com olhos velhos demais. Coça o queixo, suspira e estala os dedos. Com um estalo de fumaça, o braço dele vira um bastão de ferro."
+  descricao:
+    - "Os macacos guerreiros vivem nas florestas das montanhas e são a espécie mais versátil dos contratos: lutam, aconselham e alguns se transformam em armas nas mãos do invocador. São sábios, orgulhosos e não gostam de ser tratados como ferramenta."
+  estagios:
+    - nome: Macaco pequeno
+      papel: suporte
+      ficha: pequena
+      resumo: "Rouba, distrai e devolve tudo com uma careta."
+      ataques:
+        - { nome: Pedrada, alcance: Curto }
+      tracos:
+        - { nome: Mãos leves, efeito: "Como ação secundária, tenta tirar um objeto pequeno de um inimigo ao lado: Atletismo contra a Defesa dele." }
+    - nome: Macaco lutador
+      papel: lutador
+      ficha: media
+      resumo: "Luta de bastão e salta de galho em galho."
+      ataques:
+        - { nome: Bastão, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: konoha-senpuu }
+      tracos:
+        - { nome: Acrobata, efeito: "Nunca fica **Caído** e se move pelos galhos como se fosse chão." }
+    - nome: Macaco guerreiro
+      papel: lutador
+      ficha: grande
+      resumo: "Vira um bastão de ferro nas mãos do invocador."
+      ataques:
+        - { nome: Bastão de ferro, alcance: Corpo a corpo }
+      tracos:
+        - { nome: Forma de arma, efeito: "Pode virar um bastão nas mãos do invocador. Enquanto isso, o invocador usa o ataque básico dele no lugar do seu." }
+    - nome: Rei dos macacos
+      papel: chefe
+      ficha: chefe
+      resumo: "O sábio da floresta, que já viu três gerações de Kage."
+      ataques:
+        - { nome: Bastão diamantino, alcance: Médio, efeito: "O bastão se estica até o alvo e volta." }
+      tracos:
+        - { nome: Bastão diamantino, efeito: "Na forma de arma, nada quebra o bastão, e ele ignora a RD do alvo." }
+        - { nome: Conselho, efeito: "Fora de combate, conhece a história de clãs e vilas antigas: vantagem em testes de Investigação sobre o passado." }
+  taticas:
+    - "Usa a altura dos galhos, ataca de cima e muda de alvo o tempo todo. Os mais velhos preferem conversar antes de brigar."
+  ganchos:
+    - "O rei dos macacos quer de volta um bastão que um ninja levou há gerações."
+    - "Um bando de macacos pequenos rouba os pergaminhos de missão do grupo e foge rindo para a floresta."
+  tags: [Tático, Diplomata]
+
+- slug: aguias-e-falcoes
+  nome: Águias e falcões
+  tipo: invocação
+  origem: Picos altos
+  vila: null
+  arte: { formato: faixa, plano: de baixo }
+  cena:
+    - "Uma sombra passa sobre o grupo, depois outra, cada vez mais baixa. O grito corta o vento. Quando alguém olha para cima, a águia já fechou as asas e vem caindo como uma lança."
+  descricao:
+    - "As aves de rapina dos picos altos são os olhos do céu: reconhecimento, mensagens e ataques de cima, onde ninguém espera. Os falcões pequenos levam recados; as águias gigantes carregam o invocador por cima das nuvens."
+  estagios:
+    - nome: Falcão mensageiro
+      papel: suporte
+      ficha: pequena
+      resumo: "Leva recados na metade do tempo, porque voa."
+      ataques:
+        - { nome: Garras, alcance: Corpo a corpo }
+      tracos:
+        - { nome: Voo, efeito: "Voa. Entrega mensagens na metade do tempo das outras invocações (cap. 14)." }
+    - nome: Águia de caça
+      papel: atirador
+      ficha: media
+      resumo: "Mergulha do céu e some antes do contra-ataque."
+      ataques:
+        - { nome: Mergulho, alcance: Médio, efeito: "Se a águia se moveu de cima para baixo neste turno, o ataque tem vantagem." }
+      tracos:
+        - { nome: Voo, efeito: "Voa. Quem está no chão sem alcance não consegue atacá-la." }
+        - { nome: Olhos do céu, efeito: "Tem vantagem em Percepção para ver de longe." }
+    - nome: Águia gigante
+      papel: lutador
+      ficha: grande
+      resumo: "Carrega dois ninjas acima das nuvens."
+      ataques:
+        - { nome: Garras, alcance: Corpo a corpo, efeito: "Pode erguer o alvo no ar: ele fica **Imobilizado** até se libertar com FOR contra a DT 17, e cai se conseguir." }
+      jutsus:
+        - { slug: daitoppa }
+      tracos:
+        - { nome: Montaria, efeito: "Voa levando até dois ninjas nas costas." }
+    - nome: Senhor dos céus
+      papel: chefe
+      ficha: chefe
+      resumo: "As asas abertas cobrem uma vila inteira de sombra."
+      ataques:
+        - { nome: Garras de tempestade, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: kazekiri-no-jutsu }
+      tracos:
+        - { nome: Vendaval, efeito: "Um bater de asas varre a área: cada um no chão faz uma Resistência de FOR contra a DT 21 ou é empurrado e fica **Caído**." }
+  taticas:
+    - "Ataca de cima, sobe para fora de alcance e volta. Prefere alvos isolados em campo aberto."
+  ganchos:
+    - "Um falcão do inimigo carrega o plano da emboscada. Derrubá-lo antes que chegue muda a missão inteira."
+    - "Uma águia gigante pousa ferida no telhado da estalagem, com um ninho a defender."
+  tags: [Cauteloso, Tático]
+
+- slug: tartarugas
+  nome: Tartarugas da Ilha-Tartaruga
+  tipo: invocação
+  origem: Ilha-Tartaruga
+  vila: null
+  arte: { formato: quadro, plano: plano aberto }
+  cena:
+    - "A pedra na beira do lago abre os olhos. Devagar, sem pressa nenhuma, a cabeça sai de baixo do casco coberto de musgo, e a tartaruga olha o grupo como quem já viu muitos ninjas nascerem e morrerem."
+  descricao:
+    - "As tartarugas vivem numa ilha que anda pelo mar, e o contrato delas é raro. São lentas, teimosas e duram para sempre. No combate, viram muralha: o casco aguenta o que nenhuma armadura aguenta, e as mais velhas se lembram de técnicas que as vilas já esqueceram."
+  estagios:
+    - nome: Tartaruga pequena
+      papel: suporte
+      ficha: pequena
+      resumo: "Cabe numa mochila e esconde um pergaminho no casco."
+      ataques:
+        - { nome: Mordida, alcance: Corpo a corpo }
+      tracos:
+        - { nome: Casco, efeito: "RD 2." }
+    - nome: Tartaruga de casco
+      papel: lutador
+      ficha: media
+      resumo: "Fica na frente do invocador e não sai dali."
+      rd: 3
+      ataques:
+        - { nome: Investida de casco, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: suijinheki }
+      tracos:
+        - { nome: Casco, efeito: "RD 3." }
+        - { nome: Recolher-se, efeito: "Como reação, se fecha no casco: a Defesa sobe 4 até o próximo turno, mas não ataca." }
+    - nome: Tartaruga gigante
+      papel: lutador
+      ficha: grande
+      resumo: "Um ninja inteiro cabe em pé dentro do casco."
+      rd: 4
+      ataques:
+        - { nome: Investida de casco, alcance: Corpo a corpo }
+      tracos:
+        - { nome: Casco, efeito: "RD 4." }
+        - { nome: Abrigo, efeito: "Aliados atrás do casco contam como sob cobertura." }
+    - nome: Ancestral da ilha
+      papel: chefe
+      ficha: chefe
+      resumo: "Uma ilha com olhos, que lembra do tempo antes das vilas."
+      rd: 6
+      ataques:
+        - { nome: Mordida de pedra, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: suiryuudan-no-jutsu }
+      tracos:
+        - { nome: Casco, efeito: "RD 6." }
+        - { nome: Maré, efeito: "Uma vez por cena, chama o mar: cada inimigo no chão faz uma Resistência de FOR contra a DT 21 ou é arrastado e fica **Caído**." }
+  taticas:
+    - "Não tem pressa: fica parada entre o perigo e quem protege, deixa o inimigo se cansar no casco e morde quando ele chega perto."
+  ganchos:
+    - "A ilha que anda encalhou perto da costa, e alguém está caçando as tartarugas pelo casco."
+    - "Uma tartaruga anciã guarda uma técnica proibida e só a ensina a quem vencer um desafio de paciência."
+  tags: [Cauteloso, Leal]

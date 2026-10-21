@@ -25,6 +25,7 @@
 		{ icone: 'nav/ic-nav-clas', titulo: 'Clãs', href: '/regras/clas' },
 		{ icone: 'nav/ic-nav-equipamentos', titulo: 'Armas e equipamentos', href: '/regras/equipamentos' },
 		{ icone: 'esp/ic-esp-controle-chakra', titulo: 'Especializações', href: '/regras/especializacoes' },
+		{ icone: 'nav/ic-nav-npcs', titulo: 'Bestiário', href: '/regras/bestiario' },
 		{ icone: 'nav/ic-nav-referencia', titulo: 'Glossário', href: '/regras/glossario' }
 	];
 	const tabelas = [

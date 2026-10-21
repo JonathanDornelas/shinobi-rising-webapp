@@ -8,6 +8,7 @@ export const GRUPOS: { tipo: TipoDocBusca; rotulo: string; curto: string }[] = [
 	{ tipo: 'jutsu', rotulo: 'Jutsus', curto: 'Jutsus' },
 	{ tipo: 'cla', rotulo: 'Clãs', curto: 'Clãs' },
 	{ tipo: 'item', rotulo: 'Armas e itens', curto: 'Itens' },
+	{ tipo: 'criatura', rotulo: 'Bestiário', curto: 'Bestiário' },
 	{ tipo: 'termo', rotulo: 'Glossário', curto: 'Glossário' }
 ];
 

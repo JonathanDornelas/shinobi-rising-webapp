@@ -417,8 +417,8 @@
 				<span class="mt-1.5 text-[13px] text-mut">{nomeEra(c)} · nível inicial {c.nivel_inicial} · Mestre: {data.membros.find((m) => m.papel === 'mestre')?.nome ?? '—'}</span>
 			</section>
 
-			<nav aria-label="Biblioteca" class="grid grid-cols-3 gap-2">
-				{#each [['/regras/clas', 'nav/ic-nav-clas', 'Clãs'], ['/regras/jutsus', 'nav/ic-nav-jutsus', 'Jutsus'], ['/regras/equipamentos', 'nav/ic-nav-equipamentos', 'Equipamentos']] as [href, icone, nome] (href)}
+			<nav aria-label="Biblioteca" class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+				{#each [['/regras/clas', 'nav/ic-nav-clas', 'Clãs'], ['/regras/jutsus', 'nav/ic-nav-jutsus', 'Jutsus'], ['/regras/equipamentos', 'nav/ic-nav-equipamentos', 'Equipamentos'], ['/regras/bestiario', 'nav/ic-nav-npcs', 'Bestiário']] as [href, icone, nome] (href)}
 					<a {href} class="painel cartao-link flex flex-col items-center gap-1.5 px-1.5 py-3 text-fg">
 						<Icone id={icone} /><span class="text-[13px] leading-[18px] font-semibold">{nome}</span>
 					</a>

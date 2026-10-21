@@ -10,7 +10,9 @@ import glossarioJson from './gerado/glossario.json';
 import referenciaJson from './gerado/referencia.json';
 import buscaJson from './gerado/busca.json';
 import termosJson from './gerado/termos.json';
+import bestiarioJson from './gerado/bestiario.json';
 import type {
+	Bestiario,
 	Bloco,
 	CardReferencia,
 	Capitulo,
@@ -36,6 +38,8 @@ export const referencia = referenciaJson as CardReferencia[];
 export const busca = buscaJson as DocBusca[];
 /** Léxico: os termos destacados no texto das regras (compêndio no glossário). */
 export const termos = termosJson as TermoLexico[];
+/** Bestiário: o "Como usar" (ameaça e encontros) e os verbetes. */
+export const bestiario = bestiarioJson as Bestiario;
 
 export const resumoCla = ({ slug, nome, epiteto, vila, kkg, bonus, status }: Cla): ClaResumo => ({ slug, nome, epiteto, vila, kkg, bonus, status });
 

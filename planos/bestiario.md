@@ -1,5 +1,27 @@
 # Bestiário: é viável?
 
+> **Situação em 20/10 (noite):** feito, ainda não commitado. O bestiário virou um livro à parte, em `/regras/bestiario`:
+> - capa com sumário (introdução, monstros de A a Z, apêndice);
+> - visões Sumário e Galeria;
+> - uma página por verbete, folheada em ordem alfabética.
+>
+> São 45 verbetes e 84 fichas. Estágios só onde fazem sentido:
+> - as 7 espécies de contrato do cap. 14, cada uma com os 4 tamanhos;
+> - lobos, centopeias e aranhas;
+> - a marca amaldiçoada e o jinchuuriki;
+> - as nove Bestas com Cauda, de Shukaku a Kurama.
+>
+> A regra de ameaça está em `conteudo/bestiario/como-usar.md`, e os verbetes estão em `conteudo/bestiario/*.yaml`, com os números calculados pelo compilador. Há ainda:
+> - "usar na campanha", por estágio;
+> - o apêndice "Adversários por ameaça".
+>
+> Artes:
+> - 23 publicadas em `static/bestiario/`;
+> - 21 na fila da nova direção de arte (ação, ângulo, fora do centro), esperando cota do PixelLab;
+> - o cadáver de Edo Tensei, ainda sem arte.
+>
+> O texto abaixo é o plano original e fica como histórico.
+
 Pergunta: dá para ter um livro de adversários, com inimigos "clássicos" como referência, mas em sua maioria arquétipos (genin, chunin e jounin de vários clãs e vilas), além de criaturas (invocações, monstros, animais comuns), tudo no mundo de Naruto?
 
 **Resposta curta: sim.** Metade da base já existe no livro e no app. A parte nova e trabalhosa é a matemática de ameaça: saber quanto um adversário pesa contra um grupo de certo nível. Sem isso, o bestiário vira uma lista bonita que o Mestre não consegue usar com segurança.
