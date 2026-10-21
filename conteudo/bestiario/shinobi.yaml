@@ -578,3 +578,90 @@
     - "O jinchuuriki fugiu da própria vila, e as duas vilas vizinhas o querem: uma para proteger, outra para usar."
     - "Uma organização caça jinchuuriki, e o próximo da lista está na vila do grupo."
   tags: [Brutal, Fanático]
+
+- slug: kage
+  nome: Kage
+  tipo: shinobi
+  ameaca: 16
+  papel: chefe
+  origem: Uma das cinco grandes vilas
+  vila: null
+  arte: { formato: pagina, plano: de baixo }
+  cena:
+    - "A chuva para de cair em volta dele, como se tivesse medo de encostar. O chapéu largo esconde os olhos, o manto branco não se mexe com o vento. Quando ele finalmente olha para o grupo, os Anbu nos telhados abaixam as armas, porque sabem que não vão ser necessários."
+  descricao:
+    - "Kage é o título do líder de cada uma das cinco grandes vilas, e quase sempre o do ninja mais forte dela: Hokage em Konoha, Kazekage em Suna, Mizukage em Kiri, Raikage em Kumo e Tsuchikage em Iwa. Na cerimônia, usam o manto e o chapéu largo com o kanji da vila (fogo, vento, água, raio e terra) na cor dela: vermelho, verde, azul, amarelo e marrom."
+    - "Um Kage como adversário é o fim de um arco inteiro. Raramente luta, porque quase tudo o que quer se resolve com uma ordem; quando luta, decide guerras. Use o molde da vila (Como usar) para escolher os jutsus: o chakra de um Kage tem o sotaque da terra que ele governa."
+  ataques:
+    - { nome: Golpe do Kage, alcance: Corpo a corpo }
+  jutsus:
+    - { slug: kage-bunshin-no-jutsu }
+    - { slug: shunshin-no-jutsu }
+    - { nome: "Jutsus do elemento da vila", nota: "Três, de rank A ou S, escolhidos pelo molde da vila" }
+  tracos:
+    - { nome: Ordem do Kage, efeito: "Uma vez por rodada, como ação secundária, dá uma ordem: um aliado da vila que possa ouvi-lo faz um ataque na hora, como reação." }
+    - { nome: Escolta, efeito: "Quase nunca está sozinho: dois caçadores Anbu (verbete Caçador Anbu) protegem o Kage e entram na luta na primeira rodada." }
+  taticas:
+    - "Fala antes de lutar, porque um Kage pesa cada vida da vila. Se precisa lutar, deixa a escolta prender o grupo e usa os jutsus mais fortes logo, para acabar depressa."
+  ganchos:
+    - "O Kage oferece ao grupo uma missão que ninguém mais da vila pode saber que existe."
+    - "Um Kage de outra vila veio pessoalmente buscar um dos personagens, e a própria vila do grupo não vai impedir."
+  tags: [Tático, Leal]
+
+- slug: kage-da-sombra
+  nome: Kage da Sombra
+  tipo: shinobi
+  ameaca: 13
+  papel: chefe
+  origem: A divisão secreta de uma grande vila
+  vila: null
+  arte: { formato: retrato, plano: de cima }
+  cena:
+    - "No fundo da sala subterrânea, uma única lamparina. Dezenas de agentes de máscara lisa estão ajoelhados em fileiras perfeitas, e nenhum respira alto. Lá em cima da escada, o homem de casaco escuro termina de ler o relatório e queima o papel na chama, sem pressa."
+  descricao:
+    - "Toda divisão secreta tem um chefe, e o dela é o Kage que a vila não admite ter. Ele comanda os agentes da sombra, decide quem vive e quem some, e acredita sinceramente que salva a vila fazendo o que o Kage verdadeiro não tem coragem de fazer. Quer o chapéu, e trabalha há décadas para isso."
+  ataques:
+    - { nome: Lâmina de vento, alcance: Curto }
+  jutsus:
+    - { slug: daitoppa }
+    - { slug: kazekiri-no-jutsu }
+    - { slug: kage-bunshin-no-jutsu }
+    - { slug: kokuangyou-no-jutsu }
+  tracos:
+    - { nome: Rede de agentes, efeito: "Sempre tem dois agentes da sombra (verbete Agente da Sombra) por perto, que aparecem na primeira rodada." }
+    - { nome: Selo do silêncio, efeito: "Os agentes dele não conseguem falar dele nem da divisão (o mesmo selo do verbete Agente da Sombra)." }
+    - { nome: Morte fingida, efeito: "Uma vez por cena, quando cairia a 0 PV, revela que quem caiu era um clone: reaparece em outro lugar da cena com metade dos PV." }
+  taticas:
+    - "Nunca luta no lugar errado. Deixa os agentes cansarem o grupo, observa as técnicas de cada um e só entra para terminar o serviço."
+  ganchos:
+    - "O Kage da Sombra quer que o grupo trabalhe para ele, e oferece a cura de um aliado em troca."
+    - "Os relatórios da divisão provam que ele fabricou a guerra que o grupo está lutando."
+  tags: [Tático, Fanático]
+
+- slug: conselheiro
+  nome: Conselheiro da vila
+  tipo: shinobi
+  ameaca: 8
+  papel: controlador
+  origem: O conselho de uma grande vila
+  vila: null
+  arte: { formato: quadro, plano: de baixo }
+  cena:
+    - "Atrás da mesa baixa, a velha senhora ajeita os óculos e desenrola o pergaminho com a missão. Não olha para o grupo enquanto fala. Na parede de papel atrás dela, as sombras de outros dois conselheiros concordam com a cabeça ao mesmo tempo."
+  descricao:
+    - "Os conselheiros são os antigos companheiros de equipe do Kage, jounin que lutaram nas guerras e agora lutam na sala do conselho. Aconselham, vetam, sussurram ao daimyō e, às vezes, governam de verdade. Ainda sabem lutar, e conhecem os segredos de todo mundo na vila."
+  ataques:
+    - { nome: Bengala de ferro, alcance: Corpo a corpo }
+  jutsus:
+    - { slug: kai }
+    - { slug: magen-jubaku-satsu }
+    - { slug: doryuuheki }
+  tracos:
+    - { nome: Voz do conselho, efeito: "Uma vez por cena, chama a guarda: aparecem dois chunin da vila (verbete Chunin de Konoha, com o molde da vila), que agem na iniciativa dele." }
+    - { nome: Velha raposa, efeito: "Nunca fica **Desprevenido** e tem vantagem para perceber mentiras." }
+  taticas:
+    - "Não luta se puder mandar alguém lutar. Se for atacado, prende o agressor numa ilusão e espera a guarda."
+  ganchos:
+    - "O conselho quer o grupo fora da vila, e vai usar a lei para isso."
+    - "Um conselheiro pede ajuda ao grupo, escondido do Kage e dos outros conselheiros."
+  tags: [Diplomata, Cauteloso]

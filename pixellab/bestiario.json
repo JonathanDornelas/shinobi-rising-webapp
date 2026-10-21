@@ -1,6 +1,6 @@
 {
 	"_sobre": "Artes do bestiário (PixelLab create_image_pixflux, 1 geração cada): cada verbete numa cena com fundo, no estilo dos covers das vilas (mesma paleta e acabamento). Como no Monster Manual de D&D, onde cada página tem uma composição própria, cada verbete tem o seu formato (faixa, retrato, quadro, página) e o seu plano de câmera (close, médio, inteiro, aberto, de baixo, de cima, de costas, por trás). O prompt final é plano + prompt + formato + estilo. Criaturas canônicas seguem o desenho do anime; arquétipos usam o uniforme real da vila e do rank, com rosto original. \"fiel\" lista o que a arte precisa ter para passar na revisão; \"escolhida\" é a melhor tentativa, que entra no site depois da aprovação do usuário. As primeiras tentativas sem fundo ficaram em gerados/bestiario/sem-fundo/.",
-	"estilo": ", Naruto anime style, faithful to the anime design, Naruto anime screenshot composition, dynamic asymmetric framing, the action caught mid-movement, pixel art scene, ninja world inspired by feudal Japan, warm muted palette, crisp pixels",
+	"estilo": ", Naruto anime and manga style, faithful to the Naruto anime designs, cinematic key frame of the Naruto anime, bold artistic camera angle, dramatic perspective and lighting, dynamic asymmetric framing, the action caught mid-movement, pixel art scene, warm muted palette, crisp pixels",
 	"paleta": ["#1a1a1a", "#2b1a14", "#5c1e15", "#8b2e20", "#c44536", "#e07a5f", "#fbf7f0", "#f4e4d6", "#d9c2a7", "#a88b6a", "#bf9000", "#f2c14e", "#069bbd", "#7fd3e6", "#38761d", "#7fb069", "#674ea7", "#a895d6", "#7f6000", "#8d6e3f", "#5e6b73", "#a7b4bc", "#e8692e", "#2e6fd1", "#ffffff"],
 	"paleta_nota": "A paleta dos covers das vilas (static/covers; a mesma imagem de cores de scripts/args/seed-capa-nevoa.json). Cada verbete pode somar cores_extras quando o uniforme ou a criatura precisa de uma cor que ela não tem (o azul-marinho e o verde-oliva de Konoha, que sem isso saíam cinza).",
 	"parametros": {
@@ -66,6 +66,26 @@
 		"por-tras": {
 			"nome": "por trás de alguém",
 			"prompt": "over-the-shoulder shot from behind a ninja in the foreground who faces the creature, showing its huge scale"
+		},
+		"holandes": {
+			"nome": "câmera inclinada",
+			"prompt": "dutch angle, the camera tilted diagonally"
+		},
+		"silhueta": {
+			"nome": "silhueta",
+			"prompt": "dramatic silhouette against a huge bright moon or sun behind"
+		},
+		"olhos": {
+			"nome": "olhos",
+			"prompt": "extreme close-up on the eyes, the face cropped by the frame like an anime key frame"
+		},
+		"escorco": {
+			"nome": "escorço",
+			"prompt": "strong foreshortening, the fist or weapon thrust right at the camera"
+		},
+		"aereo": {
+			"nome": "aéreo",
+			"prompt": "bird's eye view from very high above"
 		}
 	},
 	"verbetes": [
@@ -261,7 +281,7 @@
 			"slug": "agente-da-sombra",
 			"nome": "Agente da Sombra",
 			"formato": "retrato",
-			"plano": ["de-cima"],
+			"plano": ["silhueta", "de-cima"],
 			"prompt": "a masked black ops operative of a secret division crouching on a rooftop edge at the left of the frame, plain blank white mask, black hooded cloak fluttering, a short tanto drawn in reverse grip, a lit village street far below on the right, night"
 		},
 		{
@@ -276,49 +296,49 @@
 			"slug": "aranhas-gigantes",
 			"nome": "Aranhas gigantes",
 			"formato": "quadro",
-			"plano": ["de-cima"],
+			"plano": ["aereo"],
 			"prompt": "a giant black spider with red markings descending on a silk thread toward a ninja trapped in a web in the lower right corner, long legs spread across the upper left of the frame, dark forest, webs glinting"
 		},
 		{
 			"slug": "bandidos-de-estrada",
 			"nome": "Bandidos de estrada",
 			"formato": "faixa",
-			"plano": ["medio"],
+			"plano": ["aereo"],
 			"prompt": "an ambush on a forest road: ragged bandits jumping out of the bushes on both sides at different distances, one in the foreground left raising a club, a fallen tree across the road, a merchant cart on the right, autumn"
 		},
 		{
 			"slug": "bestas-com-cauda",
 			"nome": "Besta de chakra",
 			"formato": "pagina",
-			"plano": ["de-baixo"],
+			"plano": ["de-baixo", "silhueta"],
 			"prompt": "Kurama the Nine-Tailed Fox from Naruto: a colossal orange-red fox with nine huge swirling tails, red eyes with slit pupils, dark markings around the eyes, fangs bared, rising over a burning forest at night, tiny ninjas in the lower corner"
 		},
 		{
 			"slug": "cacador-de-recompensas",
 			"nome": "Caçador de recompensas",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
+			"plano": ["escorco"],
 			"prompt": "a grizzled bounty hunter ninja hurling a chain with an iron weight toward the viewer, original character with a scarred face and stubble, straw hat, long dark coat with pouches, the chain cutting diagonally across the frame, forest road at dusk"
 		},
 		{
 			"slug": "caes-ninja",
 			"nome": "Cães ninja",
 			"formato": "faixa",
-			"plano": ["medio"],
+			"plano": ["holandes"],
 			"prompt": "a pack of ninja hound summons running through a forest toward the right, each dog wearing a steel forehead protector tied on the head and a small blue ninja vest, the lead dog sniffing the trail in the foreground left, a ninja running behind them, puffs of summoning smoke"
 		},
 		{
 			"slug": "chefe-de-bandidos",
 			"nome": "Chefe de bandidos",
 			"formato": "quadro",
-			"plano": ["de-baixo"],
+			"plano": ["de-baixo", "escorco"],
 			"prompt": "a huge middle-aged bandit chief with a shaved head and a thick black beard swinging a big axe toward the viewer from the left, scars on the arms, fur vest, forest camp with crates and a campfire on the right"
 		},
 		{
 			"slug": "espadachim-da-nevoa",
 			"nome": "Espadachim da Névoa",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
+			"plano": ["escorco"],
 			"prompt": "a Kirigakure swordsman ninja leaping out of thick white mist and swinging an enormous wide sword in a diagonal arc, original character with a sharp toothed grin and short dark hair, bandages pulled down from the face, forehead protector with the Hidden Mist symbol, wooden pier"
 		},
 		{
@@ -334,28 +354,28 @@
 			"slug": "experimento-proibido",
 			"nome": "Experimento proibido",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
+			"plano": ["holandes", "de-baixo"],
 			"prompt": "a mutated experiment ninja smashing out of a broken glass tank, one oversized discolored arm with stitches thrust toward the viewer, torn white patient clothes, glowing chakra veins, water and glass shards flying, dark laboratory"
 		},
 		{
 			"slug": "golem-de-terra",
 			"nome": "Golem de terra",
 			"formato": "quadro",
-			"plano": ["de-baixo"],
+			"plano": ["de-baixo", "escorco"],
 			"prompt": "a giant golem of rock and mud tearing itself out of a hillside, one huge stone fist slamming down toward the viewer, roots hanging from its body, two dark holes for eyes, a ninja with both hands on the ground in the lower left corner, dust"
 		},
 		{
 			"slug": "guarda-costas",
 			"nome": "Guarda-costas",
 			"formato": "quadro",
-			"plano": ["de-baixo"],
+			"plano": ["de-baixo", "escorco"],
 			"prompt": "a huge bodyguard ninja stepping in front of a fat rich merchant and blocking a thrown kunai with an iron staff, the merchant cowering behind him on the right, busy market street"
 		},
 		{
 			"slug": "jinchuuriki",
 			"nome": "Hospedeiro de besta",
 			"formato": "pagina",
-			"plano": ["de-baixo"],
+			"plano": ["de-baixo", "holandes"],
 			"prompt": "a young jinchuuriki ninja, original character with long dark hair in a ponytail and no whisker marks, crouching on all fours as boiling red chakra forms a cloak with fox ears and one tail around the body, cracked ground, stormy sky"
 		},
 		{
@@ -386,56 +406,56 @@
 			"slug": "mestre-de-armas",
 			"nome": "Mestre de armas",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
+			"plano": ["de-baixo", "holandes"],
 			"prompt": "a weapons master kunoichi, original character with hair in two buns, mid-air at the top left throwing a storm of kunai, chains and spears that rain diagonally toward the lower right, an unrolled scroll trailing behind her, training ground"
 		},
 		{
 			"slug": "mestre-de-taijutsu",
 			"nome": "Mestre de taijutsu",
 			"formato": "quadro",
-			"plano": ["de-baixo"],
+			"plano": ["escorco", "de-baixo"],
 			"prompt": "a taijutsu master ninja, original character with a shaved head and thick arms, sleeveless dark grey gi with orange bandages, delivering a flying kick toward the viewer from the right, heavy leg weights lying in a cracked crater below, dojo courtyard, motion lines"
 		},
 		{
 			"slug": "mestre-do-selo",
 			"nome": "Mestre do selo",
 			"formato": "faixa",
-			"plano": ["medio"],
+			"plano": ["aereo"],
 			"prompt": "an old sealing master slamming his palm on the floor at the left, glowing blue seal formulas spreading across the wooden floor toward intruders caught mid-step on the right, ink brush and scrolls scattered"
 		},
 		{
 			"slug": "monge-guerreiro",
 			"nome": "Monge guerreiro",
 			"formato": "quadro",
-			"plano": ["de-baixo"],
+			"plano": ["silhueta"],
 			"prompt": "a shaved head warrior monk in orange and grey robes striking with an open palm toward the viewer, prayer beads swinging, halfway up long stone temple stairs seen from the side, a temple bell in the background right"
 		},
 		{
 			"slug": "ninja-da-chuva",
 			"nome": "Ninja da Chuva",
 			"formato": "faixa",
-			"plano": ["medio"],
+			"plano": ["silhueta"],
 			"prompt": "a rain village ninja with a breathing mask standing at the right end of a metal bridge in heavy rain, a red umbrella spinning in the air at the left firing a spray of needles, dark industrial towers and pipes, grey rainy city"
 		},
 		{
 			"slug": "ninja-do-som",
 			"nome": "Ninja do Som",
 			"formato": "retrato",
-			"plano": ["medio"],
+			"plano": ["escorco"],
 			"prompt": "a sound village ninja, original character with bandages wrapped around the head leaving one eye, thrusting a forearm with a metal amplifier device toward the viewer, visible sound waves bending the air, shaggy fur collar, forehead protector with a musical note symbol, dark forest"
 		},
 		{
 			"slug": "portador-da-marca",
 			"nome": "Portador da marca amaldiçoada",
 			"formato": "pagina",
-			"plano": ["close", "de-baixo"],
+			"plano": ["olhos", "holandes"],
 			"prompt": "a young ninja, original character with short brown hair and brown eyes, black flame shaped curse seal marks spreading from the neck over half of the face, gritting teeth in pain while dark purple chakra rises, the face at the right of the frame, dark forest at night"
 		},
 		{
 			"slug": "samurai-do-pais-do-ferro",
 			"nome": "Samurai do País do Ferro",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
+			"plano": ["silhueta", "holandes"],
 			"prompt": "a samurai of the Land of Iron drawing his katana in a fast iaido slash, heavy lacquered armor and metal face mask, the blade leaving a white arc, snow scattering, a snowy fortress gate off to the left"
 		},
 		{
@@ -450,9 +470,121 @@
 			"slug": "tigre-da-montanha",
 			"nome": "Tigre da montanha",
 			"formato": "faixa",
-			"plano": ["medio"],
+			"plano": ["escorco"],
 			"prompt": "a large mountain tiger leaping out from between bamboo stalks at the right with claws out, toward a ninja falling back in the lower left, green bamboo forest, motion"
+		},
+		{
+			"slug": "kage",
+			"nome": "Kage",
+			"formato": "pagina",
+			"plano": ["de-baixo", "holandes"],
+			"prompt": "a Kage village leader, original middle-aged woman with short dark hair, white Kage robe and wide Kage hat with a blue top and the kanji 水 for the Mizukage, standing on a rooftop edge in the rain while the raindrops stop around her, hat brim shadowing her eyes, two masked Anbu crouching on the roofs below"
+		},
+		{
+			"slug": "kage-da-sombra",
+			"nome": "Kage da Sombra",
+			"formato": "retrato",
+			"plano": ["aereo"],
+			"prompt": "a gaunt commander in a black high collared coat with a dark scarf over the lower face, standing at the top of stone stairs in an underground hall, rows of black ops agents with blank white masks kneeling below him, a single oil lamp, deep shadows and high contrast"
+		},
+		{
+			"slug": "conselheiro",
+			"nome": "Conselheiro da vila",
+			"formato": "quadro",
+			"plano": ["de-baixo"],
+			"prompt": "an elderly village councilor, original old woman with white hair in a bun and round glasses, traditional dark robes, unrolling a mission scroll behind a low table, seen from a low angle across the table, the shadows of two other councilors cast on the paper screen behind her, side window light"
+		},
+		{
+			"slug": "cla-nara",
+			"nome": "Nara, estrategista das sombras",
+			"formato": "faixa",
+			"plano": ["aereo"],
+			"prompt": "a Nara clan ninja with a spiky high ponytail and a Konoha flak jacket kneeling with hands in the rat hand seal at the left, his shadow stretching impossibly long across a sunset field to the right and binding the shadows of three frozen enemy ninjas"
+		},
+		{
+			"slug": "cla-akimichi",
+			"nome": "Akimichi, guerreiro gigante",
+			"formato": "pagina",
+			"plano": ["de-baixo", "escorco"],
+			"prompt": "an Akimichi clan ninja with long spiky brown hair, red swirl marks on the cheeks and red armor with the kanji 食, expanding into a giant with one enormous fist slamming down at the camera, tiny houses and ninjas around his feet"
+		},
+		{
+			"slug": "cla-yamanaka",
+			"nome": "Yamanaka, invasor de mentes",
+			"formato": "retrato",
+			"plano": ["olhos"],
+			"prompt": "a Yamanaka clan kunoichi with long platinum blonde hair in a high ponytail covering one eye, forming the diamond shaped Mind Transfer hand sign in front of her face, her eyes going blank, the target ninja reflected small in the background"
+		},
+		{
+			"slug": "cla-inuzuka",
+			"nome": "Inuzuka, caçador e seu cão",
+			"formato": "faixa",
+			"plano": ["holandes"],
+			"prompt": "an Inuzuka clan ninja with red fang shaped marks on both cheeks and a fur hooded jacket, spinning with his huge white ninja hound in two drilling whirlwinds of fangs tearing up the ground toward the right"
+		},
+		{
+			"slug": "cla-aburame",
+			"nome": "Aburame, mestre dos insetos",
+			"formato": "quadro",
+			"plano": ["de-baixo"],
+			"prompt": "an Aburame clan ninja in a high collared long coat and round dark sunglasses, arms spread as a huge dark swarm of beetles pours out of his sleeves and blots out the sky behind him"
+		},
+		{
+			"slug": "cla-hyuuga",
+			"nome": "Hyuuga, guardião do Byakugan",
+			"formato": "retrato",
+			"plano": ["olhos"],
+			"prompt": "a Hyuuga clan ninja with long dark hair, pale white pupilless eyes with bulging veins around them as the Byakugan activates, crouched low in the Gentle Fist stance with two fingers extended toward the camera"
+		},
+		{
+			"slug": "cla-uchiha",
+			"nome": "Uchiha, portador do Sharingan",
+			"formato": "quadro",
+			"plano": ["olhos"],
+			"prompt": "an Uchiha clan ninja, original character, red Sharingan eyes with three black tomoe, half of the face cropped by the frame, a high collared navy shirt with the red and white Uchiha fan crest, a great fireball blazing from his mouth to the side"
+		},
+		{
+			"slug": "cla-senju",
+			"nome": "Senju, herdeiro da madeira",
+			"formato": "faixa",
+			"plano": ["de-baixo"],
+			"prompt": "a Senju clan ninja with long dark hair in red armor pressing both palms to the ground at the left as huge wooden trunks burst from the earth and twist into a living wall across the scene, splinters and leaves flying"
+		},
+		{
+			"slug": "cla-uzumaki",
+			"nome": "Uzumaki, mestre dos selos",
+			"formato": "retrato",
+			"plano": ["de-baixo", "holandes"],
+			"prompt": "an Uzumaki clan kunoichi with long bright red hair flowing upward, kneeling with both palms on the ground as glowing golden chakra chains covered in seal symbols burst out of the earth around her, the red spiral crest on her clothes"
+		},
+		{
+			"slug": "cla-kaguya",
+			"nome": "Kaguya, guerreiro dos ossos",
+			"formato": "quadro",
+			"plano": ["de-baixo", "escorco"],
+			"prompt": "a Kaguya clan warrior with long white hair and two red dots on the forehead, pulling a long sharp bone sword out of his own shoulder and thrusting it at the camera, bone spikes piercing out of his back and arms, ruined battlefield"
+		},
+		{
+			"slug": "cla-hozuki",
+			"nome": "Hozuki, corpo de água",
+			"formato": "retrato",
+			"plano": ["holandes"],
+			"prompt": "a Hozuki clan ninja with pale silvery hair, purple eyes and sharp pointed teeth, grinning as a kunai passes through his chest and his body turns into splashing water around the blade, misty Kirigakure dock"
+		},
+		{
+			"slug": "cla-sabaku",
+			"nome": "Sabaku, guardião da areia",
+			"formato": "faixa",
+			"plano": ["aereo"],
+			"prompt": "a Sabaku clan ninja of Sunagakure with a large sand gourd on his back standing still while a huge wave of sand rises around him and closes over three enemy ninjas, desert village rooftops below"
+		},
+		{
+			"slug": "cla-yuki",
+			"nome": "Yuki, espelhos de gelo",
+			"formato": "quadro",
+			"plano": ["de-baixo"],
+			"prompt": "a dome of tall ice mirrors around a trapped ninja, the same masked Yuki clan figure with long dark hair reflected in every mirror throwing ice needles at once, cold blue light"
 		}
 	],
-	"direcao_nota": "Direção aprovada (genin batedor, rōnin, Anbu, médico): o personagem no meio de uma ação, visto de um ângulo, fora do centro, às vezes cortado pela moldura, com a cena acontecendo em volta. Evitar a pose de ficha de personagem: de pé, de frente, no centro, com fundo simétrico. Rostos sempre originais; criaturas canônicas (sapos, Bestas com Cauda...) iguais às do anime."
+	"direcao_nota": "Direção (20/10): referências do anime e do mangá de Naruto, e ângulos ousados como os quadros-chave do anime: câmera inclinada, silhueta contra a lua, close nos olhos, escorço, vista aérea, contra-plongée extremo. O personagem no meio de uma ação, fora do centro, cortado pela moldura. Nunca a pose de ficha (de pé, de frente, no centro, fundo simétrico). Rostos originais; criaturas e símbolos canônicos iguais aos do anime."
 }

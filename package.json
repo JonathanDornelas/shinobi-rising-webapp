@@ -14,7 +14,8 @@
 		"test": "npm run test:unit -- --run",
 		"lint": "prettier --check .",
 		"format": "prettier --write .",
-		"livro:gerar": "node scripts/livro/compilar.ts"
+		"livro:gerar": "node scripts/livro/compilar.ts",
+		"imagens:otimizar": "node scripts/imagens/otimizar.ts"
 	},
 	"devDependencies": {
 		"@electric-sql/pglite": "^0.5.10",

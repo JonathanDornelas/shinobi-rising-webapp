@@ -2,6 +2,7 @@
 // e o seu plano de câmera (close, médio, inteiro, aberto, de baixo, de cima, de costas, por trás).
 //   node bestiario.cjs --seed 7701 <slug> [slug ...]   → pixellab/gerados/bestiario/<slug>-7701.png
 //   node bestiario.cjs --seed 7701 --todos             → todos os verbetes que ainda não têm arte nessa seed
+//   node bestiario.cjs --lista inicio --seed 1 capa-inicio → outra lista (pixellab/inicio.json)
 // Contas: PIXELLAB_TOKEN (uma) e/ou PIXELLAB_CONTAS (arquivo com vários tokens: JSON [{token}] ou um por linha).
 // Cada conta roda um job por vez (plano grátis); com várias contas, as artes saem em paralelo, e a conta que
 // esgota a cota sai da fila sem parar as outras. Os jobs ficam em gerados/bestiario/jobs.json com o começo do
@@ -10,8 +11,11 @@ const fs = require("fs");
 const zlib = require("zlib");
 const path = require("path");
 const ROOT = path.join(__dirname, "..");
-const LISTA = JSON.parse(fs.readFileSync(path.join(ROOT, "bestiario.json"), "utf8"));
-const OUT = path.join(ROOT, "gerados", "bestiario");
+// --lista <nome>: outra lista de pedidos no mesmo formato (pixellab/<nome>.json → gerados/<nome>/), como a da página inicial
+const iLista = process.argv.indexOf("--lista");
+const NOME_LISTA = iLista >= 0 ? process.argv.splice(iLista, 2)[1] : "bestiario";
+const LISTA = JSON.parse(fs.readFileSync(path.join(ROOT, `${NOME_LISTA}.json`), "utf8"));
+const OUT = path.join(ROOT, "gerados", NOME_LISTA);
 const JOBS = path.join(OUT, "jobs.json");
 
 // PNG de 1 linha com as cores da paleta (o PixelLab só lê as cores de color_image).

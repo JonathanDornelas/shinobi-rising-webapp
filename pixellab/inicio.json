@@ -1,0 +1,39 @@
+{
+	"_sobre": "Arte da página inicial (o banner do topo da home), no mesmo formato de pedido do bestiário: node scripts/bestiario.cjs --lista inicio --seed <n> capa-inicio. Mesma paleta dos covers e mesma direção de arte do bestiário.",
+	"estilo": ", Naruto anime and manga style, faithful to the Naruto anime designs, cinematic key frame of the Naruto anime, bold artistic camera angle, dramatic perspective and lighting, dynamic asymmetric framing, the action caught mid-movement, pixel art scene, warm muted palette, crisp pixels",
+	"paleta": ["#1a1a1a", "#2b1a14", "#5c1e15", "#8b2e20", "#c44536", "#e07a5f", "#fbf7f0", "#f4e4d6", "#d9c2a7", "#a88b6a", "#bf9000", "#f2c14e", "#069bbd", "#7fd3e6", "#38761d", "#7fb069", "#674ea7", "#a895d6", "#7f6000", "#8d6e3f", "#5e6b73", "#a7b4bc", "#e8692e", "#2e6fd1", "#ffffff"],
+	"paleta_nota": "A paleta dos covers das vilas (static/covers; a mesma imagem de cores de scripts/args/seed-capa-nevoa.json). Cada verbete pode somar cores_extras quando o uniforme ou a criatura precisa de uma cor que ela não tem (o azul-marinho e o verde-oliva de Konoha, que sem isso saíam cinza).",
+	"parametros": {
+		"no_background": false,
+		"shading": "medium shading",
+		"detail": "medium detail"
+	},
+	"formatos": {
+		"capa": {
+			"width": 400,
+			"height": 150,
+			"uso": "banner da página inicial (proporção 8:3, a mesma do cover antigo)",
+			"prompt": "wide panoramic establishing shot"
+		}
+	},
+	"planos": {
+		"aereo": {
+			"nome": "aéreo",
+			"prompt": "bird's eye view from very high above"
+		},
+		"holandes": {
+			"nome": "câmera inclinada",
+			"prompt": "dutch angle, the camera tilted diagonally"
+		}
+	},
+	"verbetes": [
+		{
+			"slug": "capa-inicio",
+			"nome": "Página inicial",
+			"formato": "capa",
+			"plano": ["aereo"],
+			"prompt": "Konohagakure at golden sunset seen from behind the giant carved stone heads of the Hokage Rock in the foreground right, looking down on the village of red roofs, the round red Hokage tower, four ninjas in Konoha flak jackets leaping from rooftop to rooftop toward the left, cherry blossom petals blowing in the wind, warm orange and purple sky, like the opening of the Naruto anime",
+			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a", "#f28c38", "#7a3b69"]
+		}
+	]
+}

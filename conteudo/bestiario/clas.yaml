@@ -1,0 +1,1041 @@
+# Bestiário · ninjas de clã: um adversário para cada clã do livro (cap. 8.3), com os jutsus do próprio clã.
+# Quatro níveis por clã, na mesma página: Genin (ameaça 2), Chunin (5), Jounin (8) e Líder do clã (11, chefe); os clãs
+# com Kekkei Genkai sobem um ponto, como manda o molde de clã do Como usar. Cada nível usa os jutsus do clã que o rank
+# dele libera. Formato de cada verbete: veja o cabeçalho de shinobi.yaml.
+- slug: cla-nara
+  nome: Nara, estrategista das sombras
+  tipo: shinobi
+  origem: Clã Nara
+  vila: konoha
+  arte:
+    formato: faixa
+    plano: de cima
+  cena:
+    - O sol se põe atrás dele, e a sombra do ninja se estica pelo campo, comprida demais, fina demais. Ela vem pelo chão sem pressa nenhuma, contorna uma pedra e encosta na sombra do primeiro inimigo. Daí em diante, ninguém do outro lado mexe um dedo sem a permissão dele.
+  descricao:
+    - "Os Nara são os estrategistas de Konoha: preguiçosos para tudo, menos para pensar. Lutam com a própria sombra, que prende, estrangula e costura os inimigos no chão, e planejam a luta dez jogadas antes de ela começar. Um Nara nunca está onde a luta parece estar."
+  estagios:
+    - nome: Genin
+      ameaca: 2
+      papel: controlador
+      resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
+      ataques: &a1
+        - nome: Kunai
+          alcance: Corpo a corpo
+      jutsus:
+        - slug: kage-yose-no-jutsu
+        - slug: kage-mane-no-jutsu
+      tracos:
+        - &a2
+          nome: Dez jogadas à frente
+          efeito: "Antes da luta, prepara o terreno com o grupo à vista: tem vantagem na Iniciativa e escolhe onde a luta começa."
+        - &a3
+          nome: Sem sombra
+          sem técnica: null
+          efeito: "As técnicas de sombra precisam de sombra: no escuro total ou sob o sol do meio-dia, o alcance delas cai pela metade."
+    - nome: Chunin
+      ameaca: 5
+      papel: controlador
+      resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
+      ataques: *a1
+      jutsus:
+        - slug: kage-mane-no-jutsu
+        - slug: kage-yose-no-jutsu
+      tracos:
+        - *a2
+        - *a3
+    - nome: Jounin
+      ameaca: 8
+      papel: controlador
+      resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
+      ataques: *a1
+      jutsus:
+        - slug: kage-kubishibari-no-jutsu
+        - slug: kage-nui-no-jutsu
+        - slug: kagemane-shuriken-no-jutsu
+        - slug: kage-mane-no-jutsu
+      tracos:
+        - *a2
+        - *a3
+    - nome: Líder do clã
+      ameaca: 11
+      papel: chefe
+      resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
+      ataques: *a1
+      jutsus:
+        - slug: kagetsukami-no-jutsu
+        - slug: kage-kubishibari-no-jutsu
+        - slug: kage-nui-no-jutsu
+        - slug: kagemane-shuriken-no-jutsu
+      tracos:
+        - *a2
+        - *a3
+        - nome: Escolta do clã
+          efeito: Costuma vir com dois ninjas do clã de nível Chunin (este verbete), que agem na iniciativa dele.
+  taticas:
+    - Fica longe, atrás de cobertura, e prende quem for mais perigoso com a Imitação da Sombra. Os aliados dele cuidam do resto enquanto o alvo não pode se mexer.
+  ganchos:
+    - Um Nara de outra geração está do lado inimigo, e o plano dele já previu a chegada do grupo.
+    - Os cervos sagrados do clã sumiram da floresta, e os Nara não querem ajuda de fora.
+  tags:
+    - Tático
+    - Cauteloso
+- slug: cla-akimichi
+  nome: Akimichi, guerreiro gigante
+  tipo: shinobi
+  origem: Clã Akimichi
+  vila: konoha
+  arte:
+    formato: pagina
+    plano: de baixo
+  cena:
+    - Ele junta as mãos num selo e respira fundo, e o corpo começa a crescer. As mangas rasgam, a sombra dele engole a casa ao lado, e o punho que desce do céu é maior que a carroça onde o grupo se escondia.
+  descricao:
+    - Os Akimichi transformam calorias em chakra e chakra em tamanho. Usam armadura vermelha com o kanji de comida, comem o tempo todo e crescem partes do corpo, ou o corpo inteiro, até virar gigantes. São leais até o fim aos amigos, e quem ofende um Akimichi chamando-o de gordo descobre o quanto um punho pode crescer.
+  estagios:
+    - nome: Genin
+      ameaca: 2
+      papel: lutador
+      resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
+      ataques: &a4
+        - nome: Punho expandido
+          alcance: Curto
+      jutsus:
+        - slug: baika-no-jutsu
+        - slug: karori-kontororu
+      tracos:
+        - &a5
+          nome: Tanque de carne
+          efeito: "Rolando no Nikudan Sensha, passa por cima de quem estiver no caminho: Resistência de Acrobacia contra a DT 15 ou fica **Caído**."
+        - &a6
+          nome: Pílulas do clã
+          efeito: "Carrega as pílulas de três cores do clã (Clã Akimichi, cap. 8): uma delas na luta, e o preço vem depois."
+    - nome: Chunin
+      ameaca: 5
+      papel: lutador
+      resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
+      ataques: *a4
+      jutsus:
+        - slug: nikudan-sensha
+        - slug: bubun-baika-no-jutsu
+        - slug: baika-no-jutsu
+        - slug: karori-kontororu
+      tracos:
+        - *a5
+        - *a6
+    - nome: Jounin
+      ameaca: 8
+      papel: lutador
+      resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
+      ataques: *a4
+      jutsus:
+        - slug: chou-baika-no-jutsu
+        - slug: hari-jizou-akimichi-hen
+        - slug: choudan-bakugeki
+        - slug: nikudan-sensha
+      tracos:
+        - *a5
+        - *a6
+    - nome: Líder do clã
+      ameaca: 11
+      papel: chefe
+      resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
+      ataques: *a4
+      jutsus:
+        - slug: chou-baika-no-jutsu
+        - slug: hari-jizou-akimichi-hen
+        - slug: choudan-bakugeki
+        - slug: nikudan-sensha
+      tracos:
+        - *a5
+        - *a6
+        - nome: Escolta do clã
+          efeito: Costuma vir com dois ninjas do clã de nível Chunin (este verbete), que agem na iniciativa dele.
+  taticas:
+    - Vai na frente, cresce e protege os companheiros com o próprio corpo. Não recua enquanto houver um amigo de pé atrás dele.
+  ganchos:
+    - Um Akimichi exilado guarda a receita das pílulas proibidas do clã.
+    - O grupo arruinou o banquete de um festival do clã, e isso é mais grave do que parece.
+  tags:
+    - Leal
+    - Brutal
+- slug: cla-yamanaka
+  nome: Yamanaka, invasor de mentes
+  tipo: shinobi
+  origem: Clã Yamanaka
+  vila: konoha
+  arte:
+    formato: retrato
+    plano: close
+  cena:
+    - Ela forma o selo com as duas mãos na frente do rosto, um losango apontado para o alvo. Os olhos perdem o brilho. Do outro lado da clareira, o ninja inimigo para, sorri do mesmo jeito que ela sorria e vira a kunai para os próprios companheiros.
+  descricao:
+    - "Os Yamanaka lutam por dentro: mandam a própria mente para o corpo do inimigo, leem pensamentos, ligam aliados numa conversa sem palavras e sentem presenças a quilômetros. São os interrogadores e os sensores de Konoha, e quase sempre têm cabelo claro e uma floricultura na família."
+  estagios:
+    - nome: Genin
+      ameaca: 2
+      papel: controlador
+      resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
+      ataques: &a7
+        - nome: Kunai
+          alcance: Corpo a corpo
+      jutsus:
+        - slug: shintenshin-no-jutsu
+        - slug: kanchi-denden
+      tracos:
+        - &a8
+          nome: Corpo vazio
+          efeito: "Enquanto a mente dela está no corpo de outro, o corpo dela fica caído e indefeso: um aliado costuma ficar de guarda."
+        - &a9
+          nome: Sensora
+          efeito: "Sente a presença de chakra em volta: ninguém se aproxima dela sem ser percebido."
+    - nome: Chunin
+      ameaca: 5
+      papel: controlador
+      resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
+      ataques: *a7
+      jutsus:
+        - slug: shintenshin-no-jutsu
+        - slug: kanchi-denden
+      tracos:
+        - *a8
+        - *a9
+    - nome: Jounin
+      ameaca: 8
+      papel: controlador
+      resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
+      ataques: *a7
+      jutsus:
+        - slug: shindenshin-no-jutsu
+        - slug: shinten-bunshin-no-jutsu
+        - slug: shinranshin-no-jutsu
+        - slug: shintenshin-no-jutsu
+      tracos:
+        - *a8
+        - *a9
+    - nome: Líder do clã
+      ameaca: 11
+      papel: chefe
+      resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
+      ataques: *a7
+      jutsus:
+        - slug: saiko-denshin
+        - slug: kanchi-kekkai
+        - slug: shindenshin-no-jutsu
+        - slug: shinten-bunshin-no-jutsu
+      tracos:
+        - *a8
+        - *a9
+        - nome: Escolta do clã
+          efeito: Costuma vir com dois ninjas do clã de nível Chunin (este verbete), que agem na iniciativa dele.
+  taticas:
+    - Toma o corpo do inimigo mais forte e o vira contra os outros. Se o corpo dela for ameaçado, volta na hora.
+  ganchos:
+    - Viu na mente de um prisioneiro algo sobre o passado de um personagem.
+    - Um Yamanaka sumiu durante um interrogatório, e o prisioneiro agora age diferente.
+  tags:
+    - Cauteloso
+    - Tático
+- slug: cla-inuzuka
+  nome: Inuzuka, caçador e seu cão
+  tipo: shinobi
+  origem: Clã Inuzuka
+  vila: konoha
+  arte:
+    formato: faixa
+    plano: plano médio
+  cena:
+    - Primeiro o latido, depois o assobio. O ninja de marcas vermelhas no rosto se abaixa de quatro, e o cão gigante ao lado dele faz o mesmo. Num instante, os dois são um só redemoinho de presas rasgando o chão na direção do grupo.
+  descricao:
+    - Os Inuzuka lutam em dupla com os cães ninja do clã, desde criança. Têm faro, garras e um jeito selvagem de lutar, e as marcas vermelhas em forma de presa no rosto dizem a qualquer um de onde vieram. O cão é parte da família, e ferir um deles é declarar guerra ao clã inteiro.
+  estagios:
+    - nome: Genin
+      ameaca: 2
+      papel: lutador
+      resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
+      ataques: &a10
+        - nome: Garras
+          alcance: Corpo a corpo
+      jutsus:
+        - slug: shikyaku-no-jutsu
+        - slug: tsuuga
+      tracos:
+        - &a11
+          nome: Companheiro ninken
+          efeito: Luta junto com um cão do clã, que usa a ficha do Cão de caça (verbete Cães ninja) e age na mesma iniciativa.
+        - &a12
+          nome: Faro
+          efeito: Tem vantagem em Rastreamento e acha qualquer um pelo cheiro, mesmo sob Henge.
+    - nome: Chunin
+      ameaca: 5
+      papel: lutador
+      resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
+      ataques: *a10
+      jutsus:
+        - slug: gatsuuga
+        - slug: shikyaku-no-jutsu
+        - slug: tsuuga
+        - slug: juujin-bunshin
+      tracos:
+        - *a11
+        - *a12
+    - nome: Jounin
+      ameaca: 8
+      papel: lutador
+      resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
+      ataques: *a10
+      jutsus:
+        - slug: jinjuu-konbi-henge-soutourou
+        - slug: garouga
+        - slug: gatenga
+        - slug: gatsuuga
+      tracos:
+        - *a11
+        - *a12
+    - nome: Líder do clã
+      ameaca: 11
+      papel: chefe
+      resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
+      ataques: *a10
+      jutsus:
+        - slug: jinjuu-kongou-henge-santourou
+        - slug: ooiga-gatenga
+        - slug: jinjuu-konbi-henge-soutourou
+        - slug: garouga
+      tracos:
+        - *a11
+        - *a12
+        - nome: Escolta do clã
+          efeito: Costuma vir com dois ninjas do clã de nível Chunin (este verbete), que agem na iniciativa dele.
+  taticas:
+    - Fareja o grupo de longe, ataca junto com o cão o alvo mais isolado e gira até ele cair. Se o cão é ferido, esquece a missão e só pensa em vingança.
+  ganchos:
+    - O cão de um Inuzuka morto apareceu sozinho, e só aceita seguir quem achar o assassino.
+    - Um filhote do clã foi roubado por caçadores ilegais.
+  tags:
+    - Agressivo
+    - Leal
+- slug: cla-aburame
+  nome: Aburame, mestre dos insetos
+  tipo: shinobi
+  origem: Clã Aburame
+  vila: konoha
+  arte:
+    formato: quadro
+    plano: de baixo
+  cena:
+    - Ele não diz nada. Ajeita os óculos escuros, a gola alta esconde metade do rosto, e um zumbido baixo começa a sair das mangas do casaco. Quando o grupo percebe, o céu da clareira já está escuro de insetos.
+  descricao:
+    - Os Aburame nascem com uma colônia de insetos vivendo dentro do corpo, os kikaichū, que comem chakra. Falam pouco, pensam muito e se escondem atrás de casacos de gola alta e óculos escuros. Uma luta contra um Aburame se perde aos poucos, sem perceber, até o chakra acabar.
+  estagios:
+    - nome: Genin
+      ameaca: 2
+      papel: controlador
+      resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
+      ataques: &a13
+        - nome: Enxame
+          alcance: Curto
+          efeito: O alvo também perde 1d6 PC, comidos pelos insetos.
+      jutsus:
+        - slug: kikaichu-no-jutsu
+        - slug: hijutsu-mushiyose
+      tracos:
+        - &a14
+          nome: Insetos espiões
+          efeito: "Antes da luta, um inseto fêmea gruda num inimigo: o Aburame sabe onde ele está pelo resto do dia."
+        - &a15
+          nome: Clone de insetos
+          efeito: O primeiro golpe que o acertaria em cada cena desfaz um clone de insetos no lugar dele.
+    - nome: Chunin
+      ameaca: 5
+      papel: controlador
+      resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
+      ataques: *a13
+      jutsus:
+        - slug: mushi-bunshin-no-jutsu
+        - slug: hijutsu-mushiheki
+        - slug: kikaichu-no-jutsu
+        - slug: hijutsu-mushiyose
+      tracos:
+        - *a14
+        - *a15
+    - nome: Jounin
+      ameaca: 8
+      papel: controlador
+      resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
+      ataques: *a13
+      jutsus:
+        - slug: hijutsu-mushidama
+        - slug: mushi-jamingu-no-jutsu
+        - slug: mushi-bunshin-no-jutsu
+        - slug: hijutsu-mushiheki
+      tracos:
+        - *a14
+        - *a15
+    - nome: Líder do clã
+      ameaca: 11
+      papel: chefe
+      resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
+      ataques: *a13
+      jutsus:
+        - slug: kidaichu-mushikui
+        - slug: hijutsu-mushitatsumaki
+        - slug: hijutsu-mushidama
+        - slug: mushi-jamingu-no-jutsu
+      tracos:
+        - *a14
+        - *a15
+        - nome: Escolta do clã
+          efeito: Costuma vir com dois ninjas do clã de nível Chunin (este verbete), que agem na iniciativa dele.
+  taticas:
+    - "Cobre o campo de insetos, drena o chakra de quem usa mais jutsus e espera. Não tem pressa: o tempo trabalha para os insetos."
+  ganchos:
+    - Uma espécie rara de inseto foi roubada do clã, e é venenosa para qualquer um que não seja Aburame.
+    - Os insetos de um Aburame começaram a atacar o próprio dono.
+  tags:
+    - Cauteloso
+    - Tático
+- slug: cla-hyuuga
+  nome: Hyuuga, guardião do Byakugan
+  tipo: shinobi
+  origem: Clã Hyuuga
+  vila: konoha
+  arte:
+    formato: retrato
+    plano: close
+  cena:
+    - "As veias saltam em volta dos olhos brancos, e ele enxerga tudo ao mesmo tempo: o grupo, a árvore atrás do grupo, o chakra correndo dentro de cada um. Ele abaixa o corpo na postura do Punho Gentil. Os dois dedos vão direto num ponto que ninguém sabia que tinha."
+  descricao:
+    - Os Hyuuga são o clã mais antigo e orgulhoso de Konoha, divididos entre a família principal e a secundária, marcada por um selo na testa. O Byakugan, os olhos brancos do clã, vê através das paredes e enxerga os pontos de chakra do corpo, e o Punho Gentil fecha esses pontos com a ponta dos dedos.
+  estagios:
+    - nome: Genin
+      ameaca: 3
+      papel: lutador
+      resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
+      ataques: &a16
+        - nome: Punho Gentil
+          alcance: Corpo a corpo
+          efeito: "O alvo também perde 1d6 PC: o golpe fecha os pontos de chakra."
+      jutsus:
+        - slug: juuken-tenketsushin
+        - slug: shotei
+      tracos:
+        - &a17
+          nome: Byakugan
+          efeito: "Enxerga quase em todas as direções, através de paredes e do encobrimento, e vê o fluxo de chakra: não pode ser surpreendido e não sofre penalidade por visibilidade. Tem um ponto cego pequeno, atrás da nuca."
+        - &a18
+          nome: Rotação
+          efeito: Como reação, gira e desvia um ataque ou jutsu que o acertaria, com o Kaiten.
+    - nome: Chunin
+      ameaca: 6
+      papel: lutador
+      resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
+      ataques: *a16
+      jutsus:
+        - slug: hakkesho-kaiten
+        - slug: hakke-rokujuyon-sho
+        - slug: hakke-kusho
+        - slug: shotei
+      tracos:
+        - *a17
+        - *a18
+    - nome: Jounin
+      ameaca: 9
+      papel: lutador
+      resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
+      ataques: *a16
+      jutsus:
+        - slug: hakkesho-kaiten
+        - slug: hakke-rokujuyon-sho
+        - slug: hakke-kusho
+        - slug: shotei
+      tracos:
+        - *a17
+        - *a18
+    - nome: Líder do clã
+      ameaca: 12
+      papel: chefe
+      resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
+      ataques: *a16
+      jutsus:
+        - slug: hakke-hyaku-nijuhassho
+        - slug: juho-soshiken
+        - slug: hakke-kuhekisho
+        - slug: hakkesho-kaiten
+      tracos:
+        - *a17
+        - *a18
+        - nome: Escolta do clã
+          efeito: Costuma vir com dois ninjas do clã de nível Chunin (este verbete), que agem na iniciativa dele.
+  taticas:
+    - Fecha os pontos de chakra de quem usa jutsus primeiro. Defende com a Rotação e espera o inimigo cansar.
+  ganchos:
+    - Um Hyuuga da família secundária quer se livrar do selo da testa, e precisa de ajuda de fora.
+    - Alguém está caçando Hyuuga para roubar o Byakugan.
+  tags:
+    - Tático
+    - Brutal
+- slug: cla-uchiha
+  nome: Uchiha, portador do Sharingan
+  tipo: shinobi
+  origem: Clã Uchiha
+  vila: konoha
+  arte:
+    formato: quadro
+    plano: close
+  cena:
+    - Os olhos dele ficam vermelhos, com as marcas pretas girando em volta da pupila. Ele já sabe o golpe que o genin vai dar antes de o genin saber. Desvia por um fio de cabelo, junta as mãos num selo, e o fogo sai da boca dele como um dragão.
+  descricao:
+    - Os Uchiha são o clã do fogo e do Sharingan, os olhos vermelhos que leem o combate, enxergam o chakra e copiam técnicas. O leque do clã está nas costas de cada um, e o orgulho na voz. O Sharingan desperta com a dor, e quanto mais o Uchiha perde, mais ele vê.
+  estagios:
+    - nome: Genin
+      ameaca: 3
+      papel: lutador
+      resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
+      ataques: &a19
+        - nome: Kunai
+          alcance: Corpo a corpo
+      jutsus:
+        - slug: katon-goukakyu-no-jutsu
+        - slug: katon-hosenka-no-jutsu
+      tracos:
+        - &a20
+          nome: Sharingan
+          efeito: "Lê os movimentos do inimigo: tem vantagem para desviar de ataques que vê e percebe genjutsu na hora."
+        - &a21
+          nome: Olhar que ilude
+          efeito: "Quem olha nos olhos dele pode cair no Genjutsu: Sharingan (o jutsu do clã)."
+    - nome: Chunin
+      ameaca: 6
+      papel: lutador
+      resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
+      ataques: *a19
+      jutsus:
+        - slug: uchihagaeshi
+        - slug: katon-ryuka-no-jutsu
+        - slug: uchiha-kaenjin
+        - slug: genjutsu-sharingan
+      tracos:
+        - *a20
+        - *a21
+    - nome: Jounin
+      ameaca: 9
+      papel: lutador
+      resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
+      ataques: *a19
+      jutsus:
+        - slug: uchihagaeshi
+        - slug: katon-ryuka-no-jutsu
+        - slug: uchiha-kaenjin
+        - slug: genjutsu-sharingan
+      tracos:
+        - *a20
+        - *a21
+    - nome: Líder do clã
+      ameaca: 12
+      papel: chefe
+      resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
+      ataques: *a19
+      jutsus:
+        - slug: uchihagaeshi
+        - slug: katon-ryuka-no-jutsu
+        - slug: uchiha-kaenjin
+        - slug: genjutsu-sharingan
+      tracos:
+        - *a20
+        - *a21
+        - nome: Escolta do clã
+          efeito: Costuma vir com dois ninjas do clã de nível Chunin (este verbete), que agem na iniciativa dele.
+  taticas:
+    - Observa o primeiro golpe de cada inimigo, desvia e responde com fogo. Contra quem o desafia, não recua nunca.
+  ganchos:
+    - Um Uchiha quer a técnica de um personagem, e já a viu uma vez.
+    - Os sobreviventes de uma tragédia do clã acham que a vila teve culpa.
+  tags:
+    - Agressivo
+    - Fanático
+- slug: cla-senju
+  nome: Senju, herdeiro da madeira
+  tipo: shinobi
+  origem: Clã Senju
+  vila: konoha
+  arte:
+    formato: faixa
+    plano: de baixo
+  cena:
+    - Ele bate as palmas uma na outra e toca o chão. A terra estala. Troncos inteiros brotam em volta do grupo, se enroscam e sobem, formando uma muralha viva em segundos, e no alto dela o ninja sorri, cansado e orgulhoso.
+  descricao:
+    - Os Senju fundaram Konoha junto com os Uchiha e eram conhecidos como o clã das mil técnicas. Têm uma vitalidade fora do comum, se recuperam depressa e, nos mais raros, controlam a madeira. A Vontade do Fogo começou com eles, e muitos ainda carregam esse peso.
+  estagios:
+    - nome: Genin
+      ameaca: 2
+      papel: lutador
+      resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
+      ataques: &a22
+        - nome: Golpe de madeira
+          alcance: Corpo a corpo
+      jutsus:
+        - slug: doryuuheki
+        - slug: bunshin-no-jutsu
+        - slug: kawarimi-no-jutsu
+      tracos:
+        - &a23
+          nome: Vitalidade Senju
+          efeito: No começo de cada turno, recupera 5 PV.
+        - &a24
+          nome: Mil técnicas
+          efeito: Conhece um jutsu a mais, de qualquer elemento, à escolha do Mestre.
+    - nome: Chunin
+      ameaca: 5
+      papel: lutador
+      resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
+      ataques: *a22
+      jutsus:
+        - slug: doryuuheki
+        - slug: bunshin-no-jutsu
+        - slug: kawarimi-no-jutsu
+      tracos:
+        - *a23
+        - *a24
+    - nome: Jounin
+      ameaca: 8
+      papel: lutador
+      resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
+      ataques: *a22
+      jutsus:
+        - slug: mokuton-mokujoheki
+        - slug: mokuton-shichuro-no-jutsu
+      tracos:
+        - *a23
+        - *a24
+    - nome: Líder do clã
+      ameaca: 11
+      papel: chefe
+      resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
+      ataques: *a22
+      jutsus:
+        - slug: mokuton-hijutsu-jukai-kotan
+        - slug: mokuton-mokujoheki
+        - slug: mokuton-shichuro-no-jutsu
+      tracos:
+        - *a23
+        - *a24
+        - nome: Escolta do clã
+          efeito: Costuma vir com dois ninjas do clã de nível Chunin (este verbete), que agem na iniciativa dele.
+  taticas:
+    - Prende os inimigos na prisão de madeira e protege os aliados com a muralha. Prefere capturar a matar.
+  ganchos:
+    - Um herdeiro Senju quer recuperar as terras do clã de antes da fundação da vila.
+    - Uma árvore plantada por um Senju séculos atrás começou a crescer sozinha.
+  tags:
+    - Leal
+    - Diplomata
+- slug: cla-uzumaki
+  nome: Uzumaki, mestre dos selos
+  tipo: shinobi
+  origem: Uzushiogakure, a vila destruída
+  vila: null
+  arte:
+    formato: retrato
+    plano: de baixo
+  cena:
+    - O cabelo vermelho cai sobre o rosto quando ela se ajoelha e bate as palmas no chão. Correntes douradas saem da terra em volta do grupo, cobertas de símbolos, e prendem cada um no lugar. Ela levanta devagar, sem nenhum sinal de cansaço.
+  descricao:
+    - Os Uzumaki vinham da Vila do Redemoinho, destruída numa guerra por quem tinha medo dos selos deles. Os sobreviventes se espalharam, quase todos de cabelo vermelho, com uma reserva de chakra enorme, uma vida longa e um talento para o selamento que nenhum outro clã alcança.
+  estagios:
+    - nome: Genin
+      ameaca: 2
+      papel: controlador
+      resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
+      ataques: &a25
+        - nome: Kunai de selo
+          alcance: Curto
+      jutsus:
+        - slug: uzumaki-fuin-kaiso
+        - slug: tairyoku-kaifuku
+      tracos:
+        - &a26
+          nome: Chakra imenso
+          efeito: Tem 30 PC a mais, e não sofre Fadiga por usar jutsus.
+        - &a27
+          nome: Correntes de selo
+          efeito: "Uma vez por cena, prende um inimigo: Resistência de FOR contra a DT 16 ou fica **Imobilizado**, e sem poder usar jutsus enquanto estiver preso."
+      pc: 60
+    - nome: Chunin
+      ameaca: 5
+      papel: controlador
+      resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
+      ataques: *a25
+      jutsus:
+        - slug: tairyoku-kaifuku
+        - slug: uzumaki-fuin-kaiso
+      tracos:
+        - *a26
+        - *a27
+      pc: 80
+    - nome: Jounin
+      ameaca: 8
+      papel: controlador
+      resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
+      ataques: *a25
+      jutsus:
+        - slug: shisho-fuin
+        - slug: uzumaki-kekkai
+        - slug: tairyoku-kaifuku
+        - slug: uzumaki-fuin-kaiso
+      tracos:
+        - *a26
+        - *a27
+      pc: 110
+    - nome: Líder do clã
+      ameaca: 11
+      papel: chefe
+      resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
+      ataques: *a25
+      jutsus:
+        - slug: kongo-fusa
+        - slug: hakke-no-fuin-shiki
+        - slug: shisho-fuin
+        - slug: uzumaki-kekkai
+      tracos:
+        - *a26
+        - *a27
+        - nome: Escolta do clã
+          efeito: Costuma vir com dois ninjas do clã de nível Chunin (este verbete), que agem na iniciativa dele.
+      pc: 140
+  taticas:
+    - Prende primeiro, conversa depois. Sela os jutsus dos inimigos mais perigosos e só ataca quando ninguém mais pode reagir.
+  ganchos:
+    - Uma Uzumaki procura os pergaminhos da vila destruída, e um deles está na vila do grupo.
+    - O selo que prende alguma coisa muito antiga foi feito por um Uzumaki, e só outro Uzumaki pode refazer.
+  tags:
+    - Cauteloso
+    - Leal
+- slug: cla-kaguya
+  nome: Kaguya, guerreiro dos ossos
+  tipo: shinobi
+  origem: Clã Kaguya, de Kiri
+  vila: kiri
+  arte:
+    formato: quadro
+    plano: de baixo
+  cena:
+    - Ele puxa um osso do próprio ombro, devagar, como quem tira uma espada da bainha. O osso endurece na mão dele, comprido e afiado. Pelos braços, pelas costas, mais pontas brancas furam a pele, e ele não para de andar na direção do grupo.
+  descricao:
+    - "Os Kaguya controlam os próprios ossos: fazem espadas, escudos e lanças do esqueleto e endurecem o corpo como armadura. O clã vivia para a guerra, e atacou Kiri por puro gosto pela luta, até ser quase apagado. Os poucos que sobraram têm cabelo claro, dois pontos vermelhos na testa e um corpo que adoece com o próprio poder."
+  estagios:
+    - nome: Genin
+      ameaca: 3
+      papel: lutador
+      resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
+      ataques: &a28
+        - nome: Espada de osso
+          alcance: Corpo a corpo
+        - nome: Dedos disparados
+          alcance: Curto
+          dano: 1d8+2
+      jutsus:
+        - slug: teshi-sendan
+        - slug: yanagi-no-mai
+      tracos:
+        - &a29
+          nome: Armadura de ossos
+          efeito: RD 2.
+        - &a30
+          nome: Maldição do clã
+          efeito: "O poder consome o corpo: depois da luta, ganha um nível de Fadiga."
+      rd: 2
+    - nome: Chunin
+      ameaca: 6
+      papel: lutador
+      resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
+      ataques: *a28
+      jutsus:
+        - slug: tsubaki-no-mai
+        - slug: tessenka-no-mai-tsuru
+        - slug: yanagi-no-mai
+        - slug: karamatsu-no-mai
+      tracos:
+        - *a29
+        - *a30
+      rd: 2
+    - nome: Jounin
+      ameaca: 9
+      papel: lutador
+      resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
+      ataques: *a28
+      jutsus:
+        - slug: tsubaki-no-mai
+        - slug: tessenka-no-mai-tsuru
+        - slug: yanagi-no-mai
+        - slug: karamatsu-no-mai
+      tracos:
+        - *a29
+        - *a30
+      rd: 2
+    - nome: Líder do clã
+      ameaca: 12
+      papel: chefe
+      resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
+      ataques: *a28
+      jutsus:
+        - slug: tessenka-no-mai-hana
+        - slug: sawarabi-no-mai
+        - slug: tsubaki-no-mai
+        - slug: tessenka-no-mai-tsuru
+      tracos:
+        - *a29
+        - *a30
+        - nome: Escolta do clã
+          efeito: Costuma vir com dois ninjas do clã de nível Chunin (este verbete), que agem na iniciativa dele.
+      rd: 3
+  taticas:
+    - Luta de perto, sempre, e sente prazer nisso. Usa os ossos como escudo e ataca sem parar até o inimigo cair.
+  ganchos:
+    - O último Kaguya está morrendo da doença do clã e quer uma luta digna antes do fim.
+    - Ossos de Kaguya estão sendo vendidos como armas no mercado negro.
+  tags:
+    - Brutal
+    - Fanático
+- slug: cla-hozuki
+  nome: Hozuki, corpo de água
+  tipo: shinobi
+  origem: Clã Hozuki, de Kiri
+  vila: kiri
+  arte:
+    formato: retrato
+    plano: corpo inteiro
+  cena:
+    - A kunai atravessa o peito dele, e ele ri, mostrando os dentes afiados. O corpo vira água em volta da lâmina e escorre para o chão, uma poça que se arrasta, sobe pelas costas do ninja que atacou e vira uma mão segurando a garganta dele.
+  descricao:
+    - "Os Hozuki de Kiri transformam o corpo em água: golpes atravessam, cortes se fecham, e o braço incha de músculo líquido para um soco. Precisam beber o tempo todo, e um Hozuki seco é um Hozuki fraco. Muitos sonham com as espadas famosas da Névoa."
+  estagios:
+    - nome: Genin
+      ameaca: 3
+      papel: assassino
+      resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
+      ataques: &a31
+        - nome: Punho de água
+          alcance: Corpo a corpo
+          efeito: Dano em dobro contra alvo **Desprevenido**.
+      jutsus:
+        - slug: suika-no-jutsu
+        - slug: mizudeppo-no-jutsu
+      tracos:
+        - &a32
+          nome: Corpo fluido
+          efeito: Golpes físicos sem chakra causam metade do dano. Raiton causa dano dobrado.
+        - &a33
+          nome: Sede
+          efeito: Sem água por perto, perde o Corpo fluido no fim da cena.
+    - nome: Chunin
+      ameaca: 6
+      papel: assassino
+      resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
+      ataques: *a31
+      jutsus:
+        - slug: suiton-gosuiwan-no-jutsu
+        - slug: suiton-tate-eboshi
+        - slug: suiton-bolha-afogadora
+        - slug: suika-no-jutsu
+      tracos:
+        - *a32
+        - *a33
+    - nome: Jounin
+      ameaca: 9
+      papel: assassino
+      resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
+      ataques: *a31
+      jutsus:
+        - slug: suiton-gosuiwan-no-jutsu
+        - slug: suiton-tate-eboshi
+        - slug: suiton-bolha-afogadora
+        - slug: suika-no-jutsu
+      tracos:
+        - *a32
+        - *a33
+    - nome: Líder do clã
+      ameaca: 12
+      papel: chefe
+      resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
+      ataques: *a31
+      jutsus:
+        - slug: joki-boi
+        - slug: suiton-gosuiwan-no-jutsu
+        - slug: suiton-tate-eboshi
+        - slug: suiton-bolha-afogadora
+      tracos:
+        - *a32
+        - *a33
+        - nome: Escolta do clã
+          efeito: Costuma vir com dois ninjas do clã de nível Chunin (este verbete), que agem na iniciativa dele.
+  taticas:
+    - Deixa o inimigo acertar, vira água e aparece nas costas dele. Foge pela água se a luta virar.
+  ganchos:
+    - Um Hozuki procura uma das Sete Espadas da Névoa que acha que está com o grupo.
+    - Alguém está secando os rios em volta da vila de Kiri.
+  tags:
+    - Agressivo
+    - Covarde
+- slug: cla-sabaku
+  nome: Sabaku, guardião da areia
+  tipo: shinobi
+  origem: Clã Sabaku, de Suna
+  vila: suna
+  arte:
+    formato: faixa
+    plano: de cima
+  cena:
+    - "A rolha da cabaça nas costas dele cai sozinha. A areia escorre, sobe no ar e forma uma onda que vem na direção do grupo. Ele nem levanta as mãos: a areia protege, ataca e se fecha em volta do inimigo como se tivesse vontade própria."
+  descricao:
+    - O clã Sabaku de Suna controla a areia, carregada numa cabaça ou tirada do próprio deserto. A areia cobre o corpo como armadura e protege sozinha do ataque que o dono nem viu chegar. Dela saiu mais de um Kazekage.
+  estagios:
+    - nome: Genin
+      ameaca: 3
+      papel: controlador
+      resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
+      ataques: &a34
+        - nome: Areia
+          alcance: Médio
+      jutsus:
+        - slug: suna-shuriken
+        - slug: suna-no-tate
+      tracos:
+        - &a35
+          nome: Defesa automática
+          efeito: Uma vez por rodada, a areia bloqueia sozinha um ataque que o acertaria, com o Suna no Tate.
+        - &a36
+          nome: Armadura de areia
+          efeito: RD 2.
+      rd: 2
+    - nome: Chunin
+      ameaca: 6
+      papel: controlador
+      resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
+      ataques: *a34
+      jutsus:
+        - slug: sabaku-soso
+        - slug: sabaku-ro
+        - slug: suna-no-tate
+        - slug: sabaku-kyu
+      tracos:
+        - *a35
+        - *a36
+      rd: 2
+    - nome: Jounin
+      ameaca: 9
+      papel: controlador
+      resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
+      ataques: *a34
+      jutsus:
+        - slug: sabaku-soso
+        - slug: sabaku-ro
+        - slug: suna-no-tate
+        - slug: sabaku-kyu
+      tracos:
+        - *a35
+        - *a36
+      rd: 2
+    - nome: Líder do clã
+      ameaca: 12
+      papel: chefe
+      resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
+      ataques: *a34
+      jutsus:
+        - slug: ryusa-bakuryu
+        - slug: sabaku-taiso
+        - slug: sabaku-soso
+        - slug: sabaku-ro
+      tracos:
+        - *a35
+        - *a36
+        - nome: Escolta do clã
+          efeito: Costuma vir com dois ninjas do clã de nível Chunin (este verbete), que agem na iniciativa dele.
+      rd: 3
+  taticas:
+    - Não se mexe do lugar. Deixa a areia defender, prende o inimigo no caixão de areia e aperta.
+  ganchos:
+    - A areia de um Sabaku jovem ataca qualquer um que se aproxime, e ele não sabe parar.
+    - O clã quer de volta uma cabaça antiga que está com um mercador da vila do grupo.
+  tags:
+    - Cauteloso
+    - Brutal
+- slug: cla-yuki
+  nome: Yuki, espelhos de gelo
+  tipo: shinobi
+  origem: Clã Yuki, do País da Neve e de Kiri
+  vila: null
+  arte:
+    formato: quadro
+    plano: de baixo
+  cena:
+    - O ar esfria de repente, e espelhos de gelo sobem do chão em volta do grupo, formando uma cúpula. Em cada espelho aparece a mesma figura de máscara, e todas jogam agulhas ao mesmo tempo. Não dá para saber qual delas é a de verdade.
+  descricao:
+    - Os Yuki unem água e vento no gelo, uma Kekkei Genkai que fez o clã ser caçado e quase extinto nas guerras de Kiri. Os sobreviventes escondem o dom. Na luta, prendem o inimigo numa cúpula de espelhos de gelo e se movem entre eles mais rápido do que os olhos acompanham.
+  estagios:
+    - nome: Genin
+      ameaca: 3
+      papel: controlador
+      resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
+      ataques: &a37
+        - nome: Agulhas de gelo
+          alcance: Médio
+      jutsus:
+        - slug: sensatsu-suisho
+        - slug: hyoton-suishoheki
+      tracos:
+        - &a38
+          nome: Espelhos de gelo
+          efeito: "Dentro da cúpula de espelhos, se move entre eles como deslocamento livre: ataques contra ela têm desvantagem enquanto não acharem o espelho certo (Percepção contra a DT 16)."
+        - &a39
+          nome: Filho do inverno
+          efeito: Não sofre penalidade por frio, neve ou gelo.
+    - nome: Chunin
+      ameaca: 6
+      papel: controlador
+      resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
+      ataques: *a37
+      jutsus:
+        - slug: hyoton-makyo-hyosho
+        - slug: hyoton-hyogan-domu
+        - slug: makyo-hakuhyo
+        - slug: sensatsu-suisho
+      tracos:
+        - *a38
+        - *a39
+    - nome: Jounin
+      ameaca: 9
+      papel: controlador
+      resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
+      ataques: *a37
+      jutsus:
+        - slug: hyoton-makyo-hyosho
+        - slug: hyoton-hyogan-domu
+        - slug: makyo-hakuhyo
+        - slug: sensatsu-suisho
+      tracos:
+        - *a38
+        - *a39
+    - nome: Líder do clã
+      ameaca: 12
+      papel: chefe
+      resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
+      ataques: *a37
+      jutsus:
+        - slug: hyoton-mangehyo
+        - slug: hyoton-makyo-hyosho
+        - slug: hyoton-hyogan-domu
+        - slug: makyo-hakuhyo
+      tracos:
+        - *a38
+        - *a39
+        - nome: Escolta do clã
+          efeito: Costuma vir com dois ninjas do clã de nível Chunin (este verbete), que agem na iniciativa dele.
+  taticas:
+    - Prende o inimigo nos espelhos e o fere aos poucos com agulhas, mirando pontos que derrubam sem matar. Não gosta de matar, e às vezes deixa isso claro.
+  ganchos:
+    - Uma Yuki escondida numa aldeia de pescadores é descoberta, e caçadores estão a caminho.
+    - Serve a um mestre que não merece a lealdade dela, e ela sabe disso.
+  tags:
+    - Leal
+    - Cauteloso

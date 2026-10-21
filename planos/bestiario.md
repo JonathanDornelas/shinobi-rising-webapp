@@ -5,11 +5,14 @@
 > - visões Sumário e Galeria;
 > - uma página por verbete, folheada em ordem alfabética.
 >
-> São 45 verbetes e 84 fichas. Estágios só onde fazem sentido:
+> São 61 verbetes e 139 fichas. Estágios (várias fichas na mesma página) onde fazem sentido:
 > - as 7 espécies de contrato do cap. 14, cada uma com os 4 tamanhos;
+> - os 13 clãs do livro, cada um com Genin, Chunin, Jounin e Líder do clã;
 > - lobos, centopeias e aranhas;
 > - a marca amaldiçoada e o jinchuuriki;
 > - as nove Bestas com Cauda, de Shukaku a Kurama.
+>
+> Entraram também as figuras de poder: Kage, Kage da Sombra e Conselheiro da vila.
 >
 > A regra de ameaça está em `conteudo/bestiario/como-usar.md`, e os verbetes estão em `conteudo/bestiario/*.yaml`, com os números calculados pelo compilador. Há ainda:
 > - "usar na campanha", por estágio;
@@ -17,8 +20,10 @@
 >
 > Artes:
 > - 23 publicadas em `static/bestiario/`;
-> - 21 na fila da nova direção de arte (ação, ângulo, fora do centro), esperando cota do PixelLab;
-> - o cadáver de Edo Tensei, ainda sem arte.
+> - 38 na fila, esperando cota do PixelLab: as 21 refeitas, os 16 verbetes novos e o cadáver de Edo Tensei. Todas seguem a direção nova, com referências do anime e do mangá e ângulos ousados (câmera inclinada, silhueta, close nos olhos, escorço, vista aérea);
+> - a arte nova da página inicial também está na fila (`pixellab/inicio.json`).
+>
+> Desempenho: as imagens já saem do CDN da Vercel. `npm run imagens:otimizar` regrava os PNG com paleta, sem perda (de 1.324 KB para 579 KB), e `/bestiario/` ganhou regra de cache no `vercel.json`.
 >
 > O texto abaixo é o plano original e fica como histórico.
 
