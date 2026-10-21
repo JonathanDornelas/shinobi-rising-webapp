@@ -1,0 +1,315 @@
+# Bestiário · outras espécies de invocação: os animais do bestiário são todos invocações, como a linha "Outra" da
+# tabela de espécies do cap. 14 permite. Cada espécie tem os quatro tamanhos do cap. 14 (Pequena, Média, Grande e
+# Chefe da Espécie), e os números vêm das fichas de lá (campo ficha); o que muda de uma espécie para outra são os
+# traços. Formato de cada verbete: veja o cabeçalho de shinobi.yaml.
+- slug: lobos
+  nome: Lobos do Norte
+  tipo: invocação
+  origem: Montanhas do norte e País da Neve
+  vila: null
+  arte: { formato: faixa, plano: plano aberto }
+  cena:
+    - "Os uivos começam longe e vão chegando de lados diferentes. Na neve, entre os pinheiros, aparecem olhos amarelos, depois mais, e a fumaça da invocação ainda escorre entre as árvores. No alto da pedra, um ninja de capa de pele tira a mão do chão e aponta para o grupo."
+  descricao:
+    - "Os lobos do norte assinam contrato com ninjas das terras frias, onde a caça é pouca e só a alcateia sobrevive. Rastreiam por dias, cercam a presa e derrubam o mais fraco do grupo. Os pequenos farejam e avisam; os grandes carregam o invocador pela neve; o chefe da alcateia só aparece quando o inverno é de guerra."
+  estagios:
+    - nome: Lobo pequeno
+      papel: suporte
+      ficha: pequena
+      resumo: "Filhote de faro afiado, que acha qualquer rastro na neve."
+      ataques:
+        - { nome: Mordida, alcance: Corpo a corpo }
+      tracos:
+        - { nome: Faro, efeito: "Tem vantagem em Rastreamento e acha qualquer um pelo cheiro, mesmo sob Henge." }
+    - nome: Lobo de caça
+      arte: { formato: faixa, plano: plano aberto }
+      capa: true
+      papel: lutador
+      ficha: media
+      resumo: "Caça em dupla com o invocador e morde para derrubar."
+      ataques:
+        - { nome: Mordida, alcance: Corpo a corpo, efeito: "O alvo resiste com FOR contra a DT 15 ou fica **Caído**." }
+      tracos:
+        - { nome: Caça em grupo, efeito: "Ataques contra um alvo que já foi mordido nesta rodada têm vantagem." }
+    - nome: Lobo gigante
+      papel: lutador
+      ficha: grande
+      resumo: "Do tamanho de um cavalo, carrega o invocador pela neve."
+      ataques:
+        - { nome: Mordida, alcance: Corpo a corpo, efeito: "O alvo resiste com FOR contra a DT 17 ou fica **Caído**." }
+      tracos:
+        - { nome: Montaria, efeito: "Leva até dois ninjas nas costas sem perder deslocamento." }
+        - { nome: Invocado, efeito: "Ao chegar a 0 PV, é desinvocado e volta às montanhas. Não pode ser invocado de novo por 24 horas (cap. 14)." }
+    - nome: Chefe da alcateia
+      papel: chefe
+      ficha: chefe
+      resumo: "Branco de velho, cheio de cicatrizes de kunai, e a alcateia inteira obedece ao uivo dele."
+      ataques:
+        - { nome: Mordida do líder, alcance: Corpo a corpo, efeito: "O alvo resiste com FOR contra a DT 21 ou fica **Caído** e **Imobilizado**." }
+      tracos:
+        - { nome: Uivo da alcateia, efeito: "Uma vez por cena, uiva: aparecem três lobos pequenos, que agem na iniciativa dele, e quem não for ninja fica **Amedrontado**." }
+  taticas:
+    - "Cercam o personagem mais isolado e mordem até ele cair. O invocador fica atrás, mandando a alcateia de um alvo para o outro."
+  ganchos:
+    - "Os lobos de um contrato antigo descem das montanhas sem invocador, procurando quem quebrou o pacto."
+    - "Um dos lobos tem uma coleira de clã Inuzuka, e o clã jura que ele foi roubado."
+  tags: [Agressivo, Tático]
+
+- slug: centopeias
+  nome: Centopeias da Floresta da Morte
+  tipo: invocação
+  origem: Floresta da Morte e cavernas úmidas
+  vila: null
+  arte: { formato: faixa, plano: corpo inteiro }
+  cena:
+    - "O tronco em que o genin se apoia se mexe. Não é casca: são placas, uma atrás da outra, e embaixo delas um mar de patas se desenrolando. Do outro lado da clareira, o invocador ainda está com a mão no chão, e a fumaça sobe das raízes."
+  descricao:
+    - "As centopeias gigantes vivem nas raízes da Floresta da Morte e nas cavernas úmidas, e assinam contrato com ninjas que gostam de emboscadas. Ficam imóveis por horas e atacam o que passa perto. O veneno das pinças não mata depressa: deixa a vítima lenta o bastante para ser arrastada."
+  estagios:
+    - nome: Centopeia pequena
+      papel: assassino
+      ficha: pequena
+      resumo: "Do comprimento de um braço, escondida sob as folhas."
+      ataques:
+        - { nome: Pinças, alcance: Corpo a corpo, efeito: "O alvo resiste com VIG contra a DT 13 ou sofre o Veneno Comum (cap. 11)." }
+    - nome: Centopeia de emboscada
+      papel: lutador
+      ficha: media
+      resumo: "Do tamanho de um homem, enrola o corpo em volta da presa."
+      ataques:
+        - { nome: Pinças, alcance: Corpo a corpo, efeito: "O alvo resiste com VIG contra a DT 15 ou fica **Envenenado** (1d4 de dano por turno, por 3 turnos)." }
+      tracos:
+        - { nome: Enrolar, efeito: "Quando as pinças acertam, pode enrolar o corpo no alvo, que fica **Imobilizado** até se libertar com uma Resistência de FOR contra a DT 15." }
+    - nome: Centopeia gigante
+      arte: { formato: faixa, plano: corpo inteiro }
+      capa: true
+      papel: lutador
+      ficha: grande
+      resumo: "Grossa como um tronco, sobe pelas árvores gigantes como se fosse chão."
+      rd: 2
+      ataques:
+        - { nome: Pinças, alcance: Corpo a corpo, efeito: "O alvo resiste com VIG contra a DT 17 ou fica **Envenenado** (1d4 de dano por turno, por 3 turnos)." }
+      tracos:
+        - { nome: Carapaça, efeito: "RD 2." }
+        - { nome: Muitas patas, efeito: "Sobe troncos e anda de cabeça para baixo nos galhos como se fosse chão. Nunca fica **Caído**." }
+        - { nome: Invocada, efeito: "Ao chegar a 0 PV, é desinvocada. Não pode ser invocada de novo por 24 horas (cap. 14)." }
+    - nome: Matriarca do ninho
+      papel: chefe
+      ficha: chefe
+      resumo: "Tão longa que dá a volta numa árvore gigante, e cada patada racha a casca."
+      rd: 3
+      ataques:
+        - { nome: Pinças da matriarca, alcance: Curto, efeito: "O alvo resiste com VIG contra a DT 21 ou sofre o Veneno Forte (cap. 11)." }
+      tracos:
+        - { nome: Carapaça antiga, efeito: "RD 3." }
+        - { nome: Ninhada, efeito: "Uma vez por cena, chama a ninhada: aparecem três centopeias pequenas, que agem na iniciativa dela." }
+  taticas:
+    - "Esperam enroladas nas raízes e atacam quem passa embaixo, de preferência o último da fila. Prendem a presa e tentam arrastá-la para longe dos aliados."
+  ganchos:
+    - "O ninho da matriarca fica no caminho até a torre do centro da floresta, e há outra equipe presa lá dentro."
+    - "Um mercador de venenos paga caro pelas glândulas das pinças, inteiras."
+  tags: [Agressivo, Cauteloso]
+
+- slug: aranhas
+  nome: Aranhas das cavernas
+  tipo: invocação
+  origem: Cavernas e florestas fechadas
+  vila: null
+  arte: { formato: quadro, plano: de cima }
+  cena:
+    - "Os fios brilham entre as árvores quando a lanterna passa, grossos como corda. Lá no alto, alguma coisa recolhe as pernas devagar, uma por uma, ainda saindo da fumaça da invocação. O primeiro fio que encosta no braço do ninja já não sai mais."
+  descricao:
+    - "As aranhas das cavernas são invocadas por ninjas que lutam com fios e armadilhas. Tecem teias duras como aço, envenenam quem se debate e embrulham quem para de se mexer. A rainha, quando aparece, enche uma floresta inteira de seda."
+  estagios:
+    - nome: Aranha pequena
+      papel: assassino
+      ficha: pequena
+      resumo: "Do tamanho de um cão, espera no teto."
+      ataques:
+        - { nome: Presas, alcance: Corpo a corpo, efeito: "O alvo resiste com VIG contra a DT 13 ou sofre o Veneno Comum (cap. 11)." }
+      tracos:
+        - { nome: Escaladora, efeito: "Anda em paredes e tetos como se fosse chão." }
+    - nome: Aranha tecelã
+      papel: controlador
+      ficha: media
+      resumo: "Cobre uma clareira de teia antes de descer."
+      ataques:
+        - { nome: Jato de teia, alcance: Médio, efeito: "O alvo resiste com FOR contra a DT 15 ou fica **Imobilizado** pela teia." }
+      tracos:
+        - { nome: Escaladora, efeito: "Anda em paredes e tetos como se fosse chão." }
+    - nome: Aranha gigante
+      papel: controlador
+      ficha: grande
+      resumo: "Maior que uma casa, com a teia armada entre as árvores."
+      ataques:
+        - { nome: Presas, alcance: Corpo a corpo, efeito: "O alvo resiste com VIG contra a DT 17 ou fica **Envenenado** (1d4 de dano por turno, por 3 turnos)." }
+        - { nome: Jato de teia, alcance: Médio, dano: 1d6, efeito: "O alvo resiste com FOR contra a DT 17 ou fica **Imobilizado** pela teia." }
+      tracos:
+        - { nome: Teia armada, efeito: "Quem entra na área da teia sem perceber fica **Imobilizado** (Resistência de FOR contra a DT 17 para sair)." }
+        - { nome: Invocada, efeito: "Ao chegar a 0 PV, é desinvocada. Não pode ser invocada de novo por 24 horas (cap. 14)." }
+    - nome: Rainha das aranhas
+      papel: chefe
+      ficha: chefe
+      resumo: "Velha como a caverna, com um casulo para cada intruso que já entrou."
+      ataques:
+        - { nome: Presas da rainha, alcance: Corpo a corpo, efeito: "O alvo resiste com VIG contra a DT 21 ou fica **Paralisado** até o fim do próximo turno." }
+      tracos:
+        - { nome: Seda de aço, efeito: "Cortar a teia dela exige uma arma afiada e um teste de FOR contra a DT 21." }
+        - { nome: Filhotes, efeito: "Uma vez por cena, solta os filhotes: aparecem quatro aranhas pequenas, que agem na iniciativa dela." }
+  taticas:
+    - "Não perseguem. Esperam a presa cair na teia, envenenam quem se debate e embrulham quem para de se mexer."
+  ganchos:
+    - "Os casulos da caverna têm bandanas de ninjas desaparecidos, e um deles ainda respira."
+    - "Um ninja renegado usa aranhas para guardar o esconderijo, e as teias cobrem a única passagem."
+  tags: [Cauteloso, Tático]
+
+- slug: ursos
+  nome: Ursos das montanhas
+  tipo: invocação
+  origem: Florestas de montanha
+  vila: null
+  arte: { formato: quadro, plano: de baixo }
+  cena:
+    - "As folhas vermelhas ainda estão caindo quando ele sai da fumaça e se levanta nas patas de trás, mais alto que as árvores novas. O rugido sacode os galhos e espanta todos os pássaros de uma vez. O invocador, pequeno ao lado dele, só sorri."
+  descricao:
+    - "Os ursos das montanhas são lentos para aceitar um contrato e mais lentos ainda para desistir de uma luta. Lutam com garras e abraços que quebram costelas, e um urso ferido fica mais perigoso, não menos. Os filhotes são curiosos e comilões; o rei da montanha dorme o inverno inteiro e acorda de mau humor."
+  estagios:
+    - nome: Filhote de urso
+      papel: lutador
+      ficha: pequena
+      resumo: "Desajeitado, comilão e mais forte do que parece."
+      ataques:
+        - { nome: Patada, alcance: Corpo a corpo }
+    - nome: Urso de batalha
+      papel: lutador
+      ficha: media
+      resumo: "Do tamanho de um urso comum, e muito mais bravo."
+      ataques:
+        - { nome: Garras, alcance: Corpo a corpo, efeito: "Pode prender o alvo num abraço: ele fica **Imobilizado** até se libertar com FOR contra a DT 15." }
+    - nome: Urso gigante
+      arte: { formato: quadro, plano: de baixo }
+      capa: true
+      papel: lutador
+      ficha: grande
+      resumo: "Fica mais alto que as árvores quando se levanta."
+      rd: 2
+      ataques:
+        - { nome: Garras, alcance: Corpo a corpo, efeito: "Pode prender o alvo num abraço: ele fica **Imobilizado** até se libertar com FOR contra a DT 17." }
+      tracos:
+        - { nome: Couro grosso, efeito: "RD 2." }
+        - { nome: Fúria, efeito: "Abaixo da metade dos PV, os ataques têm vantagem." }
+        - { nome: Invocado, efeito: "Ao chegar a 0 PV, é desinvocado. Não pode ser invocado de novo por 24 horas (cap. 14)." }
+    - nome: Rei da montanha
+      papel: chefe
+      ficha: chefe
+      resumo: "Velho, cinzento e do tamanho de uma colina."
+      rd: 3
+      ataques:
+        - { nome: Patada da montanha, alcance: Curto, efeito: "O alvo resiste com FOR contra a DT 21 ou é jogado longe e fica **Caído**." }
+      tracos:
+        - { nome: Couro de pedra, efeito: "RD 3." }
+        - { nome: Rugido, efeito: "Uma vez por cena: cada um a até 20 m resiste com ESP contra a DT 21 ou fica **Amedrontado**." }
+  taticas:
+    - "Avança direto em quem ameaça o invocador e não solta o que agarra. Depois que fica com raiva, só para quando o inimigo cai."
+  ganchos:
+    - "Um filhote de urso invocado não quer voltar para casa e segue o grupo por dias."
+    - "O rei da montanha foi acordado no meio do inverno por um invocador desesperado, e a montanha inteira sente."
+  tags: [Brutal, Leal]
+
+- slug: tigres
+  nome: Tigres do bambuzal
+  tipo: invocação
+  origem: Florestas de bambu
+  vila: null
+  arte: { formato: faixa, plano: escorço }
+  cena:
+    - "O bambuzal está quieto demais. Nenhum inseto, nenhum pássaro. Então as listras se mexem entre as hastes, saindo da fumaça da invocação, e o grupo percebe que está sendo olhado há muito tempo."
+  descricao:
+    - "Os tigres do bambuzal caçam sozinhos e não perdem. Assinam contrato com ninjas pacientes, que sabem esperar o momento certo, e atacam uma vez só, pelas costas. O senhor do bambuzal é uma lenda que nenhum invocador vivo diz ter conhecido."
+  estagios:
+    - nome: Filhote de tigre
+      papel: assassino
+      ficha: pequena
+      resumo: "Brincalhão, silencioso e de dentes já afiados."
+      ataques:
+        - { nome: Garras, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+    - nome: Tigre de caça
+      papel: assassino
+      ficha: media
+      resumo: "Persegue a presa por horas sem ser visto."
+      ataques:
+        - { nome: Bote, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com FOR contra a DT 15 ou fica **Caído**." }
+      tracos:
+        - { nome: Listras, efeito: "Tem vantagem em Furtividade entre plantas e sombras." }
+    - nome: Tigre gigante
+      papel: assassino
+      ficha: grande
+      resumo: "Salta de uma ponta à outra de uma clareira."
+      ataques:
+        - { nome: Bote, alcance: Curto, efeito: "Salta até o alvo e ataca na mesma ação. O alvo resiste com FOR contra a DT 17 ou fica **Caído**." }
+      tracos:
+        - { nome: Listras, efeito: "Tem vantagem em Furtividade entre plantas e sombras." }
+        - { nome: Invocado, efeito: "Ao chegar a 0 PV, é desinvocado. Não pode ser invocado de novo por 24 horas (cap. 14)." }
+    - nome: Senhor do bambuzal
+      papel: chefe
+      ficha: chefe
+      resumo: "Branco como a neve, e ninguém o vê chegar."
+      ataques:
+        - { nome: Bote do senhor, alcance: Curto, efeito: "O alvo resiste com FOR contra a DT 21 ou fica **Caído** e **Atordoado**." }
+      tracos:
+        - { nome: Caça silenciosa, efeito: "Uma vez por rodada, depois de atacar, some entre as sombras: até o próximo turno dele, ataques contra ele têm desvantagem." }
+  taticas:
+    - "Segue o grupo de longe, espera alguém ficar para trás e ataca de surpresa. Se a primeira investida falha, some de novo e tenta outra vez."
+  ganchos:
+    - "Uma vila oferece recompensa pelo tigre que já matou três lenhadores, sem saber que ele tem invocador."
+    - "O invocador do senhor do bambuzal morreu, e o tigre procura quem o matou."
+  tags: [Cauteloso, Agressivo]
+
+- slug: javalis
+  nome: Javalis da floresta
+  tipo: invocação
+  origem: Florestas do País do Fogo
+  vila: null
+  arte: { formato: quadro, plano: corpo inteiro }
+  cena:
+    - "Primeiro treme o chão, depois as árvores pequenas caem para os lados. O javali sai da fumaça bufando, as presas amarelas do tamanho de um braço, e não diminui a velocidade nem um pouco."
+  descricao:
+    - "Os javalis da floresta são burros, teimosos e quase impossíveis de parar quando decidem correr. O contrato deles atrai ninjas de pouca sutileza e muita força. Destroem cercas, muralhas e formações inimigas, e não fazem distinção entre uma coisa e outra."
+  estagios:
+    - nome: Leitão
+      papel: lutador
+      ficha: pequena
+      resumo: "Pequeno, barulhento e já cabeçudo."
+      ataques:
+        - { nome: Cabeçada, alcance: Corpo a corpo }
+    - nome: Javali de batalha
+      papel: lutador
+      ficha: media
+      resumo: "Atropela quem estiver no caminho."
+      ataques:
+        - { nome: Investida das presas, alcance: Corpo a corpo, efeito: "Se correu em linha reta até o alvo, ele resiste com FOR contra a DT 15 ou fica **Caído**." }
+    - nome: Javali gigante
+      arte: { formato: quadro, plano: corpo inteiro }
+      capa: true
+      papel: lutador
+      ficha: grande
+      resumo: "Derruba árvores e muralhas sem diminuir o passo."
+      ataques:
+        - { nome: Investida das presas, alcance: Corpo a corpo, efeito: "Se correu em linha reta até o alvo, ele resiste com FOR contra a DT 17 ou é jogado longe e fica **Caído**." }
+      tracos:
+        - { nome: Teimoso, efeito: "Não pode ser empurrado e tem vantagem para resistir a **Amedrontado**." }
+        - { nome: Invocado, efeito: "Ao chegar a 0 PV, é desinvocado. Não pode ser invocado de novo por 24 horas (cap. 14)." }
+    - nome: Rei dos javalis
+      papel: chefe
+      ficha: chefe
+      resumo: "Cada passo dele abre um buraco na terra."
+      ataques:
+        - { nome: Investida do rei, alcance: Corpo a corpo, efeito: "Atinge todos numa linha: cada um resiste com FOR contra a DT 21 ou é jogado longe e fica **Caído**." }
+      tracos:
+        - { nome: Estouro, efeito: "Uma vez por cena, chama a manada: aparecem três javalis de batalha, que correm na iniciativa dele." }
+  taticas:
+    - "Corre direto no que o invocador apontar, passa por cima, vira e corre de novo. Não tem outra tática, e quase nunca precisa de outra."
+  ganchos:
+    - "Um invocador inexperiente perdeu o controle de um javali gigante no meio do mercado."
+    - "Alguém está invocando javalis para destruir as plantações de uma vila rival."
+  tags: [Agressivo, Brutal]

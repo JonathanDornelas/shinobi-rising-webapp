@@ -101,8 +101,8 @@
 			"cores_extras": ["#1c2541", "#2e3c63"]
 		},
 		{
-			"slug": "centopeias-gigantes",
-			"nome": "Centopeia gigante da Floresta da Morte",
+			"slug": "centopeias",
+			"nome": "Centopeias da Floresta da Morte",
 			"tipo": "fauna",
 			"formato": "faixa",
 			"plano": ["inteiro"],
@@ -214,7 +214,7 @@
 		},
 		{
 			"slug": "lobos",
-			"nome": "Alcateia de lobos",
+			"nome": "Lobos do Norte",
 			"tipo": "fauna",
 			"formato": "faixa",
 			"plano": ["aberto"],
@@ -223,8 +223,8 @@
 			"prompt": "a pack of grey wolves running through a snowy pine forest at dusk, glowing yellow eyes, breath vapor, snowy mountains far away, cold blue light"
 		},
 		{
-			"slug": "urso-gigante",
-			"nome": "Urso gigante",
+			"slug": "ursos",
+			"nome": "Ursos das montanhas",
 			"tipo": "fauna",
 			"formato": "quadro",
 			"plano": ["de-baixo"],
@@ -293,11 +293,11 @@
 			"escolhida": "aguias-e-falcoes-7901.png"
 		},
 		{
-			"slug": "aranhas-gigantes",
-			"nome": "Aranhas gigantes",
+			"slug": "aranhas",
+			"nome": "Aranhas das cavernas",
 			"formato": "quadro",
 			"plano": ["aereo"],
-			"prompt": "a giant black spider with red markings descending on a silk thread toward a ninja trapped in a web in the lower right corner, long legs spread across the upper left of the frame, dark forest, webs glinting"
+			"prompt": "a giant black and red spider summon bursting out of white summoning smoke and descending on a silk thread toward a ninja trapped in a web in the lower right corner, long legs spread across the upper left of the frame, a ninja summoner with a hand on the ground far below, dark forest"
 		},
 		{
 			"slug": "bandidos-de-estrada",
@@ -387,8 +387,8 @@
 			"escolhida": "ilusionista-7901.png"
 		},
 		{
-			"slug": "javali-gigante",
-			"nome": "Javali gigante",
+			"slug": "javalis",
+			"nome": "Javalis da floresta",
 			"formato": "quadro",
 			"plano": ["inteiro"],
 			"prompt": "a giant wild boar with huge yellow tusks charging out of the forest and knocking down small trees, side view, dust and flying leaves",
@@ -467,11 +467,11 @@
 			"escolhida": "tartarugas-7901.png"
 		},
 		{
-			"slug": "tigre-da-montanha",
-			"nome": "Tigre da montanha",
+			"slug": "tigres",
+			"nome": "Tigres do bambuzal",
 			"formato": "faixa",
 			"plano": ["escorco"],
-			"prompt": "a large mountain tiger leaping out from between bamboo stalks at the right with claws out, toward a ninja falling back in the lower left, green bamboo forest, motion"
+			"prompt": "a huge striped tiger summon leaping out of a cloud of white summoning smoke with claws out toward a ninja falling back in the lower left, the summoner kneeling with a palm on the ground at the right, green bamboo forest, motion"
 		},
 		{
 			"slug": "kage",
@@ -584,6 +584,860 @@
 			"formato": "quadro",
 			"plano": ["de-baixo"],
 			"prompt": "a dome of tall ice mirrors around a trapped ninja, the same masked Yuki clan figure with long dark hair reflected in every mirror throwing ice needles at once, cold blue light"
+		},
+		{
+			"slug": "cla-aburame--genin",
+			"nome": "Aburame, mestre dos insetos: Genin",
+			"formato": "retrato",
+			"plano": ["holandes"],
+			"prompt": "a genin ninja of the Aburame clan in a high collared long coat and round dark sunglasses, original character, a teenager, a quiet boy letting a single beetle crawl onto his finger"
+		},
+		{
+			"slug": "cla-aburame--chunin",
+			"nome": "Aburame, mestre dos insetos: Chunin",
+			"formato": "retrato",
+			"plano": ["medio"],
+			"prompt": "a chunin ninja of the Aburame clan in a high collared long coat and round dark sunglasses, original character, a young adult, a swarm of beetles pouring out of his sleeves toward an enemy"
+		},
+		{
+			"slug": "cla-aburame--jounin",
+			"nome": "Aburame, mestre dos insetos: Jounin",
+			"formato": "quadro",
+			"plano": ["aereo"],
+			"prompt": "a jounin ninja of the Aburame clan in a high collared long coat and round dark sunglasses, original character, an adult, an enormous sphere of insects surrounding and draining an enemy ninja"
+		},
+		{
+			"slug": "cla-aburame--lider-do-cla",
+			"nome": "Aburame, mestre dos insetos: Líder do clã",
+			"formato": "pagina",
+			"plano": ["de-baixo", "holandes"],
+			"prompt": "a clan head ninja of the Aburame clan in a high collared long coat and round dark sunglasses, original character, elderly, the old Aburame clan head standing calmly while a tornado of insects swallows the sky",
+			"escolhida": "cla-aburame--lider-do-cla-8101.png"
+		},
+		{
+			"slug": "aguias-e-falcoes--falcao-mensageiro",
+			"nome": "Águias e falcões: Falcão mensageiro",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a small hawk summon flying with a message scroll tied to its leg over a mountain pass"
+		},
+		{
+			"slug": "aguias-e-falcoes--aguia-de-caca",
+			"nome": "Águias e falcões: Águia de caça",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "an eagle summon diving with talons forward toward a ninja on a rocky peak"
+		},
+		{
+			"slug": "aguias-e-falcoes--aguia-gigante",
+			"nome": "Águias e falcões: Águia gigante",
+			"formato": "faixa",
+			"plano": ["de-baixo"],
+			"prompt": "a giant brown eagle summon with a white head diving from the sky with wings half folded and talons forward, a ninja riding on its back, mountain peaks and clouds",
+			"escolhida": "aguias-e-falcoes-7901.png",
+			"veio_de": "aguias-e-falcoes"
+		},
+		{
+			"slug": "aguias-e-falcoes--senhor-dos-ceus",
+			"nome": "Águias e falcões: Senhor dos céus",
+			"formato": "pagina",
+			"plano": ["de-baixo", "silhueta"],
+			"prompt": "a colossal eagle summon with wings spread wide blotting out the sun over a village, its shadow covering the rooftops"
+		},
+		{
+			"slug": "cla-akimichi--genin",
+			"nome": "Akimichi, guerreiro gigante: Genin",
+			"formato": "retrato",
+			"plano": ["holandes"],
+			"prompt": "a genin ninja of the Akimichi clan with a big heavyset body, long spiky reddish brown hair, red swirl marks on the cheeks and red armor with the kanji 食, original character, a teenager, eating chips while expanding one arm into a giant fist"
+		},
+		{
+			"slug": "cla-akimichi--chunin",
+			"nome": "Akimichi, guerreiro gigante: Chunin",
+			"formato": "retrato",
+			"plano": ["medio"],
+			"prompt": "a chunin ninja of the Akimichi clan with a big heavyset body, long spiky reddish brown hair, red swirl marks on the cheeks and red armor with the kanji 食, original character, a young adult, rolling as a giant human boulder across a battlefield"
+		},
+		{
+			"slug": "cla-akimichi--jounin",
+			"nome": "Akimichi, guerreiro gigante: Jounin",
+			"formato": "quadro",
+			"plano": ["aereo"],
+			"prompt": "a jounin ninja of the Akimichi clan with a big heavyset body, long spiky reddish brown hair, red swirl marks on the cheeks and red armor with the kanji 食, original character, an adult, growing into a giant and crushing the ground with both fists"
+		},
+		{
+			"slug": "cla-akimichi--lider-do-cla",
+			"nome": "Akimichi, guerreiro gigante: Líder do clã",
+			"formato": "pagina",
+			"plano": ["de-baixo", "holandes"],
+			"prompt": "a clan head ninja of the Akimichi clan with a big heavyset body, long spiky reddish brown hair, red swirl marks on the cheeks and red armor with the kanji 食, original character, elderly, the huge old Akimichi clan head growing into a giant with butterfly-shaped chakra wings"
+		},
+		{
+			"slug": "aranhas--aranha-pequena",
+			"nome": "Aranhas das cavernas: Aranha pequena",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a dog-sized spider summon hanging upside down from a thread in a dark cave above an unaware ninja"
+		},
+		{
+			"slug": "aranhas--aranha-tecela",
+			"nome": "Aranhas das cavernas: Aranha tecelã",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a horse-sized spider summon spinning thick webs between trees while a ninja is caught in one"
+		},
+		{
+			"slug": "aranhas--aranha-gigante",
+			"nome": "Aranhas das cavernas: Aranha gigante",
+			"formato": "faixa",
+			"plano": ["holandes"],
+			"prompt": "a giant black and red spider summon bursting out of summoning smoke and descending on a silk thread toward a ninja trapped in a web"
+		},
+		{
+			"slug": "aranhas--rainha-das-aranhas",
+			"nome": "Aranhas das cavernas: Rainha das aranhas",
+			"formato": "pagina",
+			"plano": ["de-baixo", "silhueta"],
+			"prompt": "a colossal spider queen summon in a cave filled with silk cocoons, its many eyes glowing red"
+		},
+		{
+			"slug": "bestas-com-cauda--shukaku-o-uma-cauda",
+			"nome": "Bestas com Cauda: Shukaku, o Uma Cauda",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "Shukaku the One-Tailed beast from Naruto: a giant tanuki made of sand covered in curved blue markings, with one huge sand tail and a mad grin, in a desert at night"
+		},
+		{
+			"slug": "bestas-com-cauda--matatabi-o-duas-caudas",
+			"nome": "Bestas com Cauda: Matatabi, o Duas Caudas",
+			"formato": "faixa",
+			"plano": ["aereo"],
+			"prompt": "Matatabi the Two-Tailed beast from Naruto: a giant cat made of blue and black flames with two tails and mismatched yellow and green eyes, leaping over a mountain village"
+		},
+		{
+			"slug": "bestas-com-cauda--isobu-o-tres-caudas",
+			"nome": "Bestas com Cauda: Isobu, o Três Caudas",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "Isobu the Three-Tailed beast from Naruto: a giant turtle with a spiky coral-like shell, a single red eye and three tails, rising from a misty lake"
+		},
+		{
+			"slug": "bestas-com-cauda--son-goku-o-quatro-caudas",
+			"nome": "Bestas com Cauda: Son Gokū, o Quatro Caudas",
+			"formato": "faixa",
+			"plano": ["aereo"],
+			"prompt": "Son Goku the Four-Tailed beast from Naruto: a giant red-furred ape with four tails and two small horns spitting lava over a rocky landscape"
+		},
+		{
+			"slug": "bestas-com-cauda--kokuo-o-cinco-caudas",
+			"nome": "Bestas com Cauda: Kokuō, o Cinco Caudas",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "Kokuo the Five-Tailed beast from Naruto: a giant white horse with a dolphin-like head, long horns and five tails, charging through a cloud of boiling steam"
+		},
+		{
+			"slug": "bestas-com-cauda--saiken-o-seis-caudas",
+			"nome": "Bestas com Cauda: Saiken, o Seis Caudas",
+			"formato": "faixa",
+			"plano": ["aereo"],
+			"prompt": "Saiken the Six-Tailed beast from Naruto: a giant pale slug with six tails releasing bubbles of corrosive acid in a swamp"
+		},
+		{
+			"slug": "bestas-com-cauda--chomei-o-sete-caudas",
+			"nome": "Bestas com Cauda: Chōmei, o Sete Caudas",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "Chomei the Seven-Tailed beast from Naruto: a giant blue-green rhinoceros beetle with six insect wings and a tail, flying over a forest and scattering glowing scale powder"
+		},
+		{
+			"slug": "bestas-com-cauda--gyuki-o-oito-caudas",
+			"nome": "Bestas com Cauda: Gyūki, o Oito Caudas",
+			"formato": "faixa",
+			"plano": ["aereo"],
+			"prompt": "Gyuki the Eight-Tailed beast from Naruto: a giant ox with curved horns, a muscular humanoid upper body and eight octopus tentacle tails, standing in a stormy sea"
+		},
+		{
+			"slug": "bestas-com-cauda--kurama-o-nove-caudas",
+			"nome": "Bestas com Cauda: Kurama, o Nove Caudas",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "Kurama the Nine-Tailed Fox from Naruto: a colossal orange-red fox with nine huge swirling tails, red eyes with slit pupils and dark markings around the eyes, fangs bared over a burning village at night"
+		},
+		{
+			"slug": "caes-ninja--filhote-farejador",
+			"nome": "Cães ninja: Filhote farejador",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a small pug-like ninja dog summon wearing a forehead protector and a tiny blue vest sniffing a scroll in the summoner's hand"
+		},
+		{
+			"slug": "caes-ninja--cao-de-caca",
+			"nome": "Cães ninja: Cão de caça",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a large ninja hound summon with a forehead protector biting the arm of an enemy ninja holding a kunai"
+		},
+		{
+			"slug": "caes-ninja--cao-de-guerra",
+			"nome": "Cães ninja: Cão de guerra",
+			"formato": "faixa",
+			"plano": ["holandes"],
+			"prompt": "a giant ninja dog summon carrying its summoner on its back while running through a forest, wind in the fur"
+		},
+		{
+			"slug": "caes-ninja--chefe-da-matilha",
+			"nome": "Cães ninja: Chefe da matilha",
+			"formato": "pagina",
+			"plano": ["de-baixo", "silhueta"],
+			"prompt": "an enormous old grey ninja dog with one blind eye and a forehead protector howling on a cliff at night with the pack below"
+		},
+		{
+			"slug": "centopeias--centopeia-pequena",
+			"nome": "Centopeias da Floresta da Morte: Centopeia pequena",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a small centipede summon crawling out of summoning smoke along a ninja's arm"
+		},
+		{
+			"slug": "centopeias--centopeia-de-emboscada",
+			"nome": "Centopeias da Floresta da Morte: Centopeia de emboscada",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a man-sized centipede summon coiled around a tree trunk ready to strike at a ninja below"
+		},
+		{
+			"slug": "centopeias--centopeia-gigante",
+			"nome": "Centopeias da Floresta da Morte: Centopeia gigante",
+			"formato": "faixa",
+			"plano": ["inteiro"],
+			"prompt": "a huge giant centipede from the Forest of Death coiled in an S around enormous gnarled tree roots, glossy dark purple-red armored segments, dozens of sharp orange legs, the front of the body reared up high with curved black pincers and long antennae, the Forest of Death of Training Ground 44 behind it: colossal ancient tree trunks, thick dark green canopy blocking the sun, roots as big as bridges, shafts of light through mist",
+			"escolhida": "centopeia-gigante-7502.png",
+			"veio_de": "centopeias"
+		},
+		{
+			"slug": "centopeias--matriarca-do-ninho",
+			"nome": "Centopeias da Floresta da Morte: Matriarca do ninho",
+			"formato": "pagina",
+			"plano": ["de-baixo", "silhueta"],
+			"prompt": "a colossal centipede matriarch summon circling a giant tree in the Forest of Death above a nest of eggs"
+		},
+		{
+			"slug": "cobras-de-ryuchi--cobra-pequena",
+			"nome": "Cobras de Ryūchi: Cobra pequena",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a small purple snake summon coiled around the summoner's arm with fangs bared toward the camera"
+		},
+		{
+			"slug": "cobras-de-ryuchi--cobra-de-bote",
+			"nome": "Cobras de Ryūchi: Cobra de bote",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a purple snake summon as thick as a tree trunk striking out of the grass toward a ninja"
+		},
+		{
+			"slug": "cobras-de-ryuchi--serpente-gigante",
+			"nome": "Cobras de Ryūchi: Serpente gigante",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "a colossal summoned snake from Ryuchi Cave rising high and coiling, dark purple scales with darker violet markings and a pale yellow underside, yellow slit eyes, forked tongue, a small ninja standing on the ground in front of it for scale, white summoning smoke, dark misty rocky mountains, cracked ground",
+			"escolhida": "serpente-ryuchi-7802.png",
+			"veio_de": "cobras-de-ryuchi"
+		},
+		{
+			"slug": "cobras-de-ryuchi--chefe-das-serpentes",
+			"nome": "Cobras de Ryūchi: Chefe das serpentes",
+			"formato": "pagina",
+			"plano": ["de-baixo", "silhueta"],
+			"prompt": "the colossal purple chief snake of Ryuchi Cave with dark markings and yellow slit eyes rising above the clouds, a tiny ninja standing on its head"
+		},
+		{
+			"slug": "cla-hozuki--genin",
+			"nome": "Hozuki, corpo de água: Genin",
+			"formato": "retrato",
+			"plano": ["holandes"],
+			"prompt": "a genin ninja of the Hozuki clan with pale silvery blue hair, purple eyes and sharp pointed teeth, original character, a teenager, a young Hozuki girl turning her hand into water to escape a grip"
+		},
+		{
+			"slug": "cla-hozuki--chunin",
+			"nome": "Hozuki, corpo de água: Chunin",
+			"formato": "retrato",
+			"plano": ["medio"],
+			"prompt": "a chunin ninja of the Hozuki clan with pale silvery blue hair, purple eyes and sharp pointed teeth, original character, a young adult, his body splashing into water around a kunai as he grins"
+		},
+		{
+			"slug": "cla-hozuki--jounin",
+			"nome": "Hozuki, corpo de água: Jounin",
+			"formato": "quadro",
+			"plano": ["aereo"],
+			"prompt": "a jounin ninja of the Hozuki clan with pale silvery blue hair, purple eyes and sharp pointed teeth, original character, an adult, his arm swelling into a huge muscle of water for a crushing punch"
+		},
+		{
+			"slug": "cla-hozuki--lider-do-cla",
+			"nome": "Hozuki, corpo de água: Líder do clã",
+			"formato": "pagina",
+			"plano": ["de-baixo", "holandes"],
+			"prompt": "a clan head ninja of the Hozuki clan with pale silvery blue hair, purple eyes and sharp pointed teeth, original character, elderly, the old Hozuki clan head rising out of a lake as a giant made of water"
+		},
+		{
+			"slug": "cla-hyuuga--genin",
+			"nome": "Hyuuga, guardião do Byakugan: Genin",
+			"formato": "retrato",
+			"plano": ["medio"],
+			"prompt": "a genin ninja of the Hyuuga clan with long dark hair and pale white pupilless eyes, original character, a teenager, a young girl of the Hyuuga clan with short hair practicing the Gentle Fist stance in the clan dojo"
+		},
+		{
+			"slug": "cla-hyuuga--chunin",
+			"nome": "Hyuuga, guardião do Byakugan: Chunin",
+			"formato": "retrato",
+			"plano": ["escorco"],
+			"prompt": "a chunin ninja of the Hyuuga clan with long dark hair and pale white pupilless eyes, original character, a young adult, the Byakugan veins bulging around his eyes as he strikes with two fingers"
+		},
+		{
+			"slug": "cla-hyuuga--jounin",
+			"nome": "Hyuuga, guardião do Byakugan: Jounin",
+			"formato": "quadro",
+			"plano": ["olhos"],
+			"prompt": "a jounin ninja of the Hyuuga clan with long dark hair and pale white pupilless eyes, original character, an adult, spinning in a dome of chakra rotation that blasts enemies away"
+		},
+		{
+			"slug": "cla-hyuuga--lider-do-cla",
+			"nome": "Hyuuga, guardião do Byakugan: Líder do clã",
+			"formato": "pagina",
+			"plano": ["aereo"],
+			"prompt": "a clan head ninja of the Hyuuga clan with long dark hair and pale white pupilless eyes, original character, elderly, the stern old Hyuuga clan head in traditional robes unleashing a storm of palm strikes, a forehead-sealed branch member kneeling behind"
+		},
+		{
+			"slug": "cla-inuzuka--genin",
+			"nome": "Inuzuka, caçador e seu cão: Genin",
+			"formato": "retrato",
+			"plano": ["de-cima"],
+			"prompt": "a genin ninja of the Inuzuka clan with red fang-shaped marks on both cheeks and a fur hooded jacket, original character, a teenager, running on all fours with a small white puppy in his jacket"
+		},
+		{
+			"slug": "cla-inuzuka--chunin",
+			"nome": "Inuzuka, caçador e seu cão: Chunin",
+			"formato": "retrato",
+			"plano": ["de-baixo", "holandes"],
+			"prompt": "a chunin ninja of the Inuzuka clan with red fang-shaped marks on both cheeks and a fur hooded jacket, original character, a young adult, spinning in a drilling whirlwind of fangs with his ninja hound"
+		},
+		{
+			"slug": "cla-inuzuka--jounin",
+			"nome": "Inuzuka, caçador e seu cão: Jounin",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a jounin ninja of the Inuzuka clan with red fang-shaped marks on both cheeks and a fur hooded jacket, original character, an adult, transformed together with his giant hound into a two-headed wolf beast"
+		},
+		{
+			"slug": "cla-inuzuka--lider-do-cla",
+			"nome": "Inuzuka, caçador e seu cão: Líder do clã",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "a clan head ninja of the Inuzuka clan with red fang-shaped marks on both cheeks and a fur hooded jacket, original character, elderly, the wild-haired old Inuzuka clan head beside an enormous three-headed wolf beast transformation"
+		},
+		{
+			"slug": "javalis--leitao",
+			"nome": "Javalis da floresta: Leitão",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a small piglet summon with tiny tusks charging out of summoning smoke"
+		},
+		{
+			"slug": "javalis--javali-de-batalha",
+			"nome": "Javalis da floresta: Javali de batalha",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a horse-sized boar summon charging through a line of enemy soldiers"
+		},
+		{
+			"slug": "javalis--javali-gigante",
+			"nome": "Javalis da floresta: Javali gigante",
+			"formato": "quadro",
+			"plano": ["inteiro"],
+			"prompt": "a giant wild boar with huge yellow tusks charging out of the forest and knocking down small trees, side view, dust and flying leaves",
+			"escolhida": "javali-gigante-7901.png",
+			"veio_de": "javalis"
+		},
+		{
+			"slug": "javalis--rei-dos-javalis",
+			"nome": "Javalis da floresta: Rei dos javalis",
+			"formato": "pagina",
+			"plano": ["de-baixo", "silhueta"],
+			"prompt": "a colossal boar king summon trampling through a forest with trees flying in the air"
+		},
+		{
+			"slug": "jinchuuriki--chakra-vazando",
+			"nome": "Jinchuuriki: Chakra vazando",
+			"formato": "retrato",
+			"plano": ["holandes"],
+			"prompt": "a young jinchuuriki ninja, original character with long dark hair in a ponytail and no whisker marks, red chakra seeping from the skin and slit red pupils, crouched and holding back"
+		},
+		{
+			"slug": "jinchuuriki--manto-de-uma-cauda",
+			"nome": "Jinchuuriki: Manto de uma cauda",
+			"formato": "quadro",
+			"plano": ["olhos"],
+			"prompt": "a young jinchuuriki, original character with long dark hair and no whisker marks, wrapped in a cloak of boiling red chakra with fox ears and one tail, crouching on all fours on cracked ground"
+		},
+		{
+			"slug": "jinchuuriki--manto-de-varias-caudas",
+			"nome": "Jinchuuriki: Manto de várias caudas",
+			"formato": "pagina",
+			"plano": ["de-baixo", "silhueta"],
+			"prompt": "a jinchuuriki covered in a dark red chakra cloak with four tails, the skin hidden, glowing white eyes and a mouth full of fangs, standing in a crater it just made"
+		},
+		{
+			"slug": "cla-kaguya--genin",
+			"nome": "Kaguya, guerreiro dos ossos: Genin",
+			"formato": "retrato",
+			"plano": ["de-cima"],
+			"prompt": "a genin ninja of the Kaguya clan with long white hair and two red dots on the forehead, original character, a teenager, a young Kaguya boy firing bone bullets from his fingertips"
+		},
+		{
+			"slug": "cla-kaguya--chunin",
+			"nome": "Kaguya, guerreiro dos ossos: Chunin",
+			"formato": "retrato",
+			"plano": ["de-baixo", "holandes"],
+			"prompt": "a chunin ninja of the Kaguya clan with long white hair and two red dots on the forehead, original character, a young adult, pulling a long bone sword out of his own shoulder"
+		},
+		{
+			"slug": "cla-kaguya--jounin",
+			"nome": "Kaguya, guerreiro dos ossos: Jounin",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a jounin ninja of the Kaguya clan with long white hair and two red dots on the forehead, original character, an adult, covered in bone spikes in a whirling bone dance"
+		},
+		{
+			"slug": "cla-kaguya--lider-do-cla",
+			"nome": "Kaguya, guerreiro dos ossos: Líder do clã",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "a clan head ninja of the Kaguya clan with long white hair and two red dots on the forehead, original character, elderly, the old Kaguya clan head standing in a field of giant bone spikes erupting from the ground"
+		},
+		{
+			"slug": "lesmas-de-shikkotsu--lesma-pequena",
+			"nome": "Lesmas de Shikkotsu: Lesma pequena",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a tiny white slug summon with blue stripes clinging to an injured ninja's chest and glowing with healing chakra"
+		},
+		{
+			"slug": "lesmas-de-shikkotsu--lesma-de-cura",
+			"nome": "Lesmas de Shikkotsu: Lesma de cura",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a cow-sized white slug summon with blue stripes carrying two wounded ninjas on its back through a forest"
+		},
+		{
+			"slug": "lesmas-de-shikkotsu--lesma-gigante",
+			"nome": "Lesmas de Shikkotsu: Lesma gigante",
+			"formato": "faixa",
+			"plano": ["por-tras"],
+			"prompt": "a giant white slug summon from Shikkotsu Forest with blue stripes along its back and two eye stalks, gentle expression, looming over a medical ninja seen from behind in the foreground, damp green forest with giant mushrooms",
+			"escolhida": "lesma-shikkotsu-7801.png",
+			"veio_de": "lesmas-de-shikkotsu"
+		},
+		{
+			"slug": "lesmas-de-shikkotsu--rainha-das-lesmas",
+			"nome": "Lesmas de Shikkotsu: Rainha das lesmas",
+			"formato": "pagina",
+			"plano": ["de-baixo", "silhueta"],
+			"prompt": "the colossal white slug queen with blue stripes like the one of the Naruto anime splitting into thousands of small slugs that fly onto ninjas across a battlefield"
+		},
+		{
+			"slug": "lobos--lobo-pequeno",
+			"nome": "Lobos do Norte: Lobo pequeno",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a small wolf pup summon sniffing tracks in the snow beside its summoner's boots"
+		},
+		{
+			"slug": "lobos--lobo-de-caca",
+			"nome": "Lobos do Norte: Lobo de caça",
+			"formato": "faixa",
+			"plano": ["aberto"],
+			"prompt": "a pack of grey wolves running through a snowy pine forest at dusk, glowing yellow eyes, breath vapor, snowy mountains far away, cold blue light",
+			"escolhida": "alcateia-lobos-7801.png",
+			"veio_de": "lobos"
+		},
+		{
+			"slug": "lobos--lobo-gigante",
+			"nome": "Lobos do Norte: Lobo gigante",
+			"formato": "faixa",
+			"plano": ["holandes"],
+			"prompt": "a giant grey wolf summon carrying a ninja on its back through a snowstorm"
+		},
+		{
+			"slug": "lobos--chefe-da-alcateia",
+			"nome": "Lobos do Norte: Chefe da alcateia",
+			"formato": "pagina",
+			"plano": ["de-baixo", "silhueta"],
+			"prompt": "an enormous old white wolf summon howling on a snowy cliff under a full moon with the pack below"
+		},
+		{
+			"slug": "macacos-guerreiros--macaco-pequeno",
+			"nome": "Macacos guerreiros: Macaco pequeno",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a small mischievous monkey summon running off with a stolen scroll and grinning back at the camera"
+		},
+		{
+			"slug": "macacos-guerreiros--macaco-lutador",
+			"nome": "Macacos guerreiros: Macaco lutador",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a monkey warrior summon in a small armored vest leaping between branches swinging a staff"
+		},
+		{
+			"slug": "macacos-guerreiros--macaco-guerreiro",
+			"nome": "Macacos guerreiros: Macaco guerreiro",
+			"formato": "faixa",
+			"plano": ["holandes"],
+			"prompt": "a giant monkey summon turning into a long black iron staff in the summoner's hands in a burst of smoke"
+		},
+		{
+			"slug": "macacos-guerreiros--rei-dos-macacos",
+			"nome": "Macacos guerreiros: Rei dos macacos",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "an old wise monkey summon hanging upside down from a branch by its tail, white fur mane, wearing a small armored vest and a forehead protector, holding a black iron staff, mountain forest",
+			"escolhida": "macacos-guerreiros-7901.png",
+			"veio_de": "macacos-guerreiros"
+		},
+		{
+			"slug": "cla-nara--genin",
+			"nome": "Nara, estrategista das sombras: Genin",
+			"formato": "retrato",
+			"plano": ["de-cima"],
+			"prompt": "a genin ninja of the Nara clan with a spiky high ponytail and sleepy sharp eyes, original character, a teenager, practicing the shadow possession hand seal at sunset with his shadow stretching across a training field"
+		},
+		{
+			"slug": "cla-nara--chunin",
+			"nome": "Nara, estrategista das sombras: Chunin",
+			"formato": "retrato",
+			"plano": ["de-baixo", "holandes"],
+			"prompt": "a chunin ninja of the Nara clan with a spiky high ponytail and sleepy sharp eyes, original character, a young adult, binding two enemy ninjas with a long shadow in a forest"
+		},
+		{
+			"slug": "cla-nara--jounin",
+			"nome": "Nara, estrategista das sombras: Jounin",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a jounin ninja of the Nara clan with a spiky high ponytail and sleepy sharp eyes, original character, an adult, strangling an enemy with shadow hands rising from the ground"
+		},
+		{
+			"slug": "cla-nara--lider-do-cla",
+			"nome": "Nara, estrategista das sombras: Líder do clã",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "a clan head ninja of the Nara clan with a spiky high ponytail and sleepy sharp eyes, original character, elderly, an old Nara clan head with a scarred face and a goatee among the deer of the clan forest, shadow spikes piercing many enemies"
+		},
+		{
+			"slug": "portador-da-marca--marca-adormecida",
+			"nome": "Portador da marca amaldiçoada: Marca adormecida",
+			"formato": "retrato",
+			"plano": ["holandes"],
+			"prompt": "a young ninja, original character with short brown hair, touching a small black curse seal of three comma-shaped marks on his neck, brooding alone on a forest branch"
+		},
+		{
+			"slug": "portador-da-marca--marca-desperta",
+			"nome": "Portador da marca amaldiçoada: Marca desperta",
+			"formato": "quadro",
+			"plano": ["olhos"],
+			"prompt": "a young ninja, original character with short brown hair, black flame-shaped curse marks spreading over half of his body and face, gritting teeth in pain while dark purple chakra rises"
+		},
+		{
+			"slug": "portador-da-marca--segunda-forma",
+			"nome": "Portador da marca amaldiçoada: Segunda forma",
+			"formato": "pagina",
+			"plano": ["de-baixo", "silhueta"],
+			"prompt": "a ninja transformed by a curse seal into a second form, original character with dark grey skin, wild long hair, fangs and bony wings tearing out of his back, screaming toward the sky"
+		},
+		{
+			"slug": "cla-sabaku--genin",
+			"nome": "Sabaku, guardião da areia: Genin",
+			"formato": "retrato",
+			"plano": ["medio"],
+			"prompt": "a genin ninja of the Sabaku clan of Sunagakure with a large sand gourd on the back, original character, a teenager, a young Sabaku boy throwing sand shuriken on a dune"
+		},
+		{
+			"slug": "cla-sabaku--chunin",
+			"nome": "Sabaku, guardião da areia: Chunin",
+			"formato": "retrato",
+			"plano": ["escorco"],
+			"prompt": "a chunin ninja of the Sabaku clan of Sunagakure with a large sand gourd on the back, original character, a young adult, a coffin of sand closing around an enemy ninja"
+		},
+		{
+			"slug": "cla-sabaku--jounin",
+			"nome": "Sabaku, guardião da areia: Jounin",
+			"formato": "quadro",
+			"plano": ["de-baixo"],
+			"prompt": "a jounin ninja of the Sabaku clan of Sunagakure with a large sand gourd on the back, original character, an adult, a huge wave of sand crashing over a canyon"
+		},
+		{
+			"slug": "cla-sabaku--lider-do-cla",
+			"nome": "Sabaku, guardião da areia: Líder do clã",
+			"formato": "pagina",
+			"plano": ["aereo"],
+			"prompt": "a clan head ninja of the Sabaku clan of Sunagakure with a large sand gourd on the back, original character, elderly, the old Sabaku clan head floating on a platform of sand above a desert village during a sandstorm"
+		},
+		{
+			"slug": "sapos-de-myoboku--sapo-pequeno",
+			"nome": "Sapos de Myōboku: Sapo pequeno",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a small orange toad summon the size of a cat with a scroll tied to its back, hopping out of white summoning smoke next to its summoner"
+		},
+		{
+			"slug": "sapos-de-myoboku--sapo-de-batalha",
+			"nome": "Sapos de Myōboku: Sapo de batalha",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a horse-sized red toad summon from Mount Myoboku in a dark vest leaping over a ninja with its tongue lashing out"
+		},
+		{
+			"slug": "sapos-de-myoboku--sapo-guerreiro",
+			"nome": "Sapos de Myōboku: Sapo guerreiro",
+			"formato": "quadro",
+			"plano": ["close", "de-baixo"],
+			"prompt": "a giant warrior toad summon from Mount Myoboku, head and chest filling the frame, warty orange-red skin with dark purple markings around the eyes and lips, pale yellow throat, big yellow eyes with horizontal black pupils, fierce frown, short dark blue happi vest, one webbed hand gripping the hilt of a long tanto sword tucked into a white sash, giant curling leaves and rock spires of Mount Myoboku behind, misty sky",
+			"escolhida": "sapo-guerreiro-7701.png",
+			"veio_de": "sapos-de-myoboku"
+		},
+		{
+			"slug": "sapos-de-myoboku--chefe-dos-sapos",
+			"nome": "Sapos de Myōboku: Chefe dos sapos",
+			"formato": "pagina",
+			"plano": ["de-baixo", "silhueta"],
+			"prompt": "the colossal red-orange chief toad of Mount Myoboku from the Naruto anime with a pipe in his mouth, a short dark blue vest and a huge tanto blade at his waist, crouching on top of a destroyed rooftop over tiny ninjas"
+		},
+		{
+			"slug": "cla-senju--genin",
+			"nome": "Senju, herdeiro da madeira: Genin",
+			"formato": "retrato",
+			"plano": ["holandes"],
+			"prompt": "a genin ninja of the Senju clan with long dark hair and red armor of the Warring States era, original character, a teenager, a young Senju girl healing a scraped knee with green chakra in a forest camp"
+		},
+		{
+			"slug": "cla-senju--chunin",
+			"nome": "Senju, herdeiro da madeira: Chunin",
+			"formato": "retrato",
+			"plano": ["medio"],
+			"prompt": "a chunin ninja of the Senju clan with long dark hair and red armor of the Warring States era, original character, a young adult, pressing her palms to the ground as wooden pillars rise"
+		},
+		{
+			"slug": "cla-senju--jounin",
+			"nome": "Senju, herdeiro da madeira: Jounin",
+			"formato": "quadro",
+			"plano": ["aereo"],
+			"prompt": "a jounin ninja of the Senju clan with long dark hair and red armor of the Warring States era, original character, an adult, a prison of wooden pillars closing over enemy ninjas"
+		},
+		{
+			"slug": "cla-senju--lider-do-cla",
+			"nome": "Senju, herdeiro da madeira: Líder do clã",
+			"formato": "pagina",
+			"plano": ["de-baixo", "holandes"],
+			"prompt": "a clan head ninja of the Senju clan with long dark hair and red armor of the Warring States era, original character, elderly, the old Senju clan head in red armor raising a whole forest of giant trees around a battlefield"
+		},
+		{
+			"slug": "tartarugas--tartaruga-pequena",
+			"nome": "Tartarugas da Ilha-Tartaruga: Tartaruga pequena",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a small turtle summon with a scroll hidden in its shell sitting on a ninja's open palm"
+		},
+		{
+			"slug": "tartarugas--tartaruga-de-casco",
+			"nome": "Tartarugas da Ilha-Tartaruga: Tartaruga de casco",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a large turtle summon tucked inside its shell blocking a fireball for the ninjas behind it"
+		},
+		{
+			"slug": "tartarugas--tartaruga-gigante",
+			"nome": "Tartarugas da Ilha-Tartaruga: Tartaruga gigante",
+			"formato": "faixa",
+			"plano": ["holandes"],
+			"prompt": "a giant turtle summon carrying three ninjas across a misty lake on its shell"
+		},
+		{
+			"slug": "tartarugas--ancestral-da-ilha",
+			"nome": "Tartarugas da Ilha-Tartaruga: Ancestral da ilha",
+			"formato": "quadro",
+			"plano": ["aberto"],
+			"prompt": "a giant ancient turtle summon with a mossy shell like a small island resting at the edge of a calm lake, tiny ninjas standing near its head, morning mist",
+			"escolhida": "tartarugas-7901.png",
+			"veio_de": "tartarugas"
+		},
+		{
+			"slug": "tigres--filhote-de-tigre",
+			"nome": "Tigres do bambuzal: Filhote de tigre",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a tiger cub summon pouncing out of tall grass toward the camera"
+		},
+		{
+			"slug": "tigres--tigre-de-caca",
+			"nome": "Tigres do bambuzal: Tigre de caça",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a tiger summon stalking low through a green bamboo forest, eyes fixed on a ninja"
+		},
+		{
+			"slug": "tigres--tigre-gigante",
+			"nome": "Tigres do bambuzal: Tigre gigante",
+			"formato": "faixa",
+			"plano": ["holandes"],
+			"prompt": "a huge striped tiger summon leaping out of a cloud of white summoning smoke with claws out toward a ninja falling back"
+		},
+		{
+			"slug": "tigres--senhor-do-bambuzal",
+			"nome": "Tigres do bambuzal: Senhor do bambuzal",
+			"formato": "pagina",
+			"plano": ["de-baixo", "silhueta"],
+			"prompt": "a colossal white tiger summon with glowing eyes standing in a moonlit bamboo forest"
+		},
+		{
+			"slug": "cla-uchiha--genin",
+			"nome": "Uchiha, portador do Sharingan: Genin",
+			"formato": "retrato",
+			"plano": ["de-cima"],
+			"prompt": "a genin ninja of the Uchiha clan with dark hair and a high collared navy shirt with the red and white Uchiha fan crest, original character, a teenager, a young Uchiha boy blowing his first great fireball over a lake pier"
+		},
+		{
+			"slug": "cla-uchiha--chunin",
+			"nome": "Uchiha, portador do Sharingan: Chunin",
+			"formato": "retrato",
+			"plano": ["de-baixo", "holandes"],
+			"prompt": "a chunin ninja of the Uchiha clan with dark hair and a high collared navy shirt with the red and white Uchiha fan crest, original character, a young adult, red Sharingan eyes with two tomoe reading an enemy's punch"
+		},
+		{
+			"slug": "cla-uchiha--jounin",
+			"nome": "Uchiha, portador do Sharingan: Jounin",
+			"formato": "quadro",
+			"plano": ["olhos"],
+			"prompt": "a jounin ninja of the Uchiha clan with dark hair and a high collared navy shirt with the red and white Uchiha fan crest, original character, an adult, a dragon of flames bursting from his mouth across the battlefield"
+		},
+		{
+			"slug": "cla-uchiha--lider-do-cla",
+			"nome": "Uchiha, portador do Sharingan: Líder do clã",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "a clan head ninja of the Uchiha clan with dark hair and a high collared navy shirt with the red and white Uchiha fan crest, original character, elderly, the proud old Uchiha clan head with red Sharingan eyes with three tomoe standing in front of a burning fan crest banner"
+		},
+		{
+			"slug": "ursos--filhote-de-urso",
+			"nome": "Ursos das montanhas: Filhote de urso",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a small bear cub summon tumbling out of summoning smoke at its summoner's feet"
+		},
+		{
+			"slug": "ursos--urso-de-batalha",
+			"nome": "Ursos das montanhas: Urso de batalha",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a brown bear summon standing up and grappling a ninja in a crushing hug"
+		},
+		{
+			"slug": "ursos--urso-gigante",
+			"nome": "Ursos das montanhas: Urso gigante",
+			"formato": "quadro",
+			"plano": ["de-baixo"],
+			"prompt": "an enormous brown bear rearing up on its hind legs and roaring, claws out, scars on its snout, dense autumn mountain forest with falling red leaves",
+			"escolhida": "urso-gigante-7801.png",
+			"veio_de": "ursos"
+		},
+		{
+			"slug": "ursos--rei-da-montanha",
+			"nome": "Ursos das montanhas: Rei da montanha",
+			"formato": "pagina",
+			"plano": ["de-baixo", "silhueta"],
+			"prompt": "a colossal grey bear king summon roaring on top of a mountain, storm clouds behind"
+		},
+		{
+			"slug": "cla-uzumaki--genin",
+			"nome": "Uzumaki, mestre dos selos: Genin",
+			"formato": "retrato",
+			"plano": ["medio"],
+			"prompt": "a genin ninja of the Uzumaki clan with bright red hair and the red spiral crest, original character, a teenager, a young Uzumaki girl drawing her first sealing formula with a brush"
+		},
+		{
+			"slug": "cla-uzumaki--chunin",
+			"nome": "Uzumaki, mestre dos selos: Chunin",
+			"formato": "retrato",
+			"plano": ["escorco"],
+			"prompt": "a chunin ninja of the Uzumaki clan with bright red hair and the red spiral crest, original character, a young adult, sealing an enemy's jutsu into a scroll covered in glowing symbols"
+		},
+		{
+			"slug": "cla-uzumaki--jounin",
+			"nome": "Uzumaki, mestre dos selos: Jounin",
+			"formato": "quadro",
+			"plano": ["de-baixo"],
+			"prompt": "a jounin ninja of the Uzumaki clan with bright red hair and the red spiral crest, original character, an adult, golden chakra chains erupting from his back to bind a huge beast"
+		},
+		{
+			"slug": "cla-uzumaki--lider-do-cla",
+			"nome": "Uzumaki, mestre dos selos: Líder do clã",
+			"formato": "pagina",
+			"plano": ["aereo"],
+			"prompt": "a clan head ninja of the Uzumaki clan with bright red hair and the red spiral crest, original character, elderly, the old Uzumaki clan head with long red hair among the ruins of the Whirlpool Village, a giant sealing formula glowing on the ground"
+		},
+		{
+			"slug": "cla-yamanaka--genin",
+			"nome": "Yamanaka, invasor de mentes: Genin",
+			"formato": "retrato",
+			"plano": ["medio"],
+			"prompt": "a genin ninja of the Yamanaka clan with platinum blonde hair in a long ponytail, original character, a teenager, forming the diamond-shaped mind transfer hand sign in a flower shop"
+		},
+		{
+			"slug": "cla-yamanaka--chunin",
+			"nome": "Yamanaka, invasor de mentes: Chunin",
+			"formato": "retrato",
+			"plano": ["escorco"],
+			"prompt": "a chunin ninja of the Yamanaka clan with platinum blonde hair in a long ponytail, original character, a young adult, her mind transferring into an enemy ninja who turns his weapon against his allies"
+		},
+		{
+			"slug": "cla-yamanaka--jounin",
+			"nome": "Yamanaka, invasor de mentes: Jounin",
+			"formato": "quadro",
+			"plano": ["de-baixo"],
+			"prompt": "a jounin ninja of the Yamanaka clan with platinum blonde hair in a long ponytail, original character, an adult, a sensor ninja with her hand on a big glowing barrier device linking many minds"
+		},
+		{
+			"slug": "cla-yamanaka--lider-do-cla",
+			"nome": "Yamanaka, invasor de mentes: Líder do clã",
+			"formato": "pagina",
+			"plano": ["aereo"],
+			"prompt": "a clan head ninja of the Yamanaka clan with platinum blonde hair in a long ponytail, original character, elderly, the old Yamanaka clan head in a dark interrogation room with his hand on a prisoner's head, glowing mind chakra"
+		},
+		{
+			"slug": "cla-yuki--genin",
+			"nome": "Yuki, espelhos de gelo: Genin",
+			"formato": "retrato",
+			"plano": ["de-cima"],
+			"prompt": "a genin ninja of the Yuki clan with long dark hair and a pale face, original character, a teenager, a young Yuki girl making ice flowers bloom in the snow"
+		},
+		{
+			"slug": "cla-yuki--chunin",
+			"nome": "Yuki, espelhos de gelo: Chunin",
+			"formato": "retrato",
+			"plano": ["de-baixo", "holandes"],
+			"prompt": "a chunin ninja of the Yuki clan with long dark hair and a pale face, original character, a young adult, throwing a spray of ice needles in a frozen forest"
+		},
+		{
+			"slug": "cla-yuki--jounin",
+			"nome": "Yuki, espelhos de gelo: Jounin",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a jounin ninja of the Yuki clan with long dark hair and a pale face, original character, an adult, a dome of ice mirrors around a trapped ninja with her reflection in every mirror"
+		},
+		{
+			"slug": "cla-yuki--lider-do-cla",
+			"nome": "Yuki, espelhos de gelo: Líder do clã",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "a clan head ninja of the Yuki clan with long dark hair and a pale face, original character, elderly, the old Yuki clan head in a blizzard surrounded by a field of giant ice crystals"
 		}
 	],
 	"direcao_nota": "Direção (20/10): referências do anime e do mangá de Naruto, e ângulos ousados como os quadros-chave do anime: câmera inclinada, silhueta contra a lua, close nos olhos, escorço, vista aérea, contra-plongée extremo. O personagem no meio de uma ação, fora do centro, cortado pela moldura. Nunca a pose de ficha (de pé, de frente, no centro, fundo simétrico). Rostos originais; criaturas e símbolos canônicos iguais aos do anime."

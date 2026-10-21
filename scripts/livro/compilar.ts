@@ -338,6 +338,10 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			ataques: AtaqueYaml[];
 			jutsus?: JutsuYaml[];
 			tracos?: { nome: string; efeito: string }[];
+			/** Formato da arte própria do estágio (padrão: retrato para gente, quadro para o resto). */
+			arte?: { formato: FormatoArte; plano: string };
+			/** A arte deste estágio serve de capa da categoria quando ela não tem arte própria. */
+			capa?: boolean;
 		};
 		/** Verbete com estágios (invocações, feras que crescem, transformações) ou com a ficha direto nele (os demais). */
 		type CriaturaYaml = Partial<Omit<EstagioYaml, 'nome'>> & {
@@ -364,7 +368,14 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			return m ? +m[1] / +m[2] : +rotulo;
 		};
 
-		const estagioDe = (y: CriaturaYaml, e: EstagioYaml): EstagioCriatura => {
+		/** Arte em static/; arquivo null se ainda não foi feita. */
+		const arteDe = (arquivo: string, formato: FormatoArte, plano: string) => {
+			const [largura, altura] = TAMANHO[formato];
+			return { arquivo: existsSync(join(raiz, 'static', arquivo)) ? `/${arquivo}` : null, formato, plano, largura, altura };
+		};
+		const GENTE: TipoCriatura[] = ['shinobi', 'fora da lei', 'guerreiro'];
+		/** `varios`: o verbete tem mais de um estágio, e cada um vira uma ficha separada, com arte própria. */
+		const estagioDe = (y: CriaturaYaml, e: EstagioYaml, varios: boolean): EstagioCriatura => {
 			const f = e.ficha ? FICHAS[e.ficha] : null;
 			if (e.ficha && !f) avisar(`Bestiário: ficha de invocação desconhecida em ${y.slug}: ${e.ficha}`);
 			const rotulo = f ? String(f.ameaca) : String(e.ameaca);
@@ -391,8 +402,12 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			});
 			if (f) js.push({ slug: null, nome: 'Usos de jutsu', rank: null, custo: null, nota: f.jutsus });
 			const ameaca = valor(rotulo);
+			const slugE = slug(e.nome);
+			const formatoE = e.arte?.formato ?? (GENTE.includes(y.tipo) ? 'retrato' : 'quadro');
 			return {
+				slug: slugE,
 				nome: e.nome,
+				arte: varios ? arteDe(`bestiario/${y.slug}--${slugE}.png`, formatoE, e.arte?.plano ?? '') : null,
 				ameaca,
 				ameacaRotulo: rotulo,
 				papel: e.papel,
@@ -422,12 +437,23 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			.map((y): Criatura => {
 				if (y.vila && !NOME_VILA[y.vila]) avisar(`Bestiário: vila desconhecida em ${y.slug}: ${y.vila}`);
 				const { slug: _s, tipo: _t, origem: _o, vila: _v, arte: _a, cena: _c, descricao: _d, estagios: lista, taticas: _ta, ganchos: _g, tags: _tg, ...ficha } = y;
-				const estagios = (lista ?? [{ ...ficha, papel: ficha.papel!, ataques: ficha.ataques ?? [] } as EstagioYaml]).map((e) => estagioDe(y, e));
+				const doYaml = lista ?? [{ ...ficha, papel: ficha.papel!, ataques: ficha.ataques ?? [] } as EstagioYaml];
+				const estagios = doYaml.map((e) => estagioDe(y, e, doYaml.length > 1));
 				const min = Math.min(...estagios.map((e) => e.ameaca));
 				const max = Math.max(...estagios.map((e) => e.ameaca));
 				const rotulo = (n: number) => estagios.find((e) => e.ameaca === n)!.ameacaRotulo;
-				const arquivo = `bestiario/${y.slug}.png`;
-				const [largura, altura] = TAMANHO[y.arte.formato];
+				// a categoria sem arte própria usa a de um estágio: o marcado como capa ou o primeiro que já tem arte
+				let arte = arteDe(`bestiario/${y.slug}.png`, y.arte.formato, y.arte.plano);
+				if (!arte.arquivo) {
+					const i = doYaml.findIndex((e) => e.capa);
+					const capa = [estagios[i], ...estagios].find((e) => e?.arte?.arquivo)?.arte;
+					if (capa) arte = { ...capa };
+				}
+				const vistos = new Set<string>();
+				for (const e of estagios) {
+					if (vistos.has(e.slug)) avisar(`Bestiário: estágio repetido em ${y.slug}: ${e.nome}`);
+					vistos.add(e.slug);
+				}
 				return {
 					slug: y.slug,
 					nome: y.nome,
@@ -435,7 +461,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 					tipo: y.tipo,
 					origem: y.origem,
 					vila: y.vila && NOME_VILA[y.vila] ? { nome: NOME_VILA[y.vila], icone: `vila/ic-vila-${y.vila}` } : null,
-					arte: { arquivo: existsSync(join(raiz, 'static', arquivo)) ? `/${arquivo}` : null, formato: y.arte.formato, plano: y.arte.plano, largura, altura },
+					arte,
 					cena: y.cena.map(trechosDeMd),
 					descricao: y.descricao.map(trechosDeMd),
 					estagios,

@@ -82,7 +82,7 @@ Uma luta tranquila gasta até metade do orçamento; serve para mostrar que o gru
 Duas contas mudam a soma. O chefe conta em dobro, porque age duas vezes. E cada membro de um bando conta separado. Também vale um limite: evite um adversário avulso com ameaça mais de três acima do nível do grupo, a não ser que ele seja o chefe do arco. Um único golpe dele pode derrubar um personagem antes que alguém consiga reagir.
 
 :::exemplo{titulo="Uma emboscada para um grupo de nível 3"}
-Quatro personagens de nível 3 têm orçamento 12. Uma patrulha de Suna com três membros de ameaça 3 soma 9: é uma luta equilibrada, três quartos do orçamento. Se uma alcateia de quatro lobos aparecer no meio da luta, a soma sobe para 11, e a mesma cena fica difícil.
+Quatro personagens de nível 3 têm orçamento 12. Uma patrulha de Suna com três membros de ameaça 3 soma 9: é uma luta equilibrada, três quartos do orçamento. Se o líder da patrulha invocar um lobo pequeno no meio da luta, a soma sobe para 11, e a mesma cena fica difícil.
 :::
 
 :::na-mesa{titulo="Orçamento de encontro"}
@@ -100,12 +100,14 @@ O molde de clã soma a técnica característica do clã (cap. 8): as sombras dos
 
 ## As invocações do cap. 14 {#invocacoes}
 
-As invocações já têm ficha própria no cap. 14, e o bestiário usa a mesma ficha quando uma delas aparece do lado inimigo. Na escala, a Invocação Pequena equivale à ameaça 2, a Média à 5, a Grande à 10 e o Chefe da Espécie à 16. Cada espécie de contrato tem a sua página, com os quatro tamanhos lado a lado. O que muda de uma espécie para outra são os traços: o sapo tem a lâmina e o salto, a cobra tem o veneno e o bote, a lesma tem o ácido e a cura.
+As invocações já têm ficha própria no cap. 14, e o bestiário usa a mesma ficha quando uma delas aparece do lado inimigo. Na escala, a Invocação Pequena equivale à ameaça 2, a Média à 5, a Grande à 10 e o Chefe da Espécie à 16. Cada espécie de contrato tem a sua página, com os quatro tamanhos. O que muda de uma espécie para outra são os traços: o sapo tem a lâmina e o salto, a cobra tem o veneno e o bote, a lesma tem o ácido e a cura.
+
+Os animais do bestiário são todos invocações. Além das espécies famosas do cap. 14, o livro traz outras, como permite a linha Outra da tabela de espécies: lobos, ursos, tigres, javalis, aranhas e centopeias. Um lobo que aparece na neve tem um invocador por perto, e achar esse invocador é metade da luta.
 
 ## Como ler um verbete {#verbete}
 
 O bestiário vai em ordem alfabética, um adversário por página, e dá para folhear de um para o outro. Cada verbete começa pela arte e por uma cena curta, contada do ponto de vista de quem encontra o adversário. Depois vem quem ele é no mundo e o quadro de combate: ameaça, papel, PV, PC, Defesa, Iniciativa, ataques, jutsus e traços. Os ataques já trazem o acerto e o dano prontos para rolar.
 
-Alguns adversários crescem ou se transformam, e o verbete deles traz estágios. Uma invocação vai da pequena ao chefe da espécie; uma fera vai do filhote ao líder; uma marca amaldiçoada vai de adormecida a desperta. Cada estágio tem a sua ameaça e a sua ficha, e uma escada no alto do quadro de combate mostra todos de uma vez. Para subir o desafio sem trocar de inimigo, basta passar para o estágio de cima.
+Alguns adversários têm variações, e o verbete deles traz uma ficha separada para cada uma, com arte, resumo, jutsus e números próprios. Uma invocação vai da pequena ao chefe da espécie; um ninja de clã vai de Genin a Líder do clã; uma marca amaldiçoada vai de adormecida à segunda forma. O índice de fichas, no alto da página, mostra todas de uma vez, e as fichas vêm logo abaixo, uma depois da outra. Para subir o desafio sem trocar de inimigo, basta passar para a ficha de cima.
 
 Fechando o verbete, as táticas dizem como ele luta e quando foge, e os ganchos dão motivos para ele estar ali. As tags de comportamento são as mesmas da ficha resumida (cap. 23.2). E o botão de usar na campanha cria o NPC com esses números na lista do Mestre, pronto para entrar na ordem de iniciativa.

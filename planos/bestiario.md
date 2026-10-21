@@ -5,10 +5,9 @@
 > - visões Sumário e Galeria;
 > - uma página por verbete, folheada em ordem alfabética.
 >
-> São 61 verbetes e 139 fichas. Estágios (várias fichas na mesma página) onde fazem sentido:
-> - as 7 espécies de contrato do cap. 14, cada uma com os 4 tamanhos;
+> São 61 verbetes e 151 fichas. Onde há variações, cada uma é uma ficha separada na página da categoria, com arte, resumo, jutsus e números próprios, como os estágios de um dragão no D&D:
+> - as 13 espécies de invocação, cada uma com os 4 tamanhos do cap. 14. São as 7 famosas mais lobos, ursos, tigres, javalis, aranhas e centopeias: todos os animais do bestiário são invocações;
 > - os 13 clãs do livro, cada um com Genin, Chunin, Jounin e Líder do clã;
-> - lobos, centopeias e aranhas;
 > - a marca amaldiçoada e o jinchuuriki;
 > - as nove Bestas com Cauda, de Shukaku a Kurama.
 >
@@ -19,9 +18,12 @@
 > - o apêndice "Adversários por ameaça".
 >
 > Artes:
-> - 23 publicadas em `static/bestiario/`;
-> - 38 na fila, esperando cota do PixelLab: as 21 refeitas, os 16 verbetes novos e o cadáver de Edo Tensei. Todas seguem a direção nova, com referências do anime e do mangá e ângulos ousados (câmera inclinada, silhueta, close nos olhos, escorço, vista aérea);
-> - a arte nova da página inicial também está na fila (`pixellab/inicio.json`).
+> - 11 das 119 fichas de variação já têm arte: 10 vêm das artes de categoria que já existiam, e 1 é nova, o líder Aburame;
+> - 108 fichas de variação e 19 verbetes de ficha única estão na fila do PixelLab, primeiro os clãs. Todas seguem a direção nova, com referências do anime e do mangá e ângulos ousados;
+> - o close nos olhos fica só para Hyuuga e Uchiha. Na primeira leva, ele e a silhueta apagaram a técnica dos outros clãs;
+> - a arte nova da página inicial é a primeira da fila (`pixellab/inicio.json`).
+>
+> Regra mudada em 21/10: a Esquiva Ativa e a Defesa Total custam 10 PE cada (cap. 4), para não virarem rotina de todo turno.
 >
 > Desempenho: as imagens já saem do CDN da Vercel. `npm run imagens:otimizar` regrava os PNG com paleta, sem perda (de 1.324 KB para 579 KB), e `/bestiario/` ganhou regra de cache no `vercel.json`.
 >

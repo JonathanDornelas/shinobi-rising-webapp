@@ -73,15 +73,21 @@ Além de atacar, todo ninja conhece algumas manobras que mudam o rumo de uma lut
 
 ### Esquiva Ativa (Reação) {#esquiva-ativa-reacao}
 
-Quando um ataque vem na sua direção, você pode gastar a sua Reação para tentar sair do caminho. Faça um teste de Acrobacia: o total passa a ser a sua Defesa contra aquele ataque, mesmo que fique menor que a de costume. É uma aposta. Na mesma rodada, a Esquiva Ativa não se combina com o Kawarimi.
+Quando um ataque vem na sua direção, você pode gastar a sua Reação e 10 PE para tentar sair do caminho. Faça um teste de Acrobacia: o total passa a ser a sua Defesa contra aquele ataque, mesmo que fique menor que a de costume. É uma aposta, e uma aposta que cansa: nenhum ninja aguenta se jogar para o lado a cada golpe, e quem esquiva de tudo no começo da luta chega ao fim dela sem fôlego. Na mesma rodada, a Esquiva Ativa não se combina com o Kawarimi.
 
 ### Defesa Total {#defesa-total}
 
-Às vezes a melhor jogada é não atacar. Gastando a sua ação primária, você se fecha em guarda e ganha +5 na Defesa e na Defesa Mental até o começo do seu próximo turno.
+Às vezes a melhor jogada é não atacar. Gastando a sua ação primária e 10 PE, você se fecha em guarda e ganha +5 na Defesa e na Defesa Mental até o começo do seu próximo turno. Segurar a guarda fechada também gasta o corpo, e é por isso que ela serve para o momento certo, não para todos os turnos.
 
 ### Combo Taijutsu {#combo-taijutsu}
 
 Um golpe que entra abre espaço para o próximo. Depois de acertar um ataque de Taijutsu, você pode gastar 5 PE e a sua ação secundária para encadear um segundo ataque, com -5 na rolagem.
+
+:::na-mesa{titulo="Manobras de combate"}
+- **Esquiva Ativa:** Reação e 10 PE; teste de Acrobacia substitui a Defesa contra um ataque
+- **Defesa Total:** ação primária e 10 PE; +5 na Defesa e na Defesa Mental até o seu próximo turno
+- **Combo Taijutsu:** ação secundária e 5 PE, depois de acertar um Taijutsu; segundo ataque com -5
+:::
 
 ### Selo de Substituição (Kawarimi) {#selo-de-substituicao-kawarimi}
 

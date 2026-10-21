@@ -39,7 +39,7 @@
 						{#each linhas as l, i (`${l.slug}-${l.indice}`)}
 							<tr class="border-t border-b3 {i % 2 ? 'bg-b2' : 'bg-b1'}">
 								<td class="px-3 py-1.5">
-									<a class="link font-semibold" href="/regras/bestiario/{l.slug}{l.indice ? `?estagio=${l.indice}` : ''}">{l.estagio ?? l.verbete}</a>
+									<a class="link font-semibold" href="/regras/bestiario/{l.slug}{l.estagioSlug ? `#${l.estagioSlug}` : ''}">{l.estagio ?? l.verbete}</a>
 									{#if l.estagio}<span class="block text-[13px] text-mut">{l.verbete}</span>{/if}
 								</td>
 								<td class="px-2 py-1.5">{PAPEIS[l.papel]}{l.membros > 1 ? ` (${l.membros})` : ''}</td>

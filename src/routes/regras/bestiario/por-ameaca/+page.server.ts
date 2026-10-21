@@ -9,6 +9,7 @@ export const load: PageServerLoad = () => ({
 				slug: c.slug,
 				verbete: c.nome,
 				estagio: c.estagios.length > 1 ? e.nome : null,
+				estagioSlug: c.estagios.length > 1 ? e.slug : null,
 				indice: i,
 				ameaca: e.ameaca,
 				ameacaRotulo: e.ameacaRotulo,

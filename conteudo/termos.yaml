@@ -197,7 +197,7 @@
   rotulo: Defesa Total
   nome: Defesa Total
   padroes: [Defesa Total]
-  resumo: Usa a ação primária. +5 em Defesa e em Defesa Mental até o início do seu próximo turno.
+  resumo: Usa a ação primária e 10 PE. +5 em Defesa e em Defesa Mental até o início do seu próximo turno.
   href: /regras/combate#defesa-total
   icone: recurso/ic-recurso-defesa
 - id: regra:iniciativa
@@ -241,7 +241,7 @@
   rotulo: Esquiva Ativa
   nome: Esquiva Ativa
   padroes: [Esquiva Ativa]
-  resumo: 'Reação: role 1d20 + Acrobacia; o resultado substitui a Defesa contra aquele ataque (mesmo que seja menor).'
+  resumo: 'Reação e 10 PE: role 1d20 + Acrobacia; o resultado substitui a Defesa contra aquele ataque (mesmo que seja menor).'
   href: /regras/combate#esquiva-ativa-reacao
 - id: regra:cena
   rotulo: Cena

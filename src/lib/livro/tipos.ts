@@ -279,9 +279,25 @@ export interface JutsuCriatura {
 	nota: string | null;
 }
 
-/** Um estágio do adversário (como as idades de um dragão): cada um com a sua ameaça e a sua ficha de combate. */
+/** Arte de um verbete ou de um estágio (static/bestiario). */
+export interface ArteVerbete {
+	arquivo: string | null;
+	formato: FormatoArte;
+	plano: string;
+	largura: number;
+	altura: number;
+}
+
+/**
+ * Um estágio do adversário (como as idades de um dragão, ou os níveis de um ninja de clã): uma ficha separada, com a
+ * sua ameaça, os seus jutsus e a sua própria arte, na mesma página da categoria.
+ */
 export interface EstagioCriatura {
+	/** Âncora na página do verbete (#genin, #sapo-guerreiro). */
+	slug: string;
 	nome: string;
+	/** Arte própria do estágio (static/bestiario/<verbete>--<estágio>.png); null nos verbetes de uma ficha só. */
+	arte: ArteVerbete | null;
 	ameaca: number;
 	/** "1/2", "1/4" ou o número. */
 	ameacaRotulo: string;
@@ -314,7 +330,8 @@ export interface Criatura {
 	tipo: TipoCriatura;
 	origem: string;
 	vila: { nome: string; icone: string } | null;
-	arte: { arquivo: string | null; formato: FormatoArte; plano: string; largura: number; altura: number };
+	/** Arte da categoria; sem arquivo próprio, usa a de um estágio (o marcado como capa, ou o primeiro com arte). */
+	arte: ArteVerbete;
 	cena: Trecho[][];
 	descricao: Trecho[][];
 	estagios: EstagioCriatura[];

@@ -126,7 +126,7 @@ Os seis atributos do sistema.
 | Defesa Mental | 10 + Percepção (o alvo de ataques de Genjutsu) |
 | DT do Jutsu | 10 + bônus de rank (E +0, D +1, C +2, B +3, A +4, S +5) + atributo-chave do lançador, mais a proficiência no jutsu, se houver |
 | Resistência | Teste do alvo contra a DT de um efeito (por exemplo, 1d20 + VIG contra veneno) |
-| Esquiva Ativa | Reação: 1d20 + Acrobacia substitui a Defesa contra um ataque |
+| Esquiva Ativa | Reação e 10 PE: 1d20 + Acrobacia substitui a Defesa contra um ataque |
 | Iniciativa | 1d20 + AGI (define a ordem dos turnos em combate) |
 | Ação Primária | Atacar, lançar jutsu, sprintar, comandar marionete em manobra completa |
 | Ação Secundária | Mover (até 10 m), sacar item, comando simples a aliado |

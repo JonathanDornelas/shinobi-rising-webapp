@@ -57,6 +57,17 @@ describe('bestiário', () => {
 		}
 	});
 
+	it('cada variação é uma ficha separada, com âncora e arte próprias', () => {
+		for (const c of criaturas.filter((c) => c.estagios.length > 1)) {
+			expect(new Set(c.estagios.map((e) => e.slug)).size, c.slug).toBe(c.estagios.length);
+			for (const e of c.estagios) expect(e.arte?.arquivo === null || e.arte?.arquivo === `/bestiario/${c.slug}--${e.slug}.png`, `${c.slug}#${e.slug}`).toBe(true);
+		}
+	});
+
+	it('os animais do bestiário são todos invocações (cap. 14)', () => {
+		expect(criaturas.filter((c) => c.tipo === 'fauna').map((c) => c.slug)).toEqual([]);
+	});
+
 	it('jutsus respeitam o rank liberado pela ameaça (B a partir de 6, A de 11, S de 15)', () => {
 		const minimo = { E: 0, D: 0, C: 0, B: 6, A: 11, S: 15 } as const;
 		for (const [c, e] of daTabela) for (const j of e.combate.jutsus) if (j.rank) expect(e.ameaca, `${c.slug}: ${j.nome}`).toBeGreaterThanOrEqual(minimo[j.rank]);

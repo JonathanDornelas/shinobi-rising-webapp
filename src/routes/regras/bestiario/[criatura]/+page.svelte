@@ -1,9 +1,10 @@
 <script lang="ts">
 	// Página do verbete, como uma página de livro de monstros: a diagramação segue o formato da arte.
 	// Faixa: a arte atravessa o topo. Retrato e quadro: a arte flutua no texto, alternando o lado. Página: a arte
-	// abre o verbete ao lado do título. O quadro de combate fica na coluna da direita (embaixo, no celular); quando o
-	// adversário tem estágios, a escada deles fica em cima do quadro e troca a ficha mostrada.
-	import { untrack } from 'svelte';
+	// abre o verbete ao lado do título. Verbete de uma ficha só: o quadro de combate fica na coluna da direita.
+	// Verbete com variações (invocações, clãs, Bestas com Cauda): a coluna da direita traz o índice das fichas, e cada
+	// variação vem abaixo numa ficha separada, com a sua arte, o seu resumo e o seu quadro de combate.
+	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import ArteCriatura from '#lib/componentes/bestiario/ArteCriatura.svelte';
 	import BlocoCriatura from '#lib/componentes/bestiario/BlocoCriatura.svelte';
@@ -19,16 +20,16 @@
 	let { data }: PageProps = $props();
 	const c = $derived(data.criatura);
 	const f = $derived(c.arte.formato);
+	const varios = $derived(c.estagios.length > 1);
 	const direita = $derived(data.pagina % 2 === 0);
 	const moldura = $derived(f === 'retrato' ? (data.pagina % 2 ? 'reta' : 'vinheta') : f === 'quadro' ? (data.pagina % 2 ? 'solta' : 'reta') : 'reta');
+	/** Largura da arte de cada ficha, pelo formato (pixels inteiros: 2× o tamanho da arte, menos a faixa, que estica). */
+	const LARGURA = { retrato: 'max-w-[256px]', quadro: 'max-w-[352px]', pagina: 'max-w-[384px]', faixa: 'max-w-full' } as const;
 
-	let ativo = $state(0);
-	const estagio = $derived(c.estagios[Math.min(ativo, c.estagios.length - 1)]);
-	// a cada verbete, volta ao primeiro estágio, ou ao que o apêndice por ameaça pediu na URL (?estagio=2)
-	$effect(() => {
-		const n = c.estagios.length;
-		const e = +(untrack(() => page.url.searchParams.get('estagio')) ?? 0);
-		ativo = e > 0 && e < n ? e : 0;
+	// links antigos (?estagio=2) e do apêndice levam direto à ficha
+	onMount(() => {
+		const e = +(page.url.searchParams.get('estagio') ?? 0);
+		if (e > 0 && c.estagios[e]) document.getElementById(c.estagios[e].slug)?.scrollIntoView();
 	});
 </script>
 
@@ -40,7 +41,7 @@
 			{#if c.vila}<Icone id={c.vila.icone} />{/if}
 			<span>{c.origem}</span><span aria-hidden="true">·</span>
 			<span class="font-semibold text-fg">Ameaça {c.ameacaFaixa}</span><span aria-hidden="true">·</span>
-			<span>{c.estagios.length > 1 ? `${c.estagios.length} estágios` : PAPEIS[c.estagios[0].papel]}{c.estagios.length === 1 && c.estagios[0].membros > 1 ? `, ${c.estagios[0].membros} membros` : ''}</span>
+			<span>{varios ? `${c.estagios.length} fichas` : PAPEIS[c.estagios[0].papel]}{!varios && c.estagios[0].membros > 1 ? `, ${c.estagios[0].membros} membros` : ''}</span>
 		</p>
 	</header>
 {/snippet}
@@ -87,11 +88,38 @@
 			</div>
 		</article>
 		<div class="flex flex-col gap-4 self-start lg:sticky lg:top-20">
-			{#if c.estagios.length > 1}<EscadaEstagios estagios={c.estagios} bind:ativo />{/if}
-			<BlocoCriatura criatura={c} {estagio} />
-			<UsarNaCampanha slug={c.slug} estagio={ativo} nomeEstagio={c.estagios.length > 1 ? estagio.nome : null} />
+			{#if varios}
+				<EscadaEstagios estagios={c.estagios} />
+			{:else}
+				<BlocoCriatura criatura={c} estagio={c.estagios[0]} />
+				<UsarNaCampanha slug={c.slug} />
+			{/if}
 		</div>
 	</div>
+
+	{#if varios}
+		<!-- uma ficha separada por variação, cada uma com a sua arte, como os estágios de um dragão num livro de monstros -->
+		{#each c.estagios as e, i (e.slug)}
+			<section id={e.slug} class="flex scroll-mt-20 flex-col gap-4 border-t-2 border-b3 pt-6" aria-labelledby="titulo-{e.slug}">
+				<header class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+					<h2 id="titulo-{e.slug}" class="t-h2 m-0">{e.nome}</h2>
+					<span class="font-pixel text-xs font-bold tracking-[.12em] text-title">AMEAÇA {e.ameacaRotulo} · {PAPEIS[e.papel].toUpperCase()}{e.membros > 1 ? ` · ${e.membros} MEMBROS` : ''}</span>
+				</header>
+				<div class="grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-10">
+					<div class="flex flex-col gap-4 {i % 2 ? 'lg:order-2' : ''}">
+						{#if e.arte}
+							<figure class="m-0 mx-auto w-full {LARGURA[e.arte.formato]}">
+								<ArteCriatura criatura={{ nome: `${c.nome}: ${e.nome}`, arte: e.arte }} moldura={i % 3 === 1 ? 'vinheta' : 'reta'} class="w-full" />
+							</figure>
+						{/if}
+						{#if e.resumo}<p class="m-0 font-mincho text-[length:var(--leitura)] leading-[var(--leitura-linha)] text-pretty italic"><Texto trechos={e.resumo} /></p>{/if}
+						<UsarNaCampanha slug={c.slug} estagio={i} nomeEstagio={e.nome} />
+					</div>
+					<BlocoCriatura criatura={c} estagio={e} />
+				</div>
+			</section>
+		{/each}
+	{/if}
 
 	<nav aria-label="Folhear o bestiário" class="mt-4 grid grid-cols-2 gap-3 border-t-2 border-b3 pt-4">
 		{#if data.anterior}<a href="/regras/bestiario/{data.anterior.slug}" class="flex flex-col gap-0.5 text-sm"><span class="t-rotulo-sm text-mut">◂ Página anterior</span><span class="link font-semibold">{data.anterior.nome}</span></a>{:else}<a href="/regras/bestiario/como-usar" class="flex flex-col gap-0.5 text-sm"><span class="t-rotulo-sm text-mut">◂ Introdução</span><span class="link font-semibold">Como usar o bestiário</span></a>{/if}

@@ -13,7 +13,9 @@ export const load: PageServerLoad = () => ({
 		vila,
 		arte,
 		papel: estagios.length === 1 ? estagios[0].papel : null,
-		nEstagios: estagios.length
+		nEstagios: estagios.length,
+		// as variações aparecem no sumário embaixo da categoria, cada uma com a sua ficha e a sua arte
+		variacoes: estagios.length > 1 ? estagios.map((e) => ({ slug: e.slug, nome: e.nome, ameacaRotulo: e.ameacaRotulo, arte: e.arte! })) : []
 	})),
 	fichas: bestiario.criaturas.reduce((n, c) => n + c.estagios.length, 0),
 	comoUsar: { titulo: bestiario.comoUsar.titulo, secoes: bestiario.comoUsar.secoes.filter((s) => s.nivel === 2) },

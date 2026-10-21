@@ -34,6 +34,8 @@
       tracos:
         - { nome: Salto do pântano, efeito: "Um salto o leva por cima de inimigos e obstáculos. Conta como o deslocamento do turno." }
     - nome: Sapo guerreiro
+      arte: { formato: quadro, plano: close e de baixo }
+      capa: true
       papel: lutador
       ficha: grande
       resumo: "Colete, faixa e uma lâmina do tamanho de uma árvore."
@@ -89,6 +91,8 @@
       tracos:
         - { nome: Constrição, efeito: "Quando o bote acerta, pode enrolar o alvo, que fica **Imobilizado** até se libertar com uma Resistência de FOR contra a DT 15." }
     - nome: Serpente gigante
+      arte: { formato: pagina, plano: de baixo }
+      capa: true
       papel: lutador
       ficha: grande
       resumo: "Fecha o céu de um desfiladeiro e engole um ninja inteiro."
@@ -143,6 +147,8 @@
       tracos:
         - { nome: Corpo macio, efeito: "Não fica **Caído** nem **Atordoado** por golpes de impacto." }
     - nome: Lesma gigante
+      arte: { formato: faixa, plano: por trás de alguém }
+      capa: true
       papel: suporte
       ficha: grande
       resumo: "Protege um acampamento inteiro com o próprio corpo."
@@ -255,6 +261,8 @@
       tracos:
         - { nome: Forma de arma, efeito: "Pode virar um bastão nas mãos do invocador. Enquanto isso, o invocador usa o ataque básico dele no lugar do seu." }
     - nome: Rei dos macacos
+      arte: { formato: retrato, plano: de baixo }
+      capa: true
       papel: chefe
       ficha: chefe
       resumo: "O sábio da floresta, que já viu três gerações de Kage."
@@ -299,6 +307,8 @@
         - { nome: Voo, efeito: "Voa. Quem está no chão sem alcance não consegue atacá-la." }
         - { nome: Olhos do céu, efeito: "Tem vantagem em Percepção para ver de longe." }
     - nome: Águia gigante
+      arte: { formato: faixa, plano: de baixo }
+      capa: true
       papel: lutador
       ficha: grande
       resumo: "Carrega dois ninjas acima das nuvens."
@@ -367,6 +377,8 @@
         - { nome: Casco, efeito: "RD 4." }
         - { nome: Abrigo, efeito: "Aliados atrás do casco contam como sob cobertura." }
     - nome: Ancestral da ilha
+      arte: { formato: quadro, plano: plano aberto }
+      capa: true
       papel: chefe
       ficha: chefe
       resumo: "Uma ilha com olhos, que lembra do tempo antes das vilas."
