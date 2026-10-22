@@ -1,4 +1,5 @@
 // Modelo de dados do livro, gerado por scripts/livro/compilar.ts a partir de conteudo/ (Markdown + YAML).
+import type { FichaCompleta } from '../bestiario/ficha.ts';
 
 /**
  * Trecho de texto com formatação. `href` = referência cruzada; `termo` = id no léxico ("tipo:slug", ver TermoLexico);
@@ -318,6 +319,8 @@ export interface EstagioCriatura {
 		ataques: AtaqueCriatura[];
 		jutsus: JutsuCriatura[];
 		tracos: { nome: string; efeito: Trecho[] }[];
+		/** Atributos, perícias, especializações e proficiências, derivados dos números acima (bestiario/ficha.ts). */
+		ficha: FichaCompleta;
 	};
 }
 

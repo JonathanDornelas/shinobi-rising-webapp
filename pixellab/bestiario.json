@@ -1,6 +1,6 @@
 {
 	"_sobre": "Artes do bestiário (PixelLab create_image_pixflux, 1 geração cada): cada verbete numa cena com fundo, no estilo dos covers das vilas (mesma paleta e acabamento). Como no Monster Manual de D&D, onde cada página tem uma composição própria, cada verbete tem o seu formato (faixa, retrato, quadro, página) e o seu plano de câmera (close, médio, inteiro, aberto, de baixo, de cima, de costas, por trás). O prompt final é plano + prompt + formato + estilo. Criaturas canônicas seguem o desenho do anime; arquétipos usam o uniforme real da vila e do rank, com rosto original. \"fiel\" lista o que a arte precisa ter para passar na revisão; \"escolhida\" é a melhor tentativa, que entra no site depois da aprovação do usuário. As primeiras tentativas sem fundo ficaram em gerados/bestiario/sem-fundo/.",
-	"estilo": ", Naruto anime and manga style, faithful to the Naruto anime designs, cinematic key frame of the Naruto anime, bold artistic camera angle, dramatic perspective and lighting, dynamic asymmetric framing, the action caught mid-movement, pixel art scene, warm muted palette, crisp pixels",
+	"estilo": ", Naruto anime and manga style, faithful to the Naruto anime designs, drawn like Masashi Kishimoto in the Naruto manga: realistic body proportions with small heads (the head about one seventh of an adult body and one sixth of a teenager), long limbs, angular faces with sharp jawlines, thin confident ink lines, never chibi, never super-deformed, never big heads, cinematic key frame of the Naruto anime, bold artistic camera angle, dramatic perspective and lighting, dynamic asymmetric framing, a single storytelling moment with a natural candid pose, pixel art scene, warm muted palette, crisp pixels",
 	"paleta": ["#1a1a1a", "#2b1a14", "#5c1e15", "#8b2e20", "#c44536", "#e07a5f", "#fbf7f0", "#f4e4d6", "#d9c2a7", "#a88b6a", "#bf9000", "#f2c14e", "#069bbd", "#7fd3e6", "#38761d", "#7fb069", "#674ea7", "#a895d6", "#7f6000", "#8d6e3f", "#5e6b73", "#a7b4bc", "#e8692e", "#2e6fd1", "#ffffff"],
 	"paleta_nota": "A paleta dos covers das vilas (static/covers; a mesma imagem de cores de scripts/args/seed-capa-nevoa.json). Cada verbete pode somar cores_extras quando o uniforme ou a criatura precisa de uma cor que ela não tem (o azul-marinho e o verde-oliva de Konoha, que sem isso saíam cinza).",
 	"parametros": {
@@ -45,7 +45,7 @@
 		},
 		"inteiro": {
 			"nome": "corpo inteiro",
-			"prompt": "full body caught mid-movement at a three-quarter angle"
+			"prompt": "full body at a three-quarter angle"
 		},
 		"aberto": {
 			"nome": "plano aberto",
@@ -86,6 +86,30 @@
 		"aereo": {
 			"nome": "aéreo",
 			"prompt": "bird's eye view from very high above"
+		},
+		"ombro": {
+			"nome": "por cima do ombro",
+			"prompt": "over-the-shoulder shot from just behind the subject's head, what the subject is looking at in focus"
+		},
+		"ponta-cabeca": {
+			"nome": "de ponta-cabeça",
+			"prompt": "the subject hangs upside down, the composition built around the inverted figure"
+		},
+		"moldura": {
+			"nome": "emoldurado",
+			"prompt": "framed through something in the foreground: a doorway, a window, prison bars, a spider web or leaves"
+		},
+		"reflexo": {
+			"nome": "reflexo",
+			"prompt": "the subject also seen mirrored in still water or ice, the reflection telling part of the story"
+		},
+		"chao": {
+			"nome": "câmera no chão",
+			"prompt": "camera at ground level, grass or pebbles large and close in the foreground"
+		},
+		"perfil": {
+			"nome": "perfil",
+			"prompt": "strict side profile view, the subject crossing the frame against a flat horizon"
 		}
 	},
 	"verbetes": [
@@ -94,11 +118,33 @@
 			"nome": "Sapo guerreiro de Myōboku",
 			"tipo": "invocação",
 			"formato": "quadro",
-			"plano": ["close", "de-baixo"],
-			"escolhida": "sapo-guerreiro-7701.png",
+			"plano": ["aberto"],
 			"fiel": ["sapo grande, como os guerreiros do Monte Myōboku; sapos de Myōboku não têm rabo", "pele laranja-avermelhada com verrugas e marcas escuras em volta dos olhos e da boca", "olhos amarelos com pupila horizontal", "colete curto (happi) amarrado com faixa na cintura", "lâmina longa (dosu) na bainha presa à cintura"],
-			"prompt": "a giant warrior toad summon from Mount Myoboku, head and chest filling the frame, warty orange-red skin with dark purple markings around the eyes and lips, pale yellow throat, big yellow eyes with horizontal black pupils, fierce frown, short dark blue happi vest, one webbed hand gripping the hilt of a long tanto sword tucked into a white sash, giant curling leaves and rock spires of Mount Myoboku behind, misty sky",
-			"cores_extras": ["#1c2541", "#2e3c63"]
+			"prompt": "Mount Myoboku from the Naruto anime, a lush land of giant mushrooms, huge leaves and waterfalls where many toad summons of different sizes live: small orange toads sitting on mushroom caps, a big red toad in a vest smoking a pipe, a giant old toad sleeping by a pond, toads carrying scrolls, all drawn like the anime toads with warty skin and dark markings around the eyes and lips",
+			"cores_extras": ["#1c2541", "#2e3c63"],
+			"modelo": "pro",
+			"tamanho": [
+				168,
+				168
+			],
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/mount-myoboku.png",
+					"pagina": "Mount Myōboku",
+					"uso": "the landscape of Mount Myoboku as drawn in the Naruto anime: giant mushrooms, huge leaves, waterfalls and lush green mist"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/gamabunta.png",
+					"pagina": "Gamabunta",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/gamakichi.png",
+					"pagina": "Gamakichi",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "sapos-de-myoboku-9401-d.png"
 		},
 		{
 			"slug": "centopeias",
@@ -115,11 +161,12 @@
 			"nome": "Chunin de Konoha",
 			"tipo": "arquétipo",
 			"formato": "retrato",
-			"plano": ["inteiro"],
-			"escolhida": "chunin-konoha-7602.png",
+			"plano": ["de-cima"],
 			"fiel": ["colete tático verde-oliva de Konoha com bolsas de pergaminho no peito e ombreiras", "camisa e calça azul-marinho de manga longa, espiral vermelha no ombro", "bandana com a placa de metal e o símbolo da folha de Konoha", "bolsa de kunai na coxa direita com bandagem, sandálias ninja azuis", "rosto original, sem copiar personagem do anime"],
-			"prompt": "an adult Konoha chunin ninja standing on a red tiled rooftop in a ready stance, seen from the side, original character with short spiky brown hair, olive green Hidden Leaf flak jacket with scroll pouches on the chest, dark navy blue long-sleeved shirt and dark navy blue pants with a small red swirl emblem on the shoulder, dark blue cloth forehead protector with a shiny steel plate engraved with the leaf village symbol, white bandages and a kunai holster on the right thigh, blue ninja sandals, holding a kunai, Konohagakure houses with red roofs below and the Hokage Rock with four carved faces in the background, clear blue sky",
-			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a"]
+			"prompt": "a squad of four Konoha chunin tracking a target through a dense forest, each with a unique look and personality: a tall calm woman with a long braid crouching to read footprints, a stocky bearded man sniffing the air, a skinny young man with round glasses checking a map, a scarred veteran on a branch above signaling silence; olive green Hidden Leaf flak jackets, dark navy uniforms, leaf forehead protectors, sunlight through the leaves",
+			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a"],
+			"modelo": "pro",
+			"escolhida": "chunin-de-konoha-9401.png"
 		},
 		{
 			"slug": "genin-batedor",
@@ -147,10 +194,15 @@
 			"tipo": "arquétipo",
 			"formato": "quadro",
 			"plano": ["medio"],
-			"escolhida": "medico-ninja-7801.png",
+			"escolhida": "ninja-medico-9501.png",
 			"fiel": ["uniforme de Konoha: colete verde-oliva, roupa azul-marinho, bandana com a folha", "mãos com o brilho verde do chakra médico sobre um ferido", "rosto original"],
-			"prompt": "a Konoha medical ninja kneeling over a wounded ally on a battlefield, both hands glowing with green healing chakra over the wound, original character with short dark hair tied back, olive green Hidden Leaf flak jacket, dark navy blue uniform, forehead protector with the leaf village symbol, focused expression, smoke and broken trees behind",
-			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a"]
+			"prompt": "a Konoha medical ninja kneeling over a wounded ally in a ruined battlefield, both hands glowing with green healing chakra over the wound, detailed faces like a Naruto anime close-up: the medic is an original young woman with short dark hair tied back, sharp focused eyes and a small scar on the chin, the wounded ninja an original man with messy brown hair gritting his teeth; olive green Hidden Leaf flak jackets, dark navy uniforms, leaf forehead protectors, a medical pouch open beside them, smoke behind",
+			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a"],
+			"modelo": "pro",
+			"tamanho": [
+				168,
+				168
+			]
 		},
 		{
 			"slug": "kunoichi-de-kiri",
@@ -178,19 +230,25 @@
 			"tipo": "arquétipo",
 			"formato": "retrato",
 			"plano": ["de-baixo"],
-			"escolhida": "shinobi-iwa-7801.png",
+			"escolhida": "shinobi-de-iwa-9501.png",
 			"fiel": ["uniforme vermelho-escuro de Iwagakure com uma manga só", "colete marrom com ombreira de um lado", "bandana com o símbolo de Iwa", "mãos num selo, cânion de pedra atrás"],
-			"prompt": "a burly Iwagakure ninja standing on top of a rock pillar, original character with short brown hair, dark red uniform with a single sleeve, brown Hidden Stone flak vest with one shoulder guard, forehead protector with the Hidden Stone symbol, hands forming a hand seal, rocky brown canyon and stone bridges behind"
+			"prompt": "an Iwagakure ninja, original character with a square jaw, short brown hair and a scar across the cheek, dark red uniform with one sleeve, brown Hidden Stone flak vest with one shoulder guard, forehead protector with the Hidden Stone symbol, slamming his palms on a rocky ledge as a giant stone hand rises from the canyon behind him, debris and dust in the wind, stone bridges and cliffs of the Land of Earth",
+			"modelo": "pro"
 		},
 		{
 			"slug": "shinobi-de-kumo",
 			"nome": "Shinobi de Kumo",
 			"tipo": "arquétipo",
 			"formato": "quadro",
-			"plano": ["inteiro"],
-			"escolhida": "shinobi-kumo-7801.png",
+			"plano": ["holandes"],
+			"escolhida": "shinobi-de-kumo-9501.png",
 			"fiel": ["colete branco de Kumogakure com uma alça só", "bandana com o símbolo de Kumo", "chakra de raio em volta do corpo", "picos acima de um mar de nuvens"],
-			"prompt": "a Kumogakure ninja dashing forward wrapped in crackling blue lightning chakra, original character with dark skin and short white hair, white one-shoulder Hidden Cloud flak vest over a dark sleeveless shirt, forehead protector with the Hidden Cloud symbol, rocky mountain peaks above a sea of clouds behind, thunderstorm"
+			"prompt": "a Kumogakure ninja, original character with dark skin, short white hair and a confident grin, white one-shoulder Hidden Cloud flak vest over a dark sleeveless shirt, forehead protector with the Hidden Cloud symbol, standing on a stone peak above a sea of clouds as blue lightning chakra crackles around his arms, a storm and the Hidden Cloud village towers behind",
+			"modelo": "pro",
+			"tamanho": [
+				168,
+				168
+			]
 		},
 		{
 			"slug": "ninja-renegado",
@@ -218,9 +276,10 @@
 			"tipo": "fauna",
 			"formato": "faixa",
 			"plano": ["aberto"],
-			"escolhida": "alcateia-lobos-7801.png",
+			"escolhida": "lobos-9603.png",
 			"fiel": ["bando de lobos cinzentos correndo", "olhos amarelos, vapor da respiração", "floresta de pinheiros na neve, ao entardecer"],
-			"prompt": "a pack of grey wolves running through a snowy pine forest at dusk, glowing yellow eyes, breath vapor, snowy mountains far away, cold blue light"
+			"prompt": "a pack of wolf summons resting in the snowy courtyard of a ruined mountain fortress at dusk: many wolves of different sizes with ninja harnesses, forehead protectors and old scars, some asleep curled in the snow, two pups play-fighting, one gnawing a bone, and on top of a broken wall the old one-eyed grey alpha watching the valley, torn banners, a burning lantern, falling snow, rich detail",
+			"modelo": "pro"
 		},
 		{
 			"slug": "ursos",
@@ -228,7 +287,7 @@
 			"tipo": "fauna",
 			"formato": "quadro",
 			"plano": ["de-baixo"],
-			"escolhida": "urso-gigante-7801.png",
+			"escolhida": "ursos-9501-d.png",
 			"fiel": ["urso marrom enorme de pé nas patas de trás, rugindo", "garras à mostra, cicatrizes no focinho", "floresta de montanha no outono"],
 			"prompt": "an enormous brown bear rearing up on its hind legs and roaring, claws out, scars on its snout, dense autumn mountain forest with falling red leaves"
 		},
@@ -238,7 +297,7 @@
 			"tipo": "invocação",
 			"formato": "pagina",
 			"plano": ["de-baixo"],
-			"escolhida": "serpente-ryuchi-7802.png",
+			"escolhida": "cobras-de-ryuchi-9401-c.png",
 			"fiel": ["cobra colossal invocada, como as da Caverna Ryūchi", "escamas roxo-acinzentadas, ventre amarelo-claro, olhos amarelos de pupila fina", "um ninja pequeno na frente, para dar a escala", "fumaça da invocação"],
 			"prompt": "a colossal summoned snake from Ryuchi Cave rising high and coiling, dark purple scales with darker violet markings and a pale yellow underside, yellow slit eyes, forked tongue, a small ninja standing on the ground in front of it for scale, white summoning smoke, dark misty rocky mountains, cracked ground",
 			"cores_extras": ["#3b2a5a", "#5a3f86", "#7d5fb0"]
@@ -275,14 +334,29 @@
 			},
 			"pendente": "8 tentativas sem o visual do Edo Tensei (rachaduras, pele cinza, esclera preta). O nome da técnica puxa revividos famosos (saiu um Hashirama). O img2img a partir da 7806 (força 170, seeds 7807 e 7808) manteve o rosto e ignorou as rachaduras. Próximo: a ferramenta edit_image do PixelLab sobre a 7806, ou uma imagem de referência.",
 			"fiel": ["pele cinza rachada como papel seco, cinzas se soltando", "esclera preta, como os revividos pela Edo Tensei", "uniforme shinobi velho e rasgado, rosto original", "campo de batalha com armas cravadas no chão"],
-			"prompt": "the face of an undead ninja soldier raised from the grave, a stocky middle-aged man with short spiky grey hair, a square jaw and stubble, his skin dusty grey and covered in a web of thin black cracks like dry cracked clay, black eyeballs with small white pupils, pieces of his cheek crumbling into ash, cold empty stare, collar of an old torn green flak vest, swirling ash, battlefield with broken weapons stuck in the ground, grey sky"
+			"prompt": "the face of an undead ninja soldier raised from the grave, a stocky middle-aged man with short spiky grey hair, a square jaw and stubble, his skin dusty grey and covered in a web of thin black cracks like dry cracked clay, black eyeballs with small white pupils, pieces of his cheek crumbling into ash, cold empty stare, collar of an old torn green flak vest, swirling ash, battlefield with broken weapons stuck in the ground, grey sky",
+			"escolhida": "cadaver-edo-tensei-7801.png"
 		},
 		{
 			"slug": "agente-da-sombra",
 			"nome": "Agente da Sombra",
 			"formato": "retrato",
-			"plano": ["silhueta", "de-cima"],
-			"prompt": "a masked black ops operative of a secret division crouching on a rooftop edge at the left of the frame, plain blank white mask, black hooded cloak fluttering, a short tanto drawn in reverse grip, a lit village street far below on the right, night"
+			"plano": ["ponta-cabeca"],
+			"prompt": "a masked black ops agent of a secret division hanging upside down from the eaves of a temple roof at night, peering through a gap in a paper window at a target sleeping inside, plain blank white mask, black hooded cloak",
+			"referencia": {
+				"arquivo": "referencias/bestiario/agente-da-sombra.png",
+				"pagina": "Foundation",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/foundation.png",
+					"pagina": "Foundation",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "agente-da-sombra-9301.png"
 		},
 		{
 			"slug": "aguias-e-falcoes",
@@ -296,50 +370,74 @@
 			"slug": "aranhas",
 			"nome": "Aranhas das cavernas",
 			"formato": "quadro",
-			"plano": ["aereo"],
-			"prompt": "a giant black and red spider summon bursting out of white summoning smoke and descending on a silk thread toward a ninja trapped in a web in the lower right corner, long legs spread across the upper left of the frame, a ninja summoner with a hand on the ground far below, dark forest"
+			"plano": ["moldura"],
+			"prompt": "a giant black and red spider summon resting in the center of a huge web strung between two cliffs at dawn, dew drops shining on the silk, its ninja summoner sitting on one of the strands sharpening a kunai",
+			"escolhida": "aranhas-9301.png"
 		},
 		{
 			"slug": "bandidos-de-estrada",
 			"nome": "Bandidos de estrada",
 			"formato": "faixa",
-			"plano": ["aereo"],
-			"prompt": "an ambush on a forest road: ragged bandits jumping out of the bushes on both sides at different distances, one in the foreground left raising a club, a fallen tree across the road, a merchant cart on the right, autumn"
+			"plano": ["aberto"],
+			"prompt": "a bandit camp at night in a forest clearing: ragged bandits gambling with dice around a campfire, one asleep against a stolen merchant cart, one counting coins, a lookout with a bow up in a tree",
+			"escolhida": "bandidos-de-estrada-9301.png"
 		},
 		{
 			"slug": "bestas-com-cauda",
 			"nome": "Besta de chakra",
 			"formato": "pagina",
-			"plano": ["de-baixo", "silhueta"],
-			"prompt": "Kurama the Nine-Tailed Fox from Naruto: a colossal orange-red fox with nine huge swirling tails, red eyes with slit pupils, dark markings around the eyes, fangs bared, rising over a burning forest at night, tiny ninjas in the lower corner"
+			"plano": ["por-tras"],
+			"prompt": "Kurama the Nine-Tailed Fox from Naruto curled up behind the giant bars of a dark sealed cage with a paper seal on the gate, one huge red slit eye half open, water on the floor, a tiny ninja standing before the cage",
+			"edicao": {
+				"origem": "bestas-com-cauda-9301.png",
+				"instrucao": "Remove the small ninja standing in front of the cage. Fix the cage so the fox stays completely behind the bars: the bars pass in front of its face and nothing crosses through them. Keep everything else exactly the same: composition, pose, colors and pixel style."
+			},
+			"escolhida": "bestas-com-cauda-9401.png"
 		},
 		{
 			"slug": "cacador-de-recompensas",
 			"nome": "Caçador de recompensas",
 			"formato": "retrato",
-			"plano": ["escorco"],
-			"prompt": "a grizzled bounty hunter ninja hurling a chain with an iron weight toward the viewer, original character with a scarred face and stubble, straw hat, long dark coat with pouches, the chain cutting diagonally across the frame, forest road at dusk"
+			"plano": ["ombro"],
+			"prompt": "a grizzled bounty hunter ninja with a scarred face and stubble, straw hat and long dark coat, sitting at a teahouse counter comparing a wanted poster in his hand with a man across the room, a chain weapon coiled on the stool, lantern light",
+			"escolhida": "cacador-de-recompensas-9301.png"
 		},
 		{
 			"slug": "caes-ninja",
 			"nome": "Cães ninja",
 			"formato": "faixa",
-			"plano": ["holandes"],
-			"prompt": "a pack of ninja hound summons running through a forest toward the right, each dog wearing a steel forehead protector tied on the head and a small blue ninja vest, the lead dog sniffing the trail in the foreground left, a ninja running behind them, puffs of summoning smoke"
+			"plano": ["chao"],
+			"prompt": "a pack of ninja hound summons of different sizes napping in a pile on a sunny wooden porch, each with a steel forehead protector, a small pug awake and scratching its ear, their summoner sitting on the steps eating rice balls",
+			"escolhida": "caes-ninja-9301.png"
 		},
 		{
 			"slug": "chefe-de-bandidos",
 			"nome": "Chefe de bandidos",
 			"formato": "quadro",
-			"plano": ["de-baixo", "escorco"],
-			"prompt": "a huge middle-aged bandit chief with a shaved head and a thick black beard swinging a big axe toward the viewer from the left, scars on the arms, fur vest, forest camp with crates and a campfire on the right"
+			"plano": ["de-baixo"],
+			"prompt": "a huge middle-aged bandit chief with a shaved head and thick black beard sitting on a throne of stolen crates in a cave hideout, feet on a treasure chest, gnawing a chicken leg, a big axe leaning beside him, his men in the shadows",
+			"escolhida": "chefe-de-bandidos-9301.png"
 		},
 		{
 			"slug": "espadachim-da-nevoa",
 			"nome": "Espadachim da Névoa",
 			"formato": "retrato",
-			"plano": ["escorco"],
-			"prompt": "a Kirigakure swordsman ninja leaping out of thick white mist and swinging an enormous wide sword in a diagonal arc, original character with a sharp toothed grin and short dark hair, bandages pulled down from the face, forehead protector with the Hidden Mist symbol, wooden pier"
+			"plano": ["aberto"],
+			"prompt": "a Kirigakure swordsman ninja, original character with a sharp toothed grin and short dark hair, bandages around the neck and the Hidden Mist forehead protector, crouching on the hilt of an enormous wide sword planted in a misty lake",
+			"referencia": {
+				"arquivo": "referencias/bestiario/espadachim-da-nevoa.png",
+				"pagina": "Zabuza Momochi",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/zabuza-momochi.png",
+					"pagina": "Zabuza Momochi",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "espadachim-da-nevoa-9301.png"
 		},
 		{
 			"slug": "espiao-infiltrado",
@@ -354,37 +452,59 @@
 			"slug": "experimento-proibido",
 			"nome": "Experimento proibido",
 			"formato": "retrato",
-			"plano": ["holandes", "de-baixo"],
-			"prompt": "a mutated experiment ninja smashing out of a broken glass tank, one oversized discolored arm with stitches thrust toward the viewer, torn white patient clothes, glowing chakra veins, water and glass shards flying, dark laboratory"
+			"plano": ["moldura"],
+			"prompt": "a mutated experiment ninja curled up asleep inside a glass tank of green fluid in a dark laboratory, one oversized discolored arm with stitches pressed against the glass, breathing tube, a clipboard dropped on the floor",
+			"referencia": {
+				"arquivo": "referencias/bestiario/experimento-proibido.png",
+				"pagina": "Jūgo",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/jugo.png",
+					"pagina": "Jūgo",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "experimento-proibido-9301.png"
 		},
 		{
 			"slug": "golem-de-terra",
 			"nome": "Golem de terra",
 			"formato": "quadro",
-			"plano": ["de-baixo", "escorco"],
-			"prompt": "a giant golem of rock and mud tearing itself out of a hillside, one huge stone fist slamming down toward the viewer, roots hanging from its body, two dark holes for eyes, a ninja with both hands on the ground in the lower left corner, dust"
+			"plano": ["perfil"],
+			"prompt": "a giant moss-covered golem of rock and mud sitting dormant in a quiet forest clearing like a small hill, birds nesting on its shoulder, a ninja carving a glowing seal on its chest",
+			"escolhida": "golem-de-terra-9301.png"
 		},
 		{
 			"slug": "guarda-costas",
 			"nome": "Guarda-costas",
 			"formato": "quadro",
-			"plano": ["de-baixo", "escorco"],
-			"prompt": "a huge bodyguard ninja stepping in front of a fat rich merchant and blocking a thrown kunai with an iron staff, the merchant cowering behind him on the right, busy market street"
+			"plano": ["medio"],
+			"prompt": "a huge bodyguard ninja standing still with folded arms behind a fat rich merchant haggling at a market stall, his eyes following a suspicious hooded figure in the crowd, an iron staff on his back",
+			"escolhida": "guarda-costas-7901.png"
 		},
 		{
 			"slug": "jinchuuriki",
 			"nome": "Hospedeiro de besta",
 			"formato": "pagina",
-			"plano": ["de-baixo", "holandes"],
-			"prompt": "a young jinchuuriki ninja, original character with long dark hair in a ponytail and no whisker marks, crouching on all fours as boiling red chakra forms a cloak with fox ears and one tail around the body, cracked ground, stormy sky"
+			"plano": ["aberto"],
+			"prompt": "a young jinchuuriki, original character with long dark hair in a ponytail and no whisker marks, sitting alone on a rope swing under a tree at dusk while villagers glare and whisper in the distance, a faint red glow in the eyes",
+			"escolhida": "jinchuuriki-9301.png"
 		},
 		{
 			"slug": "ilusionista",
 			"nome": "Ilusionista",
 			"formato": "quadro",
-			"plano": ["close"],
-			"prompt": "a calm female genjutsu user with long silver hair sitting in a tea house, eyes glowing faintly, cherry blossom petals falling through her open hand, the room warping like an illusion",
-			"escolhida": "ilusionista-7901.png"
+			"plano": ["de-baixo"],
+			"prompt": "a genjutsu ninja, original character with long dark hair and a calm sinister smile, standing on a temple rooftop under a giant full moon with one hand raised in a hand seal, the full moon showing a red spiraling hypnotic pattern of rings that pulls the eye, the same pattern reflected in a pond below, a dazed enemy ninja kneeling at the water's edge, dark blue night",
+			"modelo": "pro",
+			"tamanho": [
+				168,
+				168
+			],
+			"escolhida": "ilusionista-9401.png"
 		},
 		{
 			"slug": "javalis",
@@ -392,7 +512,7 @@
 			"formato": "quadro",
 			"plano": ["inteiro"],
 			"prompt": "a giant wild boar with huge yellow tusks charging out of the forest and knocking down small trees, side view, dust and flying leaves",
-			"escolhida": "javali-gigante-7901.png"
+			"escolhida": "javalis-9401-b.png"
 		},
 		{
 			"slug": "macacos-guerreiros",
@@ -400,63 +520,136 @@
 			"formato": "retrato",
 			"plano": ["de-baixo"],
 			"prompt": "an old wise monkey summon hanging upside down from a branch by its tail, white fur mane, wearing a small armored vest and a forehead protector, holding a black iron staff, mountain forest",
-			"escolhida": "macacos-guerreiros-7901.png"
+			"escolhida": "macacos-guerreiros-9401-c.png"
 		},
 		{
 			"slug": "mestre-de-armas",
 			"nome": "Mestre de armas",
 			"formato": "retrato",
-			"plano": ["de-baixo", "holandes"],
-			"prompt": "a weapons master kunoichi, original character with hair in two buns, mid-air at the top left throwing a storm of kunai, chains and spears that rain diagonally toward the lower right, an unrolled scroll trailing behind her, training ground"
+			"plano": ["de-cima"],
+			"prompt": "a weapons master kunoichi, original character with hair in two buns, sitting cross-legged in an armory polishing a kunai, hundreds of weapons hanging on the walls around her, sealing scrolls stacked beside her",
+			"referencia": {
+				"arquivo": "referencias/bestiario/mestre-de-armas.png",
+				"pagina": "Tenten",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/tenten.png",
+					"pagina": "Tenten",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "mestre-de-armas-9301.png"
 		},
 		{
 			"slug": "mestre-de-taijutsu",
 			"nome": "Mestre de taijutsu",
 			"formato": "quadro",
-			"plano": ["escorco", "de-baixo"],
-			"prompt": "a taijutsu master ninja, original character with a shaved head and thick arms, sleeveless dark grey gi with orange bandages, delivering a flying kick toward the viewer from the right, heavy leg weights lying in a cracked crater below, dojo courtyard, motion lines"
+			"plano": ["silhueta"],
+			"prompt": "a taijutsu master ninja, original character with a shaved head and thick arms, sleeveless dark grey gi with orange bandages, doing one-handed push-ups in a handstand on top of a tall wooden training post at sunrise, leg weights on his ankles",
+			"referencia": {
+				"arquivo": "referencias/bestiario/mestre-de-taijutsu.png",
+				"pagina": "Might Guy",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/might-guy.png",
+					"pagina": "Might Guy",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "mestre-de-taijutsu-9301.png"
 		},
 		{
 			"slug": "mestre-do-selo",
 			"nome": "Mestre do selo",
 			"formato": "faixa",
-			"plano": ["aereo"],
-			"prompt": "an old sealing master slamming his palm on the floor at the left, glowing blue seal formulas spreading across the wooden floor toward intruders caught mid-step on the right, ink brush and scrolls scattered"
+			"plano": ["perfil"],
+			"prompt": "an old sealing master kneeling at a long low table in a candlelit archive, painting a huge sealing formula with an ink brush on a scroll that rolls across the whole floor, shelves of sealed jars and scrolls",
+			"escolhida": "mestre-do-selo-9301.png"
 		},
 		{
 			"slug": "monge-guerreiro",
 			"nome": "Monge guerreiro",
 			"formato": "quadro",
-			"plano": ["silhueta"],
-			"prompt": "a shaved head warrior monk in orange and grey robes striking with an open palm toward the viewer, prayer beads swinging, halfway up long stone temple stairs seen from the side, a temple bell in the background right"
+			"plano": ["aberto"],
+			"prompt": "a shaved head warrior monk in orange and grey robes meditating cross-legged on top of a tall stone pillar above a sea of clouds at dawn, prayer beads in one hand, a temple bell hanging from a pine nearby",
+			"referencia": {
+				"arquivo": "referencias/bestiario/monge-guerreiro.png",
+				"pagina": "Chiriku",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/chiriku.png",
+					"pagina": "Chiriku",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "monge-guerreiro-9301.png"
 		},
 		{
 			"slug": "ninja-da-chuva",
 			"nome": "Ninja da Chuva",
 			"formato": "faixa",
-			"plano": ["silhueta"],
-			"prompt": "a rain village ninja with a breathing mask standing at the right end of a metal bridge in heavy rain, a red umbrella spinning in the air at the left firing a spray of needles, dark industrial towers and pipes, grey rainy city"
+			"plano": ["de-cima"],
+			"prompt": "a rain village ninja with a breathing mask standing under a red umbrella on a narrow metal walkway between dark industrial towers, watching the street far below in heavy rain",
+			"escolhida": "ninja-da-chuva-9301.png"
 		},
 		{
 			"slug": "ninja-do-som",
 			"nome": "Ninja do Som",
 			"formato": "retrato",
-			"plano": ["escorco"],
-			"prompt": "a sound village ninja, original character with bandages wrapped around the head leaving one eye, thrusting a forearm with a metal amplifier device toward the viewer, visible sound waves bending the air, shaggy fur collar, forehead protector with a musical note symbol, dark forest"
+			"plano": ["holandes"],
+			"prompt": "a sound village ninja, original character with bandages wrapped around the head leaving one eye, crouching in a tree with an ear pressed to the trunk, listening, faint sound ripples in the bark, metal amplifier on the forearm, fur collar, forehead protector with a musical note symbol",
+			"referencia": {
+				"arquivo": "referencias/bestiario/ninja-do-som.png",
+				"pagina": "Dosu Kinuta",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/dosu-kinuta.png",
+					"pagina": "Dosu Kinuta",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "ninja-do-som-9301.png"
 		},
 		{
 			"slug": "portador-da-marca",
 			"nome": "Portador da marca amaldiçoada",
 			"formato": "pagina",
-			"plano": ["olhos", "holandes"],
-			"prompt": "a young ninja, original character with short brown hair and brown eyes, black flame shaped curse seal marks spreading from the neck over half of the face, gritting teeth in pain while dark purple chakra rises, the face at the right of the frame, dark forest at night"
+			"plano": ["costas"],
+			"prompt": "a young ninja, original character with short brown hair, seen from behind walking away from his village gate at night, a black curse mark of three commas glowing faintly on the back of his neck, a full moon over the road",
+			"escolhida": "portador-da-marca-9301.png"
 		},
 		{
 			"slug": "samurai-do-pais-do-ferro",
 			"nome": "Samurai do País do Ferro",
 			"formato": "retrato",
-			"plano": ["silhueta", "holandes"],
-			"prompt": "a samurai of the Land of Iron drawing his katana in a fast iaido slash, heavy lacquered armor and metal face mask, the blade leaving a white arc, snow scattering, a snowy fortress gate off to the left"
+			"plano": ["perfil"],
+			"prompt": "a samurai of the Land of Iron kneeling in seiza in the snow before a fortress gate, heavy lacquered armor and metal face mask, his sheathed katana across his knees, snow piling on his shoulders",
+			"referencia": {
+				"arquivo": "referencias/bestiario/samurai-do-pais-do-ferro.png",
+				"pagina": "Mifune",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/mifune.png",
+					"pagina": "Mifune",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "samurai-do-pais-do-ferro-9301.png"
 		},
 		{
 			"slug": "tartarugas",
@@ -470,141 +663,244 @@
 			"slug": "tigres",
 			"nome": "Tigres do bambuzal",
 			"formato": "faixa",
-			"plano": ["escorco"],
-			"prompt": "a huge striped tiger summon leaping out of a cloud of white summoning smoke with claws out toward a ninja falling back in the lower left, the summoner kneeling with a palm on the ground at the right, green bamboo forest, motion"
+			"plano": ["aberto"],
+			"prompt": "a family of striped tiger summons resting on a sunlit rock above a bamboo forest, a cub chewing a scroll, their summoner asleep against the big tiger's flank",
+			"escolhida": "tigres-9301.png"
 		},
 		{
 			"slug": "kage",
 			"nome": "Kage",
 			"formato": "pagina",
-			"plano": ["de-baixo", "holandes"],
-			"prompt": "a Kage village leader, original middle-aged woman with short dark hair, white Kage robe and wide Kage hat with a blue top and the kanji 水 for the Mizukage, standing on a rooftop edge in the rain while the raindrops stop around her, hat brim shadowing her eyes, two masked Anbu crouching on the roofs below"
+			"plano": ["costas"],
+			"prompt": "a Kage village leader, original middle-aged woman with short dark hair, white Kage robe and wide Kage hat with a blue top and the kanji 水, seen from behind at the tall round window of the Kage office looking over a rainy misty village, a pile of mission reports on her desk",
+			"escolhida": "kage-9301.png"
 		},
 		{
 			"slug": "kage-da-sombra",
 			"nome": "Kage da Sombra",
 			"formato": "retrato",
 			"plano": ["aereo"],
-			"prompt": "a gaunt commander in a black high collared coat with a dark scarf over the lower face, standing at the top of stone stairs in an underground hall, rows of black ops agents with blank white masks kneeling below him, a single oil lamp, deep shadows and high contrast"
+			"prompt": "a gaunt commander in a black high collared coat with a dark scarf over the lower face, standing at the top of stone stairs in an underground hall, rows of black ops agents with blank white masks kneeling below him, a single oil lamp, deep shadows and high contrast",
+			"referencia": {
+				"arquivo": "referencias/bestiario/kage-da-sombra.png",
+				"pagina": "Danzō Shimura",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/danzo-shimura.png",
+					"pagina": "Danzō Shimura",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "kage-da-sombra-9301.png"
 		},
 		{
 			"slug": "conselheiro",
 			"nome": "Conselheiro da vila",
 			"formato": "quadro",
 			"plano": ["de-baixo"],
-			"prompt": "an elderly village councilor, original old woman with white hair in a bun and round glasses, traditional dark robes, unrolling a mission scroll behind a low table, seen from a low angle across the table, the shadows of two other councilors cast on the paper screen behind her, side window light"
+			"prompt": "an elderly village councilor, original old woman with white hair in a bun and round glasses, traditional dark robes, unrolling a mission scroll behind a low table, seen from a low angle across the table, the shadows of two other councilors cast on the paper screen behind her, side window light",
+			"referencia": {
+				"arquivo": "referencias/bestiario/conselheiro.png",
+				"pagina": "Koharu Utatane",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/koharu-utatane.png",
+					"pagina": "Koharu Utatane",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "conselheiro-9301.png"
 		},
 		{
 			"slug": "cla-nara",
 			"nome": "Nara, estrategista das sombras",
 			"formato": "faixa",
-			"plano": ["aereo"],
-			"prompt": "a Nara clan ninja with a spiky high ponytail and a Konoha flak jacket kneeling with hands in the rat hand seal at the left, his shadow stretching impossibly long across a sunset field to the right and binding the shadows of three frozen enemy ninjas"
+			"plano": ["chao"],
+			"prompt": "a Nara clan ninja with a spiky high ponytail and a Konoha flak jacket lying on his back on a grassy hill watching the clouds, a shogi board beside him, deer grazing around, his shadow stretching long in the sunset",
+			"escolhida": "cla-nara-9301.png"
 		},
 		{
 			"slug": "cla-akimichi",
 			"nome": "Akimichi, guerreiro gigante",
 			"formato": "pagina",
-			"plano": ["de-baixo", "escorco"],
-			"prompt": "an Akimichi clan ninja with long spiky brown hair, red swirl marks on the cheeks and red armor with the kanji 食, expanding into a giant with one enormous fist slamming down at the camera, tiny houses and ninjas around his feet"
+			"plano": ["medio"],
+			"prompt": "a big heavyset Akimichi clan ninja with long spiky reddish brown hair, red swirl marks on the cheeks and red armor with the kanji 食, grilling meat at a barbecue restaurant table, smoke rising, chopsticks raised, seen from across the table",
+			"escolhida": "cla-akimichi-9301.png"
 		},
 		{
 			"slug": "cla-yamanaka",
 			"nome": "Yamanaka, invasor de mentes",
 			"formato": "retrato",
-			"plano": ["olhos"],
-			"prompt": "a Yamanaka clan kunoichi with long platinum blonde hair in a high ponytail covering one eye, forming the diamond shaped Mind Transfer hand sign in front of her face, her eyes going blank, the target ninja reflected small in the background"
+			"plano": ["moldura"],
+			"prompt": "a Yamanaka clan kunoichi with long platinum blonde hair in a high ponytail arranging flowers in the family flower shop, seen through the shop window with buckets of flowers in the foreground",
+			"escolhida": "cla-yamanaka-9301.png"
 		},
 		{
 			"slug": "cla-inuzuka",
 			"nome": "Inuzuka, caçador e seu cão",
 			"formato": "faixa",
-			"plano": ["holandes"],
-			"prompt": "an Inuzuka clan ninja with red fang shaped marks on both cheeks and a fur hooded jacket, spinning with his huge white ninja hound in two drilling whirlwinds of fangs tearing up the ground toward the right"
+			"plano": ["aberto"],
+			"prompt": "an Inuzuka clan ninja with red fang shaped marks on both cheeks and a fur hooded jacket running across a wide open hillside alongside his huge white ninja hound, both mid-leap, wind in the grass",
+			"escolhida": "cla-inuzuka-9301.png"
 		},
 		{
 			"slug": "cla-aburame",
 			"nome": "Aburame, mestre dos insetos",
 			"formato": "quadro",
 			"plano": ["de-baixo"],
-			"prompt": "an Aburame clan ninja in a high collared long coat and round dark sunglasses, arms spread as a huge dark swarm of beetles pours out of his sleeves and blots out the sky behind him"
+			"prompt": "an Aburame clan ninja in a high collared long coat and round dark sunglasses standing perfectly still in a dark forest as hundreds of glowing insects orbit around him, only the sunglasses catching the light",
+			"escolhida": "cla-aburame-9301.png"
 		},
 		{
 			"slug": "cla-hyuuga",
 			"nome": "Hyuuga, guardião do Byakugan",
 			"formato": "retrato",
 			"plano": ["olhos"],
-			"prompt": "a Hyuuga clan ninja with long dark hair, pale white pupilless eyes with bulging veins around them as the Byakugan activates, crouched low in the Gentle Fist stance with two fingers extended toward the camera"
+			"prompt": "a Hyuuga clan ninja with long dark hair, pale white pupilless eyes with bulging veins as the Byakugan activates, a distant hidden enemy reflected small in the pale eye",
+			"escolhida": "cla-hyuuga-9301.png"
 		},
 		{
 			"slug": "cla-uchiha",
 			"nome": "Uchiha, portador do Sharingan",
 			"formato": "quadro",
-			"plano": ["olhos"],
-			"prompt": "an Uchiha clan ninja, original character, red Sharingan eyes with three black tomoe, half of the face cropped by the frame, a high collared navy shirt with the red and white Uchiha fan crest, a great fireball blazing from his mouth to the side"
+			"plano": ["reflexo"],
+			"prompt": "an Uchiha clan ninja in a high collared navy shirt with the red and white Uchiha fan crest sitting on a lake pier at sunset with his feet in the water, staring at his reflection, which shows red Sharingan eyes",
+			"escolhida": "cla-uchiha-9301.png"
 		},
 		{
 			"slug": "cla-senju",
 			"nome": "Senju, herdeiro da madeira",
 			"formato": "faixa",
 			"plano": ["de-baixo"],
-			"prompt": "a Senju clan ninja with long dark hair in red armor pressing both palms to the ground at the left as huge wooden trunks burst from the earth and twist into a living wall across the scene, splinters and leaves flying"
+			"prompt": "a Senju clan kunoichi with long dark hair in red armor asleep in a hammock strung between two enormous trees she grew herself, a peaceful forest camp, leaves falling",
+			"escolhida": "cla-senju-9301.png"
 		},
 		{
 			"slug": "cla-uzumaki",
 			"nome": "Uzumaki, mestre dos selos",
 			"formato": "retrato",
-			"plano": ["de-baixo", "holandes"],
-			"prompt": "an Uzumaki clan kunoichi with long bright red hair flowing upward, kneeling with both palms on the ground as glowing golden chakra chains covered in seal symbols burst out of the earth around her, the red spiral crest on her clothes"
+			"plano": ["costas"],
+			"prompt": "an Uzumaki clan kunoichi with long bright red hair seen from behind painting a huge sealing formula with a big brush on a wall covered in spirals, ink pots around her feet",
+			"escolhida": "cla-uzumaki-9301.png"
 		},
 		{
 			"slug": "cla-kaguya",
 			"nome": "Kaguya, guerreiro dos ossos",
 			"formato": "quadro",
-			"plano": ["de-baixo", "escorco"],
-			"prompt": "a Kaguya clan warrior with long white hair and two red dots on the forehead, pulling a long sharp bone sword out of his own shoulder and thrusting it at the camera, bone spikes piercing out of his back and arms, ruined battlefield"
+			"plano": ["medio"],
+			"prompt": "a Kaguya clan warrior with long white hair and two red dots on the forehead kneeling in a ruined temple, carving a small flower out of a bone that grows from his own palm",
+			"escolhida": "cla-kaguya-9301.png"
 		},
 		{
 			"slug": "cla-hozuki",
 			"nome": "Hozuki, corpo de água",
 			"formato": "retrato",
-			"plano": ["holandes"],
-			"prompt": "a Hozuki clan ninja with pale silvery hair, purple eyes and sharp pointed teeth, grinning as a kunai passes through his chest and his body turns into splashing water around the blade, misty Kirigakure dock"
+			"plano": ["de-cima"],
+			"prompt": "a Hozuki clan ninja with pale silvery hair, purple eyes and sharp pointed teeth sitting on a dock drinking from a big water bottle, one hand melted into water dangling into the sea, a giant sword lying beside him",
+			"escolhida": "cla-hozuki-9301.png"
 		},
 		{
 			"slug": "cla-sabaku",
 			"nome": "Sabaku, guardião da areia",
 			"formato": "faixa",
-			"plano": ["aereo"],
-			"prompt": "a Sabaku clan ninja of Sunagakure with a large sand gourd on his back standing still while a huge wave of sand rises around him and closes over three enemy ninjas, desert village rooftops below"
+			"plano": ["perfil"],
+			"prompt": "a Sabaku clan ninja of Sunagakure walking alone across endless dunes at dawn with a large sand gourd on his back, a trail of footprints behind him, sand drifting from the gourd",
+			"escolhida": "cla-sabaku-9301.png"
 		},
 		{
 			"slug": "cla-yuki",
 			"nome": "Yuki, espelhos de gelo",
 			"formato": "quadro",
-			"plano": ["de-baixo"],
-			"prompt": "a dome of tall ice mirrors around a trapped ninja, the same masked Yuki clan figure with long dark hair reflected in every mirror throwing ice needles at once, cold blue light"
+			"plano": ["de-cima"],
+			"prompt": "a Yuki clan ninja with long dark hair and a pale face kneeling in a snowy field picking medicinal herbs, a small ice flower blooming in his palm, snow falling",
+			"escolhida": "cla-yuki-9301.png"
 		},
 		{
 			"slug": "cla-aburame--genin",
 			"nome": "Aburame, mestre dos insetos: Genin",
 			"formato": "retrato",
 			"plano": ["holandes"],
-			"prompt": "a genin ninja of the Aburame clan in a high collared long coat and round dark sunglasses, original character, a teenager, a quiet boy letting a single beetle crawl onto his finger"
+			"prompt": "a genin ninja of the Aburame clan in a high collared long coat and round dark sunglasses, original character with short cropped hair and a thin scar across the nose, a different person from any famous clan member, a teenager, a quiet boy letting a single beetle crawl onto his finger",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-aburame--genin.png",
+				"pagina": "Shino Aburame",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shino-aburame.png",
+					"pagina": "Shino Aburame",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/shibi-aburame.png",
+					"pagina": "Shibi Aburame",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "short cropped hair and a thin scar across the nose",
+			"escolhida": "cla-aburame--genin-9101.png"
 		},
 		{
 			"slug": "cla-aburame--chunin",
 			"nome": "Aburame, mestre dos insetos: Chunin",
 			"formato": "retrato",
-			"plano": ["medio"],
-			"prompt": "a chunin ninja of the Aburame clan in a high collared long coat and round dark sunglasses, original character, a young adult, a swarm of beetles pouring out of his sleeves toward an enemy"
+			"plano": ["moldura"],
+			"prompt": "a chunin ninja of the Aburame clan in a high collared long coat and round dark sunglasses, original character with a long braid over one shoulder and heavy thick eyebrows, a different person from any famous clan member, a young adult, sitting cross-legged in a dark archive cataloguing insects in rows of glass jars by candlelight, a beetle resting on the rim of his sunglasses",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-aburame--chunin.png",
+				"pagina": "Shino Aburame",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shino-aburame.png",
+					"pagina": "Shino Aburame",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/shibi-aburame.png",
+					"pagina": "Shibi Aburame",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a long braid over one shoulder and heavy thick eyebrows",
+			"escolhida": "cla-aburame--chunin-9301.png"
 		},
 		{
 			"slug": "cla-aburame--jounin",
 			"nome": "Aburame, mestre dos insetos: Jounin",
 			"formato": "quadro",
 			"plano": ["aereo"],
-			"prompt": "a jounin ninja of the Aburame clan in a high collared long coat and round dark sunglasses, original character, an adult, an enormous sphere of insects surrounding and draining an enemy ninja"
+			"prompt": "a jounin ninja of the Aburame clan in a high collared long coat and round dark sunglasses, original character with a neat side part and a wide confident grin, a different person from any famous clan member, an adult, an enormous sphere of insects surrounding and draining an enemy ninja",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-aburame--jounin.png",
+				"pagina": "Shibi Aburame",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shibi-aburame.png",
+					"pagina": "Shibi Aburame",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/shino-aburame.png",
+					"pagina": "Shino Aburame",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a neat side part and a wide confident grin",
+			"escolhida": "cla-aburame--jounin-9001.png"
 		},
 		{
 			"slug": "cla-aburame--lider-do-cla",
@@ -618,15 +914,35 @@
 			"slug": "aguias-e-falcoes--falcao-mensageiro",
 			"nome": "Águias e falcões: Falcão mensageiro",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
-			"prompt": "a small hawk summon flying with a message scroll tied to its leg over a mountain pass"
+			"plano": ["medio"],
+			"prompt": "a young fluffy hawk chick summon still covered in patches of soft downy feathers, big round curious eyes, a tiny message scroll tied to its leg, perched in a row with other young messenger hawks of different sizes on a wooden perch inside a mountain messenger tower, morning light through the window",
+			"modelo": "pro",
+			"tamanho": [
+				112,
+				168
+			],
+			"escolhida": "aguias-e-falcoes--falcao-mensageiro-9401.png"
 		},
 		{
 			"slug": "aguias-e-falcoes--aguia-de-caca",
 			"nome": "Águias e falcões: Águia de caça",
 			"formato": "quadro",
-			"plano": ["escorco"],
-			"prompt": "an eagle summon diving with talons forward toward a ninja on a rocky peak"
+			"plano": ["de-baixo"],
+			"prompt": "an eagle summon perched on a dead tree branch over a deep gorge, watching a ninja climb the cliff below",
+			"referencia": {
+				"arquivo": "referencias/bestiario/aguias-e-falcoes--aguia-de-caca.png",
+				"pagina": "Garuda",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/garuda.png",
+					"pagina": "Garuda",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "aguias-e-falcoes--aguia-de-caca-9301.png"
 		},
 		{
 			"slug": "aguias-e-falcoes--aguia-gigante",
@@ -641,169 +957,464 @@
 			"slug": "aguias-e-falcoes--senhor-dos-ceus",
 			"nome": "Águias e falcões: Senhor dos céus",
 			"formato": "pagina",
-			"plano": ["de-baixo", "silhueta"],
-			"prompt": "a colossal eagle summon with wings spread wide blotting out the sun over a village, its shadow covering the rooftops"
+			"plano": ["aereo"],
+			"prompt": "a colossal eagle summon soaring above a sea of clouds with a ninja lying flat on its back, its shadow on the clouds",
+			"referencia": {
+				"arquivo": "referencias/bestiario/aguias-e-falcoes--senhor-dos-ceus.png",
+				"pagina": "Garuda",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/garuda.png",
+					"pagina": "Garuda",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "aguias-e-falcoes--senhor-dos-ceus-9301.png"
 		},
 		{
 			"slug": "cla-akimichi--genin",
 			"nome": "Akimichi, guerreiro gigante: Genin",
 			"formato": "retrato",
-			"plano": ["holandes"],
-			"prompt": "a genin ninja of the Akimichi clan with a big heavyset body, long spiky reddish brown hair, red swirl marks on the cheeks and red armor with the kanji 食, original character, a teenager, eating chips while expanding one arm into a giant fist"
+			"plano": ["medio"],
+			"prompt": "a genin ninja of the Akimichi clan with a big heavyset body, long spiky reddish brown hair, red swirl marks on the cheeks and red armor with the kanji 食, original character with freckles, a different person from any famous clan member, a teenager, a heavyset teenage girl stuffing three dumplings into her mouth at a festival food stall while lanterns glow and her teammates stare in disbelief",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-akimichi--genin.png",
+				"pagina": "Chōji Akimichi",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/choji-akimichi.png",
+					"pagina": "Chōji Akimichi",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/choza-akimichi.png",
+					"pagina": "Chōza Akimichi",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "freckles",
+			"escolhida": "cla-akimichi--genin-9301.png"
 		},
 		{
 			"slug": "cla-akimichi--chunin",
 			"nome": "Akimichi, guerreiro gigante: Chunin",
 			"formato": "retrato",
-			"plano": ["medio"],
-			"prompt": "a chunin ninja of the Akimichi clan with a big heavyset body, long spiky reddish brown hair, red swirl marks on the cheeks and red armor with the kanji 食, original character, a young adult, rolling as a giant human boulder across a battlefield"
+			"plano": ["de-cima"],
+			"prompt": "a chunin ninja of the Akimichi clan with a big heavyset body, long spiky reddish brown hair, red swirl marks on the cheeks and red armor with the kanji 食, original character with a crooked broken nose, a different person from any famous clan member, a young adult, asleep and snoring after a feast, sitting against a tree with an empty cooking pot on his big belly, the red armor loosened, food wrappers around him",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-akimichi--chunin.png",
+				"pagina": "Chōji Akimichi",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/choji-akimichi.png",
+					"pagina": "Chōji Akimichi",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/choza-akimichi.png",
+					"pagina": "Chōza Akimichi",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a crooked broken nose",
+			"escolhida": "cla-akimichi--chunin-9301.png"
 		},
 		{
 			"slug": "cla-akimichi--jounin",
 			"nome": "Akimichi, guerreiro gigante: Jounin",
 			"formato": "quadro",
-			"plano": ["aereo"],
-			"prompt": "a jounin ninja of the Akimichi clan with a big heavyset body, long spiky reddish brown hair, red swirl marks on the cheeks and red armor with the kanji 食, original character, an adult, growing into a giant and crushing the ground with both fists"
+			"plano": ["costas"],
+			"prompt": "a jounin ninja of the Akimichi clan with a big heavyset body, long spiky reddish brown hair, red swirl marks on the cheeks and red armor with the kanji 食, original character with deep wrinkles and a stern frown, a different person from any famous clan member, an adult, seen from behind training alone in a quarry at dusk, one arm expanded into a giant hand pressed flat against a cracked cliff face",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-akimichi--jounin.png",
+				"pagina": "Chōza Akimichi",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/choza-akimichi.png",
+					"pagina": "Chōza Akimichi",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/choji-akimichi.png",
+					"pagina": "Chōji Akimichi",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "deep wrinkles and a stern frown",
+			"escolhida": "cla-akimichi--jounin-9001.png"
 		},
 		{
 			"slug": "cla-akimichi--lider-do-cla",
 			"nome": "Akimichi, guerreiro gigante: Líder do clã",
 			"formato": "pagina",
 			"plano": ["de-baixo", "holandes"],
-			"prompt": "a clan head ninja of the Akimichi clan with a big heavyset body, long spiky reddish brown hair, red swirl marks on the cheeks and red armor with the kanji 食, original character, elderly, the huge old Akimichi clan head growing into a giant with butterfly-shaped chakra wings"
+			"prompt": "a clan head ninja of the Akimichi clan with a big heavyset body, long spiky reddish brown hair, red swirl marks on the cheeks and red armor with the kanji 食, original character with a single earring, a different person from any famous clan member, elderly, the huge old Akimichi clan head growing into a giant with butterfly-shaped chakra wings",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-akimichi--lider-do-cla.png",
+				"pagina": "Chōza Akimichi",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/choza-akimichi.png",
+					"pagina": "Chōza Akimichi",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/choji-akimichi.png",
+					"pagina": "Chōji Akimichi",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a single earring",
+			"escolhida": "cla-akimichi--lider-do-cla-9201.png"
 		},
 		{
 			"slug": "aranhas--aranha-pequena",
 			"nome": "Aranhas das cavernas: Aranha pequena",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
-			"prompt": "a dog-sized spider summon hanging upside down from a thread in a dark cave above an unaware ninja"
+			"plano": ["ponta-cabeca"],
+			"prompt": "a dog-sized spider summon hanging upside down from a thread in a dark cave right above an unaware ninja reading a map",
+			"escolhida": "aranhas--aranha-pequena-9301.png"
 		},
 		{
 			"slug": "aranhas--aranha-tecela",
 			"nome": "Aranhas das cavernas: Aranha tecelã",
 			"formato": "quadro",
-			"plano": ["escorco"],
-			"prompt": "a horse-sized spider summon spinning thick webs between trees while a ninja is caught in one"
+			"plano": ["moldura"],
+			"prompt": "a horse-sized spider summon spinning silk cocoons in a quiet forest at dawn, seen through its own dewy web",
+			"escolhida": "aranhas--aranha-tecela-9301.png"
 		},
 		{
 			"slug": "aranhas--aranha-gigante",
 			"nome": "Aranhas das cavernas: Aranha gigante",
 			"formato": "faixa",
 			"plano": ["holandes"],
-			"prompt": "a giant black and red spider summon bursting out of summoning smoke and descending on a silk thread toward a ninja trapped in a web"
+			"prompt": "a giant black and red spider summon bursting out of summoning smoke and descending on a silk thread toward a ninja trapped in a web",
+			"referencia": {
+				"arquivo": "referencias/bestiario/aranhas--aranha-gigante.png",
+				"pagina": "Kyodaigumo",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kyodaigumo.png",
+					"pagina": "Kyodaigumo",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "aranhas--aranha-gigante-9301.png"
 		},
 		{
 			"slug": "aranhas--rainha-das-aranhas",
 			"nome": "Aranhas das cavernas: Rainha das aranhas",
 			"formato": "pagina",
-			"plano": ["de-baixo", "silhueta"],
-			"prompt": "a colossal spider queen summon in a cave filled with silk cocoons, its many eyes glowing red"
+			"plano": ["de-baixo"],
+			"prompt": "a colossal spider queen summon in a cave filled with silk cocoons, its many eyes glowing red in the dark",
+			"referencia": {
+				"arquivo": "referencias/bestiario/aranhas--rainha-das-aranhas.png",
+				"pagina": "Kyodaigumo",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kyodaigumo.png",
+					"pagina": "Kyodaigumo",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "aranhas--rainha-das-aranhas-9301.png"
 		},
 		{
 			"slug": "bestas-com-cauda--shukaku-o-uma-cauda",
 			"nome": "Bestas com Cauda: Shukaku, o Uma Cauda",
 			"formato": "pagina",
 			"plano": ["de-baixo"],
-			"prompt": "Shukaku the One-Tailed beast from Naruto: a giant tanuki made of sand covered in curved blue markings, with one huge sand tail and a mad grin, in a desert at night"
+			"prompt": "Shukaku the One-Tailed beast from Naruto: a giant tanuki made of sand covered in curved blue markings, with one huge sand tail, laughing madly in a desert at night",
+			"referencia": {
+				"arquivo": "referencias/bestiario/bestas-com-cauda--shukaku-o-uma-cauda.png",
+				"pagina": "Shukaku",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shukaku.png",
+					"pagina": "Shukaku",
+					"uso": "creature design of this Tailed Beast exactly as in the Naruto anime: body shape, colors, number of tails, eyes and markings. Keep the design; change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "bestas-com-cauda--shukaku-o-uma-cauda-9301.png"
 		},
 		{
 			"slug": "bestas-com-cauda--matatabi-o-duas-caudas",
 			"nome": "Bestas com Cauda: Matatabi, o Duas Caudas",
 			"formato": "faixa",
-			"plano": ["aereo"],
-			"prompt": "Matatabi the Two-Tailed beast from Naruto: a giant cat made of blue and black flames with two tails and mismatched yellow and green eyes, leaping over a mountain village"
+			"plano": ["perfil"],
+			"prompt": "Matatabi the Two-Tailed beast from Naruto: a giant cat made of blue and black flames with two tails and mismatched yellow and green eyes, leaping over a mountain village",
+			"referencia": {
+				"arquivo": "referencias/bestiario/bestas-com-cauda--matatabi-o-duas-caudas.png",
+				"pagina": "Matatabi",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/matatabi.png",
+					"pagina": "Matatabi",
+					"uso": "creature design of this Tailed Beast exactly as in the Naruto anime: body shape, colors, number of tails, eyes and markings. Keep the design; change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "bestas-com-cauda--matatabi-o-duas-caudas-9301.png"
 		},
 		{
 			"slug": "bestas-com-cauda--isobu-o-tres-caudas",
 			"nome": "Bestas com Cauda: Isobu, o Três Caudas",
 			"formato": "pagina",
-			"plano": ["de-baixo"],
-			"prompt": "Isobu the Three-Tailed beast from Naruto: a giant turtle with a spiky coral-like shell, a single red eye and three tails, rising from a misty lake"
+			"plano": ["por-tras"],
+			"prompt": "Isobu the Three-Tailed beast from Naruto: a giant turtle with a spiky coral-like shell, a single red eye and three tails, rising from a misty lake",
+			"referencia": {
+				"arquivo": "referencias/bestiario/bestas-com-cauda--isobu-o-tres-caudas.png",
+				"pagina": "Isobu",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/isobu.png",
+					"pagina": "Isobu",
+					"uso": "creature design of this Tailed Beast exactly as in the Naruto anime: body shape, colors, number of tails, eyes and markings. Keep the design; change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "bestas-com-cauda--isobu-o-tres-caudas-9301.png"
 		},
 		{
 			"slug": "bestas-com-cauda--son-goku-o-quatro-caudas",
 			"nome": "Bestas com Cauda: Son Gokū, o Quatro Caudas",
 			"formato": "faixa",
-			"plano": ["aereo"],
-			"prompt": "Son Goku the Four-Tailed beast from Naruto: a giant red-furred ape with four tails and two small horns spitting lava over a rocky landscape"
+			"plano": ["aberto"],
+			"prompt": "Son Goku the Four-Tailed beast from Naruto: a giant red-furred ape with four tails and two small horns sitting on the rim of a volcano with arms crossed",
+			"referencia": {
+				"arquivo": "referencias/bestiario/bestas-com-cauda--son-goku-o-quatro-caudas.png",
+				"pagina": "Son Gokū",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/son-goku.png",
+					"pagina": "Son Gokū",
+					"uso": "creature design of this Tailed Beast exactly as in the Naruto anime: body shape, colors, number of tails, eyes and markings. Keep the design; change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "bestas-com-cauda--son-goku-o-quatro-caudas-9301.png"
 		},
 		{
 			"slug": "bestas-com-cauda--kokuo-o-cinco-caudas",
 			"nome": "Bestas com Cauda: Kokuō, o Cinco Caudas",
 			"formato": "pagina",
-			"plano": ["de-baixo"],
-			"prompt": "Kokuo the Five-Tailed beast from Naruto: a giant white horse with a dolphin-like head, long horns and five tails, charging through a cloud of boiling steam"
+			"plano": ["holandes"],
+			"prompt": "Kokuo the Five-Tailed beast from Naruto: a giant white horse with a dolphin-like head, long horns and five tails, galloping through a cloud of boiling steam",
+			"referencia": {
+				"arquivo": "referencias/bestiario/bestas-com-cauda--kokuo-o-cinco-caudas.png",
+				"pagina": "Kokuō",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kokuo.png",
+					"pagina": "Kokuō",
+					"uso": "creature design of this Tailed Beast exactly as in the Naruto anime: body shape, colors, number of tails, eyes and markings. Keep the design; change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "bestas-com-cauda--kokuo-o-cinco-caudas-9301.png"
 		},
 		{
 			"slug": "bestas-com-cauda--saiken-o-seis-caudas",
 			"nome": "Bestas com Cauda: Saiken, o Seis Caudas",
 			"formato": "faixa",
 			"plano": ["aereo"],
-			"prompt": "Saiken the Six-Tailed beast from Naruto: a giant pale slug with six tails releasing bubbles of corrosive acid in a swamp"
+			"prompt": "Saiken the Six-Tailed beast from Naruto: a giant pale slug with six tails releasing bubbles of corrosive acid in a swamp",
+			"referencia": {
+				"arquivo": "referencias/bestiario/bestas-com-cauda--saiken-o-seis-caudas.png",
+				"pagina": "Saiken",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/saiken.png",
+					"pagina": "Saiken",
+					"uso": "creature design of this Tailed Beast exactly as in the Naruto anime: body shape, colors, number of tails, eyes and markings. Keep the design; change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "bestas-com-cauda--saiken-o-seis-caudas-9301.png"
 		},
 		{
 			"slug": "bestas-com-cauda--chomei-o-sete-caudas",
 			"nome": "Bestas com Cauda: Chōmei, o Sete Caudas",
 			"formato": "pagina",
 			"plano": ["de-baixo"],
-			"prompt": "Chomei the Seven-Tailed beast from Naruto: a giant blue-green rhinoceros beetle with six insect wings and a tail, flying over a forest and scattering glowing scale powder"
+			"prompt": "Chomei the Seven-Tailed beast from Naruto: a giant blue-green rhinoceros beetle with six insect wings and a tail, flying over a forest and scattering glowing scale powder",
+			"referencia": {
+				"arquivo": "referencias/bestiario/bestas-com-cauda--chomei-o-sete-caudas.png",
+				"pagina": "Chōmei",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/chomei.png",
+					"pagina": "Chōmei",
+					"uso": "creature design of this Tailed Beast exactly as in the Naruto anime: body shape, colors, number of tails, eyes and markings. Keep the design; change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "bestas-com-cauda--chomei-o-sete-caudas-9301.png"
 		},
 		{
 			"slug": "bestas-com-cauda--gyuki-o-oito-caudas",
 			"nome": "Bestas com Cauda: Gyūki, o Oito Caudas",
 			"formato": "faixa",
-			"plano": ["aereo"],
-			"prompt": "Gyuki the Eight-Tailed beast from Naruto: a giant ox with curved horns, a muscular humanoid upper body and eight octopus tentacle tails, standing in a stormy sea"
+			"plano": ["holandes"],
+			"prompt": "Gyuki the Eight-Tailed beast from Naruto close up and filling most of the frame: a giant ox with curved horns, a muscular humanoid upper body and eight octopus tentacle tails, half submerged in a stormy sea, waves crashing against its chest, lightning behind, a clear readable silhouette",
+			"referencia": {
+				"arquivo": "referencias/bestiario/bestas-com-cauda--gyuki-o-oito-caudas.png",
+				"pagina": "Gyūki",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/gyuki.png",
+					"pagina": "Gyūki",
+					"uso": "creature design of this Tailed Beast exactly as in the Naruto anime: body shape, colors, number of tails, eyes and markings. Keep the design; change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "bestas-com-cauda--gyuki-o-oito-caudas-9401.png"
 		},
 		{
 			"slug": "bestas-com-cauda--kurama-o-nove-caudas",
 			"nome": "Bestas com Cauda: Kurama, o Nove Caudas",
 			"formato": "pagina",
-			"plano": ["de-baixo"],
-			"prompt": "Kurama the Nine-Tailed Fox from Naruto: a colossal orange-red fox with nine huge swirling tails, red eyes with slit pupils and dark markings around the eyes, fangs bared over a burning village at night"
+			"plano": ["aereo"],
+			"prompt": "Kurama the Nine-Tailed Fox from Naruto: a colossal orange-red fox with nine huge tails wrapped around its body, curled up in a crater over a burning village at night, one red slit eye open",
+			"referencia": {
+				"arquivo": "referencias/bestiario/bestas-com-cauda--kurama-o-nove-caudas.png",
+				"pagina": "Kurama",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kurama.png",
+					"pagina": "Kurama",
+					"uso": "creature design of this Tailed Beast exactly as in the Naruto anime: body shape, colors, number of tails, eyes and markings. Keep the design; change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "bestas-com-cauda--kurama-o-nove-caudas-9301.png"
 		},
 		{
 			"slug": "caes-ninja--filhote-farejador",
 			"nome": "Cães ninja: Filhote farejador",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
-			"prompt": "a small pug-like ninja dog summon wearing a forehead protector and a tiny blue vest sniffing a scroll in the summoner's hand"
+			"plano": ["de-cima"],
+			"prompt": "a small pug-like ninja dog summon with a forehead protector and a tiny blue vest sitting on its summoner's head, looking down at the camera",
+			"referencia": {
+				"arquivo": "referencias/bestiario/caes-ninja--filhote-farejador.png",
+				"pagina": "Pakkun",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/pakkun.png",
+					"pagina": "Pakkun",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "caes-ninja--filhote-farejador-9301.png"
 		},
 		{
 			"slug": "caes-ninja--cao-de-caca",
 			"nome": "Cães ninja: Cão de caça",
 			"formato": "quadro",
-			"plano": ["escorco"],
-			"prompt": "a large ninja hound summon with a forehead protector biting the arm of an enemy ninja holding a kunai"
+			"plano": ["chao"],
+			"prompt": "a large ninja hound summon with a forehead protector sniffing a trail across stepping stones in a river, ears up",
+			"referencia": {
+				"arquivo": "referencias/bestiario/caes-ninja--cao-de-caca.png",
+				"pagina": "Akamaru",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/akamaru.png",
+					"pagina": "Akamaru",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "caes-ninja--cao-de-caca-9301.png"
 		},
 		{
 			"slug": "caes-ninja--cao-de-guerra",
 			"nome": "Cães ninja: Cão de guerra",
 			"formato": "faixa",
 			"plano": ["holandes"],
-			"prompt": "a giant ninja dog summon carrying its summoner on its back while running through a forest, wind in the fur"
+			"prompt": "a giant ninja dog summon carrying its summoner on its back while running through a forest, wind in the fur",
+			"referencia": {
+				"arquivo": "referencias/bestiario/caes-ninja--cao-de-guerra.png",
+				"pagina": "Bull",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/bull.png",
+					"pagina": "Bull",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "caes-ninja--cao-de-guerra-9301.png"
 		},
 		{
 			"slug": "caes-ninja--chefe-da-matilha",
 			"nome": "Cães ninja: Chefe da matilha",
 			"formato": "pagina",
-			"plano": ["de-baixo", "silhueta"],
-			"prompt": "an enormous old grey ninja dog with one blind eye and a forehead protector howling on a cliff at night with the pack below"
+			"plano": ["silhueta"],
+			"prompt": "an enormous old grey ninja dog with one blind eye and a forehead protector howling on a cliff at night with the pack below",
+			"escolhida": "caes-ninja--chefe-da-matilha-9301.png"
 		},
 		{
 			"slug": "centopeias--centopeia-pequena",
 			"nome": "Centopeias da Floresta da Morte: Centopeia pequena",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
-			"prompt": "a small centipede summon crawling out of summoning smoke along a ninja's arm"
+			"plano": ["close"],
+			"prompt": "a small centipede summon crawling out of summoning smoke along a ninja's arm",
+			"escolhida": "centopeias--centopeia-pequena-9301.png"
 		},
 		{
 			"slug": "centopeias--centopeia-de-emboscada",
 			"nome": "Centopeias da Floresta da Morte: Centopeia de emboscada",
 			"formato": "quadro",
-			"plano": ["escorco"],
-			"prompt": "a man-sized centipede summon coiled around a tree trunk ready to strike at a ninja below"
+			"plano": ["de-cima"],
+			"prompt": "a man-sized centipede summon coiled around a tree trunk, waiting above a forest path where a ninja walks",
+			"escolhida": "centopeias--centopeia-de-emboscada-9301.png"
 		},
 		{
 			"slug": "centopeias--centopeia-gigante",
@@ -818,215 +1429,648 @@
 			"slug": "centopeias--matriarca-do-ninho",
 			"nome": "Centopeias da Floresta da Morte: Matriarca do ninho",
 			"formato": "pagina",
-			"plano": ["de-baixo", "silhueta"],
-			"prompt": "a colossal centipede matriarch summon circling a giant tree in the Forest of Death above a nest of eggs"
+			"plano": ["de-baixo"],
+			"prompt": "a colossal centipede matriarch summon circling a giant tree in the Forest of Death above a nest of eggs",
+			"escolhida": "centopeias--matriarca-do-ninho-9301.png"
 		},
 		{
 			"slug": "cobras-de-ryuchi--cobra-pequena",
 			"nome": "Cobras de Ryūchi: Cobra pequena",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
-			"prompt": "a small purple snake summon coiled around the summoner's arm with fangs bared toward the camera"
+			"plano": ["close"],
+			"prompt": "a small purple snake summon peeking out of a ninja's sleeve, tongue flicking",
+			"escolhida": "cobras-de-ryuchi--cobra-pequena-9301.png"
 		},
 		{
 			"slug": "cobras-de-ryuchi--cobra-de-bote",
 			"nome": "Cobras de Ryūchi: Cobra de bote",
 			"formato": "quadro",
 			"plano": ["escorco"],
-			"prompt": "a purple snake summon as thick as a tree trunk striking out of the grass toward a ninja"
+			"prompt": "a purple snake summon as thick as a tree trunk striking out of the grass toward a ninja",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cobras-de-ryuchi--cobra-de-bote.png",
+				"pagina": "Aoda",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/aoda.png",
+					"pagina": "Aoda",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "cobras-de-ryuchi--cobra-de-bote-9301.png"
 		},
 		{
 			"slug": "cobras-de-ryuchi--serpente-gigante",
 			"nome": "Cobras de Ryūchi: Serpente gigante",
 			"formato": "pagina",
-			"plano": ["de-baixo"],
-			"prompt": "a colossal summoned snake from Ryuchi Cave rising high and coiling, dark purple scales with darker violet markings and a pale yellow underside, yellow slit eyes, forked tongue, a small ninja standing on the ground in front of it for scale, white summoning smoke, dark misty rocky mountains, cracked ground",
-			"escolhida": "serpente-ryuchi-7802.png",
-			"veio_de": "cobras-de-ryuchi"
+			"plano": ["escorco", "de-baixo"],
+			"prompt": "a terrifying colossal purple snake summon from Ryuchi Cave lunging out of the darkness straight at the viewer with its jaws wide open, long dripping fangs, glowing yellow slit eyes, dark purple scales with violet markings, its huge coils filling the misty canyon behind, a tiny ninja falling backwards in the lower corner, horror atmosphere",
+			"veio_de": "cobras-de-ryuchi",
+			"modelo": "pro",
+			"tamanho": [
+				128,
+				170
+			],
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/manda.png",
+					"pagina": "Manda",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "cobras-de-ryuchi--serpente-gigante-9401.png"
 		},
 		{
 			"slug": "cobras-de-ryuchi--chefe-das-serpentes",
 			"nome": "Cobras de Ryūchi: Chefe das serpentes",
 			"formato": "pagina",
-			"plano": ["de-baixo", "silhueta"],
-			"prompt": "the colossal purple chief snake of Ryuchi Cave with dark markings and yellow slit eyes rising above the clouds, a tiny ninja standing on its head"
+			"plano": ["de-baixo"],
+			"prompt": "the colossal purple chief snake of Ryuchi Cave with dark markings and yellow slit eyes rising above the clouds, a tiny ninja standing on its head",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cobras-de-ryuchi--chefe-das-serpentes.png",
+				"pagina": "Manda",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/manda.png",
+					"pagina": "Manda",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "cobras-de-ryuchi--chefe-das-serpentes-9301.png"
 		},
 		{
 			"slug": "cla-hozuki--genin",
 			"nome": "Hozuki, corpo de água: Genin",
 			"formato": "retrato",
-			"plano": ["holandes"],
-			"prompt": "a genin ninja of the Hozuki clan with pale silvery blue hair, purple eyes and sharp pointed teeth, original character, a teenager, a young Hozuki girl turning her hand into water to escape a grip"
+			"plano": ["de-cima"],
+			"prompt": "a genin ninja of the Hozuki clan with pale silvery blue hair, purple eyes and sharp pointed teeth, original character with a messy bowl cut and narrow fox-like eyes, a different person from any famous clan member, a teenager, a teenage girl napping in a shallow clear stream with only her face above the surface, half of her body melted into the flowing water",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-hozuki--genin.png",
+				"pagina": "Suigetsu Hōzuki",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/suigetsu-hozuki.png",
+					"pagina": "Suigetsu Hōzuki",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/mangetsu-hozuki.png",
+					"pagina": "Mangetsu Hōzuki",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a messy bowl cut and narrow fox-like eyes",
+			"escolhida": "cla-hozuki--genin-9201.png"
 		},
 		{
 			"slug": "cla-hozuki--chunin",
 			"nome": "Hozuki, corpo de água: Chunin",
 			"formato": "retrato",
-			"plano": ["medio"],
-			"prompt": "a chunin ninja of the Hozuki clan with pale silvery blue hair, purple eyes and sharp pointed teeth, original character, a young adult, his body splashing into water around a kunai as he grins"
+			"plano": ["ponta-cabeca"],
+			"prompt": "a chunin ninja of the Hozuki clan with pale silvery blue hair, purple eyes and sharp pointed teeth, original character with a short low ponytail and a bandage on one cheek, a different person from any famous clan member, a young adult, a young man hanging upside down by his knees from the mast of a moored boat in a misty harbor, grinning with pointed teeth, drops of water falling from his melting hair",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-hozuki--chunin.png",
+				"pagina": "Suigetsu Hōzuki",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/suigetsu-hozuki.png",
+					"pagina": "Suigetsu Hōzuki",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/mangetsu-hozuki.png",
+					"pagina": "Mangetsu Hōzuki",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a short low ponytail and a bandage on one cheek",
+			"edicao": {
+				"origem": "cla-hozuki--chunin-9301.png",
+				"instrucao": "Redraw only the face of the upside-down young man so it is clean and sharp: clear eyes, nose and a grinning mouth with pointed teeth, no blur. Keep everything else exactly the same: composition, pose, colors and pixel style."
+			},
+			"escolhida": "cla-hozuki--chunin-9301-rosto.png"
 		},
 		{
 			"slug": "cla-hozuki--jounin",
 			"nome": "Hozuki, corpo de água: Jounin",
 			"formato": "quadro",
-			"plano": ["aereo"],
-			"prompt": "a jounin ninja of the Hozuki clan with pale silvery blue hair, purple eyes and sharp pointed teeth, original character, an adult, his arm swelling into a huge muscle of water for a crushing punch"
+			"plano": ["de-baixo"],
+			"prompt": "a jounin ninja of the Hozuki clan with pale silvery blue hair, purple eyes and sharp pointed teeth, original character with a high bun and a short goatee, a different person from any famous clan member, an adult, sitting on a pile of old swords in a dark forge, slowly polishing a huge executioner's blade across his knees, sparks from the furnace behind",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-hozuki--jounin.png",
+				"pagina": "Mangetsu Hōzuki",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/mangetsu-hozuki.png",
+					"pagina": "Mangetsu Hōzuki",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/suigetsu-hozuki.png",
+					"pagina": "Suigetsu Hōzuki",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a high bun and a short goatee",
+			"escolhida": "cla-hozuki--jounin-9301.png"
 		},
 		{
 			"slug": "cla-hozuki--lider-do-cla",
 			"nome": "Hozuki, corpo de água: Líder do clã",
 			"formato": "pagina",
-			"plano": ["de-baixo", "holandes"],
-			"prompt": "a clan head ninja of the Hozuki clan with pale silvery blue hair, purple eyes and sharp pointed teeth, original character, elderly, the old Hozuki clan head rising out of a lake as a giant made of water"
+			"plano": ["medio"],
+			"prompt": "the elderly head of the Hozuki clan, original character with short cropped pale silvery blue hair, purple eyes, tired dark circles under the eyes and normal human teeth (no fangs), sitting in a dark stone room lit by a single lantern, the seven legendary swords of the Mist hung on the wall behind him: the huge cleaver, the bandaged shark-skin sword, the twin lightning blades, the hammer and axe, the long needle sword, the explosive scroll sword and the twin-handled blade, water dripping, ominous",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-hozuki--lider-do-cla.png",
+				"pagina": "Mangetsu Hōzuki",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/mangetsu-hozuki.png",
+					"pagina": "Mangetsu Hōzuki",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits and the clan clothes. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/seven-ninja-swordsmen-of-the-mist.png",
+					"pagina": "Seven Ninja Swordsmen of the Mist",
+					"uso": "the seven legendary swords of the Seven Ninja Swordsmen of the Mist as drawn in the Naruto anime, to hang on the wall"
+				}
+			],
+			"escolhida": "cla-hozuki--lider-do-cla-9401.png"
 		},
 		{
 			"slug": "cla-hyuuga--genin",
 			"nome": "Hyuuga, guardião do Byakugan: Genin",
 			"formato": "retrato",
-			"plano": ["medio"],
-			"prompt": "a genin ninja of the Hyuuga clan with long dark hair and pale white pupilless eyes, original character, a teenager, a young girl of the Hyuuga clan with short hair practicing the Gentle Fist stance in the clan dojo"
+			"plano": ["chao"],
+			"prompt": "a genin ninja of the Hyuuga clan with long dark hair and pale white pupilless eyes, original character with a scar over one eyebrow, a different person from any famous clan member, a teenager, a teenage boy kneeling in seiza on the polished floor of the clan's main hall being scolded, the feet and robe hems of the elders large in the foreground",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-hyuuga--genin.png",
+				"pagina": "Hinata Hyūga",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/hinata-hyuga.png",
+					"pagina": "Hinata Hyūga",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/neji-hyuga.png",
+					"pagina": "Neji Hyūga",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a scar over one eyebrow",
+			"escolhida": "cla-hyuuga--genin-9301.png"
 		},
 		{
 			"slug": "cla-hyuuga--chunin",
 			"nome": "Hyuuga, guardião do Byakugan: Chunin",
 			"formato": "retrato",
-			"plano": ["escorco"],
-			"prompt": "a chunin ninja of the Hyuuga clan with long dark hair and pale white pupilless eyes, original character, a young adult, the Byakugan veins bulging around his eyes as he strikes with two fingers"
+			"plano": ["silhueta"],
+			"prompt": "a chunin ninja of the Hyuuga clan with long dark hair and pale white pupilless eyes, original character with a scar on the chin, a different person from any famous clan member, a young adult, a young woman standing on a high pine branch at night with the Byakugan veins bulging around her eyes, scanning the whole valley through walls and trees",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-hyuuga--chunin.png",
+				"pagina": "Neji Hyūga",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/neji-hyuga.png",
+					"pagina": "Neji Hyūga",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/hinata-hyuga.png",
+					"pagina": "Hinata Hyūga",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a scar on the chin",
+			"escolhida": "cla-hyuuga--chunin-9301.png"
 		},
 		{
 			"slug": "cla-hyuuga--jounin",
 			"nome": "Hyuuga, guardião do Byakugan: Jounin",
 			"formato": "quadro",
-			"plano": ["olhos"],
-			"prompt": "a jounin ninja of the Hyuuga clan with long dark hair and pale white pupilless eyes, original character, an adult, spinning in a dome of chakra rotation that blasts enemies away"
+			"plano": ["perfil"],
+			"prompt": "a jounin ninja of the Hyuuga clan with long dark hair and pale white pupilless eyes, original character with deep wrinkles and a stern frown, a different person from any famous clan member, an adult, a man correcting the Gentle Fist stance of a small child in a sunny dojo courtyard, both in the same pose, cherry petals falling",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-hyuuga--jounin.png",
+				"pagina": "Neji Hyūga",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/neji-hyuga.png",
+					"pagina": "Neji Hyūga",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/hinata-hyuga.png",
+					"pagina": "Hinata Hyūga",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "deep wrinkles and a stern frown",
+			"escolhida": "cla-hyuuga--jounin-9001.png"
 		},
 		{
 			"slug": "cla-hyuuga--lider-do-cla",
 			"nome": "Hyuuga, guardião do Byakugan: Líder do clã",
 			"formato": "pagina",
-			"plano": ["aereo"],
-			"prompt": "a clan head ninja of the Hyuuga clan with long dark hair and pale white pupilless eyes, original character, elderly, the stern old Hyuuga clan head in traditional robes unleashing a storm of palm strikes, a forehead-sealed branch member kneeling behind"
+			"plano": ["aberto"],
+			"prompt": "a clan head ninja of the Hyuuga clan with long dark hair and pale white pupilless eyes, original character with heavy thick eyebrows, a different person from any famous clan member, elderly, the stern old clan head drinking tea alone in a vast empty hall of the Hyuuga compound, a branch member with a bandaged forehead kneeling far behind him",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-hyuuga--lider-do-cla.png",
+				"pagina": "Hiashi Hyūga",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/hiashi-hyuga.png",
+					"pagina": "Hiashi Hyūga",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/hinata-hyuga.png",
+					"pagina": "Hinata Hyūga",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "heavy thick eyebrows",
+			"escolhida": "cla-hyuuga--lider-do-cla-9001.png"
 		},
 		{
 			"slug": "cla-inuzuka--genin",
 			"nome": "Inuzuka, caçador e seu cão: Genin",
 			"formato": "retrato",
-			"plano": ["de-cima"],
-			"prompt": "a genin ninja of the Inuzuka clan with red fang-shaped marks on both cheeks and a fur hooded jacket, original character, a teenager, running on all fours with a small white puppy in his jacket"
+			"plano": ["close"],
+			"prompt": "a genin ninja of the Inuzuka clan with red fang-shaped marks on both cheeks and a fur hooded jacket, original character with wild shoulder-length hair and a wide confident grin, a different person from any famous clan member, a teenager, a teenage girl with a small white puppy poking its head out of her jacket next to her chin, both sniffing the wind on a hilltop",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-inuzuka--genin.png",
+				"pagina": "Kiba Inuzuka",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kiba-inuzuka.png",
+					"pagina": "Kiba Inuzuka",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/tsume-inuzuka.png",
+					"pagina": "Tsume Inuzuka",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "wild shoulder-length hair and a wide confident grin",
+			"escolhida": "cla-inuzuka--genin-9301.png"
 		},
 		{
 			"slug": "cla-inuzuka--chunin",
 			"nome": "Inuzuka, caçador e seu cão: Chunin",
 			"formato": "retrato",
-			"plano": ["de-baixo", "holandes"],
-			"prompt": "a chunin ninja of the Inuzuka clan with red fang-shaped marks on both cheeks and a fur hooded jacket, original character, a young adult, spinning in a drilling whirlwind of fangs with his ninja hound"
+			"plano": ["medio"],
+			"prompt": "a chunin ninja of the Inuzuka clan with red fang-shaped marks on both cheeks and a fur hooded jacket, original character with curly hair and freckles, a different person from any famous clan member, a young adult, a young man laughing while washing his huge ninja hound in a river, the dog shaking water all over him",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-inuzuka--chunin.png",
+				"pagina": "Kiba Inuzuka",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kiba-inuzuka.png",
+					"pagina": "Kiba Inuzuka",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/tsume-inuzuka.png",
+					"pagina": "Tsume Inuzuka",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "curly hair and freckles",
+			"escolhida": "cla-inuzuka--chunin-9301.png"
 		},
 		{
 			"slug": "cla-inuzuka--jounin",
 			"nome": "Inuzuka, caçador e seu cão: Jounin",
 			"formato": "quadro",
-			"plano": ["escorco"],
-			"prompt": "a jounin ninja of the Inuzuka clan with red fang-shaped marks on both cheeks and a fur hooded jacket, original character, an adult, transformed together with his giant hound into a two-headed wolf beast"
+			"plano": ["chao"],
+			"prompt": "a jounin ninja of the Inuzuka clan with red fang-shaped marks on both cheeks and a fur hooded jacket, original character with a messy bowl cut and a short goatee, a different person from any famous clan member, an adult, crouched on all fours sniffing fresh tracks in the mud at night beside his giant hound, both with glowing slit eyes",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-inuzuka--jounin.png",
+				"pagina": "Tsume Inuzuka",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/tsume-inuzuka.png",
+					"pagina": "Tsume Inuzuka",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kiba-inuzuka.png",
+					"pagina": "Kiba Inuzuka",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a messy bowl cut and a short goatee",
+			"escolhida": "cla-inuzuka--jounin-9301.png"
 		},
 		{
 			"slug": "cla-inuzuka--lider-do-cla",
 			"nome": "Inuzuka, caçador e seu cão: Líder do clã",
 			"formato": "pagina",
-			"plano": ["de-baixo"],
-			"prompt": "a clan head ninja of the Inuzuka clan with red fang-shaped marks on both cheeks and a fur hooded jacket, original character, elderly, the wild-haired old Inuzuka clan head beside an enormous three-headed wolf beast transformation"
+			"plano": ["de-cima"],
+			"prompt": "a clan head ninja of the Inuzuka clan with red fang-shaped marks on both cheeks and a fur hooded jacket, original character with a short low ponytail and a bandaged forearm, a different person from any famous clan member, elderly, the old wild-haired clan head feeding a dozen ninja dogs of every size in the clan kennels, dogs climbing over each other around her",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-inuzuka--lider-do-cla.png",
+				"pagina": "Tsume Inuzuka",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/tsume-inuzuka.png",
+					"pagina": "Tsume Inuzuka",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kiba-inuzuka.png",
+					"pagina": "Kiba Inuzuka",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a short low ponytail and a bandaged forearm",
+			"escolhida": "cla-inuzuka--lider-do-cla-9301.png"
 		},
 		{
 			"slug": "javalis--leitao",
 			"nome": "Javalis da floresta: Leitão",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
-			"prompt": "a small piglet summon with tiny tusks charging out of summoning smoke"
+			"plano": ["de-cima"],
+			"prompt": "a small piglet summon in a tiny ninja vest asleep in a basket of sweet potatoes",
+			"escolhida": "javalis--leitao-9301.png"
 		},
 		{
 			"slug": "javalis--javali-de-batalha",
 			"nome": "Javalis da floresta: Javali de batalha",
 			"formato": "quadro",
 			"plano": ["escorco"],
-			"prompt": "a horse-sized boar summon charging through a line of enemy soldiers"
+			"prompt": "a horse-sized boar summon charging through a line of enemy soldiers",
+			"escolhida": "javalis--javali-de-batalha-9301.png"
 		},
 		{
 			"slug": "javalis--javali-gigante",
 			"nome": "Javalis da floresta: Javali gigante",
 			"formato": "quadro",
-			"plano": ["inteiro"],
-			"prompt": "a giant wild boar with huge yellow tusks charging out of the forest and knocking down small trees, side view, dust and flying leaves",
-			"escolhida": "javali-gigante-7901.png",
-			"veio_de": "javalis"
+			"plano": ["escorco", "de-baixo"],
+			"prompt": "a colossal shaggy wild boar summon with thick bristly dark brown fur and a mane of long coarse hair along its spine, scarred snout, huge curved yellow tusks and steaming breath, charging down a hillside straight at the viewer and smashing through pine trees, splinters and earth flying",
+			"veio_de": "javalis",
+			"modelo": "pro",
+			"tamanho": [
+				168,
+				168
+			],
+			"escolhida": "javalis--javali-gigante-9401.png"
 		},
 		{
 			"slug": "javalis--rei-dos-javalis",
 			"nome": "Javalis da floresta: Rei dos javalis",
 			"formato": "pagina",
 			"plano": ["de-baixo", "silhueta"],
-			"prompt": "a colossal boar king summon trampling through a forest with trees flying in the air"
+			"prompt": "a colossal boar king summon trampling through a forest with trees flying in the air",
+			"escolhida": "javalis--rei-dos-javalis-9301.png"
 		},
 		{
 			"slug": "jinchuuriki--chakra-vazando",
 			"nome": "Jinchuuriki: Chakra vazando",
 			"formato": "retrato",
-			"plano": ["holandes"],
-			"prompt": "a young jinchuuriki ninja, original character with long dark hair in a ponytail and no whisker marks, red chakra seeping from the skin and slit red pupils, crouched and holding back"
+			"plano": ["de-cima"],
+			"prompt": "a young jinchuuriki, original character with long dark hair in a ponytail and no whisker marks, sitting alone in a dark room hugging the knees, red chakra seeping from the skin, slit red pupils",
+			"escolhida": "jinchuuriki--chakra-vazando-9301.png"
 		},
 		{
 			"slug": "jinchuuriki--manto-de-uma-cauda",
 			"nome": "Jinchuuriki: Manto de uma cauda",
 			"formato": "quadro",
 			"plano": ["olhos"],
-			"prompt": "a young jinchuuriki, original character with long dark hair and no whisker marks, wrapped in a cloak of boiling red chakra with fox ears and one tail, crouching on all fours on cracked ground"
+			"prompt": "a young jinchuuriki, original character with long dark hair and no whisker marks, wrapped in a cloak of boiling red chakra with fox ears and one tail, crouching on all fours on cracked ground",
+			"referencia": {
+				"arquivo": "referencias/bestiario/jinchuuriki--manto-de-uma-cauda.png",
+				"pagina": "Version 1",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/version-1.png",
+					"pagina": "Version 1",
+					"uso": "only the transformation effect as drawn in the Naruto anime (chakra cloak or cursed seal marks: shape, color, texture). The person wearing it is an original character with a different face and hair"
+				}
+			],
+			"escolhida": "jinchuuriki--manto-de-uma-cauda-9301.png"
 		},
 		{
 			"slug": "jinchuuriki--manto-de-varias-caudas",
 			"nome": "Jinchuuriki: Manto de várias caudas",
 			"formato": "pagina",
 			"plano": ["de-baixo", "silhueta"],
-			"prompt": "a jinchuuriki covered in a dark red chakra cloak with four tails, the skin hidden, glowing white eyes and a mouth full of fangs, standing in a crater it just made"
+			"prompt": "a jinchuuriki covered in a dark red chakra cloak with four tails, the skin hidden, glowing white eyes and a mouth full of fangs, standing in a crater it just made",
+			"referencia": {
+				"arquivo": "referencias/bestiario/jinchuuriki--manto-de-varias-caudas.png",
+				"pagina": "Version 2",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/version-2.png",
+					"pagina": "Version 2",
+					"uso": "only the transformation effect as drawn in the Naruto anime (chakra cloak or cursed seal marks: shape, color, texture). The person wearing it is an original character with a different face and hair"
+				}
+			],
+			"escolhida": "jinchuuriki--manto-de-varias-caudas-9301.png"
 		},
 		{
 			"slug": "cla-kaguya--genin",
 			"nome": "Kaguya, guerreiro dos ossos: Genin",
 			"formato": "retrato",
-			"plano": ["de-cima"],
-			"prompt": "a genin ninja of the Kaguya clan with long white hair and two red dots on the forehead, original character, a teenager, a young Kaguya boy firing bone bullets from his fingertips"
+			"plano": ["moldura"],
+			"prompt": "a genin ninja of the Kaguya clan with long white hair and two red dots on the forehead, original character with a single earring, a different person from any famous clan member, a teenager, a teenage girl seen through the bars of a stone cell, drawing on the wall with a sharp bone growing from her fingertip",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-kaguya--genin.png",
+				"pagina": "Kimimaro",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kimimaro.png",
+					"pagina": "Kimimaro",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kaguya-clan.png",
+					"pagina": "Kaguya Clan",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a single earring",
+			"escolhida": "cla-kaguya--genin-9301.png"
 		},
 		{
 			"slug": "cla-kaguya--chunin",
 			"nome": "Kaguya, guerreiro dos ossos: Chunin",
 			"formato": "retrato",
-			"plano": ["de-baixo", "holandes"],
-			"prompt": "a chunin ninja of the Kaguya clan with long white hair and two red dots on the forehead, original character, a young adult, pulling a long bone sword out of his own shoulder"
+			"plano": ["silhueta"],
+			"prompt": "a chunin ninja of the Kaguya clan with long white hair and two red dots on the forehead, original character with narrow fox-like eyes, a different person from any famous clan member, a young adult, dancing alone on a cliff edge in the rain with eyes closed, curved bone blades growing from both elbows",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-kaguya--chunin.png",
+				"pagina": "Kimimaro",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kimimaro.png",
+					"pagina": "Kimimaro",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kaguya-clan.png",
+					"pagina": "Kaguya Clan",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "narrow fox-like eyes",
+			"escolhida": "cla-kaguya--chunin-9301.png"
 		},
 		{
 			"slug": "cla-kaguya--jounin",
 			"nome": "Kaguya, guerreiro dos ossos: Jounin",
 			"formato": "quadro",
-			"plano": ["escorco"],
-			"prompt": "a jounin ninja of the Kaguya clan with long white hair and two red dots on the forehead, original character, an adult, covered in bone spikes in a whirling bone dance"
+			"plano": ["holandes"],
+			"prompt": "a young adult jounin of the Kaguya clan with long white hair and two red dots on the forehead, original character, wounded and bleeding, crouched like a wild animal among the dead bodies of his fallen clan members on a ruined battlefield, bone blades growing from his forearms and spine, fierce hungry eyes, fighting to survive, smoke and a red sunset",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-kaguya--jounin.png",
+				"pagina": "Kaguya Clan",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kaguya-clan.png",
+					"pagina": "Kaguya Clan",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits and the clan clothes. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kimimaro.png",
+					"pagina": "Kimimaro",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits and the clan clothes. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"tamanho": [
+				168,
+				168
+			],
+			"escolhida": "cla-kaguya--jounin-9401-c.png"
 		},
 		{
 			"slug": "cla-kaguya--lider-do-cla",
 			"nome": "Kaguya, guerreiro dos ossos: Líder do clã",
 			"formato": "pagina",
-			"plano": ["de-baixo"],
-			"prompt": "a clan head ninja of the Kaguya clan with long white hair and two red dots on the forehead, original character, elderly, the old Kaguya clan head standing in a field of giant bone spikes erupting from the ground"
+			"plano": ["aereo"],
+			"prompt": "the elderly head of the Kaguya clan with long white hair and two red dots on the forehead, original character, standing still in the center of a field of giant white bone spikes erupting from the ground in a spiral around him, several enemy ninjas impaled on the spikes and lifted off the ground, limbs hanging limp, broken weapons scattered, dust and a grey sky",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-kaguya--lider-do-cla.png",
+				"pagina": "Kaguya Clan",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kaguya-clan.png",
+					"pagina": "Kaguya Clan",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits and the clan clothes. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kimimaro.png",
+					"pagina": "Kimimaro",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits and the clan clothes. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"individuo": "a beauty mark under one eye",
+			"escolhida": "cla-kaguya--lider-do-cla-9501.png"
 		},
 		{
 			"slug": "lesmas-de-shikkotsu--lesma-pequena",
 			"nome": "Lesmas de Shikkotsu: Lesma pequena",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
-			"prompt": "a tiny white slug summon with blue stripes clinging to an injured ninja's chest and glowing with healing chakra"
+			"plano": ["close"],
+			"prompt": "a tiny white slug summon with blue stripes clinging to an injured ninja's chest and glowing with healing chakra",
+			"referencia": {
+				"arquivo": "referencias/bestiario/lesmas-de-shikkotsu--lesma-pequena.png",
+				"pagina": "Katsuyu",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/katsuyu.png",
+					"pagina": "Katsuyu",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "lesmas-de-shikkotsu--lesma-pequena-9301.png"
 		},
 		{
 			"slug": "lesmas-de-shikkotsu--lesma-de-cura",
 			"nome": "Lesmas de Shikkotsu: Lesma de cura",
 			"formato": "quadro",
-			"plano": ["escorco"],
-			"prompt": "a cow-sized white slug summon with blue stripes carrying two wounded ninjas on its back through a forest"
+			"plano": ["perfil"],
+			"prompt": "a cow-sized white slug summon with blue stripes carrying two wounded ninjas on its back through a forest",
+			"referencia": {
+				"arquivo": "referencias/bestiario/lesmas-de-shikkotsu--lesma-de-cura.png",
+				"pagina": "Katsuyu",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/katsuyu.png",
+					"pagina": "Katsuyu",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "lesmas-de-shikkotsu--lesma-de-cura-9301.png"
 		},
 		{
 			"slug": "lesmas-de-shikkotsu--lesma-gigante",
@@ -1041,224 +2085,640 @@
 			"slug": "lesmas-de-shikkotsu--rainha-das-lesmas",
 			"nome": "Lesmas de Shikkotsu: Rainha das lesmas",
 			"formato": "pagina",
-			"plano": ["de-baixo", "silhueta"],
-			"prompt": "the colossal white slug queen with blue stripes like the one of the Naruto anime splitting into thousands of small slugs that fly onto ninjas across a battlefield"
+			"plano": ["aereo"],
+			"prompt": "the colossal white slug queen with blue stripes splitting into thousands of small slugs that fly onto wounded ninjas across a battlefield",
+			"referencia": {
+				"arquivo": "referencias/bestiario/lesmas-de-shikkotsu--rainha-das-lesmas.png",
+				"pagina": "Katsuyu",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/katsuyu.png",
+					"pagina": "Katsuyu",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "lesmas-de-shikkotsu--rainha-das-lesmas-9301.png"
 		},
 		{
 			"slug": "lobos--lobo-pequeno",
 			"nome": "Lobos do Norte: Lobo pequeno",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
-			"prompt": "a small wolf pup summon sniffing tracks in the snow beside its summoner's boots"
+			"plano": ["chao"],
+			"prompt": "a small wolf pup summon sniffing tracks in the snow beside its summoner's boots",
+			"escolhida": "lobos--lobo-pequeno-9301.png"
 		},
 		{
 			"slug": "lobos--lobo-de-caca",
 			"nome": "Lobos do Norte: Lobo de caça",
 			"formato": "faixa",
-			"plano": ["aberto"],
-			"prompt": "a pack of grey wolves running through a snowy pine forest at dusk, glowing yellow eyes, breath vapor, snowy mountains far away, cold blue light",
-			"escolhida": "alcateia-lobos-7801.png",
-			"veio_de": "lobos"
+			"plano": ["chao"],
+			"prompt": "a lone hunting wolf summon with a ninja harness and a forehead protector tracking a scent across a frozen river at dawn, nose low to the ice, breath steaming, thick grey fur with frost, detailed close view, pine forest and mountains behind",
+			"escolhida": "lobos--lobo-de-caca-9502.png",
+			"veio_de": "lobos",
+			"modelo": "pro"
 		},
 		{
 			"slug": "lobos--lobo-gigante",
 			"nome": "Lobos do Norte: Lobo gigante",
 			"formato": "faixa",
-			"plano": ["holandes"],
-			"prompt": "a giant grey wolf summon carrying a ninja on its back through a snowstorm"
+			"plano": ["perfil"],
+			"prompt": "a giant grey wolf summon carrying a ninja on its back through a snowstorm",
+			"escolhida": "lobos--lobo-gigante-9301.png"
 		},
 		{
 			"slug": "lobos--chefe-da-alcateia",
 			"nome": "Lobos do Norte: Chefe da alcateia",
 			"formato": "pagina",
 			"plano": ["de-baixo", "silhueta"],
-			"prompt": "an enormous old white wolf summon howling on a snowy cliff under a full moon with the pack below"
+			"prompt": "an enormous old white wolf summon howling on a snowy cliff under a full moon with the pack below",
+			"escolhida": "lobos--chefe-da-alcateia-9301.png"
 		},
 		{
 			"slug": "macacos-guerreiros--macaco-pequeno",
 			"nome": "Macacos guerreiros: Macaco pequeno",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
-			"prompt": "a small mischievous monkey summon running off with a stolen scroll and grinning back at the camera"
+			"plano": ["holandes"],
+			"prompt": "a small mischievous monkey summon running off with a stolen scroll and grinning back at the camera",
+			"escolhida": "macacos-guerreiros--macaco-pequeno-9301.png"
 		},
 		{
 			"slug": "macacos-guerreiros--macaco-lutador",
 			"nome": "Macacos guerreiros: Macaco lutador",
 			"formato": "quadro",
-			"plano": ["escorco"],
-			"prompt": "a monkey warrior summon in a small armored vest leaping between branches swinging a staff"
+			"plano": ["ponta-cabeca"],
+			"prompt": "a monkey warrior summon in a small armored vest hanging upside down by its tail from a branch, spinning a staff, laughing",
+			"escolhida": "macacos-guerreiros--macaco-lutador-9301.png"
 		},
 		{
 			"slug": "macacos-guerreiros--macaco-guerreiro",
 			"nome": "Macacos guerreiros: Macaco guerreiro",
 			"formato": "faixa",
 			"plano": ["holandes"],
-			"prompt": "a giant monkey summon turning into a long black iron staff in the summoner's hands in a burst of smoke"
+			"prompt": "a giant monkey summon turning into a long black iron staff in the summoner's hands in a burst of smoke",
+			"referencia": {
+				"arquivo": "referencias/bestiario/macacos-guerreiros--macaco-guerreiro.png",
+				"pagina": "Enma",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/enma.png",
+					"pagina": "Enma",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "macacos-guerreiros--macaco-guerreiro-9301.png"
 		},
 		{
 			"slug": "macacos-guerreiros--rei-dos-macacos",
 			"nome": "Macacos guerreiros: Rei dos macacos",
 			"formato": "retrato",
 			"plano": ["de-baixo"],
-			"prompt": "an old wise monkey summon hanging upside down from a branch by its tail, white fur mane, wearing a small armored vest and a forehead protector, holding a black iron staff, mountain forest",
-			"escolhida": "macacos-guerreiros-7901.png",
-			"veio_de": "macacos-guerreiros"
+			"prompt": "a band of warrior monkey summons in small armored vests and forehead protectors gathered on the rocks of a mountain forest with their staffs, and on the highest rock their king: a big old monkey with a white mane and a long black iron staff sitting proudly as the others bow to him",
+			"veio_de": "macacos-guerreiros",
+			"modelo": "pro",
+			"tamanho": [
+				112,
+				168
+			],
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/enma.png",
+					"pagina": "Enma",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "macacos-guerreiros--rei-dos-macacos-9401.png"
 		},
 		{
 			"slug": "cla-nara--genin",
 			"nome": "Nara, estrategista das sombras: Genin",
 			"formato": "retrato",
 			"plano": ["de-cima"],
-			"prompt": "a genin ninja of the Nara clan with a spiky high ponytail and sleepy sharp eyes, original character, a teenager, practicing the shadow possession hand seal at sunset with his shadow stretching across a training field"
+			"prompt": "a genin ninja of the Nara clan with a spiky high ponytail and sleepy sharp eyes, original character with tired dark circles under the eyes, a different person from any famous clan member, a teenager, a teenage girl lying on a sunny rooftop with her hands behind her head watching the clouds, eyes half closed, a deer antler charm on her belt",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-nara--genin.png",
+				"pagina": "Shikamaru Nara",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shikamaru-nara.png",
+					"pagina": "Shikamaru Nara",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/shikaku-nara.png",
+					"pagina": "Shikaku Nara",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "tired dark circles under the eyes",
+			"escolhida": "cla-nara--genin-9301.png"
 		},
 		{
 			"slug": "cla-nara--chunin",
 			"nome": "Nara, estrategista das sombras: Chunin",
 			"formato": "retrato",
-			"plano": ["de-baixo", "holandes"],
-			"prompt": "a chunin ninja of the Nara clan with a spiky high ponytail and sleepy sharp eyes, original character, a young adult, binding two enemy ninjas with a long shadow in a forest"
+			"plano": ["ombro"],
+			"prompt": "a chunin ninja of the Nara clan with a spiky high ponytail and sleepy sharp eyes, original character with a scar over one eyebrow, a different person from any famous clan member, a young adult, playing shogi against an old man on a wooden porch in the evening, deep in thought, the shadows of the pieces strangely long on the board",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-nara--chunin.png",
+				"pagina": "Shikamaru Nara",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shikamaru-nara.png",
+					"pagina": "Shikamaru Nara",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/shikaku-nara.png",
+					"pagina": "Shikaku Nara",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a scar over one eyebrow",
+			"escolhida": "cla-nara--chunin-9301.png"
 		},
 		{
 			"slug": "cla-nara--jounin",
 			"nome": "Nara, estrategista das sombras: Jounin",
 			"formato": "quadro",
-			"plano": ["escorco"],
-			"prompt": "a jounin ninja of the Nara clan with a spiky high ponytail and sleepy sharp eyes, original character, an adult, strangling an enemy with shadow hands rising from the ground"
+			"plano": ["costas"],
+			"prompt": "a jounin ninja of the Nara clan with a spiky high ponytail and sleepy sharp eyes, original character with a short goatee, a different person from any famous clan member, an adult, walking through the clan's misty deer forest at dawn with a young deer following him, his shadow stretching far ahead of him like a living thing",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-nara--jounin.png",
+				"pagina": "Shikaku Nara",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shikaku-nara.png",
+					"pagina": "Shikaku Nara",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/shikamaru-nara.png",
+					"pagina": "Shikamaru Nara",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a short goatee",
+			"escolhida": "cla-nara--jounin-9301.png"
 		},
 		{
 			"slug": "cla-nara--lider-do-cla",
 			"nome": "Nara, estrategista das sombras: Líder do clã",
 			"formato": "pagina",
-			"plano": ["de-baixo"],
-			"prompt": "a clan head ninja of the Nara clan with a spiky high ponytail and sleepy sharp eyes, original character, elderly, an old Nara clan head with a scarred face and a goatee among the deer of the clan forest, shadow spikes piercing many enemies"
+			"plano": ["moldura"],
+			"prompt": "a clan head ninja of the Nara clan with a spiky high ponytail and sleepy sharp eyes, original character with a thin scar across the nose, a different person from any famous clan member, elderly, the old clan head kneeling to bandage the leg of a wounded deer, seen through the branches of the clan forest, a medicine box open beside him",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-nara--lider-do-cla.png",
+				"pagina": "Shikaku Nara",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shikaku-nara.png",
+					"pagina": "Shikaku Nara",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/shikamaru-nara.png",
+					"pagina": "Shikamaru Nara",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a thin scar across the nose",
+			"escolhida": "cla-nara--lider-do-cla-9301.png"
 		},
 		{
 			"slug": "portador-da-marca--marca-adormecida",
 			"nome": "Portador da marca amaldiçoada: Marca adormecida",
 			"formato": "retrato",
 			"plano": ["holandes"],
-			"prompt": "a young ninja, original character with short brown hair, touching a small black curse seal of three comma-shaped marks on his neck, brooding alone on a forest branch"
+			"prompt": "a young ninja, original character with short brown hair, touching a small black curse seal of three comma-shaped marks on his neck, brooding alone on a forest branch",
+			"escolhida": "portador-da-marca--marca-adormecida-9301.png"
 		},
 		{
 			"slug": "portador-da-marca--marca-desperta",
 			"nome": "Portador da marca amaldiçoada: Marca desperta",
 			"formato": "quadro",
 			"plano": ["olhos"],
-			"prompt": "a young ninja, original character with short brown hair, black flame-shaped curse marks spreading over half of his body and face, gritting teeth in pain while dark purple chakra rises"
+			"prompt": "a young ninja, original character with short brown hair, black flame-shaped curse marks spreading over half of his face, gritting teeth in pain while dark purple chakra rises",
+			"referencia": {
+				"arquivo": "referencias/bestiario/portador-da-marca--marca-desperta.png",
+				"pagina": "Cursed Seal of Heaven",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/cursed-seal-of-heaven.png",
+					"pagina": "Cursed Seal of Heaven",
+					"uso": "only the transformation effect as drawn in the Naruto anime (chakra cloak or cursed seal marks: shape, color, texture). The person wearing it is an original character with a different face and hair"
+				}
+			],
+			"escolhida": "portador-da-marca--marca-desperta-7901.png"
 		},
 		{
 			"slug": "portador-da-marca--segunda-forma",
 			"nome": "Portador da marca amaldiçoada: Segunda forma",
 			"formato": "pagina",
-			"plano": ["de-baixo", "silhueta"],
-			"prompt": "a ninja transformed by a curse seal into a second form, original character with dark grey skin, wild long hair, fangs and bony wings tearing out of his back, screaming toward the sky"
+			"plano": ["de-baixo"],
+			"prompt": "a ninja transformed by a curse seal into a second form, original character with dark grey skin, wild long hair, fangs and bony wings tearing out of his back, screaming toward the sky",
+			"referencia": {
+				"arquivo": "referencias/bestiario/portador-da-marca--segunda-forma.png",
+				"pagina": "Jūgo",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/jugo.png",
+					"pagina": "Jūgo",
+					"uso": "only the transformation effect as drawn in the Naruto anime (chakra cloak or cursed seal marks: shape, color, texture). The person wearing it is an original character with a different face and hair"
+				}
+			],
+			"escolhida": "portador-da-marca--segunda-forma-9301.png"
 		},
 		{
 			"slug": "cla-sabaku--genin",
 			"nome": "Sabaku, guardião da areia: Genin",
 			"formato": "retrato",
-			"plano": ["medio"],
-			"prompt": "a genin ninja of the Sabaku clan of Sunagakure with a large sand gourd on the back, original character, a teenager, a young Sabaku boy throwing sand shuriken on a dune"
+			"plano": ["silhueta"],
+			"prompt": "a genin ninja of the Sabaku clan of Sunagakure with a large sand gourd on the back, original character with a messy bowl cut and heavy thick eyebrows, a different person from any famous clan member, a teenager, a teenage girl sitting on a flat desert rooftop at night hugging her big sand gourd, a huge full moon behind her",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-sabaku--genin.png",
+				"pagina": "Gaara",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/gaara.png",
+					"pagina": "Gaara",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/temari.png",
+					"pagina": "Temari",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a messy bowl cut and heavy thick eyebrows",
+			"escolhida": "cla-sabaku--genin-9301.png"
 		},
 		{
 			"slug": "cla-sabaku--chunin",
 			"nome": "Sabaku, guardião da areia: Chunin",
 			"formato": "retrato",
-			"plano": ["escorco"],
-			"prompt": "a chunin ninja of the Sabaku clan of Sunagakure with a large sand gourd on the back, original character, a young adult, a coffin of sand closing around an enemy ninja"
+			"plano": ["holandes"],
+			"prompt": "a chunin ninja of the Sabaku clan of Sunagakure with a large sand gourd on the back, original character with a short low ponytail and a wide confident grin, a different person from any famous clan member, a young adult, a young man surfing down a huge dune on a board made of his own sand, arms out for balance, a trail of dust behind",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-sabaku--chunin.png",
+				"pagina": "Temari",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/temari.png",
+					"pagina": "Temari",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/gaara.png",
+					"pagina": "Gaara",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a short low ponytail and a wide confident grin",
+			"escolhida": "cla-sabaku--chunin-9301.png"
 		},
 		{
 			"slug": "cla-sabaku--jounin",
 			"nome": "Sabaku, guardião da areia: Jounin",
 			"formato": "quadro",
 			"plano": ["de-baixo"],
-			"prompt": "a jounin ninja of the Sabaku clan of Sunagakure with a large sand gourd on the back, original character, an adult, a huge wave of sand crashing over a canyon"
+			"prompt": "a jounin ninja of the Sabaku clan of Sunagakure with a large sand gourd on the back, original character with a high bun and deep wrinkles and a stern frown, a different person from any famous clan member, an adult, a woman floating cross-legged on a small cloud of sand above a canyon, reading a mission scroll as sand drifts upward",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-sabaku--jounin.png",
+				"pagina": "Gaara",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/gaara.png",
+					"pagina": "Gaara",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/temari.png",
+					"pagina": "Temari",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a high bun and deep wrinkles and a stern frown",
+			"escolhida": "cla-sabaku--jounin-9301.png"
 		},
 		{
 			"slug": "cla-sabaku--lider-do-cla",
 			"nome": "Sabaku, guardião da areia: Líder do clã",
 			"formato": "pagina",
-			"plano": ["aereo"],
-			"prompt": "a clan head ninja of the Sabaku clan of Sunagakure with a large sand gourd on the back, original character, elderly, the old Sabaku clan head floating on a platform of sand above a desert village during a sandstorm"
+			"plano": ["costas"],
+			"prompt": "a clan head ninja of the Sabaku clan of Sunagakure with a large sand gourd on the back, original character with short cropped hair and a crooked broken nose, a different person from any famous clan member, elderly, the old clan head standing on top of the village wall with arms crossed, facing a gigantic approaching sandstorm, his robes snapping in the wind",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-sabaku--lider-do-cla.png",
+				"pagina": "Rasa",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/rasa.png",
+					"pagina": "Rasa",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/gaara.png",
+					"pagina": "Gaara",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "short cropped hair and a crooked broken nose",
+			"escolhida": "cla-sabaku--lider-do-cla-9301.png"
 		},
 		{
 			"slug": "sapos-de-myoboku--sapo-pequeno",
 			"nome": "Sapos de Myōboku: Sapo pequeno",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
-			"prompt": "a small orange toad summon the size of a cat with a scroll tied to its back, hopping out of white summoning smoke next to its summoner"
+			"plano": ["chao"],
+			"prompt": "a small orange toad summon from Mount Myoboku the size of a cat, drawn like the small toads of the Naruto anime with dark markings around the eyes and lips and a tiny blue vest, sitting alone on wet mossy ground in the rain and holding a big green leaf over its head like an umbrella, puddles and falling raindrops around it, close view, no people",
+			"referencia": {
+				"arquivo": "referencias/bestiario/sapos-de-myoboku--sapo-pequeno.png",
+				"pagina": "Gamakichi",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/gamakichi.png",
+					"pagina": "Gamakichi",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "sapos-de-myoboku--sapo-pequeno-9701.png"
 		},
 		{
 			"slug": "sapos-de-myoboku--sapo-de-batalha",
 			"nome": "Sapos de Myōboku: Sapo de batalha",
 			"formato": "quadro",
 			"plano": ["escorco"],
-			"prompt": "a horse-sized red toad summon from Mount Myoboku in a dark vest leaping over a ninja with its tongue lashing out"
+			"prompt": "a horse-sized red toad summon from Mount Myoboku in a dark vest leaping over a ninja with its tongue lashing out",
+			"referencia": {
+				"arquivo": "referencias/bestiario/sapos-de-myoboku--sapo-de-batalha.png",
+				"pagina": "Gamaken",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/gamaken.png",
+					"pagina": "Gamaken",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "sapos-de-myoboku--sapo-de-batalha-9101.png"
 		},
 		{
 			"slug": "sapos-de-myoboku--sapo-guerreiro",
 			"nome": "Sapos de Myōboku: Sapo guerreiro",
 			"formato": "quadro",
-			"plano": ["close", "de-baixo"],
-			"prompt": "a giant warrior toad summon from Mount Myoboku, head and chest filling the frame, warty orange-red skin with dark purple markings around the eyes and lips, pale yellow throat, big yellow eyes with horizontal black pupils, fierce frown, short dark blue happi vest, one webbed hand gripping the hilt of a long tanto sword tucked into a white sash, giant curling leaves and rock spires of Mount Myoboku behind, misty sky",
-			"escolhida": "sapo-guerreiro-7701.png",
-			"veio_de": "sapos-de-myoboku"
+			"plano": ["escorco"],
+			"prompt": "a warrior toad summon from Mount Myoboku drawn like the toads of the Naruto anime, crouched low in a natural toad pose on all four legs, never standing upright, lunging straight at the viewer with its mouth open in a battle cry, thrusting a long two-pronged jitte fork at the camera with one webbed hand, the fork tips huge in the foreground, light gear only: bandaged forearms, a short sleeveless vest and a headband, warty skin with dark markings around the eyes and lips, water splashing",
+			"veio_de": "sapos-de-myoboku",
+			"modelo": "pro",
+			"tamanho": [
+				168,
+				168
+			],
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/gamahiro.png",
+					"pagina": "Gamahiro",
+					"uso": "a battle toad of Jiraiya in the Naruto anime: follow its body shape, warty skin and light gear (short vest, headband, no heavy armor). Draw a DIFFERENT individual of the same kind, crouched like a real toad"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/gamaken.png",
+					"pagina": "Gamaken",
+					"uso": "only the weapon: the long two-pronged jitte fork this toad carries in the Naruto anime; ignore its armor and shield"
+				}
+			],
+			"escolhida": "sapos-de-myoboku--sapo-guerreiro-9701-b.png"
 		},
 		{
 			"slug": "sapos-de-myoboku--chefe-dos-sapos",
 			"nome": "Sapos de Myōboku: Chefe dos sapos",
 			"formato": "pagina",
-			"plano": ["de-baixo", "silhueta"],
-			"prompt": "the colossal red-orange chief toad of Mount Myoboku from the Naruto anime with a pipe in his mouth, a short dark blue vest and a huge tanto blade at his waist, crouching on top of a destroyed rooftop over tiny ninjas"
+			"plano": ["perfil"],
+			"prompt": "the colossal red-orange chief toad of Mount Myoboku with a pipe in his mouth, a short dark blue vest and a huge tanto blade at his waist, sitting on a mountain top blowing smoke rings, a tiny ninja sitting on his head",
+			"referencia": {
+				"arquivo": "referencias/bestiario/sapos-de-myoboku--chefe-dos-sapos.png",
+				"pagina": "Gamabunta",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/gamabunta.png",
+					"pagina": "Gamabunta",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "sapos-de-myoboku--chefe-dos-sapos-9301.png"
 		},
 		{
 			"slug": "cla-senju--genin",
 			"nome": "Senju, herdeiro da madeira: Genin",
 			"formato": "retrato",
 			"plano": ["holandes"],
-			"prompt": "a genin ninja of the Senju clan with long dark hair and red armor of the Warring States era, original character, a teenager, a young Senju girl healing a scraped knee with green chakra in a forest camp"
+			"prompt": "a genin ninja of the Senju clan with long dark hair and red armor of the Warring States era, original character with a bandaged forearm, a different person from any famous clan member, a teenager, a young Senju girl healing a scraped knee with green chakra in a forest camp",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-senju--genin.png",
+				"pagina": "Nawaki",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/nawaki.png",
+					"pagina": "Nawaki",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/tsunade.png",
+					"pagina": "Tsunade",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a bandaged forearm",
+			"escolhida": "cla-senju--genin-9301.png"
 		},
 		{
 			"slug": "cla-senju--chunin",
 			"nome": "Senju, herdeiro da madeira: Chunin",
 			"formato": "retrato",
-			"plano": ["medio"],
-			"prompt": "a chunin ninja of the Senju clan with long dark hair and red armor of the Warring States era, original character, a young adult, pressing her palms to the ground as wooden pillars rise"
+			"plano": ["de-baixo"],
+			"prompt": "a chunin ninja of the Senju clan with long dark hair and red armor of the Warring States era, original character with a single earring, a different person from any famous clan member, a young adult, a young woman asleep on a high branch of an enormous tree, one arm dangling down, a little sapling sprouting from her open palm",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-senju--chunin.png",
+				"pagina": "Tsunade",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/tsunade.png",
+					"pagina": "Tsunade",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/nawaki.png",
+					"pagina": "Nawaki",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a single earring",
+			"escolhida": "cla-senju--chunin-9301.png"
 		},
 		{
 			"slug": "cla-senju--jounin",
 			"nome": "Senju, herdeiro da madeira: Jounin",
 			"formato": "quadro",
-			"plano": ["aereo"],
-			"prompt": "a jounin ninja of the Senju clan with long dark hair and red armor of the Warring States era, original character, an adult, a prison of wooden pillars closing over enemy ninjas"
+			"plano": ["aberto"],
+			"prompt": "a jounin ninja of the Senju clan with long dark hair and red armor of the Warring States era, original character with a short goatee, a different person from any famous clan member, an adult, a man planting a sapling among old graves on a former battlefield, young trees already growing over the rows of grave markers",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-senju--jounin.png",
+				"pagina": "Tobirama Senju",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/tobirama-senju.png",
+					"pagina": "Tobirama Senju",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/nawaki.png",
+					"pagina": "Nawaki",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a short goatee",
+			"escolhida": "cla-senju--jounin-9301.png"
 		},
 		{
 			"slug": "cla-senju--lider-do-cla",
 			"nome": "Senju, herdeiro da madeira: Líder do clã",
 			"formato": "pagina",
-			"plano": ["de-baixo", "holandes"],
-			"prompt": "a clan head ninja of the Senju clan with long dark hair and red armor of the Warring States era, original character, elderly, the old Senju clan head in red armor raising a whole forest of giant trees around a battlefield"
+			"plano": ["perfil"],
+			"prompt": "a clan head ninja of the Senju clan with long dark hair and red armor of the Warring States era, original character with a bandage on one cheek, a different person from any famous clan member, elderly, the old clan head sitting in seiza with eyes closed at the foot of a giant ancient tree whose roots curl around him",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-senju--lider-do-cla.png",
+				"pagina": "Hashirama Senju",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/hashirama-senju.png",
+					"pagina": "Hashirama Senju",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/nawaki.png",
+					"pagina": "Nawaki",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a bandage on one cheek",
+			"escolhida": "cla-senju--lider-do-cla-9301.png"
 		},
 		{
 			"slug": "tartarugas--tartaruga-pequena",
 			"nome": "Tartarugas da Ilha-Tartaruga: Tartaruga pequena",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
-			"prompt": "a small turtle summon with a scroll hidden in its shell sitting on a ninja's open palm"
+			"plano": ["close"],
+			"prompt": "a small turtle summon with a scroll hidden in its shell sitting on a ninja's open palm",
+			"referencia": {
+				"arquivo": "referencias/bestiario/tartarugas--tartaruga-pequena.png",
+				"pagina": "Ninkame",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/ninkame.png",
+					"pagina": "Ninkame",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "tartarugas--tartaruga-pequena-9301.png"
 		},
 		{
 			"slug": "tartarugas--tartaruga-de-casco",
 			"nome": "Tartarugas da Ilha-Tartaruga: Tartaruga de casco",
 			"formato": "quadro",
 			"plano": ["escorco"],
-			"prompt": "a large turtle summon tucked inside its shell blocking a fireball for the ninjas behind it"
+			"prompt": "a large turtle summon tucked inside its shell blocking a fireball for the ninjas behind it",
+			"referencia": {
+				"arquivo": "referencias/bestiario/tartarugas--tartaruga-de-casco.png",
+				"pagina": "Ninkame",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/ninkame.png",
+					"pagina": "Ninkame",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "tartarugas--tartaruga-de-casco-9301.png"
 		},
 		{
 			"slug": "tartarugas--tartaruga-gigante",
 			"nome": "Tartarugas da Ilha-Tartaruga: Tartaruga gigante",
 			"formato": "faixa",
-			"plano": ["holandes"],
-			"prompt": "a giant turtle summon carrying three ninjas across a misty lake on its shell"
+			"plano": ["aberto"],
+			"prompt": "a giant turtle summon carrying three ninjas across a misty lake on its shell",
+			"referencia": {
+				"arquivo": "referencias/bestiario/tartarugas--tartaruga-gigante.png",
+				"pagina": "Ninkame",
+				"forca": 120
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/ninkame.png",
+					"pagina": "Ninkame",
+					"uso": "style guide for this kind of summoned animal as drawn in the Naruto anime: species, body shape, proportions and the way clothes and gear are worn. Draw a DIFFERENT individual of the same kind, not this exact character: its own markings, scars, accessories and color variations. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "tartarugas--tartaruga-gigante-9301.png"
 		},
 		{
 			"slug": "tartarugas--ancestral-da-ilha",
@@ -1273,172 +2733,508 @@
 			"slug": "tigres--filhote-de-tigre",
 			"nome": "Tigres do bambuzal: Filhote de tigre",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
-			"prompt": "a tiger cub summon pouncing out of tall grass toward the camera"
+			"plano": ["chao"],
+			"prompt": "a tiger cub summon pouncing out of tall grass toward the camera",
+			"escolhida": "tigres--filhote-de-tigre-9301.png"
 		},
 		{
 			"slug": "tigres--tigre-de-caca",
 			"nome": "Tigres do bambuzal: Tigre de caça",
 			"formato": "quadro",
-			"plano": ["escorco"],
-			"prompt": "a tiger summon stalking low through a green bamboo forest, eyes fixed on a ninja"
+			"plano": ["moldura"],
+			"prompt": "a tiger summon stalking low through a green bamboo forest, eyes fixed on a ninja, seen between the bamboo stalks",
+			"escolhida": "tigres--tigre-de-caca-9301.png"
 		},
 		{
 			"slug": "tigres--tigre-gigante",
 			"nome": "Tigres do bambuzal: Tigre gigante",
 			"formato": "faixa",
 			"plano": ["holandes"],
-			"prompt": "a huge striped tiger summon leaping out of a cloud of white summoning smoke with claws out toward a ninja falling back"
+			"prompt": "a huge striped tiger summon leaping out of a cloud of white summoning smoke with claws out toward a ninja falling back",
+			"escolhida": "tigres--tigre-gigante-9301.png"
 		},
 		{
 			"slug": "tigres--senhor-do-bambuzal",
 			"nome": "Tigres do bambuzal: Senhor do bambuzal",
 			"formato": "pagina",
-			"plano": ["de-baixo", "silhueta"],
-			"prompt": "a colossal white tiger summon with glowing eyes standing in a moonlit bamboo forest"
+			"plano": ["de-baixo"],
+			"prompt": "a colossal white tiger summon with glowing eyes standing in a moonlit bamboo forest",
+			"escolhida": "tigres--senhor-do-bambuzal-9301.png"
 		},
 		{
 			"slug": "cla-uchiha--genin",
 			"nome": "Uchiha, portador do Sharingan: Genin",
 			"formato": "retrato",
-			"plano": ["de-cima"],
-			"prompt": "a genin ninja of the Uchiha clan with dark hair and a high collared navy shirt with the red and white Uchiha fan crest, original character, a teenager, a young Uchiha boy blowing his first great fireball over a lake pier"
+			"plano": ["ponta-cabeca"],
+			"prompt": "a genin ninja of the Uchiha clan with dark hair and a high collared navy shirt with the red and white Uchiha fan crest, original character with wild shoulder-length hair and a beauty mark under one eye, a different person from any famous clan member, a teenager, a teenage girl hanging upside down by her knees from a tree branch at night, throwing kunai at targets around her, one eye glowing red",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-uchiha--genin.png",
+				"pagina": "Sasuke Uchiha",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/sasuke-uchiha.png",
+					"pagina": "Sasuke Uchiha",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/shisui-uchiha.png",
+					"pagina": "Shisui Uchiha",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "wild shoulder-length hair and a beauty mark under one eye",
+			"escolhida": "cla-uchiha--genin-9301.png"
 		},
 		{
 			"slug": "cla-uchiha--chunin",
 			"nome": "Uchiha, portador do Sharingan: Chunin",
 			"formato": "retrato",
-			"plano": ["de-baixo", "holandes"],
-			"prompt": "a chunin ninja of the Uchiha clan with dark hair and a high collared navy shirt with the red and white Uchiha fan crest, original character, a young adult, red Sharingan eyes with two tomoe reading an enemy's punch"
+			"plano": ["moldura"],
+			"prompt": "a chunin ninja of the Uchiha clan with dark hair and a high collared navy shirt with the red and white Uchiha fan crest, original character with curly hair and tired dark circles under the eyes, a different person from any famous clan member, a young adult, a young man praying at a small family shrine with the fan crest, seen through the open sliding door, candle light on his face, eyes closed",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-uchiha--chunin.png",
+				"pagina": "Shisui Uchiha",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shisui-uchiha.png",
+					"pagina": "Shisui Uchiha",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/sasuke-uchiha.png",
+					"pagina": "Sasuke Uchiha",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "curly hair and tired dark circles under the eyes",
+			"escolhida": "cla-uchiha--chunin-9301.png"
 		},
 		{
 			"slug": "cla-uchiha--jounin",
 			"nome": "Uchiha, portador do Sharingan: Jounin",
 			"formato": "quadro",
-			"plano": ["olhos"],
-			"prompt": "a jounin ninja of the Uchiha clan with dark hair and a high collared navy shirt with the red and white Uchiha fan crest, original character, an adult, a dragon of flames bursting from his mouth across the battlefield"
+			"plano": ["holandes"],
+			"prompt": "a young adult jounin of the Uchiha clan, original character with messy dark hair, high collared navy shirt with the red and white Uchiha fan crest and red Sharingan eyes with three tomoe, standing calmly while the world around him folds into an impossible optical illusion: an endless staircase looping on itself, the sky and the ground swapped, his enemy repeated in a spiral of copies, genjutsu",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-uchiha--jounin.png",
+				"pagina": "Itachi Uchiha",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/itachi-uchiha.png",
+					"pagina": "Itachi Uchiha",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits and the clan clothes. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"tamanho": [
+				168,
+				168
+			],
+			"escolhida": "cla-uchiha--jounin-9901.png"
 		},
 		{
 			"slug": "cla-uchiha--lider-do-cla",
 			"nome": "Uchiha, portador do Sharingan: Líder do clã",
 			"formato": "pagina",
 			"plano": ["de-baixo"],
-			"prompt": "a clan head ninja of the Uchiha clan with dark hair and a high collared navy shirt with the red and white Uchiha fan crest, original character, elderly, the proud old Uchiha clan head with red Sharingan eyes with three tomoe standing in front of a burning fan crest banner"
+			"prompt": "the elderly head of the Uchiha clan, original character with a short low ponytail and a scar on the chin, standing and speaking at a secret clan meeting in the hidden underground hall beneath the Naka Shrine, an ancient stone tablet behind him, rows of Uchiha clan members with the fan crest on their backs sitting on the stone floor listening in candlelight, tense conspiratorial mood, seen from among the seated members",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-uchiha--lider-do-cla.png",
+				"pagina": "Fugaku Uchiha",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/fugaku-uchiha.png",
+					"pagina": "Fugaku Uchiha",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits and the clan clothes. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "cla-uchiha--lider-do-cla-9401.png"
 		},
 		{
 			"slug": "ursos--filhote-de-urso",
 			"nome": "Ursos das montanhas: Filhote de urso",
 			"formato": "retrato",
-			"plano": ["de-baixo"],
-			"prompt": "a small bear cub summon tumbling out of summoning smoke at its summoner's feet"
+			"plano": ["de-cima"],
+			"prompt": "a small bear cub summon tumbling out of summoning smoke at its summoner's feet",
+			"escolhida": "ursos--filhote-de-urso-9301.png"
 		},
 		{
 			"slug": "ursos--urso-de-batalha",
 			"nome": "Ursos das montanhas: Urso de batalha",
 			"formato": "quadro",
-			"plano": ["escorco"],
-			"prompt": "a brown bear summon standing up and grappling a ninja in a crushing hug"
+			"plano": ["medio"],
+			"prompt": "a brown bear summon catching salmon in a waterfall with its paws",
+			"escolhida": "ursos--urso-de-batalha-9301.png"
 		},
 		{
 			"slug": "ursos--urso-gigante",
 			"nome": "Ursos das montanhas: Urso gigante",
 			"formato": "quadro",
 			"plano": ["de-baixo"],
-			"prompt": "an enormous brown bear rearing up on its hind legs and roaring, claws out, scars on its snout, dense autumn mountain forest with falling red leaves",
-			"escolhida": "urso-gigante-7801.png",
-			"veio_de": "ursos"
+			"prompt": "a gigantic brown bear summon standing up on its hind legs to its full height to show its size, towering over a pine forest, claws spread, scarred chest, roaring at the sky, a tiny ninja at its feet looking up, dramatic clouds",
+			"veio_de": "ursos",
+			"modelo": "pro",
+			"tamanho": [
+				168,
+				168
+			],
+			"escolhida": "ursos--urso-gigante-9501-d.png"
 		},
 		{
 			"slug": "ursos--rei-da-montanha",
 			"nome": "Ursos das montanhas: Rei da montanha",
 			"formato": "pagina",
-			"plano": ["de-baixo", "silhueta"],
-			"prompt": "a colossal grey bear king summon roaring on top of a mountain, storm clouds behind"
+			"plano": ["de-baixo"],
+			"prompt": "after a great battle: the ancient grey bear king of the mountain sitting calmly among the ruins of a destroyed mountain fortress, smashed stone walls, broken burning trees and drifting smoke, a sacred shimenawa rope with white paper streamers tied around his neck, a broken giant sword stuck in his scarred shoulder, licking a wounded paw, the bear filling only half of the frame, no people",
+			"modelo": "pro",
+			"escolhida": "ursos--rei-da-montanha-9501.png"
 		},
 		{
 			"slug": "cla-uzumaki--genin",
 			"nome": "Uzumaki, mestre dos selos: Genin",
 			"formato": "retrato",
-			"plano": ["medio"],
-			"prompt": "a genin ninja of the Uzumaki clan with bright red hair and the red spiral crest, original character, a teenager, a young Uzumaki girl drawing her first sealing formula with a brush"
+			"plano": ["de-cima"],
+			"prompt": "a genin ninja of the Uzumaki clan with bright red hair and the red spiral crest, original character with a high bun and a thin scar across the nose, a different person from any famous clan member, a teenager, a teenage girl kneeling on the floor drawing her first sealing formula with a brush, ink stains on her face and spiral symbols all around her",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-uzumaki--genin.png",
+				"pagina": "Karin",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/karin.png",
+					"pagina": "Karin",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kushina-uzumaki.png",
+					"pagina": "Kushina Uzumaki",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a high bun and a thin scar across the nose",
+			"escolhida": "cla-uzumaki--genin-9301.png"
 		},
 		{
 			"slug": "cla-uzumaki--chunin",
 			"nome": "Uzumaki, mestre dos selos: Chunin",
 			"formato": "retrato",
-			"plano": ["escorco"],
-			"prompt": "a chunin ninja of the Uzumaki clan with bright red hair and the red spiral crest, original character, a young adult, sealing an enemy's jutsu into a scroll covered in glowing symbols"
+			"plano": ["costas"],
+			"prompt": "a chunin ninja of the Uzumaki clan with bright red hair and the red spiral crest, original character with short cropped hair and heavy thick eyebrows, a different person from any famous clan member, a young adult, a young man seen from behind repairing a cracked sealing formula on a stone shrine door in the overgrown ruins of the Whirlpool Village, red hair blowing",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-uzumaki--chunin.png",
+				"pagina": "Kushina Uzumaki",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kushina-uzumaki.png",
+					"pagina": "Kushina Uzumaki",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/karin.png",
+					"pagina": "Karin",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "short cropped hair and heavy thick eyebrows",
+			"escolhida": "cla-uzumaki--chunin-9301.png"
 		},
 		{
 			"slug": "cla-uzumaki--jounin",
 			"nome": "Uzumaki, mestre dos selos: Jounin",
 			"formato": "quadro",
 			"plano": ["de-baixo"],
-			"prompt": "a jounin ninja of the Uzumaki clan with bright red hair and the red spiral crest, original character, an adult, golden chakra chains erupting from his back to bind a huge beast"
+			"prompt": "a jounin of the Uzumaki clan, original character with bright red hair in a long braid and a short goatee, wounded and bleeding in the middle of a battle, cuts on his face and torn clothes, hands locked in a seal, standing in front of the giant ghostly Shinigami of the Dead Demon Consuming Seal: the pale reaper with wild white hair and a knife held in its mouth looms behind him, its spectral arm passing through his body and pulling a glowing captured soul out of an enemy, night battlefield, no fox, no Tailed Beast",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-uzumaki--jounin.png",
+				"pagina": "Mito Uzumaki",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "gerados/bestiario/cla-uzumaki--jounin-9401.png",
+					"pagina": "(arte 9401 aprovada)",
+					"uso": "this Uzumaki ninja and this Shinigami: keep the character design (red braid, goatee, Konoha flak vest, Uzumaki crest) and the reaper design and colors; remove the fox entirely"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/dead-demon-consuming-seal.png",
+					"pagina": "Dead Demon Consuming Seal",
+					"uso": "the Dead Demon Consuming Seal as drawn in the Naruto anime: the ghostly Shinigami with a knife in its mouth behind the user, its arm reaching through the user to seize a soul"
+				}
+			],
+			"tamanho": [
+				168,
+				168
+			],
+			"escolhida": "cla-uzumaki--jounin-9802.png"
 		},
 		{
 			"slug": "cla-uzumaki--lider-do-cla",
 			"nome": "Uzumaki, mestre dos selos: Líder do clã",
 			"formato": "pagina",
 			"plano": ["aereo"],
-			"prompt": "a clan head ninja of the Uzumaki clan with bright red hair and the red spiral crest, original character, elderly, the old Uzumaki clan head with long red hair among the ruins of the Whirlpool Village, a giant sealing formula glowing on the ground"
+			"prompt": "a clan head ninja of the Uzumaki clan with bright red hair and the red spiral crest, original character with freckles, a different person from any famous clan member, elderly, the old clan head with long red hair standing among the ruins of the Whirlpool Village in the center of a giant sealing formula glowing on the ground",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-uzumaki--lider-do-cla.png",
+				"pagina": "Ashina Uzumaki",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/ashina-uzumaki.png",
+					"pagina": "Ashina Uzumaki",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/karin.png",
+					"pagina": "Karin",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "freckles",
+			"escolhida": "cla-uzumaki--lider-do-cla-9301.png"
 		},
 		{
 			"slug": "cla-yamanaka--genin",
 			"nome": "Yamanaka, invasor de mentes: Genin",
 			"formato": "retrato",
 			"plano": ["medio"],
-			"prompt": "a genin ninja of the Yamanaka clan with platinum blonde hair in a long ponytail, original character, a teenager, forming the diamond-shaped mind transfer hand sign in a flower shop"
+			"prompt": "a genin ninja of the Yamanaka clan with platinum blonde hair in a long ponytail, original character with a crooked broken nose, a different person from any famous clan member, a teenager, a teenage boy asleep at the counter of the family flower shop with his head on his arms, a cat walking across the flowers beside him",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-yamanaka--genin.png",
+				"pagina": "Ino Yamanaka",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/ino-yamanaka.png",
+					"pagina": "Ino Yamanaka",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/inoichi-yamanaka.png",
+					"pagina": "Inoichi Yamanaka",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a crooked broken nose",
+			"edicao": {
+				"origem": "cla-yamanaka--genin-9301.png",
+				"instrucao": "Replace the green jounin flak vest of the sleeping boy with simple genin clothes: a plain dark purple short-sleeved shirt, no vest. Keep everything else exactly the same: composition, pose, colors and pixel style."
+			},
+			"escolhida": "cla-yamanaka--genin-9401.png"
 		},
 		{
 			"slug": "cla-yamanaka--chunin",
 			"nome": "Yamanaka, invasor de mentes: Chunin",
 			"formato": "retrato",
-			"plano": ["escorco"],
-			"prompt": "a chunin ninja of the Yamanaka clan with platinum blonde hair in a long ponytail, original character, a young adult, her mind transferring into an enemy ninja who turns his weapon against his allies"
+			"plano": ["holandes"],
+			"prompt": "a chunin ninja of the Yamanaka clan with platinum blonde hair in a long ponytail, original character with a bandaged forearm, a different person from any famous clan member, a young adult, a young woman sitting on a rooftop at night with two fingers on her forehead while a faint ghostly copy of her drifts out of her body",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-yamanaka--chunin.png",
+				"pagina": "Ino Yamanaka",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/ino-yamanaka.png",
+					"pagina": "Ino Yamanaka",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/inoichi-yamanaka.png",
+					"pagina": "Inoichi Yamanaka",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a bandaged forearm",
+			"escolhida": "cla-yamanaka--chunin-9301.png"
 		},
 		{
 			"slug": "cla-yamanaka--jounin",
 			"nome": "Yamanaka, invasor de mentes: Jounin",
 			"formato": "quadro",
 			"plano": ["de-baixo"],
-			"prompt": "a jounin ninja of the Yamanaka clan with platinum blonde hair in a long ponytail, original character, an adult, a sensor ninja with her hand on a big glowing barrier device linking many minds"
+			"prompt": "a jounin ninja of the Yamanaka clan with platinum blonde hair in a long ponytail, original character with a single earring, a different person from any famous clan member, an adult, a sensor ninja with her hand on a big glowing barrier device linking many minds, cables and seals around the room",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-yamanaka--jounin.png",
+				"pagina": "Inoichi Yamanaka",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/inoichi-yamanaka.png",
+					"pagina": "Inoichi Yamanaka",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/ino-yamanaka.png",
+					"pagina": "Ino Yamanaka",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a single earring",
+			"escolhida": "cla-yamanaka--jounin-9301.png"
 		},
 		{
 			"slug": "cla-yamanaka--lider-do-cla",
 			"nome": "Yamanaka, invasor de mentes: Líder do clã",
 			"formato": "pagina",
-			"plano": ["aereo"],
-			"prompt": "a clan head ninja of the Yamanaka clan with platinum blonde hair in a long ponytail, original character, elderly, the old Yamanaka clan head in a dark interrogation room with his hand on a prisoner's head, glowing mind chakra"
+			"plano": ["moldura", "de-baixo"],
+			"prompt": "the head of the Yamanaka clan, original character, a man in his forties with platinum blond hair tied in a short low ponytail, in the long dark coat of Konoha's Intelligence Division, standing in the doorway of a dark prison cell completely covered in deep shadow, a cold light behind him turning him into a silhouette, his long shadow falling over a chained prisoner on the stone floor, only his pale eyes and a faint blue glow of mind chakra in his raised hand visible, intimidating",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-yamanaka--lider-do-cla.png",
+				"pagina": "Inoichi Yamanaka",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/inoichi-yamanaka.png",
+					"pagina": "Inoichi Yamanaka",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits and the clan clothes. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/ibiki-morino.png",
+					"pagina": "Ibiki Morino",
+					"uso": "the long dark coat and bandana of Konoha's Intelligence Division as drawn in the Naruto anime: only the outfit, not this face"
+				}
+			],
+			"escolhida": "cla-yamanaka--lider-do-cla-9602.png"
 		},
 		{
 			"slug": "cla-yuki--genin",
 			"nome": "Yuki, espelhos de gelo: Genin",
 			"formato": "retrato",
 			"plano": ["de-cima"],
-			"prompt": "a genin ninja of the Yuki clan with long dark hair and a pale face, original character, a teenager, a young Yuki girl making ice flowers bloom in the snow"
+			"prompt": "a genin ninja of the Yuki clan with long dark hair and a pale face, original character with a bandage on one cheek, a different person from any famous clan member, a teenager, a teenage girl making ice flowers bloom in the snow around her knees",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-yuki--genin.png",
+				"pagina": "Haku",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/haku.png",
+					"pagina": "Haku",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/yuki-clan.png",
+					"pagina": "Yuki Clan",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a bandage on one cheek",
+			"escolhida": "cla-yuki--genin-9301.png"
 		},
 		{
 			"slug": "cla-yuki--chunin",
 			"nome": "Yuki, espelhos de gelo: Chunin",
 			"formato": "retrato",
-			"plano": ["de-baixo", "holandes"],
-			"prompt": "a chunin ninja of the Yuki clan with long dark hair and a pale face, original character, a young adult, throwing a spray of ice needles in a frozen forest"
+			"plano": ["aberto"],
+			"prompt": "a chunin ninja of the Yuki clan with long dark hair and a pale face, original character with a beauty mark under one eye, a different person from any famous clan member, a young adult, a young man skating alone across a vast frozen lake at dawn, ice crystals trailing behind him, distant snowy pines",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-yuki--chunin.png",
+				"pagina": "Haku",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/haku.png",
+					"pagina": "Haku",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/yuki-clan.png",
+					"pagina": "Yuki Clan",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a beauty mark under one eye",
+			"escolhida": "cla-yuki--chunin-9301.png"
 		},
 		{
 			"slug": "cla-yuki--jounin",
 			"nome": "Yuki, espelhos de gelo: Jounin",
 			"formato": "quadro",
-			"plano": ["escorco"],
-			"prompt": "a jounin ninja of the Yuki clan with long dark hair and a pale face, original character, an adult, a dome of ice mirrors around a trapped ninja with her reflection in every mirror"
+			"plano": ["reflexo"],
+			"prompt": "a jounin ninja of the Yuki clan with long dark hair and a pale face, original character with tired dark circles under the eyes, a different person from any famous clan member, an adult, a woman inside a dome of tall ice mirrors, her reflection repeated in every mirror, each reflection in a different pose",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-yuki--jounin.png",
+				"pagina": "Yuki Clan",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/yuki-clan.png",
+					"pagina": "Yuki Clan",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/haku.png",
+					"pagina": "Haku",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "tired dark circles under the eyes",
+			"escolhida": "cla-yuki--jounin-9301.png"
 		},
 		{
 			"slug": "cla-yuki--lider-do-cla",
 			"nome": "Yuki, espelhos de gelo: Líder do clã",
 			"formato": "pagina",
-			"plano": ["de-baixo"],
-			"prompt": "a clan head ninja of the Yuki clan with long dark hair and a pale face, original character, elderly, the old Yuki clan head in a blizzard surrounded by a field of giant ice crystals"
+			"plano": ["silhueta"],
+			"prompt": "a clan head ninja of the Yuki clan with long dark hair and a pale face, original character with a scar over one eyebrow, a different person from any famous clan member, elderly, the old clan head walking into a blizzard with a lantern, surrounded by giant ice crystals",
+			"referencia": {
+				"arquivo": "referencias/bestiario/cla-yuki--lider-do-cla.png",
+				"pagina": "Yuki Clan",
+				"forca": 140
+			},
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/yuki-clan.png",
+					"pagina": "Yuki Clan",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits (body type and build, hair color, eyes, clan markings) and the clan clothes and armor. Draw a DIFFERENT member of the clan, an original character with his or her own face, hairstyle and a variation of the outfit, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/haku.png",
+					"pagina": "Haku",
+					"uso": "another member of the same clan in the Naruto anime: only the traits the whole family shares (body type, hair color, markings, clan clothes), not a face to copy"
+				}
+			],
+			"individuo": "a scar over one eyebrow",
+			"escolhida": "cla-yuki--lider-do-cla-9301.png"
 		}
 	],
-	"direcao_nota": "Direção (20/10): referências do anime e do mangá de Naruto, e ângulos ousados como os quadros-chave do anime: câmera inclinada, silhueta contra a lua, close nos olhos, escorço, vista aérea, contra-plongée extremo. O personagem no meio de uma ação, fora do centro, cortado pela moldura. Nunca a pose de ficha (de pé, de frente, no centro, fundo simétrico). Rostos originais; criaturas e símbolos canônicos iguais aos do anime."
+	"direcao_nota": "Direção (20/10): referências do anime e do mangá de Naruto, e ângulos ousados como os quadros-chave do anime: câmera inclinada, silhueta contra a lua, close nos olhos, escorço, vista aérea, contra-plongée extremo. O personagem no meio de uma ação, fora do centro, cortado pela moldura. Nunca a pose de ficha (de pé, de frente, no centro, fundo simétrico). Rostos originais; criaturas e símbolos canônicos iguais aos do anime.",
+	"imagem_estilo": "gerados/bestiario/ronin-mercenario-7801.png",
+	"imagem_estilo_nota": "O padrão de acabamento (contorno, detalhe e sombra) de todas as artes Pro: o rōnin, que o usuário apontou como a direção certa.",
+	"paleta_anime": ["#f2c9a0", "#e0a878", "#b5764a", "#1c2541", "#2e3c63", "#56622a", "#86964a", "#f28c38", "#7a3b69", "#3b2a5a", "#d94f2b", "#ffd27a"],
+	"modelo": "pro",
+	"modelo_nota": "modelo: \"pro\" (o padrão da lista; um pedido pode pedir \"pixflux\") usa create_image_pro: 10 gerações por arte em qualquer dos quatro formatos (medido em 21/10), com a imagem de estilo, a paleta e as referências do anime em referencias [{arquivo, pagina, uso}] (o arquivo vai em base64: a CDN da wiki recusa o servidor do PixelLab). Sem referência, o Pro segue só o texto e a imagem de estilo."
 }

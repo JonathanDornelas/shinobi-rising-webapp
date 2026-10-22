@@ -90,4 +90,26 @@ describe('bestiário', () => {
 				expect(a.dano).toBe(e.combate.ataques[0].dano);
 			});
 	});
+
+	it('atributos, perícias e proficiências fecham com o acerto, a Defesa e a Iniciativa (cap. 3 e 4)', () => {
+		for (const [c, e] of estagios) {
+			const k = e.combate;
+			const f = k.ficha;
+			const nome = `${c.slug} · ${e.nome}`;
+			// atributos de -2 a +10 (o teto do atributo de clã); AGI é a Iniciativa
+			for (const v of Object.values(f.atributos)) expect(v, nome).toBeGreaterThanOrEqual(-2), expect(v, nome).toBeLessThanOrEqual(10);
+			expect(f.atributos.agi, nome).toBe(k.iniciativa);
+			// a perícia do ataque principal + a proficiência na arma = o acerto
+			const arma = f.proficiencias.find((p) => !p.jutsu)?.bonus ?? 0;
+			expect(f.pericias[0].total + arma, nome).toBe(k.ataques[0].acerto);
+			// Acrobacia = Defesa − 10 (nas feras de couraça, menos que isso)
+			expect(f.pericias.find((p) => p.id === 'acrobacia')!.total, nome).toBeLessThanOrEqual(k.defesa - 10);
+			// poucas: até 4 perícias, 2 especializações e 2 proficiências (de Familiar a Lendário)
+			expect(f.pericias.length, nome).toBeLessThanOrEqual(4);
+			expect(f.especializacoes.length, nome).toBeLessThanOrEqual(2);
+			expect(f.proficiencias.length, nome).toBeLessThanOrEqual(2);
+			for (const p of f.proficiencias) expect(p.bonus, nome).toBeGreaterThanOrEqual(1), expect(p.bonus, nome).toBeLessThanOrEqual(5);
+			for (const s of f.especializacoes) expect(s.ancora, nome).toMatch(/^especializacao-/);
+		}
+	});
 });

@@ -1,0 +1,9 @@
+{
+	"_sobre": "Artes provisórias dos pedidos marcados como \"nova\" em escolhas-bestiario.json que ainda não foram refeitos (cota do PixelLab zerada até 21/11). O aplicar-escolhidas usa estas até a nova ser escolhida.",
+	"bestiario": {
+		"cla-kaguya--lider-do-cla": "cla-kaguya--lider-do-cla-9301.png",
+		"ninja-medico": "medico-ninja-7801.png",
+		"ursos--rei-da-montanha": "ursos--rei-da-montanha-9301.png",
+		"cla-yamanaka--lider-do-cla": "cla-yamanaka--lider-do-cla-9301.png"
+	}
+}

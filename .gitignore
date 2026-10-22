@@ -30,3 +30,12 @@ vite.config.ts.timestamp-*
 
 # Jobs do PixelLab (guardam o começo do token da conta que gerou)
 pixellab/gerados/**/jobs.json
+
+# Referências do anime usadas como imagem inicial (img2img) das artes do bestiário: não vão para o repositório
+pixellab/referencias/bestiario/
+
+# imagens sem uso (varredura de 21/10): guardadas fora do git
+backup-imagens/
+
+# cache das consultas à API da wiki de Naruto (só nomes de arquivo)
+pixellab/referencias/api-wiki.json

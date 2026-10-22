@@ -1,15 +1,24 @@
 <script lang="ts">
 	// Quadro de combate de um estágio do verbete, no espírito do "Na mesa": a barra escura com a ameaça, os números
-	// grandes, os ataques prontos para rolar (chips de dado), os jutsus com link para o catálogo e os traços.
+	// grandes, os atributos, as perícias, especializações e proficiências, os ataques prontos para rolar (chips de dado),
+	// os jutsus lado a lado e os traços. Atributos, perícias e jutsus abrem o cartão do léxico no hover, como no livro.
+	import { ATRIBUTOS, NIVEIS_PROFICIENCIA } from '#lib/bestiario/ficha.ts';
 	import { PAPEIS } from '#lib/bestiario/npc.ts';
 	import type { Criatura, EstagioCriatura } from '#lib/livro/tipos.ts';
 	import DadoInline from '../leitura/DadoInline.svelte';
+	import Termo from '../leitura/Termo.svelte';
 	import Texto from '../leitura/Texto.svelte';
 	import SeloRank from '../regras/SeloRank.svelte';
 	import Icone from '../ui/Icone.svelte';
 
 	let { criatura, estagio }: { criatura: Pick<Criatura, 'nome' | 'tags'>; estagio: EstagioCriatura } = $props();
 	const k = $derived(estagio.combate);
+	const fc = $derived(k.ficha);
+	const sinal = (n: number) => (n >= 0 ? `+${n}` : `${n}`);
+	const CAP3 = '/regras/atributos-pericias-e-proficiencias';
+	// "Usos de jutsu" das invocações (cap. 14) não é um jutsu: vai numa linha à parte, embaixo da lista
+	const jutsus = $derived(k.jutsus.filter((j) => j.slug || j.rank));
+	const usos = $derived(k.jutsus.filter((j) => !j.slug && !j.rank));
 	const numeros = $derived(
 		[
 			['PV', k.pv],
@@ -40,8 +49,42 @@
 		{/each}
 	</dl>
 
+	<dl class="m-0 grid grid-cols-6 border-b-2 border-b3" aria-label="Atributos">
+		{#each ATRIBUTOS as a (a)}
+			<div class="flex flex-col items-center gap-1 px-0.5 py-1.5">
+				<dt class="text-[13px] leading-4"><Termo id="atributo:{a}" texto={a.toUpperCase()} href="{CAP3}#atributos" /></dt>
+				<dd class="t-num m-0 text-[15px] leading-5 font-bold">{sinal(fc.atributos[a])}</dd>
+			</div>
+		{/each}
+	</dl>
+
 	<div class="flex flex-col gap-3 px-3 py-3 text-[15px] leading-[22px]">
 		{#if k.nota}<p class="m-0 text-sm leading-5 text-mut italic">{k.nota}</p>{/if}
+
+		<dl class="m-0 flex flex-col gap-1 text-sm leading-5">
+			<div>
+				<dt class="inline font-semibold text-title">Perícias</dt>
+				<dd class="m-0 inline">
+					{#each fc.pericias as p, i (p.id)}<Termo id="pericia:{p.id}" texto={p.nome} href="{CAP3}#pericia-{p.id}" /> {sinal(p.total)}{i < fc.pericias.length - 1 ? ', ' : ''}{/each}
+				</dd>
+			</div>
+			{#if fc.especializacoes.length}
+				<div>
+					<dt class="inline font-semibold text-title">Especializações</dt>
+					<dd class="m-0 inline">
+						{#each fc.especializacoes as s, i (s.nome)}<a class="link" href="/regras/especializacoes#{s.ancora}">{s.nome}</a> (nível {s.nivel}){i < fc.especializacoes.length - 1 ? ', ' : ''}{/each}
+					</dd>
+				</div>
+			{/if}
+			{#if fc.proficiencias.length}
+				<div>
+					<dt class="inline font-semibold text-title">Proficiências</dt>
+					<dd class="m-0 inline">
+						{#each fc.proficiencias as p, i (p.nome)}{#if p.jutsu}<Termo id="jutsu:{p.jutsu}" texto={p.nome} href="/regras/jutsus/{p.jutsu}" />{:else}{p.nome}{/if} ({NIVEIS_PROFICIENCIA[p.bonus]}, {sinal(p.bonus)}){i < fc.proficiencias.length - 1 ? ', ' : ''}{/each}
+					</dd>
+				</div>
+			{/if}
+		</dl>
 
 		<section class="flex flex-col gap-2" aria-label="Ataques">
 			<h3 class="t-rotulo m-0 text-title">Ataques</h3>
@@ -61,20 +104,24 @@
 		</section>
 
 		{#if k.jutsus.length}
-			<section class="flex flex-col gap-1.5 border-t border-b3 pt-3" aria-label="Jutsus">
+			<section class="flex flex-col gap-2 border-t border-b3 pt-3" aria-label="Jutsus">
 				<h3 class="t-rotulo m-0 text-title">Jutsus</h3>
-				<ul class="m-0 flex list-none flex-col gap-1.5 p-0">
-					{#each k.jutsus as j (j.nome)}
-						<li class="flex items-center gap-2">
-							{#if j.rank}<SeloRank rank={j.rank} />{/if}
-							<span class="min-w-0 flex-1">
-								{#if j.slug}<a class="link font-semibold" href="/regras/jutsus/{j.slug}">{j.nome}</a>{:else}<span class="font-semibold">{j.nome}</span>{/if}
-								{#if j.custo}<span class="text-sm text-mut"> · {j.custo}</span>{/if}
-								{#if j.nota}<span class="block text-sm leading-5 text-mut">{j.nota}</span>{/if}
-							</span>
-						</li>
-					{/each}
-				</ul>
+				{#if jutsus.length}
+					<!-- lado a lado; o nome abre o cartão do jutsu no hover, como no livro -->
+					<ul class="m-0 flex list-none flex-wrap gap-1.5 p-0">
+						{#each jutsus as j (j.nome)}
+							<li class="inline-flex items-center gap-1.5 border border-b3 bg-b2 py-0.5 pr-2 pl-1 text-sm leading-5">
+								{#if j.rank}<SeloRank rank={j.rank} />{/if}
+								{#if j.slug}<Termo id="jutsu:{j.slug}" texto={j.nome} href="/regras/jutsus/{j.slug}" />{:else}<span class="font-semibold">{j.nome}</span>{/if}
+								{#if j.custo}<span class="text-xs whitespace-nowrap text-mut">{j.custo}</span>{/if}
+							</li>
+						{/each}
+					</ul>
+					{#each jutsus.filter((j) => j.nota) as j (j.nome)}<p class="m-0 text-sm leading-5 text-mut"><b class="font-semibold">{j.nome}:</b> {j.nota}</p>{/each}
+				{/if}
+				{#each usos as u (u.nome)}
+					<p class="m-0 text-sm leading-5"><b class="font-semibold">{u.nome}.</b> <span class="text-mut">{u.nota}</span></p>
+				{/each}
 			</section>
 		{/if}
 

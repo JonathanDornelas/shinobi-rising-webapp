@@ -3,6 +3,12 @@
 //   node bestiario.cjs --seed 7701 <slug> [slug ...]   → pixellab/gerados/bestiario/<slug>-7701.png
 //   node bestiario.cjs --seed 7701 --todos             → todos os verbetes que ainda não têm arte nessa seed
 //   node bestiario.cjs --lista inicio --seed 1 capa-inicio → outra lista (pixellab/inicio.json)
+//   node bestiario.cjs --saldo                         → quantas gerações cada conta ainda tem hoje
+//   node bestiario.cjs --seed 9001 --paralelo 3 …      → 3 jobs ao mesmo tempo em cada conta
+// Num pedido, "tamanho": [l, a] troca a tela do formato (até 170 px saem 4 candidatas: <slug>-<seed>.png, -b, -c, -d) e
+// "edicao": { origem, instrucao } edita uma arte de gerados/ em vez de gerar (Pixen, 1 geração).
+// Pedido com "referencia": a imagem do anime em pixellab/referencias/ (fora do git; baixada da wiki) entra como
+// imagem inicial, e "forca" diz quanto do desenho dela fica (120–140: corpo, roupa e cores; pose e cena mudam).
 // Contas: PIXELLAB_TOKEN (uma) e/ou PIXELLAB_CONTAS (arquivo com vários tokens: JSON [{token}] ou um por linha).
 // Cada conta roda um job por vez (plano grátis); com várias contas, as artes saem em paralelo, e a conta que
 // esgota a cota sai da fila sem parar as outras. Os jobs ficam em gerados/bestiario/jobs.json com o começo do
@@ -57,11 +63,12 @@ async function call(conta, name, args) {
 }
 
 async function baixar(conta, jobId, arquivo) {
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 24; i++) { // o Pro leva até 10 min
     await call(conta, "wait_for_jobs", { timeout_seconds: 50 });
     const r = await call(conta, "get_image", { job_id: jobId });
     if (/status: completed/.test(r.text) && r.images.length) {
-      fs.writeFileSync(arquivo, Buffer.from(r.images[0], "base64"));
+      // o Pro devolve várias candidatas em telas de até 170 px: a primeira fica com o nome do pedido, as outras com -b, -c…
+      r.images.forEach((img, k) => fs.writeFileSync(k ? arquivo.replace(/\.png$/, `-${String.fromCharCode(97 + k)}.png`) : arquivo, Buffer.from(img, "base64")));
       return true;
     }
     if (/status: failed|error/i.test(r.text) && !/processing|pending/.test(r.text)) { console.log(r.text.slice(0, 300)); return false; }
@@ -81,20 +88,61 @@ async function gerar(conta, v, seed, jobs) {
   let job = typeof jobs[nome] === "string" ? { id: jobs[nome], conta: null } : jobs[nome];
   if (job && job.conta && job.conta !== conta.nome) return "outra-conta";
   if (!job) {
-    const { width, height } = LISTA.formatos[v.formato];
+    // "tamanho": tela menor que a do formato, na mesma proporção (até 170 px o Pro devolve 4 candidatas pelo mesmo custo)
+    const [width, height] = v.tamanho || [LISTA.formatos[v.formato].width, LISTA.formatos[v.formato].height];
     const args = { description: descricao(v), width, height, ...LISTA.parametros, color_image_base64: paleta([...LISTA.paleta, ...(v.cores_extras || [])]), seed };
     // "partir_de": refaz uma tentativa anterior (img2img), guardando "forca" dela (500 quase não muda, 150 é uma edição visível)
     if (v.partir_de) Object.assign(args, { init_image_base64: fs.readFileSync(path.join(OUT, v.partir_de.arquivo)).toString("base64"), init_image_strength: v.partir_de.forca });
+    // "referencia": imagem do anime (pixellab/referencias/…, fora do git) como imagem inicial, para o desenho ficar fiel
+    else if (v.referencia && fs.existsSync(path.join(ROOT, v.referencia.arquivo)))
+      Object.assign(args, { init_image_base64: fs.readFileSync(path.join(ROOT, v.referencia.arquivo)).toString("base64"), init_image_strength: v.referencia.forca });
+    // Pro: referências do anime (url + o que tirar de cada uma), a imagem de estilo do padrão e a paleta do site com os
+    // tons do anime; sai sem a imagem inicial do img2img, então a pose e a cena ficam livres
+    const pro = !v.edicao && v.modelo !== "flash" && (v.modelo === "pro" || (LISTA.modelo === "pro" && v.modelo !== "pixflux"));
+    let ferramenta = "create_image_pixflux";
+    // "edicao": ajuste pontual numa arte já gerada (Pixen, 1 geração), que mantém a composição e muda só o que se pede
+    if (v.edicao) {
+      ferramenta = "edit_image_pixen";
+      const origem = fs.readFileSync(path.join(OUT, v.edicao.origem));
+      for (const k of Object.keys(args)) delete args[k];
+      Object.assign(args, { description: v.edicao.instrucao, image_base64: origem.toString("base64"), width: origem.readUInt32BE(16), height: origem.readUInt32BE(20), no_background: false, seed });
+    }
+    // "flash": Pro Flash (6–9 gerações, sem referências do anime), com a mesma imagem de estilo e a mesma paleta do Pro
+    if (v.modelo === "flash") {
+      ferramenta = "create_image_pro_flash";
+      Object.assign(args, {
+        style_image: { base64: fs.readFileSync(path.join(ROOT, LISTA.imagem_estilo)).toString("base64"), usage_description: "the finish of the art: outlines, detail, shading and colors" },
+        style_options: { color_palette: true, outline: true, detail: true, shading: true },
+        palette: [...new Set([...LISTA.paleta, ...(LISTA.paleta_anime || []), ...(v.cores_extras || [])])]
+      });
+      for (const k of ["color_image_base64", "init_image_base64", "init_image_strength", "view", "outline", "shading", "detail", "text_guidance_scale"]) delete args[k];
+    }
+    if (pro) {
+      ferramenta = "create_image_pro";
+      const estilo = LISTA.imagem_estilo ? fs.readFileSync(path.join(ROOT, LISTA.imagem_estilo)).toString("base64") : null;
+      for (const k of ["init_image_base64", "init_image_strength", "color_image_base64", "view", "outline", "shading", "detail", "text_guidance_scale"]) delete args[k];
+      // a CDN da wiki recusa o servidor do PixelLab: a referência vai como arquivo (a foto tirada pelo Edge)
+      const refs = (v.referencias || [])
+        .filter((r) => r.url || fs.existsSync(path.join(ROOT, r.arquivo)))
+        .map((r) => (r.url ? { url: r.url, usage: r.uso } : { base64: fs.readFileSync(path.join(ROOT, r.arquivo)).toString("base64"), usage: r.uso }));
+      Object.assign(args, {
+        reference_images: refs.length ? refs : null,
+        style_image_base64: estilo,
+        style_copy: ["outline", "detail", "shading"],
+        palette: [...new Set([...LISTA.paleta, ...(LISTA.paleta_anime || []), ...(v.cores_extras || [])])]
+      });
+    }
     let r;
     for (let t = 0; t < 6; t++) {
-      r = await call(conta, "create_image_pixflux", args);
+      r = await call(conta, ferramenta, args);
       if (!/rate limit/i.test(r.text)) break;
       await call(conta, "wait_for_jobs", { timeout_seconds: 50 });
     }
     const m = r.text.match(/job_id: (\S+)/);
     if (!m) {
       console.log(`[${conta.nome}] ${nome} não enfileirou: ${r.text.replace(/\s+/g, " ").slice(0, 200)}`);
-      return /generation|credit|balance|quota|limit|insufficient/i.test(r.text) ? "sem-cota" : "falhou";
+      // "rate limit" é só a fila cheia (jobs demais ao mesmo tempo), não cota esgotada
+      return !/rate limit/i.test(r.text) && /generation|credit|balance|quota|limit|insufficient/i.test(r.text) ? "sem-cota" : "falhou";
     }
     job = { id: m[1], conta: conta.nome };
     jobs[nome] = job;
@@ -107,8 +155,24 @@ async function gerar(conta, v, seed, jobs) {
 
 (async () => {
   const argv = process.argv.slice(2);
+  // --saldo: quanto cada conta ainda gera hoje (mostra só o começo do token)
+  if (argv.includes("--saldo")) {
+    let total = 0;
+    for (const conta of contas()) {
+      const t = (await call(conta, "get_balance", {})).text;
+      const n = (k) => +(t.match(new RegExp(`${k}:\\s*\\$?([\\d.]+)`))?.[1] ?? 0);
+      const livres = n("generations_remaining") + n("generations_today");
+      total += livres;
+      console.log(`[${conta.nome}] ${livres} gerações (plano ${n("generations_remaining")} + bônus do dia ${n("generations_today")}), créditos $${n("credits")}`);
+    }
+    console.log(`total: ${total} gerações disponíveis agora`);
+    return;
+  }
   const i = argv.indexOf("--seed");
   const seed = i >= 0 ? Number(argv.splice(i, 2)[1]) : NaN;
+  // --paralelo N: N jobs ao mesmo tempo em cada conta (o plano pago aceita mais de um)
+  const ip = argv.indexOf("--paralelo");
+  const paralelo = ip >= 0 ? Number(argv.splice(ip, 2)[1]) : 1;
   const todos = argv.includes("--todos");
   const verbetes = todos ? LISTA.verbetes : argv.map(s => LISTA.verbetes.find(v => v.slug === s) || console.log("verbete desconhecido:", s)).filter(Boolean);
   const lista = contas();
@@ -125,8 +189,12 @@ async function gerar(conta, v, seed, jobs) {
   const esgotadas = new Set();
   for (;;) {
     const ativas = lista.filter(c => !esgotadas.has(c.nome)), antes = fila.length, esgotadasAntes = esgotadas.size;
-    await Promise.all(ativas.map(async conta => {
-      for (const v of fila.filter(v => dono(v) === conta.nome)) { fila.splice(fila.indexOf(v), 1); await gerar(conta, v, seed, jobs); }
+    await Promise.all(ativas.flatMap(c => Array(paralelo).fill(c)).map(async conta => {
+      for (const v of fila.filter(v => dono(v) === conta.nome)) {
+        if (!fila.includes(v)) continue; // outro job da mesma conta já pegou
+        fila.splice(fila.indexOf(v), 1);
+        await gerar(conta, v, seed, jobs);
+      }
       while (fila.length) {
         const k = fila.findIndex(v => !dono(v));
         if (k < 0) return;

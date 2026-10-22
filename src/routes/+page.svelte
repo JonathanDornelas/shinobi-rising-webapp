@@ -29,7 +29,7 @@
 
 <section class="flex flex-col items-center gap-5 border-b-2 border-ink bg-b0 px-4 pt-6 pb-8 md:gap-6 md:px-5 md:pt-10 md:pb-12 lg:gap-7 lg:px-6 lg:pt-16 lg:pb-[72px]">
 	<div class="relative flex h-48 w-full max-w-[768px] justify-center overflow-hidden border-2 border-[#2E2420] md:h-auto md:overflow-visible md:shadow-[6px_6px_0_#000] lg:shadow-[8px_8px_0_#000]">
-		<img src="/covers/capa-konoha-256.png" width="768" height="288" alt="Konoha, a Vila Oculta da Folha, com o monumento dos Hokage" class="h-48 w-auto max-w-none flex-none md:h-auto md:w-full md:max-w-full" />
+		<img src="/covers/capa-inicio.png" width="768" height="288" alt="Ninjas de Konoha saltando pelos telhados da vila ao pôr do sol, com a torre do Hokage e o monumento dos Hokage ao fundo" class="h-48 w-auto max-w-none flex-none md:h-auto md:w-full md:max-w-full" />
 		<img
 			src="/illustrations/il-boas-vindas-96.png"
 			width="96"

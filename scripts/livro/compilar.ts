@@ -41,6 +41,7 @@ import type {
 	TipoTermo,
 	Trecho
 } from '../../src/lib/livro/tipos.ts';
+import { fichaCompleta } from '../../src/lib/bestiario/ficha.ts';
 import { lerDoc, lerYaml, trechosDeMd } from './md.ts';
 
 export const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -402,6 +403,24 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			});
 			if (f) js.push({ slug: null, nome: 'Usos de jutsu', rank: null, custo: null, nota: f.jutsus });
 			const ameaca = valor(rotulo);
+			const ataques = e.ataques.map((a) => ({ nome: a.nome, alcance: a.alcance, acerto: a.acerto ?? base.acerto, dano: (a.dano ?? base.dano).replace(/\s+/g, ''), efeito: a.efeito ? trechosDeMd(a.efeito) : null }));
+			const defesa = e.defesa ?? base.defesa;
+			const iniciativa = e.iniciativa ?? base.iniciativa;
+			// atributos, perícias, especializações e proficiências, coerentes com o acerto, a Defesa e a Iniciativa
+			const ficha = fichaCompleta({
+				ameaca,
+				papel: e.papel,
+				tipo: y.tipo,
+				cla: y.slug.startsWith('cla-') ? y.slug.slice(4) : null,
+				acerto: ataques[0]?.acerto ?? base.acerto,
+				defesa,
+				iniciativa,
+				ataque: ataques[0] ? { nome: ataques[0].nome, alcance: ataques[0].alcance } : null,
+				jutsus: (e.jutsus ?? []).map((j) => {
+					const card = j.slug ? jutsus.find((x) => x.slug === j.slug) : undefined;
+					return { slug: card?.slug ?? null, nome: card?.nome ?? j.nome ?? '', tipo: card?.tipo ?? null, elemento: card?.elemento ?? null };
+				})
+			});
 			const slugE = slug(e.nome);
 			const formatoE = e.arte?.formato ?? (GENTE.includes(y.tipo) ? 'retrato' : 'quadro');
 			return {
@@ -417,14 +436,15 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 				combate: {
 					pv: e.pv ?? base.pv,
 					pc: e.pc !== undefined ? e.pc : base.pc,
-					defesa: e.defesa ?? base.defesa,
-					iniciativa: e.iniciativa ?? base.iniciativa,
+					defesa,
+					iniciativa,
 					dt: e.dt ?? base.dt,
 					rd: e.rd ?? null,
 					nota: [base.nota, e.nota].filter(Boolean).join(' ') || null,
-					ataques: e.ataques.map((a) => ({ nome: a.nome, alcance: a.alcance, acerto: a.acerto ?? base.acerto, dano: (a.dano ?? base.dano).replace(/\s+/g, ''), efeito: a.efeito ? trechosDeMd(a.efeito) : null })),
+					ataques,
 					jutsus: js,
-					tracos: (e.tracos ?? []).map((t) => ({ nome: t.nome, efeito: trechosDeMd(t.efeito) }))
+					tracos: (e.tracos ?? []).map((t) => ({ nome: t.nome, efeito: trechosDeMd(t.efeito) })),
+					ficha
 				}
 			};
 		};

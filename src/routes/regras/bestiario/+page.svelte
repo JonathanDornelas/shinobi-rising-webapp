@@ -153,19 +153,6 @@
 									</span>
 									<span class="t-num flex-none text-right text-sm font-bold text-title" title="Ameaça">{c.ameacaFaixa}</span>
 								</a>
-								{#if c.variacoes.length}
-									<ul class="m-0 flex list-none flex-col border-b border-b3 py-1 pl-6">
-										{#each c.variacoes as v (v.slug)}
-											<li>
-												<a href="/regras/bestiario/{c.slug}#{v.slug}" class="group flex items-center gap-2 py-0.5 text-sm hover:bg-b2">
-													<span class="block h-7 w-7 flex-none overflow-hidden border border-ink bg-b0"><ArteCriatura criatura={{ nome: `${c.nome}: ${v.nome}`, arte: v.arte }} moldura="solta" cobrir /></span>
-													<span class="min-w-0 flex-1 truncate group-hover:text-link">{v.nome}</span>
-													<span class="t-num text-xs text-mut" title="Ameaça">{v.ameacaRotulo}</span>
-												</a>
-											</li>
-										{/each}
-									</ul>
-								{/if}
 							</li>
 						{/each}
 					</ul>
