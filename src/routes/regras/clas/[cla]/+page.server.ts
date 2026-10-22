@@ -13,7 +13,8 @@ export const load: PageServerLoad = ({ params }) => {
 		const s = c8.secoes.find((x) => re.test(x.titulo));
 		return s ? `${c8.href}#${s.id}` : c8.href;
 	};
-	const js = jutsus.filter((j) => cla.jutsus.includes(j.slug));
+	// os citados no texto do clã e os do catálogo marcados com o clã (os importados da wiki)
+	const js = jutsus.filter((j) => cla.jutsus.includes(j.slug) || j.cla === cla.slug);
 	const hs = habilidades.filter((h) => cla.habilidades.includes(h.slug));
 	return {
 		cla,

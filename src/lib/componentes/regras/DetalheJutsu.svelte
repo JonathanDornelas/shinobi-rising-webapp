@@ -38,7 +38,8 @@
 					<Icone id="cla/ic-cla-{jutsu.cla}" />Clã {nomeCla ?? jutsu.origem.replace(/^Clã /, '')} · Jutsus e Habilidades
 				</a>
 			{:else}
-				<a href="{capitulo.href}#jutsu-{jutsu.slug}" class="link flex items-center gap-1.5 text-sm leading-5 font-semibold">
+				<!-- a carta embutida no capítulo, ou a seção dele quando a carta só existe no catálogo -->
+				<a href="{capitulo.href}#{jutsu.cartaNoCapitulo ? `jutsu-${jutsu.slug}` : jutsu.ancora}" class="link flex items-center gap-1.5 text-sm leading-5 font-semibold">
 					<Icone id={indice.partes[capitulo.parte - 1].icone} />Cap. {capitulo.numero} · {capitulo.titulo}{secao ? ` › ${secao.titulo}` : ''}
 				</a>
 			{/if}

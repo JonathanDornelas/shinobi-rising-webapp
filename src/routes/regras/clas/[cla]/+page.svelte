@@ -53,8 +53,11 @@
 	let filtroRank = $state<Rank | 'hab' | null>(null);
 	/** Cards da seção "Jutsus e Habilidades" (os de outras seções, como o Mangekyou, ficam no lugar). */
 	const secaoJutsus = $derived(cla.secoes.find((s) => tipoSecao(s.titulo) === 'jutsus'));
-	const slugsGrade = $derived(new Set((secaoJutsus?.blocos ?? []).flatMap((b) => (b.tipo === 'jutsu' || b.tipo === 'habilidade' ? [b.slug] : []))));
-	const jutsusGrade = $derived(jutsusDoCla.filter((j) => slugsGrade.has(j.slug)));
+	const cartas = (bs: Bloco[]) => bs.flatMap((b) => (b.tipo === 'jutsu' || b.tipo === 'habilidade' ? [b.slug] : []));
+	const slugsGrade = $derived(new Set(cartas(secaoJutsus?.blocos ?? [])));
+	const slugsNaPagina = $derived(new Set(cla.secoes.flatMap((s) => cartas(s.blocos))));
+	// jutsus do clã que o texto não cita (os importados da wiki) entram na grade também
+	const jutsusGrade = $derived(jutsusDoCla.filter((j) => slugsGrade.has(j.slug) || !slugsNaPagina.has(j.slug)));
 	const habilidadesGrade = $derived(habilidadesDoCla.filter((h) => slugsGrade.has(h.slug)));
 	const ranksPresentes = $derived(RANKS.filter((r) => jutsusGrade.some((j) => j.rank === r)));
 

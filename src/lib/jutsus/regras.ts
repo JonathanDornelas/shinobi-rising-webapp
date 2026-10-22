@@ -308,6 +308,7 @@ export function paraJutsuLivro(slug: string, d: JutsuDados, origem: string, calc
 		pj: calc.linhas.some((l) => l.pj) ? `${calc.linhas.filter((l) => l.pj).map((l) => `${l.rotulo} (${sinalPj(l.pj)})`).join(' · ')}: ${calc.pj} PJ, rank ${calc.rank}.` : `${calc.pj} PJ (mínimo), rank ${calc.rank}.`,
 		capitulo: 20,
 		ancora: '',
+		cartaNoCapitulo: false,
 		cla: null,
 		elemento: d.elemento
 	};

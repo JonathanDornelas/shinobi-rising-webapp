@@ -189,6 +189,17 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 		ancora: c.ancora,
 		cla: c.cla
 	});
+	// as cartas embutidas no texto dos capítulos (::jutsu): o "Onde aparece" da página do jutsu aponta para elas
+	const cartasNoTexto = new Set<string>();
+	const coletarCartas = (v: unknown): void => {
+		if (Array.isArray(v)) v.forEach(coletarCartas);
+		else if (v && typeof v === 'object') {
+			const b = v as { tipo?: string; slug?: string };
+			if (b.tipo === 'jutsu' && b.slug) cartasNoTexto.add(b.slug);
+			Object.values(v).forEach(coletarCartas);
+		}
+	};
+	capitulos.forEach((c) => coletarCartas(c.blocos));
 	const jutsus: Jutsu[] = (lerYaml(readFileSync(join(CONTEUDO, 'jutsus.yaml'), 'utf8')) as (CardYaml & { tipo: TipoJutsu; rank: Rank; custo: string; info: InfoJutsu[]; pj: string | null; elemento: string | null })[]).map((j) => ({
 		slug: j.slug,
 		...base(j),
@@ -198,6 +209,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 		custoNum: +(j.custo.match(/\d+/)?.[0] ?? 0),
 		info: j.info ?? [],
 		pj: j.pj,
+		cartaNoCapitulo: cartasNoTexto.has(j.slug),
 		elemento: j.elemento
 	}));
 	const habilidades: Habilidade[] = (lerYaml(readFileSync(join(CONTEUDO, 'habilidades.yaml'), 'utf8')) as CardYaml[]).map((h) => ({ slug: h.slug, ...base(h) }));

@@ -89,6 +89,8 @@ export interface Jutsu {
 	capitulo: number;
 	/** Seção do capítulo onde o card aparece. */
 	ancora: string;
+	/** A carta está embutida no texto do capítulo (::jutsu); as da wiki ficam só no catálogo. */
+	cartaNoCapitulo: boolean;
 	cla: string | null;
 	elemento: string | null;
 }
