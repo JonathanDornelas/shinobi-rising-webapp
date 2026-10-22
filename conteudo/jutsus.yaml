@@ -8450,3 +8450,3483 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+# ---- Jutsus da wiki de Naruto: onda 2 (gerado por scripts/livro/importar-jutsus.ts a partir da especificação da onda)
+- slug: katon-goka-messhitsu
+  nome: "Katon: Gōka Messhitsu"
+  traducao: Grande Destruição de Fogo
+  origem: Katon
+  tipo: Ninjutsu
+  rank: A
+  custo: 19 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 15m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um mar de fogo sai da boca do ninja e cobre uma área enorme. Não há para onde correr dentro dele.
+  efeito: 4d8 de dano de fogo em todos na área (metade com sucesso na Resistência).
+  notas: []
+  pj: "dano 4d8 (9) + Médio (2) + esfera 15m (8): 19 PJ, rank A."
+  capitulo: 10
+  ancora: katon-liberacao-de-fogo
+  cla: null
+  elemento: katon
+- slug: katon-ryuen-hoka-no-jutsu
+  nome: "Katon: Ryūen Hōka no Jutsu"
+  traducao: Técnica da Canção das Chamas do Dragão
+  origem: Katon
+  tipo: Ninjutsu
+  rank: B
+  custo: 17 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único +3
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Várias cabeças de dragão de fogo saem em leque e fecham o alvo pela frente e pelos lados, sem deixar saída.
+  efeito: 3d8+3 de dano de fogo em até 4 alvos, com uma rolagem por alvo.
+  notas: []
+  pj: "dano 3d8+3 (9) + Médio (2) + 3 alvos extras (6): 17 PJ, rank B."
+  capitulo: 10
+  ancora: katon-liberacao-de-fogo
+  cla: null
+  elemento: katon
+- slug: katon-haijingakure-no-jutsu
+  nome: "Katon: Haijingakure no Jutsu"
+  traducao: Técnica de Esconder-se nas Cinzas
+  origem: Katon
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma nuvem de cinza em brasa cobre o campo. Ela queima quem toca e esconde o ninja como uma cortina de fumaça.
+  efeito: 3d6 de dano de fogo em todos na área (metade com sucesso na Resistência). Quem falha também fica Cego por 1 turno.
+  notas: []
+  pj: "dano 3d6 (5) + Médio (2) + esfera 6m (4) + cega (2): 13 PJ, rank B."
+  capitulo: 10
+  ancora: katon-liberacao-de-fogo
+  cla: null
+  elemento: katon
+- slug: katon-goen-no-jutsu
+  nome: "Katon: Gōen no Jutsu"
+  traducao: Técnica da Grande Chama
+  origem: Katon
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Cone médio / Linha 30m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma torrente de fogo que sai fina da boca e vai se abrindo, cada vez mais larga, até engolir tudo à frente. É uma técnica antiga da família Sarutobi.
+  efeito: 4d8 de dano de fogo em todos no cone (metade com sucesso na Resistência).
+  notas: []
+  pj: "dano 4d8 (9) + Médio (2) + cone médio / linha 30m (2): 13 PJ, rank B."
+  capitulo: 10
+  ancora: katon-liberacao-de-fogo
+  cla: null
+  elemento: katon
+- slug: katon-kibaku-enjin
+  nome: "Katon: Kibaku Enjin"
+  traducao: Formação das Chamas Explosivas
+  origem: Katon
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Etiquetas explosivas carregadas de fogo ficam escondidas sob a terra, em volta do lugar onde o inimigo vai pisar. Quando ele chega, o chão inteiro explode em chamas.
+  efeito: 4d8 de dano de fogo em todos na área (metade com sucesso na Resistência).
+  notas:
+    - Preparar as etiquetas leva alguns minutos antes da luta. Gasta um maço de etiquetas explosivas.
+  pj: "dano 4d8 (9) + Curto (1) + esfera 6m (4) − preparação (−2) − material consumível (−1): 11 PJ, rank B."
+  capitulo: 10
+  ancora: katon-liberacao-de-fogo
+  cla: null
+  elemento: katon
+- slug: kazanami
+  nome: Kazanami
+  traducao: Ondas de Vento
+  origem: Fuuton
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Cone médio / Linha 30m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Com um aceno de mão, o ninja solta uma lâmina de vento larga, forte o bastante para fazer recuar até um gigante.
+  efeito: 4d8 de dano cortante em todos na linha (metade com sucesso na Resistência).
+  notas: []
+  pj: "dano 4d8 (9) + Médio (2) + cone médio / linha 30m (2): 13 PJ, rank B."
+  capitulo: 10
+  ancora: fuuton-liberacao-de-vento
+  cla: null
+  elemento: fuuton
+- slug: futon-shinkuha
+  nome: "Fūton: Shinkūha"
+  traducao: Onda de Vácuo
+  origem: Fuuton
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja respira fundo e gira enquanto solta o ar, que vira uma lâmina de vento em volta dele, cortando tudo num círculo.
+  efeito: 3d8+3 de dano cortante em todos num raio de 6 m (metade com sucesso na Resistência).
+  notas: []
+  pj: "dano 3d8+3 (9) + esfera 6m (4): 13 PJ, rank B."
+  capitulo: 10
+  ancora: fuuton-liberacao-de-vento
+  cla: null
+  elemento: fuuton
+- slug: futon-shinkujin
+  nome: "Fūton: Shinkūjin"
+  traducao: Lâmina de Vácuo
+  origem: Fuuton
+  tipo: Ninjutsu
+  rank: C
+  custo: 8 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja sopra chakra de vento sobre a arma, que fica mais longa, mais afiada e voa mais longe. Uma kunai vira quase uma cimitarra.
+  efeito: 2d8 de dano cortante, somado ao dano normal da arma, contra alvos a até 10 m.
+  notas:
+    - Exige uma arma em mãos ou arremessada no mesmo turno.
+  pj: "dano 2d8 (5) + Curto (1) − foco em mãos (−1) + em arma (3): 8 PJ, rank C."
+  capitulo: 10
+  ancora: fuuton-liberacao-de-vento
+  cla: null
+  elemento: fuuton
+- slug: futon-fujin-no-jutsu
+  nome: "Fūton: Fūjin no Jutsu"
+  traducao: Técnica da Nuvem de Poeira
+  origem: Fuuton
+  tipo: Ninjutsu
+  rank: B
+  custo: 15 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Cone médio / Linha 30m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma corrente de vento cheia de poeira sai pelas mãos sobrepostas do ninja e desfaz o que encontra pela frente.
+  efeito: 3d8 de dano em todos na linha (metade com sucesso na Resistência), que ignora cobertura e RD.
+  notas: []
+  pj: "dano 3d8 (7) + Longo (4) + cone médio / linha 30m (2) + ignora RD (2): 15 PJ, rank B."
+  capitulo: 10
+  ancora: fuuton-liberacao-de-vento
+  cla: null
+  elemento: fuuton
+- slug: futon-kakeami
+  nome: "Fūton: Kakeami"
+  traducao: Rede de Lançar
+  origem: Fuuton
+  tipo: Ninjutsu
+  rank: C
+  custo: 8 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Com o leque de guerra, o ninja lança correntes de vento que se cruzam como uma rede de pescar, cortando quem fica preso nela.
+  efeito: 3d6 de dano cortante em todos na área (metade com sucesso na Resistência).
+  notas:
+    - Exige um leque de guerra em mãos.
+  pj: "dano 3d6 (5) + Médio (2) + esfera 3m (2) − foco em mãos (−1): 8 PJ, rank C."
+  capitulo: 10
+  ancora: fuuton-liberacao-de-vento
+  cla: null
+  elemento: fuuton
+- slug: futon-okakeami
+  nome: "Fūton: Ōkakeami"
+  traducao: Grande Rede de Lançar
+  origem: Fuuton
+  tipo: Ninjutsu
+  rank: B
+  custo: 16 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - "A versão maior da Rede de Lançar: dezenas de lâminas de vento caem juntas sobre uma área inteira."
+  efeito: 4d8 de dano cortante em todos na área (metade com sucesso na Resistência).
+  notas:
+    - Exige um leque de guerra em mãos.
+  pj: "dano 4d8 (9) + Longo (4) + esfera 6m (4) − foco em mãos (−1): 16 PJ, rank B."
+  capitulo: 10
+  ancora: fuuton-liberacao-de-vento
+  cla: null
+  elemento: fuuton
+- slug: tenkyu
+  nome: Tenkyū
+  traducao: Choro Celestial
+  origem: Suiton
+  tipo: Ninjutsu
+  rank: C
+  custo: 10 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Secundária
+  descricao:
+    - O ninja junta água na boca, molda em agulhas e cospe numa velocidade que o olho não acompanha.
+  efeito: 2d8 de dano perfurante.
+  notas: []
+  pj: "dano 2d8 (5) + Curto (1) + sem selos (2) + ação secundária (2): 10 PJ, rank C."
+  capitulo: 10
+  ancora: suiton-liberacao-de-agua
+  cla: null
+  elemento: suiton
+- slug: ukojizai-no-jutsu
+  nome: Ukojizai no Jutsu
+  traducao: Técnica do Tigre da Chuva à Vontade
+  origem: Suiton
+  tipo: Ninjutsu
+  rank: C
+  custo: 8 PC
+  info:
+    - k: Alcance
+      v: Muito distante (100m+)
+    - k: Duração
+      v: Sustentado (2 PC/turno)
+    - k: Área
+      v: Toda a área onde a chuva cai
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja enche o céu de nuvens com o próprio chakra, e cada gota de chuva vira um sensor. Quem anda na chuva é sentido por ele.
+  efeito: Enquanto a chuva cair, o usuário sente a posição, o tamanho e o chakra de toda criatura molhada por ela, a qualquer distância dentro da área.
+  notas:
+    - Formar as nuvens leva alguns minutos de concentração.
+  pj: "Muito distante (8) + sustentado (2) − preparação (−2): 8 PJ, rank C."
+  capitulo: 10
+  ancora: suiton-liberacao-de-agua
+  cla: null
+  elemento: suiton
+- slug: mujin-meisai
+  nome: Mujin Meisai
+  traducao: Cobertura Desconcertante sem Pó
+  origem: Suiton
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Sustentado (3 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "O vapor de água em volta do ninja desvia a luz, e ele some de verdade: sem cheiro, sem som, sem presença."
+  efeito: Enquanto mantém a técnica, o usuário fica invisível e tem +2 de Defesa. Nem sensores o percebem; só um dōjutsu ou um ataque em área o encontram.
+  notas: []
+  pj: "sustentado (2) + buff +2 (4) + dura 1 cena (2) + não copiável (3): 11 PJ, rank B."
+  capitulo: 10
+  ancora: suiton-liberacao-de-agua
+  cla: null
+  elemento: suiton
+- slug: suiton-hahonryu
+  nome: "Suiton: Hahonryū"
+  traducao: Torrente que Rasga
+  origem: Suiton
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - A água gira na palma da mão do ninja como uma broca e sai disparada, furando o que encontra.
+  efeito: 3d8 de dano perfurante, que ignora RD.
+  notas: []
+  pj: "dano 3d8 (7) + Médio (2) + ignora RD (2): 11 PJ, rank B."
+  capitulo: 10
+  ancora: suiton-liberacao-de-agua
+  cla: null
+  elemento: suiton
+- slug: suiton-suishoha
+  nome: "Suiton: Suishōha"
+  traducao: Onda de Água que Colide
+  origem: Suiton
+  tipo: Ninjutsu
+  rank: A
+  custo: 19 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Esfera 15m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um redemoinho de água sobe em volta do ninja, que fica protegido no meio dele. Do alto, a água explode numa onda que varre o campo inteiro.
+  efeito: 3d8 de dano em todos na área (metade com sucesso na Resistência). O redemoinho protege o usuário com 20 PV até o começo do próximo turno dele.
+  notas: []
+  pj: "dano 3d8 (7) + esfera 15m (8) + barreira ×2 (4): 19 PJ, rank A."
+  capitulo: 10
+  ancora: suiton-liberacao-de-agua
+  cla: null
+  elemento: suiton
+- slug: suiton-suijinchu
+  nome: "Suiton: Suijinchū"
+  traducao: Pilar da Formação de Água
+  origem: Suiton
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Reação
+  descricao:
+    - O ninja cospe uma torrente grossa e curva de água que vira, num instante, uma barreira redonda em volta dele.
+  efeito: Absorve até 30 do dano de um ataque ou jutsu contra o usuário ou quem estiver a até 3 m dele.
+  notas: []
+  pj: "barreira ×3 (6) + reação (3): 9 PJ, rank C."
+  capitulo: 10
+  ancora: suiton-liberacao-de-agua
+  cla: null
+  elemento: suiton
+- slug: suiton-suidanha
+  nome: "Suiton: Suidanha"
+  traducao: Onda de Água Cortante
+  origem: Suiton
+  tipo: Ninjutsu
+  rank: A
+  custo: 19 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um jato fino de água, com tanta pressão que corta raízes gigantes e o que estiver atrás delas.
+  efeito: 5d8 de dano cortante em todos os alvos em linha até o alcance.
+  notas: []
+  pj: "dano 5d8 (12) + Longo (4) + atravessa (3): 19 PJ, rank A."
+  capitulo: 10
+  ancora: suiton-liberacao-de-agua
+  cla: null
+  elemento: suiton
+- slug: suiton-homatsu-no-jutsu
+  nome: "Suiton: Hōmatsu no Jutsu"
+  traducao: Técnica das Bolhas
+  origem: Suiton
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Dezenas de bolhas cercam o inimigo por todos os lados e estouram ao menor toque, em pequenas explosões.
+  efeito: 2d6 de dano em todos na área (metade com sucesso na Resistência).
+  notas: []
+  pj: "dano 2d6 (3) + Médio (2) + esfera 3m (2): 7 PJ, rank C."
+  capitulo: 10
+  ancora: suiton-liberacao-de-agua
+  cla: null
+  elemento: suiton
+- slug: doton-daichidokaku
+  nome: "Doton: Daichidōkaku"
+  traducao: Grande Núcleo da Terra em Movimento
+  origem: Doton
+  tipo: Ninjutsu
+  rank: B
+  custo: 14 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 15m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - "O ninja ergue e afunda o chão em volta à vontade, numa escala enorme: abre buracos, levanta paredões e derruba exércitos."
+  efeito: 2d6 de dano em todos na área (metade com sucesso na Resistência). Quem falha cai num buraco ou é jogado de um paredão.
+  notas: []
+  pj: "dano 2d6 (3) + Médio (2) + esfera 15m (8) + empurra (1): 14 PJ, rank B."
+  capitulo: 10
+  ancora: doton-liberacao-de-terra
+  cla: null
+  elemento: doton
+- slug: doton-renga-no-jutsu
+  nome: "Doton: Renga no Jutsu"
+  traducao: Técnica dos Tijolos de Treino
+  origem: Doton
+  tipo: Ninjutsu
+  rank: D
+  custo: 5 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Uma técnica simples de Iwagakure: o ninja põe as mãos no chão e levanta um muro de tijolos de terra para se proteger."
+  efeito: Cria um muro com 20 PV que bloqueia a passagem e a linha de visão.
+  notas: []
+  pj: "Curto (1) + barreira ×2 (4): 5 PJ, rank D."
+  capitulo: 10
+  ancora: doton-liberacao-de-terra
+  cla: null
+  elemento: doton
+- slug: doton-sazareishi
+  nome: "Doton: Sazareishi"
+  traducao: Cascalho
+  origem: Doton
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (2 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - A terra em volta do alvo se levanta e se fecha sobre ele, apertada como pedra, até ele não conseguir se mexer.
+  efeito: O alvo fica Imobilizado na terra enquanto o usuário mantiver a técnica e o alvo não vencer a Resistência.
+  notas: []
+  pj: "Médio (2) + imobiliza (3) + sustentado (2): 7 PJ, rank C."
+  capitulo: 10
+  ancora: doton-liberacao-de-terra
+  cla: null
+  elemento: doton
+- slug: doton-otoshibuta
+  nome: "Doton: Otoshibuta"
+  traducao: Tampa que Cai
+  origem: Doton
+  tipo: Ninjutsu
+  rank: B
+  custo: 14 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma tampa enorme de terra, com a forma de um javali, aparece no alto e cai sobre o alvo, prendendo-o embaixo.
+  efeito: 3d6 de dano em todos na área, que ficam Imobilizados sob a tampa até vencer a Resistência de FOR ao fim do turno.
+  notas: []
+  pj: "dano 3d6 (5) + Longo (4) + esfera 3m (2) + imobiliza (3): 14 PJ, rank B."
+  capitulo: 10
+  ancora: doton-liberacao-de-terra
+  cla: null
+  elemento: doton
+- slug: doton-ressenga
+  nome: "Doton: Ressenga"
+  traducao: Presa da Broca que Rasga
+  origem: Doton
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Escondido debaixo da terra, o ninja sai de uma vez, girando como uma broca, bem embaixo do inimigo.
+  efeito: 3d8 de dano perfurante, que ignora RD.
+  notas:
+    - "Exige que o usuário esteja debaixo da terra, com o Doton: Moguragakure no Jutsu."
+  pj: "dano 3d8 (7) + Curto (1) + ignora RD (2) − exige outra técnica (−1): 9 PJ, rank C."
+  capitulo: 10
+  ancora: doton-liberacao-de-terra
+  cla: null
+  elemento: doton
+- slug: doton-chokajugan-no-jutsu
+  nome: "Doton: Chōkajūgan no Jutsu"
+  traducao: Técnica da Rocha de Peso Superaumentado
+  origem: Doton
+  tipo: Ninjutsu
+  rank: B
+  custo: 16 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Sustentado (4 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Secundária
+  descricao:
+    - "A versão extrema da Rocha de Peso Aumentado: o alvo fica tão pesado que o chão afunda e os ossos estalam."
+  efeito: 3d6 de dano, esmagado pelo próprio peso, e o alvo fica Imobilizado até vencer a Resistência de FOR ao fim de um turno, por até 4 turnos.
+  notas: []
+  pj: "dano 3d6 (5) + Curto (1) + imobiliza (3) + turnos extras ×3 (3) + sustentado (2) + ação secundária (2): 16 PJ, rank B."
+  capitulo: 10
+  ancora: doton-liberacao-de-terra
+  cla: null
+  elemento: doton
+- slug: doton-chokeijugan-no-jutsu
+  nome: "Doton: Chōkeijūgan no Jutsu"
+  traducao: Técnica da Rocha de Peso Superreduzido
+  origem: Doton
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Secundária
+  descricao:
+    - O ninja deixa algo tão leve que consegue erguer até uma montanha. Também serve para deixar um aliado leve como uma folha.
+  efeito: O usuário ganha +2 de AGI por 1 cena e consegue erguer objetos enormes. No mesmo lançamento, um aliado a até 30 m ganha +1 de AGI por 3 turnos.
+  notas: []
+  pj: "Médio (2) + buff +2 (4) + dura 1 cena (2) + buff em aliado (3) + ação secundária (2): 13 PJ, rank B."
+  capitulo: 10
+  ancora: doton-liberacao-de-terra
+  cla: null
+  elemento: doton
+- slug: iwa-bunshin-no-jutsu
+  nome: Iwa Bunshin no Jutsu
+  traducao: Técnica do Clone de Pedra
+  origem: Doton
+  tipo: Ninjutsu
+  rank: C
+  custo: 8 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja cospe terra e a molda em um clone de pedra. Em vez de sumir com um golpe, ele racha e se quebra.
+  efeito: Cria um clone de pedra com 10 PV, a Defesa e os valores do usuário. Na sua vez, ele faz uma ação secundária e um ataque básico.
+  notas: []
+  pj: "barreira (2) + clone ou invocação (6): 8 PJ, rank C."
+  capitulo: 10
+  ancora: doton-liberacao-de-terra
+  cla: null
+  elemento: doton
+- slug: doton-banri-doryuheki
+  nome: "Doton: Banri Doryūheki"
+  traducao: Muralha de Terra dos Dez Mil Ri
+  origem: Doton
+  tipo: Ninjutsu
+  rank: A
+  custo: 21 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Muralha de várias centenas de metros
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Vários ninjas da terra cospem lama ao mesmo tempo, e a lama vira uma muralha imensa, de colunas encostadas umas nas outras, que segura um exército.
+  efeito: Cria uma muralha com 100 PV que bloqueia a passagem e a linha de visão.
+  notas:
+    - Exige vários usuários de Doton que saibam a técnica, gastando a ação no mesmo turno e dividindo o custo.
+  pj: "Médio (2) + barreira ×10 (20) − exige outra técnica (−1): 21 PJ, rank A."
+  capitulo: 10
+  ancora: doton-liberacao-de-terra
+  cla: null
+  elemento: doton
+- slug: raiton-kangekiha
+  nome: "Raiton: Kangekiha"
+  traducao: Onda da Inspiração
+  origem: Raiton
+  tipo: Ninjutsu
+  rank: A
+  custo: 20 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Cone médio / Linha 30m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja cospe uma onda de água e, no mesmo instante, passa raio por ela. Quem está molhado leva o choque inteiro.
+  efeito: 4d8 de dano elétrico em todos no cone (metade com sucesso na Resistência). Quem falha fica Paralisado por 1 turno.
+  notas:
+    - Exige afinidade com Raiton e com Suiton.
+  pj: "dano 4d8 (9) + Médio (2) + cone médio / linha 30m (2) + paralisa (2) + dois elementos (5): 20 PJ, rank A."
+  capitulo: 10
+  ancora: raiton-liberacao-de-raio
+  cla: null
+  elemento: raiton
+- slug: raiton-shiden
+  nome: "Raiton: Shiden"
+  traducao: Eletricidade Roxa
+  origem: Raiton
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: VIG (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um raio roxo sai da mão do ninja em linha reta. Foi criado para substituir um golpe que exigia um olho que o criador já não tinha.
+  efeito: 4d8 de dano elétrico; se falhar na Resistência, o alvo fica Paralisado por 1 turno.
+  notas: []
+  pj: "dano 4d8 (9) + Médio (2) + paralisa (2): 13 PJ, rank B."
+  capitulo: 10
+  ancora: raiton-liberacao-de-raio
+  cla: null
+  elemento: raiton
+- slug: yoton-yokai-no-jutsu
+  nome: "Yōton: Yōkai no Jutsu"
+  traducao: Técnica da Aparição Derretida
+  origem: Yōton
+  tipo: Ninjutsu
+  rank: B
+  custo: 15 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Cone médio / Linha 30m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma lama ácida e fervente sai da boca do ninja e corrói até carne e metal.
+  efeito: 3d8 de dano de ácido em todos no cone (metade com sucesso na Resistência), que ignora RD. Quem falha continua sendo corroído, com o dano contínuo.
+  notas:
+    - Exige a Kekkei Genkai do Yōton (Liberação de Lava), criada com as regras do cap. 8.4.
+  pj: "dano 3d8 (7) + Médio (2) + cone médio / linha 30m (2) + dano contínuo (2) + ignora RD (2): 15 PJ, rank B."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: yoton
+- slug: yoton-sekkaigyo-no-jutsu
+  nome: "Yōton: Sekkaigyō no Jutsu"
+  traducao: Técnica da Cal Viva que Endurece
+  origem: Yōton
+  tipo: Ninjutsu
+  rank: C
+  custo: 10 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja cospe uma massa de cal viva que machuca e endurece em segundos, prendendo quem ela cobre.
+  efeito: 2d6 de dano em todos na área, que ficam Imobilizados na cal até vencer a Resistência de FOR ao fim do turno.
+  notas:
+    - Exige a Kekkei Genkai do Yōton (Liberação de Lava), criada com as regras do cap. 8.4.
+  pj: "dano 2d6 (3) + Médio (2) + esfera 3m (2) + imobiliza (3): 10 PJ, rank C."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: yoton
+- slug: yoton-kaisekifu-no-jutsu
+  nome: "Yōton: Kaisekifū no Jutsu"
+  traducao: Técnica do Selo de Pedra e Cinza
+  origem: Yōton
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (2 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma nuvem grossa de cinza envolve o alvo e endurece em volta dele como pedra.
+  efeito: O alvo fica Imobilizado na cinza enquanto o usuário mantiver a técnica e o alvo não vencer a Resistência de FOR.
+  notas:
+    - Exige a Kekkei Genkai do Yōton (Liberação de Lava), criada com as regras do cap. 8.4.
+  pj: "Médio (2) + imobiliza (3) + sustentado (2): 7 PJ, rank C."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: yoton
+- slug: ranton-reiza-sakasu
+  nome: "Ranton: Reizā Sākasu"
+  traducao: Circo de Laser
+  origem: Ranton
+  tipo: Ninjutsu
+  rank: A
+  custo: 22 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único +3
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um halo de luz cerca as mãos do ninja, e dele saem vários feixes que mudam de rumo no ar para acertar os alvos.
+  efeito: 4d8 de dano em até 4 alvos. Os feixes perseguem os alvos e acertam automaticamente, a não ser que eles usem a Esquiva Ativa ou o Kawarimi.
+  notas:
+    - Exige a Kekkei Genkai do Ranton (Liberação de Tempestade), criada com as regras do cap. 8.4.
+  pj: "dano 4d8 (9) + Longo (4) + 3 alvos extras (6) + persegue (3): 22 PJ, rank A."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: ranton
+- slug: kusa-boheki
+  nome: Kūsa Bōheki
+  traducao: Muralha Protetora de Areia no Ar
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: B
+  custo: 17 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Reação
+  descricao:
+    - Um escudo gigante de areia sobe do chão e fica suspenso no ar, entre o ninja e o ataque que vem de cima.
+  efeito: Absorve até 60 de dano de um ataque ou jutsu contra o usuário ou um aliado a até 30 m.
+  notas: []
+  pj: "Médio (2) + barreira ×6 (12) + reação (3): 17 PJ, rank B."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: suna-no-yoroi
+  nome: Suna no Yoroi
+  traducao: Armadura de Areia
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Sustentado (3 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma camada fina de areia cobre o corpo como uma segunda pele. É a última defesa, para o que passa pelo escudo.
+  efeito: Enquanto mantém a armadura, o usuário tem +2 de Defesa, e RD 2 por 3 turnos.
+  notas: []
+  pj: "sustentado (2) + buff +2 (4) + RD 2 (3): 9 PJ, rank C."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: sabaku-fuyu
+  nome: Sabaku Fuyū
+  traducao: Suspensão do Deserto
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Sustentado (2 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja junta areia sob os pés numa plataforma e voa sobre ela, longe do alcance de quem luta no chão.
+  efeito: Enquanto mantém a técnica, o usuário voa sobre a plataforma no deslocamento normal e tem +1 de Defesa. Um aliado tocado pode ir junto, com +1 de Defesa por 3 turnos.
+  notas: []
+  pj: "sustentado (2) + buff +1 (2) + buff em aliado (3): 7 PJ, rank C."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: sabaku-hando
+  nome: "Sabaku: Hando"
+  traducao: "Deserto: Mão"
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - A areia vira uma mão gigante, com garras, que agarra o alvo e aperta.
+  efeito: 3d8 de dano, e o alvo fica Imobilizado na mão de areia até vencer a Resistência.
+  notas: []
+  pj: "dano 3d8 (7) + Médio (2) + imobiliza (3): 12 PJ, rank B."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: sabakuha
+  nome: Sabakuha
+  traducao: Onda do Deserto
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Reação
+  descricao:
+    - A areia sobe numa parede curva na frente do ninja e para o golpe ou fecha o caminho do inimigo.
+  efeito: Absorve até 40 de dano de um ataque ou jutsu. A parede fica de pé até o fim da rodada.
+  notas: []
+  pj: "barreira ×4 (8) + reação (3): 11 PJ, rank B."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: suna-no-kaiwan
+  nome: Suna no Kaiwan
+  traducao: Braço Monstruoso de Areia
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: B
+  custo: 16 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma quantidade enorme de areia toma a forma de um braço monstruoso, que se estica longe para agarrar e esmagar.
+  efeito: 4d8 de dano, e o alvo fica Imobilizado no braço até vencer a Resistência.
+  notas: []
+  pj: "dano 4d8 (9) + Longo (4) + imobiliza (3): 16 PJ, rank B."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: gokusa-maiso
+  nome: Gokusa Maisō
+  traducao: Enterro na Prisão de Areia
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: B
+  custo: 14 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O chão se abre e a areia puxa o alvo para baixo, tão fundo e tão rápido que ele não tem tempo de reagir.
+  efeito: 3d8 de dano, e o alvo fica Imobilizado debaixo da areia, sem lançar jutsus, até vencer a Resistência.
+  notas: []
+  pj: "dano 3d8 (7) + Médio (2) + imobiliza (3) + sela chakra (2): 14 PJ, rank B."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: suna-shigure
+  nome: Suna Shigure
+  traducao: Garoa de Areia
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: C
+  custo: 10 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Bolinhas de areia se formam no alto e caem como chuva, guiadas pelo chakra até as costas do alvo.
+  efeito: 2d6 de dano. A areia persegue o alvo e acerta automaticamente, a não ser que ele use a Esquiva Ativa ou o Kawarimi.
+  notas: []
+  pj: "dano 2d6 (3) + Longo (4) + persegue (3): 10 PJ, rank C."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: suna-arare
+  nome: Suna Arare
+  traducao: Granizo de Areia
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: B
+  custo: 17 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - "A versão grande da Garoa: blocos de areia do tamanho de pedras caem do céu sobre uma área inteira."
+  efeito: 4d8 de dano em todos na área (metade com sucesso na Resistência).
+  notas: []
+  pj: "dano 4d8 (9) + Longo (4) + esfera 6m (4): 17 PJ, rank B."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: suna-bunshin
+  nome: Suna Bunshin
+  traducao: Clone de Areia
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: D
+  custo: 5 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um clone feito de areia, que luta no lugar do ninja. Ninguém o confunde com o original, mas ele aguenta o golpe que seria do dono.
+  efeito: Cria um clone de areia que segue as regras do Kage Bunshin no Jutsu (1 PV, a sua Defesa e os seus valores).
+  notas: []
+  pj: "clone ou invocação (5): 5 PJ, rank D."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: sensa-kaibyo
+  nome: Sensa Kaibyō
+  traducao: Gato de Areia Escondido
+  origem: Linhagem Sabaku
+  tipo: Ninjutsu
+  rank: C
+  custo: 6 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Sustentado (2 PC/turno)
+    - k: Área
+      v: Esfera de 60 m em volta do usuário
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja espalha areia com chakra pelo lugar e sente cada passo dado sobre ela.
+  efeito: Enquanto mantém a técnica, o usuário sabe a posição de toda criatura que se move sobre a areia num raio de 60 m.
+  notas: []
+  pj: "Longo (4) + sustentado (2): 6 PJ, rank C."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-12
+  cla: sabaku
+  elemento: null
+- slug: kagemane-kage-shibari-no-jutsu
+  nome: Kagemane Kage Shibari no Jutsu
+  traducao: Técnica da Amarra da Sombra que Imita
+  origem: Clã Nara
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (2 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O Nara prende a sombra à de um aliado sem limitar os movimentos dele. A partir daí, o aliado vira um ponto de partida para as sombras do Nara.
+  efeito: Enquanto mantém a técnica, o aliado ganha +1 de Defesa por 3 turnos, e o alcance dos jutsus de sombra do usuário passa a contar também a partir dele.
+  notas: []
+  pj: "Médio (2) + sustentado (2) + buff em aliado (3): 7 PJ, rank C."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla
+  cla: nara
+  elemento: null
+- slug: jukenho-ichigekishin
+  nome: Jūkenhō Ichigekishin
+  traducao: "Arte do Punho Gentil: Corpo de um Só Golpe"
+  origem: Clã Hyuuga
+  tipo: Taijutsu
+  rank: C
+  custo: 9 PE
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O Hyuuga solta chakra por todos os pontos de tenketsu de uma vez, num golpe que joga o alvo longe.
+  efeito: 3d8 + FOR de dano, e o alvo é jogado 5 m.
+  notas: []
+  pj: "dano 3d8 + FOR (7) + Curto (1) + empurra (1): 9 PJ, rank C."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-6
+  cla: hyuuga
+  elemento: null
+- slug: mizudeppo-nicho
+  nome: "Mizudeppō: Nichō"
+  traducao: "Pistola de Água: Duas Pistolas"
+  origem: Clã Hozuki
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único +1
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "A versão com as duas mãos da Pistola de Água: dois tiros de água ao mesmo tempo, fortes o bastante para furar pedra."
+  efeito: 3d8 de dano perfurante em até 2 alvos, com uma rolagem por alvo.
+  notas:
+    - Exige saber o Mizudeppō no Jutsu.
+  pj: "dano 3d8 (7) + Curto (1) + 1 alvo extra (2) − exige outra técnica (−1): 9 PJ, rank C."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-11
+  cla: hozuki
+  elemento: suiton
+- slug: kagura-shingan
+  nome: Kagura Shingan
+  traducao: Olho da Mente da Kagura
+  origem: Clã Uzumaki
+  tipo: Ninjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Muito distante (100m+)
+    - k: Duração
+      v: Sustentado (3 PC/turno)
+    - k: Área
+      v: Esfera de vários quilômetros
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma percepção de chakra tão fina que distingue pessoas a quilômetros, sente mentiras na respiração e acha quem se esconde atrás de qualquer disfarce.
+  efeito: Enquanto mantém a técnica, o usuário sente e reconhece o chakra de toda criatura a até alguns quilômetros, inclusive disfarçada pelo Henge ou invisível.
+  notas: []
+  pj: "Muito distante (8) + sustentado (2) + sem selos (2): 12 PJ, rank B."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-9
+  cla: uzumaki
+  elemento: null
+- slug: kinbaku-kingusari-no-jutsu
+  nome: Kinbaku Kingusari no Jutsu
+  traducao: Técnica das Correntes Douradas que Amarram
+  origem: Clã Uzumaki
+  tipo: Fuuinjutsu
+  rank: C
+  custo: 10 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Selamento
+    - k: Resistência
+      v: FOR (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Correntes douradas de chakra saem do corpo do Uzumaki, acertam o alvo e se enrolam nele.
+  efeito: 2d6 de dano; o alvo fica Imobilizado nas correntes até vencer a Resistência e, enquanto preso, não lança jutsus.
+  notas: []
+  pj: "dano 2d6 (3) + Médio (2) + imobiliza (3) + sela chakra (2): 10 PJ, rank C."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-9
+  cla: uzumaki
+  elemento: null
+- slug: shinten-kugutsu-juin-no-jutsu
+  nome: Shinten Kugutsu Juin no Jutsu
+  traducao: Técnica do Selo Amaldiçoado da Marionete da Mente
+  origem: Clã Yamanaka
+  tipo: Ninjutsu
+  rank: C
+  custo: 6 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: ESP (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - O Yamanaka deixa uma marionete no caminho do inimigo e passa a mente para ela. Quando o inimigo destrói a marionete, a mente do Yamanaka pula para dentro dele.
+  efeito: Quem destruir a marionete fica Controlado pelo usuário por até 3 turnos. Ao fim de cada turno, pode tentar se libertar com uma Resistência de ESP.
+  notas:
+    - A marionete precisa ser preparada antes, no caminho por onde o alvo vai passar.
+  pj: "Médio (2) + controla (6) + turnos extras ×2 (2) − condição rara (−2) − preparação (−2): 6 PJ, rank C."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-3
+  cla: yamanaka
+  elemento: null
+- slug: daburu-nikudan-sensha
+  nome: Daburu Nikudan Sensha
+  traducao: Tanque de Bala Humana Duplo
+  origem: Clã Akimichi
+  tipo: Taijutsu
+  rank: B
+  custo: 15 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: VIG (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Dois Akimichi viram bolas gigantes e rolam um contra o outro, com o inimigo no meio.
+  efeito: 6d8 + FOR de dano; se falhar na Resistência, o alvo fica Atordoado.
+  notas:
+    - Exige dois Akimichi que saibam o Nikudan Sensha, gastando a ação primária no mesmo turno.
+  pj: "dano 6d8 + FOR (15) + atordoa (1) − exige outra técnica (−1): 15 PJ, rank B."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-2
+  cla: akimichi
+  elemento: null
+- slug: soshuga
+  nome: Sōshūga
+  traducao: Garra Dupla do Nunchaku
+  origem: Bukijutsu
+  tipo: Bukijutsu
+  rank: D
+  custo: 5 PE
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um estilo de luta com um par de nunchakus, usado com as mãos, os pés e o que mais estiver livre, quando tocar no inimigo é perigoso demais.
+  efeito: +2 nos ataques de Bukijutsu com nunchaku por 1 cena.
+  notas:
+    - Exige um par de nunchakus.
+  pj: "buff +2 (4) + dura 1 cena (2) − foco em mãos (−1): 5 PJ, rank D."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: hayanie
+  nome: Hayanie
+  traducao: Sacrifício Antecipado
+  origem: Taijutsu
+  tipo: Taijutsu
+  rank: C
+  custo: 9 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu)
+    - k: Ação
+      v: Reação
+  descricao:
+    - O ninja salta por cima do atacante apoiado no ombro dele, escapa do golpe e, ao aterrissar, o joga por cima de si no chão.
+  efeito: 2d8 + FOR de dano, como reação a um ataque corpo a corpo, e o atacante cai.
+  notas: []
+  pj: "dano 2d8 + FOR (5) + empurra (1) + reação (3): 9 PJ, rank C."
+  capitulo: 10
+  ancora: tecnicas-de-taijutsu-combate-corporal
+  cla: null
+  elemento: null
+- slug: kakuran-taijutsu
+  nome: Kakuran Taijutsu
+  traducao: Taijutsu da Perturbação
+  origem: Taijutsu
+  tipo: Taijutsu
+  rank: C
+  custo: 6 PE
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Um estilo de luta que parece dança: golpes de todos os ângulos, num ritmo que o inimigo não consegue prever."
+  efeito: O usuário tem +2 de Defesa por 1 cena.
+  notas: []
+  pj: "buff +2 (4) + dura 1 cena (2): 6 PJ, rank C."
+  capitulo: 10
+  ancora: tecnicas-de-taijutsu-combate-corporal
+  cla: null
+  elemento: null
+- slug: hoka-ranbu
+  nome: Hōka Ranbu
+  traducao: Dança Selvagem do Fogo que Sobe
+  origem: Taijutsu
+  tipo: Taijutsu
+  rank: C
+  custo: 7 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Uma sequência sem pausa: um chute, um soco e outro chute com a perna contrária, antes de o alvo se recuperar do primeiro."
+  efeito: 3d8 + FOR de dano.
+  notas: []
+  pj: "dano 3d8 + FOR (7): 7 PJ, rank C."
+  capitulo: 10
+  ancora: tecnicas-de-taijutsu-combate-corporal
+  cla: null
+  elemento: null
+- slug: konoha-otoshi
+  nome: Konoha Otoshi
+  traducao: Queda da Folha
+  origem: Taijutsu
+  tipo: Taijutsu
+  rank: C
+  custo: 10 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um chute que desce do alto com tanta força que o chão em volta desmorona.
+  efeito: 3d8 + FOR de dano em todos num raio de 3 m do ponto do golpe (metade com sucesso na Resistência). Quem falha cai.
+  notas: []
+  pj: "dano 3d8 + FOR (7) + esfera 3m (2) + empurra (1): 10 PJ, rank C."
+  capitulo: 10
+  ancora: tecnicas-de-taijutsu-combate-corporal
+  cla: null
+  elemento: null
+- slug: konoha-kaigansho
+  nome: Konoha Kaiganshō
+  traducao: Ascensão da Folha que Destrói a Rocha
+  origem: Taijutsu
+  tipo: Taijutsu
+  rank: B
+  custo: 11 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma cotovelada apoiada no outro braço, forte o bastante para quebrar coral e rocha.
+  efeito: 4d8 + FOR de dano, que ignora RD.
+  notas: []
+  pj: "dano 4d8 + FOR (9) + ignora RD (2): 11 PJ, rank B."
+  capitulo: 10
+  ancora: tecnicas-de-taijutsu-combate-corporal
+  cla: null
+  elemento: null
+- slug: sotenkyaku
+  nome: Sōtenkyaku
+  traducao: Pé da Lança Celestial
+  origem: Taijutsu
+  tipo: Taijutsu
+  rank: B
+  custo: 14 PE
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: VIG (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja salta muito alto e cai sobre o alvo com o pé à frente, com força para rachar uma armadura de chakra.
+  efeito: 5d8 + FOR de dano; se falhar na Resistência, o alvo fica Atordoado.
+  notas: []
+  pj: "dano 5d8 + FOR (12) + Curto (1) + atordoa (1): 14 PJ, rank B."
+  capitulo: 10
+  ancora: tecnicas-de-taijutsu-combate-corporal
+  cla: null
+  elemento: null
+- slug: erubo
+  nome: Erubō
+  traducao: Cotovelada
+  origem: Raiton
+  tipo: Taijutsu
+  rank: C
+  custo: 9 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Com a armadura de raio, o ninja enterra o cotovelo no alvo e o arremessa contra a parede.
+  efeito: 4d8 + FOR de dano, e o alvo é jogado 5 m.
+  notas:
+    - Exige o Raiton Chakura Mōdo ativo.
+  pj: "dano 4d8 + FOR (9) + empurra (1) − exige outra técnica (−1): 9 PJ, rank C."
+  capitulo: 10
+  ancora: raiton-liberacao-de-raio
+  cla: null
+  elemento: raiton
+- slug: girochin-doroppu
+  nome: Girochin Doroppu
+  traducao: Queda da Guilhotina
+  origem: Raiton
+  tipo: Taijutsu
+  rank: B
+  custo: 12 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: VIG (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja salta acima do alvo e desce com um chute, de cima para baixo, como a lâmina de uma guilhotina.
+  efeito: 5d8 + FOR de dano; se falhar na Resistência, o alvo fica Atordoado.
+  notas:
+    - Exige o Raiton Chakura Mōdo ativo.
+  pj: "dano 5d8 + FOR (12) + atordoa (1) − exige outra técnica (−1): 12 PJ, rank B."
+  capitulo: 10
+  ancora: raiton-liberacao-de-raio
+  cla: null
+  elemento: raiton
+- slug: zanko
+  nome: Zankō
+  traducao: Brilho Restante
+  origem: Bukijutsu
+  tipo: Bukijutsu
+  rank: C
+  custo: 8 PE
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Bukijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma corrida curta e um corte rápido, que deixa só o brilho da lâmina no ar.
+  efeito: 3d8 + FOR de dano cortante.
+  notas:
+    - Exige uma espada em mãos.
+  pj: "dano 3d8 + FOR (7) + Curto (1): 8 PJ, rank C."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: tsukikage
+  nome: Tsukikage
+  traducao: Luz da Lua
+  origem: Bukijutsu
+  tipo: Bukijutsu
+  rank: C
+  custo: 6 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Bukijutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O espadachim crava a espada no chão, se apoia nela e chuta o alvo para longe.
+  efeito: 2d8 + FOR de dano, e o alvo é jogado 5 m.
+  notas:
+    - Exige uma espada em mãos.
+  pj: "dano 2d8 + FOR (5) + empurra (1): 6 PJ, rank C."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: yojinbo
+  nome: Yōjinbō
+  traducao: Risco da Lâmina Dançante
+  origem: Bukijutsu
+  tipo: Bukijutsu
+  rank: C
+  custo: 10 PE
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Bukijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Secundária
+  descricao:
+    - Um avanço tão rápido que o corte acontece antes do passo terminar.
+  efeito: 3d8 + FOR de dano cortante.
+  notas:
+    - Exige uma espada em mãos.
+  pj: "dano 3d8 + FOR (7) + Curto (1) + ação secundária (2): 10 PJ, rank C."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: iaigiri
+  nome: Iaigiri
+  traducao: Corte do Saque
+  origem: Bukijutsu
+  tipo: Bukijutsu
+  rank: B
+  custo: 14 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Bukijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Seguindo o caminho do saque, o espadachim corta e embainha a espada num só movimento, rápido demais para ser visto.
+  efeito: 5d8 + FOR de dano cortante, que ignora RD.
+  notas:
+    - Exige uma espada embainhada.
+  pj: "dano 5d8 + FOR (12) + ignora RD (2): 14 PJ, rank B."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: kumogakure-taijutsu-okami-ringu
+  nome: "Kumogakure Taijutsu: Ōkami Ringu"
+  traducao: "Taijutsu de Kumogakure: Anel do Lobo"
+  origem: Bukijutsu
+  tipo: Bukijutsu
+  rank: C
+  custo: 9 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O espadachim gira o corpo inteiro na horizontal, com as espadas abertas, e acerta tudo em volta numa sequência rápida.
+  efeito: 3d8 + FOR de dano cortante em todos num raio de 3 m (metade com sucesso na Resistência).
+  notas:
+    - Exige duas espadas.
+  pj: "dano 3d8 + FOR (7) + esfera 3m (2): 9 PJ, rank C."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: hisenken
+  nome: Hisenken
+  traducao: Espada Giratória Voadora
+  origem: Bukijutsu
+  tipo: Bukijutsu
+  rank: B
+  custo: 12 PE
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Bukijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O espadachim arremessa a espada enorme, que gira no ar como uma roda. Se ela se crava numa árvore, ele usa a lâmina de apoio para os pés.
+  efeito: 4d8 + FOR de dano cortante.
+  notas:
+    - Exige uma espada grande, que precisa ser recuperada depois.
+  pj: "dano 4d8 + FOR (9) + Longo (4) − foco em mãos (−1): 12 PJ, rank B."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: chigiri-toho-honenuki
+  nome: "Chigiri Tōhō: Honenuki"
+  traducao: "Arte da Espada da Névoa Sangrenta: Mutilação dos Ossos"
+  origem: Kirigakure
+  tipo: Bukijutsu
+  rank: B
+  custo: 14 PE
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único +2
+    - k: Ataque
+      v: 1d20 + Bukijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Uma técnica de espada que só Kirigakure conhece: a lâmina solta dezenas de agulhas de chakra azul que voam até o alvo e se cravam fundo."
+  efeito: 4d8 + FOR de dano perfurante em até 3 alvos, com uma rolagem por alvo.
+  notas:
+    - Exige uma espada que solte chakra (uma das espadas lendárias da Névoa ou parecida).
+  pj: "dano 4d8 + FOR (9) + Médio (2) + 2 alvos extras (4) − foco em mãos (−1): 14 PJ, rank B."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: chakura-to-maichimonji
+  nome: "Chakura-tō: Maichimonji"
+  traducao: "Lâmina de Chakra: Linha Reta"
+  origem: Fuuton
+  tipo: Ninjutsu
+  rank: C
+  custo: 10 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja segura a lâmina na horizontal e passa chakra por ela, que se estica muito além do metal.
+  efeito: 3d8 de dano cortante, somado ao dano normal da arma, contra alvos a até 10 m.
+  notas:
+    - Exige uma lâmina em mãos.
+  pj: "dano 3d8 (7) + Curto (1) − foco em mãos (−1) + em arma (3): 10 PJ, rank C."
+  capitulo: 10
+  ancora: fuuton-liberacao-de-vento
+  cla: null
+  elemento: fuuton
+- slug: hagama-no-mai-rakuko-no-yaiba
+  nome: "Hagama no Mai: Rakukō no Yaiba"
+  traducao: "Dança da Foice: Lâmina que Cai"
+  origem: Bukijutsu
+  tipo: Bukijutsu
+  rank: C
+  custo: 8 PE
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Bukijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - De longe, o ninja gira a foice presa à corrente bem alto no ar e a faz descer sobre o alvo.
+  efeito: 3d8 + FOR de dano cortante, contra alvos a até 10 m.
+  notas:
+    - Exige uma kusarigama.
+  pj: "dano 3d8 + FOR (7) + Curto (1): 8 PJ, rank C."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: kumo-ryu-omotegiri
+  nome: Kumo-Ryū Omotegiri
+  traducao: Decapitação Frontal do Estilo da Nuvem
+  origem: Bukijutsu
+  tipo: Bukijutsu
+  rank: C
+  custo: 9 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Bukijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "O golpe mais direto do estilo de espada de Kumogakure: um só corte, rápido e pesado, de frente."
+  efeito: 4d8 + FOR de dano cortante.
+  notas:
+    - Exige uma espada em mãos.
+  pj: "dano 4d8 + FOR (9): 9 PJ, rank C."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: kumo-ryu-mikazukigiri
+  nome: Kumo-Ryū Mikazukigiri
+  traducao: Decapitação da Lua Crescente do Estilo da Nuvem
+  origem: Bukijutsu
+  tipo: Bukijutsu
+  rank: B
+  custo: 11 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Cone pequeno
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Reação
+  descricao:
+    - Um arco largo, em forma de lua crescente, tão rápido que serve até quando quase não há tempo de reagir.
+  efeito: 3d8 + FOR de dano cortante, como reação, em todos no cone à frente (metade com sucesso na Resistência).
+  notas:
+    - Exige uma espada em mãos.
+  pj: "dano 3d8 + FOR (7) + cone pequeno (1) + reação (3): 11 PJ, rank B."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: kumo-ryu-kaengiri
+  nome: Kumo-Ryū Kaengiri
+  traducao: Decapitação Flamejante do Estilo da Nuvem
+  origem: Katon
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Cone médio / Linha 30m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O espadachim acende a lâmina e corta o ar, e o fogo segue o traço do golpe em arcos enormes.
+  efeito: 3d8 de dano de fogo em todos na linha do corte (metade com sucesso na Resistência).
+  notas:
+    - Exige uma espada em mãos.
+  pj: "dano 3d8 (7) + Médio (2) + cone médio / linha 30m (2): 11 PJ, rank B."
+  capitulo: 10
+  ancora: katon-liberacao-de-fogo
+  cla: null
+  elemento: katon
+- slug: cho-biburato-raitonto
+  nome: Chō Biburāto Raitontō
+  traducao: Espadas de Raio Supervibrantes
+  origem: Raiton
+  tipo: Ninjutsu
+  rank: C
+  custo: 8 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja passa raio pelas lâminas, que vibram tão rápido que cortam qualquer coisa. Até um lápis vira uma arma assim.
+  efeito: +2 nos ataques com lâmina por 1 cena, e esses ataques ignoram RD.
+  notas:
+    - Exige lâminas em mãos.
+  pj: "ignora RD (2) + buff +2 (4) + dura 1 cena (2): 8 PJ, rank C."
+  capitulo: 10
+  ancora: raiton-liberacao-de-raio
+  cla: null
+  elemento: raiton
+- slug: bubitorappu
+  nome: Būbītorappu
+  traducao: Armadilha
+  origem: Fuuinjutsu
+  tipo: Fuuinjutsu
+  rank: C
+  custo: 6 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um boneco ou um bicho de mentira, recheado de kunai e de uma etiqueta explosiva, deixado no caminho do inimigo.
+  efeito: 3d6 de dano em todos num raio de 3 m da armadilha (metade com sucesso na Resistência), quando alguém chega perto.
+  notas:
+    - Gasta kunai e uma etiqueta explosiva.
+  pj: "dano 3d6 (5) + Curto (1) + esfera 3m (2) − preparação (−1) − material consumível (−1): 6 PJ, rank C."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: tenchu
+  nome: Tenchū
+  traducao: Castigo Celestial
+  origem: Fuuinjutsu
+  tipo: Fuuinjutsu
+  rank: B
+  custo: 15 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - "A última técnica de quem não tem mais saída: o ninja cobre o corpo de etiquetas explosivas e as detona quando o inimigo está perto."
+  efeito: 8d10 de dano em todos num raio de 6 m (metade com sucesso na Resistência). O usuário perde 3d6 PV e mais 30 PV junto, e quase nunca sobrevive.
+  notas:
+    - Gasta dezenas de etiquetas explosivas.
+  pj: "dano 8d10 (25) + esfera 6m (4) − dano a si ×3 (−3) − custa PV ×6 (−6) − uma vez por cena (−2) − material consumível (−3): 15 PJ, rank B."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: kage-senbon
+  nome: Kage Senbon
+  traducao: Senbon da Sombra
+  origem: Bukijutsu
+  tipo: Bukijutsu
+  rank: D
+  custo: 5 PE
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Bukijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Senbon com guizos e senbon sem guizos voam juntas. O inimigo se defende do som e não vê as silenciosas.
+  efeito: 2d6 + FOR de dano perfurante.
+  notas: []
+  pj: "dano 2d6 + FOR (3) + Médio (2): 5 PJ, rank D."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: chakura-kontororu-baku
+  nome: "Chakura Kontorōru: Baku"
+  traducao: "Controle de Chakra: Amarra"
+  origem: Fuuinjutsu
+  tipo: Fuuinjutsu
+  rank: D
+  custo: 3 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Selamento
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja marca uma pessoa com um selo. Quando ela chega perto de uma etiqueta preparada, fios vermelhos de chakra saem do papel e a amarram no lugar, por horas se for preciso.
+  efeito: O alvo marcado fica Imobilizado pelos fios quando chega a até 10 m da etiqueta, até vencer a Resistência de FOR ao fim de um turno.
+  notas:
+    - Marcar o alvo e preparar a etiqueta leva um turno completo.
+  pj: "Curto (1) + imobiliza (3) − preparação (−1): 3 PJ, rank D."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: kaija-hoin
+  nome: Kaija Hōin
+  traducao: Método de Liberação do Mal
+  origem: Fuuinjutsu
+  tipo: Fuuinjutsu
+  rank: E
+  custo: 2 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Selamento
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "O contrário do Método de Selamento do Mal: em vez de selar, o ninja desfaz um selo posto por outro jutsu no corpo de alguém."
+  efeito: Remove de um aliado tocado uma condição causada por um selo (como um chakra selado ou uma marca imposta por outro jutsu).
+  notas:
+    - O ritual leva um turno completo.
+  pj: "remove condição (3) − preparação (−1): 2 PJ, rank E."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: isshi-tojin
+  nome: Isshi Tōjin
+  traducao: Formação da Luz do Fio
+  origem: Fuuinjutsu
+  tipo: Fuuinjutsu
+  rank: C
+  custo: 8 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma barreira que nasce do chão, sob os pés do alvo, e não deixa ninguém sair de dentro dela. É simples, mas muito difícil de romper.
+  efeito: Quem estiver na área fica preso dentro da barreira, que tem 30 PV. Enquanto ela estiver de pé, ninguém sai.
+  notas: []
+  pj: "Curto (1) + esfera 3m (2) + barreira ×3 (6) − preparação (−1): 8 PJ, rank C."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: saisei-kekkai
+  nome: Saisei Kekkai
+  traducao: Barreira que se Regenera
+  origem: Fuuinjutsu
+  tipo: Fuuinjutsu
+  rank: A
+  custo: 20 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Sustentado (5 PC/turno)
+    - k: Área
+      v: Esfera 15m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um grupo de ninjas liga o chakra numa barreira só. Quando ela racha, o chakra deles a fecha de novo.
+  efeito: Cria uma barreira com 50 PV em volta da área. Enquanto os usuários a mantiverem, ela recupera 10 PV no começo de cada turno deles.
+  notas:
+    - Exige três ou mais usuários que saibam a técnica, dividindo o custo e a manutenção.
+  pj: "Curto (1) + esfera 15m (8) + barreira ×5 (10) + sustentado (2) − exige outra técnica (−1): 20 PJ, rank A."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: kekkaifu-gansoko
+  nome: "Kekkaifu: Gansōkō"
+  traducao: "Talismã de Barreira: Olho Blindado"
+  origem: Kirigakure
+  tipo: Fuuinjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Selamento
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Reação
+  descricao:
+    - Um selo criado pelos caçadores de Kirigakure para proteger uma parte do corpo, em geral um olho. Quando alguém mira ali, a barreira se ativa sozinha.
+  efeito: Absorve até 30 do dano de um ataque ou jutsu que mire a parte protegida do corpo. Só os caçadores de Kiri sabem desfazer o selo.
+  notas: []
+  pj: "barreira ×3 (6) + não copiável (3) + reação (3): 12 PJ, rank B."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: zekka-konzetsu-no-in
+  nome: Zekka Konzetsu no In
+  traducao: Selo de Erradicação da Língua Amaldiçoada
+  origem: Fuuinjutsu
+  tipo: Fuuinjutsu
+  rank: D
+  custo: 4 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: 4 turnos
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Selamento
+    - k: Resistência
+      v: VIG (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um selo gravado na língua de cada membro de uma unidade secreta. Quem tenta contar os segredos dela trava por inteiro, incapaz de falar ou de se mexer.
+  efeito: Quando o marcado tenta revelar o segredo protegido, fica Paralisado por até 4 turnos, sem Resistência.
+  notas:
+    - Gravar o selo leva tempo e o consentimento (ou a rendição) do marcado.
+  pj: "paralisa (2) + turnos extras ×3 (3) − condição rara (−2) − preparação (−2) + não copiável (3): 4 PJ, rank D."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: jigo-jubaku-no-in
+  nome: Jigō Jubaku no In
+  traducao: Selo da Prisão da Própria Maldição
+  origem: Fuuinjutsu
+  tipo: Fuuinjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: 4 turnos
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Selamento
+    - k: Resistência
+      v: VIG (DT do Jutsu) contra a paralisia
+    - k: Ação
+      v: Secundária
+  descricao:
+    - O ninja deixa um selo escondido no corpo do inimigo durante a luta. Quando o ativa, as marcas se espalham pela pele e travam o corpo inteiro.
+  efeito: Se falhar na Resistência, o alvo tocado fica Paralisado por até 4 turnos, com as marcas do selo espalhadas pelo corpo.
+  notas: []
+  pj: "paralisa (2) + turnos extras ×3 (3) + ação secundária (2): 7 PJ, rank C."
+  capitulo: 20
+  ancora: os-seis-tipos-de-jutsu
+  cla: null
+  elemento: null
+- slug: inyu-shometsu
+  nome: In'yu Shōmetsu
+  traducao: Destruição das Feridas pela Cura Yin
+  origem: Ninjutsu Médico
+  tipo: Ninjutsu
+  rank: A
+  custo: 20 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Reação
+  descricao:
+    - O médico lê o movimento do inimigo, adivinha onde vai ser atingido e junta chakra ali antes do golpe. A ferida se fecha quase ao mesmo tempo em que abre.
+  efeito: Como reação a um ataque que o acerta, o usuário recupera 5d10 PV.
+  notas: []
+  pj: "cura 5d10 (15) + sem selos (2) + reação (3): 20 PJ, rank A."
+  capitulo: 10
+  ancora: ninjutsu-medico
+  cla: null
+  elemento: null
+- slug: senpuku
+  nome: Senpuku
+  traducao: Emboscada Subterrânea
+  origem: Ninjutsu Médico
+  tipo: Ninjutsu
+  rank: C
+  custo: 6 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O médico some debaixo da terra e sai aos pés do alvo, cortando os tendões dele com o bisturi de chakra.
+  efeito: 2d6 de dano interno, que ignora RD, e o alvo cai com as pernas cortadas.
+  notas:
+    - Exige saber o Chakra no Mesu.
+  pj: "dano 2d6 (3) + Curto (1) + empurra (1) + ignora RD (2) − exige outra técnica (−1): 6 PJ, rank C."
+  capitulo: 10
+  ancora: ninjutsu-medico
+  cla: null
+  elemento: doton
+- slug: raiton-raigen-raikochu
+  nome: "Raiton: Raigen Raikōchū"
+  traducao: "Ilusão de Raio: Pilar do Clarão"
+  origem: Genjutsu
+  tipo: Genjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 2 turnos
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja descarrega raio pelo corpo inteiro num clarão tão forte que cega quem olha. O clarão é real; a cegueira que fica depois, não.
+  efeito: Quem estiver na área e falhar na Resistência fica Cego por 2 turnos.
+  notas: []
+  pj: "esfera 6m (4) + cega (2) + turnos extras (1): 7 PJ, rank C."
+  capitulo: 10
+  ancora: genjutsu-comuns
+  cla: null
+  elemento: raiton
+- slug: utakata
+  nome: Utakata
+  traducao: Efêmero
+  origem: Genjutsu
+  tipo: Genjutsu
+  rank: D
+  custo: 4 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: 3 turnos
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Genjutsu
+    - k: Resistência
+      v: ESP (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Com um toque do dedo, o ninja prende o alvo numa ilusão em que corvos voam em volta dele e viram shuriken.
+  efeito: Se falhar na Resistência, o alvo tocado fica Paralisado por até 3 turnos, preso na ilusão.
+  notas: []
+  pj: "paralisa (2) + turnos extras ×2 (2): 4 PJ, rank D."
+  capitulo: 10
+  ancora: genjutsu-comuns
+  cla: null
+  elemento: null
+- slug: magen-gama-rinsho
+  nome: "Magen: Gama Rinshō"
+  traducao: "Ilusão Demoníaca: Canto do Confronto dos Sapos"
+  origem: Genjutsu
+  tipo: Genjutsu
+  rank: B
+  custo: 15 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: 4 turnos
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: ESP (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - "O genjutsu mais forte dos sapos do Monte Myōboku: uma canção cantada por dois sábios, que prende quem a escuta num mundo de ilusão."
+  efeito: Quem estiver na área e falhar na Resistência fica Controlado por até 4 turnos, preso na ilusão. Ao fim de cada turno, pode tentar se libertar com uma Resistência de ESP.
+  notas:
+    - Exige dois cantores em Modo Sennin, sapos sábios ou Sennin dos sapos, e um turno de preparo.
+  pj: "Longo (4) + esfera 6m (4) + controla (6) + turnos extras ×3 (3) − exige outra técnica (−1) − preparação (−1): 15 PJ, rank B."
+  capitulo: 10
+  ancora: genjutsu-comuns
+  cla: null
+  elemento: null
+- slug: kugutsu-chichi-to-haha
+  nome: "Kugutsu: Chichi to Haha"
+  traducao: "Marionete: Pai e Mãe"
+  origem: Kugutsu
+  tipo: Kugutsu
+  rank: B
+  custo: 7 PC + 6 PE
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único +1
+    - k: Ataque
+      v: 1d20 + Kugutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Duas marionetes, um pai e uma mãe, dão as mãos e esticam entre elas um fio de navalha que corta até outra marionete ao meio.
+  efeito: 4d8 de dano cortante em até 2 alvos, com uma rolagem por alvo, que ignora RD.
+  notas:
+    - Exige duas marionetes ligadas pela técnica.
+  pj: "dano 4d8 (9) + Curto (1) + 1 alvo extra (2) + ignora RD (2) − exige outra técnica (−1): 13 PJ, rank B."
+  capitulo: 13
+  ancora: como-funciona-o-combate-com-marionetes-visao-geral
+  cla: null
+  elemento: null
+- slug: shikomi-kugutsu-shinshin-happa
+  nome: "Shikomi Kugutsu: Shinshin Happa"
+  traducao: "Marionete Preparada: Oito Ondas de Agulhas"
+  origem: Kugutsu
+  tipo: Kugutsu
+  rank: C
+  custo: 5 PC + 5 PE
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Cone médio / Linha 30m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - A boca da marionete cospe uma torrente de senbon envenenados, sem parar, como uma metralhadora.
+  efeito: 3d6 de dano em todos no cone (metade com sucesso na Resistência). Quem falha fica envenenado, com o dano contínuo.
+  notas:
+    - Exige uma marionete com Senbon Disparados e Compartimento de Veneno (cap. 13).
+  pj: "dano 3d6 (5) + Médio (2) + cone médio / linha 30m (2) + dano contínuo (2) − exige outra técnica (−1): 10 PJ, rank C."
+  capitulo: 13
+  ancora: como-funciona-o-combate-com-marionetes-visao-geral
+  cla: null
+  elemento: null
+- slug: kugutsu-no-jutsu-gishu-senbon
+  nome: "Kugutsu no Jutsu: Gishu Senbon"
+  traducao: "Técnica da Marionete: Senbon do Braço Postiço"
+  origem: Kugutsu
+  tipo: Kugutsu
+  rank: B
+  custo: 7 PC + 7 PE
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O braço da marionete é disparado como um torpedo e solta, no ar, cilindros que se abrem numa chuva de senbon.
+  efeito: 3d8 de dano em todos na área (metade com sucesso na Resistência). Quem falha fica envenenado, com o dano contínuo.
+  notas:
+    - Exige uma marionete com Membros Substituíveis e Compartimento de Veneno (cap. 13).
+  pj: "dano 3d8 (7) + Longo (4) + esfera 3m (2) + dano contínuo (2) − exige outra técnica (−1): 14 PJ, rank B."
+  capitulo: 13
+  ancora: como-funciona-o-combate-com-marionetes-visao-geral
+  cla: null
+  elemento: null
+- slug: akahigi-kiki-sankaku
+  nome: "Akahigi: Kiki Sankaku"
+  traducao: "Técnica Secreta Vermelha: Triângulos da Máquina"
+  origem: Kugutsu
+  tipo: Kugutsu
+  rank: B
+  custo: 7 PC + 7 PE
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único +1
+    - k: Ataque
+      v: 1d20 + Kugutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Do pescoço e das palmas da marionete saem lâminas triangulares com bolas explosivas presas, que voam até os alvos.
+  efeito: 4d8 de dano em até 2 alvos, com uma rolagem por alvo.
+  notas:
+    - Exige uma marionete com Pergaminhos Explosivos (cap. 13).
+  pj: "dano 4d8 (9) + Longo (4) + 1 alvo extra (2) − exige outra técnica (−1): 14 PJ, rank B."
+  capitulo: 13
+  ancora: como-funciona-o-combate-com-marionetes-visao-geral
+  cla: null
+  elemento: null
+- slug: kugutsu-haruchugeki
+  nome: "Kugutsu: Haruchūgeki"
+  traducao: "Marionete: Golpe de Castigo da Primavera"
+  origem: Kugutsu
+  tipo: Kugutsu
+  rank: B
+  custo: 7 PC + 6 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Kugutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Com um aliado preso nos fios, o marionetista o lança alto no ar e o guia num soco carregado de chakra.
+  efeito: 5d8 de dano, que ignora RD, no golpe do aliado guiado pelos fios.
+  notas:
+    - "Exige um aliado sob o Sōen: Hitomi Gokū."
+  pj: "dano 5d8 (12) + ignora RD (2) − exige outra técnica (−1): 13 PJ, rank B."
+  capitulo: 13
+  ancora: como-funciona-o-combate-com-marionetes-visao-geral
+  cla: null
+  elemento: null
+- slug: gamayudan
+  nome: Gamayudan
+  traducao: Projétil de Óleo de Sapo
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja transforma o chakra num óleo grudento e cospe uma massa enorme dele. Quem é atingido mal consegue se mexer, e água comum não lava.
+  efeito: Quem estiver na área fica Imobilizado no óleo até vencer a Resistência de FOR ao fim do turno. O óleo pega fogo com qualquer chama.
+  notas: []
+  pj: "Médio (2) + esfera 3m (2) + imobiliza (3): 7 PJ, rank C."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: gamadaira-kageayatsuri-no-jutsu
+  nome: "Gamadaira: Kageayatsuri no Jutsu"
+  traducao: "Achatamento do Sapo: Técnica de Manipular a Sombra"
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Sustentado (3 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: ESP (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja fica fino como papel, entra na sombra do alvo e passa a controlar o corpo e a mente dele por dentro.
+  efeito: O alvo tocado fica Controlado pelo usuário por até 4 turnos, enquanto ele mantiver a técnica. Ao fim de cada turno, pode tentar se libertar com uma Resistência de ESP.
+  notas: []
+  pj: "controla (6) + turnos extras ×3 (3) + sustentado (2): 11 PJ, rank B."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: gamagakure-no-jutsu
+  nome: Gamagakure no Jutsu
+  traducao: Técnica de Esconder-se num Sapo
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: C
+  custo: 6 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Sustentado (2 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja invoca um sapo especial de Myōboku e se esconde na barriga dele. O sapo mergulha cem metros em água doce, ótimo para entrar num acampamento cercado por rio.
+  efeito: O usuário fica dentro do sapo, fora do alcance de ataques, enquanto mantiver a técnica. O sapo nada e mergulha levando-o.
+  notas:
+    - Exige um contrato com os sapos do Monte Myōboku (cap. 14).
+  pj: "clone ou invocação (4) + sustentado (2): 6 PJ, rank C."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: kekkai-gama-hyoro
+  nome: "Kekkai: Gama Hyōrō"
+  traducao: "Barreira: Prisão da Cabaça de Sapo"
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja invoca um sapo pequeno em forma de cabaça, que puxa o alvo com a língua para dentro da barriga e o isola do mundo.
+  efeito: O alvo fica Imobilizado dentro do sapo, sem lançar jutsus, até vencer a Resistência.
+  notas:
+    - Exige um contrato com os sapos do Monte Myōboku (cap. 14).
+  pj: "Médio (2) + imobiliza (3) + sela chakra (2) + clone ou invocação (4): 11 PJ, rank B."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: kaeru-kaeru-no-jutsu
+  nome: Kaeru Kaeru no Jutsu
+  traducao: Técnica de Virar Sapo
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: 4 turnos
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: VIG (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Com um toque na testa, o ninja transforma o alvo numa perereca. É mais usado em interrogatórios: os outros prisioneiros falam rápido quando veem os colegas virarem sapo."
+  efeito: "Se falhar na Resistência, o alvo tocado vira uma perereca por até 4 turnos: fica Paralisado para fins de combate e não lança jutsus."
+  notas: []
+  pj: "paralisa (2) + turnos extras ×3 (3) + sela chakra (2): 7 PJ, rank C."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: kuchiyose-gamaguchi-shibari
+  nome: "Kuchiyose: Gamaguchi Shibari"
+  traducao: "Invocação: Prisão da Boca do Sapo"
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: A
+  custo: 19 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Sustentado (5 PC/turno)
+    - k: Área
+      v: Esfera 15m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - Em vez de um sapo inteiro, o ninja invoca só o esôfago de um sapo gigante, que cobre as paredes em volta. Quem está lá dentro está dentro do sapo.
+  efeito: 2d6 de dano por turno em todos na área, que ficam Imobilizados nas paredes de carne até vencer a Resistência de FOR ao fim do turno.
+  notas:
+    - Exige um contrato com os sapos do Monte Myōboku (cap. 14). Gasta um pouco de sangue do usuário no selo de invocação.
+  pj: "dano 2d6 (3) + Longo (4) + esfera 15m (8) + imobiliza (3) + sustentado (2) − material consumível (−1): 19 PJ, rank A."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: kuchiyose-yatai-kuzushi-no-jutsu
+  nome: "Kuchiyose: Yatai Kuzushi no Jutsu"
+  traducao: "Invocação: Técnica do Destruidor de Barracas"
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: B
+  custo: 15 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja invoca um sapo enorme no ar, bem em cima do alvo. O chão treme e quem estava embaixo fica preso sob o peso.
+  efeito: 4d8 de dano em todos na área, que ficam Imobilizados sob o sapo até vencer a Resistência de FOR ao fim do turno.
+  notas:
+    - Exige um contrato com os sapos do Monte Myōboku (cap. 14). Gasta um pouco de sangue do usuário no selo de invocação.
+  pj: "dano 4d8 (9) + Médio (2) + esfera 3m (2) + imobiliza (3) − material consumível (−1): 15 PJ, rank B."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: kuchiyose-goju-rashomon
+  nome: "Kuchiyose: Gojū Rashōmon"
+  traducao: "Invocação: Portão Rashōmon Quíntuplo"
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: A
+  custo: 24 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Reação
+  descricao:
+    - Cinco portões Rashōmon de uma vez, sem selos, onde o ninja quiser, mesmo em volta de outra pessoa.
+  efeito: Absorve até 100 de dano de um ataque ou jutsu contra o usuário ou um aliado. Os portões somem depois de absorver o golpe.
+  notas:
+    - Gasta um pouco de sangue do usuário no selo de invocação.
+  pj: "barreira ×10 (20) − material consumível (−1) + sem selos (2) + reação (3): 24 PJ, rank A."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: mandara-no-jin
+  nome: Mandara no Jin
+  traducao: Formação das Dez Mil Serpentes
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: B
+  custo: 15 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Serpentes sem fim saem da boca do ninja e formam uma muralha viva que caça o inimigo. Contra tantas, defender e desviar não adianta.
+  efeito: 3d8 de dano em todos na área (metade com sucesso na Resistência).
+  notas:
+    - Exige um contrato com as serpentes (cap. 14).
+  pj: "dano 3d8 (7) + Longo (4) + esfera 6m (4): 15 PJ, rank B."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: kebari-senbon
+  nome: Kebari Senbon
+  traducao: Senbon de Agulhas de Cabelo
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: C
+  custo: 8 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Cone pequeno
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O cabelo do ninja endurece e sai disparado numa chuva de agulhas.
+  efeito: 2d6+2 de dano perfurante em todos no cone (metade com sucesso na Resistência).
+  notas: []
+  pj: "dano 2d6+2 (5) + Médio (2) + cone pequeno (1): 8 PJ, rank C."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: ranjishigami-no-jutsu
+  nome: Ranjishigami no Jutsu
+  traducao: Técnica da Juba do Leão Selvagem
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (3 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O cabelo do ninja cresce, endurece como aço e serve ao mesmo tempo de corda para prender e de escudo.
+  efeito: O alvo fica Imobilizado pelo cabelo até vencer a Resistência, e enquanto o usuário mantiver a técnica o cabelo o protege como uma barreira de 20 PV.
+  notas: []
+  pj: "Médio (2) + imobiliza (3) + barreira ×2 (4) + sustentado (2): 11 PJ, rank B."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: choodama-rasengan
+  nome: Chōōdama Rasengan
+  traducao: Rasengan de Bola Supergrande
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: A
+  custo: 24 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um Rasengan gigantesco, criado num instante. O impacto solta uma onda de choque que arremessa tudo em volta.
+  efeito: 8d8 de dano em todos num raio de 3 m do impacto (metade com sucesso na Resistência), que ignora RD. Quem falha é arremessado 5 m e cai.
+  notas:
+    - Exige saber o Ōdama Rasengan.
+  pj: "dano 8d8 (20) + esfera 3m (2) + empurra (1) + ignora RD (2) − exige outra técnica (−1): 24 PJ, rank A."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: bunretsu-no-jutsu
+  nome: Bunretsu no Jutsu
+  traducao: Técnica da Fissão
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: A
+  custo: 19 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Sustentado (5 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Não é um clone: o ninja divide o próprio corpo em dois, e cada metade é ele de verdade, com vontade e jutsus próprios."
+  efeito: O usuário se divide em dois corpos, cada um com metade dos PV e dos PC que ele tinha, e ganha uma ação secundária extra no próximo turno. Os dois se juntam de novo quando ele quiser.
+  notas: []
+  pj: "clone ou invocação (8) + sustentado (2) + ação extra (4) + sem selos (2) + não copiável (3): 19 PJ, rank A."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: tenso-no-jutsu
+  nome: Tensō no Jutsu
+  traducao: Técnica da Transferência Celestial
+  origem: Ninjutsu
+  tipo: Ninjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Qualquer lugar que o usuário conheça
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único +2
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja envolve um objeto ou uma pessoa em luz e o manda, na velocidade da luz, para onde quiser.
+  efeito: Transporta até 3 objetos ou criaturas voluntárias tocadas para um lugar que o usuário conheça, a qualquer distância.
+  notas: []
+  pj: "Muito distante (8) + 2 alvos extras (4): 12 PJ, rank B."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: senpo-kawazu-naki
+  nome: "Senpō: Kawazu Naki"
+  traducao: "Arte Sábia: Coaxar do Sapo"
+  origem: Senjutsu
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: VIG (DT do Jutsu) contra a paralisia
+    - k: Ação
+      v: Primária
+  descricao:
+    - Dois sábios concentram a energia natural na garganta e coaxam juntos. A onda de som é tão forte que trava quem a escuta.
+  efeito: Quem estiver na área e falhar na Resistência fica Paralisado por 1 turno.
+  notas:
+    - Exige dois usuários em Modo Sennin coaxando juntos.
+  pj: "Médio (2) + esfera 6m (4) + paralisa (2) − exige outra técnica (−1): 7 PJ, rank C."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: senpo-goemon
+  nome: "Senpō: Goemon"
+  traducao: "Arte Sábia: Goemon"
+  origem: Senjutsu
+  tipo: Ninjutsu
+  rank: A
+  custo: 29 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Três técnicas numa: um cospe óleo, outro cospe fogo e o terceiro sopra vento. O óleo fervente vira um mar de fogo que não se apaga."
+  efeito: 6d8 de dano de fogo em todos na área (metade com sucesso na Resistência). Quem falha continua queimando, com o dano contínuo.
+  notas:
+    - Exige três usuários (óleo, Katon e Fuuton), ao menos um em Modo Sennin, gastando a ação no mesmo turno e dividindo o custo.
+  pj: "dano 6d8 (15) + Longo (4) + esfera 6m (4) + dano contínuo (2) − exige outra técnica (−1) + dois elementos (5): 29 PJ, rank A."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: katon
+- slug: senpo-futon-sunabokori
+  nome: "Senpō: Fūton Sunabokori"
+  traducao: "Arte Sábia: Fuuton, Nuvem de Poeira"
+  origem: Senjutsu
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 15m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O sábio solta da boca uma nuvem de poeira tão densa que esconde até um sapo gigante e não deixa ninguém enxergar.
+  efeito: Quem estiver na área e falhar na Resistência fica Cego por 1 turno.
+  notas:
+    - Exige o Modo Sennin ativo (cap. 15).
+  pj: "Médio (2) + esfera 15m (8) + cega (2) − exige outra técnica (−1): 11 PJ, rank B."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: fuuton
+- slug: kawazu-tataki
+  nome: Kawazu Tataki
+  traducao: Golpe do Sapo
+  origem: Senjutsu
+  tipo: Taijutsu
+  rank: C
+  custo: 8 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - No meio do Kata do Sapo, o ninja dá um tapa de mão aberta, e ondas de energia natural atravessam o alvo por dentro.
+  efeito: 3d8 + FOR de dano interno, que ignora RD.
+  notas:
+    - Exige o Modo Sennin ativo (cap. 15).
+  pj: "dano 3d8 + FOR (7) + ignora RD (2) − exige outra técnica (−1): 8 PJ, rank C."
+  capitulo: 10
+  ancora: ninjutsu-geral-sem-elemento
+  cla: null
+  elemento: null
+- slug: mokuton-henge
+  nome: "Mokuton: Henge"
+  traducao: "Mokuton: Transformação"
+  origem: Clã Senju
+  tipo: Ninjutsu
+  rank: D
+  custo: 5 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Sustentado (2 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - A madeira cobre o corpo do ninja e assume outra forma, uma árvore, um objeto ou outra pessoa. Ao contrário do Henge comum, o disfarce é sólido.
+  efeito: O usuário assume a forma escolhida enquanto mantiver a técnica e tem RD 2 por 3 turnos, coberto de madeira.
+  notas: []
+  pj: "sustentado (2) + RD 2 (3): 5 PJ, rank D."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-8
+  cla: senju
+  elemento: mokuton
+- slug: mokuton-mokusatsu-shibari-no-jutsu
+  nome: "Mokuton: Mokusatsu Shibari no Jutsu"
+  traducao: "Mokuton: Técnica da Amarra que Sufoca"
+  origem: Clã Senju
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Sustentado (2 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O braço do ninja vira uma árvore, e os galhos crescem em volta do alvo até prendê-lo por inteiro. Seguram até uma lula gigante.
+  efeito: O alvo fica Imobilizado nos galhos enquanto o usuário mantiver a técnica e o alvo não vencer a Resistência.
+  notas: []
+  pj: "Médio (2) + imobiliza (3) + sustentado (2): 7 PJ, rank C."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-8
+  cla: senju
+  elemento: mokuton
+- slug: mokuton-hobi-no-jutsu
+  nome: "Mokuton: Hōbi no Jutsu"
+  traducao: "Mokuton: Técnica do Hōbi"
+  origem: Clã Senju
+  tipo: Ninjutsu
+  rank: B
+  custo: 15 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Reação
+  descricao:
+    - Uma cúpula de madeira em forma de cabeça de dragão se fecha em volta do ninja e suga a força dos ataques que batem nela.
+  efeito: Absorve até 50 de dano de um jutsu contra o usuário, e o lançador perde 1d6 PC, sugados pela madeira.
+  notas: []
+  pj: "drena chakra (2) + barreira ×5 (10) + reação (3): 15 PJ, rank B."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-8
+  cla: senju
+  elemento: mokuton
+- slug: mokuton-hotei-no-jutsu
+  nome: "Mokuton: Hotei no Jutsu"
+  traducao: "Mokuton: Técnica do Hotei"
+  origem: Clã Senju
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - Mãos de madeira do tamanho de uma Besta com Cauda saem do chão e se fecham em volta do inimigo.
+  efeito: Quem estiver na área fica Imobilizado nas mãos, sem lançar jutsus, até vencer a Resistência de FOR ao fim do turno.
+  notas: []
+  pj: "Longo (4) + esfera 6m (4) + imobiliza (3) + sela chakra (2): 13 PJ, rank B."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-8
+  cla: senju
+  elemento: mokuton
+- slug: soshinki
+  nome: Sōshinki
+  traducao: Madeira Transmissora
+  origem: Clã Senju
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Qualquer distância
+    - k: Duração
+      v: Sustentado (3 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um clone de madeira vira uma semente, plantada no alvo ou engolida por ele. A partir daí, a semente avisa o ninja de onde ele está.
+  efeito: Enquanto a semente estiver com o alvo, o usuário sabe onde ele está, a qualquer distância. Só o usuário sente a semente.
+  notas:
+    - Preparar a semente leva um turno completo, a partir de um Moku Bunshin.
+  pj: "Muito distante (8) + sustentado (2) − preparação (−1): 9 PJ, rank C."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-8
+  cla: senju
+  elemento: mokuton
+- slug: senpo-mokuton-shin-susenju
+  nome: "Senpō Mokuton: Shin Sūsenju"
+  traducao: "Arte Sábia Mokuton: Verdadeiras Milhares de Mãos"
+  origem: Clã Senju
+  tipo: Ninjutsu
+  rank: S
+  custo: 44 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Esfera 15m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Em Modo Sennin, o ninja ergue uma estátua de madeira titânica, com milhares de mãos, e luta de cima da cabeça dela.
+  efeito: 8d10 de dano em todos na área (metade com sucesso na Resistência), sob a chuva de mãos. A estátua continua em campo até o fim da cena e pode repetir o golpe a cada turno, pelo custo de manutenção.
+  notas:
+    - Exige o Modo Sennin ativo (cap. 15).
+  pj: "dano 8d10 (25) + Longo (4) + esfera 15m (8) + clone ou invocação (8) − exige outra técnica (−1): 44 PJ, rank S."
+  capitulo: 8
+  ancora: jutsus-e-habilidades-do-cla-8
+  cla: senju
+  elemento: mokuton
