@@ -257,7 +257,7 @@ export interface CardReferencia {
 }
 
 // ---------------------------------------------------------------- bestiário (conteudo/bestiario.yaml)
-export type TipoCriatura = 'shinobi' | 'fora da lei' | 'guerreiro' | 'fauna' | 'invocação' | 'criatura';
+export type TipoCriatura = 'shinobi' | 'fora da lei' | 'guerreiro' | 'organização' | 'fauna' | 'invocação' | 'criatura';
 export type PapelCriatura = 'lutador' | 'atirador' | 'controlador' | 'suporte' | 'assassino' | 'bando' | 'chefe';
 /** Formato da arte do verbete: a página muda de diagramação conforme ele (faixa no topo, retrato ao lado etc.). */
 export type FormatoArte = 'faixa' | 'retrato' | 'quadro' | 'pagina';

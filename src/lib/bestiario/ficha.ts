@@ -74,7 +74,7 @@ export interface EntradaFicha {
 	ameaca: number;
 	papel: PapelCriatura;
 	tipo: TipoCriatura;
-	/** Slug do clã (akimichi, uchiha…), para quem é de clã. */
+	/** Slug do clã (akimichi, uchiha…), para quem é de clã; "sennin" para os Sennin. */
 	cla: string | null;
 	acerto: number;
 	defesa: number;
@@ -94,7 +94,7 @@ const semAcento = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '');
 const ARMA = /kunai|katana|espada|lamina|faca|clava|machado|bengala|bastao|lanca|shuriken|arco|corrente|senbon|kusarigama|tessen|leque|agulha|foice|naginata|tanto|wakizashi|garfo|jitte|cajado|martelo|cutelo|machete|adaga|tridente/i;
 const MARIONETE = /marionete|fios de chakra/i;
 const CORPO = /punho|soco|chute|golpe|palma|dedo|ombro|joelho|cotovelo|agarr|cabecada|investida/i;
-const NINJA: TipoCriatura[] = ['shinobi', 'fora da lei', 'guerreiro'];
+const NINJA: TipoCriatura[] = ['shinobi', 'fora da lei', 'guerreiro', 'organização'];
 
 /** Perícia e atributo do ataque principal. */
 function periciaDoAtaque(e: EntradaFicha): { pericia: Pericia; atributo: Atributo; arma: boolean } {
@@ -130,7 +130,7 @@ function atributosDe(e: EntradaFicha): Record<Atributo, number> {
 function secundarias(e: EntradaFicha): Pericia[] {
 	const lista: Pericia[] = [];
 	if (!NINJA.includes(e.tipo)) return ['percepcao', 'sobrevivencia'];
-	const CLA: Record<string, Pericia> = { hyuuga: 'percepcao', inuzuka: 'rastreamento', aburame: 'percepcao', uzumaki: 'selamento', yamanaka: 'percepcao', nara: 'investigacao', akimichi: 'atletismo' };
+	const CLA: Record<string, Pericia> = { hyuuga: 'percepcao', inuzuka: 'rastreamento', aburame: 'percepcao', uzumaki: 'selamento', yamanaka: 'percepcao', nara: 'investigacao', akimichi: 'atletismo', sennin: 'percepcao' };
 	if (e.cla && CLA[e.cla]) lista.push(CLA[e.cla]);
 	if (e.jutsus.some((j) => /shosen|kaifuku|iryo/.test(j.slug ?? ''))) lista.push('medicina');
 	const PAPEL: Record<PapelCriatura, Pericia[]> = {
@@ -161,7 +161,8 @@ const ESPECIALIZACAO: Record<string, string> = {
 	Marionete: 'especializacao-marionete-kugutsu',
 	Invocação: 'especializacao-invocacao-kuchiyose',
 	'Sensor de Chakra': 'especializacao-sensor-de-chakra',
-	'Ninjutsu Médico': 'especializacao-ninjutsu-medico'
+	'Ninjutsu Médico': 'especializacao-ninjutsu-medico',
+	Sennin: 'especializacao-sennin-pre-requisitos-no-cap-15'
 };
 const ANCORA_ELEMENTO = 'especializacao-elemento-especifico-katon-suiton-etc';
 
@@ -186,6 +187,8 @@ function especializacoesDe(e: EntradaFicha, ataque: Pericia): EspecializacaoFich
 		yuki: 'Controle de Chakra'
 	};
 	if (e.cla && CLA[e.cla]) nomes.push(CLA[e.cla]);
+	// os Sennin aprenderam com uma espécie de invocação (cap. 15)
+	if (e.cla === 'sennin') nomes.push('Sennin', 'Invocação');
 	// o elemento mais usado nos jutsus
 	const conta: Record<string, number> = {};
 	for (const j of e.jutsus) if (j.elemento && ELEMENTO_NOME[j.elemento]) conta[j.elemento] = (conta[j.elemento] ?? 0) + 1;

@@ -1,0 +1,188 @@
+# Bestiário · organizações: moldes abstratos de grupos que atravessam vilas, com os seus degraus, do informante que
+# a organização paga ao líder que quase ninguém viu. O Mestre dá o nome, o símbolo e o objetivo. Formato de cada verbete: veja o cabeçalho de shinobi.yaml.
+
+- slug: organizacao-clandestina
+  nome: Organização clandestina
+  tipo: organização
+  origem: Esconderijos que mudam de lugar
+  vila: null
+  arte: { formato: faixa, plano: silhueta }
+  cena:
+    - "Ninguém na casa de chá repara nos dois viajantes da mesa do canto, e é exatamente essa a ideia. Quando eles se levantam, deixam em cima da mesa um sinal pequeno, que o grupo já viu antes: no corpo de um ninja morto na estrada."
+  descricao:
+    - "Nem todo inimigo responde a uma vila. Organizações clandestinas reúnem renegados, mercenários e fanáticos em torno de um objetivo que poucos conhecem por inteiro: dinheiro, poder, vingança, um ideal, uma relíquia. Este verbete é um molde abstrato. O Mestre escolhe o nome, o símbolo, o objetivo e o jeito de cada uma, e as fichas servem para qualquer organização da campanha, de um sindicato do submundo a uma seita que cultua um deus esquecido."
+    - "Cada ficha é um degrau dela: o informante pago nas cidades, o recruta que ainda prova o valor, o membro de confiança, o executor que cuida dos alvos difíceis e o líder, que quase ninguém viu de perto. Os membros vêm de vilas diferentes, e os jutsus de cada um podem seguir o molde da vila de onde ele saiu (Como usar)."
+  estagios:
+    - nome: Informante
+      arte: { formato: retrato, plano: por cima do ombro }
+      ameaca: 2
+      papel: suporte
+      resumo: "Um olheiro pago pela organização, que nem sabe direito para quem trabalha."
+      ataques:
+        - { nome: Kunai, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: henge-no-jutsu }
+        - { slug: kawarimi-no-jutsu }
+      tracos:
+        - { nome: Mensageiro, efeito: "Sabe onde deixar o recado para a organização. Capturado, entrega o ponto de encontro com um teste de Persuasão contra a DT 13." }
+    - nome: Recruta
+      arte: { formato: quadro, plano: emoldurado }
+      ameaca: 5
+      papel: lutador
+      resumo: "Ainda está sendo testado, e faria qualquer coisa para ser aceito."
+      ataques:
+        - { nome: Lâmina curva, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: shunshin-no-jutsu }
+        - { slug: kirigakure-no-jutsu-ilusorio }
+        - { slug: goukakyu-no-jutsu }
+      tracos:
+        - { nome: Prova de valor, efeito: "Enquanto um membro da organização o observa, não foge nem se rende." }
+    - nome: Membro
+      arte: { formato: faixa, plano: perfil }
+      capa: true
+      ameaca: 8
+      papel: controlador
+      resumo: "Um membro de confiança, que conhece os segredos e quase nunca anda sozinho."
+      ataques:
+        - { nome: Lâmina curva, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: karyuu-endan }
+        - { slug: suiryuudan-no-jutsu }
+      tracos:
+        - &dupla { nome: Dupla, efeito: "Quase sempre anda com outro membro (esta mesma ficha), e os dois agem na mesma iniciativa. Quando um cai, o outro foge levando o sinal dele." }
+        - &sinal { nome: Sinal da organização, efeito: "Carrega o sinal dela (um manto, um anel, uma tatuagem, à escolha do Mestre). Pelo sinal, a organização sabe onde o membro caiu." }
+    - nome: Executor
+      arte: { formato: retrato, plano: silhueta }
+      ameaca: 11
+      papel: assassino
+      resumo: "Cuida dos alvos que os outros não conseguem pegar."
+      ataques:
+        - { nome: Lâmina curva, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: chidori }
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: sairento-kiringu }
+        - { slug: kage-bunshin-no-jutsu }
+      tracos:
+        - *dupla
+        - *sinal
+        - { nome: Caçador de alvos, efeito: "A organização caça um tipo de alvo, à escolha do Mestre (jinchuuriki, portadores de Kekkei Genkai, herdeiros de clã, desertores). Contra eles, tem vantagem em Rastreamento e nos ataques." }
+    - nome: Líder
+      ameaca: 16
+      papel: chefe
+      resumo: "Quem decide o que a organização quer, e que quase ninguém viu em carne e osso."
+      arte: { formato: pagina, plano: de costas }
+      ataques:
+        - { nome: Golpe do líder, alcance: Médio }
+      jutsus:
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
+        - { nome: Técnica do líder, nota: "Uma técnica de rank S que define a organização, escolhida pelo Mestre no catálogo ou criada com as regras do cap. 20." }
+      tracos:
+        - { nome: Comando, efeito: "Uma vez por rodada, como ação secundária, dá uma ordem: um membro da organização que possa ouvi-lo faz um ataque na hora, como reação." }
+        - { nome: Escolta, efeito: "Quase nunca aparece sozinho: dois Executores (ficha acima) entram na luta na primeira rodada." }
+        - { nome: Voz distante, efeito: "Fala e observa pelo sinal de qualquer membro, e pode aparecer ao lado dele como uma imagem de chakra." }
+  taticas:
+    - "Os membros nunca lutam de graça. Se a luta não serve à organização, recuam; quando caçam um alvo, isolam ele do grupo antes de qualquer coisa."
+  ganchos:
+    - "A organização oferece a um personagem que acabou de virar renegado um lugar entre os seus."
+    - "O grupo encontra o sinal da organização no corpo de um aliado que sumiu há meses."
+    - "A organização caça alguém da vila do grupo, e esse alguém não sabe por quê."
+  tags: [Tático, Fanático]
+
+- slug: divisao-das-sombras
+  nome: Divisão das Sombras
+  tipo: organização
+  origem: A divisão secreta de uma grande vila
+  vila: null
+  arte: { formato: retrato, plano: de cima }
+  cena:
+    - "No fundo da sala subterrânea, uma única lamparina. Dezenas de agentes de máscara lisa estão ajoelhados em fileiras perfeitas, e nenhum respira alto. Lá em cima da escada, o homem de casaco escuro termina de ler o relatório e queima o papel na chama, sem pressa."
+  descricao:
+    - "Toda vila grande tem uma divisão que não existe oficialmente. Os agentes dela foram tirados das famílias ainda crianças, treinados para não sentir e marcados com um selo que os impede de falar de quem dá as ordens. Fazem o trabalho que o Kage não pode assinar."
+    - "No topo está o Kage da Sombra, o Kage que a vila não admite ter. Ele decide quem vive e quem some, e acredita sinceramente que salva a vila fazendo o que o Kage verdadeiro não tem coragem de fazer. Quer o chapéu, e trabalha há décadas para isso."
+  estagios:
+    - nome: Recruta
+      arte: { formato: retrato, plano: de cima }
+      ameaca: 2
+      papel: assassino
+      resumo: "Uma criança tirada da família e treinada para não sentir nada."
+      ataques:
+        - { nome: Kunai, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: henge-no-jutsu }
+        - { slug: kawarimi-no-jutsu }
+      tracos:
+        - &sem-emocao { nome: Sem emoção, efeito: "É imune a **Amedrontado**." }
+    - nome: Agente
+      ameaca: 5
+      papel: assassino
+      resumo: "Máscara lisa, selo na língua e nenhuma pergunta."
+      arte: { formato: retrato, plano: de costas }
+      ataques:
+        - { nome: Tantō curta, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: shunshin-no-jutsu }
+        - { slug: kawarimi-no-jutsu }
+      tracos:
+        - &selo-lingua { nome: Selo na língua, efeito: "Não consegue falar nem escrever nada sobre a divisão. Tentar arrancar isso dele com Persuasão ou genjutsu simplesmente falha." }
+        - *sem-emocao
+    - nome: Operador
+      arte: { formato: faixa, plano: câmera no chão }
+      ameaca: 8
+      papel: assassino
+      resumo: "Prefere matar dormindo, envenenar a comida ou cortar a corda da ponte a qualquer luta justa."
+      ataques:
+        - { nome: Tantō curta, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: shunshin-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: kokuangyou-no-jutsu }
+      tracos:
+        - *selo-lingua
+        - *sem-emocao
+        - { nome: Trabalho sujo, efeito: "Tem vantagem para envenenar, sabotar e armar emboscadas." }
+    - nome: Capitão
+      arte: { formato: quadro, plano: emoldurado }
+      ameaca: 11
+      papel: assassino
+      resumo: "Comanda uma célula de agentes e responde só ao Kage da Sombra."
+      ataques:
+        - { nome: Tantō curta, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: chidori }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *selo-lingua
+        - *sem-emocao
+        - { nome: Célula, efeito: "Dois Agentes (ficha acima) acompanham o capitão e agem na iniciativa dele." }
+    - nome: Kage da Sombra
+      ameaca: 13
+      papel: chefe
+      capa: true
+      resumo: "O Kage que a vila não admite ter, e que quer o chapéu de verdade."
+      arte: { formato: retrato, plano: de cima }
+      ataques:
+        - { nome: Lâmina de vento, alcance: Curto }
+      jutsus:
+        - { slug: daitoppa }
+        - { slug: kazekiri-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: kokuangyou-no-jutsu }
+      tracos:
+        - { nome: Rede de agentes, efeito: "Sempre tem dois Agentes (ficha acima) por perto, que aparecem na primeira rodada." }
+        - { nome: Selo do silêncio, efeito: "Os agentes dele não conseguem falar dele nem da divisão (o mesmo Selo na língua dos agentes)." }
+        - { nome: Morte fingida, efeito: "Uma vez por cena, quando cairia a 0 PV, revela que quem caiu era um clone: reaparece em outro lugar da cena com metade dos PV." }
+  taticas:
+    - "Trabalham em dupla ou trio, cada um de um lado, e se forem capturados esperam a primeira chance de morrer em silêncio."
+    - "O Kage da Sombra nunca luta no lugar errado. Deixa os agentes cansarem o grupo, observa as técnicas de cada um e só entra para terminar o serviço."
+  ganchos:
+    - "A divisão quer o grupo morto por algo que ele viu sem saber que viu."
+    - "Um agente começa a desobedecer as ordens e procura o grupo para pedir ajuda."
+    - "Os relatórios da divisão provam que o Kage da Sombra fabricou a guerra que o grupo está lutando."
+  tags: [Tático, Fanático]

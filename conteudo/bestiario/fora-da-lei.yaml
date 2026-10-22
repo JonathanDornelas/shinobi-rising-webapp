@@ -1,26 +1,91 @@
 # Bestiário · fora da lei e guerreiros: renegados, mercenários, bandidos, caçadores e quem luta sem ser ninja
-# (samurai, monges). Formato de cada verbete: veja o cabeçalho de shinobi.yaml.
+# (samurai, monges). O renegado e o espião têm os cinco níveis, do Genin ao nível Kage. Formato de cada verbete:
+# veja o cabeçalho de shinobi.yaml.
 - slug: ninja-renegado
   nome: Ninja renegado
   tipo: fora da lei
-  ameaca: 8
-  papel: assassino
   origem: Sem vila
   vila: null
   arte: { formato: faixa, plano: de costas }
   cena:
     - "Do alto do penhasco, as luzes da vila parecem pequenas. Ele as olha por muito tempo, a capa batendo no vento, antes de virar as costas de vez. Na bandana, um risco fundo atravessa o símbolo de casa."
   descricao:
-    - "Todo renegado traiu alguma coisa: uma vila, um mestre, uma ordem que não quis cumprir. O risco na bandana diz isso a quem souber ler. Eles sabem os segredos da vila de onde saíram e vivem de vendê-los, ou de fugir de quem quer calá-los."
-  ataques:
-    - { nome: Katana, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
-  jutsus:
-    - { slug: kage-bunshin-no-jutsu }
-    - { slug: kawarimi-no-jutsu }
-    - { slug: kirigakure-no-jutsu-ilusorio }
-  tracos:
-    - { nome: O caminho de casa, efeito: "Conhece as senhas, as rotas e os pontos cegos da vila que abandonou." }
-    - { nome: Fuga preparada, efeito: "Na primeira vez que cai abaixo da metade dos PV, um clone fica no lugar dele e ele foge, sem gastar ação." }
+    - "Todo renegado traiu alguma coisa: uma vila, um mestre, uma ordem que não quis cumprir. O risco na bandana diz isso a quem souber ler. Eles sabem os segredos da vila de onde saíram e vivem de vendê-los, ou de fugir de quem quer calá-los. Quanto mais alto era o rank, maior o preço da cabeça."
+  estagios:
+    - nome: Genin
+
+      arte: { formato: retrato, plano: perfil }
+      ameaca: 2
+      papel: assassino
+      resumo: "Desertou cedo, antes de entender direito o que estava traindo."
+      ataques:
+        - { nome: Kunai, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: kawarimi-no-jutsu }
+        - { slug: bunshin-no-jutsu }
+      tracos:
+        - &caminho-casa { nome: O caminho de casa, efeito: "Conhece as senhas, as rotas e os pontos cegos da vila que abandonou." }
+    - nome: Chunin
+
+      arte: { formato: quadro, plano: de cima }
+      ameaca: 5
+      papel: assassino
+      resumo: "Fugiu no meio de uma missão e vive de vender o que sabe."
+      ataques:
+        - { nome: Katana, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: kawarimi-no-jutsu }
+        - { slug: kirigakure-no-jutsu-ilusorio }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *caminho-casa
+        - &fuga-preparada { nome: Fuga preparada, efeito: "Na primeira vez que cai abaixo da metade dos PV, um clone fica no lugar dele e ele foge, sem gastar ação." }
+    - nome: Jounin
+
+      arte: { formato: retrato, plano: emoldurado }
+      ameaca: 8
+      papel: assassino
+      resumo: "Veterano que traiu a vila por um motivo que só ele conhece, e tem provas."
+      ataques:
+        - { nome: Katana, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: kawarimi-no-jutsu }
+        - { slug: kirigakure-no-jutsu-ilusorio }
+      tracos:
+        - *caminho-casa
+        - *fuga-preparada
+    - nome: Nível Anbu
+
+      arte: { formato: faixa, plano: câmera inclinada }
+      ameaca: 11
+      papel: assassino
+      resumo: "Saiu da elite da vila e levou os segredos dela junto."
+      ataques:
+        - { nome: Katana, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: sairento-kiringu }
+        - { slug: chidori }
+      tracos:
+        - *fuga-preparada
+        - { nome: Segredos da elite, efeito: "Tem vantagem nas Resistências contra os jutsus de ninjas da vila que abandonou." }
+    - nome: Nível Kage
+
+      arte: { formato: pagina, plano: de baixo }
+      ameaca: 16
+      papel: chefe
+      resumo: "Renegado de rank S, no topo do livro bingo de cinco vilas."
+      ataques:
+        - { nome: Katana, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: kirin }
+        - { slug: chidori }
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
+      tracos:
+        - *fuga-preparada
+        - { nome: Rank S, efeito: "Caçadores de recompensas e a elite de três vilas estão atrás dele: numa luta que passa de cinco rodadas, um deles aparece, e não está do lado de ninguém." }
   taticas:
     - "Evita lutas longas. Ataca de surpresa, testa o grupo e some quando a conta não fecha."
   ganchos:
@@ -136,8 +201,6 @@
 - slug: espiao-infiltrado
   nome: Espião infiltrado
   tipo: fora da lei
-  ameaca: 4
-  papel: assassino
   origem: Qualquer lugar
   vila: null
   arte: { formato: quadro, plano: close }
@@ -145,13 +208,83 @@
     - "A criada serve o chá ao daimyō com as duas mãos e uma reverência perfeita. Ninguém repara que ela não tem sombra embaixo da bandeja. Quando o daimyō leva a xícara à boca, o grupo é o único que ainda pode gritar."
   descricao:
     - "O espião vive dentro da casa do inimigo, às vezes por anos. Muda de rosto, de nome e de voz, ganha a confiança de todos e espera a ordem. Quando ela chega, mata sem barulho e some antes de alguém perceber que faltava alguém."
-  ataques:
-    - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 14 ou sofre o Veneno Sonífero (cap. 11)." }
-  jutsus:
-    - { slug: henge-no-jutsu }
-    - { slug: kawarimi-no-jutsu }
-  tracos:
-    - { nome: Mil rostos, efeito: "Tem vantagem em Persuasão para mentir e em Furtividade para se misturar à multidão." }
+  estagios:
+    - nome: Genin
+
+      arte: { formato: retrato, plano: emoldurado }
+      ameaca: 2
+      papel: assassino
+      resumo: "Olheiro que só observa, conta e repassa o que viu."
+      ataques:
+        - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 13 ou sofre o Veneno Comum (cap. 11)." }
+      jutsus:
+        - { slug: henge-no-jutsu }
+        - { slug: kawarimi-no-jutsu }
+      tracos:
+        - &mil-rostos { nome: Mil rostos, efeito: "Tem vantagem em Persuasão para mentir e em Furtividade para se misturar à multidão." }
+    - nome: Chunin
+
+      arte: { formato: quadro, plano: por cima do ombro }
+      ameaca: 5
+      papel: assassino
+      resumo: "Serve o chá na casa do inimigo e espera a ordem."
+      ataques:
+        - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 15 ou sofre o Veneno Sonífero (cap. 11)." }
+      jutsus:
+        - { slug: henge-no-jutsu }
+        - { slug: kawarimi-no-jutsu }
+      tracos:
+        - *mil-rostos
+    - nome: Jounin
+
+      arte: { formato: retrato, plano: reflexo }
+      ameaca: 8
+      papel: assassino
+      resumo: "Comanda uma rede de informantes numa cidade inteira."
+      ataques:
+        - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 16 ou sofre o Veneno Sonífero (cap. 11)." }
+      jutsus:
+        - { slug: henge-no-jutsu }
+        - { slug: kawarimi-no-jutsu }
+        - { slug: shunshin-no-jutsu }
+        - { slug: magen-narakumi-no-jutsu }
+      tracos:
+        - *mil-rostos
+        - &rede-informantes { nome: Rede de informantes, efeito: "Sabe tudo o que aconteceu na cidade onde está nos últimos três dias, inclusive o que o grupo fez." }
+    - nome: Nível Anbu
+
+      arte: { formato: faixa, plano: perfil }
+      ameaca: 11
+      papel: assassino
+      resumo: "Vive há anos com o rosto de outra pessoa, e a família dela não percebeu."
+      ataques:
+        - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 18 ou sofre o Veneno Letal de Sasori (cap. 11)." }
+      jutsus:
+        - { slug: henge-no-jutsu }
+        - { slug: shunshin-no-jutsu }
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
+      tracos:
+        - *mil-rostos
+        - *rede-informantes
+        - &rosto-roubado { nome: Rosto roubado, efeito: "Copia o rosto, a voz e o jeito de andar de alguém com quem conviveu por uma semana; só um teste de Percepção contra a DT 18 percebe a diferença." }
+    - nome: Nível Kage
+
+      arte: { formato: pagina, plano: de cima }
+      ameaca: 16
+      papel: chefe
+      resumo: "Infiltrado no conselho de uma grande vila, e ninguém desconfia dele."
+      ataques:
+        - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 20 ou sofre o Veneno Letal de Sasori (cap. 11)." }
+      jutsus:
+        - { slug: henge-no-jutsu }
+        - { slug: shunshin-no-jutsu }
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
+      tracos:
+        - *mil-rostos
+        - *rosto-roubado
+        - { nome: Agentes adormecidos, efeito: "Uma vez por cena, ativa dois agentes infiltrados (a ficha Chunin deste verbete), que estavam entre os aliados do grupo e agem na iniciativa dele." }
   taticas:
     - "Não luta se puder evitar. Se for descoberto, foge pelo caminho que preparou na primeira semana."
   ganchos:

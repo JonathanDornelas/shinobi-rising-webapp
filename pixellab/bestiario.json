@@ -157,7 +157,7 @@
 			"prompt": "a huge giant centipede from the Forest of Death coiled in an S around enormous gnarled tree roots, glossy dark purple-red armored segments, dozens of sharp orange legs, the front of the body reared up high with curved black pincers and long antennae, the Forest of Death of Training Ground 44 behind it: colossal ancient tree trunks, thick dark green canopy blocking the sun, roots as big as bridges, shafts of light through mist"
 		},
 		{
-			"slug": "chunin-de-konoha",
+			"slug": "shinobi-de-konoha--chunin",
 			"nome": "Chunin de Konoha",
 			"tipo": "arquétipo",
 			"formato": "retrato",
@@ -169,7 +169,7 @@
 			"escolhida": "chunin-de-konoha-9401.png"
 		},
 		{
-			"slug": "genin-batedor",
+			"slug": "shinobi-de-konoha--genin",
 			"nome": "Genin batedor de Konoha",
 			"tipo": "arquétipo",
 			"formato": "retrato",
@@ -179,7 +179,7 @@
 			"prompt": "a teen genin ninja crouching on a thick tree branch high above the ground, looking down, original character with short black hair, casual ninja outfit with a dark grey short-sleeved shirt and tan shorts, blue cloth forehead protector with a steel plate engraved with the leaf village symbol, shuriken holster on the thigh, the forest floor of giant tree trunks far below"
 		},
 		{
-			"slug": "cacador-anbu",
+			"slug": "shinobi-de-konoha--anbu",
 			"nome": "Caçador Anbu",
 			"tipo": "arquétipo",
 			"formato": "retrato",
@@ -205,7 +205,7 @@
 			]
 		},
 		{
-			"slug": "kunoichi-de-kiri",
+			"slug": "shinobi-de-kiri--chunin",
 			"nome": "Kunoichi de Kiri",
 			"tipo": "arquétipo",
 			"formato": "quadro",
@@ -215,7 +215,7 @@
 			"prompt": "a Kirigakure kunoichi emerging from thick white mist, original character with long dark blue hair, dark grey-green Hidden Mist flak vest with vertical pockets, forehead protector with the Hidden Mist symbol of four wavy lines, holding senbon needles between her fingers, calm deadly expression, misty lake and wooden walkways behind"
 		},
 		{
-			"slug": "patrulha-de-suna",
+			"slug": "shinobi-de-suna--genin",
 			"nome": "Patrulha de Suna",
 			"tipo": "arquétipo",
 			"formato": "faixa",
@@ -225,7 +225,7 @@
 			"prompt": "three Sunagakure ninjas walking in single file across huge golden sand dunes, beige Hidden Sand flak vests with cloth wraps, forehead protectors with the Hidden Sand symbol, the round sandstone domes of the Hidden Sand Village far away inside tall cliffs, harsh sun, heat haze"
 		},
 		{
-			"slug": "shinobi-de-iwa",
+			"slug": "shinobi-de-iwa--jounin",
 			"nome": "Shinobi de Iwa",
 			"tipo": "arquétipo",
 			"formato": "retrato",
@@ -236,7 +236,7 @@
 			"modelo": "pro"
 		},
 		{
-			"slug": "shinobi-de-kumo",
+			"slug": "shinobi-de-kumo--jounin",
 			"nome": "Shinobi de Kumo",
 			"tipo": "arquétipo",
 			"formato": "quadro",
@@ -338,7 +338,7 @@
 			"escolhida": "cadaver-edo-tensei-7801.png"
 		},
 		{
-			"slug": "agente-da-sombra",
+			"slug": "divisao-das-sombras--agente",
 			"nome": "Agente da Sombra",
 			"formato": "retrato",
 			"plano": ["ponta-cabeca"],
@@ -594,7 +594,7 @@
 			"escolhida": "monge-guerreiro-9301.png"
 		},
 		{
-			"slug": "ninja-da-chuva",
+			"slug": "shinobi-de-ame--chunin",
 			"nome": "Ninja da Chuva",
 			"formato": "faixa",
 			"plano": ["de-cima"],
@@ -602,7 +602,7 @@
 			"escolhida": "ninja-da-chuva-9301.png"
 		},
 		{
-			"slug": "ninja-do-som",
+			"slug": "shinobi-de-oto--chunin",
 			"nome": "Ninja do Som",
 			"formato": "retrato",
 			"plano": ["holandes"],
@@ -668,7 +668,7 @@
 			"escolhida": "tigres-9301.png"
 		},
 		{
-			"slug": "kage",
+			"slug": "shinobi-de-kiri--mizukage",
 			"nome": "Kage",
 			"formato": "pagina",
 			"plano": ["costas"],
@@ -676,7 +676,7 @@
 			"escolhida": "kage-9301.png"
 		},
 		{
-			"slug": "kage-da-sombra",
+			"slug": "divisao-das-sombras--kage-da-sombra",
 			"nome": "Kage da Sombra",
 			"formato": "retrato",
 			"plano": ["aereo"],
@@ -3229,6 +3229,1320 @@
 			],
 			"individuo": "a scar over one eyebrow",
 			"escolhida": "cla-yuki--lider-do-cla-9301.png"
+		},
+		{
+			"slug": "divisao-das-sombras--recruta",
+			"nome": "Divisão das Sombras: Recruta",
+			"formato": "retrato",
+			"plano": ["de-cima"],
+			"prompt": "a child recruit of a secret black ops division, original thin boy with a shaved head, kneeling alone on the stone floor of a bare underground training hall lit by one hanging lamp, plain black clothes and a short tanto on his back, a blank white mask with no features lying on the floor in front of him, his face lowered in shadow, rows of identical blank masks hanging on the wall",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/foundation.png",
+					"pagina": "foundation",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "divisao-das-sombras--recruta-10101.png"
+		},
+		{
+			"slug": "divisao-das-sombras--operador",
+			"nome": "Divisão das Sombras: Operador",
+			"formato": "faixa",
+			"plano": ["chao"],
+			"prompt": "black ink rats and ink snakes drawn with a brush leap off an unrolled scroll and run through wet reeds toward the camera by a river at night; behind them a masked operative of a secret division, blank white mask, black hooded cloak, kneels with the calligraphy brush still in hand",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/foundation.png",
+					"pagina": "foundation",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "divisao-das-sombras--operador-10101.png"
+		},
+		{
+			"slug": "divisao-das-sombras--capitao",
+			"nome": "Divisão das Sombras: Capitão",
+			"formato": "quadro",
+			"plano": ["moldura"],
+			"prompt": "framed by the iron bars of an underground cell, the captain of a secret black ops division, original person with a long grey ponytail, black hooded cloak, a blank white mask pushed to the side of the head, reads a confiscated scroll by candlelight with the face half in shadow, a prisoner asleep in chains in the corner, a paper seal tag on the cell door",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/foundation.png",
+					"pagina": "foundation",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "divisao-das-sombras--capitao-10101.png"
+		},
+		{
+			"slug": "espadachim-da-nevoa--genin",
+			"nome": "Espadachim da Névoa: Genin",
+			"formato": "retrato",
+			"plano": ["reflexo"],
+			"prompt": "a teenage Kirigakure swordsman-in-training, original boy with messy light blue hair and a gap tooth, alone at dawn on a misty lake shore struggling to lift a huge training cleaver taller than himself, bandaged forearms, Hidden Mist forehead protector with four wavy lines worn tilted; his reflection in the still water shows him grown up, a confident swordsman holding the same sword",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/seven-ninja-swordsmen-of-the-mist.png",
+					"pagina": "seven-ninja-swordsmen-of-the-mist",
+					"uso": "the legendary swords of the Seven Ninja Swordsmen of the Mist as drawn in the Naruto anime: only the sword designs, not the people"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/chojuro.png",
+					"pagina": "chojuro",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "espadachim-da-nevoa--genin-10101.png"
+		},
+		{
+			"slug": "espadachim-da-nevoa--chunin",
+			"nome": "Espadachim da Névoa: Chunin",
+			"formato": "quadro",
+			"plano": ["ombro"],
+			"prompt": "a Kirigakure chunin swordsman crouched on the bow of a small wooden boat gliding through thick white fog, original man with a shaved head and a scar on the scalp, a long wide-bladed sword strapped across his back, dark grey-green Hidden Mist flak vest; ahead the lanterns of an enemy ship barely visible in the mist",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/seven-ninja-swordsmen-of-the-mist.png",
+					"pagina": "seven-ninja-swordsmen-of-the-mist",
+					"uso": "the legendary swords of the Seven Ninja Swordsmen of the Mist as drawn in the Naruto anime: only the sword designs, not the people"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/chojuro.png",
+					"pagina": "chojuro",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "espadachim-da-nevoa--chunin-10101.png"
+		},
+		{
+			"slug": "espadachim-da-nevoa--jounin",
+			"nome": "Espadachim da Névoa: Jounin",
+			"formato": "retrato",
+			"plano": ["silhueta"],
+			"prompt": "silhouette of a Hidden Mist swordsman in dense mist against a pale white sun, only the outline of a giant cleaver sword, a torn cloak and two sharp glowing eyes visible, water dripping from the blade, a deadly silence",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/seven-ninja-swordsmen-of-the-mist.png",
+					"pagina": "seven-ninja-swordsmen-of-the-mist",
+					"uso": "the legendary swords of the Seven Ninja Swordsmen of the Mist as drawn in the Naruto anime: only the sword designs, not the people"
+				}
+			],
+			"escolhida": "espadachim-da-nevoa--jounin-10101.png"
+		},
+		{
+			"slug": "espadachim-da-nevoa--nivel-anbu",
+			"nome": "Espadachim da Névoa: Nível Anbu",
+			"formato": "faixa",
+			"plano": ["aereo"],
+			"prompt": "a lone swordsman of the Hidden Mist standing in the middle of a long wooden bridge over a misty lake, surrounded by the scattered dropped weapons of a defeated squad, a water dragon coiling up from the lake beside the bridge",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/seven-ninja-swordsmen-of-the-mist.png",
+					"pagina": "seven-ninja-swordsmen-of-the-mist",
+					"uso": "the legendary swords of the Seven Ninja Swordsmen of the Mist as drawn in the Naruto anime: only the sword designs, not the people"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kirigakure.png",
+					"pagina": "kirigakure",
+					"uso": "the village of Kirigakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "espadachim-da-nevoa--nivel-anbu-10101.png"
+		},
+		{
+			"slug": "espadachim-da-nevoa--nivel-kage",
+			"nome": "Espadachim da Névoa: Nível Kage",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "a legendary swordsman of the Hidden Mist resting both hands on a huge sword planted on top of a hill of rusted swords stuck in the ground, heavy rain, original older man with a long white braid, an eyepatch and sharp pointed teeth, a sleeveless dark kimono with a sash, Hidden Mist forehead protector",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/seven-ninja-swordsmen-of-the-mist.png",
+					"pagina": "seven-ninja-swordsmen-of-the-mist",
+					"uso": "the legendary swords of the Seven Ninja Swordsmen of the Mist as drawn in the Naruto anime: only the sword designs, not the people"
+				}
+			],
+			"escolhida": "espadachim-da-nevoa--nivel-kage-10101.png"
+		},
+		{
+			"slug": "espiao-infiltrado--genin",
+			"nome": "Espião infiltrado: Genin",
+			"formato": "retrato",
+			"plano": ["moldura"],
+			"prompt": "framed by a half-open sliding paper door, a young kunoichi spy, original girl with a round face and short bobbed hair, disguised as a tea house servant in a simple kimono, kneeling and pouring tea for two samurai lords while she listens with her eyes turned sideways, a tiny kunai hidden in her sleeve, warm lantern light",
+			"modelo": "pro",
+			"escolhida": "espiao-infiltrado--genin-10101.png"
+		},
+		{
+			"slug": "espiao-infiltrado--chunin",
+			"nome": "Espião infiltrado: Chunin",
+			"formato": "quadro",
+			"plano": ["ombro"],
+			"prompt": "a spy, original thin man with a shaved head and a small mole, copying a secret letter by the light of a small oil lamp in a daimyo's archive at night, shelves full of scrolls, the shadow of a passing guard on the paper wall in front of him",
+			"modelo": "pro",
+			"escolhida": "espiao-infiltrado--chunin-10101.png"
+		},
+		{
+			"slug": "espiao-infiltrado--jounin",
+			"nome": "Espião infiltrado: Jounin",
+			"formato": "retrato",
+			"plano": ["reflexo"],
+			"prompt": "a spy halfway through a Transformation Jutsu in front of a tall bronze mirror, a puff of white smoke around him: the mirror reflects an old grey-bearded court official while the real body outside the mirror is a lean young man with sharp eyes in a dark ninja outfit, a forehead protector tucked into his belt",
+			"modelo": "pro",
+			"escolhida": "espiao-infiltrado--jounin-10101.png"
+		},
+		{
+			"slug": "espiao-infiltrado--nivel-anbu",
+			"nome": "Espião infiltrado: Nível Anbu",
+			"formato": "faixa",
+			"plano": ["perfil"],
+			"prompt": "a disguised spy in a merchant's cloak walking calmly past three castle guards under paper lanterns at night; on the castle wall behind him his long shadow shows a different person, a ninja holding a kunai",
+			"modelo": "pro",
+			"escolhida": "espiao-infiltrado--nivel-anbu-10101.png"
+		},
+		{
+			"slug": "espiao-infiltrado--nivel-kage",
+			"nome": "Espião infiltrado: Nível Kage",
+			"formato": "pagina",
+			"plano": ["de-cima"],
+			"prompt": "a master spy, ageless person with short silver hair, sitting at the head of a long table in a candlelit secret room with a cup of tea, dozens of face masks of different people (merchants, monks, lords, ninjas) hanging on the wall behind, a large map of the five great nations covered in pins and red threads, the face half in shadow",
+			"modelo": "pro",
+			"escolhida": "espiao-infiltrado--nivel-kage-10101.png"
+		},
+		{
+			"slug": "ilusionista--genin",
+			"nome": "Ilusionista: Genin",
+			"formato": "retrato",
+			"plano": ["medio"],
+			"prompt": "a young Konoha genin kunoichi, original girl with long dark hair in two low tails and violet eyes, sitting on a wooden training post with a bored face and making a single hand seal, while below her a teammate swats wildly at a swarm of glowing butterflies that are not really there, training field, afternoon light, Hidden Leaf forehead protector",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kurenai-yuhi.png",
+					"pagina": "kurenai-yuhi",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a"],
+			"escolhida": "ilusionista--genin-10101.png"
+		},
+		{
+			"slug": "ilusionista--chunin",
+			"nome": "Ilusionista: Chunin",
+			"formato": "quadro",
+			"plano": ["holandes"],
+			"prompt": "a forest where the trees bend and melt like ink in water and the sky turns upside down, an enemy ninja staggering and clutching his head, while a calm Kumogakure chunin illusionist, original tall man with dark skin and long white dreadlocks, white one-shoulder Hidden Cloud flak vest, stands among falling petals making a hand seal",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/karui.png",
+					"pagina": "karui",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "ilusionista--chunin-10101.png"
+		},
+		{
+			"slug": "ilusionista--jounin",
+			"nome": "Ilusionista: Jounin",
+			"formato": "retrato",
+			"plano": ["olhos"],
+			"prompt": "the eyes of an illusionist, dark red-brown irises (not Sharingan, no tomoe) reflecting a tiny nightmarish scene of an upside-down burning village, long eyelashes, a small teardrop tattoo under one eye, the edge of a Hidden Leaf forehead protector",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kurenai-yuhi.png",
+					"pagina": "kurenai-yuhi",
+					"uso": "drawing style of the eyes and face in the Naruto anime. Draw an original person, not this character"
+				}
+			],
+			"escolhida": "ilusionista--jounin-10101.png"
+		},
+		{
+			"slug": "ilusionista--nivel-anbu",
+			"nome": "Ilusionista: Nível Anbu",
+			"formato": "faixa",
+			"plano": ["perfil"],
+			"prompt": "a moonlit forest: an enemy ninja tied tight to a tree trunk by thick roots growing over his body, and behind him an illusionist, original woman with short black hair, emerges from the bark of the same tree with a kunai raised, petals swirling",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kurenai-yuhi.png",
+					"pagina": "kurenai-yuhi",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "ilusionista--nivel-anbu-10101.png"
+		},
+		{
+			"slug": "ilusionista--nivel-kage",
+			"nome": "Ilusionista: Nível Kage",
+			"formato": "pagina",
+			"plano": ["aberto"],
+			"prompt": "an illusory world: an illusion master, original old woman with long white hair and closed eyes, sits cross-legged in midair playing a biwa lute while the landscape folds into an endless spiral of red torii gates around her, five tiny lost ninjas wandering inside the spiral, a pale violet sky with two suns",
+			"modelo": "pro",
+			"escolhida": "ilusionista--nivel-kage-10101.png"
+		},
+		{
+			"slug": "marionetista--genin",
+			"nome": "Marionetista: Genin",
+			"formato": "retrato",
+			"plano": ["de-cima"],
+			"prompt": "a young Sunagakure puppeteer apprentice, original girl with short brown hair and a beige head wrap (no hood with ears, no face paint), beige Hidden Sand flak vest, sitting cross-legged on the floor of a cluttered workshop full of wooden puppet parts, painting purple stripes on a small puppet's face, thin blue chakra threads from her fingertips testing its jaw, tools, springs and sawdust around her",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/baki.png",
+					"pagina": "baki",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "marionetista--genin-10102.png"
+		},
+		{
+			"slug": "marionetista--chunin",
+			"nome": "Marionetista: Chunin",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a wooden puppet with hidden blades bursting from its open arms lunges right at the camera; behind it a Sunagakure puppeteer, original young man with a long braid and a bare head (no hood, no cat ears, no face paint), beige Hidden Sand flak vest, pulls blue chakra threads from all ten fingers, desert rocks",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/baki.png",
+					"pagina": "baki",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "marionetista--chunin-10102.png"
+		},
+		{
+			"slug": "marionetista--jounin",
+			"nome": "Marionetista: Jounin",
+			"formato": "retrato",
+			"plano": ["costas"],
+			"prompt": "a Sunagakure puppeteer walking alone into a sandstorm with a large puppet wrapped in bandages strapped to his back, beige hooded cloak flapping, a single blue chakra thread glowing from his fingers to the bundle, the sun a pale disc",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/puppet-technique.png",
+					"pagina": "puppet-technique",
+					"uso": "the puppet technique as drawn in the Naruto anime: wooden puppets with hidden blades and the blue chakra threads from the fingertips. The puppeteer is an original person, not this character"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/sunagakure.png",
+					"pagina": "sunagakure",
+					"uso": "the village of Sunagakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "marionetista--jounin-10101.png"
+		},
+		{
+			"slug": "marionetista--nivel-anbu",
+			"nome": "Marionetista: Nível Anbu",
+			"formato": "faixa",
+			"plano": ["aereo"],
+			"prompt": "a puppeteer, original middle-aged man with a goatee, standing in the desert at dusk in the center of a perfect circle of ten humanoid puppets with blades and shields, blue chakra threads from all his fingers to each one, purple poison smoke drifting toward enemy ninjas",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/puppet-technique.png",
+					"pagina": "puppet-technique",
+					"uso": "the puppet technique as drawn in the Naruto anime: wooden puppets with hidden blades and the blue chakra threads from the fingertips. The puppeteer is an original person, not this character"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/chiyo.png",
+					"pagina": "chiyo",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "marionetista--nivel-anbu-10101.png"
+		},
+		{
+			"slug": "marionetista--nivel-kage",
+			"nome": "Marionetista: Nível Kage",
+			"formato": "pagina",
+			"plano": ["moldura"],
+			"prompt": "framed by the doorway of a dark workshop, an old puppet master, original bald man with a thin white beard, sitting among hundreds of puppets hanging from the ceiling, his own left arm opened like a cabinet to show wooden mechanisms, cables and a hidden blade, a single lamp lighting his calm face, sawdust in the air",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/puppet-technique.png",
+					"pagina": "puppet-technique",
+					"uso": "the puppet technique as drawn in the Naruto anime: wooden puppets with hidden blades and the blue chakra threads from the fingertips. The puppeteer is an original person, not this character"
+				}
+			],
+			"escolhida": "marionetista--nivel-kage-10101.png"
+		},
+		{
+			"slug": "mestre-de-armas--genin",
+			"nome": "Mestre de armas: Genin",
+			"formato": "retrato",
+			"plano": ["chao"],
+			"prompt": "dozens of kunai and shuriken stuck in the dirt and in a wooden target post, a young Iwagakure genin, original boy with short black hair under a brown bandana, a round face and freckles, dark red one-sleeve uniform, kneeling to pull them out after practice at sunset",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kurotsuchi.png",
+					"pagina": "kurotsuchi",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/tenten.png",
+					"pagina": "tenten",
+					"uso": "only the weapons and the training gear as drawn in the Naruto anime, not this character"
+				}
+			],
+			"escolhida": "mestre-de-armas--genin-10103.png"
+		},
+		{
+			"slug": "mestre-de-armas--chunin",
+			"nome": "Mestre de armas: Chunin",
+			"formato": "quadro",
+			"plano": ["perfil"],
+			"prompt": "a chunin weapon specialist, original young man with long black hair tied low, red sleeveless tunic, Hidden Leaf forehead protector, leaping across the frame while a long white paper summoning scroll unrolls in the air around him like a ribbon, and dozens of kunai, sickles and spears burst out of the paper in puffs of white smoke, blue sky",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/tenten.png",
+					"pagina": "tenten",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a"],
+			"escolhida": "mestre-de-armas--chunin-10103.png"
+		},
+		{
+			"slug": "mestre-de-armas--jounin",
+			"nome": "Mestre de armas: Jounin",
+			"formato": "retrato",
+			"plano": ["ombro"],
+			"prompt": "a weapon master, original burly woman with dark skin and a shaved undercut, sharpening a kusarigama on a whetstone at a forge at night, sparks flying, a wall of blades, spears and chains behind, a Hidden Cloud forehead protector hanging on a nail",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/darui.png",
+					"pagina": "darui",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "mestre-de-armas--jounin-10101.png"
+		},
+		{
+			"slug": "mestre-de-armas--nivel-anbu",
+			"nome": "Mestre de armas: Nível Anbu",
+			"formato": "faixa",
+			"plano": ["holandes"],
+			"prompt": "a weapon master, original woman with a high black ponytail and a scar across her lips, spinning in midair between two rivals with a long chain and sickle whipping around her, kunai and shuriken frozen in the air like a storm of steel, a bamboo forest being cut down",
+			"modelo": "pro",
+			"escolhida": "mestre-de-armas--nivel-anbu-10101.png"
+		},
+		{
+			"slug": "mestre-de-armas--nivel-kage",
+			"nome": "Mestre de armas: Nível Kage",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "a legendary weapon master, original older man with a grey beard and a torn cape, standing on top of a mountain of weapons in a storm with a giant naginata over one shoulder, hundreds of blades falling from the dark sky like rain around him",
+			"modelo": "pro",
+			"escolhida": "mestre-de-armas--nivel-kage-10101.png"
+		},
+		{
+			"slug": "mestre-de-taijutsu--genin",
+			"nome": "Mestre de taijutsu: Genin",
+			"formato": "retrato",
+			"plano": ["ponta-cabeca"],
+			"prompt": "a young taijutsu specialist, original boy with short spiky brown hair and a bandage on the nose (not a bowl haircut, no green jumpsuit), doing one-finger handstand push-ups upside down on a thick tree branch at dawn, sweat dripping, orange leg weights, bandaged hands, a Hidden Leaf forehead protector tied around the waist",
+			"modelo": "pro",
+			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a"],
+			"escolhida": "mestre-de-taijutsu--genin-10101.png"
+		},
+		{
+			"slug": "mestre-de-taijutsu--chunin",
+			"nome": "Mestre de taijutsu: Chunin",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"prompt": "a flying kick right at the camera, the sandal sole huge in the foreground, behind it a Sunagakure chunin taijutsu fighter, original kunoichi with a head wrap and long braids and a fierce grin, beige Hidden Sand flak vest, two surprised enemies in the background",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/baki.png",
+					"pagina": "baki",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "mestre-de-taijutsu--chunin-10101.png"
+		},
+		{
+			"slug": "mestre-de-taijutsu--jounin",
+			"nome": "Mestre de taijutsu: Jounin",
+			"formato": "retrato",
+			"plano": ["perfil"],
+			"prompt": "a taijutsu jounin, original big man with dark skin and a shaved head, meditating cross-legged under a roaring waterfall, the water splitting around his body, steam rising from his shoulders after training, eyes closed, bandaged forearms, a Hidden Cloud forehead protector on a rock beside him",
+			"modelo": "pro",
+			"escolhida": "mestre-de-taijutsu--jounin-10101.png"
+		},
+		{
+			"slug": "mestre-de-taijutsu--nivel-anbu",
+			"nome": "Mestre de taijutsu: Nível Anbu",
+			"formato": "faixa",
+			"plano": ["aereo"],
+			"prompt": "a stone arena: a taijutsu master, original lean man with a black ponytail, spinning down out of the sky like a drill with bandages streaming from his arms wrapped around an opponent, a crater forming below, a tiny crowd around",
+			"modelo": "pro",
+			"escolhida": "mestre-de-taijutsu--nivel-anbu-10101.png"
+		},
+		{
+			"slug": "mestre-de-taijutsu--nivel-kage",
+			"nome": "Mestre de taijutsu: Nível Kage",
+			"formato": "pagina",
+			"plano": ["close"],
+			"prompt": "a taijutsu master with the Eight Gates open, original middle-aged woman with a short grey crew cut and a scar across the chin: red skin, bulging veins, eyes white without pupils, a blazing blue-green steam aura rising from the body, the ground cracking, a trickle of blood on the lip",
+			"modelo": "pro",
+			"escolhida": "mestre-de-taijutsu--nivel-kage-10101.png"
+		},
+		{
+			"slug": "mestre-do-selo--genin",
+			"nome": "Mestre do selo: Genin",
+			"formato": "retrato",
+			"plano": ["de-cima"],
+			"prompt": "a young sealing apprentice, original girl with bright red hair in a messy bun, kneeling on a wooden floor completely covered in paper sheets of seal formulas, writing with a big calligraphy brush, ink on her nose and fingers, a black cat walking across the wet papers, an ink stone and scrolls",
+			"modelo": "pro",
+			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a"],
+			"escolhida": "mestre-do-selo--genin-10101.png"
+		},
+		{
+			"slug": "mestre-do-selo--chunin",
+			"nome": "Mestre do selo: Chunin",
+			"formato": "quadro",
+			"plano": ["chao"],
+			"prompt": "a sealing circle of black kanji spreads across the stone floor toward the camera from the palm of a kneeling Kirigakure chunin, original skinny young man with round glasses, the glowing lines rising into barrier walls, an enemy ninja frozen mid-step as the seal script crawls up his legs",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/chojuro.png",
+					"pagina": "chojuro",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "mestre-do-selo--chunin-10101.png"
+		},
+		{
+			"slug": "mestre-do-selo--jounin",
+			"nome": "Mestre do selo: Jounin",
+			"formato": "retrato",
+			"plano": ["moldura"],
+			"prompt": "framed by a small red torii gate covered in paper seal tags, a sealing master, original tall woman with long white hair and a red seal tattoo on her forearm, pressing both palms at night against the cracked door of a tiny shrine as something huge pushes from inside, seal tags tearing and fluttering, a lantern on the ground",
+			"modelo": "pro",
+			"escolhida": "mestre-do-selo--jounin-10101.png"
+		},
+		{
+			"slug": "mestre-do-selo--nivel-anbu",
+			"nome": "Mestre do selo: Nível Anbu",
+			"formato": "faixa",
+			"plano": ["aberto"],
+			"prompt": "a battlefield enclosed by a giant translucent purple barrier box, a sealing master standing outside it with one hand raised in a seal, the flames of an enemy jutsu pressing against the inside walls, forest and hills",
+			"modelo": "pro",
+			"escolhida": "mestre-do-selo--nivel-anbu-10101.png"
+		},
+		{
+			"slug": "mestre-do-selo--nivel-kage",
+			"nome": "Mestre do selo: Nível Kage",
+			"formato": "pagina",
+			"plano": ["costas"],
+			"prompt": "a legendary sealing master, original hunched bald old man with a long thin white beard and a dark green haori with a small spiral crest, standing on a cliff as a gigantic scroll unrolls into the stormy sky around him like a dragon, the black seal script on the paper glowing as it swallows a tornado of chakra",
+			"modelo": "pro",
+			"escolhida": "mestre-do-selo--nivel-kage-10103.png"
+		},
+		{
+			"slug": "ninja-medico--genin",
+			"nome": "Ninja médico de campo: Genin",
+			"formato": "retrato",
+			"plano": ["ombro"],
+			"prompt": "a young medic-in-training, original boy with curly hair and a Hidden Leaf forehead protector, practicing healing chakra on a dying fish in a wooden bucket, green glow from his hands, a stern instructor's hand pointing at it, a medical scroll open beside the bucket",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shizune.png",
+					"pagina": "shizune",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a"],
+			"escolhida": "ninja-medico--genin-10101.png"
+		},
+		{
+			"slug": "ninja-medico--chunin",
+			"nome": "Ninja médico de campo: Chunin",
+			"formato": "quadro",
+			"plano": ["aberto"],
+			"prompt": "a field hospital tent at night lit by paper lanterns, rows of wounded ninjas on cots, a Sunagakure chunin medic with a head cloth running between them with a basin, green healing chakra glowing over another cot, rain outside",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/baki.png",
+					"pagina": "baki",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "ninja-medico--chunin-10101.png"
+		},
+		{
+			"slug": "ninja-medico--jounin",
+			"nome": "Ninja médico de campo: Jounin",
+			"formato": "retrato",
+			"plano": ["close"],
+			"prompt": "a medic ninja's face lit from below by the blue chakra scalpel glowing on her fingertips, original woman with dark green hair in a low bun and a beauty mark, a faint confident smile, Hidden Mist forehead protector",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shizune.png",
+					"pagina": "shizune",
+					"uso": "drawing style of a medical ninja in the Naruto anime. Draw an original person, not this character"
+				}
+			],
+			"escolhida": "ninja-medico--jounin-10101.png"
+		},
+		{
+			"slug": "ninja-medico--nivel-anbu",
+			"nome": "Ninja médico de campo: Nível Anbu",
+			"formato": "faixa",
+			"plano": ["holandes"],
+			"prompt": "a combat medic, original young man with short black hair and a cloth medical mask over the mouth, dark red Iwagakure uniform, sliding under a sword slash and sweeping a blue chakra scalpel across the attacker's legs, blue light trails, the attacker's knees buckling, dust",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kurotsuchi.png",
+					"pagina": "kurotsuchi",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "ninja-medico--nivel-anbu-10101.png"
+		},
+		{
+			"slug": "ninja-medico--nivel-kage",
+			"nome": "Ninja médico de campo: Nível Kage",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "a legendary medic, original woman in her forties with long braided black hair and a scar on her cheek, punching the ground with one fist as the earth shatters into a giant crater with flying rocks, a small purple diamond seal glowing on her forehead, coat flapping",
+			"modelo": "pro",
+			"escolhida": "ninja-medico--nivel-kage-10101.png"
+		},
+		{
+			"slug": "ninja-renegado--genin",
+			"nome": "Ninja renegado: Genin",
+			"formato": "retrato",
+			"plano": ["perfil"],
+			"prompt": "a young deserter, original teenage boy with long wet black hair, standing in the rain at a village border stone, scratching a deep line across the Hidden Cloud symbol of his forehead protector with a kunai, tears mixed with rain, a small bundle on his back",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/omoi.png",
+					"pagina": "omoi",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "ninja-renegado--genin-10101.png"
+		},
+		{
+			"slug": "ninja-renegado--chunin",
+			"nome": "Ninja renegado: Chunin",
+			"formato": "quadro",
+			"plano": ["de-cima"],
+			"prompt": "a missing-nin, original young woman with short choppy hair, sleeping curled inside a hollow tree trunk in a snowy forest, a dying campfire, a slashed forehead protector used as a pillow, a crumpled wanted poster beside her, snow falling",
+			"modelo": "pro",
+			"escolhida": "ninja-renegado--chunin-10101.png"
+		},
+		{
+			"slug": "ninja-renegado--jounin",
+			"nome": "Ninja renegado: Jounin",
+			"formato": "retrato",
+			"plano": ["moldura"],
+			"prompt": "framed by the window of a smoky tavern, a renegade, original man with a shaved head, an eyepatch and a long coat, counting gold coins from a bounty on the table, a slashed forehead protector on his brow, a wanted poster with his sketched face nailed to the wall behind, a big sword leaning on the chair",
+			"modelo": "pro",
+			"escolhida": "ninja-renegado--jounin-10101.png"
+		},
+		{
+			"slug": "ninja-renegado--nivel-anbu",
+			"nome": "Ninja renegado: Nível Anbu",
+			"formato": "faixa",
+			"plano": ["holandes"],
+			"prompt": "night, a renegade, original man with long silver-blue hair tied back and a slashed forehead protector, running across the surface of a river with crackling lightning chakra in his right hand, two masked hunter-nin chasing him, water spraying",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/hunter-nin.png",
+					"pagina": "hunter-nin",
+					"uso": "the hunter-nin outfit and mask as drawn in the Naruto anime, for the pursuers"
+				}
+			],
+			"escolhida": "ninja-renegado--nivel-anbu-10101.png"
+		},
+		{
+			"slug": "ninja-renegado--nivel-kage",
+			"nome": "Ninja renegado: Nível Kage",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"prompt": "a legendary renegade, original man with a short black beard and a long scar, on a mountain peak raising one arm as a gigantic dragon of lightning descends from the black storm clouds, cloak torn, a slashed forehead protector on his brow, rain",
+			"modelo": "pro",
+			"escolhida": "ninja-renegado--nivel-kage-10101.png"
+		},
+		{
+			"slug": "organizacao-clandestina--informante",
+			"nome": "Organização clandestina: Informante",
+			"formato": "retrato",
+			"plano": ["ombro"],
+			"prompt": "an old fisherman in a harbor town at dawn, slipping a folded note under a crate of fish while watching the docks, a plain iron ring on his thumb, seagulls and fog",
+			"modelo": "pro",
+			"escolhida": "organizacao-clandestina--informante-10101.png"
+		},
+		{
+			"slug": "organizacao-clandestina--recruta",
+			"nome": "Organização clandestina: Recruta",
+			"formato": "quadro",
+			"plano": ["moldura"],
+			"prompt": "framed by the mouth of a dark cave, a young ninja, original woman with a scar on her cheek, kneeling in the rain before two figures in long dark cloaks with high collars and wide straw hats hung with small bells, their faces unseen, her old forehead protector lying in the mud, no symbols on the cloaks",
+			"modelo": "pro",
+			"escolhida": "organizacao-clandestina--recruta-10101.png"
+		},
+		{
+			"slug": "organizacao-clandestina--membro",
+			"nome": "Organização clandestina: Membro",
+			"formato": "faixa",
+			"plano": ["perfil"],
+			"prompt": "two members of a secret organization walking side by side along a road through tall golden grass at sunset, long dark cloaks with high collars and no symbol, wide straw hats hiding the faces, one carrying a huge weapon wrapped in cloth, crows in the sky",
+			"modelo": "pro",
+			"escolhida": "organizacao-clandestina--membro-10101.png"
+		},
+		{
+			"slug": "organizacao-clandestina--executor",
+			"nome": "Organização clandestina: Executor",
+			"formato": "retrato",
+			"plano": ["silhueta"],
+			"prompt": "silhouette of a cloaked executor standing on top of a torii gate against a huge full moon, a long dark cloak flapping, a ring glinting on one finger, crackling lightning chakra in one hand, the face unseen",
+			"modelo": "pro",
+			"escolhida": "organizacao-clandestina--executor-10101.png"
+		},
+		{
+			"slug": "organizacao-clandestina--lider",
+			"nome": "Organização clandestina: Líder",
+			"formato": "pagina",
+			"plano": ["costas"],
+			"prompt": "the leader of a secret organization standing at the far end of a long table in a candlelit stone hall, empty chairs on both sides with a ring placed on the table in front of each one, faint translucent ghostly silhouettes of members standing behind some chairs, a dark cloak with a very high collar, no symbols; the face is never shown, an anonymous figure",
+			"modelo": "pro",
+			"escolhida": "organizacao-clandestina--lider-10101.png"
+		},
+		{
+			"slug": "sennin--aprendiz-de-senjutsu",
+			"nome": "Sennin: Aprendiz de senjutsu",
+			"formato": "retrato",
+			"plano": ["perfil"],
+			"prompt": "a young ninja, original man with dark skin and a black topknot, sitting cross-legged with eyes closed on top of a giant mushroom on Mount Myoboku, meditating to absorb nature energy, his left hand and forearm already turning to cracked grey stone, a small elderly toad sitting on a leaf in front of him with a wooden stick raised to whack him, waterfalls, huge leaves and green mist",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/mount-myoboku.png",
+					"pagina": "mount-myoboku",
+					"uso": "the landscape of Mount Myoboku as drawn in the Naruto anime: giant mushrooms, huge leaves, waterfalls and lush green mist"
+				}
+			],
+			"escolhida": "sennin--aprendiz-de-senjutsu-10103.png"
+		},
+		{
+			"slug": "sennin--modo-sennin",
+			"nome": "Sennin: Modo Sennin",
+			"formato": "quadro",
+			"plano": ["olhos"],
+			"prompt": "the eyes of a ninja in Sage Mode learned from the snakes: golden slit pupils like a serpent, dark purple markings around both eyes like eyeshadow, a few tiny white scales at the temples, strands of dark hair, a white snake coiling at the edge of the frame",
+			"modelo": "pro",
+			"escolhida": "sennin--modo-sennin-10103.png"
+		},
+		{
+			"slug": "sennin--sabio",
+			"nome": "Sennin: Sábio",
+			"formato": "pagina",
+			"plano": ["aberto"],
+			"prompt": "an old sage, original man with a long white beard, closed eyes and orange markings around the eyes, meditating among the roots of an enormous ancient tree in a deep forest, faint green light of nature energy flowing into him, moss on his shoulders, birds and deer resting around him undisturbed",
+			"modelo": "pro",
+			"escolhida": "sennin--sabio-10101.png"
+		},
+		{
+			"slug": "shinobi-de-ame--genin",
+			"nome": "Shinobi de Ame: Genin",
+			"formato": "retrato",
+			"plano": ["medio"],
+			"prompt": "two Amegakure genin sitting under a dripping metal pipe sharing a rice ball, grey rain uniforms, breathing masks pulled down to the chin, straw rain hats, forehead protectors with four vertical lines, endless rain, rusty industrial pipes, original young faces",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/oboro.png",
+					"pagina": "oboro",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/amegakure.png",
+					"pagina": "amegakure",
+					"uso": "the village of Amegakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-ame--genin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-ame--jounin",
+			"nome": "Shinobi de Ame: Jounin",
+			"formato": "quadro",
+			"plano": ["reflexo"],
+			"prompt": "an Amegakure jounin, original man with long dark hair and a breathing mask, standing on the surface of a flooded street making a hand seal as a water dragon rises behind him; the rain puddle reflects the scene upside down, grey towers",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/oboro.png",
+					"pagina": "oboro",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/amegakure.png",
+					"pagina": "amegakure",
+					"uso": "the village of Amegakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-ame--jounin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-ame--vigias-da-chuva",
+			"nome": "Shinobi de Ame: Vigias da Chuva",
+			"formato": "faixa",
+			"plano": ["aereo"],
+			"prompt": "the rain-soaked tower rooftops of Amegakure, four masked watchers each standing on a different spire with an umbrella, watching the streets below, pipes and dark water channels, heavy rain",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/amegakure.png",
+					"pagina": "amegakure",
+					"uso": "the village of Amegakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/oboro.png",
+					"pagina": "oboro",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "shinobi-de-ame--vigias-da-chuva-10101.png"
+		},
+		{
+			"slug": "shinobi-de-ame--lider-da-chuva",
+			"nome": "Shinobi de Ame: Líder da Chuva",
+			"formato": "pagina",
+			"plano": ["costas"],
+			"prompt": "the leader of Amegakure seen strictly from behind with his back to the camera, standing at the top of the tallest tower with arms open toward the city in the endless rain, a long grey cloak, a breathing apparatus tube over the shoulder, the whole grey industrial village below, lightning; the face is never shown, an anonymous figure",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/amegakure.png",
+					"pagina": "amegakure",
+					"uso": "the village of Amegakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/hanzo.png",
+					"pagina": "hanzo",
+					"uso": "only the breathing mask apparatus and its tube as drawn in the Naruto anime, not this person"
+				}
+			],
+			"escolhida": "shinobi-de-ame--lider-da-chuva-10103.png"
+		},
+		{
+			"slug": "shinobi-de-iwa--genin",
+			"nome": "Shinobi de Iwa: Genin",
+			"formato": "retrato",
+			"plano": ["de-cima"],
+			"prompt": "a young Iwagakure genin, original girl with a thick brown braid and a scar on the cheek, climbing a sheer canyon wall with chakra in her hands and feet, a heavy training boulder tied to her back with ropes, dark red one-sleeve uniform, the rock towers of the Hidden Stone village far below",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kurotsuchi.png",
+					"pagina": "kurotsuchi",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/iwagakure.png",
+					"pagina": "iwagakure",
+					"uso": "the village of Iwagakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-iwa--genin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-iwa--chunin",
+			"nome": "Shinobi de Iwa: Chunin",
+			"formato": "quadro",
+			"plano": ["chao"],
+			"prompt": "a thick earth wall bursts up from the ground toward the camera, spat out as a stream of mud from the mouth of a crouching Iwagakure chunin, original stocky young man with a shaved head, brown flak vest with one shoulder guard over a dark red uniform, rocks and dust flying",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kitsuchi.png",
+					"pagina": "kitsuchi",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "shinobi-de-iwa--chunin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-iwa--corpo-de-explosao",
+			"nome": "Shinobi de Iwa: Corpo de Explosão",
+			"formato": "faixa",
+			"plano": ["aereo"],
+			"prompt": "three Iwagakure explosion corps ninjas planting explosive tags and clay mines along an old stone bridge over a canyon at dawn, one lighting a long fuse, dark red one-sleeve uniforms, rolling clouds",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kurotsuchi.png",
+					"pagina": "kurotsuchi",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/iwagakure.png",
+					"pagina": "iwagakure",
+					"uso": "the village of Iwagakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-iwa--corpo-de-explosao-10101.png"
+		},
+		{
+			"slug": "shinobi-de-iwa--tsuchikage",
+			"nome": "Shinobi de Iwa: Tsuchikage",
+			"formato": "pagina",
+			"plano": ["perfil"],
+			"prompt": "the Tsuchikage floating in the air above the rock towers of the Hidden Stone village at sunset, seen from the side, a brown and white Kage hat with the kanji 土 and a long robe, the face lost in the shadow of the hat brim, a small cube of white light glowing between the hands, pebbles floating around; the face is never shown, an anonymous figure",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kage.png",
+					"pagina": "kage",
+					"uso": "the Kage hats and robes as drawn in the Naruto anime: only the hat shape, its color and kanji and the white robe. The person is anonymous and the face is never shown"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/iwagakure.png",
+					"pagina": "iwagakure",
+					"uso": "the village of Iwagakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-iwa--tsuchikage-10101.png"
+		},
+		{
+			"slug": "shinobi-de-kiri--genin",
+			"nome": "Shinobi de Kiri: Genin",
+			"formato": "retrato",
+			"plano": ["reflexo"],
+			"prompt": "a young Kirigakure genin, original girl with short dark blue hair, standing on the surface of a misty lake for the first time, knees shaking, ripples under her sandals, her reflection wobbling in the water, the stilt houses of the Hidden Mist village in the fog, Hidden Mist forehead protector",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/chojuro.png",
+					"pagina": "chojuro",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kirigakure.png",
+					"pagina": "kirigakure",
+					"uso": "the village of Kirigakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-kiri--genin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-kiri--jounin",
+			"nome": "Shinobi de Kiri: Jounin",
+			"formato": "quadro",
+			"plano": ["holandes"],
+			"prompt": "the deck of a ship in a storm: a Kirigakure jounin, original woman with a long black braid and freckles, dark grey-green Hidden Mist flak vest, sends a water dragon crashing over the railing at enemy boats, spray and rain, forehead protector with four wavy lines",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/ao.png",
+					"pagina": "ao",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "shinobi-de-kiri--jounin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-kiri--oinin",
+			"nome": "Shinobi de Kiri: Oinin",
+			"formato": "retrato",
+			"plano": ["moldura"],
+			"prompt": "framed by bare dead branches in a misty swamp, a Kirigakure hunter-nin in a white mask with red markings and the Hidden Mist symbol, dark green long-sleeved robe with a sash, kneeling over a defeated missing-nin and unrolling a sealing scroll to dispose of the body",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/hunter-nin.png",
+					"pagina": "hunter-nin",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "shinobi-de-kiri--oinin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-konoha--jounin",
+			"nome": "Shinobi de Konoha: Jounin",
+			"formato": "quadro",
+			"plano": ["ombro"],
+			"prompt": "a Konoha jounin, original woman with a long chestnut braid, sitting on a high tree branch eating dango and watching three genin below argue about the two silver bells hanging from her belt, olive green Hidden Leaf flak vest with the red spiral, dark navy uniform, sunny training field",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kakashi-hatake.png",
+					"pagina": "kakashi-hatake",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a"],
+			"escolhida": "shinobi-de-konoha--jounin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-konoha--hokage",
+			"nome": "Shinobi de Konoha: Hokage",
+			"formato": "pagina",
+			"plano": ["costas"],
+			"prompt": "the Hokage standing on the roof of the Hokage residence at dawn, looking at the village and at the Hokage Rock with exactly five carved stone faces, a white haori with red flame patterns at the hem, the red and white Hokage hat worn on the head and covering all the hair, no hair visible; the face is never shown, an anonymous figure",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kage.png",
+					"pagina": "kage",
+					"uso": "the Kage hats and robes as drawn in the Naruto anime: only the hat shape, its color and kanji and the white robe. The person is anonymous and the face is never shown"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/hokage-rock.png",
+					"pagina": "hokage-rock",
+					"uso": "the Hokage Rock and the village of Konoha as drawn in the Naruto anime, for the background"
+				}
+			],
+			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a"],
+			"escolhida": "shinobi-de-konoha--hokage-10102.png"
+		},
+		{
+			"slug": "shinobi-de-kumo--genin",
+			"nome": "Shinobi de Kumo: Genin",
+			"formato": "retrato",
+			"plano": ["perfil"],
+			"prompt": "a young Kumogakure genin, original girl with dark skin and short curly white hair, practicing hand seals on a narrow stone bridge between peaks above a sea of clouds, a small spark of lightning between her fingers, hair blown by the wind, white one-shoulder Hidden Cloud flak vest",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/karui.png",
+					"pagina": "karui",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kumogakure.png",
+					"pagina": "kumogakure",
+					"uso": "the village of Kumogakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-kumo--genin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-kumo--chunin",
+			"nome": "Shinobi de Kumo: Chunin",
+			"formato": "quadro",
+			"plano": ["ombro"],
+			"prompt": "a Kumogakure chunin, original lanky young man with dark skin and long white dreadlocks, sitting on a cliff edge above the sea of clouds with legs dangling, scribbling rhymes in a small notebook, chewing a blade of grass, a sword on his back, white one-shoulder Hidden Cloud flak vest",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/darui.png",
+					"pagina": "darui",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kumogakure.png",
+					"pagina": "kumogakure",
+					"uso": "the village of Kumogakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-kumo--chunin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-kumo--guarda-do-raio",
+			"nome": "Shinobi de Kumo: Guarda do Raio",
+			"formato": "faixa",
+			"plano": ["aberto"],
+			"prompt": "two Kumogakure bodyguards large in the foreground on the balcony of the Raikage tower in a thunderstorm at night, original faces, white one-shoulder Hidden Cloud flak vests, one lazily sitting on the railing, the other standing alert with a big sword on his back, lightning striking the mountains behind",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kumogakure.png",
+					"pagina": "kumogakure",
+					"uso": "the village of Kumogakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/darui.png",
+					"pagina": "darui",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "shinobi-de-kumo--guarda-do-raio-10103.png"
+		},
+		{
+			"slug": "shinobi-de-kumo--raikage",
+			"nome": "Shinobi de Kumo: Raikage",
+			"formato": "pagina",
+			"plano": ["silhueta"],
+			"prompt": "silhouette of a huge muscular figure crashing through the wall of the Raikage tower, wrapped in a blinding armor of lightning chakra, only the outline, a white robe with yellow trim and a falling yellow and white Kage hat with the kanji 雷 visible, the face lost in the glare of the lightning; the face is never shown, an anonymous figure",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kage.png",
+					"pagina": "kage",
+					"uso": "the Kage hats and robes as drawn in the Naruto anime: only the hat shape, its color and kanji and the white robe. The person is anonymous and the face is never shown"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kumogakure.png",
+					"pagina": "kumogakure",
+					"uso": "the village of Kumogakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-kumo--raikage-10101.png"
+		},
+		{
+			"slug": "shinobi-de-oto--genin",
+			"nome": "Shinobi de Oto: Genin",
+			"formato": "retrato",
+			"plano": ["medio"],
+			"prompt": "a Sound village genin, original pale girl with long grey hair over one eye, playing a bamboo flute alone on a rock by a black pond at night, the sound waves visible as rings across the water, beige camouflage-patterned shirt, forehead protector with a musical note symbol",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/zaku-abumi.png",
+					"pagina": "zaku-abumi",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "shinobi-de-oto--genin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-oto--jounin",
+			"nome": "Shinobi de Oto: Jounin",
+			"formato": "quadro",
+			"plano": ["de-cima"],
+			"prompt": "a Sound jounin, original man with a shaved head and stitched scars, in a torch-lit stone tunnel of an underground hideout, blasting shock waves from metal air tubes in his palms that crack the walls, snakes slithering on the floor, a thick purple rope belt tied in a bow",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kidomaru.png",
+					"pagina": "kidomaru",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "shinobi-de-oto--jounin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-oto--guarda-do-som",
+			"nome": "Shinobi de Oto: Guarda do Som",
+			"formato": "faixa",
+			"plano": ["chao"],
+			"prompt": "four elite Sound ninjas, teenagers with realistic proportions, standing in a dark forest at the corners of a tall translucent purple barrier wall, the nearest one large in the foreground with a crooked grin, beige outfits with thick purple rope belts tied in bows, black flame-like cursed seal marks spreading over their arms and faces, four original faces",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/sound-four.png",
+					"pagina": "sound-four",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/cursed-seal-of-heaven.png",
+					"pagina": "cursed-seal-of-heaven",
+					"uso": "only the cursed seal marks as drawn in the Naruto anime (black flame-like marks spreading over the skin). The people wearing them are original characters"
+				}
+			],
+			"escolhida": "shinobi-de-oto--guarda-do-som-10103.png"
+		},
+		{
+			"slug": "shinobi-de-oto--otokage",
+			"nome": "Shinobi de Oto: Otokage",
+			"formato": "pagina",
+			"plano": ["moldura"],
+			"prompt": "framed by a huge carved stone doorway of a dark underground hideout, the leader of the Sound village seated on a throne deep in shadow, only pale long-fingered hands, a thick purple rope belt tied in a bow and a coiling white snake visible, the face completely swallowed by darkness; the face is never shown, an anonymous figure",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/otogakure.png",
+					"pagina": "otogakure",
+					"uso": "the village of Otogakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-oto--otokage-10101.png"
+		},
+		{
+			"slug": "shinobi-de-suna--chunin",
+			"nome": "Shinobi de Suna: Chunin",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a Sunagakure chunin, original woman with dark skin and short silver hair, on a sandstone rooftop slicing the air with a sweep of her arm, a sharp wind blade cutting a hanging cloth banner in two, sand swirling, beige Hidden Sand flak vest and a head cloth with the Hidden Sand forehead protector",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/baki.png",
+					"pagina": "baki",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/sunagakure.png",
+					"pagina": "sunagakure",
+					"uso": "the village of Sunagakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-suna--chunin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-suna--jounin",
+			"nome": "Shinobi de Suna: Jounin",
+			"formato": "quadro",
+			"plano": ["ombro"],
+			"prompt": "a Sunagakure jounin, original bearded man with a head cloth, kneeling and drawing a map in the sand on the floor of a domed room while three young genin lean in to listen, oil lamp light, round windows, beige Hidden Sand flak vests",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/baki.png",
+					"pagina": "baki",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "shinobi-de-suna--jounin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-suna--escorpioes-do-deserto",
+			"nome": "Shinobi de Suna: Escorpiões do Deserto",
+			"formato": "faixa",
+			"plano": ["chao"],
+			"prompt": "masked elite ninjas of the Hidden Sand rising out from under the dunes at night, sand pouring off their dark cloaks, curved blades shaped like scorpion tails, only their eyes visible, a full moon over the desert",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/sunagakure.png",
+					"pagina": "sunagakure",
+					"uso": "the village of Sunagakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-suna--escorpioes-do-deserto-10101.png"
+		},
+		{
+			"slug": "shinobi-de-suna--kazekage",
+			"nome": "Shinobi de Suna: Kazekage",
+			"formato": "pagina",
+			"plano": ["costas"],
+			"prompt": "the Kazekage sitting on the edge of the great dome of the Kazekage tower at night, looking at the moon over the desert, a white robe with green trim, the green and white Kazekage hat with the kanji 風 hanging on the back by its string, golden dust drifting gently around; the face is never shown, an anonymous figure",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kage.png",
+					"pagina": "kage",
+					"uso": "the Kage hats and robes as drawn in the Naruto anime: only the hat shape, its color and kanji and the white robe. The person is anonymous and the face is never shown"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/sunagakure.png",
+					"pagina": "sunagakure",
+					"uso": "the village of Sunagakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-suna--kazekage-10101.png"
+		},
+		{
+			"slug": "shinobi-de-taki--genin",
+			"nome": "Shinobi de Taki: Genin",
+			"formato": "retrato",
+			"plano": ["chao"],
+			"prompt": "a young Takigakure genin, original boy with green spiky hair, leaping from stone to stone across a fast river below a waterfall, water splashing toward the camera, forehead protector with the Hidden Waterfall symbol",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/fu.png",
+					"pagina": "fu",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/takigakure.png",
+					"pagina": "takigakure",
+					"uso": "the village of Takigakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-taki--genin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-taki--chunin",
+			"nome": "Shinobi de Taki: Chunin",
+			"formato": "quadro",
+			"plano": ["moldura"],
+			"prompt": "framed by a curtain of falling water, a Takigakure chunin, original woman with short dark hair, hiding behind the waterfall and watching intruders on the riverbank through the water, kunai ready",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shibuki.png",
+					"pagina": "shibuki",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "shinobi-de-taki--chunin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-taki--jounin",
+			"nome": "Shinobi de Taki: Jounin",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "a Takigakure jounin, original man with a long brown ponytail, standing on the water at the foot of a giant waterfall as a water dragon coils up around him, mist and a rainbow",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shibuki.png",
+					"pagina": "shibuki",
+					"uso": "outfit, gear and drawing style from the Naruto anime to follow closely (clothes, armor, weapons, colors, forehead protector). Draw an original person with a different face and hair, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/takigakure.png",
+					"pagina": "takigakure",
+					"uso": "the village of Takigakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-taki--jounin-10101.png"
+		},
+		{
+			"slug": "shinobi-de-taki--guardioes-da-agua-do-heroi",
+			"nome": "Shinobi de Taki: Guardiões da Água do Herói",
+			"formato": "faixa",
+			"plano": ["aberto"],
+			"prompt": "the enormous ancient tree at the heart of Takigakure hidden behind a waterfall, two guardians standing on its giant roots beside a small glowing spring of golden water, sunbeams through the leaves",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/takigakure.png",
+					"pagina": "takigakure",
+					"uso": "the village of Takigakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-taki--guardioes-da-agua-do-heroi-10101.png"
+		},
+		{
+			"slug": "shinobi-de-taki--lider-da-cachoeira",
+			"nome": "Shinobi de Taki: Líder da Cachoeira",
+			"formato": "pagina",
+			"plano": ["silhueta"],
+			"prompt": "silhouette of the leader of Takigakure standing inside a giant waterfall, the water parting around the outline, a small cup of glowing golden water in one hand, sunlight behind the falling water; the face is never shown, an anonymous figure",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/takigakure.png",
+					"pagina": "takigakure",
+					"uso": "the village of Takigakure as drawn in the Naruto anime: only the architecture and the landscape, for the background"
+				}
+			],
+			"escolhida": "shinobi-de-taki--lider-da-cachoeira-10101.png"
 		}
 	],
 	"direcao_nota": "Direção (20/10): referências do anime e do mangá de Naruto, e ângulos ousados como os quadros-chave do anime: câmera inclinada, silhueta contra a lua, close nos olhos, escorço, vista aérea, contra-plongée extremo. O personagem no meio de uma ação, fora do centro, cortado pela moldura. Nunca a pose de ficha (de pé, de frente, no centro, fundo simétrico). Rostos originais; criaturas e símbolos canônicos iguais aos do anime.",

@@ -16,6 +16,7 @@
 		['shinobi', 'Shinobi'],
 		['fora da lei', 'Fora da lei'],
 		['guerreiro', 'Guerreiros'],
+		['organização', 'Organizações'],
 		['fauna', 'Feras'],
 		['invocação', 'Invocações'],
 		['criatura', 'Criaturas']
@@ -71,7 +72,7 @@
 			<span class="font-pixel text-[13px] leading-none font-bold tracking-[.14em] text-[#D9A82B]">SHINOBI NO MICHI · LIVRO DE MONSTROS</span>
 			<h1 class="m-0 font-mincho text-[38px] leading-[44px] font-extrabold text-papel md:text-[56px] md:leading-[62px]">Bestiário</h1>
 			<p class="m-0 max-w-[62ch] text-[15px] leading-[23px] text-areia md:text-[17px] md:leading-[27px]">
-				O que se levanta contra os ninjas: arquétipos de qualquer vila, fora da lei, feras, invocações e coisas que não deveriam andar. {data.criaturas.length} verbetes e {data.fichas} fichas de combate, em ordem alfabética.
+				O que se levanta contra os ninjas: os shinobi de cada vila, do Genin ao Kage, clãs, o Sennin, organizações, fora da lei, feras, invocações e coisas que não deveriam andar. {data.criaturas.length} verbetes e {data.fichas} fichas de combate, em ordem alfabética.
 			</p>
 		</div>
 		<nav aria-label="Sumário do bestiário" class="flex flex-col border-2 border-[var(--vermelhao-lo)] bg-[#16110F] text-papel">

@@ -374,7 +374,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			const [largura, altura] = TAMANHO[formato];
 			return { arquivo: existsSync(join(raiz, 'static', arquivo)) ? `/${arquivo}` : null, formato, plano, largura, altura };
 		};
-		const GENTE: TipoCriatura[] = ['shinobi', 'fora da lei', 'guerreiro'];
+		const GENTE: TipoCriatura[] = ['shinobi', 'fora da lei', 'guerreiro', 'organização'];
 		/** `varios`: o verbete tem mais de um estágio, e cada um vira uma ficha separada, com arte própria. */
 		const estagioDe = (y: CriaturaYaml, e: EstagioYaml, varios: boolean): EstagioCriatura => {
 			const f = e.ficha ? FICHAS[e.ficha] : null;
@@ -411,7 +411,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 				ameaca,
 				papel: e.papel,
 				tipo: y.tipo,
-				cla: y.slug.startsWith('cla-') ? y.slug.slice(4) : null,
+				cla: y.slug.startsWith('cla-') ? y.slug.slice(4) : y.slug === 'sennin' ? 'sennin' : null,
 				acerto: ataques[0]?.acerto ?? base.acerto,
 				defesa,
 				iniciativa,

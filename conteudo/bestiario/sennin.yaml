@@ -1,0 +1,77 @@
+# Bestiário · Sennin: o ninja que aprendeu a misturar a energia da natureza ao próprio chakra (cap. 15). É um molde
+# abstrato, como as organizações: o Mestre escolhe quem o ensinou (uma espécie de invocação ou um mestre solitário) e
+# o dom que a escola deu. O cap. 15 exige nível 7 ou mais, por isso são três fichas: o aprendiz (nível Jounin,
+# ameaça 8), o Modo Sennin completo (nível Anbu, 11) e o sábio (nível Kage, 16). A ficha já considera o modo ativo.
+# Formato de cada verbete: veja o cabeçalho de shinobi.yaml.
+
+- slug: sennin
+  nome: Sennin
+  tipo: shinobi
+  origem: Uma terra sagrada ou um mestre solitário
+  vila: null
+  arte: { formato: pagina, plano: de baixo }
+  cena:
+    - "Ele está sentado de pernas cruzadas no meio da clareira, e a luta passa em volta dele como se ele fosse uma pedra. O vento para. Quando ele abre os olhos, há marcas em volta deles que não estavam ali, e as pupilas mudaram de forma. O primeiro ninja que avança cai antes de chegar perto, atingido por um golpe que nem chegou a tocá-lo."
+  descricao:
+    - "Poucos ninjas aprendem a absorver a energia da natureza e a misturá-la ao próprio chakra. O caminho mais comum passa pela terra sagrada de uma espécie de invocação, que ensina o senjutsu a quem os sábios dela aceitam. O mais raro passa por um mestre solitário, que cobra caro pelo que sabe (cap. 15). Em Modo Sennin, ele sente tudo o que vive num raio de duzentos metros, bate com uma força que o corpo dele não teria e transforma os jutsus que já conhece em técnicas de eremita. A energia natural cobra o preço: quem absorve demais vira pedra."
+    - "Este verbete é um molde abstrato. O Mestre escolhe quem ensinou o Sennin, e essa escolha dá o jeito dele: as marcas que o modo deixa no rosto, o companheiro que luta ao lado e o dom que a escola deu (o traço Escola do senjutsu). As três fichas são os degraus do caminho: o aprendiz, que ainda luta para ficar parado o bastante; o Sennin que domina o modo; e o sábio, que os próprios mestres tratam como igual."
+  estagios:
+    - nome: Aprendiz de senjutsu
+      arte: { formato: retrato, plano: perfil }
+      ameaca: 8
+      papel: lutador
+      resumo: "Ainda aprende a ficar parado o bastante para a natureza entrar."
+      ataques:
+        - &golpe-natureza { nome: Golpe da natureza, alcance: Corpo a corpo, efeito: "A energia natural estende o golpe: acerta alvos a até 3 m." }
+      jutsus:
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: kawarimi-no-jutsu }
+        - { nome: Técnica de antes do treino, nota: "Um jutsu de rank B ou menor que ele já dominava antes do senjutsu, escolhido pelo Mestre no catálogo. É ele que vira Senpou com mais frequência." }
+      tracos:
+        - &sennin-imperfeito { nome: Modo Sennin imperfeito, efeito: "Precisa de 3 turnos meditando, sem se mexer, para entrar no modo, que dura só 3 turnos (Especialização Sennin nível 1) e custa 5 PC por turno. Enquanto dura, sente presenças num raio de 200 m e ignora genjutsu de rank C ou menor. Ao sair, ganha dois níveis de Fadiga e -2 em todas as rolagens por 1d4 turnos." }
+        - &risco-pedra { nome: Risco de pedra, efeito: "A cada turno que tenta absorver além do limite, rola 1d20. Num 1, perde 1d6 PV para sempre, e parte do corpo vira pedra (cap. 15)." }
+        - &senpou { nome: Senpou, efeito: "Em Modo Sennin, qualquer jutsu que ele conhece pode sair na versão de eremita: custa metade a mais (no mínimo 5 PC), rola o dobro de dados de dano e tem alcance e área 50% maiores (cap. 15)." }
+        - &escola { nome: Escola do senjutsu, efeito: "Aprendeu com uma espécie de invocação (sapos, serpentes, lesmas ou outra que ensine o senjutsu) ou com um mestre solitário, à escolha do Mestre, e a escola deu um dom. **Força:** o golpe da natureza soma um dado de dano. **Veneno:** quem sofre o golpe resiste com VIG contra a DT da ficha ou sofre o Veneno Forte (cap. 11). **Cura:** uma vez por rodada, como ação secundária, cura 2d6 PV de um aliado que toca. **Sentidos:** tem vantagem em Percepção e nunca fica **Desprevenido**." }
+    - nome: Modo Sennin
+      arte: { formato: quadro, plano: olhos }
+      ameaca: 11
+      papel: lutador
+      resumo: "Domina o modo, e quem o ensinou luta ao lado dele."
+      ataques:
+        - *golpe-natureza
+      jutsus:
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: shunshin-no-jutsu }
+        - { nome: Técnica de eremita, nota: "Um jutsu de rank A ou menor, escolhido pelo Mestre no catálogo, que ele quase sempre lança na versão Senpou." }
+      tracos:
+        - &modo-sennin { nome: Modo Sennin, efeito: "Entra no modo depois de 1 turno parado com um companheiro de invocação ajudando (3 turnos meditando sozinho), e ele dura uma cena por 5 PC por turno. Enquanto dura, sente presenças num raio de 200 m e percebe intenções hostis, ignora genjutsu de rank C ou menor e soma um dado ao dano dos jutsus. Ao sair, ganha dois níveis de Fadiga e -2 em todas as rolagens por 1d4 turnos." }
+        - *senpou
+        - *escola
+        - { nome: Clone que medita, efeito: "Antes da luta, deixa um clone das sombras escondido absorvendo a energia natural. Quando desfaz o clone, entra no modo na hora, sem gastar turno." }
+        - { nome: Companheiro da escola, efeito: "Se aprendeu com uma espécie de invocação, luta com um animal pequeno dela ao lado (a ficha mais baixa do verbete da espécie), que age na iniciativa dele. Com o companheiro encostado nele, não corre o risco de petrificação." }
+    - nome: Sábio
+      arte: { formato: pagina, plano: plano aberto }
+      capa: true
+      ameaca: 16
+      papel: chefe
+      resumo: "Um dos poucos humanos que os mestres do senjutsu tratam como igual."
+      ataques:
+        - { nome: Golpe da natureza, alcance: Corpo a corpo, efeito: "A energia natural estende o golpe: acerta alvos a até 6 m." }
+      jutsus:
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: shunshin-no-jutsu }
+        - { nome: Técnica do sábio, nota: "Uma técnica de rank S feita de energia natural, escolhida pelo Mestre no catálogo ou criada com as regras do cap. 20. Ele sempre a lança na versão Senpou." }
+      tracos:
+        - *modo-sennin
+        - *senpou
+        - *escola
+        - { nome: Em paz com a natureza, efeito: "A energia natural entra nele sem esforço: entra no modo sem gastar turno e nunca corre o risco de petrificação." }
+        - { nome: A escola responde, efeito: "Uma vez por cena, se aprendeu com uma espécie de invocação, invoca o chefe dela (o verbete da espécie), que entra na luta na rodada seguinte. Se aprendeu com um mestre solitário, a própria natureza responde: o chão num raio de 12 m em volta dele vira terreno difícil para os inimigos até o fim da cena." }
+  taticas:
+    - "Deixa os clones e o companheiro ganharem tempo enquanto absorve a energia natural. Depois que o modo está ativo, vai direto no inimigo mais forte e tenta acabar a luta antes de o modo acabar. Quem quer vencê-lo tem duas chances: interromper a meditação ou aguentar até a ressaca."
+  ganchos:
+    - "Os sábios de uma terra sagrada pedem ao grupo que traga de volta um Sennin que virou as costas para eles."
+    - "Um Sennin procura o sucessor de uma profecia antiga, e acha que é alguém do grupo."
+    - "Um mestre solitário morreu sem herdeiro, e o aluno que ele expulsou quer o que ficou escrito nas paredes da caverna."
+    - "Um Sennin cura os soldados de um daimyō tirano, e acha que salvar vidas nunca é errado."
+  tags: [Tático, Cauteloso]

@@ -1,0 +1,722 @@
+# Bestiário · os shinobi das vilas ocultas, em cinco níveis cada: Genin (ameaça 2), Chunin (5), Jounin (8), a tropa de
+# elite da vila (11) e o líder dela (16, chefe). Cada vila tem o sotaque do cap. 7 (elemento, estilo, armas) e o nome
+# próprio da sua elite: Anbu em Konoha, Escorpiões do Deserto em Suna, Oinin em Kiri, Guarda do Raio em Kumo, Corpo de
+# Explosão em Iwa, Vigias da Chuva em Ame, Guarda do Som em Oto e Guardiões da Água do Herói em Taki.
+# Formato de cada verbete: veja o cabeçalho de shinobi.yaml.
+
+- slug: shinobi-de-konoha
+  nome: Shinobi de Konoha
+  tipo: shinobi
+  origem: Konohagakure
+  vila: konoha
+  arte: { formato: faixa, plano: plano aberto }
+  cena:
+    - "Os telhados vermelhos ficam para trás, e a patrulha corre pelos galhos sem fazer barulho. São três, depois quatro, depois ninguém sabe mais quantos. Quando o grupo percebe que está cercado, o líder deles já fez a pergunta educada que todo intruso de Konoha ouve antes da luta."
+  descricao:
+    - "Konoha é a maior das vilas ocultas e a mais orgulhosa do próprio trabalho em equipe. Os ninjas da Folha aprendem cedo que a vila é uma família: lutam em equipes de três com um líder, cobrem as costas uns dos outros e dominam o fogo e o taijutsu melhor que qualquer vizinho. Esta página traz o ninja de Konoha do genin recém-formado ao Hokage."
+  estagios:
+    - nome: Genin
+      ameaca: 2
+      papel: atirador
+      resumo: "Recém-saído da Academia, vai à frente da equipe para ver primeiro e avisar."
+      arte: { formato: retrato, plano: de cima }
+      ataques:
+        - { nome: Shuriken, alcance: Médio }
+        - { nome: Kunai, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: henge-no-jutsu }
+        - { slug: bunshin-no-jutsu }
+        - { slug: kawarimi-no-jutsu }
+      tracos:
+        - { nome: Olhos da copa, efeito: "Tem vantagem nos testes de Percepção enquanto está no alto das árvores." }
+        - { nome: Sinal, efeito: "Como ação secundária, dispara um sinalizador. A equipe dele chega em 1d4 rodadas." }
+    - nome: Chunin
+      ameaca: 5
+      papel: lutador
+      resumo: "Lidera equipes de genin, guarda os portões e cumpre as missões de rank C e B."
+      arte: { formato: retrato, plano: corpo inteiro }
+      ataques:
+        - { nome: Kunai, alcance: Corpo a corpo }
+        - { nome: Shuriken, alcance: Curto, dano: 1d6+2 }
+      jutsus:
+        - { slug: kawarimi-no-jutsu }
+        - { slug: bunshin-no-jutsu }
+        - { slug: goukakyu-no-jutsu }
+      tracos:
+        - &konoha-equipe { nome: Trabalho em equipe, efeito: "Quando outro shinobi de Konoha ataca o mesmo alvo na mesma rodada, o ataque dele tem vantagem." }
+    - nome: Jounin
+      ameaca: 8
+      papel: lutador
+      resumo: "Veterano de guerra que lidera os chunin e decide a luta antes de ela começar."
+      arte: { formato: quadro, plano: por cima do ombro }
+      ataques:
+        - { nome: Kunai, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: karyuu-endan }
+        - { slug: goukakyu-no-jutsu }
+        - { slug: konoha-daisenpuu }
+      tracos:
+        - *konoha-equipe
+        - &vontade-fogo { nome: Vontade do Fogo, efeito: "Uma vez por cena, quando cai abaixo da metade dos PV, os ataques dele têm vantagem até o fim do próximo turno." }
+    - nome: Anbu
+      ameaca: 11
+      papel: assassino
+      resumo: "O esquadrão de elite do Hokage: caça renegados, guarda segredos e responde só a ele."
+      arte: { formato: retrato, plano: close }
+      ataques:
+        - { nome: Tantō, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: shunshin-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: chidori }
+      tracos:
+        - &mascara { nome: Máscara, efeito: "Testes de Persuasão para arrancar dele qualquer informação têm desvantagem." }
+        - { nome: Selo do silêncio, efeito: "Se cair inconsciente perto de inimigos, um selo no próprio corpo o queima até as cinzas no fim do turno, levando os segredos junto." }
+    - nome: Hokage
+      ameaca: 16
+      papel: chefe
+      resumo: "O líder da vila e, quase sempre, o ninja mais forte dela."
+      arte: { formato: pagina, plano: de costas }
+      ataques:
+        - { nome: Golpe do Hokage, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: rasengan }
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: karyuu-endan }
+        - { slug: goukakyu-no-jutsu }
+      tracos:
+        - &ordem-kage { nome: Ordem do Kage, efeito: "Uma vez por rodada, como ação secundária, dá uma ordem: um aliado da vila que possa ouvi-lo faz um ataque na hora, como reação." }
+        - { nome: Escolta, efeito: "Quase nunca está sozinho: dois Anbu (ficha acima) entram na luta na primeira rodada." }
+        - *vontade-fogo
+  taticas:
+    - "Abre com shuriken de longe e chega perto para a kunai quando o alvo se distrai. Usa a Substituição no primeiro golpe que vier forte."
+    - "Se a luta vira, recua para buscar reforço. Em Konoha, informação vale mais do que uma vitória, e nenhum ninja da Folha deixa um companheiro para trás."
+  ganchos:
+    - "Uma equipe de Konoha escolta um cliente que mente sobre o que carrega, e o chunin que a lidera desconfia."
+    - "O genin que o grupo capturou tem a idade de um irmão mais novo de alguém da equipe, e o sinal que ele disparou chamou outra coisa."
+    - "O Hokage oferece ao grupo uma missão que ninguém mais da vila pode saber que existe."
+  tags: [Leal, Tático]
+
+- slug: shinobi-de-suna
+  nome: Shinobi de Suna
+  tipo: shinobi
+  origem: Sunagakure
+  vila: suna
+  arte: { formato: faixa, plano: plano aberto }
+  cena:
+    - "No alto da duna, três figuras andam em fila, panos enrolados no rosto contra a areia. O calor faz as silhuetas tremerem. Elas param juntas, sem que ninguém dê ordem, e se viram para o mesmo lado."
+  descricao:
+    - "Suna fica no meio do deserto do País do Vento, onde a água vale mais do que ouro. Os ninjas da Areia lutam com o vento, com venenos que a vila guarda há gerações e, os mais pacientes, com marionetes (veja o verbete Marionetista). São poucos, conhecem cada duna e não deixam ninguém da vila para trás. Esta página traz o ninja de Suna do genin ao Kazekage."
+  estagios:
+    - nome: Genin
+      ameaca: 2
+      papel: bando
+      membros: 3
+      resumo: "Patrulham o deserto em trio e conhecem cada poço do caminho."
+      arte: { formato: faixa, plano: plano aberto }
+      nota: "Ficha de cada membro; os três agem na mesma iniciativa."
+      ataques:
+        - { nome: Kunai envenenada, alcance: Corpo a corpo, efeito: "Na primeira kunai que acerta, o alvo resiste com VIG contra a DT 13 ou sofre o Veneno Comum (cap. 11)." }
+      jutsus:
+        - { slug: kawarimi-no-jutsu }
+        - { slug: daitoppa }
+      tracos:
+        - &filhos-deserto { nome: Filhos do deserto, efeito: "Não sofrem penalidade por areia, calor ou tempestade de areia." }
+    - nome: Chunin
+      arte: { formato: retrato, plano: de baixo }
+      ameaca: 5
+      papel: atirador
+      resumo: "Ataca de longe com agulhas e vento, e sempre carrega o antídoto do próprio veneno."
+      ataques:
+        - { nome: Agulhas envenenadas, alcance: Curto, efeito: "O alvo resiste com VIG contra a DT 15 ou sofre o Veneno Forte (cap. 11)." }
+      jutsus:
+        - { slug: daitoppa }
+        - { slug: kazekiri-no-jutsu }
+      tracos:
+        - *filhos-deserto
+        - { nome: Antídoto, efeito: "Uma vez por cena, como ação secundária, cura um aliado do veneno de Suna." }
+    - nome: Jounin
+      arte: { formato: quadro, plano: por cima do ombro }
+      ameaca: 8
+      papel: controlador
+      resumo: "Comanda o vento do deserto e transforma o campo inteiro numa tempestade de areia."
+      ataques:
+        - { nome: Lâmina de vento, alcance: Curto }
+      jutsus:
+        - { slug: kazekiri-no-jutsu }
+        - { slug: daitoppa }
+        - { slug: kage-bunshin-no-jutsu }
+      tracos:
+        - *filhos-deserto
+        - { nome: Tempestade de areia, efeito: "Uma vez por cena, levanta uma tempestade numa área de 12 m: quem não é de Suna resiste com VIG contra a DT 17 ou fica **Cego** dentro dela até o fim do próximo turno." }
+    - nome: Escorpiões do Deserto
+      arte: { formato: faixa, plano: câmera no chão }
+      ameaca: 11
+      papel: assassino
+      resumo: "A elite do Kazekage: assassinos que matam com veneno e não deixam rastro na areia."
+      ataques:
+        - { nome: Agulha de escorpião, alcance: Curto, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 18 ou sofre o Veneno Forte (cap. 11)." }
+      jutsus:
+        - { slug: shunshin-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: kazekiri-no-jutsu }
+      tracos:
+        - *filhos-deserto
+        - { nome: Sem rastro, efeito: "Na areia, testes de Rastreamento para segui-lo falham sozinhos." }
+    - nome: Kazekage
+      ameaca: 16
+      papel: chefe
+      resumo: "O líder de Suna, que governa o vento e a tempestade do País do Vento."
+      arte: { formato: pagina, plano: de costas }
+      ataques:
+        - { nome: Rajada do Kazekage, alcance: Médio }
+      jutsus:
+        - { slug: kazekiri-no-jutsu }
+        - { slug: daitoppa }
+        - { slug: kage-bunshin-no-jutsu }
+        - { nome: "Fuuton: Grande Tempestade", nota: "Técnica de rank S do Kazekage: um vendaval que varre uma área de 18 m (use a DT e o dano da ficha, com Resistência de Acrobacia para metade)." }
+      tracos:
+        - *ordem-kage
+        - { nome: Escolta, efeito: "Quase nunca está sozinho: dois Escorpiões do Deserto (ficha acima) entram na luta na primeira rodada." }
+        - *filhos-deserto
+  taticas:
+    - "Um levanta o vento para cegar, os outros cercam. Atacam o mesmo alvo até ele cair, e o veneno faz o resto."
+    - "Quando um deles cai, os outros carregam o corpo e recuam. Suna não deixa os seus no deserto."
+  ganchos:
+    - "Uma patrulha escolta uma caravana com uma carga selada que nenhum deles pode abrir."
+    - "Estão longe demais da vila, seguindo o rastro de um marionetista desaparecido."
+    - "O Kazekage quer o antídoto de um veneno que só o grupo sabe onde encontrar."
+  tags: [Tático, Leal]
+
+- slug: shinobi-de-kiri
+  nome: Shinobi de Kiri
+  tipo: shinobi
+  origem: Kirigakure
+  vila: kiri
+  arte: { formato: quadro, plano: plano médio }
+  cena:
+    - "A névoa sobe do lago e engole a ponte em poucos segundos. Uma silhueta aparece nela, calma, os dedos cheios de agulhas finas. Quando alguém pisca, a silhueta já não está mais ali."
+  descricao:
+    - "Kiri ainda carrega a fama da Névoa Sangrenta, dos tempos em que os alunos se matavam na formatura. Os ninjas da Névoa lutam como ela: cobrem o campo, cortam a visão e atacam de onde ninguém espera, com agulhas, espadas e água. Esta página traz o ninja de Kiri do genin à Mizukage."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: reflexo }
+      ameaca: 2
+      papel: atirador
+      resumo: "Aprendeu a se esconder na névoa antes de aprender a lutar."
+      ataques:
+        - { nome: Senbon, alcance: Curto }
+      jutsus:
+        - { slug: kirigakure-no-jutsu-ilusorio }
+        - { slug: mizu-teppou }
+      tracos:
+        - &filho-nevoa { nome: Filho da névoa, efeito: "Enxerga normalmente dentro da névoa. Para os outros, a névoa segue as regras de encobrimento do cap. 4." }
+    - nome: Chunin
+      ameaca: 5
+      papel: controlador
+      resumo: "Enche o campo de névoa e separa o grupo para cuidar de um de cada vez."
+      arte: { formato: quadro, plano: plano médio }
+      ataques:
+        - { nome: Senbon, alcance: Curto, efeito: "Num acerto crítico, o alvo fica **Atordoado**." }
+      jutsus:
+        - { slug: kirigakure-no-jutsu-ilusorio }
+        - { slug: mizu-teppou }
+        - { slug: suijinheki }
+      tracos:
+        - *filho-nevoa
+    - nome: Jounin
+      arte: { formato: quadro, plano: câmera inclinada }
+      ameaca: 8
+      papel: assassino
+      resumo: "Mestre do assassinato silencioso: acha o alvo pela respiração, dentro da névoa."
+      ataques:
+        - { nome: Espada curta, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: sairento-kiringu }
+        - { slug: suiryuudan-no-jutsu }
+        - { slug: kirigakure-no-jutsu-ilusorio }
+        - { slug: suijinheki }
+      tracos:
+        - *filho-nevoa
+        - { nome: Assassinato silencioso, efeito: "Dentro da névoa, tem vantagem em Furtividade, e o primeiro ataque contra um alvo que não o percebeu é crítico se acertar." }
+    - nome: Oinin
+      arte: { formato: retrato, plano: emoldurado }
+      ameaca: 11
+      papel: assassino
+      resumo: "Os caçadores da Névoa: perseguem desertores, destroem os corpos e apagam os segredos de Kiri."
+      ataques:
+        - { nome: Senbon, alcance: Médio, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: sairento-kiringu }
+        - { slug: suiryuudan-no-jutsu }
+        - { slug: shunshin-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
+      tracos:
+        - *mascara
+        - *filho-nevoa
+        - { nome: Apagar o corpo, efeito: "Depois de derrubar um alvo, destrói o corpo em um turno, e nenhum segredo de Kiri sobra para ser lido." }
+    - nome: Mizukage
+      ameaca: 16
+      papel: chefe
+      capa: true
+      resumo: "A líder de Kiri, diante de quem a própria chuva para de cair."
+      arte: { formato: pagina, plano: de baixo }
+      ataques:
+        - { nome: Golpe da Mizukage, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: suiryuudan-no-jutsu }
+        - { slug: suijinheki }
+        - { slug: kage-bunshin-no-jutsu }
+        - { nome: "Suiton: Névoa Ácida", nota: "Técnica de rank S da Mizukage: uma névoa que corrói tudo o que toca numa área de 12 m (use a DT e o dano da ficha, com Resistência de VIG para metade)." }
+      tracos:
+        - *ordem-kage
+        - { nome: Escolta, efeito: "Quase nunca está sozinha: dois Oinin (ficha acima) entram na luta na primeira rodada." }
+        - *filho-nevoa
+  taticas:
+    - "Abre a luta enchendo o campo de névoa e ataca com senbon de dentro dela. Separa o grupo e cuida de um de cada vez."
+    - "Ergue a muralha de água contra o primeiro jutsu de fogo que vier e responde com o dragão."
+  ganchos:
+    - "Uma kunoichi desertora dos tempos da Névoa Sangrenta quer apagar o próprio nome do livro bingo."
+    - "Um Oinin segue um desertor até a vila do grupo e não aceita voltar sem o corpo."
+    - "A Mizukage veio pessoalmente buscar um dos personagens, e a própria vila do grupo não vai impedir."
+  tags: [Cauteloso, Tático]
+
+- slug: shinobi-de-kumo
+  nome: Shinobi de Kumo
+  tipo: shinobi
+  origem: Kumogakure
+  vila: kumo
+  arte: { formato: quadro, plano: corpo inteiro }
+  cena:
+    - "O trovão chega antes dele. Uma linha azul corta o campo, o ar cheira a queimado, e de repente ele está ali, a um passo, o corpo inteiro estalando de eletricidade."
+  descricao:
+    - "Kumo forma lutadores de corpo a corpo como nenhuma outra vila. Os ninjas de lá treinam nas montanhas acima das nuvens, misturam Raiton com taijutsu e espadas pesadas e chegam no alvo mais rápido do que os olhos acompanham. Têm fama de orgulhosos, e merecem. Esta página traz o ninja de Kumo do genin ao Raikage."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: perfil }
+      ameaca: 2
+      papel: lutador
+      resumo: "Treina nas montanhas desde criança e não sabe recuar."
+      ataques:
+        - { nome: Golpe de mão aberta, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: kawarimi-no-jutsu }
+        - { slug: jibashi }
+      tracos:
+        - &corpo-forjado { nome: Corpo forjado, efeito: "Tem vantagem nas Resistências contra **Atordoado**." }
+    - nome: Chunin
+      arte: { formato: quadro, plano: por cima do ombro }
+      ameaca: 5
+      papel: lutador
+      resumo: "Carrega uma espada pesada que poucos de outras vilas conseguiriam levantar."
+      ataques:
+        - { nome: Espada pesada, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: jibashi }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *corpo-forjado
+    - nome: Jounin
+      ameaca: 8
+      papel: lutador
+      resumo: "Mistura raio e taijutsu e não sai de cima do alvo que escolheu."
+      arte: { formato: quadro, plano: corpo inteiro }
+      ataques:
+        - { nome: Golpe relâmpago, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: jibashi }
+        - { slug: kage-bunshin-no-jutsu }
+      tracos:
+        - &investida { nome: Investida relâmpago, efeito: "Uma vez por cena, se move e ataca com a mesma ação primária, e o ataque tem vantagem." }
+        - *corpo-forjado
+    - nome: Guarda do Raio
+      arte: { formato: faixa, plano: plano aberto }
+      ameaca: 11
+      papel: lutador
+      resumo: "A guarda pessoal do Raikage: espadas de raio e corpos treinados para receber o golpe no lugar dele."
+      ataques:
+        - { nome: Lâmina de raio, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: raikiri }
+        - { slug: jibashi }
+        - { slug: shunshin-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
+      tracos:
+        - *investida
+        - *corpo-forjado
+        - { nome: Escudo do Raikage, efeito: "Como reação, quando o Raikage ao lado dele é atacado, recebe o ataque no lugar." }
+    - nome: Raikage
+      ameaca: 16
+      papel: chefe
+      resumo: "O líder de Kumo, o lutador mais rápido do continente, que resolve quase tudo com o próprio punho."
+      arte: { formato: pagina, plano: silhueta }
+      ataques:
+        - { nome: Punho do Raikage, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: raikiri }
+        - { slug: jibashi }
+        - { slug: kage-bunshin-no-jutsu }
+        - { nome: "Raiton: Armadura de Raio", nota: "Técnica de rank S do Raikage: cobre o corpo de eletricidade por uma cena, e quem o acerta corpo a corpo sofre 2d10 de dano." }
+      tracos:
+        - *ordem-kage
+        - { nome: Escolta, efeito: "Quase nunca está sozinho: dois da Guarda do Raio (ficha acima) entram na luta na primeira rodada." }
+        - *investida
+  taticas:
+    - "Abre com a investida no ninja mais perigoso e não sai de cima dele. Usa o Jibashi em quem tenta ajudar."
+  ganchos:
+    - "Veio buscar um herdeiro de clã com Kekkei Genkai, e a vila dele nega tudo."
+    - "Quer um duelo justo com o lutador mais forte do grupo, e cumpre a palavra se perder."
+    - "O Raikage acusa a vila do grupo de sequestrar um dos seus, e marcha com a Guarda do Raio até a fronteira."
+  tags: [Agressivo, Brutal]
+
+- slug: shinobi-de-iwa
+  nome: Shinobi de Iwa
+  tipo: shinobi
+  origem: Iwagakure
+  vila: iwa
+  arte: { formato: retrato, plano: de baixo }
+  cena:
+    - "Ele está de pé sobre o pilar de pedra como se tivesse nascido ali. As mãos se juntam num selo, devagar, sem pressa nenhuma. Embaixo dos pés do grupo, o chão começa a tremer."
+  descricao:
+    - "Iwa é uma vila de pedra, e os seus ninjas são como ela: duros, teimosos e difíceis de derrubar. Os veteranos lembram das guerras contra Konoha e não esquecem. Lutam de frente, erguendo muralhas e esmagando quem estiver do outro lado, e a elite deles transforma chakra em explosão. Esta página traz o ninja de Iwa do genin ao Tsuchikage."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: de cima }
+      ameaca: 2
+      papel: atirador
+      resumo: "Atira de trás de uma muralha que ele mesmo ergueu."
+      ataques:
+        - { nome: Kunai, alcance: Curto }
+      jutsus:
+        - { slug: kawarimi-no-jutsu }
+        - { slug: doryuuheki }
+      tracos:
+        - &pe-no-chao { nome: Pé no chão, efeito: "Enquanto toca o solo, não pode ser empurrado nem derrubado." }
+    - nome: Chunin
+      arte: { formato: quadro, plano: câmera no chão }
+      ameaca: 5
+      papel: lutador
+      resumo: "Lança balas de terra e avança atrás delas, sem recuar um passo."
+      ataques:
+        - { nome: Punho de pedra, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: doryuudan }
+        - { slug: doryuuheki }
+      tracos:
+        - *pe-no-chao
+    - nome: Jounin
+      ameaca: 8
+      papel: lutador
+      resumo: "Veterano das guerras contra Konoha, que derruba montanhas em cima de quem não recua."
+      arte: { formato: retrato, plano: de baixo }
+      ataques:
+        - { nome: Punho de pedra, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: iwa-yado-kuzushi }
+        - { slug: doryuudan }
+        - { slug: doryuuheki }
+      tracos:
+        - *pe-no-chao
+    - nome: Corpo de Explosão
+      arte: { formato: faixa, plano: aéreo }
+      ameaca: 11
+      papel: atirador
+      resumo: "A elite de Iwa: ninjas que transformam chakra em explosão e campos de batalha em crateras."
+      ataques:
+        - { nome: Etiqueta explosiva, alcance: Médio, efeito: "Quem está a até 3 m do alvo sofre metade do dano." }
+      jutsus:
+        - { slug: iwa-yado-kuzushi }
+        - { slug: doryuudan }
+        - { slug: shunshin-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
+      tracos:
+        - *pe-no-chao
+        - { nome: Detonação, efeito: "Uma vez por cena, detona todas as etiquetas que espalhou: cada um numa área de 6 m resiste com Acrobacia contra a DT 18 e sofre 4d8 de dano, ou metade se passar." }
+    - nome: Tsuchikage
+      ameaca: 16
+      papel: chefe
+      resumo: "O líder de Iwa, que flutua sobre o campo e desfaz em pó o que toca."
+      arte: { formato: pagina, plano: perfil }
+      ataques:
+        - { nome: Punho de rocha, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: iwa-yado-kuzushi }
+        - { slug: doryuudan }
+        - { slug: kage-bunshin-no-jutsu }
+        - { nome: "Jinton: Liberação da Poeira", nota: "Técnica de rank S do Tsuchikage: um cubo de luz que desfaz o alvo em pó (use a DT e o dano da ficha, com Resistência de Acrobacia para metade)." }
+        - { nome: Técnica do peso, nota: "Deixa um alvo ao toque mais leve ou mais pesado: ele resiste com FOR contra a DT da ficha ou fica **Caído** ou **Imobilizado**." }
+      tracos:
+        - *ordem-kage
+        - { nome: Escolta, efeito: "Quase nunca está sozinho: dois do Corpo de Explosão (ficha acima) entram na luta na primeira rodada." }
+        - { nome: Voo de pedra, efeito: "Flutua e voa pelo campo, e por isso o traço Pé no chão não vale para ele." }
+  taticas:
+    - "Ergue uma muralha para se proteger do primeiro ataque e responde com terra. Avança devagar, sem recuar um passo."
+    - "Contra ninjas de Konoha, luta até cair."
+  ganchos:
+    - "Perdeu a família na última guerra e reconhece o símbolo de um clã do grupo."
+    - "Guarda uma passagem na montanha que o grupo precisa atravessar, e só aceita passagem em troca de um duelo."
+    - "O Corpo de Explosão minou a ponte que o grupo precisa cruzar, e o detonador está com um genin assustado."
+  tags: [Brutal, Fanático]
+
+- slug: shinobi-de-ame
+  nome: Shinobi de Ame
+  tipo: shinobi
+  origem: Amegakure
+  vila: ame
+  arte: { formato: faixa, plano: plano aberto }
+  cena:
+    - "Na cidade de ferro, a chuva não para nunca. Um guarda-chuva vermelho fica parado no meio da ponte, sem ninguém embaixo. Quando ele começa a girar sozinho, as agulhas saem das varetas."
+  descricao:
+    - "A vila da Chuva cresceu entre as guerras dos grandes países, sempre com o campo de batalha no quintal. Os ninjas de lá são desconfiados, discretos e cruéis com quem entra sem convite. Usam a chuva como olhos e esconderijo, e guarda-chuvas que disparam agulhas. Esta página traz o ninja de Ame do genin ao líder da vila."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: plano médio }
+      ameaca: 2
+      papel: atirador
+      resumo: "Vigia as pontes de ferro e conta quem entra na cidade."
+      ataques:
+        - { nome: Senbon, alcance: Curto }
+      jutsus:
+        - { slug: kawarimi-no-jutsu }
+        - { slug: suiton-mizurappa }
+      tracos:
+        - { nome: Cidade de ferro, efeito: "Tem vantagem em Furtividade entre os canos e as torres de Amegakure." }
+    - nome: Chunin
+      ameaca: 5
+      papel: assassino
+      resumo: "Ataca de cima das torres e deixa a chuva contar onde os intrusos estão."
+      arte: { formato: faixa, plano: plano aberto }
+      ataques:
+        - { nome: Guarda-chuva de agulhas, alcance: Médio, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: suiton-mizurappa }
+        - { slug: kirigakure-no-jutsu-ilusorio }
+      tracos:
+        - &olhos-chuva { nome: Olhos da chuva, efeito: "Sob a chuva, sente a posição de cada pessoa na área: ninguém se esconde dele." }
+    - nome: Jounin
+      arte: { formato: quadro, plano: reflexo }
+      ameaca: 8
+      papel: controlador
+      resumo: "Faz da chuva uma arma, e dos canos da cidade, uma armadilha."
+      ataques:
+        - { nome: Guarda-chuva de agulhas, alcance: Médio }
+      jutsus:
+        - { slug: suiryuudan-no-jutsu }
+        - { slug: suijinheki }
+        - { slug: kage-bunshin-no-jutsu }
+      tracos:
+        - *olhos-chuva
+    - nome: Vigias da Chuva
+      arte: { formato: faixa, plano: aéreo }
+      ameaca: 11
+      papel: assassino
+      resumo: "Os espiões de elite da Chuva: ouvem tudo o que a chuva toca e calam quem ouviu demais."
+      ataques:
+        - { nome: Agulhas da chuva, alcance: Médio, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: suiryuudan-no-jutsu }
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: shunshin-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
+      tracos:
+        - *olhos-chuva
+        - *mascara
+    - nome: Líder da Chuva
+      ameaca: 16
+      papel: chefe
+      resumo: "Quem governa Ame, e a quem a vila inteira obedece sem saber direito quem é."
+      arte: { formato: pagina, plano: de costas }
+      ataques:
+        - { nome: Guarda-chuvas de agulhas, alcance: Médio }
+      jutsus:
+        - { slug: suiryuudan-no-jutsu }
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
+        - { nome: Chuva que sente, nota: "Faz chover sobre a vila inteira por uma cena: sente cada pessoa que a chuva toca e sabe onde todas estão." }
+      tracos:
+        - *ordem-kage
+        - { nome: Escolta, efeito: "Quase nunca está sozinho: dois Vigias da Chuva (ficha acima) entram na luta na primeira rodada." }
+        - *olhos-chuva
+  taticas:
+    - "Ataca de longe, de cima das torres, e deixa a chuva contar onde os intrusos estão. Nunca mostra o rosto."
+  ganchos:
+    - "A vila fecha as fronteiras, e o grupo precisa entrar para buscar alguém."
+    - "Um ninja da Chuva vende informações sobre a própria vila, e o preço é sempre alto demais."
+    - "Ninguém de fora sabe quem é o líder de Ame. O grupo acabou de descobrir, e isso já é motivo para morrer."
+  tags: [Cauteloso, Leal]
+
+- slug: shinobi-de-oto
+  nome: Shinobi de Oto
+  tipo: shinobi
+  origem: Otogakure
+  vila: oto
+  arte: { formato: retrato, plano: plano médio }
+  cena:
+    - "Ele ergue o braço coberto pelo aparelho de metal e bate de leve com os dedos. Não acontece nada. Um segundo depois, o mundo inteiro gira, e o chão sobe para encontrar o rosto de quem estava em pé."
+  descricao:
+    - "Otogakure é nova, pequena e esconde demais. Os ninjas do Som compensam o tamanho da vila com técnicas estranhas, saídas de laboratórios onde ninguém de fora entra: aparelhos que lutam com vibração, buracos nas palmas das mãos e, na elite, o selo amaldiçoado. Esta página traz o ninja de Oto do genin ao Otokage."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: plano médio }
+      ameaca: 2
+      papel: controlador
+      resumo: "Testa nos inimigos o aparelho que acabou de ganhar do laboratório."
+      ataques:
+        - { nome: Onda sonora, alcance: Curto, efeito: "O alvo resiste com VIG contra a DT 14 ou fica **Atordoado**." }
+      jutsus:
+        - { slug: kawarimi-no-jutsu }
+      tracos:
+        - &ouvido-treinado { nome: Ouvido treinado, efeito: "Não pode ser surpreendido por quem faz qualquer barulho." }
+    - nome: Chunin
+      ameaca: 5
+      papel: controlador
+      resumo: "Desequilibra primeiro, ataca depois, e trabalha em trio."
+      arte: { formato: retrato, plano: plano médio }
+      ataques:
+        - { nome: Onda sonora, alcance: Curto, efeito: "O alvo resiste com VIG contra a DT 16 ou fica **Atordoado**." }
+      jutsus:
+        - { slug: daitoppa }
+      tracos:
+        - &golpe-nao-erra { nome: Golpe que não erra, efeito: "Quando o ataque corpo a corpo erra por 2 ou menos, a vibração ainda causa metade do dano." }
+        - *ouvido-treinado
+    - nome: Jounin
+      arte: { formato: quadro, plano: de cima }
+      ameaca: 8
+      papel: controlador
+      resumo: "Mistura som e ilusão: o inimigo não sabe mais o que ouviu nem o que viu."
+      ataques:
+        - { nome: Onda sonora, alcance: Médio, efeito: "O alvo resiste com VIG contra a DT 17 ou fica **Atordoado**." }
+      jutsus:
+        - { slug: daitoppa }
+        - { slug: magen-narakumi-no-jutsu }
+        - { slug: kokuangyou-no-jutsu }
+      tracos:
+        - *golpe-nao-erra
+        - *ouvido-treinado
+    - nome: Guarda do Som
+      arte: { formato: faixa, plano: câmera no chão }
+      ameaca: 11
+      papel: lutador
+      resumo: "A guarda pessoal do Otokage, marcada com o selo amaldiçoado."
+      ataques:
+        - { nome: Golpe da marca, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: karyuu-endan }
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - { nome: Marca amaldiçoada, efeito: "Uma vez por cena, abaixo da metade dos PV, a marca desperta: até o fim da cena, ignora a primeira condição que sofrer e os ataques dele têm vantagem. No fim da cena, ganha um nível de Fadiga (veja o verbete Portador da marca amaldiçoada)." }
+        - *ouvido-treinado
+    - nome: Otokage
+      ameaca: 16
+      papel: chefe
+      resumo: "O fundador de Oto, que trocou a própria humanidade por técnicas proibidas."
+      arte: { formato: pagina, plano: emoldurado }
+      ataques:
+        - { nome: Espada de chakra, alcance: Médio }
+      jutsus:
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: magen-kyouten-chiten }
+        - { slug: kage-bunshin-no-jutsu }
+        - { nome: Troca de pele, nota: "Técnica proibida dos laboratórios de Oto: uma vez por cena, quando cairia a 0 PV, sai da própria pele e volta com metade dos PV." }
+      tracos:
+        - *ordem-kage
+        - { nome: Escolta, efeito: "Quase nunca está sozinho: dois da Guarda do Som (ficha acima) entram na luta na primeira rodada." }
+        - { nome: Pesquisa proibida, efeito: "Tem vantagem nas Resistências contra veneno e contra **Envenenado**." }
+  taticas:
+    - "Desequilibra primeiro, ataca depois. Trabalha em trio: um atordoa, outro prende, outro mata."
+  ganchos:
+    - "Foi abandonado pela vila no meio de uma missão e procura um novo mestre."
+    - "Carrega no corpo um selo que não entende, colocado por quem o treinou."
+    - "Oto está recrutando no Exame Chunin, e um genin do grupo recebeu um convite."
+  tags: [Agressivo, Fanático]
+
+- slug: shinobi-de-taki
+  nome: Shinobi de Taki
+  tipo: shinobi
+  origem: Takigakure
+  vila: taki
+  arte: { formato: quadro, plano: de baixo }
+  cena:
+    - "O barulho da cachoeira cobre todos os outros. O grupo atravessa as pedras molhadas olhando para baixo, e por isso ninguém vê as figuras de pé dentro da água que cai, paradas como se fizessem parte dela."
+  descricao:
+    - "Takigakure é uma vila pequena escondida atrás de uma cachoeira, e sobrevive por ser difícil de achar e mais difícil de invadir. Os ninjas da Cachoeira são mestres de emboscada e infiltração, e guardam com a vida a Água do Herói, um segredo que dá poder em troca de anos de vida. Esta página traz o ninja de Taki do genin ao líder da vila."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: câmera no chão }
+      ameaca: 2
+      papel: atirador
+      resumo: "Espera atrás da água que cai e só aparece para atacar."
+      ataques:
+        - { nome: Kunai, alcance: Curto }
+      jutsus:
+        - { slug: kawarimi-no-jutsu }
+        - { slug: suiton-mizurappa }
+      tracos:
+        - &emboscada { nome: Emboscada da cachoeira, efeito: "Perto de água corrente, tem vantagem na Iniciativa." }
+    - nome: Chunin
+      arte: { formato: quadro, plano: emoldurado }
+      ameaca: 5
+      papel: assassino
+      resumo: "Prepara a emboscada dias antes e escolhe o alvo com calma."
+      ataques:
+        - { nome: Kunai da emboscada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: suijinheki }
+        - { slug: kirigakure-no-jutsu-ilusorio }
+      tracos:
+        - *emboscada
+    - nome: Jounin
+      arte: { formato: retrato, plano: de baixo }
+      ameaca: 8
+      papel: lutador
+      resumo: "Guarda as passagens escondidas da vila e conhece cada pedra do rio."
+      ataques:
+        - { nome: Espada curta, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: suiryuudan-no-jutsu }
+        - { slug: suijinheki }
+        - { slug: kage-bunshin-no-jutsu }
+      tracos:
+        - *emboscada
+    - nome: Guardiões da Água do Herói
+      arte: { formato: faixa, plano: plano aberto }
+      capa: true
+      ameaca: 11
+      papel: lutador
+      resumo: "A elite de Taki, que guarda a Água do Herói e bebe dela quando a vila corre perigo."
+      ataques:
+        - { nome: Espada da cachoeira, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: suiryuudan-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *emboscada
+        - &agua-heroi { nome: Água do Herói, efeito: "Uma vez por cena, bebe a Água do Herói: até o fim da cena, recupera 10 PC no começo de cada turno. No fim da cena, ganha dois níveis de Fadiga." }
+    - nome: Líder da Cachoeira
+      ameaca: 16
+      papel: chefe
+      resumo: "O líder de Taki, que carrega no corpo os anos que a Água do Herói já cobrou."
+      arte: { formato: pagina, plano: silhueta }
+      ataques:
+        - { nome: Golpe da cachoeira, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: suiryuudan-no-jutsu }
+        - { slug: suijinheki }
+        - { slug: kage-bunshin-no-jutsu }
+        - { nome: "Suiton: Queda da Cachoeira", nota: "Técnica de rank S do líder de Taki: a cachoeira inteira desaba sobre uma área de 12 m (use a DT e o dano da ficha, com Resistência de FOR para metade)." }
+      tracos:
+        - *ordem-kage
+        - { nome: Escolta, efeito: "Quase nunca está sozinho: dois Guardiões da Água do Herói (ficha acima) entram na luta na primeira rodada." }
+        - *agua-heroi
+  taticas:
+    - "Nunca luta em campo aberto. Atrai o grupo para a água, ataca de dentro da cachoeira e some de novo antes do contra-ataque."
+  ganchos:
+    - "Alguém roubou um frasco da Água do Herói, e os Guardiões acham que foi o grupo."
+    - "Um jovem de Taki quer beber a Água do Herói para salvar a vila, e o preço vai ser a vida dele."
+    - "O grupo precisa achar a entrada da vila escondida, e os ninjas da Cachoeira não querem ser achados."
+  tags: [Cauteloso, Tático]

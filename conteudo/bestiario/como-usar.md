@@ -1,13 +1,13 @@
 ---
 titulo: Como usar o bestiário
-resumo: A escala de ameaça, os papéis de combate, o orçamento de encontro e os moldes de vila e de clã, para o Mestre montar lutas justas com os adversários do bestiário.
+resumo: A escala de ameaça, os papéis de combate, o orçamento de encontro, os níveis e os moldes de vila e de clã, para o Mestre montar lutas justas com os adversários do bestiário.
 ---
 
 :::cena
 O rastro corta a trilha de lado a lado, largo demais para qualquer animal da floresta. O líder da equipe se agacha, toca a terra revirada e olha para cima, para os galhos quebrados bem acima da cabeça. Ninguém pergunta se vale a pena seguir. Todo mundo pergunta se vale a pena voltar.
 :::
 
-O bestiário reúne o que se levanta contra os ninjas: shinobi de outras vilas, renegados, mercenários, feras da floresta, invocações e coisas que não deveriam andar. A maioria dos verbetes é um arquétipo, um inimigo que pode aparecer em qualquer campanha, e cada um traz a sua arte, uma cena de abertura, os números de combate, as táticas e os ganchos para a história.
+O bestiário reúne o que se levanta contra os ninjas: os shinobi de cada vila, do Genin ao Kage, os clãs, o Sennin, as organizações clandestinas, renegados, mercenários, feras da floresta, invocações e coisas que não deveriam andar. A maioria dos verbetes é um arquétipo, um inimigo que pode aparecer em qualquer campanha, e cada um traz a sua arte, uma cena de abertura, os números de combate, as táticas e os ganchos para a história.
 
 Esta parte é do Mestre. Ela explica a escala de ameaça, que diz o quanto um adversário pesa, e o orçamento de encontro, que diz quantos adversários uma luta aguenta antes de virar massacre.
 
@@ -82,7 +82,7 @@ Uma luta tranquila gasta até metade do orçamento; serve para mostrar que o gru
 Duas contas mudam a soma. O chefe conta em dobro, porque age duas vezes. E cada membro de um bando conta separado. Também vale um limite: evite um adversário avulso com ameaça mais de três acima do nível do grupo, a não ser que ele seja o chefe do arco. Um único golpe dele pode derrubar um personagem antes que alguém consiga reagir.
 
 :::exemplo{titulo="Uma emboscada para um grupo de nível 3"}
-Quatro personagens de nível 3 têm orçamento 12. Uma patrulha de Suna com três membros de ameaça 3 soma 9: é uma luta equilibrada, três quartos do orçamento. Se o líder da patrulha invocar um lobo pequeno no meio da luta, a soma sobe para 11, e a mesma cena fica difícil.
+Quatro personagens de nível 3 têm orçamento 12. Uma patrulha de genin de Suna, com três membros de ameaça 2, soma 6: é uma luta tranquila, metade do orçamento. Se o chunin que lidera a patrulha (ameaça 5) vier junto, a soma sobe para 11, e a mesma cena fica difícil.
 :::
 
 :::na-mesa{titulo="Orçamento de encontro"}
@@ -92,11 +92,37 @@ Quatro personagens de nível 3 têm orçamento 12. Uma patrulha de Suna com trê
 - **Limite:** adversário avulso com ameaça até o nível do grupo + 3, salvo o chefe do arco
 :::
 
-## Moldes de vila e de clã {#moldes}
+## Os níveis e os moldes de vila e de clã {#moldes}
 
-Um chunin de Konoha e um chunin de Iwa têm os mesmos números, mas não lutam igual. O molde é o que troca o sotaque de um arquétipo. Para aplicar um molde de vila, troque os jutsus marcantes por técnicas do elemento e do estilo daquela vila (cap. 7): Katon e Taijutsu em Konoha, Fuuton, marionetes e venenos em Suna, Suiton, névoa e espadas em Kiri, Raiton em Kumo, Doton em Iwa. A ameaça não muda.
+Quase todo ninja do bestiário vem em cinco níveis, na mesma página: Genin, Chunin, Jounin, a elite e o Kage. Quem não governa vila nenhuma, como o renegado ou o mestre de taijutsu, chega ao nível Anbu e ao nível Kage sem o chapéu. Os degraus caem sempre nas mesmas ameaças, e os jutsus de cada um respeitam o rank que a ameaça libera. Para subir o desafio sem trocar de inimigo, basta passar para a ficha de cima.
+
+Cada grande vila tem a sua página, com o sotaque do cap. 7: Katon e taijutsu em Konoha, Fuuton, venenos e marionetes em Suna, Suiton, névoa e espadas em Kiri, Raiton em Kumo, Doton em Iwa, chuva e espionagem em Ame, som e pesquisa proibida em Oto, emboscadas em Taki. A elite de cada uma tem nome próprio, e o líder também.
+
+:::tabela{titulo="A elite e o líder de cada vila"}
+| Vila | Elite | Líder |
+| - | - | - |
+| Konohagakure | Anbu | Hokage |
+| Sunagakure | Escorpiões do Deserto | Kazekage |
+| Kirigakure | Oinin, os caçadores da Névoa | Mizukage |
+| Kumogakure | Guarda do Raio | Raikage |
+| Iwagakure | Corpo de Explosão | Tsuchikage |
+| Amegakure | Vigias da Chuva | Líder da Chuva |
+| Otogakure | Guarda do Som | Otokage |
+| Takigakure | Guardiões da Água do Herói | Líder da Cachoeira |
+:::
+
+Um chunin de Konoha e um chunin de Iwa têm os mesmos números, mas não lutam igual. O molde é o que troca esse sotaque, e continua valendo para o que não tem página própria. Para um ninja de uma vila menor, use a ficha do mesmo nível de uma das vilas acima e troque os jutsus marcantes pelos do elemento e do estilo da vila dele (cap. 7). Os arquétipos que servem a qualquer vila, como o médico, o ilusionista ou o espião, mudam de sotaque do mesmo jeito. A ameaça não muda.
 
 O molde de clã soma a técnica característica do clã (cap. 8): as sombras dos Nara, os insetos dos Aburame, o Juuken dos Hyuuga. Quando o clã tem Kekkei Genkai, o adversário sobe um ponto de ameaça, porque a técnica hereditária pesa mais do que qualquer jutsu aprendido.
+
+O Sennin só aparece a partir do nível Jounin, porque o Modo Sennin exige nível 7 ou mais (cap. 15). Ele e as organizações são moldes abstratos. O Sennin dá os degraus do caminho e deixa com o Mestre quem o ensinou e o dom que a escola deu. As organizações dão os degraus, do informante pago nas cidades ao líder que quase ninguém viu, e deixam o nome, o símbolo e o objetivo com o Mestre. Os membros vêm de vilas diferentes, e cada um pode trazer o molde da vila de onde saiu.
+
+:::na-mesa{titulo="Níveis"}
+- **Ninjas de vila e arquétipos:** Genin 2 · Chunin 5 · Jounin 8 · elite ou nível Anbu 11 · Kage ou nível Kage 16
+- **Clãs:** Genin 2 · Chunin 5 · Jounin 8 · Líder do clã 11, um ponto a mais com Kekkei Genkai
+- **Sennin:** aprendiz 8 · Modo Sennin 11 · sábio 16
+- **Molde de vila:** troca os jutsus marcantes; a ameaça não muda
+:::
 
 ## As invocações do cap. 14 {#invocacoes}
 
@@ -108,6 +134,6 @@ Os animais do bestiário são todos invocações. Além das espécies famosas do
 
 O bestiário vai em ordem alfabética, um adversário por página, e dá para folhear de um para o outro. Cada verbete começa pela arte e por uma cena curta, contada do ponto de vista de quem encontra o adversário. Depois vem quem ele é no mundo e o quadro de combate: ameaça, papel, PV, PC, Defesa, Iniciativa, ataques, jutsus e traços. Os ataques já trazem o acerto e o dano prontos para rolar.
 
-Alguns adversários têm variações, e o verbete deles traz uma ficha separada para cada uma, com arte, resumo, jutsus e números próprios. Uma invocação vai da pequena ao chefe da espécie; um ninja de clã vai de Genin a Líder do clã; uma marca amaldiçoada vai de adormecida à segunda forma. O índice de fichas, no alto da página, mostra todas de uma vez, e as fichas vêm logo abaixo, uma depois da outra. Para subir o desafio sem trocar de inimigo, basta passar para a ficha de cima.
+Quase todo adversário tem níveis ou variações, e o verbete traz uma ficha separada para cada um, com arte, resumo, jutsus e números próprios. Um ninja de vila vai de Genin a Kage; um ninja de clã, de Genin a Líder do clã; uma invocação, da pequena ao chefe da espécie; uma marca amaldiçoada, de adormecida à segunda forma. As fichas vêm logo depois do texto do verbete, uma depois da outra, da menor ameaça para a maior.
 
 Fechando o verbete, as táticas dizem como ele luta e quando foge, e os ganchos dão motivos para ele estar ali. As tags de comportamento são as mesmas da ficha resumida (cap. 23.2). E o botão de usar na campanha cria o NPC com esses números na lista do Mestre, pronto para entrar na ordem de iniciativa.
