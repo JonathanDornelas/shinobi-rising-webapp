@@ -253,7 +253,7 @@
         - &rede-informantes { nome: Rede de informantes, efeito: "Sabe tudo o que aconteceu na cidade onde está nos últimos três dias, inclusive o que o grupo fez." }
     - nome: Nível Anbu
 
-      arte: { formato: faixa, plano: perfil }
+      arte: { formato: retrato, plano: de baixo }
       ameaca: 11
       papel: assassino
       resumo: "Vive há anos com o rosto de outra pessoa, e a família dela não percebeu."

@@ -64,6 +64,17 @@ describe('bestiário', () => {
 		}
 	});
 
+	it('nenhuma ficha repete jutsu, ataque ou traço com o mesmo nome (a página quebra no navegador)', () => {
+		const repetidos = (nomes: string[]) => nomes.filter((n, i) => nomes.indexOf(n) !== i);
+		for (const c of criaturas)
+			for (const e of c.estagios) {
+				const k = e.combate;
+				expect(repetidos(k.jutsus.map((j) => j.nome)), `${c.slug}#${e.slug} jutsus`).toEqual([]);
+				expect(repetidos(k.ataques.map((a) => a.nome)), `${c.slug}#${e.slug} ataques`).toEqual([]);
+				expect(repetidos(k.tracos.map((t) => t.nome)), `${c.slug}#${e.slug} traços`).toEqual([]);
+			}
+	});
+
 	it('os animais do bestiário são todos invocações (cap. 14)', () => {
 		expect(criaturas.filter((c) => c.tipo === 'fauna').map((c) => c.slug)).toEqual([]);
 	});

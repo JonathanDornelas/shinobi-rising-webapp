@@ -91,7 +91,7 @@
 
 		<section class="flex flex-col gap-2" aria-label="Ataques">
 			<h3 class="t-rotulo m-0 text-title">Ataques</h3>
-			{#each k.ataques as a (a.nome)}
+			{#each k.ataques as a, i (`${a.nome}-${i}`)}
 				<div class="flex flex-col gap-1">
 					<div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
 						<span class="font-semibold">{a.nome}</span>
@@ -112,7 +112,7 @@
 				{#if jutsus.length}
 					<!-- lado a lado; o nome abre o cartão do jutsu no hover, como no livro -->
 					<ul class="m-0 flex list-none flex-wrap gap-1.5 p-0">
-						{#each jutsus as j (j.nome)}
+						{#each jutsus as j, i (`${j.slug ?? j.nome}-${i}`)}
 							<li class="inline-flex items-center gap-1.5 border border-b3 bg-b2 py-0.5 pr-2 pl-1 text-sm leading-5">
 								{#if j.rank}<SeloRank rank={j.rank} />{/if}
 								<span class="flex flex-col">
@@ -123,9 +123,9 @@
 							</li>
 						{/each}
 					</ul>
-					{#each jutsus.filter((j) => j.nota) as j (j.nome)}<p class="m-0 text-sm leading-5 text-mut"><b class="font-semibold">{j.nome}:</b> {j.nota}</p>{/each}
+					{#each jutsus.filter((j) => j.nota) as j, i (`${j.nome}-${i}`)}<p class="m-0 text-sm leading-5 text-mut"><b class="font-semibold">{j.nome}:</b> {j.nota}</p>{/each}
 				{/if}
-				{#each usos as u (u.nome)}
+				{#each usos as u, i (`${u.nome}-${i}`)}
 					<p class="m-0 text-sm leading-5"><b class="font-semibold">{u.nome}.</b> <span class="text-mut">{u.nota}</span></p>
 				{/each}
 			</section>
@@ -134,7 +134,7 @@
 		{#if k.tracos.length}
 			<section class="flex flex-col gap-1.5 border-t border-b3 pt-3" aria-label="Traços">
 				<h3 class="t-rotulo m-0 text-title">Traços</h3>
-				{#each k.tracos as t (t.nome)}
+				{#each k.tracos as t, i (`${t.nome}-${i}`)}
 					<p class="m-0 text-pretty"><b class="font-semibold">{t.nome}.</b> <Texto trechos={t.efeito} /></p>
 				{/each}
 			</section>

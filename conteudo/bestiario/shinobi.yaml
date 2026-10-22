@@ -55,7 +55,6 @@
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo }
       jutsus:
-        - { slug: shosen-jutsu-2 }
         - { slug: shosen-jutsu }
         - { slug: chakra-no-mesu }
         - { slug: kage-bunshin-no-jutsu }
@@ -63,7 +62,7 @@
         - *triagem
         - &antidotos { nome: Antídotos, efeito: "Como ação secundária, tira um aliado ao alcance da condição **Envenenado**." }
     - nome: Nível Anbu
-      arte: { formato: faixa, plano: câmera inclinada }
+      arte: { formato: quadro, plano: câmera inclinada }
       ameaca: 11
       papel: suporte
       resumo: "Médico de elite que acompanha as equipes mais perigosas e traz todo mundo de volta."
@@ -154,7 +153,7 @@
         - *mente-treinada
         - &isca { nome: Isca, efeito: "Uma vez por cena, quando um ataque o acertaria, revela que era uma ilusão: o ataque erra, e ele aparece a alguns metros dali." }
     - nome: Nível Anbu
-      arte: { formato: faixa, plano: perfil }
+      arte: { formato: retrato, plano: perfil }
       ameaca: 11
       papel: controlador
       resumo: "Prende um esquadrão inteiro num mesmo pesadelo."
@@ -323,7 +322,7 @@
         - { nome: Chuva de aço, efeito: "Uma vez por cena, solta o pergaminho inteiro: cada um numa área de 6 m faz uma Resistência de Acrobacia contra a DT 16 e sofre 3d8 de dano, ou metade se passar." }
         - *recolher
     - nome: Nível Anbu
-      arte: { formato: faixa, plano: câmera inclinada }
+      arte: { formato: quadro, plano: escorço }
       ameaca: 11
       papel: atirador
       resumo: "Troca de arma a cada golpe e nunca repete a mesma duas vezes."
@@ -412,7 +411,7 @@
         - *pesos
         - { nome: Portões internos, efeito: "Pode abrir até o 3º portão interno, com as regras do cap. 16." }
     - nome: Nível Anbu
-      arte: { formato: faixa, plano: aéreo }
+      arte: { formato: quadro, plano: câmera inclinada }
       ameaca: 11
       papel: lutador
       resumo: "Abre o quinto portão, e a pele fica vermelha de tanto chakra correndo no corpo."
@@ -426,7 +425,7 @@
         - *pesos
         - { nome: Portões internos, efeito: "Pode abrir até o 5º portão interno, com as regras do cap. 16." }
     - nome: Nível Kage
-      arte: { formato: pagina, plano: câmera no chão }
+      arte: { formato: pagina, plano: de baixo }
       ameaca: 16
       papel: chefe
       resumo: "Uma lenda dos portões, capaz de lutar de igual para igual com um Kage sem fazer um selo."
@@ -501,7 +500,7 @@
         - &escudo-madeira { nome: Escudo de madeira, efeito: "Como reação, uma das marionetes se põe na frente de um ataque contra ele e recebe o golpe." }
         - *fios
     - nome: Nível Anbu
-      arte: { formato: faixa, plano: aéreo }
+      arte: { formato: quadro, plano: câmera no chão }
       ameaca: 11
       papel: controlador
       resumo: "Três marionetes e um arsenal de venenos que poucos antídotos curam."
