@@ -1,6 +1,6 @@
 ---
 titulo: Como usar o bestiário
-resumo: A escala de ameaça, os papéis de combate, o orçamento de encontro, os níveis e os moldes de vila e de clã, para o Mestre montar lutas justas com os adversários do bestiário.
+resumo: A escala de ameaça, os papéis de combate, os perfis de corpo e chakra, o orçamento de encontro, os níveis e os moldes de vila e de clã, para o Mestre montar lutas justas com os adversários do bestiário.
 ---
 
 :::cena
@@ -17,7 +17,7 @@ Todo adversário tem uma ameaça, de 1 a 20, na mesma escala dos níveis dos per
 
 Os ranks das fichas resumidas (cap. 23.2) cabem dentro da escala. O genin está na ameaça 1, o chunin na 4, o jounin na 7, o Anbu na 9 e o lendário na 13. Abaixo do genin ficam as frações: ameaça 1/2 para bandidos e feras comuns, e 1/4 para quem mal sabe segurar uma faca.
 
-A tabela abaixo dá os números de partida de cada ameaça. Comece por ela, ajuste pelo papel do adversário (veja a seguir) e dê a ele um ou dois jutsus marcantes. Os jutsus seguem o mesmo limite dos personagens: rank B a partir da ameaça 6, rank A a partir da 11 e rank S a partir da 15.
+A tabela abaixo dá os números de partida de cada ameaça. Comece por ela, ajuste pelo papel e pelo perfil do adversário (veja a seguir) e dê a ele um ou dois jutsus marcantes. Os jutsus seguem o mesmo limite dos personagens: rank B a partir da ameaça 6, rank A a partir da 11 e rank S a partir da 15.
 
 :::tabela{titulo="Números por ameaça"}
 | Ameaça | PV | PC | Defesa | Ataque | Dano por golpe | DT | Iniciativa |
@@ -48,11 +48,14 @@ A tabela abaixo dá os números de partida de cada ameaça. Comece por ela, ajus
 
 Feras e criaturas sem treino ninja não têm chakra: no lugar dos PC, elas contam com os seus traços. E a DT da tabela vale para tudo que o adversário obriga o alvo a resistir, de um jutsu de área a um veneno nas presas.
 
+Os PE não estão na tabela, porque saem do corpo de cada um. Eles pagam o taijutsu e o bukijutsu e seguem a mesma conta dos personagens (cap. 6): 20, mais o bônus de VIG da ficha, mais 3 por ameaça acima da primeira. Um lutador de VIG alto aguenta uma sequência de golpes que deixaria um ilusionista da mesma ameaça sem fôlego.
+
 :::na-mesa{titulo="Ameaça"}
 - **Escala:** 1/4, 1/2 e de 1 a 20, como os níveis dos personagens
 - **Ranks do cap. 23.2:** genin 1 · chunin 4 · jounin 7 · Anbu 9 · lendário 13
 - **Jutsus:** rank B a partir da ameaça 6 · A a partir da 11 · S a partir da 15
 - **DT do adversário:** 9 + ataque
+- **PE:** 20 + bônus de VIG + 3 por ameaça acima de 1 (cap. 6)
 :::
 
 ## Papéis de combate {#papeis}
@@ -72,6 +75,31 @@ Dois adversários da mesma ameaça podem lutar de jeitos opostos. Um aguenta pan
 :::
 
 O chefe merece uma palavra a mais. Ele age na própria iniciativa e de novo dez pontos abaixo dela, e é por isso que consegue segurar quatro ninjas ao mesmo tempo. Use com parcimônia: um chefe por arco, não um por sessão.
+
+## Corpo ou chakra: o perfil {#perfis}
+
+O papel diz como o adversário luta. O perfil diz de onde vem o fôlego dele. O jounin de Kumo passou a vida trocando socos e aguenta o que derrubaria outro ninja, mas tem pouco chakra para gastar. O jounin de Suna com a mesma ameaça cai mais cedo, só que solta um jutsu atrás do outro sem cansar. Os dois pesam o mesmo numa luta; o grupo só sente a diferença quando ela se arrasta.
+
+O perfil troca uma coisa pela outra. Os PV vêm do Vigor e os PC vêm do Espírito e do Controle (cap. 6), então o perfil também puxa o VIG e o ESP da ficha, e com o VIG mudam os PE. Como a vida vale mais do que o chakra numa luta curta, o corpo perde mais chakra do que ganha de vida, e o chakra custa pouca vida.
+
+:::tabela{titulo="Perfis"}
+| Perfil | Quem tem | PV | PC | Atributos |
+| - | - | - | - | - |
+| Corpo robusto | Mestres de taijutsu, Akimichi, Kaguya, guarda-costas, quem luta com o corpo antes de tudo | ×1,2 | ×0,5 | VIG +2, ESP -2 |
+| Corpo resistente | Soldados da linha de frente, samurais, os ninjas de Kumo e de Iwa | ×1,1 | ×0,75 | VIG +1, ESP -1 |
+| Equilibrado | O padrão: quem treinou um pouco de tudo, como os ninjas de Konoha | ×1 | ×1 | sem ajuste |
+| Chakra farto | Ilusionistas, médicos, sensores, quem vence pelo controle | ×0,95 | ×1,3 | VIG -1, ESP +1 |
+| Chakra vasto | Jinchuuriki, Uzumaki, os líderes Senju, os sábios Sennin e os Kages que vencem pelo chakra | ×0,9 | ×1,6 | VIG -2, ESP +2 |
+:::
+
+O perfil vale para o estágio, não para a categoria inteira. O genin de uma vila pode ser equilibrado e o Kage da mesma vila ter chakra vasto; o recruta de uma organização pode ser só músculo e o líder, só chakra. É por isso que dois adversários do mesmo nível, de vilas diferentes, raramente têm os mesmos números.
+
+:::na-mesa{titulo="Perfil"}
+- **Conta:** PV da tabela × papel × perfil; PC da tabela × perfil; arredonde
+- **Corpo robusto:** PV ×1,2 · PC ×0,5 · **Corpo resistente:** PV ×1,1 · PC ×0,75
+- **Chakra farto:** PV ×0,95 · PC ×1,3 · **Chakra vasto:** PV ×0,9 · PC ×1,6
+- **A ameaça não muda:** o corpo aguenta a luta curta; o chakra aguenta a longa
+:::
 
 ## Montando um encontro {#orcamento}
 
@@ -132,7 +160,7 @@ Os animais do bestiário são todos invocações. Além das espécies famosas do
 
 ## Como ler um verbete {#verbete}
 
-O bestiário vai em ordem alfabética, um adversário por página, e dá para folhear de um para o outro. Cada verbete começa pela arte e por uma cena curta, contada do ponto de vista de quem encontra o adversário. Depois vem quem ele é no mundo e o quadro de combate: ameaça, papel, PV, PC, Defesa, Iniciativa, ataques, jutsus e traços. Os ataques já trazem o acerto e o dano prontos para rolar.
+O bestiário vai em ordem alfabética, um adversário por página, e dá para folhear de um para o outro. Cada verbete começa pela arte e por uma cena curta, contada do ponto de vista de quem encontra o adversário. Depois vem quem ele é no mundo e o quadro de combate: ameaça, papel, perfil, PV, PC, Defesa, Iniciativa, ataques, jutsus e traços. Os ataques já trazem o acerto e o dano prontos para rolar.
 
 Quase todo adversário tem níveis ou variações, e o verbete traz uma ficha separada para cada um, com arte, resumo, jutsus e números próprios. Um ninja de vila vai de Genin a Kage; um ninja de clã, de Genin a Líder do clã; uma invocação, da pequena ao chefe da espécie; uma marca amaldiçoada, de adormecida à segunda forma. As fichas vêm logo depois do texto do verbete, uma depois da outra, da menor ameaça para a maior.
 

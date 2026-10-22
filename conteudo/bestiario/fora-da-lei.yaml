@@ -17,6 +17,7 @@
       arte: { formato: retrato, plano: perfil }
       ameaca: 2
       papel: assassino
+      perfil: equilibrado
       resumo: "Desertou cedo, antes de entender direito o que estava traindo."
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
@@ -30,13 +31,14 @@
       arte: { formato: quadro, plano: de cima }
       ameaca: 5
       papel: assassino
+      perfil: corpo-resistente
       resumo: "Fugiu no meio de uma missão e vive de vender o que sabe."
       ataques:
         - { nome: Katana, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: kawarimi-no-jutsu }
-        - { slug: kirigakure-no-jutsu-ilusorio }
+        - { slug: iaido }
         - { slug: shunshin-no-jutsu }
+        - { slug: kirigakure-no-jutsu-ilusorio }
       tracos:
         - *caminho-casa
         - &fuga-preparada { nome: Fuga preparada, efeito: "Na primeira vez que cai abaixo da metade dos PV, um clone fica no lugar dele e ele foge, sem gastar ação." }
@@ -45,13 +47,15 @@
       arte: { formato: retrato, plano: emoldurado }
       ameaca: 8
       papel: assassino
+      perfil: equilibrado
       resumo: "Veterano que traiu a vila por um motivo que só ele conhece, e tem provas."
       ataques:
         - { nome: Katana, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
+        - { slug: iaigiri }
         - { slug: kage-bunshin-no-jutsu }
-        - { slug: kawarimi-no-jutsu }
-        - { slug: kirigakure-no-jutsu-ilusorio }
+        - { slug: oboro-bunshin-no-jutsu }
+        - { slug: shunshin-no-jutsu }
       tracos:
         - *caminho-casa
         - *fuga-preparada
@@ -60,13 +64,15 @@
       arte: { formato: faixa, plano: câmera inclinada }
       ameaca: 11
       papel: assassino
+      perfil: chakra-farto
       resumo: "Saiu da elite da vila e levou os segredos dela junto."
       ataques:
         - { nome: Katana, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: kusanagi-no-tsurugi-chidorigatana }
+        - { slug: chidori-eiso }
         - { slug: sairento-kiringu }
-        - { slug: chidori }
+        - { slug: kage-bunshin-no-jutsu }
       tracos:
         - *fuga-preparada
         - { nome: Segredos da elite, efeito: "Tem vantagem nas Resistências contra os jutsus de ninjas da vila que abandonou." }
@@ -75,14 +81,15 @@
       arte: { formato: pagina, plano: de baixo }
       ameaca: 16
       papel: chefe
+      perfil: chakra-vasto
       resumo: "Renegado de rank S, no topo do livro bingo de cinco vilas."
       ataques:
         - { nome: Katana, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
         - { slug: kirin }
-        - { slug: chidori }
+        - { slug: chidori-nagashi }
+        - { slug: katon-goka-messhitsu }
         - { slug: kokuangyou-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
       tracos:
         - *fuga-preparada
         - { nome: Rank S, efeito: "Caçadores de recompensas e a elite de três vilas estão atrás dele: numa luta que passa de cinco rodadas, um deles aparece, e não está do lado de ninguém." }
@@ -98,7 +105,7 @@
   tipo: fora da lei
   ameaca: 5
   papel: lutador
-  pc: 20
+  perfil: corpo-robusto
   origem: Estradas do continente
   vila: null
   arte: { formato: retrato, plano: close }
@@ -108,6 +115,9 @@
     - "Nem todo espadachim é ninja. Os rōnin são samurais sem mestre, ou que fingem ter sido, e vendem a espada pela estrada a quem pagar. Têm pouco chakra e muita técnica, e alguns ainda guardam um resto de honra. Outros só guardam a conta."
   ataques:
     - { nome: Katana, alcance: Corpo a corpo }
+  jutsus:
+    - { slug: iaido }
+    - { slug: zanko }
   tracos:
     - { nome: Iaijutsu, efeito: "O primeiro ataque da cena saca e corta numa só ação, com vantagem." }
     - { nome: Sem mestre, efeito: "Luta pelo pagamento. Uma oferta melhor, com um teste de Persuasão contra a DT 15, o faz trocar de lado." }
@@ -123,6 +133,7 @@
   tipo: fora da lei
   ameaca: 1/2
   papel: bando
+  perfil: equilibrado
   membros: 4
   pc: 0
   origem: Estradas e florestas
@@ -149,6 +160,7 @@
   tipo: fora da lei
   ameaca: 3
   papel: chefe
+  perfil: corpo-resistente
   pc: 0
   origem: Estradas e florestas
   vila: null
@@ -175,6 +187,7 @@
   tipo: fora da lei
   ameaca: 6
   papel: atirador
+  perfil: corpo-resistente
   origem: Postos de troca do livro bingo
   vila: null
   arte: { formato: retrato, plano: plano médio }
@@ -186,7 +199,9 @@
     - { nome: Corrente com peso, alcance: Médio, efeito: "O alvo resiste com FOR contra a DT 15 ou fica **Caído**." }
     - { nome: Faca curva, alcance: Corpo a corpo }
   jutsus:
-    - { slug: kawarimi-no-jutsu }
+    - { slug: bubitorappu }
+    - { slug: futon-kakeami }
+    - { slug: kusari-sogazan }
     - { slug: shunshin-no-jutsu }
   tracos:
     - { nome: Armadilhas, efeito: "Antes da luta, prepara o terreno: quem pisa numa armadilha resiste com Percepção contra a DT 15 ou fica **Imobilizado**." }
@@ -214,6 +229,7 @@
       arte: { formato: retrato, plano: emoldurado }
       ameaca: 2
       papel: assassino
+      perfil: equilibrado
       resumo: "Olheiro que só observa, conta e repassa o que viu."
       ataques:
         - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 13 ou sofre o Veneno Comum (cap. 11)." }
@@ -227,12 +243,14 @@
       arte: { formato: quadro, plano: por cima do ombro }
       ameaca: 5
       papel: assassino
+      perfil: chakra-farto
       resumo: "Serve o chá na casa do inimigo e espera a ordem."
       ataques:
         - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 15 ou sofre o Veneno Sonífero (cap. 11)." }
       jutsus:
         - { slug: henge-no-jutsu }
-        - { slug: kawarimi-no-jutsu }
+        - { slug: kanashibari-no-jutsu }
+        - { slug: kage-senbon }
       tracos:
         - *mil-rostos
     - nome: Jounin
@@ -240,14 +258,15 @@
       arte: { formato: retrato, plano: reflexo }
       ameaca: 8
       papel: assassino
+      perfil: chakra-farto
       resumo: "Comanda uma rede de informantes numa cidade inteira."
       ataques:
         - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 16 ou sofre o Veneno Sonífero (cap. 11)." }
       jutsus:
         - { slug: henge-no-jutsu }
-        - { slug: kawarimi-no-jutsu }
-        - { slug: shunshin-no-jutsu }
+        - { slug: sanzengarasu-no-jutsu }
         - { slug: magen-narakumi-no-jutsu }
+        - { slug: shunshin-no-jutsu }
       tracos:
         - *mil-rostos
         - &rede-informantes { nome: Rede de informantes, efeito: "Sabe tudo o que aconteceu na cidade onde está nos últimos três dias, inclusive o que o grupo fez." }
@@ -256,14 +275,15 @@
       arte: { formato: retrato, plano: de baixo }
       ameaca: 11
       papel: assassino
+      perfil: equilibrado
       resumo: "Vive há anos com o rosto de outra pessoa, e a família dela não percebeu."
       ataques:
         - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 18 ou sofre o Veneno Letal de Sasori (cap. 11)." }
       jutsus:
         - { slug: henge-no-jutsu }
-        - { slug: shunshin-no-jutsu }
+        - { slug: shikon-no-jutsu }
         - { slug: kokuangyou-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: oboro-bunshin-no-jutsu }
       tracos:
         - *mil-rostos
         - *rede-informantes
@@ -273,14 +293,15 @@
       arte: { formato: pagina, plano: de cima }
       ameaca: 16
       papel: chefe
+      perfil: chakra-farto
       resumo: "Infiltrado no conselho de uma grande vila, e ninguém desconfia dele."
       ataques:
         - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 20 ou sofre o Veneno Letal de Sasori (cap. 11)." }
       jutsus:
         - { slug: henge-no-jutsu }
-        - { slug: shunshin-no-jutsu }
+        - { slug: nehan-shoja-no-jutsu }
+        - { slug: karasu-bunshin-no-jutsu }
         - { slug: kokuangyou-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
       tracos:
         - *mil-rostos
         - *rosto-roubado
@@ -297,6 +318,7 @@
   tipo: guerreiro
   ameaca: 5
   papel: lutador
+  perfil: corpo-resistente
   origem: País do Ferro
   vila: null
   arte: { formato: retrato, plano: corpo inteiro }
@@ -306,6 +328,9 @@
     - "No País do Ferro, os samurais nunca deixaram o lugar para os ninjas. Lutam com espada e armadura, seguem um código rígido e passam chakra pela lâmina para cortar o que aço nenhum cortaria. Não aceitam truques e desprezam quem foge de um duelo."
   ataques:
     - { nome: Katana com chakra, alcance: Corpo a corpo, efeito: "Ignora a RD do alvo." }
+  jutsus:
+    - { slug: chakura-to-maichimonji }
+    - { slug: yojinbo }
   tracos:
     - { nome: Armadura de placas, efeito: "RD 2." }
     - { nome: Código, efeito: "Não ataca um inimigo caído nem pelas costas. Contra quem quebra o código diante dele, o ataque tem vantagem." }
@@ -322,6 +347,7 @@
   tipo: guerreiro
   ameaca: 4
   papel: lutador
+  perfil: corpo-resistente
   origem: Templos das montanhas
   vila: null
   arte: { formato: quadro, plano: de baixo }
@@ -332,6 +358,8 @@
   ataques:
     - { nome: Palma do templo, alcance: Corpo a corpo }
   jutsus:
+    - { slug: rakanken }
+    - { slug: kaija-hoin }
     - { slug: kai }
   tracos:
     - { nome: Espírito firme, efeito: "Tem vantagem para resistir a genjutsu e não pode ficar **Amedrontado**." }

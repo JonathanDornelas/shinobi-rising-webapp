@@ -3,6 +3,7 @@ import bestiarioJson from '#lib/livro/gerado/bestiario.json';
 import type { Bestiario, Bloco, Celula, Criatura, EstagioCriatura } from '#lib/livro/tipos.ts';
 import { ataqueNpc } from '#lib/npcs/gerador.ts';
 import { RANKS_NPC, TAGS_NPC } from '#lib/npcs/dados.ts';
+import { PERFIS } from './ficha.ts';
 import { npcDoVerbete } from './npc.ts';
 
 const { comoUsar, criaturas } = bestiarioJson as Bestiario;
@@ -14,7 +15,7 @@ const linhas = tabela.linhas.map((l) => l.map(cel));
 const ordem = linhas.map((l) => l[0]);
 const linha = (rotulo: string, abaixo = 0) => {
 	const l = linhas[Math.max(0, ordem.indexOf(rotulo) - abaixo)];
-	return { pv: +l[1], defesa: +l[3], ataque: +l[4].replace('+', ''), dano: l[5].replace(/\s+/g, ''), dt: +l[6], iniciativa: +l[7].replace('+', '') };
+	return { pv: +l[1], pc: +l[2], defesa: +l[3], ataque: +l[4].replace('+', ''), dano: l[5].replace(/\s+/g, ''), dt: +l[6], iniciativa: +l[7].replace('+', '') };
 };
 const estagios = criaturas.flatMap((c) => c.estagios.map((e) => [c, e] as [Criatura, EstagioCriatura]));
 // as invocações usam a ficha do cap. 14, não a tabela
@@ -36,12 +37,19 @@ describe('bestiário', () => {
 		expect(new Set(criaturas.map((c) => c.slug)).size).toBe(criaturas.length);
 	});
 
-	it.each(daTabela.map(([c, e]) => [`${c.slug} · ${e.nome}`, e] as const))('%s segue a linha da ameaça e o papel', (_, e) => {
+	it.each(daTabela.map(([c, e]) => [`${c.slug} · ${e.nome}`, e] as const))('%s segue a linha da ameaça, o papel e o perfil', (_, e) => {
 		const l = linha(e.ameacaRotulo);
 		const fatorPv = e.papel === 'lutador' ? 1.25 : e.papel === 'atirador' || e.papel === 'assassino' ? 0.75 : e.papel === 'chefe' ? 2 : 1;
 		const bonus = e.papel === 'atirador' ? 1 : e.papel === 'assassino' ? 2 : 0;
 		const dano = e.papel === 'controlador' || e.papel === 'suporte' ? linha(e.ameacaRotulo, 2).dano : l.dano;
-		expect(e.combate.pv).toBe(Math.round(l.pv * fatorPv));
+		const perfil = PERFIS[e.perfil!];
+		expect(perfil, 'perfil').toBeDefined();
+		expect(e.combate.pv).toBe(Math.round(l.pv * fatorPv * perfil.pv));
+		// sem chakra (pc 0 ou null) só quem não tem treino ninja: bandidos e feras
+		if (e.combate.pc) expect(e.combate.pc).toBe(Math.round(l.pc * perfil.pc));
+		// PE pela conta do cap. 6: 20 + 5 por ponto de VIG + 3 por nível depois do 1º (a ameaça faz o papel do nível)
+		const vig = e.combate.ficha.atributos.vig;
+		expect(e.combate.pe).toBe(20 + 5 * Math.max(0, vig) + 3 * Math.max(0, Math.floor(e.ameaca) - 1));
 		expect(e.combate.defesa).toBe(l.defesa);
 		expect(e.combate.iniciativa).toBe(l.iniciativa);
 		expect(e.combate.dt).toBe(l.dt + (e.papel === 'controlador' ? 1 : 0));
@@ -54,6 +62,7 @@ describe('bestiário', () => {
 		for (const [c, e] of estagios.filter(([c]) => c.tipo === 'invocação')) {
 			expect(ficha[e.ameaca], `${c.slug} · ${e.nome}`).toBeDefined();
 			expect([e.combate.pv, e.combate.defesa]).toEqual([ficha[e.ameaca].pv, ficha[e.ameaca].defesa]);
+			expect(e.combate.pe, 'a ficha do cap. 14 não tem PE').toBeNull();
 		}
 	});
 

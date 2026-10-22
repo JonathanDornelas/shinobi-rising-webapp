@@ -17,6 +17,7 @@
       arte: { formato: retrato, plano: por cima do ombro }
       ameaca: 2
       papel: suporte
+      perfil: equilibrado
       resumo: "Um olheiro pago pela organização, que nem sabe direito para quem trabalha."
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo }
@@ -29,13 +30,14 @@
       arte: { formato: quadro, plano: emoldurado }
       ameaca: 5
       papel: lutador
+      perfil: corpo-resistente
       resumo: "Ainda está sendo testado, e faria qualquer coisa para ser aceito."
       ataques:
         - { nome: Lâmina curva, alcance: Corpo a corpo }
       jutsus:
+        - { slug: goukakyu-no-jutsu }
         - { slug: shunshin-no-jutsu }
         - { slug: kirigakure-no-jutsu-ilusorio }
-        - { slug: goukakyu-no-jutsu }
       tracos:
         - { nome: Prova de valor, efeito: "Enquanto um membro da organização o observa, não foge nem se rende." }
     - nome: Membro
@@ -43,14 +45,15 @@
       capa: true
       ameaca: 8
       papel: controlador
+      perfil: chakra-farto
       resumo: "Um membro de confiança, que conhece os segredos e quase nunca anda sozinho."
       ataques:
         - { nome: Lâmina curva, alcance: Corpo a corpo }
       jutsus:
-        - { slug: kage-bunshin-no-jutsu }
         - { slug: kokuangyou-no-jutsu }
-        - { slug: karyuu-endan }
-        - { slug: suiryuudan-no-jutsu }
+        - { slug: suiton-goshokuzame }
+        - { slug: futon-okakeami }
+        - { slug: katon-goen-no-jutsu }
       tracos:
         - &dupla { nome: Dupla, efeito: "Quase sempre anda com outro membro (esta mesma ficha), e os dois agem na mesma iniciativa. Quando um cai, o outro foge levando o sinal dele." }
         - &sinal { nome: Sinal da organização, efeito: "Carrega o sinal dela (um manto, um anel, uma tatuagem, à escolha do Mestre). Pelo sinal, a organização sabe onde o membro caiu." }
@@ -58,12 +61,13 @@
       arte: { formato: retrato, plano: silhueta }
       ameaca: 11
       papel: assassino
+      perfil: equilibrado
       resumo: "Cuida dos alvos que os outros não conseguem pegar."
       ataques:
         - { nome: Lâmina curva, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: chidori }
-        - { slug: kokuangyou-no-jutsu }
+        - { slug: chidori-senbon }
+        - { slug: hien }
         - { slug: sairento-kiringu }
         - { slug: kage-bunshin-no-jutsu }
       tracos:
@@ -73,13 +77,16 @@
     - nome: Líder
       ameaca: 16
       papel: chefe
+      perfil: chakra-vasto
       resumo: "Quem decide o que a organização quer, e que quase ninguém viu em carne e osso."
       arte: { formato: pagina, plano: de costas }
       ataques:
         - { nome: Golpe do líder, alcance: Médio }
       jutsus:
+        - { slug: ranton-reiza-sakasu }
+        - { slug: kuchiyose-goju-rashomon }
+        - { slug: taju-kage-bunshin-no-jutsu }
         - { slug: kokuangyou-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
         - { nome: Técnica do líder, nota: "Uma técnica de rank S que define a organização, escolhida pelo Mestre no catálogo ou criada com as regras do cap. 20." }
       tracos:
         - { nome: Comando, efeito: "Uma vez por rodada, como ação secundária, dá uma ordem: um membro da organização que possa ouvi-lo faz um ataque na hora, como reação." }
@@ -109,24 +116,27 @@
       arte: { formato: retrato, plano: de cima }
       ameaca: 2
       papel: assassino
+      perfil: equilibrado
       resumo: "Uma criança tirada da família e treinada para não sentir nada."
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: henge-no-jutsu }
+        - { slug: kage-senbon }
         - { slug: kawarimi-no-jutsu }
       tracos:
         - &sem-emocao { nome: Sem emoção, efeito: "É imune a **Amedrontado**." }
     - nome: Agente
       ameaca: 5
       papel: assassino
+      perfil: corpo-resistente
       resumo: "Máscara lisa, selo na língua e nenhuma pergunta."
       arte: { formato: retrato, plano: de costas }
       ataques:
         - { nome: Tantō curta, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
+        - { slug: ansatsu-jutsu }
+        - { slug: sumi-bunshin-no-jutsu }
         - { slug: shunshin-no-jutsu }
-        - { slug: kawarimi-no-jutsu }
       tracos:
         - &selo-lingua { nome: Selo na língua, efeito: "Não consegue falar nem escrever nada sobre a divisão. Tentar arrancar isso dele com Persuasão ou genjutsu simplesmente falha." }
         - *sem-emocao
@@ -134,13 +144,15 @@
       arte: { formato: faixa, plano: câmera no chão }
       ameaca: 8
       papel: assassino
+      perfil: equilibrado
       resumo: "Prefere matar dormindo, envenenar a comida ou cortar a corda da ponte a qualquer luta justa."
       ataques:
         - { nome: Tantō curta, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: shunshin-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: choju-giga }
+        - { slug: sumigasumi-no-jutsu }
         - { slug: kokuangyou-no-jutsu }
+        - { slug: shunshin-no-jutsu }
       tracos:
         - *selo-lingua
         - *sem-emocao
@@ -149,14 +161,15 @@
       arte: { formato: quadro, plano: emoldurado }
       ameaca: 11
       papel: assassino
+      perfil: chakra-farto
       resumo: "Comanda uma célula de agentes e responde só ao Kage da Sombra."
       ataques:
         - { nome: Tantō curta, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
+        - { slug: futon-shinku-renpa }
+        - { slug: choju-giga }
+        - { slug: ansatsu-jutsu }
         - { slug: kage-bunshin-no-jutsu }
-        - { slug: kokuangyou-no-jutsu }
-        - { slug: chidori }
-        - { slug: shunshin-no-jutsu }
       tracos:
         - *selo-lingua
         - *sem-emocao
@@ -164,16 +177,17 @@
     - nome: Kage da Sombra
       ameaca: 13
       papel: chefe
+      perfil: chakra-vasto
       capa: true
       resumo: "O Kage que a vila não admite ter, e que quer o chapéu de verdade."
       arte: { formato: retrato, plano: de cima }
       ataques:
         - { nome: Lâmina de vento, alcance: Curto }
       jutsus:
-        - { slug: daitoppa }
-        - { slug: kazekiri-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
-        - { slug: kokuangyou-no-jutsu }
+        - { slug: futon-shinkugyoku }
+        - { slug: futon-shinkuha }
+        - { slug: kaze-no-yaiba }
+        - { slug: zekka-konzetsu-no-in }
       tracos:
         - { nome: Rede de agentes, efeito: "Sempre tem dois Agentes (ficha acima) por perto, que aparecem na primeira rodada." }
         - { nome: Selo do silêncio, efeito: "Os agentes dele não conseguem falar dele nem da divisão (o mesmo Selo na língua dos agentes)." }

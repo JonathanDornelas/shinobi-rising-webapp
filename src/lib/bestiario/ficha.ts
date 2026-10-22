@@ -5,7 +5,7 @@
 //  - o atributo principal do papel sobe com a ameaça, até +10 (o teto do atributo de clã); o treino de perícia não passa
 //    de +5 e a proficiência não passa de Lendário (+5), como no cap. 3.
 // Poucas perícias (até 4), uma ou duas especializações (só quem tem treino ninja) e até duas proficiências.
-import type { PapelCriatura, TipoCriatura } from '../livro/tipos.ts';
+import type { PapelCriatura, PerfilCriatura, TipoCriatura } from '../livro/tipos.ts';
 
 export type Atributo = 'for' | 'agi' | 'vig' | 'int' | 'ctr' | 'esp';
 export const ATRIBUTOS: Atributo[] = ['for', 'agi', 'vig', 'int', 'ctr', 'esp'];
@@ -81,13 +81,32 @@ export interface EntradaFicha {
 	iniciativa: number;
 	ataque: { nome: string; alcance: string } | null;
 	jutsus: { slug: string | null; nome: string; tipo: string | null; elemento: string | null }[];
+	perfil?: PerfilCriatura | null;
 }
+
+/**
+ * Perfis de PV e PC (Como usar): multiplicam os PV e os PC da tabela de ameaça e puxam o VIG (que dá os PV, cap. 6)
+ * contra o ESP (que dá os PC). O PV vale mais que o PC numa luta curta, por isso o corpo perde mais chakra do que ganha
+ * de vida, e o chakra perde pouca vida.
+ */
+export const PERFIS: Record<PerfilCriatura, { nome: string; pv: number; pc: number; vig: number; esp: number }> = {
+	'corpo-robusto': { nome: 'Corpo robusto', pv: 1.2, pc: 0.5, vig: 2, esp: -2 },
+	'corpo-resistente': { nome: 'Corpo resistente', pv: 1.1, pc: 0.75, vig: 1, esp: -1 },
+	equilibrado: { nome: 'Equilibrado', pv: 1, pc: 1, vig: 0, esp: 0 },
+	'chakra-farto': { nome: 'Chakra farto', pv: 0.95, pc: 1.3, vig: -1, esp: 1 },
+	'chakra-vasto': { nome: 'Chakra vasto', pv: 0.9, pc: 1.6, vig: -2, esp: 2 }
+};
 
 const limitar = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
 /** Atributo principal do papel: +2 na ameaça 2, +6 na 10, +10 na 20. */
 export const principal = (ameaca: number) => limitar(Math.round(1 + ameaca * 0.45), 1, 10);
 /** Treino das perícias secundárias e nível das proficiências pela ameaça (1 a 5). */
 const treino = (ameaca: number) => limitar(Math.round(ameaca / 4) + 1, 1, 5);
+/**
+ * PE pela conta dos personagens (cap. 6): 20, mais 5 por ponto de VIG acima de 0, mais 3 por nível depois do 1º.
+ * A ameaça faz o papel do nível (as frações contam como nível 1).
+ */
+export const peDe = (ameaca: number, vig: number) => 20 + 5 * Math.max(0, vig) + 3 * Math.max(0, Math.floor(ameaca) - 1);
 
 // os nomes são comparados sem acento ("Tantō" → "tanto")
 const semAcento = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -95,6 +114,8 @@ const ARMA = /kunai|katana|espada|lamina|faca|clava|machado|bengala|bastao|lanca
 const MARIONETE = /marionete|fios de chakra/i;
 const CORPO = /punho|soco|chute|golpe|palma|dedo|ombro|joelho|cotovelo|agarr|cabecada|investida/i;
 const NINJA: TipoCriatura[] = ['shinobi', 'fora da lei', 'guerreiro', 'organização'];
+// jutsus de cura e de cirurgia: dão a perícia Medicina e a especialização de Ninjutsu Médico
+const MEDICO = /shosen|kaifuku|iryo|chakra-no-mesu|chikatsu-saisei|sozo-saisei|inyu-shometsu|saikan-chushutsu|byakugo-no-in/;
 
 /** Perícia e atributo do ataque principal. */
 function periciaDoAtaque(e: EntradaFicha): { pericia: Pericia; atributo: Atributo; arma: boolean } {
@@ -121,6 +142,10 @@ function atributosDe(e: EntradaFicha): Record<Atributo, number> {
 	else if (e.papel === 'controlador') Object.assign(a, { ctr: p, esp: p - 1, int: p - 2 });
 	else if (e.papel === 'suporte') Object.assign(a, { int: p, ctr: p - 1, esp: p - 2 });
 	else if (e.papel === 'chefe') Object.assign(a, { ctr: p, vig: p - 1, for: p - 1, esp: p - 2 });
+	if (e.perfil) {
+		a.vig += PERFIS[e.perfil].vig;
+		a.esp += PERFIS[e.perfil].esp;
+	}
 	for (const k of ATRIBUTOS) a[k] = limitar(a[k], -2, 10);
 	a.agi = e.iniciativa;
 	return a;
@@ -132,7 +157,7 @@ function secundarias(e: EntradaFicha): Pericia[] {
 	if (!NINJA.includes(e.tipo)) return ['percepcao', 'sobrevivencia'];
 	const CLA: Record<string, Pericia> = { hyuuga: 'percepcao', inuzuka: 'rastreamento', aburame: 'percepcao', uzumaki: 'selamento', yamanaka: 'percepcao', nara: 'investigacao', akimichi: 'atletismo', sennin: 'percepcao' };
 	if (e.cla && CLA[e.cla]) lista.push(CLA[e.cla]);
-	if (e.jutsus.some((j) => /shosen|kaifuku|iryo/.test(j.slug ?? ''))) lista.push('medicina');
+	if (e.jutsus.some((j) => MEDICO.test(j.slug ?? ''))) lista.push('medicina');
 	const PAPEL: Record<PapelCriatura, Pericia[]> = {
 		lutador: ['atletismo', 'percepcao'],
 		bando: ['atletismo', 'sobrevivencia'],
@@ -194,7 +219,7 @@ function especializacoesDe(e: EntradaFicha, ataque: Pericia): EspecializacaoFich
 	for (const j of e.jutsus) if (j.elemento && ELEMENTO_NOME[j.elemento]) conta[j.elemento] = (conta[j.elemento] ?? 0) + 1;
 	const elemento = Object.entries(conta).sort((a, b) => b[1] - a[1])[0]?.[0];
 	if (elemento) nomes.push(`Elemento: ${ELEMENTO_NOME[elemento]}`);
-	if (e.jutsus.some((j) => /shosen|kaifuku|iryo/.test(j.slug ?? ''))) nomes.push('Ninjutsu Médico');
+	if (e.jutsus.some((j) => MEDICO.test(j.slug ?? ''))) nomes.push('Ninjutsu Médico');
 	if (e.jutsus.some((j) => j.tipo === 'Genjutsu')) nomes.push('Genjutsu');
 	const PAPEL: Record<PapelCriatura, string> = {
 		lutador: ataque === 'bukijutsu' ? 'Bukijutsu' : 'Taijutsu',

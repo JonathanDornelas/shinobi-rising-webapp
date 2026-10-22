@@ -226,14 +226,30 @@
 		},
 		{
 			"slug": "shinobi-de-iwa--jounin",
-			"nome": "Shinobi de Iwa",
+			"nome": "Shinobi de Iwa: Jounin",
 			"tipo": "arquétipo",
-			"formato": "retrato",
-			"plano": ["de-baixo"],
-			"escolhida": "shinobi-de-iwa-9501.png",
-			"fiel": ["uniforme vermelho-escuro de Iwagakure com uma manga só", "colete marrom com ombreira de um lado", "bandana com o símbolo de Iwa", "mãos num selo, cânion de pedra atrás"],
-			"prompt": "an Iwagakure ninja, original character with a square jaw, short brown hair and a scar across the cheek, dark red uniform with one sleeve, brown Hidden Stone flak vest with one shoulder guard, forehead protector with the Hidden Stone symbol, slamming his palms on a rocky ledge as a giant stone hand rises from the canyon behind him, debris and dust in the wind, stone bridges and cliffs of the Land of Earth",
-			"modelo": "pro"
+			"formato": "quadro",
+			"plano": ["close"],
+			"escolhida": "shinobi-de-iwa--jounin-10502-simbolo.png",
+			"fiel": ["o rosto e o cabelo da kunoichi de Iwagakure da referência (cabelo castanho-arroxeado na altura do queixo, mechas laterais longas, coque no alto)", "uniforme vermelho-escuro de Iwagakure com uma manga só e colete marrom com ombreira", "bandana com o símbolo de Iwa e espada de cabo vermelho nas costas", "o segundo antes da explosão: rachaduras brancas de chakra explosivo sob os inimigos ao fundo"],
+			"prompt": "an Iwagakure jounin kunoichi who uses Explosion Release, with the face and hair of the reference: dark purple-brown hair cut at the jaw with long side locks and a small top-knot bun, pale skin, sharp dark eyes and a confident sly smirk; dark red Iwagakure uniform with one sleeve, brown Hidden Stone flak vest with one shoulder guard, Hidden Stone forehead protector, a katana with a red hilt over her shoulder; she looks straight at the viewer and raises one hand in the Ram hand seal in front of her lips, like asking for silence; behind her, slightly out of focus, a squad of enemy ninjas crosses a stone bridge over a canyon of the Land of Earth while thin glowing white cracks of explosive chakra spread across the stone under their feet, a split second before the detonation",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kunoichi-de-iwagakure.png",
+					"pagina": "Kunoichi de Iwagakure",
+					"uso": "the appearance of this kunoichi as drawn in the Naruto anime: face shape, hair (color, cut, side locks and top-knot bun), pale skin, eyes and confident expression. Keep her look, but dress her in the Iwagakure jounin uniform and change the pose and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kurotsuchi.png",
+					"pagina": "Kurotsuchi",
+					"uso": "only the Iwagakure uniform as drawn in the Naruto anime: dark red outfit with one sleeve and the brown flak vest. Not this face"
+				}
+			],
+			"edicao_local": {
+				"origem": "shinobi-de-iwa--jounin-10502.png",
+				"instrucao": "símbolo da bandana trocado à mão pelo de Iwagakure (duas pedras), com scratchpad simbolo-iwa.mjs"
+			}
 		},
 		{
 			"slug": "shinobi-de-kumo--jounin",

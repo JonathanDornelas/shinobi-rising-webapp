@@ -41,7 +41,8 @@ export function npcDoVerbete(c: Criatura, estagio = 0): NpcDoVerbete {
 		tags: c.tags.slice(0, 3),
 		quer: caber(texto(c.ganchos[0] ?? []), 300),
 		segredo: caber(texto(c.ganchos[1] ?? []), 300),
-		notas: caber([`Do bestiário: /regras/bestiario/${c.slug}`, ...c.taticas.map(texto)].join('\n\n'), 2000),
+		// a ficha resumida não tem campo de PE: ele vai nas notas, para o taijutsu e o bukijutsu
+		notas: caber([`Do bestiário: /regras/bestiario/${c.slug}`, ...(k.pe !== null ? [`PE: ${k.pe}`] : []), ...c.taticas.map(texto)].join('\n\n'), 2000),
 		membros: Math.min(20, Math.max(1, e.membros))
 	};
 }

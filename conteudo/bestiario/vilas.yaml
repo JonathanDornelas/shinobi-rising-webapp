@@ -18,13 +18,14 @@
     - nome: Genin
       ameaca: 2
       papel: atirador
+      perfil: equilibrado
       resumo: "Recém-saído da Academia, vai à frente da equipe para ver primeiro e avisar."
       arte: { formato: retrato, plano: de cima }
       ataques:
         - { nome: Shuriken, alcance: Médio }
         - { nome: Kunai, alcance: Corpo a corpo }
       jutsus:
-        - { slug: henge-no-jutsu }
+        - { slug: hi-no-tama }
         - { slug: bunshin-no-jutsu }
         - { slug: kawarimi-no-jutsu }
       tracos:
@@ -33,58 +34,64 @@
     - nome: Chunin
       ameaca: 5
       papel: lutador
+      perfil: equilibrado
       resumo: "Lidera equipes de genin, guarda os portões e cumpre as missões de rank C e B."
       arte: { formato: retrato, plano: corpo inteiro }
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo }
         - { nome: Shuriken, alcance: Curto, dano: 1d6+2 }
       jutsus:
-        - { slug: kawarimi-no-jutsu }
-        - { slug: bunshin-no-jutsu }
         - { slug: goukakyu-no-jutsu }
+        - { slug: katon-endan }
+        - { slug: konoha-senpuu }
       tracos:
         - &konoha-equipe { nome: Trabalho em equipe, efeito: "Quando outro shinobi de Konoha ataca o mesmo alvo na mesma rodada, o ataque dele tem vantagem." }
     - nome: Jounin
       ameaca: 8
       papel: lutador
+      perfil: equilibrado
       resumo: "Veterano de guerra que lidera os chunin e decide a luta antes de ela começar."
       arte: { formato: quadro, plano: por cima do ombro }
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo }
       jutsus:
-        - { slug: kage-bunshin-no-jutsu }
         - { slug: karyuu-endan }
-        - { slug: goukakyu-no-jutsu }
-        - { slug: konoha-daisenpuu }
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: katon-dai-endan }
+        - { slug: konoha-tsumuji-senpu }
       tracos:
         - *konoha-equipe
         - &vontade-fogo { nome: Vontade do Fogo, efeito: "Uma vez por cena, quando cai abaixo da metade dos PV, os ataques dele têm vantagem até o fim do próximo turno." }
     - nome: Anbu
       ameaca: 11
       papel: assassino
+      perfil: equilibrado
       resumo: "O esquadrão de elite do Hokage: caça renegados, guarda segredos e responde só a ele."
       arte: { formato: retrato, plano: close }
       ataques:
         - { nome: Tantō, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: shunshin-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
         - { slug: chidori }
+        - { slug: ansatsu-jutsu }
+        - { slug: katon-haijingakure-no-jutsu }
+        - { slug: shunshin-no-jutsu }
       tracos:
         - &mascara { nome: Máscara, efeito: "Testes de Persuasão para arrancar dele qualquer informação têm desvantagem." }
         - { nome: Selo do silêncio, efeito: "Se cair inconsciente perto de inimigos, um selo no próprio corpo o queima até as cinzas no fim do turno, levando os segredos junto." }
     - nome: Hokage
       ameaca: 16
       papel: chefe
+      perfil: chakra-vasto
       resumo: "O líder da vila e, quase sempre, o ninja mais forte dela."
       arte: { formato: pagina, plano: de costas }
       ataques:
         - { nome: Golpe do Hokage, alcance: Corpo a corpo }
       jutsus:
         - { slug: rasengan }
-        - { slug: kage-bunshin-no-jutsu }
-        - { slug: karyuu-endan }
-        - { slug: goukakyu-no-jutsu }
+        - { slug: hiraishin-no-jutsu }
+        - { slug: katon-goka-messhitsu }
+        - { slug: taju-kage-bunshin-no-jutsu }
+        - { slug: shuriken-kage-bunshin-no-jutsu }
       tracos:
         - &ordem-kage { nome: Ordem do Kage, efeito: "Uma vez por rodada, como ação secundária, dá uma ordem: um aliado da vila que possa ouvi-lo faz um ataque na hora, como reação." }
         - { nome: Escolta, efeito: "Quase nunca está sozinho: dois Anbu (ficha acima) entram na luta na primeira rodada." }
@@ -112,6 +119,7 @@
     - nome: Genin
       ameaca: 2
       papel: bando
+      perfil: corpo-resistente
       membros: 3
       resumo: "Patrulham o deserto em trio e conhecem cada poço do caminho."
       arte: { formato: faixa, plano: plano aberto }
@@ -119,20 +127,22 @@
       ataques:
         - { nome: Kunai envenenada, alcance: Corpo a corpo, efeito: "Na primeira kunai que acerta, o alvo resiste com VIG contra a DT 13 ou sofre o Veneno Comum (cap. 11)." }
       jutsus:
-        - { slug: kawarimi-no-jutsu }
         - { slug: daitoppa }
+        - { slug: kawarimi-no-jutsu }
       tracos:
         - &filhos-deserto { nome: Filhos do deserto, efeito: "Não sofrem penalidade por areia, calor ou tempestade de areia." }
     - nome: Chunin
       arte: { formato: retrato, plano: de baixo }
       ameaca: 5
       papel: atirador
+      perfil: equilibrado
       resumo: "Ataca de longe com agulhas e vento, e sempre carrega o antídoto do próprio veneno."
       ataques:
         - { nome: Agulhas envenenadas, alcance: Curto, efeito: "O alvo resiste com VIG contra a DT 15 ou sofre o Veneno Forte (cap. 11)." }
       jutsus:
-        - { slug: daitoppa }
+        - { slug: shikomishindan }
         - { slug: kazekiri-no-jutsu }
+        - { slug: futon-shinkujin }
       tracos:
         - *filhos-deserto
         - { nome: Antídoto, efeito: "Uma vez por cena, como ação secundária, cura um aliado do veneno de Suna." }
@@ -140,13 +150,15 @@
       arte: { formato: quadro, plano: por cima do ombro }
       ameaca: 8
       papel: controlador
+      perfil: chakra-vasto
       resumo: "Comanda o vento do deserto e transforma o campo inteiro numa tempestade de areia."
       ataques:
         - { nome: Lâmina de vento, alcance: Curto }
       jutsus:
-        - { slug: kazekiri-no-jutsu }
-        - { slug: daitoppa }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: futon-fujin-no-jutsu }
+        - { slug: daikamaitachi-no-jutsu }
+        - { slug: kamaitachi-no-jutsu }
+        - { slug: futon-kakeami }
       tracos:
         - *filhos-deserto
         - { nome: Tempestade de areia, efeito: "Uma vez por cena, levanta uma tempestade numa área de 12 m: quem não é de Suna resiste com VIG contra a DT 17 ou fica **Cego** dentro dela até o fim do próximo turno." }
@@ -154,28 +166,31 @@
       arte: { formato: faixa, plano: câmera no chão }
       ameaca: 11
       papel: assassino
+      perfil: corpo-resistente
       resumo: "A elite do Kazekage: assassinos que matam com veneno e não deixam rastro na areia."
       ataques:
         - { nome: Agulha de escorpião, alcance: Curto, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 18 ou sofre o Veneno Forte (cap. 11)." }
       jutsus:
+        - { slug: dokugiri }
+        - { slug: futon-shinkuha }
+        - { slug: joro-senbon }
         - { slug: shunshin-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
-        - { slug: kokuangyou-no-jutsu }
-        - { slug: kazekiri-no-jutsu }
       tracos:
         - *filhos-deserto
         - { nome: Sem rastro, efeito: "Na areia, testes de Rastreamento para segui-lo falham sozinhos." }
     - nome: Kazekage
       ameaca: 16
       papel: chefe
+      perfil: equilibrado
       resumo: "O líder de Suna, que governa o vento e a tempestade do País do Vento."
       arte: { formato: pagina, plano: de costas }
       ataques:
         - { nome: Rajada do Kazekage, alcance: Médio }
       jutsus:
-        - { slug: kazekiri-no-jutsu }
-        - { slug: daitoppa }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: satetsu-kaiho }
+        - { slug: satetsu-shigure }
+        - { slug: satetsu-kesshu }
+        - { slug: futon-shinku-taigyoku }
         - { nome: "Fuuton: Grande Tempestade", nota: "Técnica de rank S do Kazekage: um vendaval que varre uma área de 18 m (use a DT e o dano da ficha, com Resistência de Acrobacia para metade)." }
       tracos:
         - *ordem-kage
@@ -205,39 +220,43 @@
       arte: { formato: retrato, plano: reflexo }
       ameaca: 2
       papel: atirador
+      perfil: chakra-farto
       resumo: "Aprendeu a se esconder na névoa antes de aprender a lutar."
       ataques:
         - { nome: Senbon, alcance: Curto }
       jutsus:
         - { slug: kirigakure-no-jutsu-ilusorio }
+        - { slug: kage-senbon }
         - { slug: mizu-teppou }
       tracos:
         - &filho-nevoa { nome: Filho da névoa, efeito: "Enxerga normalmente dentro da névoa. Para os outros, a névoa segue as regras de encobrimento do cap. 4." }
     - nome: Chunin
       ameaca: 5
       papel: controlador
+      perfil: chakra-farto
       resumo: "Enche o campo de névoa e separa o grupo para cuidar de um de cada vez."
       arte: { formato: quadro, plano: plano médio }
       ataques:
         - { nome: Senbon, alcance: Curto, efeito: "Num acerto crítico, o alvo fica **Atordoado**." }
       jutsus:
+        - { slug: suiro-no-jutsu }
+        - { slug: suiton-mizuame-nabara }
         - { slug: kirigakure-no-jutsu-ilusorio }
-        - { slug: mizu-teppou }
-        - { slug: suijinheki }
       tracos:
         - *filho-nevoa
     - nome: Jounin
       arte: { formato: quadro, plano: por cima do ombro }
       ameaca: 8
       papel: assassino
+      perfil: corpo-resistente
       resumo: "Mestre do assassinato silencioso: acha o alvo pela respiração, dentro da névoa."
       ataques:
         - { nome: Espada larga, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
         - { slug: sairento-kiringu }
+        - { slug: chigiri-toho-honenuki }
         - { slug: suiryuudan-no-jutsu }
         - { slug: kirigakure-no-jutsu-ilusorio }
-        - { slug: suijinheki }
       tracos:
         - *filho-nevoa
         - { nome: Assassinato silencioso, efeito: "Dentro da névoa, tem vantagem em Furtividade, e o primeiro ataque contra um alvo que não o percebeu é crítico se acertar." }
@@ -245,14 +264,15 @@
       arte: { formato: retrato, plano: emoldurado }
       ameaca: 11
       papel: assassino
+      perfil: chakra-farto
       resumo: "Os caçadores da Névoa: perseguem desertores, destroem os corpos e apagam os segredos de Kiri."
       ataques:
         - { nome: Senbon, alcance: Médio, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: sairento-kiringu }
-        - { slug: suiryuudan-no-jutsu }
+        - { slug: joro-senbon }
+        - { slug: hyousenkou-no-mai }
+        - { slug: suiton-suigadan }
         - { slug: shunshin-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
       tracos:
         - *mascara
         - *filho-nevoa
@@ -260,15 +280,17 @@
     - nome: Mizukage
       ameaca: 16
       papel: chefe
+      perfil: chakra-farto
       capa: true
       resumo: "A líder de Kiri, diante de quem a própria chuva para de cair."
       arte: { formato: pagina, plano: de baixo }
       ataques:
         - { nome: Golpe da Mizukage, alcance: Corpo a corpo }
       jutsus:
-        - { slug: suiryuudan-no-jutsu }
-        - { slug: suijinheki }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: yoton-yokai-no-jutsu }
+        - { slug: suiton-daikodan-no-jutsu }
+        - { slug: suiton-suishoha }
+        - { slug: gufu-suika-no-jutsu }
         - { nome: "Suiton: Névoa Ácida", nota: "Técnica de rank S da Mizukage: uma névoa que corrói tudo o que toca numa área de 12 m (use a DT e o dano da ficha, com Resistência de VIG para metade)." }
       tracos:
         - *ordem-kage
@@ -298,11 +320,12 @@
       arte: { formato: retrato, plano: perfil }
       ameaca: 2
       papel: lutador
+      perfil: corpo-resistente
       resumo: "Treina nas montanhas desde criança e não sabe recuar."
       ataques:
         - { nome: Golpe de mão aberta, alcance: Corpo a corpo }
       jutsus:
-        - { slug: kawarimi-no-jutsu }
+        - { slug: raigyaku-suihei-choppu }
         - { slug: jibashi }
       tracos:
         - &corpo-forjado { nome: Corpo forjado, efeito: "Tem vantagem nas Resistências contra **Atordoado**." }
@@ -310,24 +333,29 @@
       arte: { formato: quadro, plano: por cima do ombro }
       ameaca: 5
       papel: lutador
+      perfil: corpo-robusto
       resumo: "Carrega uma espada pesada que poucos de outras vilas conseguiriam levantar."
       ataques:
         - { nome: Espada pesada, alcance: Corpo a corpo }
       jutsus:
-        - { slug: jibashi }
-        - { slug: shunshin-no-jutsu }
+        - { slug: kumo-ryu-omotegiri }
+        - { slug: kumo-ryu-uragiri }
+        - { slug: cho-biburato-raitonto }
       tracos:
         - *corpo-forjado
     - nome: Jounin
       ameaca: 8
       papel: lutador
+      perfil: corpo-resistente
       resumo: "Mistura raio e taijutsu e não sai de cima do alvo que escolheu."
       arte: { formato: quadro, plano: corpo inteiro }
       ataques:
         - { nome: Golpe relâmpago, alcance: Corpo a corpo }
       jutsus:
-        - { slug: jibashi }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: raiton-chakura-modo }
+        - { slug: raitoningu-sutoreto }
+        - { slug: erubo }
+        - { slug: kuroi-kaminari }
       tracos:
         - &investida { nome: Investida relâmpago, efeito: "Uma vez por cena, se move e ataca com a mesma ação primária, e o ataque tem vantagem." }
         - *corpo-forjado
@@ -335,14 +363,15 @@
       arte: { formato: faixa, plano: plano aberto }
       ameaca: 11
       papel: lutador
+      perfil: corpo-robusto
       resumo: "A guarda pessoal do Raikage: espadas de raio e corpos treinados para receber o golpe no lugar dele."
       ataques:
         - { nome: Lâmina de raio, alcance: Corpo a corpo }
       jutsus:
-        - { slug: raikiri }
-        - { slug: jibashi }
+        - { slug: kumo-ryu-mikazukigiri }
+        - { slug: raiton-kuropansa }
+        - { slug: raiton-raigen-raikochu }
         - { slug: shunshin-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
       tracos:
         - *investida
         - *corpo-forjado
@@ -350,21 +379,23 @@
     - nome: Raikage
       ameaca: 16
       papel: chefe
+      perfil: corpo-robusto
       resumo: "O líder de Kumo, o lutador mais rápido do continente, que resolve quase tudo com o próprio punho."
       arte: { formato: pagina, plano: silhueta }
       ataques:
         - { nome: Punho do Raikage, alcance: Corpo a corpo }
       jutsus:
-        - { slug: raikiri }
-        - { slug: jibashi }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: raiton-rariatto }
+        - { slug: girochin-doroppu }
+        - { slug: jigokuzuki }
+        - { slug: raiga-bomu }
         - { nome: "Raiton: Armadura de Raio", nota: "Técnica de rank S do Raikage: cobre o corpo de eletricidade por uma cena, e quem o acerta corpo a corpo sofre 2d10 de dano." }
       tracos:
         - *ordem-kage
         - { nome: Escolta, efeito: "Quase nunca está sozinho: dois da Guarda do Raio (ficha acima) entram na luta na primeira rodada." }
         - *investida
   taticas:
-    - "Abre com a investida no ninja mais perigoso e não sai de cima dele. Usa o Jibashi em quem tenta ajudar."
+    - "Abre com a investida no ninja mais perigoso e não sai de cima dele. Quem tenta ajudar leva o choque: o Jibashi nos genin, a Pantera Negra na Guarda do Raio."
   ganchos:
     - "Veio buscar um herdeiro de clã com Kekkei Genkai, e a vila dele nega tudo."
     - "Quer um duelo justo com o lutador mais forte do grupo, e cumpre a palavra se perder."
@@ -386,67 +417,75 @@
       arte: { formato: retrato, plano: de cima }
       ameaca: 2
       papel: atirador
+      perfil: corpo-resistente
       resumo: "Atira de trás de uma muralha que ele mesmo ergueu."
       ataques:
         - { nome: Kunai, alcance: Curto }
       jutsus:
-        - { slug: kawarimi-no-jutsu }
         - { slug: doryuuheki }
+        - { slug: doton-sazareishi }
+        - { slug: kawarimi-no-jutsu }
       tracos:
         - &pe-no-chao { nome: Pé no chão, efeito: "Enquanto toca o solo, não pode ser empurrado nem derrubado." }
     - nome: Chunin
       arte: { formato: quadro, plano: câmera no chão }
       ameaca: 5
       papel: lutador
+      perfil: corpo-resistente
       resumo: "Lança balas de terra e avança atrás delas, sem recuar um passo."
       ataques:
         - { nome: Punho de pedra, alcance: Corpo a corpo }
       jutsus:
+        - { slug: doton-kengan-no-jutsu }
         - { slug: doryuudan }
-        - { slug: doryuuheki }
+        - { slug: doton-retsudo-tensho }
       tracos:
         - *pe-no-chao
     - nome: Jounin
+      arte: { formato: quadro, plano: close }
       ameaca: 8
       papel: lutador
-      resumo: "Veterano das guerras contra Konoha, que derruba montanhas em cima de quem não recua."
-      arte: { formato: retrato, plano: de baixo }
+      perfil: corpo-robusto
+      resumo: "Lutou nas guerras contra Konoha e derruba montanhas em cima de quem não recua."
       ataques:
         - { nome: Punho de pedra, alcance: Corpo a corpo }
       jutsus:
         - { slug: iwa-yado-kuzushi }
-        - { slug: doryuudan }
-        - { slug: doryuuheki }
+        - { slug: doton-sando-no-jutsu }
+        - { slug: doton-doryo-dango }
+        - { slug: doton-kengan-no-jutsu }
       tracos:
         - *pe-no-chao
     - nome: Corpo de Explosão
       arte: { formato: faixa, plano: aéreo }
       ameaca: 11
       papel: atirador
+      perfil: chakra-farto
       resumo: "A elite de Iwa: ninjas que transformam chakra em explosão e campos de batalha em crateras."
       ataques:
         - { nome: Etiqueta explosiva, alcance: Médio, efeito: "Quem está a até 3 m do alvo sofre metade do dano." }
       jutsus:
-        - { slug: iwa-yado-kuzushi }
-        - { slug: doryuudan }
-        - { slug: shunshin-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: gojo-kibaku-fuda }
+        - { slug: bunshin-daibakuha }
+        - { slug: iwa-bunshin-no-jutsu }
+        - { slug: doton-dochu-senko }
       tracos:
         - *pe-no-chao
         - { nome: Detonação, efeito: "Uma vez por cena, detona todas as etiquetas que espalhou: cada um numa área de 6 m resiste com Acrobacia contra a DT 18 e sofre 4d8 de dano, ou metade se passar." }
     - nome: Tsuchikage
       ameaca: 16
       papel: chefe
+      perfil: chakra-farto
       resumo: "O líder de Iwa, que flutua sobre o campo e desfaz em pó o que toca."
       arte: { formato: pagina, plano: perfil }
       ataques:
         - { nome: Punho de rocha, alcance: Corpo a corpo }
       jutsus:
+        - { slug: doton-chokajugan-no-jutsu }
+        - { slug: doton-chokeijugan-no-jutsu }
+        - { slug: doton-goremu-no-jutsu }
         - { slug: iwa-yado-kuzushi }
-        - { slug: doryuudan }
-        - { slug: kage-bunshin-no-jutsu }
         - { nome: "Jinton: Liberação da Poeira", nota: "Técnica de rank S do Tsuchikage: um cubo de luz que desfaz o alvo em pó (use a DT e o dano da ficha, com Resistência de Acrobacia para metade)." }
-        - { nome: Técnica do peso, nota: "Deixa um alvo ao toque mais leve ou mais pesado: ele resiste com FOR contra a DT da ficha ou fica **Caído** ou **Imobilizado**." }
       tracos:
         - *ordem-kage
         - { nome: Escolta, efeito: "Quase nunca está sozinho: dois do Corpo de Explosão (ficha acima) entram na luta na primeira rodada." }
@@ -475,65 +514,74 @@
       arte: { formato: retrato, plano: plano médio }
       ameaca: 2
       papel: atirador
+      perfil: equilibrado
       resumo: "Vigia as pontes de ferro e conta quem entra na cidade."
       ataques:
         - { nome: Senbon, alcance: Curto }
       jutsus:
-        - { slug: kawarimi-no-jutsu }
+        - { slug: kanchi-suikyu }
         - { slug: suiton-mizurappa }
+        - { slug: kawarimi-no-jutsu }
       tracos:
         - { nome: Cidade de ferro, efeito: "Tem vantagem em Furtividade entre os canos e as torres de Amegakure." }
     - nome: Chunin
       ameaca: 5
       papel: assassino
+      perfil: chakra-farto
       resumo: "Ataca de cima das torres e deixa a chuva contar onde os intrusos estão."
       arte: { formato: faixa, plano: plano aberto }
       ataques:
         - { nome: Guarda-chuva de agulhas, alcance: Médio, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: suiton-mizurappa }
+        - { slug: tenkyu }
         - { slug: kirigakure-no-jutsu-ilusorio }
+        - { slug: suiton-mizurappa }
       tracos:
         - &olhos-chuva { nome: Olhos da chuva, efeito: "Sob a chuva, sente a posição de cada pessoa na área: ninguém se esconde dele." }
     - nome: Jounin
       arte: { formato: quadro, plano: reflexo }
       ameaca: 8
       papel: controlador
+      perfil: chakra-farto
       resumo: "Faz da chuva uma arma, e dos canos da cidade, uma armadilha."
       ataques:
         - { nome: Guarda-chuva de agulhas, alcance: Médio }
       jutsus:
-        - { slug: suiryuudan-no-jutsu }
-        - { slug: suijinheki }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: mujin-meisai }
+        - { slug: suiton-hahonryu }
+        - { slug: suiton-suijinchu }
+        - { slug: suiro-no-jutsu }
       tracos:
         - *olhos-chuva
     - nome: Vigias da Chuva
       arte: { formato: faixa, plano: aéreo }
       ameaca: 11
       papel: assassino
+      perfil: chakra-vasto
       resumo: "Os espiões de elite da Chuva: ouvem tudo o que a chuva toca e calam quem ouviu demais."
       ataques:
         - { nome: Agulhas da chuva, alcance: Médio, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: suiryuudan-no-jutsu }
+        - { slug: oboro-bunshin-no-jutsu }
         - { slug: kokuangyou-no-jutsu }
+        - { slug: tomegane-no-jutsu }
         - { slug: shunshin-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
       tracos:
         - *olhos-chuva
         - *mascara
     - nome: Líder da Chuva
       ameaca: 16
       papel: chefe
+      perfil: chakra-vasto
       resumo: "Quem governa Ame, e a quem a vila inteira obedece sem saber direito quem é."
       arte: { formato: pagina, plano: de costas }
       ataques:
         - { nome: Guarda-chuvas de agulhas, alcance: Médio }
       jutsus:
-        - { slug: suiryuudan-no-jutsu }
+        - { slug: ukojizai-no-jutsu }
+        - { slug: suiton-suidanha }
+        - { slug: dokugiri }
         - { slug: kokuangyou-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
         - { nome: Chuva que sente, nota: "Faz chover sobre a vila inteira por uma cena: sente cada pessoa que a chuva toca e sabe onde todas estão." }
       tracos:
         - *ordem-kage
@@ -562,22 +610,27 @@
       arte: { formato: retrato, plano: plano médio }
       ameaca: 2
       papel: controlador
+      perfil: chakra-farto
       resumo: "Testa nos inimigos o aparelho que acabou de ganhar do laboratório."
       ataques:
         - { nome: Onda sonora, alcance: Curto, efeito: "O alvo resiste com VIG contra a DT 14 ou fica **Atordoado**." }
       jutsus:
+        - { slug: zankuha }
         - { slug: kawarimi-no-jutsu }
       tracos:
         - &ouvido-treinado { nome: Ouvido treinado, efeito: "Não pode ser surpreendido por quem faz qualquer barulho." }
     - nome: Chunin
       ameaca: 5
       papel: controlador
+      perfil: equilibrado
       resumo: "Desequilibra primeiro, ataca depois, e trabalha em trio."
       arte: { formato: retrato, plano: plano médio }
       ataques:
         - { nome: Onda sonora, alcance: Curto, efeito: "O alvo resiste com VIG contra a DT 16 ou fica **Atordoado**." }
       jutsus:
-        - { slug: daitoppa }
+        - { slug: kyomeisen }
+        - { slug: zankukyokuha }
+        - { slug: kanashibari-no-jutsu }
       tracos:
         - &golpe-nao-erra { nome: Golpe que não erra, efeito: "Quando o ataque corpo a corpo erra por 2 ou menos, a vibração ainda causa metade do dano." }
         - *ouvido-treinado
@@ -585,12 +638,14 @@
       arte: { formato: quadro, plano: de cima }
       ameaca: 8
       papel: controlador
+      perfil: equilibrado
       resumo: "Mistura som e ilusão: o inimigo não sabe mais o que ouviu nem o que viu."
       ataques:
         - { nome: Onda sonora, alcance: Médio, efeito: "O alvo resiste com VIG contra a DT 17 ou fica **Atordoado**." }
       jutsus:
-        - { slug: daitoppa }
+        - { slug: mateki-mugen-onsa }
         - { slug: magen-narakumi-no-jutsu }
+        - { slug: zankukyokuha }
         - { slug: kokuangyou-no-jutsu }
       tracos:
         - *golpe-nao-erra
@@ -599,13 +654,14 @@
       arte: { formato: faixa, plano: câmera no chão }
       ameaca: 11
       papel: lutador
+      perfil: chakra-farto
       resumo: "A guarda pessoal do Otokage, marcada com o selo amaldiçoado."
       ataques:
         - { nome: Golpe da marca, alcance: Corpo a corpo }
       jutsus:
-        - { slug: kokuangyou-no-jutsu }
-        - { slug: karyuu-endan }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: bunretsu-no-jutsu }
+        - { slug: doton-kekkai-doro-domu }
+        - { slug: shishienjin }
         - { slug: shunshin-no-jutsu }
       tracos:
         - { nome: Marca amaldiçoada, efeito: "Uma vez por cena, abaixo da metade dos PV, a marca desperta: até o fim da cena, ignora a primeira condição que sofrer e os ataques dele têm vantagem. No fim da cena, ganha um nível de Fadiga (veja o verbete Portador da marca amaldiçoada)." }
@@ -613,14 +669,16 @@
     - nome: Otokage
       ameaca: 16
       papel: chefe
+      perfil: corpo-resistente
       resumo: "O fundador de Oto, que trocou a própria humanidade por técnicas proibidas."
       arte: { formato: pagina, plano: emoldurado }
       ataques:
         - { nome: Espada de chakra, alcance: Médio }
       jutsus:
-        - { slug: kokuangyou-no-jutsu }
-        - { slug: magen-kyouten-chiten }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: senei-tajashu }
+        - { slug: sojasosai-no-jutsu }
+        - { slug: mandara-no-jin }
+        - { slug: kuchiyose-sanju-rashomon }
         - { nome: Troca de pele, nota: "Técnica proibida dos laboratórios de Oto: uma vez por cena, quando cairia a 0 PV, sai da própria pele e volta com metade dos PV." }
       tracos:
         - *ordem-kage
@@ -649,23 +707,26 @@
       arte: { formato: retrato, plano: câmera no chão }
       ameaca: 2
       papel: atirador
+      perfil: equilibrado
       resumo: "Espera atrás da água que cai e só aparece para atacar."
       ataques:
         - { nome: Kunai, alcance: Curto }
       jutsus:
-        - { slug: kawarimi-no-jutsu }
         - { slug: suiton-mizurappa }
+        - { slug: kawarimi-no-jutsu }
       tracos:
         - &emboscada { nome: Emboscada da cachoeira, efeito: "Perto de água corrente, tem vantagem na Iniciativa." }
     - nome: Chunin
       arte: { formato: quadro, plano: emoldurado }
       ameaca: 5
       papel: assassino
+      perfil: corpo-resistente
       resumo: "Prepara a emboscada dias antes e escolhe o alvo com calma."
       ataques:
         - { nome: Kunai da emboscada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: suijinheki }
+        - { slug: bubitorappu }
+        - { slug: senpuku }
         - { slug: kirigakure-no-jutsu-ilusorio }
       tracos:
         - *emboscada
@@ -673,13 +734,15 @@
       arte: { formato: retrato, plano: de baixo }
       ameaca: 8
       papel: lutador
+      perfil: chakra-farto
       resumo: "Guarda as passagens escondidas da vila e conhece cada pedra do rio."
       ataques:
         - { nome: Espada curta, alcance: Corpo a corpo }
       jutsus:
-        - { slug: suiryuudan-no-jutsu }
+        - { slug: suiton-suikodan-no-jutsu }
+        - { slug: meisaigakure-no-jutsu }
+        - { slug: suiton-takitsubo-no-jutsu }
         - { slug: suijinheki }
-        - { slug: kage-bunshin-no-jutsu }
       tracos:
         - *emboscada
     - nome: Guardiões da Água do Herói
@@ -687,11 +750,13 @@
       capa: true
       ameaca: 11
       papel: lutador
+      perfil: chakra-vasto
       resumo: "A elite de Taki, que guarda a Água do Herói e bebe dela quando a vila corre perigo."
       ataques:
         - { nome: Espada da cachoeira, alcance: Corpo a corpo }
       jutsus:
-        - { slug: suiryuudan-no-jutsu }
+        - { slug: suiton-bakusui-shoha }
+        - { slug: suiton-hahonryu }
         - { slug: kage-bunshin-no-jutsu }
         - { slug: shunshin-no-jutsu }
       tracos:
@@ -700,14 +765,16 @@
     - nome: Líder da Cachoeira
       ameaca: 16
       papel: chefe
+      perfil: equilibrado
       resumo: "O líder de Taki, que carrega no corpo os anos que a Água do Herói já cobrou."
       arte: { formato: pagina, plano: silhueta }
       ataques:
         - { nome: Golpe da cachoeira, alcance: Corpo a corpo }
       jutsus:
-        - { slug: suiryuudan-no-jutsu }
-        - { slug: suijinheki }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: futon-atsugai }
+        - { slug: katon-zukokku }
+        - { slug: raiton-gian }
+        - { slug: suiton-suidanha }
         - { nome: "Suiton: Queda da Cachoeira", nota: "Técnica de rank S do líder de Taki: a cachoeira inteira desaba sobre uma área de 12 m (use a DT e o dano da ficha, com Resistência de FOR para metade)." }
       tracos:
         - *ordem-kage

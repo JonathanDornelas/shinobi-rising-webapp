@@ -20,6 +20,7 @@
       arte: { formato: retrato, plano: perfil }
       ameaca: 8
       papel: lutador
+      perfil: equilibrado
       resumo: "Ainda aprende a ficar parado o bastante para a natureza entrar."
       ataques:
         - &golpe-natureza { nome: Golpe da natureza, alcance: Corpo a corpo, efeito: "A energia natural estende o golpe: acerta alvos a até 3 m." }
@@ -36,10 +37,12 @@
       arte: { formato: quadro, plano: olhos }
       ameaca: 11
       papel: lutador
+      perfil: chakra-farto
       resumo: "Domina o modo, e quem o ensinou luta ao lado dele."
       ataques:
         - *golpe-natureza
       jutsus:
+        - { slug: senpo-futon-sunabokori }
         - { slug: kage-bunshin-no-jutsu }
         - { slug: shunshin-no-jutsu }
         - { nome: Técnica de eremita, nota: "Um jutsu de rank A ou menor, escolhido pelo Mestre no catálogo, que ele quase sempre lança na versão Senpou." }
@@ -54,11 +57,13 @@
       capa: true
       ameaca: 16
       papel: chefe
+      perfil: chakra-vasto
       resumo: "Um dos poucos humanos que os mestres do senjutsu tratam como igual."
       ataques:
         - { nome: Golpe da natureza, alcance: Corpo a corpo, efeito: "A energia natural estende o golpe: acerta alvos a até 6 m." }
       jutsus:
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: senpo-futon-sunabokori }
+        - { slug: taju-kage-bunshin-no-jutsu }
         - { slug: shunshin-no-jutsu }
         - { nome: Técnica do sábio, nota: "Uma técnica de rank S feita de energia natural, escolhida pelo Mestre no catálogo ou criada com as regras do cap. 20. Ele sempre a lança na versão Senpou." }
       tracos:

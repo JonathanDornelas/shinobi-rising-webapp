@@ -18,6 +18,7 @@
     - nome: Genin
       ameaca: 2
       papel: controlador
+      perfil: chakra-farto
       resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
       ataques: &a1
         - nome: Kunai
@@ -36,17 +37,20 @@
     - nome: Chunin
       ameaca: 5
       papel: controlador
+      perfil: chakra-farto
       resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
       ataques: *a1
       jutsus:
-        - slug: kage-mane-no-jutsu
-        - slug: kage-yose-no-jutsu
+        - { slug: kagemane-kage-shibari-no-jutsu }
+        - { slug: kage-mane-no-jutsu }
+        - { slug: kage-yose-no-jutsu }
       tracos:
         - *a2
         - *a3
     - nome: Jounin
       ameaca: 8
       papel: controlador
+      perfil: chakra-farto
       resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
       ataques: *a1
       jutsus:
@@ -60,6 +64,7 @@
     - nome: Líder do clã
       ameaca: 11
       papel: chefe
+      perfil: chakra-farto
       resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
       ataques: *a1
       jutsus:
@@ -96,13 +101,14 @@
     - nome: Genin
       ameaca: 2
       papel: lutador
+      perfil: corpo-robusto
       resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
       ataques: &a4
         - nome: Punho expandido
           alcance: Curto
       jutsus:
-        - slug: baika-no-jutsu
-        - slug: karori-kontororu
+        - { slug: baika-no-jutsu }
+        - { slug: karori-kontororu }
       tracos:
         - &a5
           nome: Tanque de carne
@@ -113,39 +119,42 @@
     - nome: Chunin
       ameaca: 5
       papel: lutador
+      perfil: corpo-robusto
       resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
       ataques: *a4
       jutsus:
-        - slug: nikudan-sensha
-        - slug: bubun-baika-no-jutsu
-        - slug: baika-no-jutsu
-        - slug: karori-kontororu
+        - { slug: nikudan-sensha }
+        - { slug: bubun-baika-no-jutsu }
+        - { slug: baika-no-jutsu }
+        - { slug: karori-kontororu }
       tracos:
         - *a5
         - *a6
     - nome: Jounin
       ameaca: 8
       papel: lutador
+      perfil: corpo-robusto
       resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
       ataques: *a4
       jutsus:
-        - slug: chou-baika-no-jutsu
-        - slug: hari-jizou-akimichi-hen
-        - slug: choudan-bakugeki
-        - slug: nikudan-sensha
+        - { slug: chou-baika-no-jutsu }
+        - { slug: choharite }
+        - { slug: hari-jizou-akimichi-hen }
+        - { slug: nikudan-sensha }
       tracos:
         - *a5
         - *a6
     - nome: Líder do clã
       ameaca: 11
       papel: chefe
+      perfil: corpo-resistente
       resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
       ataques: *a4
       jutsus:
-        - slug: chou-baika-no-jutsu
-        - slug: hari-jizou-akimichi-hen
-        - slug: choudan-bakugeki
-        - slug: nikudan-sensha
+        - { slug: cho-modo }
+        - { slug: choudan-bakugeki }
+        - { slug: daburu-nikudan-sensha }
+        - { slug: chou-baika-no-jutsu }
       tracos:
         - *a5
         - *a6
@@ -175,6 +184,7 @@
     - nome: Genin
       ameaca: 2
       papel: controlador
+      perfil: chakra-farto
       resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
       ataques: &a7
         - nome: Kunai
@@ -192,17 +202,20 @@
     - nome: Chunin
       ameaca: 5
       papel: controlador
+      perfil: chakra-farto
       resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
       ataques: *a7
       jutsus:
-        - slug: shintenshin-no-jutsu
-        - slug: kanchi-denden
+        - { slug: shintenshin-no-jutsu }
+        - { slug: shinten-kugutsu-juin-no-jutsu }
+        - { slug: kanchi-denden }
       tracos:
         - *a8
         - *a9
     - nome: Jounin
       ameaca: 8
       papel: controlador
+      perfil: chakra-farto
       resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
       ataques: *a7
       jutsus:
@@ -216,6 +229,7 @@
     - nome: Líder do clã
       ameaca: 11
       papel: chefe
+      perfil: chakra-farto
       resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
       ataques: *a7
       jutsus:
@@ -252,13 +266,15 @@
     - nome: Genin
       ameaca: 2
       papel: lutador
+      perfil: corpo-resistente
       resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
       ataques: &a10
         - nome: Garras
           alcance: Corpo a corpo
       jutsus:
-        - slug: shikyaku-no-jutsu
-        - slug: tsuuga
+        - { slug: tsuuga }
+        - { slug: shikyaku-no-jutsu }
+        - { slug: dainamikku-makingu }
       tracos:
         - &a11
           nome: Companheiro ninken
@@ -269,6 +285,7 @@
     - nome: Chunin
       ameaca: 5
       papel: lutador
+      perfil: corpo-resistente
       resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
       ataques: *a10
       jutsus:
@@ -282,6 +299,7 @@
     - nome: Jounin
       ameaca: 8
       papel: lutador
+      perfil: corpo-resistente
       resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
       ataques: *a10
       jutsus:
@@ -295,6 +313,7 @@
     - nome: Líder do clã
       ameaca: 11
       papel: chefe
+      perfil: corpo-robusto
       resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
       ataques: *a10
       jutsus:
@@ -331,6 +350,7 @@
     - nome: Genin
       ameaca: 2
       papel: controlador
+      perfil: chakra-farto
       resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
       ataques: &a13
         - nome: Enxame
@@ -349,6 +369,7 @@
     - nome: Chunin
       ameaca: 5
       papel: controlador
+      perfil: chakra-farto
       resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
       ataques: *a13
       jutsus:
@@ -362,6 +383,7 @@
     - nome: Jounin
       ameaca: 8
       papel: controlador
+      perfil: chakra-farto
       resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
       ataques: *a13
       jutsus:
@@ -375,6 +397,7 @@
     - nome: Líder do clã
       ameaca: 11
       papel: chefe
+      perfil: chakra-vasto
       resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
       ataques: *a13
       jutsus:
@@ -411,14 +434,15 @@
     - nome: Genin
       ameaca: 3
       papel: lutador
+      perfil: equilibrado
       resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
       ataques: &a16
         - nome: Punho Gentil
           alcance: Corpo a corpo
           efeito: "O alvo também perde 1d6 PC: o golpe fecha os pontos de chakra."
       jutsus:
-        - slug: juuken-tenketsushin
-        - slug: shotei
+        - { slug: juuken-tenketsushin }
+        - { slug: shotei }
       tracos:
         - &a17
           nome: Byakugan
@@ -429,32 +453,35 @@
     - nome: Chunin
       ameaca: 6
       papel: lutador
+      perfil: equilibrado
       resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
       ataques: *a16
       jutsus:
-        - slug: hakkesho-kaiten
-        - slug: hakke-rokujuyon-sho
-        - slug: hakke-kusho
-        - slug: shotei
+        - { slug: hakke-kusho }
+        - { slug: jukenho-ichigekishin }
+        - { slug: shotei }
+        - { slug: juuken-tenketsushin }
       tracos:
         - *a17
         - *a18
     - nome: Jounin
       ameaca: 9
       papel: lutador
+      perfil: equilibrado
       resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
       ataques: *a16
       jutsus:
-        - slug: hakkesho-kaiten
-        - slug: hakke-rokujuyon-sho
-        - slug: hakke-kusho
-        - slug: shotei
+        - { slug: hakke-rokujuyon-sho }
+        - { slug: hakkesho-kaiten }
+        - { slug: hakke-kusho }
+        - { slug: jukenho-ichigekishin }
       tracos:
         - *a17
         - *a18
     - nome: Líder do clã
       ameaca: 12
       papel: chefe
+      perfil: chakra-farto
       resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
       ataques: *a16
       jutsus:
@@ -491,13 +518,15 @@
     - nome: Genin
       ameaca: 3
       papel: lutador
+      perfil: equilibrado
       resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
       ataques: &a19
         - nome: Kunai
           alcance: Corpo a corpo
       jutsus:
-        - slug: katon-goukakyu-no-jutsu
-        - slug: katon-hosenka-no-jutsu
+        - { slug: katon-goukakyu-no-jutsu }
+        - { slug: katon-hosenka-no-jutsu }
+        - { slug: sofushasan-no-tachi }
       tracos:
         - &a20
           nome: Sharingan
@@ -508,39 +537,42 @@
     - nome: Chunin
       ameaca: 6
       papel: lutador
+      perfil: chakra-farto
       resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
       ataques: *a19
       jutsus:
-        - slug: uchihagaeshi
-        - slug: katon-ryuka-no-jutsu
-        - slug: uchiha-kaenjin
-        - slug: genjutsu-sharingan
+        - { slug: katon-hosenka-tsumabeni }
+        - { slug: katon-goukakyu-no-jutsu }
+        - { slug: genjutsu-sharingan }
+        - { slug: uchihagaeshi }
       tracos:
         - *a20
         - *a21
     - nome: Jounin
       ameaca: 9
       papel: lutador
+      perfil: chakra-farto
       resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
       ataques: *a19
       jutsus:
-        - slug: uchihagaeshi
-        - slug: katon-ryuka-no-jutsu
-        - slug: uchiha-kaenjin
-        - slug: genjutsu-sharingan
+        - { slug: katon-ryuka-no-jutsu }
+        - { slug: genjutsu-sharingan }
+        - { slug: katon-hosenka-tsumabeni }
+        - { slug: uchihagaeshi }
       tracos:
         - *a20
         - *a21
     - nome: Líder do clã
       ameaca: 12
       papel: chefe
+      perfil: chakra-vasto
       resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
       ataques: *a19
       jutsus:
-        - slug: uchihagaeshi
-        - slug: katon-ryuka-no-jutsu
-        - slug: uchiha-kaenjin
-        - slug: genjutsu-sharingan
+        - { slug: uchiha-kaenjin }
+        - { slug: katon-goka-messhitsu }
+        - { slug: katon-ryuka-no-jutsu }
+        - { slug: genjutsu-sharingan }
       tracos:
         - *a20
         - *a21
@@ -570,14 +602,15 @@
     - nome: Genin
       ameaca: 2
       papel: lutador
+      perfil: corpo-resistente
       resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
       ataques: &a22
         - nome: Golpe de madeira
           alcance: Corpo a corpo
       jutsus:
-        - slug: doryuuheki
-        - slug: bunshin-no-jutsu
-        - slug: kawarimi-no-jutsu
+        - { slug: mokuton-henge }
+        - { slug: doryuuheki }
+        - { slug: kawarimi-no-jutsu }
       tracos:
         - &a23
           nome: Vitalidade Senju
@@ -588,35 +621,41 @@
     - nome: Chunin
       ameaca: 5
       papel: lutador
+      perfil: equilibrado
       resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
       ataques: *a22
       jutsus:
-        - slug: doryuuheki
-        - slug: bunshin-no-jutsu
-        - slug: kawarimi-no-jutsu
+        - { slug: moku-bunshin-no-jutsu }
+        - { slug: mokuton-mokusatsu-shibari-no-jutsu }
+        - { slug: soshinki }
       tracos:
         - *a23
         - *a24
     - nome: Jounin
       ameaca: 8
       papel: lutador
+      perfil: chakra-farto
       resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
       ataques: *a22
       jutsus:
-        - slug: mokuton-mokujoheki
-        - slug: mokuton-shichuro-no-jutsu
+        - { slug: mokuton-shichuro-no-jutsu }
+        - { slug: mokuton-mokujoheki }
+        - { slug: mokuton-daisoju }
+        - { slug: mokuton-sashiki-no-jutsu }
       tracos:
         - *a23
         - *a24
     - nome: Líder do clã
       ameaca: 11
       papel: chefe
+      perfil: chakra-vasto
       resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
       ataques: *a22
       jutsus:
-        - slug: mokuton-hijutsu-jukai-kotan
-        - slug: mokuton-mokujoheki
-        - slug: mokuton-shichuro-no-jutsu
+        - { slug: mokuton-hijutsu-jukai-kotan }
+        - { slug: mokuton-mokuryu-no-jutsu }
+        - { slug: mokuton-mokujin-no-jutsu }
+        - { slug: hokage-shiki-jijun-jutsu-kakuan-nitten-suishu }
       tracos:
         - *a23
         - *a24
@@ -646,63 +685,64 @@
     - nome: Genin
       ameaca: 2
       papel: controlador
+      perfil: chakra-vasto
       resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
       ataques: &a25
         - nome: Kunai de selo
           alcance: Curto
       jutsus:
-        - slug: uzumaki-fuin-kaiso
-        - slug: tairyoku-kaifuku
+        - { slug: uzumaki-fuin-kaiso }
+        - { slug: tairyoku-kaifuku }
       tracos:
         - &a26
           nome: Chakra imenso
-          efeito: Tem 30 PC a mais, e não sofre Fadiga por usar jutsus.
+          efeito: Os PC da ficha já contam a reserva do clã, e ele não sofre Fadiga por usar jutsus.
         - &a27
           nome: Correntes de selo
           efeito: "Uma vez por cena, prende um inimigo: Resistência de FOR contra a DT 16 ou fica **Imobilizado**, e sem poder usar jutsus enquanto estiver preso."
-      pc: 60
     - nome: Chunin
       ameaca: 5
       papel: controlador
+      perfil: chakra-vasto
       resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
       ataques: *a25
       jutsus:
-        - slug: tairyoku-kaifuku
-        - slug: uzumaki-fuin-kaiso
+        - { slug: kinbaku-kingusari-no-jutsu }
+        - { slug: tairyoku-kaifuku }
+        - { slug: uzumaki-fuin-kaiso }
       tracos:
         - *a26
         - *a27
-      pc: 80
     - nome: Jounin
       ameaca: 8
       papel: controlador
+      perfil: chakra-vasto
       resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
       ataques: *a25
       jutsus:
-        - slug: shisho-fuin
-        - slug: uzumaki-kekkai
-        - slug: tairyoku-kaifuku
-        - slug: uzumaki-fuin-kaiso
+        - { slug: kagura-shingan }
+        - { slug: shisho-fuin }
+        - { slug: uzumaki-kekkai }
+        - { slug: kinbaku-kingusari-no-jutsu }
       tracos:
         - *a26
         - *a27
-      pc: 110
     - nome: Líder do clã
       ameaca: 11
       papel: chefe
+      perfil: chakra-vasto
       resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
       ataques: *a25
       jutsus:
-        - slug: kongo-fusa
-        - slug: hakke-no-fuin-shiki
-        - slug: shisho-fuin
-        - slug: uzumaki-kekkai
+        - { slug: kongo-fusa }
+        - { slug: hakke-no-fuin-shiki }
+        - { slug: kagura-shingan }
+        - { slug: uzumaki-kekkai }
       tracos:
         - *a26
         - *a27
         - nome: Escolta do clã
           efeito: Costuma vir com dois ninjas do clã de nível Chunin (este verbete), que agem na iniciativa dele.
-      pc: 140
   taticas:
     - Prende primeiro, conversa depois. Sela os jutsus dos inimigos mais perigosos e só ataca quando ninguém mais pode reagir.
   ganchos:
@@ -727,6 +767,7 @@
     - nome: Genin
       ameaca: 3
       papel: lutador
+      perfil: corpo-robusto
       resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
       ataques: &a28
         - nome: Espada de osso
@@ -748,13 +789,14 @@
     - nome: Chunin
       ameaca: 6
       papel: lutador
+      perfil: corpo-robusto
       resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
       ataques: *a28
       jutsus:
-        - slug: tsubaki-no-mai
-        - slug: tessenka-no-mai-tsuru
-        - slug: yanagi-no-mai
-        - slug: karamatsu-no-mai
+        - { slug: tsubaki-no-mai }
+        - { slug: yanagi-no-mai }
+        - { slug: karamatsu-no-mai }
+        - { slug: teshi-sendan }
       tracos:
         - *a29
         - *a30
@@ -762,13 +804,14 @@
     - nome: Jounin
       ameaca: 9
       papel: lutador
+      perfil: corpo-robusto
       resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
       ataques: *a28
       jutsus:
-        - slug: tsubaki-no-mai
-        - slug: tessenka-no-mai-tsuru
-        - slug: yanagi-no-mai
-        - slug: karamatsu-no-mai
+        - { slug: tessenka-no-mai-tsuru }
+        - { slug: tsubaki-no-mai }
+        - { slug: karamatsu-no-mai }
+        - { slug: yanagi-no-mai }
       tracos:
         - *a29
         - *a30
@@ -776,6 +819,7 @@
     - nome: Líder do clã
       ameaca: 12
       papel: chefe
+      perfil: corpo-robusto
       resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
       ataques: *a28
       jutsus:
@@ -813,14 +857,15 @@
     - nome: Genin
       ameaca: 3
       papel: assassino
+      perfil: chakra-farto
       resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
       ataques: &a31
         - nome: Punho de água
           alcance: Corpo a corpo
           efeito: Dano em dobro contra alvo **Desprevenido**.
       jutsus:
-        - slug: suika-no-jutsu
-        - slug: mizudeppo-no-jutsu
+        - { slug: suika-no-jutsu }
+        - { slug: mizudeppo-no-jutsu }
       tracos:
         - &a32
           nome: Corpo fluido
@@ -831,39 +876,42 @@
     - nome: Chunin
       ameaca: 6
       papel: assassino
+      perfil: chakra-farto
       resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
       ataques: *a31
       jutsus:
-        - slug: suiton-gosuiwan-no-jutsu
-        - slug: suiton-tate-eboshi
-        - slug: suiton-bolha-afogadora
-        - slug: suika-no-jutsu
+        - { slug: mizudeppo-nicho }
+        - { slug: suika-no-jutsu }
+        - { slug: suiton-tate-eboshi }
+        - { slug: suiton-mizu-bunshin }
       tracos:
         - *a32
         - *a33
     - nome: Jounin
       ameaca: 9
       papel: assassino
+      perfil: chakra-farto
       resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
       ataques: *a31
       jutsus:
-        - slug: suiton-gosuiwan-no-jutsu
-        - slug: suiton-tate-eboshi
-        - slug: suiton-bolha-afogadora
-        - slug: suika-no-jutsu
+        - { slug: suiton-gosuiwan-no-jutsu }
+        - { slug: suiton-bolha-afogadora }
+        - { slug: mizudeppo-nicho }
+        - { slug: suika-no-jutsu }
       tracos:
         - *a32
         - *a33
     - nome: Líder do clã
       ameaca: 12
       papel: chefe
+      perfil: chakra-vasto
       resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
       ataques: *a31
       jutsus:
-        - slug: joki-boi
-        - slug: suiton-gosuiwan-no-jutsu
-        - slug: suiton-tate-eboshi
-        - slug: suiton-bolha-afogadora
+        - { slug: joki-boi }
+        - { slug: suiton-gosuiwan-no-jutsu }
+        - { slug: suiton-bolha-afogadora }
+        - { slug: suiton-tate-eboshi }
       tracos:
         - *a32
         - *a33
@@ -893,13 +941,15 @@
     - nome: Genin
       ameaca: 3
       papel: controlador
+      perfil: chakra-farto
       resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
       ataques: &a34
         - nome: Areia
           alcance: Médio
       jutsus:
-        - slug: suna-shuriken
-        - slug: suna-no-tate
+        - { slug: suna-shuriken }
+        - { slug: suna-no-tate }
+        - { slug: suna-bunshin }
       tracos:
         - &a35
           nome: Defesa automática
@@ -911,13 +961,14 @@
     - nome: Chunin
       ameaca: 6
       papel: controlador
+      perfil: chakra-farto
       resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
       ataques: *a34
       jutsus:
-        - slug: sabaku-soso
-        - slug: sabaku-ro
-        - slug: suna-no-tate
-        - slug: sabaku-kyu
+        - { slug: sabaku-kyu }
+        - { slug: suna-no-yoroi }
+        - { slug: sabaku-fuyu }
+        - { slug: suna-shigure }
       tracos:
         - *a35
         - *a36
@@ -925,13 +976,14 @@
     - nome: Jounin
       ameaca: 9
       papel: controlador
+      perfil: chakra-farto
       resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
       ataques: *a34
       jutsus:
-        - slug: sabaku-soso
-        - slug: sabaku-ro
-        - slug: suna-no-tate
-        - slug: sabaku-kyu
+        - { slug: sabaku-soso }
+        - { slug: sabakuha }
+        - { slug: suna-no-kaiwan }
+        - { slug: suna-no-tate }
       tracos:
         - *a35
         - *a36
@@ -939,13 +991,14 @@
     - nome: Líder do clã
       ameaca: 12
       papel: chefe
+      perfil: chakra-vasto
       resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
       ataques: *a34
       jutsus:
-        - slug: ryusa-bakuryu
-        - slug: sabaku-taiso
-        - slug: sabaku-soso
-        - slug: sabaku-ro
+        - { slug: sabaku-taiso }
+        - { slug: ryusa-bakuryu }
+        - { slug: kusa-boheki }
+        - { slug: suna-arare }
       tracos:
         - *a35
         - *a36
@@ -976,13 +1029,15 @@
     - nome: Genin
       ameaca: 3
       papel: controlador
+      perfil: chakra-farto
       resumo: Saído da Academia há pouco, ainda aprende as técnicas do clã.
       ataques: &a37
         - nome: Agulhas de gelo
           alcance: Médio
       jutsus:
-        - slug: sensatsu-suisho
-        - slug: hyoton-suishoheki
+        - { slug: sensatsu-suisho }
+        - { slug: hyoton-suishoheki }
+        - { slug: hyoton-tsubame-fubuki }
       tracos:
         - &a38
           nome: Espelhos de gelo
@@ -993,32 +1048,35 @@
     - nome: Chunin
       ameaca: 6
       papel: controlador
+      perfil: chakra-farto
       resumo: Já domina as técnicas básicas do clã e lidera uma equipe de genin.
       ataques: *a37
       jutsus:
-        - slug: hyoton-makyo-hyosho
-        - slug: hyoton-hyogan-domu
-        - slug: makyo-hakuhyo
-        - slug: sensatsu-suisho
+        - { slug: hyoton-tsubame-fubuki }
+        - { slug: hyoton-hyogan-domu }
+        - { slug: sensatsu-suisho }
+        - { slug: hyoton-suishoheki }
       tracos:
         - *a38
         - *a39
     - nome: Jounin
       ameaca: 9
       papel: controlador
+      perfil: chakra-farto
       resumo: Um dos melhores do clã, com as técnicas avançadas na ponta dos dedos.
       ataques: *a37
       jutsus:
-        - slug: hyoton-makyo-hyosho
-        - slug: hyoton-hyogan-domu
-        - slug: makyo-hakuhyo
-        - slug: sensatsu-suisho
+        - { slug: hyoton-makyo-hyosho }
+        - { slug: makyo-hakuhyo }
+        - { slug: hyoton-hyogan-domu }
+        - { slug: sensatsu-suisho }
       tracos:
         - *a38
         - *a39
     - nome: Líder do clã
       ameaca: 12
       papel: chefe
+      perfil: chakra-farto
       resumo: A cabeça do clã, que guarda os segredos dele e decide por todos.
       ataques: *a37
       jutsus:

@@ -2,7 +2,9 @@
 	// Arte do verbete (PixelLab, static/bestiario): pixels nítidos em qualquer escala. Na página do monstro a arte vem
 	// "pintada" no papel, com a borda irregular de uma pincelada seca de nanquim em vez de um quadro reto; a pincelada
 	// muda de arte para arte (variante), como num livro ilustrado à mão. Na lista, a arte sai solta e cortada na caixa.
+	// A arte pintada amplia com um clique (ZoomImagem); a solta da lista não, porque ela já é o link do verbete.
 	import type { Criatura } from '#lib/livro/tipos.ts';
+	import ZoomImagem from '../ui/ZoomImagem.svelte';
 
 	interface Props {
 		criatura: Pick<Criatura, 'nome' | 'arte'>;
@@ -12,13 +14,17 @@
 		/** Na lista: a arte preenche a caixa e é cortada nas bordas. */
 		cobrir?: boolean;
 		carregar?: 'lazy' | 'eager';
+		/** Abre a arte em tela cheia ao clicar (padrão: só a arte pintada; nunca dentro de um link). */
+		ampliar?: boolean;
 		class?: string;
 	}
-	let { criatura, moldura = 'pintura', variante = 0, cobrir = false, carregar = 'lazy', class: classe = '' }: Props = $props();
+	let { criatura, moldura = 'pintura', variante = 0, cobrir = false, carregar = 'lazy', ampliar, class: classe = '' }: Props = $props();
 	const a = $derived(criatura.arte);
+	const comZoom = $derived(ampliar ?? (moldura === 'pintura' && !cobrir));
+	let aberta = $state(false);
 </script>
 
-{#if a.arquivo}
+{#snippet imagem()}
 	<img
 		src={a.arquivo}
 		width={a.largura}
@@ -27,6 +33,15 @@
 		loading={carregar}
 		class="block max-w-full [image-rendering:pixelated] {cobrir ? 'h-full w-full object-cover' : 'h-auto'} {moldura === 'pintura' && !cobrir ? `pintura pintura-${variante % 3}` : ''} {classe}"
 	/>
+{/snippet}
+
+{#if a.arquivo && comZoom}
+	<button type="button" class="ampliar block w-full cursor-zoom-in p-0" aria-label="Ampliar a arte: {criatura.nome}" onclick={() => (aberta = true)}>
+		{@render imagem()}
+	</button>
+	{#if aberta}<ZoomImagem src={a.arquivo} largura={a.largura} altura={a.altura} rotulo={criatura.nome} aoFechar={() => (aberta = false)} />{/if}
+{:else if a.arquivo}
+	{@render imagem()}
 {:else}
 	<div
 		class="flex items-center justify-center border-2 border-dashed border-b3 bg-b2 text-center {cobrir ? 'h-full w-full' : ''} {classe}"
@@ -43,6 +58,15 @@
 {/if}
 
 <style>
+	/* O botão em volta da arte não tem cara de botão: só o cursor de lupa e, no foco do teclado, um contorno ouro. */
+	.ampliar {
+		background: none;
+		border: 0;
+	}
+	.ampliar:focus-visible {
+		outline: 2px solid #d9a82b;
+		outline-offset: 4px;
+	}
 	/* A pincelada: um retângulo com a borda deslocada por ruído (feTurbulence), que deixa as fibras do pincel nas
 	   bordas; esticado no tamanho da arte. Cada variante muda a semente e o sentido das fibras. */
 	.pintura {

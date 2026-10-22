@@ -16,6 +16,7 @@ import type {
 	EstagioCriatura,
 	FormatoArte,
 	PapelCriatura,
+	PerfilCriatura,
 	RankNpc,
 	TipoCriatura,
 	Capitulo,
@@ -41,7 +42,7 @@ import type {
 	TipoTermo,
 	Trecho
 } from '../../src/lib/livro/tipos.ts';
-import { fichaCompleta } from '../../src/lib/bestiario/ficha.ts';
+import { fichaCompleta, peDe, PERFIS } from '../../src/lib/bestiario/ficha.ts';
 import { lerDoc, lerYaml, trechosDeMd } from './md.ts';
 
 export const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -338,6 +339,8 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			nome: string;
 			ameaca?: number | string;
 			papel: PapelCriatura;
+			/** Perfil de PV e PC; o do estágio vale sobre o do verbete, e o padrão é equilibrado. */
+			perfil?: PerfilCriatura;
 			ficha?: keyof typeof FICHAS;
 			membros?: number;
 			resumo?: string;
@@ -392,14 +395,17 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			const f = e.ficha ? FICHAS[e.ficha] : null;
 			if (e.ficha && !f) avisar(`Bestiário: ficha de invocação desconhecida em ${y.slug}: ${e.ficha}`);
 			const rotulo = f ? String(f.ameaca) : String(e.ameaca);
+			const perfil = f ? null : (e.perfil ?? y.perfil ?? 'equilibrado');
+			if (perfil && !PERFIS[perfil]) avisar(`Bestiário: perfil desconhecido em ${y.slug}: ${perfil}`);
 			let base: { pv: number; pc: number | null; defesa: number; iniciativa: number; dt: number; acerto: number; dano: string; nota: string | null };
 			if (f) base = { pv: f.pv, pc: null, defesa: f.defesa, iniciativa: f.iniciativa, dt: f.dt, acerto: f.acerto, dano: f.dano, nota: [`Usa a ficha ${/^Chefe/.test(f.titulo) ? 'do' : 'da'} ${f.titulo} (cap. 14).`, f.restricao && `${f.restricao.replace(/\.$/, '')}.`].filter(Boolean).join(' ') };
 			else {
 				const l = linha(rotulo);
 				const fraco = e.papel === 'controlador' || e.papel === 'suporte';
+				const p = PERFIS[perfil!] ?? PERFIS.equilibrado;
 				base = {
-					pv: Math.round(l.pv * (FATOR_PV[e.papel] ?? 1)),
-					pc: y.tipo === 'fauna' ? null : l.pc,
+					pv: Math.round(l.pv * (FATOR_PV[e.papel] ?? 1) * p.pv),
+					pc: y.tipo === 'fauna' ? null : Math.round(l.pc * p.pc),
 					defesa: l.defesa,
 					iniciativa: l.iniciativa,
 					dt: l.dt + (e.papel === 'controlador' ? 1 : 0),
@@ -427,6 +433,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 				acerto: ataques[0]?.acerto ?? base.acerto,
 				defesa,
 				iniciativa,
+				perfil,
 				ataque: ataques[0] ? { nome: ataques[0].nome, alcance: ataques[0].alcance } : null,
 				jutsus: (e.jutsus ?? []).map((j) => {
 					const card = j.slug ? jutsus.find((x) => x.slug === j.slug) : undefined;
@@ -442,12 +449,15 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 				ameaca,
 				ameacaRotulo: rotulo,
 				papel: e.papel,
+				perfil,
 				rank: rankDe(ameaca),
 				membros: e.membros ?? 1,
 				resumo: e.resumo ? trechosDeMd(e.resumo) : null,
 				combate: {
 					pv: e.pv ?? base.pv,
 					pc: e.pc !== undefined ? e.pc : base.pc,
+					// as invocações usam a ficha do cap. 14, que não tem PE
+					pe: f ? null : peDe(ameaca, ficha.atributos.vig),
 					defesa,
 					iniciativa,
 					dt: e.dt ?? base.dt,

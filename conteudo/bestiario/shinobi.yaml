@@ -28,36 +28,42 @@
       arte: { formato: retrato, plano: por cima do ombro }
       ameaca: 2
       papel: suporte
+      perfil: equilibrado
       resumo: "Aprendiz de medicina que ainda treme quando o corte é fundo."
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo }
       jutsus:
         - { slug: shosen-jutsu }
+        - { slug: kawarimi-no-jutsu }
       tracos:
         - &triagem { nome: Triagem, efeito: "Uma vez por rodada, pode estabilizar um aliado caído ao alcance com uma ação secundária, sem teste." }
     - nome: Chunin
       arte: { formato: quadro, plano: plano aberto }
       ameaca: 5
       papel: suporte
+      perfil: chakra-farto
       resumo: "Fecha cortes no meio da luta e sabe onde cortar quando precisa."
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo }
       jutsus:
         - { slug: shosen-jutsu }
         - { slug: chakra-no-mesu }
+        - { slug: kanashibari-no-jutsu }
       tracos:
         - *triagem
     - nome: Jounin
       arte: { formato: retrato, plano: close }
       ameaca: 8
       papel: suporte
+      perfil: equilibrado
       resumo: "Cirurgião de campo que trata veneno, osso e chakra ao mesmo tempo."
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo }
       jutsus:
+        - { slug: saikan-chushutsu-no-jutsu }
         - { slug: shosen-jutsu }
         - { slug: chakra-no-mesu }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: okasho }
       tracos:
         - *triagem
         - &antidotos { nome: Antídotos, efeito: "Como ação secundária, tira um aliado ao alcance da condição **Envenenado**." }
@@ -65,14 +71,15 @@
       arte: { formato: quadro, plano: câmera inclinada }
       ameaca: 11
       papel: suporte
+      perfil: chakra-farto
       resumo: "Médico de elite que acompanha as equipes mais perigosas e traz todo mundo de volta."
       ataques:
         - { nome: Bisturi de chakra, alcance: Corpo a corpo }
       jutsus:
-        - { slug: shosen-jutsu-2 }
+        - { slug: chikatsu-saisei-no-jutsu }
+        - { slug: ranshinsho }
+        - { slug: saikan-chushutsu-no-jutsu }
         - { slug: chakra-no-mesu }
-        - { slug: shunshin-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
       tracos:
         - *triagem
         - *antidotos
@@ -81,14 +88,15 @@
       arte: { formato: pagina, plano: de baixo }
       ameaca: 16
       papel: chefe
+      perfil: chakra-vasto
       resumo: "A lenda viva da medicina ninja, que cura qualquer ferida e quebra qualquer osso."
       ataques:
         - { nome: Soco de chakra, alcance: Corpo a corpo }
       jutsus:
-        - { slug: shosen-jutsu-2 }
-        - { slug: chakra-no-mesu }
-        - { slug: kage-bunshin-no-jutsu }
-        - { nome: Força monstruosa, nota: "Concentra o chakra no punho no instante do golpe e racha o chão numa área de 6 m: quem está nela resiste com Acrobacia contra a DT da ficha ou fica **Caído**." }
+        - { slug: byakugo-no-in }
+        - { slug: sozo-saisei }
+        - { slug: okasho }
+        - { slug: tsutenkyaku }
       tracos:
         - *cirurgia
         - *antidotos
@@ -116,39 +124,43 @@
       arte: { formato: retrato, plano: plano médio }
       ameaca: 2
       papel: controlador
+      perfil: chakra-farto
       resumo: "Descobriu cedo que a mente dos outros é mais fácil de enganar que o corpo."
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo }
       jutsus:
-        - { slug: kai }
         - { slug: kirigakure-no-jutsu-ilusorio }
+        - { slug: utakata }
+        - { slug: kai }
       tracos:
         - &mente-treinada { nome: Mente treinada, efeito: "Tem vantagem para perceber um genjutsu e para se libertar dele." }
     - nome: Chunin
       arte: { formato: quadro, plano: câmera inclinada }
       ameaca: 5
       papel: controlador
+      perfil: chakra-farto
       resumo: "Faz o chão sumir debaixo dos pés de quem chega perto demais."
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo }
       jutsus:
+        - { slug: magen-kokoni-arazu-no-jutsu }
         - { slug: magen-narakumi-no-jutsu }
-        - { slug: kirigakure-no-jutsu-ilusorio }
-        - { slug: kai }
+        - { slug: kasumi-jusha-no-jutsu }
       tracos:
         - *mente-treinada
     - nome: Jounin
       arte: { formato: retrato, plano: olhos }
       ameaca: 8
       papel: controlador
+      perfil: chakra-farto
       resumo: "Prende o mais forte do grupo numa ilusão logo no começo e cuida dos outros depois."
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo }
       jutsus:
-        - { slug: kirigakure-no-jutsu-ilusorio }
-        - { slug: magen-narakumi-no-jutsu }
-        - { slug: magen-kyouten-chiten }
+        - { slug: magen-jubaku-satsu }
         - { slug: kokuangyou-no-jutsu }
+        - { slug: magen-kyouten-chiten }
+        - { slug: kasumi-jusha-no-jutsu }
       tracos:
         - *mente-treinada
         - &isca { nome: Isca, efeito: "Uma vez por cena, quando um ataque o acertaria, revela que era uma ilusão: o ataque erra, e ele aparece a alguns metros dali." }
@@ -156,13 +168,14 @@
       arte: { formato: retrato, plano: perfil }
       ameaca: 11
       papel: controlador
+      perfil: chakra-farto
       resumo: "Prende um esquadrão inteiro num mesmo pesadelo."
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo }
       jutsus:
+        - { slug: nehan-shoja-no-jutsu }
         - { slug: kokuangyou-no-jutsu }
         - { slug: magen-jubaku-satsu }
-        - { slug: magen-kyouten-chiten }
         - { slug: magen-narakumi-no-jutsu }
       tracos:
         - *isca
@@ -171,14 +184,15 @@
       arte: { formato: pagina, plano: plano aberto }
       ameaca: 16
       papel: chefe
+      perfil: chakra-vasto
       resumo: "Um segundo no mundo real, três dias dentro da ilusão dele."
       ataques:
         - { nome: Lâmina ilusória, alcance: Curto }
       jutsus:
+        - { slug: nehan-shoja-no-jutsu }
+        - { slug: magen-kokoni-arazu-no-jutsu }
         - { slug: kokuangyou-no-jutsu }
-        - { slug: magen-jubaku-satsu }
         - { slug: magen-kyouten-chiten }
-        - { slug: kirigakure-no-jutsu-ilusorio }
       tracos:
         - *isca
         - { nome: Mundo de ilusão, efeito: "Uma vez por cena, como ação primária, olha nos olhos de um alvo: ele resiste com ESP contra a DT 21 ou fica **Em Genjutsu** e, quando se libertar, ganha dois níveis de Fadiga." }
@@ -205,35 +219,42 @@
       arte: { formato: retrato, plano: de cima }
       ameaca: 2
       papel: controlador
+      perfil: equilibrado
       resumo: "Aprendiz de selamento que ainda borra a tinta, mas já sabe esconder uma armadilha."
       ataques:
         - { nome: Pergaminho de armas, alcance: Médio }
       jutsus:
-        - { slug: kai }
+        - { slug: chakura-kontororu-baku }
+        - { slug: kaija-hoin }
       tracos:
         - { nome: Selo de papel, efeito: "Antes da luta, esconde um selo no chão: o primeiro inimigo que pisar nele resiste com Selamento contra a DT 14 ou fica **Imobilizado** até o fim do próximo turno." }
     - nome: Chunin
       arte: { formato: quadro, plano: câmera no chão }
       ameaca: 5
       papel: controlador
+      perfil: chakra-farto
       resumo: "Prepara uma sala inteira antes de deixar o inimigo entrar."
       ataques:
         - { nome: Pergaminho de armas, alcance: Médio }
       jutsus:
-        - { slug: kai }
-        - { slug: doryuuheki }
+        - { slug: bubitorappu }
+        - { slug: gofu-kekkai }
+        - { slug: nunoshibari-no-jutsu }
       tracos:
         - { nome: Território preparado, efeito: "No lugar que ele preparou, um inimigo que entra numa área marcada resiste com Selamento contra a DT 16 ou fica **Imobilizado** pelo selo." }
     - nome: Jounin
       arte: { formato: retrato, plano: emoldurado }
       ameaca: 8
       papel: controlador
+      perfil: chakra-farto
       resumo: "Prende o corpo e depois o chakra de quem cai nas armadilhas dele."
       ataques:
         - { nome: Pergaminho de armas, alcance: Médio }
       jutsus:
-        - { slug: kai }
-        - { slug: doryuuheki }
+        - { slug: kekkai-tengai-hojin }
+        - { slug: kekkaifu-gansoko }
+        - { slug: fuka-hoin }
+        - { slug: jigo-jubaku-no-in }
       tracos:
         - { nome: Território preparado, efeito: "No lugar que ele preparou, um inimigo que entra numa área marcada resiste com Selamento contra a DT 17 ou fica **Imobilizado** pelo selo." }
         - { nome: Selo de chakra, efeito: "Como ação primária, toca um inimigo **Imobilizado**: ele não pode usar jutsus até se libertar (Resistência de CTR contra a DT 17 no fim de cada turno)." }
@@ -241,13 +262,15 @@
       arte: { formato: faixa, plano: plano aberto }
       ameaca: 11
       papel: controlador
+      perfil: chakra-farto
       resumo: "Espalha selos pelo campo e aparece em qualquer um deles."
       ataques:
         - { nome: Pergaminho de armas, alcance: Médio }
       jutsus:
-        - { slug: kai }
-        - { slug: doryuuheki }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: hiraishin-no-jutsu }
+        - { slug: hiraishingiri }
+        - { slug: shishienjin }
+        - { slug: kekkaifu-gansoko }
       tracos:
         - { nome: Território preparado, efeito: "No lugar que ele preparou, um inimigo que entra numa área marcada resiste com Selamento contra a DT 19 ou fica **Imobilizado** pelo selo." }
         - { nome: Selo de chakra, efeito: "Como ação primária, toca um inimigo **Imobilizado**: ele não pode usar jutsus até se libertar (Resistência de CTR contra a DT 19 no fim de cada turno)." }
@@ -256,13 +279,15 @@
       arte: { formato: pagina, plano: de costas }
       ameaca: 16
       papel: chefe
+      perfil: chakra-vasto
       resumo: "Guarda uma prisão de selos que poderia trancar até uma Besta com Cauda."
       ataques:
         - { nome: Pergaminho de armas, alcance: Médio }
       jutsus:
-        - { slug: kai }
-        - { slug: doryuuheki }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: ura-shisho-fuin }
+        - { slug: shisekiyojin }
+        - { slug: saisei-kekkai }
+        - { slug: tenchu }
       tracos:
         - { nome: Território preparado, efeito: "No lugar que ele preparou, um inimigo que entra numa área marcada resiste com Selamento contra a DT 21 ou fica **Imobilizado** pelo selo." }
         - { nome: Selo de chakra, efeito: "Como ação primária, toca um inimigo **Imobilizado**: ele não pode usar jutsus até se libertar (Resistência de CTR contra a DT 21 no fim de cada turno)." }
@@ -289,10 +314,12 @@
       arte: { formato: retrato, plano: câmera no chão }
       ameaca: 2
       papel: atirador
+      perfil: equilibrado
       resumo: "Ainda carrega as armas na bolsa, não em pergaminhos, e já acerta o alvo de olhos fechados."
       ataques:
         - { nome: Arma arremessada, alcance: Médio }
       jutsus:
+        - { slug: kage-shuriken-no-jutsu }
         - { slug: kawarimi-no-jutsu }
       tracos:
         - &recolher { nome: Recolher, efeito: "Puxa de volta as armas com fios de chakra: nunca fica sem munição." }
@@ -300,10 +327,15 @@
       arte: { formato: quadro, plano: perfil }
       ameaca: 5
       papel: atirador
+      perfil: corpo-resistente
       resumo: "Solta o pergaminho inteiro quando o grupo se junta num lugar só."
       ataques:
         - { nome: Arma arremessada, alcance: Médio }
         - { nome: Corrente com foice, alcance: Curto, efeito: "O alvo resiste com FOR contra a DT 15 ou fica **Imobilizado** pela corrente." }
+      jutsus:
+        - { slug: kusari-sogazan }
+        - { slug: sogazan }
+        - { slug: joro-senbon }
       tracos:
         - { nome: Chuva de aço, efeito: "Uma vez por cena, solta o pergaminho inteiro: cada um numa área de 6 m faz uma Resistência de Acrobacia contra a DT 15 e sofre 2d8 de dano, ou metade se passar." }
         - *recolher
@@ -311,13 +343,16 @@
       arte: { formato: retrato, plano: por cima do ombro }
       ameaca: 8
       papel: atirador
+      perfil: corpo-resistente
       resumo: "Cobre o campo de aço do alto e prende com a corrente quem tenta chegar perto."
       ataques:
         - { nome: Arma arremessada, alcance: Médio }
         - { nome: Corrente com foice, alcance: Curto, efeito: "O alvo resiste com FOR contra a DT 16 ou fica **Imobilizado** pela corrente." }
       jutsus:
-        - { slug: kawarimi-no-jutsu }
-        - { slug: shunshin-no-jutsu }
+        - { slug: hisenken }
+        - { slug: hagama-no-mai-rakuko-no-yaiba }
+        - { slug: kusari-sogazan }
+        - { slug: kage-shuriken-no-jutsu }
       tracos:
         - { nome: Chuva de aço, efeito: "Uma vez por cena, solta o pergaminho inteiro: cada um numa área de 6 m faz uma Resistência de Acrobacia contra a DT 16 e sofre 3d8 de dano, ou metade se passar." }
         - *recolher
@@ -325,13 +360,16 @@
       arte: { formato: quadro, plano: escorço }
       ameaca: 11
       papel: atirador
+      perfil: corpo-resistente
       resumo: "Troca de arma a cada golpe e nunca repete a mesma duas vezes."
       ataques:
         - { nome: Arma do arsenal, alcance: Médio }
         - { nome: Corrente com foice, alcance: Curto, efeito: "O alvo resiste com FOR contra a DT 18 ou fica **Imobilizado** pela corrente." }
       jutsus:
-        - { slug: shunshin-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: akurobatto }
+        - { slug: issen }
+        - { slug: iaigiri }
+        - { slug: tsukikage }
       tracos:
         - { nome: Chuva de aço, efeito: "Uma vez por cena, solta o pergaminho inteiro: cada um numa área de 9 m faz uma Resistência de Acrobacia contra a DT 18 e sofre 4d8 de dano, ou metade se passar." }
         - { nome: Arsenal invocado, efeito: "Troca de arma sem gastar ação, quantas vezes quiser no turno." }
@@ -340,13 +378,16 @@
       arte: { formato: pagina, plano: de baixo }
       ameaca: 16
       papel: chefe
+      perfil: equilibrado
       resumo: "Mil armas no ar ao mesmo tempo, e uma lendária na mão."
       ataques:
         - { nome: Arma lendária, alcance: Corpo a corpo, efeito: "Ignora a RD do alvo." }
         - { nome: Arma do arsenal, alcance: Médio }
       jutsus:
-        - { slug: shunshin-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: shuriken-kage-bunshin-no-jutsu }
+        - { slug: mikazuki-no-mai }
+        - { slug: akurobatto }
+        - { slug: yojinbo }
       tracos:
         - { nome: Mil lâminas, efeito: "Duas vezes por cena, solta o arsenal inteiro: cada um numa área de 12 m faz uma Resistência de Acrobacia contra a DT 20 e sofre 6d8 de dano, ou metade se passar." }
         - { nome: Arsenal invocado, efeito: "Troca de arma sem gastar ação, quantas vezes quiser no turno." }
@@ -373,25 +414,28 @@
       arte: { formato: retrato, plano: de ponta-cabeça }
       ameaca: 2
       papel: lutador
+      perfil: corpo-robusto
       resumo: "Treina dobrado porque não tem talento para o chakra, e ninguém treina mais do que ele."
       ataques:
         - { nome: Sequência de golpes, alcance: Corpo a corpo }
       jutsus:
-        - { slug: konoha-reppuu }
+        - { slug: goken }
         - { slug: konoha-senpuu }
+        - { slug: konoha-reppuu }
       tracos:
         - &pesos { nome: Pesos, efeito: "Uma vez por cena, solta os pesos: até o fim da cena, a Iniciativa e a Defesa sobem 2." }
     - nome: Chunin
       arte: { formato: quadro, plano: escorço }
       ameaca: 5
       papel: lutador
+      perfil: corpo-robusto
       resumo: "Já abre os primeiros portões internos e chuta mais rápido do que o olho acompanha."
       ataques:
         - { nome: Sequência de golpes, alcance: Corpo a corpo }
       jutsus:
-        - { slug: konoha-senpuu }
-        - { slug: dynamic-entry }
+        - { slug: konoha-shofu }
         - { slug: konoha-daisenpuu }
+        - { slug: dynamic-entry }
       tracos:
         - *pesos
         - { nome: Portões internos, efeito: "Pode abrir até o 2º portão interno, com as regras do cap. 16." }
@@ -399,14 +443,15 @@
       arte: { formato: retrato, plano: perfil }
       ameaca: 8
       papel: lutador
+      perfil: corpo-robusto
       resumo: "Vai direto no ninja de selos mais perigoso, porque sabe que selo precisa de tempo."
       ataques:
         - { nome: Sequência de golpes, alcance: Corpo a corpo }
       jutsus:
-        - { slug: konoha-senpuu }
-        - { slug: dynamic-entry }
         - { slug: omote-renge }
-        - { slug: konoha-daikaiten }
+        - { slug: konoha-goriki-senpu }
+        - { slug: konoha-kaigansho }
+        - { slug: suiken }
       tracos:
         - *pesos
         - { nome: Portões internos, efeito: "Pode abrir até o 3º portão interno, com as regras do cap. 16." }
@@ -414,13 +459,15 @@
       arte: { formato: quadro, plano: câmera inclinada }
       ameaca: 11
       papel: lutador
+      perfil: corpo-robusto
       resumo: "Abre o quinto portão, e a pele fica vermelha de tanto chakra correndo no corpo."
       ataques:
         - { nome: Sequência de golpes, alcance: Corpo a corpo }
       jutsus:
+        - { slug: sotenkyaku }
+        - { slug: hoka-ranbu }
         - { slug: omote-renge }
-        - { slug: konoha-daisenpuu }
-        - { slug: dynamic-entry }
+        - { slug: konoha-otoshi }
       tracos:
         - *pesos
         - { nome: Portões internos, efeito: "Pode abrir até o 5º portão interno, com as regras do cap. 16." }
@@ -428,13 +475,16 @@
       arte: { formato: pagina, plano: de baixo }
       ameaca: 16
       papel: chefe
+      perfil: corpo-robusto
       resumo: "Uma lenda dos portões, capaz de lutar de igual para igual com um Kage sem fazer um selo."
       ataques:
         - { nome: Sequência de golpes, alcance: Corpo a corpo }
       jutsus:
-        - { slug: omote-renge }
-        - { slug: konoha-daisenpuu }
-        - { slug: dynamic-entry }
+        - { slug: sotenkyaku }
+        - { slug: konoha-kaigansho }
+        - { slug: konoha-goriki-senpu }
+        - { slug: kage-buyo }
+        - { slug: hayanie }
       tracos:
         - *pesos
         - { nome: Portões internos, efeito: "Pode abrir até o 7º portão interno, com as regras do cap. 16." }
@@ -462,11 +512,13 @@
       arte: { formato: retrato, plano: de cima }
       ameaca: 2
       papel: atirador
+      perfil: equilibrado
       resumo: "Ainda luta com uma marionete pequena, emprestada da oficina da vila."
       ataques:
         - { nome: Marionete pequena, alcance: Curto }
         - { nome: Kunai, alcance: Corpo a corpo, dano: 1d4+1 }
       jutsus:
+        - { slug: soshujin }
         - { slug: kawarimi-no-jutsu }
       tracos:
         - { nome: Marionete pequena, efeito: "PV 30 e Defesa 16. É ela que ataca; o marionetista fica até 30 m atrás, escondido se puder." }
@@ -475,12 +527,15 @@
       arte: { formato: quadro, plano: escorço }
       ameaca: 5
       papel: atirador
+      perfil: equilibrado
       resumo: "Já tem uma marionete humanoide só sua, com lâminas e veneno escondidos."
       ataques:
         - { nome: Marionete humanoide, alcance: Curto, efeito: "O alvo resiste com VIG contra a DT 15 ou sofre o Veneno Forte (cap. 11)." }
         - { nome: Kunai, alcance: Corpo a corpo, dano: 1d6+1 }
       jutsus:
-        - { slug: kawarimi-no-jutsu }
+        - { slug: shikomi-kugutsu-shinshin-happa }
+        - { slug: senju-sobu }
+        - { slug: soshujin }
       tracos:
         - { nome: Marionete humanoide, efeito: "PV 60 e Defesa 15, com lâminas ocultas nos braços e um compartimento de veneno." }
         - *fios
@@ -488,13 +543,16 @@
       arte: { formato: retrato, plano: de costas }
       ameaca: 8
       papel: controlador
+      perfil: chakra-farto
       resumo: "Rege duas marionetes ao mesmo tempo, uma para atacar e outra para protegê-lo."
       ataques:
         - { nome: Marionetes gêmeas, alcance: Curto, efeito: "O alvo resiste com VIG contra a DT 17 ou sofre o Veneno Forte (cap. 11)." }
         - { nome: Kunai, alcance: Corpo a corpo, dano: 1d6+2 }
       jutsus:
-        - { slug: kawarimi-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: kurohigi-kiki-ippatsu }
+        - { slug: kiko-junbu }
+        - { slug: shikomi-kugutsu-shinshin-happa }
+        - { slug: senju-sobu }
       tracos:
         - { nome: Duas marionetes, efeito: "Duas marionetes humanoides, com PV 60 e Defesa 15 cada. Comanda uma com a ação primária e a outra com a secundária, como no cap. 13." }
         - &escudo-madeira { nome: Escudo de madeira, efeito: "Como reação, uma das marionetes se põe na frente de um ataque contra ele e recebe o golpe." }
@@ -503,13 +561,16 @@
       arte: { formato: quadro, plano: câmera no chão }
       ameaca: 11
       papel: controlador
+      perfil: chakra-farto
       resumo: "Três marionetes e um arsenal de venenos que poucos antídotos curam."
       ataques:
         - { nome: Marionetes de guerra, alcance: Médio, efeito: "O alvo resiste com VIG contra a DT 19 ou sofre o Veneno Letal de Sasori (cap. 11)." }
         - { nome: Kunai, alcance: Corpo a corpo, dano: 1d8+2 }
       jutsus:
-        - { slug: kawarimi-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: kurohigi-kiki-sanpatsu }
+        - { slug: sanbo-kyukai }
+        - { slug: kugutsu-no-jutsu-gishu-senbon }
+        - { slug: kiko-junbu }
       tracos:
         - { nome: Três marionetes, efeito: "Três marionetes humanoides, com PV 60 e Defesa 15 cada; uma delas tem um lança-chamas embutido (cone de fogo, 2d6 de dano, 3 usos por cena)." }
         - *escudo-madeira
@@ -519,12 +580,15 @@
       capa: true
       ameaca: 16
       papel: chefe
+      perfil: corpo-resistente
       resumo: "O mestre das cem marionetes, que transformou o próprio corpo na mais perigosa delas."
       ataques:
         - { nome: Marionete humana, alcance: Médio, efeito: "O alvo resiste com VIG contra a DT 21 ou sofre o Veneno Letal de Sasori (cap. 11)." }
       jutsus:
-        - { slug: kawarimi-no-jutsu }
-        - { slug: kage-bunshin-no-jutsu }
+        - { slug: akahigi-hyakki-no-soen }
+        - { slug: shirohigi-jikki-chikamatsu-no-shu }
+        - { slug: kugutsu-chichi-to-haha }
+        - { slug: akahigi-kiki-sankaku }
         - { nome: Jutsu guardado na marionete, nota: "A marionete humana foi um ninja de verdade e ainda guarda um jutsu dele (cap. 13): escolha um de rank A do catálogo." }
       tracos:
         - { nome: Exército de marionetes, efeito: "Uma vez por cena, solta dezenas de marionetes de uma vez: cada inimigo numa área de 12 m resiste com Acrobacia contra a DT 21 e sofre 6d8 de dano, ou metade se passar." }
@@ -544,6 +608,7 @@
   tipo: shinobi
   ameaca: 5
   papel: lutador
+  perfil: corpo-robusto
   origem: Contratado por nobres e mercadores
   vila: null
   arte: { formato: quadro, plano: de baixo }
@@ -554,8 +619,9 @@
   ataques:
     - { nome: Bastão de ferro, alcance: Corpo a corpo }
   jutsus:
-    - { slug: kawarimi-no-jutsu }
+    - { slug: ninpo-shinken-shirahadori }
     - { slug: doryuuheki }
+    - { slug: kawarimi-no-jutsu }
   tracos:
     - { nome: Escudo humano, efeito: "Como reação, quando o protegido ao lado dele é atacado, o guarda-costas recebe o ataque no lugar." }
   taticas:
@@ -579,34 +645,41 @@
     - nome: Marca adormecida
       ameaca: 4
       papel: lutador
+      perfil: equilibrado
       resumo: "A marca ainda está quieta no pescoço. Por enquanto."
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo }
       jutsus:
         - { slug: goukakyu-no-jutsu }
+        - { slug: jagei-jubaku }
       tracos:
         - { nome: Despertar, efeito: "Abaixo da metade dos PV, a marca pode despertar: o portador passa a usar a ficha da marca desperta até o fim da cena e, depois dela, ganha um nível de Fadiga." }
     - nome: Marca desperta
       ameaca: 8
       papel: lutador
+      perfil: chakra-farto
       resumo: "As chamas pretas cobrem metade do corpo, e o chakra pesa no ar."
       ataques:
         - { nome: Golpe da marca, alcance: Corpo a corpo }
       jutsus:
-        - { slug: goukakyu-no-jutsu }
         - { slug: karyuu-endan }
+        - { slug: senei-jashu }
+        - { slug: katon-dai-endan }
       tracos:
         - { nome: Fúria do selo, efeito: "Ignora a primeira condição que sofrer em cada cena." }
         - { nome: Preço, efeito: "No fim da cena, ganha um nível de Fadiga." }
     - nome: Segunda forma
       ameaca: 12
       papel: chefe
+      perfil: corpo-resistente
       resumo: "A pele escurece, o cabelo cresce e asas de carne rasgam as costas."
       ataques:
         - { nome: Garras da segunda forma, alcance: Corpo a corpo }
       jutsus:
-        - { slug: karyuu-endan }
         - { slug: chidori }
+        - { slug: chidori-nagashi }
+        - { slug: senei-tajashu }
+        - { slug: katon-goka-mekkyaku }
       tracos:
         - { nome: Asas, efeito: "Voa." }
         - { nome: Preço, efeito: "No fim da cena, ganha dois níveis de Fadiga. Se chegar ao nível 5, o corpo não aguenta." }
@@ -632,6 +705,7 @@
     - nome: Chakra vazando
       ameaca: 6
       papel: lutador
+      perfil: chakra-vasto
       resumo: "O chakra da besta escapa pela pele, vermelho e quente."
       ataques:
         - { nome: Golpe selvagem, alcance: Corpo a corpo }
@@ -642,6 +716,7 @@
     - nome: Manto de uma cauda
       ameaca: 9
       papel: lutador
+      perfil: chakra-vasto
       resumo: "Um manto de chakra com orelhas e uma cauda cobre o corpo."
       ataques:
         - { nome: Garras de chakra, alcance: Curto }
@@ -651,6 +726,7 @@
     - nome: Manto de várias caudas
       ameaca: 13
       papel: chefe
+      perfil: chakra-vasto
       resumo: "A pele some sob o chakra, as caudas se multiplicam e a besta quase toma conta."
       ataques:
         - { nome: Braços de chakra, alcance: Médio }
@@ -671,6 +747,7 @@
   tipo: shinobi
   ameaca: 8
   papel: controlador
+  perfil: chakra-farto
   origem: O conselho de uma grande vila
   vila: null
   arte: { formato: quadro, plano: de baixo }
@@ -681,9 +758,10 @@
   ataques:
     - { nome: Bengala de ferro, alcance: Corpo a corpo }
   jutsus:
-    - { slug: kai }
+    - { slug: tomegane-no-jutsu }
     - { slug: magen-jubaku-satsu }
     - { slug: doryuuheki }
+    - { slug: kai }
   tracos:
     - { nome: Voz do conselho, efeito: "Uma vez por cena, chama a guarda: aparecem dois chunin da vila dele (a ficha Chunin do verbete da vila, como Shinobi de Konoha), que agem na iniciativa dele." }
     - { nome: Velha raposa, efeito: "Nunca fica **Desprevenido** e tem vantagem para perceber mentiras." }
