@@ -1,0 +1,317 @@
+// Onda 1 · Clones, Mokuton (Senju), Jiton (Areia de Ferro) e outros ninjutsu
+import { CAP10, cla } from '../base.mjs';
+
+const ninjutsu = { origem: 'Ninjutsu', tipo: 'Ninjutsu', ...CAP10.geral };
+const mokuton = { origem: 'Clã Senju', tipo: 'Ninjutsu', elemento: 'mokuton', ...cla('senju') };
+const jiton = { origem: 'Jiton', tipo: 'Ninjutsu', elemento: 'jiton', ...CAP10.geral };
+const AREIA = 'Exige a Kekkei Genkai do Jiton ou a marionete humana do Terceiro Kazekage (cap. 13).';
+const BUNSHIN = 'Os clones seguem as regras do Kage Bunshin no Jutsu: 1 PV, a sua Defesa e os seus valores.';
+
+export default [
+	{
+		...ninjutsu,
+		wiki: 'Multiple Shadow Clone Technique',
+		rankWiki: 'A',
+		nome: 'Tajū Kage Bunshin no Jutsu',
+		traducao: 'Técnica dos Múltiplos Clones das Sombras',
+		dano: [4, 6],
+		alcance: 'medio',
+		area: 'esfera6',
+		comp: { invocacao: 8, fadiga: 2 },
+		descricao: 'A versão proibida do Kage Bunshin: centenas de clones sólidos aparecem de uma vez e cobrem o campo. O chakra se divide entre todos, e poucos aguentam o preço.',
+		efeito: '4d6 de dano em todos na área (metade com sucesso na Resistência), atacados pelo bando de clones. Depois do ataque, até 10 clones continuam em campo até o fim da cena. O usuário sofre 2 níveis de Fadiga.',
+		notas: [BUNSHIN]
+	},
+	{
+		...ninjutsu,
+		wiki: 'Clone Great Explosion',
+		rankWiki: 'A',
+		nome: 'Bunshin Daibakuha',
+		traducao: 'Grande Explosão do Clone',
+		dano: [6, 8],
+		alcance: 'curto',
+		area: 'esfera3',
+		comp: { ignora: 1, exige: 1 },
+		descricao: 'O clone das sombras agarra o inimigo e explode com todo o chakra que tinha.',
+		efeito: '6d8 de dano em todos num raio de 3 m do clone (metade com sucesso na Resistência), que ignora RD. O clone some na explosão.',
+		notas: ['Exige saber o Kage Bunshin no Jutsu.']
+	},
+	{
+		...ninjutsu,
+		wiki: 'Crow Clone Technique',
+		rankWiki: 'C',
+		nome: 'Karasu Bunshin no Jutsu',
+		traducao: 'Técnica do Clone de Corvos',
+		comp: { invocacao: 4, 'sem-selos': 1 },
+		descricao: 'Um clone feito de corvos. Quando é atingido, ou quando o dono quer, ele se desfaz numa revoada que cobre a fuga.',
+		efeito: 'Cria um clone sólido. Quando o clone some, os corvos voam em volta e o usuário pode se esconder ou fugir no meio deles.',
+		notas: [BUNSHIN]
+	},
+	{
+		...ninjutsu,
+		wiki: 'Haze Clone Technique',
+		rankWiki: 'D',
+		nome: 'Oboro Bunshin no Jutsu',
+		traducao: 'Técnica do Clone de Bruma',
+		alcance: 'medio',
+		alvosExtras: 1,
+		comp: { atordoa: 1 },
+		descricao: 'Clones de bruma que parecem atacar de verdade, enquanto o ninja de carne e osso espera escondido.',
+		efeito: 'Até 2 alvos que falharem na Resistência ficam Atordoados por 1 turno, defendendo-se dos clones de bruma.'
+	},
+	{
+		...ninjutsu,
+		wiki: 'Ink Clone Technique',
+		rankWiki: 'C',
+		nome: 'Sumi Bunshin no Jutsu',
+		traducao: 'Técnica do Clone de Tinta',
+		comp: { invocacao: 7, duravel: 1 },
+		descricao: 'Um clone desenhado com tinta, que vira uma poça preta quando é atingido.',
+		efeito: 'Cria um clone sólido, que some numa poça de tinta ao sofrer qualquer dano.',
+		notas: [BUNSHIN, 'Exige pincel e tinta.']
+	},
+	{
+		...ninjutsu,
+		origem: 'Raiton',
+		elemento: 'raiton',
+		...CAP10.raiton,
+		wiki: 'Lightning Release: Shadow Clone Technique',
+		rankWiki: 'A',
+		nome: 'Raiton: Kage Bunshin no Jutsu',
+		traducao: 'Raiton: Técnica do Clone das Sombras',
+		dano: [4, 8],
+		alcance: 'curto',
+		comp: { invocacao: 8, paralisa: 1, exige: 1 },
+		descricao: 'Um clone das sombras feito de raio. Quem o acerta, ou é acertado por ele, leva a descarga inteira.',
+		efeito: '4d8 de dano elétrico em quem tocar o clone ou for tocado por ele; se falhar na Resistência, fica Paralisado por 1 turno. O clone some depois da descarga.',
+		notas: ['Exige saber o Kage Bunshin no Jutsu.']
+	},
+	{
+		...ninjutsu,
+		wiki: 'Scattering Thousand Crows Technique',
+		rankWiki: 'C',
+		nome: 'Sanzengarasu no Jutsu',
+		traducao: 'Técnica dos Mil Corvos que se Espalham',
+		alcance: 'medio',
+		area: 'esfera3',
+		comp: { cega: 1 },
+		descricao: 'Uma revoada de corvos sai das mangas do ninja e cobre os inimigos de penas e bicadas.',
+		efeito: 'Quem estiver na área e falhar na Resistência fica Cego por 1 turno.'
+	},
+	{
+		...mokuton,
+		wiki: 'Wood Release: Wood Dragon Technique',
+		nome: 'Mokuton: Mokuryū no Jutsu',
+		traducao: 'Mokuton: Técnica do Dragão de Madeira',
+		dano: [4, 8],
+		alcance: 'longo',
+		comp: { imobiliza: 1, drena: 1, transfere: 1 },
+		descricao: 'Um dragão de madeira enorme se enrola no alvo e suga o chakra dele, como as raízes sugam a água.',
+		efeito: '4d8 de dano; o alvo fica Imobilizado nas espirais até vencer a Resistência e perde 1d6 PC, que passam para o usuário.'
+	},
+	{
+		...mokuton,
+		wiki: 'Wood Clone Technique',
+		nome: 'Moku Bunshin no Jutsu',
+		traducao: 'Técnica do Clone de Madeira',
+		alcance: 'medio',
+		comp: { invocacao: 6 },
+		descricao: 'Um clone feito de madeira viva, que pode se fundir às árvores e aparecer longe do dono.',
+		efeito: 'Cria um clone sólido de madeira, que pode surgir de qualquer árvore ao alcance.',
+		notas: [BUNSHIN]
+	},
+	{
+		...mokuton,
+		wiki: 'Wood Release: Great Spear Tree',
+		nome: 'Mokuton: Daisōju',
+		traducao: 'Mokuton: Grande Árvore de Lanças',
+		dano: [4, 8],
+		alcance: 'medio',
+		alvosExtras: 2,
+		descricao: 'O braço do ninja vira um tronco que se divide em dezenas de lanças de madeira pontudas.',
+		efeito: '4d8 de dano perfurante em até 3 alvos, com uma rolagem por alvo.'
+	},
+	{
+		...mokuton,
+		wiki: 'Hokage-Style Sixty-Year-Old Technique — Kakuan Entering Society with Bliss-Bringing Hands',
+		nome: 'Hokage-Shiki Jijun Jutsu: Kakuan Nitten Suishu',
+		traducao: 'Técnica do Estilo Hokage: Mãos que Trazem a Paz',
+		alcance: 'curto',
+		comp: { imobiliza: 1, sela: 1, sustentado: 1, 'nao-copia': 1 },
+		descricao: 'Mãos de madeira saem do chão e seguram a Besta com Cauda, ou o jinchuuriki, enquanto o chakra Senju acalma o chakra dela.',
+		efeito: 'O alvo fica Imobilizado e não usa jutsus nem o chakra de uma Besta com Cauda enquanto o usuário mantiver a técnica e o alvo não vencer a Resistência.'
+	},
+	{
+		...mokuton,
+		wiki: 'Wood Release: Cutting Technique',
+		nome: 'Mokuton: Sashiki no Jutsu',
+		traducao: 'Mokuton: Técnica das Estacas',
+		dano: [3, 8],
+		alcance: 'curto',
+		comp: { atravessa: 1 },
+		acao: 'reacao',
+		descricao: 'Estacas de madeira brotam do corpo do ninja, de repente, e furam quem estiver perto demais.',
+		efeito: '3d8 de dano perfurante, como reação, em todos os alvos em linha até 10 m.'
+	},
+	{
+		...mokuton,
+		wiki: 'Wood Release: Wood Human Technique',
+		nome: 'Mokuton: Mokujin no Jutsu',
+		traducao: 'Mokuton: Técnica do Gigante de Madeira',
+		alcance: 'medio',
+		comp: { invocacao: 8, barreira: 5 },
+		descricao: 'Um gigante de madeira, alto como uma montanha, se levanta do chão e luta pelo ninja.',
+		efeito: 'Cria um gigante de madeira com 50 PV e a Defesa do usuário. Na ação do usuário, ele dá um golpe enorme (6d8, com o ataque do usuário, contra todos num raio de 3 m) ou protege os aliados atrás dele. Desfaz-se ao chegar a 0 PV ou no fim da cena.'
+	},
+	{
+		...jiton,
+		wiki: 'Iron Sand World Method',
+		nome: 'Satetsu Kaihō',
+		traducao: 'Método do Mundo da Areia de Ferro',
+		dano: [6, 8],
+		alcance: 'medio',
+		area: 'esfera15',
+		comp: { exige: 1 },
+		descricao: 'A areia de ferro se espalha no ar e vira, de uma vez, uma floresta de espinhos que cobre tudo em volta.',
+		efeito: '6d8 de dano perfurante em todos na área (metade com sucesso na Resistência).',
+		notas: [AREIA]
+	},
+	{
+		...jiton,
+		wiki: 'Iron Sand Gathering Assault',
+		nome: 'Satetsu Kesshū',
+		traducao: 'Assalto da Areia de Ferro Reunida',
+		dano: [4, 8],
+		alcance: 'medio',
+		area: 'esfera3',
+		comp: { exige: 1 },
+		descricao: 'A areia de ferro se junta numa forma enorme, um martelo ou um espinho, e cai sobre o alvo.',
+		efeito: '4d8 de dano em todos na área (metade com sucesso na Resistência).',
+		notas: [AREIA]
+	},
+	{
+		...jiton,
+		wiki: 'Iron Sand Drizzle',
+		nome: 'Satetsu Shigure',
+		traducao: 'Garoa da Areia de Ferro',
+		dano: [3, 8],
+		alcance: 'medio',
+		area: 'esfera6',
+		comp: { continuo: 1, exige: 1 },
+		descricao: 'Uma chuva fina de bolinhas de ferro, muitas vezes envenenadas, cai sobre o campo inteiro.',
+		efeito: '3d8 de dano em todos na área (metade com sucesso na Resistência). Quem falha fica envenenado, com o dano contínuo.',
+		notas: [AREIA]
+	},
+	{
+		...ninjutsu,
+		wiki: 'Big Ball Rasengan',
+		rankWiki: 'A',
+		nome: 'Ōdama Rasengan',
+		traducao: 'Rasengan de Bola Grande',
+		dano: [7, 8],
+		comp: { empurra: 1, ignora: 1, exige: 1 },
+		descricao: 'Um Rasengan do tamanho de uma pessoa, que exige mais chakra e muito mais controle.',
+		efeito: '7d8 de dano, que ignora RD; o alvo é arremessado 5 m e cai.',
+		notas: ['Exige saber o Rasengan.']
+	},
+	{
+		...ninjutsu,
+		wiki: 'Spiralling Serial Spheres',
+		rankWiki: 'A',
+		nome: 'Rasenrengan',
+		traducao: 'Esferas Espirais em Série',
+		dano: [6, 8],
+		alvosExtras: 1,
+		comp: { empurra: 1, ignora: 1, exige: 1 },
+		descricao: 'Dois Rasengan ao mesmo tempo, um em cada mão, ou um nas mãos do ninja e outro nas de um clone.',
+		efeito: '6d8 de dano em até 2 alvos, com uma rolagem por alvo, que ignora RD. Quem é atingido é arremessado 5 m e cai.',
+		notas: ['Exige saber o Rasengan e o Kage Bunshin no Jutsu.']
+	},
+	{
+		...ninjutsu,
+		wiki: 'Super Beast Imitating Drawing',
+		rankWiki: 'B',
+		nome: 'Chōjū Giga',
+		traducao: 'Desenho que Imita as Super Feras',
+		dano: [3, 8],
+		alcance: 'medio',
+		alvosExtras: 2,
+		comp: { duravel: 1 },
+		descricao: 'O ninja desenha feras num pergaminho, com pincel e tinta, e elas saltam do papel para atacar. Um pássaro de tinta grande o bastante também serve para voar.',
+		efeito: '3d8 de dano em até 3 alvos, com uma rolagem por alvo, atacados pelas feras de tinta.',
+		notas: ['Exige pincel, tinta e pergaminho.']
+	},
+	{
+		...ninjutsu,
+		wiki: 'Ink Mist Technique',
+		rankWiki: 'C',
+		nome: 'Sumigasumi no Jutsu',
+		traducao: 'Técnica da Névoa de Tinta',
+		alcance: 'curto',
+		area: 'esfera6',
+		comp: { cega: 1 },
+		descricao: 'Uma nuvem de tinta preta cobre o lugar, densa a ponto de não se ver a própria mão.',
+		efeito: 'Quem estiver na área e falhar na Resistência fica Cego por 1 turno.'
+	},
+	{
+		...ninjutsu,
+		wiki: 'Temporary Paralysis Technique',
+		rankWiki: 'D',
+		nome: 'Kanashibari no Jutsu',
+		traducao: 'Técnica da Paralisia Temporária',
+		alcance: 'medio',
+		comp: { paralisa: 1 },
+		descricao: 'Um jutsu simples, muito usado pela Anbu, que trava os músculos da vítima por um instante.',
+		efeito: 'Se falhar na Resistência, o alvo fica Paralisado por 1 turno.'
+	},
+	{
+		...ninjutsu,
+		wiki: 'Telescope Technique',
+		nome: 'Tōmegane no Jutsu',
+		traducao: 'Técnica do Telescópio',
+		alcance: 'distante',
+		comp: { sustentado: 1, duravel: 1 },
+		info: { area: 'Um lugar ou uma pessoa que o usuário conheça', ataque: 'Automático' },
+		descricao: 'Numa bola de cristal, o ninja vê o que acontece em outro lugar, a qualquer distância, como se estivesse lá.',
+		efeito: 'Enquanto mantém a técnica, o usuário vê e ouve o que acontece num lugar ou em volta de uma pessoa que já conheça, a qualquer distância.',
+		notas: ['Exige a bola de cristal.']
+	},
+	{
+		...ninjutsu,
+		origem: 'Doton',
+		elemento: 'doton',
+		...CAP10.doton,
+		wiki: 'Hiding with Camouflage Technique',
+		nome: 'Meisaigakure no Jutsu',
+		traducao: 'Técnica de Esconder-se com Camuflagem',
+		alcance: 'toque',
+		comp: { buff2: 1, 'buff-cena': 1, sustentado: 1, 'buff-aliado': 1 },
+		descricao: 'O ninja some da vista, ele e o que estiver tocando, e só os sensores ou um dōjutsu conseguem achá-lo.',
+		efeito: 'Enquanto mantém a técnica, o usuário fica invisível: tem +2 de Defesa e só sensores e dōjutsu o percebem. Um aliado tocado fica invisível junto, com +1 de Defesa, por 3 turnos.'
+	},
+	{
+		origem: 'Clã Akimichi',
+		tipo: 'Ninjutsu',
+		...cla('akimichi'),
+		wiki: 'Butterfly Mode',
+		nome: 'Chō Mōdo',
+		traducao: 'Modo Borboleta',
+		alcance: 'pessoal',
+		comp: { buff2: 1, 'buff-cena': 1, rd2: 1, 'acao-extra': 1, 'custa-pv': 2, fadiga: 2, exige: 1 },
+		descricao: 'O Akimichi queima todas as calorias de uma vez, e asas de chakra em forma de borboleta saem das costas. É força demais para o corpo aguentar por muito tempo.',
+		efeito: 'O usuário ganha +2 de FOR por 1 cena, RD 2 por 3 turnos e uma ação secundária extra no próximo turno. Ao terminar, perde 10 PV e sofre 2 níveis de Fadiga.',
+		notas: ['Exige o Karori Kontororu, com as cargas do dia ainda disponíveis.']
+	},
+	{
+		...ninjutsu,
+		wiki: 'Twin Snakes Mutual Death Technique',
+		rankWiki: 'A',
+		nome: 'Sōjasōsai no Jutsu',
+		traducao: 'Técnica da Morte Mútua das Serpentes Gêmeas',
+		dano: [10, 10],
+		comp: { ignora: 1, rara: 1, 'uma-vez': 1, 'dano-proprio': 3, 'custa-pv': 6 },
+		descricao: 'Uma técnica proibida, a última de quem já perdeu: o ninja segura a mão do inimigo e invoca a serpente da morte, que leva os dois.',
+		efeito: '10d10 de dano, que ignora RD. O usuário perde 3d6 PV e mais 30 PV junto.',
+		notas: ['Exige segurar a mão do alvo (o alvo precisa estar Imobilizado ou aceitar).']
+	}
+];

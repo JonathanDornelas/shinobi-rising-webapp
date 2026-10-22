@@ -182,6 +182,8 @@ export interface ItemLoja {
 export interface JutsuOpcao {
 	slug: string;
 	nome: string;
+	/** Tradução do nome, para a legenda da escolha. */
+	traducao?: string;
 	rank: 'E' | 'D';
 	elemento: string | null;
 	/** Jutsu original criado para esta ficha (cap. 20): precisa ir para a revisão junto com ela. */

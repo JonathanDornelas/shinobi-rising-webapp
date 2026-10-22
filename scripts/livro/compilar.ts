@@ -399,9 +399,9 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			const js = (e.jutsus ?? []).map((j) => {
 				const card = j.slug ? jutsus.find((x) => x.slug === j.slug) : undefined;
 				if (j.slug && !card) avisar(`Bestiário: jutsu desconhecido em ${y.slug}: ${j.slug}`);
-				return { slug: card?.slug ?? null, nome: card?.nome ?? j.nome ?? j.slug ?? '', rank: card?.rank ?? null, custo: card?.custo ?? null, nota: j.nota ?? null };
+				return { slug: card?.slug ?? null, nome: card?.nome ?? j.nome ?? j.slug ?? '', traducao: card?.traducao || null, rank: card?.rank ?? null, custo: card?.custo ?? null, nota: j.nota ?? null };
 			});
-			if (f) js.push({ slug: null, nome: 'Usos de jutsu', rank: null, custo: null, nota: f.jutsus });
+			if (f) js.push({ slug: null, nome: 'Usos de jutsu', traducao: null, rank: null, custo: null, nota: f.jutsus });
 			const ameaca = valor(rotulo);
 			const ataques = e.ataques.map((a) => ({ nome: a.nome, alcance: a.alcance, acerto: a.acerto ?? base.acerto, dano: (a.dano ?? base.dano).replace(/\s+/g, ''), efeito: a.efeito ? trechosDeMd(a.efeito) : null }));
 			const defesa = e.defesa ?? base.defesa;
@@ -1045,7 +1045,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 		}
 		for (const j of jutsus) {
 			const icone = j.cla ? `cla/ic-cla-${j.cla}` : j.elemento ? `elemento/ic-elemento-${j.elemento}` : `pericia/ic-pericia-${j.tipo === 'Fuuinjutsu' ? 'selamento' : slug(j.tipo)}`;
-			busca.push({ id: `j:${j.slug}`, tipo: 'jutsu', titulo: j.nome, caminho: `${j.tipo} · ${j.origem} · Rank ${j.rank}`, texto: [j.traducao, ...j.descricao.map(textoDe), j.efeito ? textoDe(j.efeito) : ''].filter(Boolean).join(' — '), href: `/regras/jutsus/${j.slug}`, icone, rank: j.rank });
+			busca.push({ id: `j:${j.slug}`, tipo: 'jutsu', titulo: j.nome, ...(j.traducao ? { traducao: j.traducao } : {}), caminho: `${j.tipo} · ${j.origem} · Rank ${j.rank}`, texto: [j.traducao, ...j.descricao.map(textoDe), j.efeito ? textoDe(j.efeito) : ''].filter(Boolean).join(' — '), href: `/regras/jutsus/${j.slug}`, icone, rank: j.rank });
 		}
 		for (const h of habilidades) {
 			const cl = clas.find((c) => c.slug === h.cla);

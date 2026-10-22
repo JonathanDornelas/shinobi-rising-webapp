@@ -141,6 +141,8 @@ export function aplicarNivel(f: FichaDados, escolha: EscolhaNivel, treinoElement
 export interface JutsuFicha {
 	slug: string;
 	nome: string;
+	/** Tradução do nome (os jutsus do livro sempre têm; os criados, quando o jogador escreveu). */
+	traducao?: string;
 	rank: string;
 	tipo: string;
 	custo: string;
@@ -193,6 +195,8 @@ export interface OpcaoTreino {
 	chave: string;
 	grupo: 'jutsu' | 'especializacao' | 'proficiencia' | 'elemento';
 	nome: string;
+	/** Tradução do nome do jutsu. */
+	traducao?: string;
 	descricao: string;
 	pt: number;
 	icone: string;
@@ -217,6 +221,7 @@ export function opcoesTreino(f: FichaDados, jutsus: JutsuFicha[], nomeEsp: (id: 
 			chave: `jutsu:${j.slug}`,
 			grupo: 'jutsu',
 			nome: j.nome,
+			traducao: j.traducao,
 			descricao: [j.origem !== j.tipo ? j.origem : '', `Rank ${j.rank}`, j.tipo, j.custo].filter(Boolean).join(' · '),
 			pt,
 			icone: `rank/ic-rank-${j.rank.toLowerCase()}`,

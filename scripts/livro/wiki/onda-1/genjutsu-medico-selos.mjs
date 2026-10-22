@@ -1,0 +1,252 @@
+// Onda 1 · Genjutsu, Ninjutsu Médico, Fuuinjutsu e barreiras
+import { CAP10, TIPOS } from '../base.mjs';
+
+const genjutsu = { origem: 'Genjutsu', tipo: 'Genjutsu', ...CAP10.genjutsu };
+const medico = { origem: 'Ninjutsu Médico', tipo: 'Ninjutsu', ...CAP10.medico };
+const selo = { origem: 'Fuuinjutsu', tipo: 'Fuuinjutsu', ...TIPOS };
+const QUATRO = 'Exige quatro usuários nos quatro cantos da área, que gastam a ação no mesmo turno e dividem o custo.';
+
+export default [
+	{
+		...genjutsu,
+		wiki: 'Mist Servant Technique',
+		rankWiki: 'D',
+		nome: 'Kasumi Jūsha no Jutsu',
+		traducao: 'Técnica dos Servos de Névoa',
+		alcance: 'medio',
+		alvosExtras: 1,
+		comp: { atordoa: 1 },
+		descricao: 'Guerreiros feitos de névoa surgem em volta das vítimas e atacam sem parar. Os golpes atravessam o corpo, mas quem acredita neles gasta o turno se defendendo.',
+		efeito: 'Até 2 alvos que falharem na Resistência ficam Atordoados por 1 turno, ocupados com os guerreiros de névoa.'
+	},
+	{
+		...genjutsu,
+		wiki: 'Demonic Flute: Phantom Sound Chains',
+		rankWiki: 'B',
+		nome: 'Mateki: Mugen Onsa',
+		traducao: 'Flauta Demoníaca: Correntes do Som Fantasma',
+		alcance: 'medio',
+		alvosExtras: 2,
+		comp: { paralisa: 1, turnos: 2, sustentado: 1, duravel: 1 },
+		descricao: 'A melodia da flauta entra pelos ouvidos e vira correntes na mente da vítima. O corpo se desfaz em pedaços na ilusão, e ela não consegue se mexer.',
+		efeito: 'Até 3 alvos que falharem na Resistência ficam Paralisados por até 3 turnos, enquanto o usuário continuar tocando.',
+		notas: ['Exige uma flauta em mãos.']
+	},
+	{
+		...genjutsu,
+		wiki: 'Demonic Illusion: False Surroundings Technique',
+		rankWiki: 'C',
+		nome: 'Magen: Kokoni Arazu no Jutsu',
+		traducao: 'Ilusão Demoníaca: Técnica do Lugar que Não Está Aqui',
+		alcance: 'medio',
+		area: 'esfera6',
+		comp: { cega: 1 },
+		info: { resistencia: 'ESP (DT do Jutsu)' },
+		descricao: 'Um trecho de corredor, de floresta ou de estrada passa a parecer outro, igualzinho ao anterior. Quem cai na ilusão anda em círculos sem perceber.',
+		efeito: 'Quem estiver na área e falhar na Resistência fica Cego por 1 turno para o que está fora da ilusão e não acha a saída do lugar até alguém quebrar o genjutsu.'
+	},
+	{
+		...genjutsu,
+		wiki: 'Temple of Nirvana Technique',
+		rankWiki: 'A',
+		nome: 'Nehan Shōja no Jutsu',
+		traducao: 'Técnica do Templo do Nirvana',
+		alcance: 'longo',
+		area: 'esfera15',
+		comp: { paralisa: 1, turnos: 3, sustentado: 1 },
+		info: { resistencia: 'ESP (DT do Jutsu)' },
+		descricao: 'Penas brancas caem do céu sobre uma área enorme, e quem olha para elas cai num sono profundo e tranquilo.',
+		efeito: 'Quem estiver na área e falhar na Resistência adormece: fica Paralisado por até 4 turnos. Qualquer dano acorda a vítima.'
+	},
+	{
+		...medico,
+		wiki: 'Creation Rebirth',
+		rankWiki: 'S',
+		nome: 'Sōzō Saisei',
+		traducao: 'Renascimento da Criação',
+		cura: [10, 10],
+		alcance: 'pessoal',
+		comp: { remove: 1, exige: 1 },
+		descricao: 'O ninja libera o chakra guardado no Selo da Força de Cem e força as células a se dividirem: os ferimentos se fecham na hora, até os mortais. Cada divisão encurta a vida dele um pouco.',
+		efeito: 'O usuário recupera 10d10 PV e se livra de uma condição negativa.',
+		notas: ['Exige o Byakugō no In (Selo da Força de Cem) carregado.']
+	},
+	{
+		...medico,
+		wiki: 'Healing Resuscitation Regeneration Technique',
+		rankWiki: 'A',
+		nome: 'Chikatsu Saisei no Jutsu',
+		traducao: 'Técnica de Regeneração e Ressuscitação',
+		cura: [6, 10],
+		comp: { remove: 1, exige: 1, preparo: -2 },
+		descricao: 'Três ninjas médicos erguem uma barreira de chakra em volta do paciente e trabalham juntos, por um bom tempo, para trazer de volta alguém que já estava indo embora.',
+		efeito: 'Cura 6d10 PV de um aliado à beira da morte e remove uma condição negativa. O tratamento leva 3 turnos completos.',
+		notas: ['Exige três ninjas médicos que saibam a técnica, gastando as ações juntos e dividindo o custo.']
+	},
+	{
+		...medico,
+		wiki: 'Poison Mist',
+		rankWiki: 'B',
+		nome: 'Dokugiri',
+		traducao: 'Névoa Venenosa',
+		dano: [3, 6],
+		alcance: 'curto',
+		area: 'cone-medio',
+		comp: { continuo: 1, cega: 1 },
+		descricao: 'O ninja médico cospe uma névoa roxa de veneno, que arde nos olhos e queima por dentro.',
+		efeito: '3d6 de dano de veneno em todos no cone (metade com sucesso na Resistência). Quem falha fica envenenado, com o dano contínuo, e Cego por 1 turno.'
+	},
+	{
+		...medico,
+		wiki: 'Delicate Illness Extraction Technique',
+		rankWiki: 'B',
+		nome: 'Saikan Chūshutsu no Jutsu',
+		traducao: 'Técnica de Extração da Doença Delicada',
+		cura: [4, 8],
+		comp: { remove: 1 },
+		acao: 'completa',
+		descricao: 'O médico mergulha as mãos numa bola de água cheia de chakra e puxa o veneno de dentro do corpo do paciente, gota a gota.',
+		efeito: 'Tira o veneno do corpo de um aliado (remove a condição) e cura 4d8 PV.'
+	},
+	{
+		...medico,
+		wiki: 'Body Pathway Derangement',
+		rankWiki: 'A',
+		nome: 'Ranshinshō',
+		traducao: 'Desordem dos Caminhos do Corpo',
+		dano: [3, 6],
+		comp: { controla: 1, turnos: 3, ignora: 1, 'sem-selos': 1 },
+		acao: 'secundaria',
+		info: { resistencia: 'VIG (DT do Jutsu) ao fim de cada turno' },
+		descricao: 'Com um toque carregado de raio, o médico embaralha os sinais elétricos do corpo do alvo. Ele tenta andar e mexe o braço, tenta socar e fecha o olho.',
+		efeito: '3d6 de dano nos nervos, que ignora RD, e o alvo fica Controlado por até 4 turnos: quem decide o que o corpo dele faz é o usuário. Ao fim de cada turno, pode tentar se recuperar com uma Resistência de VIG.'
+	},
+	{
+		...medico,
+		wiki: 'Dead Soul Technique',
+		rankWiki: 'B',
+		nome: 'Shikon no Jutsu',
+		traducao: 'Técnica da Alma Morta',
+		alcance: 'curto',
+		comp: { invocacao: 8, sustentado: 1 },
+		descricao: 'O médico reativa o coração de um cadáver recente e o move por dentro, como um boneco de carne. O rosto do morto confunde até os antigos companheiros.',
+		efeito: 'Um cadáver recente se levanta e luta pelo usuário enquanto ele mantiver a técnica. Use a ficha do morto com metade dos PV e sem jutsus.'
+	},
+	{
+		...selo,
+		origem: 'Ninjutsu Médico',
+		wiki: 'Strength of a Hundred Seal',
+		rankWiki: 'S',
+		nome: 'Byakugō no In',
+		traducao: 'Selo da Força de Cem',
+		cura: [6, 10],
+		alcance: 'pessoal',
+		comp: { sustentado: 1, remove: 1, buff2: 1, 'buff-cena': 1, 'sem-selos': 1, 'nao-copia': 1, preparo: -2, 'uma-vez': 1 },
+		descricao: 'Durante anos, o ninja guarda um pouco de chakra todos os dias num selo na testa, um losango roxo. Quando o libera, as marcas correm pelo corpo e ele se regenera sem parar.',
+		efeito: 'Ao liberar o selo, o usuário recupera 6d10 PV no começo de cada turno enquanto o mantiver, se livra de uma condição negativa e ganha +2 de FOR por 1 cena.',
+		notas: ['Carregar o selo leva anos de treino e de chakra guardado: o Mestre decide quando um personagem tem o selo pronto.']
+	},
+	{
+		...selo,
+		wiki: 'Four Violet Flames Formation',
+		rankWiki: 'B',
+		nome: 'Shishienjin',
+		traducao: 'Formação das Quatro Chamas Violeta',
+		alcance: 'curto',
+		area: 'esfera15',
+		comp: { barreira: 5, exige: 1, preparo: -1 },
+		descricao: 'Quatro ninjas erguem uma caixa de chakra roxo em volta de uma área inteira. Ninguém entra nem sai, e quem encosta nas paredes pega fogo.',
+		efeito: 'Cria uma barreira em forma de caixa, com 50 PV, em volta da área. Enquanto ela estiver de pé, nada a atravessa, por dentro ou por fora, e quem encosta nas paredes é jogado para trás.',
+		notas: [QUATRO]
+	},
+	{
+		...selo,
+		wiki: 'Four Red Yang Formation',
+		rankWiki: 'A',
+		nome: 'Shisekiyōjin',
+		traducao: 'Formação dos Quatro Yang Vermelhos',
+		alcance: 'curto',
+		area: 'esfera15',
+		comp: { barreira: 10, exige: 1, preparo: -1 },
+		descricao: 'A barreira mais forte que quatro ninjas conseguem erguer juntos: paredes vermelhas que seguram até a fúria de uma Besta com Cauda.',
+		efeito: 'Cria uma barreira em forma de caixa, com 100 PV, em volta da área. Enquanto ela estiver de pé, nada a atravessa, por dentro ou por fora.',
+		notas: [QUATRO]
+	},
+	{
+		...selo,
+		wiki: 'Barrier: Canopy Method Formation',
+		rankWiki: 'B',
+		nome: 'Kekkai: Tengai Hōjin',
+		traducao: 'Barreira: Formação da Abóbada',
+		alcance: 'longo',
+		area: 'esfera15',
+		comp: { sustentado: 1, preparo: -2 },
+		info: { area: 'Cúpula de 15 m (ou maior, com mais preparo)', ataque: 'Automático' },
+		descricao: 'Uma cúpula invisível de chakra cobre o lugar como um sino. Não segura ninguém: só avisa o ninja de tudo o que entra nela.',
+		efeito: 'Enquanto a cúpula estiver ativa, o usuário sabe quando qualquer criatura entra ou sai dela, e em que ponto.'
+	},
+	{
+		...selo,
+		wiki: 'Five-Seal Barrier',
+		rankWiki: 'C',
+		nome: 'Gofū Kekkai',
+		traducao: 'Barreira dos Cinco Selos',
+		alcance: 'curto',
+		comp: { barreira: 4, consumivel: -1, preparo: -1 },
+		info: { area: 'Uma entrada (porta, caverna, portão)' },
+		descricao: 'Cinco etiquetas de selo, uma na entrada e quatro escondidas em volta, fecham um lugar como uma pedra que ninguém move.',
+		efeito: 'Sela uma entrada com uma barreira de 40 PV. Para abrir de outro jeito, é preciso arrancar as cinco etiquetas ao mesmo tempo.',
+		notas: ['Gasta cinco etiquetas de selo.']
+	},
+	{
+		...selo,
+		wiki: 'Cloth Binding Technique',
+		nome: 'Nunoshibari no Jutsu',
+		traducao: 'Técnica da Amarração com Pano',
+		alcance: 'medio',
+		comp: { imobiliza: 1, sustentado: 1, duravel: 1 },
+		descricao: 'O ninja passa chakra por um rolo de pano, que voa e se enrola no alvo como uma cobra.',
+		efeito: 'O alvo fica Imobilizado, enrolado no pano, enquanto o usuário mantiver a técnica e o alvo não vencer a Resistência.',
+		notas: ['Exige um rolo de pano marcado com selos.']
+	},
+	{
+		...selo,
+		wiki: 'Mutually Multiplying Explosive Tags',
+		rankWiki: 'A',
+		nome: 'Gojō Kibaku Fuda',
+		traducao: 'Etiquetas Explosivas que se Multiplicam',
+		dano: [6, 8],
+		alcance: 'curto',
+		area: 'esfera6',
+		comp: { ignora: 1, consumivel: -2 },
+		descricao: 'Uma etiqueta explosiva vira duas, duas viram quatro, e em segundos milhares delas cobrem o alvo antes de explodir em cadeia. A técnica é proibida.',
+		efeito: '6d8 de dano em todos na área (metade com sucesso na Resistência), que ignora RD.',
+		notas: ['Gasta um maço de etiquetas explosivas.']
+	},
+	{
+		...selo,
+		wiki: 'Reverse Four Symbols Sealing',
+		rankWiki: 'S',
+		nome: 'Ura Shishō Fūin',
+		traducao: 'Selamento Reverso dos Quatro Símbolos',
+		dano: [10, 10],
+		alcance: 'pessoal',
+		area: 'esfera6',
+		comp: { 'nao-copia': 1, rara: 1 },
+		descricao: 'Um selo gravado no próprio corpo, a última carta de quem não pretende morrer sozinho. Quando o dono morre, o corpo vira uma esfera preta que puxa tudo em volta para dentro.',
+		efeito: '10d10 de dano em todos num raio de 6 m (metade com sucesso na Resistência), puxados para dentro do corpo do usuário quando ele morre.',
+		notas: ['Só dispara com a morte do usuário.']
+	},
+	{
+		...selo,
+		wiki: 'Fire Sealing Method',
+		nome: 'Fūka Hōin',
+		traducao: 'Método de Selamento do Fogo',
+		alcance: 'curto',
+		comp: { barreira: 4, duravel: 1, rara: 1 },
+		acao: 'reacao',
+		descricao: 'O ninja abre um pergaminho na frente de um jutsu de fogo, e as chamas são sugadas para dentro do papel.',
+		efeito: 'Contra um jutsu de fogo, absorve até 40 do dano. O fogo fica guardado no pergaminho até ser liberado.',
+		notas: ['Só funciona contra fogo. Exige um pergaminho em mãos.']
+	}
+];

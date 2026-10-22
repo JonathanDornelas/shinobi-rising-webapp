@@ -30,14 +30,14 @@ export function jutsusCriadosDaCriacao(linhas: { id: string; status: string; dad
 		.flatMap((j) => {
 			const l = paraJutsuLivro(slugJutsuCriado(j.id), normalizarJutsu(j.dados as Partial<JutsuDados>), 'Criação própria');
 			if (l.rank !== 'E' && l.rank !== 'D') return [];
-			return [{ slug: l.slug, nome: l.nome, rank: l.rank, elemento: l.elemento, tipo: l.tipo, custo: l.custo, efeito: texto(l.efeito).slice(0, 180), criado: { id: j.id, status: j.status } }];
+			return [{ slug: l.slug, nome: l.nome, traducao: l.traducao, rank: l.rank, elemento: l.elemento, tipo: l.tipo, custo: l.custo, efeito: texto(l.efeito).slice(0, 180), criado: { id: j.id, status: j.status } }];
 		});
 }
 
 function jutsuResumo(slug: string): JutsuResumo | null {
 	const j = jutsus.find((x) => x.slug === slug);
 	if (!j) return null;
-	return { slug: j.slug, nome: j.nome, rank: j.rank as 'E' | 'D', elemento: j.elemento, tipo: j.tipo, custo: j.custo, efeito: texto(j.efeito).slice(0, 180) };
+	return { slug: j.slug, nome: j.nome, traducao: j.traducao, rank: j.rank as 'E' | 'D', elemento: j.elemento, tipo: j.tipo, custo: j.custo, efeito: texto(j.efeito).slice(0, 180) };
 }
 
 /** Kunai, shuriken e senbon contam em conjuntos de 10; consumíveis pequenos em conjuntos de 5 (cap. 11). */
@@ -124,10 +124,11 @@ export function catalogoCriacao(clasPermitidos: string[]) {
 }
 export type CatalogoCriacao = ReturnType<typeof catalogoCriacao>;
 
-function jutsuFicha(j: Pick<(typeof jutsus)[number], 'slug' | 'nome' | 'rank' | 'tipo' | 'custo' | 'custoNum' | 'elemento' | 'cla' | 'origem' | 'efeito' | 'info'>): JutsuFicha {
+function jutsuFicha(j: Pick<(typeof jutsus)[number], 'slug' | 'nome' | 'traducao' | 'rank' | 'tipo' | 'custo' | 'custoNum' | 'elemento' | 'cla' | 'origem' | 'efeito' | 'info'>): JutsuFicha {
 	return {
 		slug: j.slug,
 		nome: j.nome,
+		traducao: j.traducao,
 		rank: j.rank,
 		tipo: j.tipo,
 		custo: j.custo,

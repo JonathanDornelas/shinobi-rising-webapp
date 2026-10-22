@@ -4,6 +4,7 @@
 	import { agrupar, buscar, GRUPOS, trecho, type Resultado } from '#lib/busca/motor.ts';
 	import { paleta } from '#lib/estado/paleta.svelte.ts';
 	import type { TipoDocBusca } from '#lib/livro/tipos.ts';
+	import Glosa from '../regras/Glosa.svelte';
 	import { prenderFoco } from '../ui/foco';
 	import Icone from '../ui/Icone.svelte';
 	import Traco from '../ui/Traco.svelte';
@@ -214,7 +215,7 @@
 						>
 							<Icone id={r.icone} />
 							<span class="flex min-w-0 flex-1 flex-col gap-0.5">
-								<span class="text-[15px] leading-5 font-semibold">{r.titulo}</span>
+								<span class="text-[15px] leading-5 font-semibold">{r.titulo}{#if r.traducao}{' '}<Glosa texto={r.traducao} emLinha sobreFaixa={i === selecao} class="text-[13px]" />{/if}</span>
 								<span class="truncate text-xs leading-4 {i === selecao ? 'text-papel-2' : 'text-mut'}">{r.caminho}</span>
 								{#if t}<span class="line-clamp-2 text-[13px] leading-[19px] {i === selecao ? 'text-papel-2' : 'text-mut'}">{t.pre}<mark>{t.hit}</mark>{t.pos}</span>{/if}
 							</span>

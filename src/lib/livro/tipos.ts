@@ -275,6 +275,8 @@ export interface AtaqueCriatura {
 export interface JutsuCriatura {
 	slug: string | null;
 	nome: string;
+	/** Tradução do nome, do card do catálogo. */
+	traducao: string | null;
 	rank: Rank | null;
 	custo: string | null;
 	nota: string | null;
@@ -358,6 +360,8 @@ export interface DocBusca {
 	id: string;
 	tipo: TipoDocBusca;
 	titulo: string;
+	/** Tradução do título (jutsus), mostrada como legenda ao lado dele. */
+	traducao?: string;
 	caminho: string;
 	texto: string;
 	href: string;

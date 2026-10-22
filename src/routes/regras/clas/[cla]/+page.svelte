@@ -8,6 +8,7 @@
 	import Texto from '#lib/componentes/leitura/Texto.svelte';
 	import CardHabilidade from '#lib/componentes/regras/CardHabilidade.svelte';
 	import CardJutsu from '#lib/componentes/regras/CardJutsu.svelte';
+	import Glosa from '#lib/componentes/regras/Glosa.svelte';
 	import LinhaTempoMarcos from '#lib/componentes/regras/LinhaTempoMarcos.svelte';
 	import Rodape from '#lib/componentes/shell/Rodape.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
@@ -238,7 +239,7 @@
 				<span class="t-rotulo">Jutsus do clã · {jutsusDoCla.length}</span>
 				{#each jutsusDoCla as j (j.slug)}
 					<a href="#jutsu-{j.slug}" onclick={() => (filtroRank = null)} class="flex min-h-10 items-center gap-2 border-b-2 border-b3 text-sm leading-5 font-semibold hover:text-link">
-						<Icone id="rank/ic-rank-{j.rank.toLowerCase()}" alt="Rank {j.rank}" /><span class="flex-1">{j.nome}</span><span class="t-num text-sm">{j.custo}</span>
+						<Icone id="rank/ic-rank-{j.rank.toLowerCase()}" alt="Rank {j.rank}" /><span class="flex flex-1 flex-col py-1">{j.nome}<Glosa texto={j.traducao} class="text-xs leading-4" /></span><span class="t-num text-sm">{j.custo}</span>
 					</a>
 				{/each}
 				{#if habilidadesDoCla.length}

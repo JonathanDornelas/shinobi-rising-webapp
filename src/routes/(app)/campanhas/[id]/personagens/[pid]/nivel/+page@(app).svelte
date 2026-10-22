@@ -21,6 +21,7 @@
 	} from '#lib/personagem/progressao.ts';
 	import { especializacoes, normalizarFicha, resumoFicha, sinal, treinoPericia, type FichaDados, type GanhoMarco, type ItemLoja } from '#lib/personagem/regras.ts';
 	import { hrefFicha } from '#lib/personagem/status.ts';
+	import Glosa from '#lib/componentes/regras/Glosa.svelte';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
 	import type { Json } from '#lib/supabase/banco.ts';
@@ -267,7 +268,7 @@
 							{#each plano.marco.pericias ?? [] as pr (pr)}<li>+1 em {PERICIAS.find((x) => x.id === pr)?.nome}</li>{/each}
 							{#if plano.marco.pt}<li>+{plano.marco.pt} PT</li>{/if}
 							{#if plano.marco.pic}<li>+{plano.marco.pic} PIC por arco</li>{/if}
-							{#each plano.marco.jutsus ?? [] as j (j)}<li>Aprende {cat.jutsus.find((x) => x.slug === j)?.nome ?? j}</li>{/each}
+							{#each plano.marco.jutsus ?? [] as j (j)}{@const jj = cat.jutsus.find((x) => x.slug === j)}<li>Aprende {jj?.nome ?? j} <Glosa texto={jj?.traducao} emLinha /></li>{/each}
 						</ul>
 						{#if plano.marco.escolhaPericia}
 							<div class="flex flex-wrap gap-2 border-t-2 border-b3 px-3.5 py-3" role="radiogroup" aria-label="Perícia do marco">

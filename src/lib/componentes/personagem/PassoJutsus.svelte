@@ -7,6 +7,7 @@
 	import { hrefJutsu } from '#lib/jutsus/status.ts';
 	import { elementos, regrasCla } from '#lib/personagem/regras.ts';
 	import type { StatusCriacao } from '#lib/supabase/banco.ts';
+	import Glosa from '../regras/Glosa.svelte';
 	import Icone from '../ui/Icone.svelte';
 
 	let { c }: { c: Criador } = $props();
@@ -33,8 +34,10 @@
 <span class="t-rotulo">Já conhecidos</span>
 <div class="flex flex-wrap gap-2">
 	{#each conhecidos as { j, origem } (j.slug)}
-		<span class="inline-flex h-10 items-center gap-1.5 border-2 border-frame bg-b2 pr-2.5 pl-1 text-[13px] leading-none font-semibold">
-			<Icone id="rank/ic-rank-{(j.rank ?? 'c').toLowerCase()}" alt="Rank {j.rank ?? '?'}" />{j.nome}<span class="text-xs font-semibold text-mut">{origem}</span>
+		<span class="inline-flex min-h-10 items-center gap-1.5 border-2 border-frame bg-b2 py-1 pr-2.5 pl-1 text-[13px] leading-4 font-semibold">
+			<Icone id="rank/ic-rank-{(j.rank ?? 'c').toLowerCase()}" alt="Rank {j.rank ?? '?'}" />
+			<span class="flex flex-col">{j.nome}<Glosa texto={'traducao' in j ? j.traducao : null} class="text-xs leading-4" /></span>
+			<span class="text-xs font-semibold text-mut">{origem}</span>
 		</span>
 	{/each}
 </div>
@@ -97,7 +100,7 @@
 						onchange={() => alternar(rank, j.slug)}
 					/>
 					<span class="flex min-w-0 flex-1 flex-col">
-						<span class="flex flex-wrap items-center gap-1.5 font-medium">{j.nome}{#if j.criado}{@const st = STATUS_CRIACAO[j.criado.status as StatusCriacao]}<span class="border-2 px-1 py-0.5 font-pixel text-[11px] leading-none font-bold {on ? 'border-papel/60' : 'border-b3 text-mut'}">ORIGINAL · {st?.rotulo ?? j.criado.status}</span><a href={hrefJutsu(page.params.id!, j.criado.id, volta)} class="text-xs underline {on ? 'text-papel' : 'link'}" onclick={(e) => e.stopPropagation()}>abrir</a>{/if}</span>
+						<span class="flex flex-wrap items-center gap-x-1.5 font-medium">{j.nome}<Glosa texto={j.traducao} emLinha sobreFaixa={on} class="text-[13px]" />{#if j.criado}{@const st = STATUS_CRIACAO[j.criado.status as StatusCriacao]}<span class="border-2 px-1 py-0.5 font-pixel text-[11px] leading-none font-bold {on ? 'border-papel/60' : 'border-b3 text-mut'}">ORIGINAL · {st?.rotulo ?? j.criado.status}</span><a href={hrefJutsu(page.params.id!, j.criado.id, volta)} class="text-xs underline {on ? 'text-papel' : 'link'}" onclick={(e) => e.stopPropagation()}>abrir</a>{/if}</span>
 						<span class="text-xs leading-4 {on ? 'text-papel/80' : 'text-mut'}">{j.tipo} · {j.custo}{j.elemento ? ` · ${ELEMENTOS.find((e) => e.id === j.elemento)?.nome}` : ''}{motivo ? ` · ${motivo}` : ''}</span>
 					</span>
 				</label>

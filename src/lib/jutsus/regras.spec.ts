@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { pjDoDano } from './dados.ts';
+import jutsusJson from '#lib/livro/gerado/jutsus.json';
+import { pjDoDano, rankDoPj } from './dados.ts';
 import { analisarJutsu, calcularJutsu, infoAutomatica, jutsuVazio, paraJutsuLivro, type JutsuDados } from './regras.ts';
 
 const jutsu = (p: Partial<JutsuDados>): JutsuDados => ({ ...jutsuVazio(), nome: 'Teste', efeito: 'x', ...p, dano: { ...jutsuVazio().dano, ...p.dano } });
@@ -13,6 +14,21 @@ describe('tabela de dano (cap. 20)', () => {
 		expect(pjDoDano(27)).toBe(15);
 		expect(pjDoDano(55)).toBe(30);
 		expect(pjDoDano(65)).toBe(35);
+	});
+});
+
+describe('catálogo do livro', () => {
+	it('toda carta com a conta de PJ tem o rank e o custo que a conta dá (cap. 20, Passos 3 e 4)', () => {
+		const comConta = (jutsusJson as { slug: string; rank: string; custo: string; pj: string | null }[]).filter((j) => j.pj && /\d+ PJ, rank/.test(j.pj));
+		expect(comConta.length).toBeGreaterThan(250);
+		for (const j of comConta) {
+			const [, pj, rank] = j.pj!.match(/(\d+) PJ, rank ([EDCBAS])/)!;
+			// custo duplo, como "5 PC (Reação) ou 10 PC (cena)", fica de fora; custo misto (PC + PE) soma as partes
+			if (/ ou /.test(j.custo)) continue;
+			const custo = (j.custo.match(/\d+/g) ?? []).reduce((t, n) => t + Number(n), 0);
+			expect({ slug: j.slug, rank: j.rank, custo }).toEqual({ slug: j.slug, rank: rankDoPj(+pj).rank, custo: +pj });
+			expect(rank).toBe(j.rank);
+		}
 	});
 });
 

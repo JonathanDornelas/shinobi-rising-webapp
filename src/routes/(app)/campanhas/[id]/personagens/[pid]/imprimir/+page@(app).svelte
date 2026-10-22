@@ -118,7 +118,7 @@
 			{#each jutsus as j (j!.slug)}
 				{@const c = custoJutsu(d, j!)}
 				<div class="grid grid-cols-[minmax(0,1.4fr)_44px_70px_64px_minmax(0,2fr)] gap-2 border-b border-[#999] px-2 py-1 text-[9pt] leading-[1.35]">
-					<b>{j!.nome}</b><span>{j!.rank}</span><span>{j!.tipo}</span><span>{c.final} {c.unidade}</span><span class="line-clamp-2">{j!.efeito}</span>
+					<span class="flex flex-col"><b>{j!.nome}</b>{#if j!.traducao}<i class="text-[8pt] leading-[1.25] text-[#555]">{j!.traducao}</i>{/if}</span><span>{j!.rank}</span><span>{j!.tipo}</span><span>{c.final} {c.unidade}</span><span class="line-clamp-2">{j!.efeito}</span>
 				</div>
 			{/each}
 		</div>

@@ -10,6 +10,7 @@
 	import CardJutsu from '#lib/componentes/regras/CardJutsu.svelte';
 	import ChipElemento from '#lib/componentes/regras/ChipElemento.svelte';
 	import DetalheJutsu from '#lib/componentes/regras/DetalheJutsu.svelte';
+	import Glosa from '#lib/componentes/regras/Glosa.svelte';
 	import SeloRank from '#lib/componentes/regras/SeloRank.svelte';
 	import Rodape from '#lib/componentes/shell/Rodape.svelte';
 	import Folha from '#lib/componentes/ui/Folha.svelte';
@@ -313,7 +314,10 @@
 							<span class="-my-1 self-stretch md:-my-1.5" style:background={t.cor}></span>
 							<Icone id={iconeJ(j)} alt="Rank {j.rank}" />
 							<span class="flex min-w-0 flex-col gap-0.5">
-								<a href="/regras/jutsus/{j.slug}" onclick={(e) => abrir(e, j)} class="truncate font-mincho text-[15px] leading-5 font-bold after:absolute after:inset-0 md:text-[17px] md:leading-[22px]">{j.nome}</a>
+								<span class="flex min-w-0 flex-col">
+									<a href="/regras/jutsus/{j.slug}" onclick={(e) => abrir(e, j)} class="truncate font-mincho text-[15px] leading-5 font-bold after:absolute after:inset-0 md:text-[17px] md:leading-[22px]">{j.nome}</a>
+									<Glosa texto={j.traducao} class="truncate text-xs leading-4 md:text-[13px] md:leading-[18px]" />
+								</span>
 								<span class="truncate text-xs leading-4 text-mut md:text-[13px] md:leading-[18px]"><span class="md:hidden">{j.tipo}{' · '}</span>{j.origem} · {acaoDe(j)}</span>
 							</span>
 							<span class="flex flex-col items-end gap-1.5">
@@ -382,7 +386,7 @@
 							{#each filtrados as j, i (j.slug)}
 								<tr class={i % 2 ? 'bg-b2' : 'bg-b1'}>
 									<td class="sticky left-0 z-10 py-0 pr-3 {i % 2 ? 'bg-b2' : 'bg-b1'}">
-										<span class="flex items-center"><BotaoFavorito slug={j.slug} nome={j.nome} tamanho={18} /><a href="/regras/jutsus/{j.slug}" onclick={(e) => abrir(e, j)} class="text-[15px] font-semibold whitespace-nowrap hover:text-link">{j.nome}</a></span>
+										<span class="flex items-center"><BotaoFavorito slug={j.slug} nome={j.nome} tamanho={18} /><span class="flex flex-col py-1"><a href="/regras/jutsus/{j.slug}" onclick={(e) => abrir(e, j)} class="text-[15px] leading-5 font-semibold whitespace-nowrap hover:text-link">{j.nome}</a><Glosa texto={j.traducao} class="text-xs leading-4 whitespace-nowrap" /></span></span>
 									</td>
 									<td class="px-2 py-1.5"><span title="Rank {j.rank} · {RANK[j.rank].pj} PJ"><Icone id={iconeJ(j)} alt="Rank {j.rank}" /></span></td>
 									<td class="t-num px-2 py-1.5 text-right text-[15px] whitespace-nowrap">{j.custo}</td>

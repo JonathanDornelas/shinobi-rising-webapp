@@ -2,6 +2,7 @@
 	// D9 · Resultados de busca: contagem por tipo, filtro por tipo de conteúdo e lista paginada (estrutura do G2).
 	import { onMount } from 'svelte';
 	import { replaceState } from '$app/navigation';
+	import Glosa from '#lib/componentes/regras/Glosa.svelte';
 	import Rodape from '#lib/componentes/shell/Rodape.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import Traco from '#lib/componentes/ui/Traco.svelte';
@@ -131,7 +132,7 @@
 						<a href={r.href} class="flex items-start gap-3 px-3.5 py-3 hover:bg-b3">
 							<Icone id={r.icone} />
 							<span class="flex min-w-0 flex-1 flex-col gap-0.5">
-								<span class="text-base leading-[22px] font-semibold">{r.titulo}</span>
+								<span class="text-base leading-[22px] font-semibold">{r.titulo}{#if r.traducao}{' '}<Glosa texto={r.traducao} emLinha class="text-sm" />{/if}</span>
 								<span class="text-xs leading-4 text-mut">{r.caminho}</span>
 								{#if t}<span class="line-clamp-2 text-sm leading-[21px] text-mut">{t.pre}<mark>{t.hit}</mark>{t.pos}</span>{/if}
 							</span>

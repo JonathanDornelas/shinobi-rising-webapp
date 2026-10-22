@@ -17,6 +17,7 @@
 	import { jutsusConhecidos, resumoFicha, type ItemLoja, type Treino } from '#lib/personagem/regras.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
 	import type { Json } from '#lib/supabase/banco.ts';
+	import Glosa from '../regras/Glosa.svelte';
 	import Campo from '../ui/Campo.svelte';
 	import Girando from '../ui/Girando.svelte';
 	import Icone from '../ui/Icone.svelte';
@@ -51,7 +52,7 @@
 	const resta = $derived(pt - custo);
 	const lista = $derived(
 		opcoes
-			.filter((o) => o.grupo === aba && (aba !== 'jutsu' || o.nome.toLowerCase().includes(filtro.trim().toLowerCase())))
+			.filter((o) => o.grupo === aba && (aba !== 'jutsu' || `${o.nome} ${o.traducao ?? ''}`.toLowerCase().includes(filtro.trim().toLowerCase())))
 			.sort((a, b) => Number(!!a.bloqueio) - Number(!!b.bloqueio) || a.pt - b.pt)
 	);
 	const noCarrinho = (o: OpcaoTreino) => carrinho.some((c) => c.chave === o.chave);
@@ -203,7 +204,7 @@
 				<div class="flex items-center gap-2.5 border-2 bg-b1 py-2 pr-2.5 pl-1.5 {dentro ? 'border-vermelhao' : 'border-b3'} {o.bloqueio ? 'opacity-55' : ''}">
 					<Icone id={o.icone} />
 					<div class="flex min-w-0 flex-1 flex-col gap-0.5">
-						<span class="text-[15px] leading-5 font-semibold">{o.nome}</span>
+						<span class="text-[15px] leading-5 font-semibold">{o.nome}<Glosa texto={o.traducao} class="text-[13px] leading-[18px]" /></span>
 						<span class="text-xs leading-4 text-mut">{o.descricao}</span>
 						{#if o.bloqueio || curto}<span class="text-xs leading-4 font-semibold">{o.bloqueio || `Faltam ${o.pt - resta} PT`}</span>{/if}
 					</div>

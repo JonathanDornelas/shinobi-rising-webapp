@@ -8,6 +8,7 @@
 	import DadoInline from '../leitura/DadoInline.svelte';
 	import Termo from '../leitura/Termo.svelte';
 	import Texto from '../leitura/Texto.svelte';
+	import Glosa from '../regras/Glosa.svelte';
 	import SeloRank from '../regras/SeloRank.svelte';
 	import Icone from '../ui/Icone.svelte';
 
@@ -19,6 +20,8 @@
 	// "Usos de jutsu" das invocações (cap. 14) não é um jutsu: vai numa linha à parte, embaixo da lista
 	const jutsus = $derived(k.jutsus.filter((j) => j.slug || j.rank));
 	const usos = $derived(k.jutsus.filter((j) => !j.slug && !j.rank));
+	// a proficiência no jutsu marcante repete o nome dele: a tradução vem da lista de jutsus do estágio
+	const traducaoDe = (slug: string) => k.jutsus.find((j) => j.slug === slug)?.traducao ?? null;
 	const numeros = $derived(
 		[
 			['PV', k.pv],
@@ -80,7 +83,7 @@
 				<div>
 					<dt class="inline font-semibold text-title">Proficiências</dt>
 					<dd class="m-0 inline">
-						{#each fc.proficiencias as p, i (p.nome)}{#if p.jutsu}<Termo id="jutsu:{p.jutsu}" texto={p.nome} href="/regras/jutsus/{p.jutsu}" />{:else}{p.nome}{/if} ({NIVEIS_PROFICIENCIA[p.bonus]}, {sinal(p.bonus)}){i < fc.proficiencias.length - 1 ? ', ' : ''}{/each}
+						{#each fc.proficiencias as p, i (p.nome)}{#if p.jutsu}<Termo id="jutsu:{p.jutsu}" texto={p.nome} href="/regras/jutsus/{p.jutsu}" /> <Glosa texto={traducaoDe(p.jutsu)} emLinha />{:else}{p.nome}{/if} ({NIVEIS_PROFICIENCIA[p.bonus]}, {sinal(p.bonus)}){i < fc.proficiencias.length - 1 ? ', ' : ''}{/each}
 					</dd>
 				</div>
 			{/if}
@@ -112,7 +115,10 @@
 						{#each jutsus as j (j.nome)}
 							<li class="inline-flex items-center gap-1.5 border border-b3 bg-b2 py-0.5 pr-2 pl-1 text-sm leading-5">
 								{#if j.rank}<SeloRank rank={j.rank} />{/if}
-								{#if j.slug}<Termo id="jutsu:{j.slug}" texto={j.nome} href="/regras/jutsus/{j.slug}" />{:else}<span class="font-semibold">{j.nome}</span>{/if}
+								<span class="flex flex-col">
+									{#if j.slug}<Termo id="jutsu:{j.slug}" texto={j.nome} href="/regras/jutsus/{j.slug}" />{:else}<span class="font-semibold">{j.nome}</span>{/if}
+									<Glosa texto={j.traducao} class="text-xs leading-4" />
+								</span>
 								{#if j.custo}<span class="text-xs whitespace-nowrap text-mut">{j.custo}</span>{/if}
 							</li>
 						{/each}

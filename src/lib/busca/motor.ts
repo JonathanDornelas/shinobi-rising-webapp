@@ -20,10 +20,10 @@ let indice: Promise<MiniSearch<DocBusca>> | null = null;
 
 function montar(docs: DocBusca[]) {
 	const ms = new MiniSearch<DocBusca>({
-		fields: ['titulo', 'caminho', 'texto'],
-		storeFields: ['id', 'tipo', 'titulo', 'caminho', 'texto', 'href', 'icone', 'rank'],
+		fields: ['titulo', 'traducao', 'caminho', 'texto'],
+		storeFields: ['id', 'tipo', 'titulo', 'traducao', 'caminho', 'texto', 'href', 'icone', 'rank'],
 		processTerm: (t) => normalizar(t) || null,
-		searchOptions: { boost: { titulo: 5, caminho: 1.5 }, prefix: true, combineWith: 'AND' }
+		searchOptions: { boost: { titulo: 5, traducao: 4, caminho: 1.5 }, prefix: true, combineWith: 'AND' }
 	});
 	ms.addAll(docs);
 	return ms;
@@ -52,8 +52,9 @@ export async function buscar(consulta: string): Promise<{ resultados: Resultado[
 	const ajustar = (r: ReturnType<typeof ms.search>) =>
 		r
 			.map((x) => {
-				const titulo = normalizar(x.titulo as string);
-				const bonus = titulo === nq ? 3 : titulo.startsWith(nq) ? 1.5 : 1;
+				// o nome japonês ou a tradução dele contam como título
+				const nomes = [x.titulo as string, (x.traducao as string | undefined) ?? ''].map(normalizar);
+				const bonus = nomes.includes(nq) ? 3 : nomes.some((n) => n && n.startsWith(nq)) ? 1.5 : 1;
 				return { ...(x as unknown as DocBusca), pontos: x.score * bonus };
 			})
 			.sort((a, b) => b.pontos - a.pontos);

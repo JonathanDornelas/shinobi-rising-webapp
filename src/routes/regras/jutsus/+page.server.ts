@@ -6,5 +6,5 @@ export const load: PageServerLoad = () => ({
 	nomesCla: Object.fromEntries(clas.map((c) => [c.slug, c.nome])),
 	titulo: 'Jutsus',
 	navTitulo: 'JUTSUS',
-	descricao: `Catálogo com os ${jutsus.length} jutsus do livro de regras de Shinobi no Michi, com filtros por tipo, rank, origem, elemento e custo.`
+	descricao: `Catálogo com os ${jutsus.length} jutsus de Shinobi no Michi, os do livro de regras e os do mangá de Naruto, com filtros por tipo, rank, origem, elemento e custo.`
 });

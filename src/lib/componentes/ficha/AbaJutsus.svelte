@@ -17,6 +17,7 @@
 	import Icone from '../ui/Icone.svelte';
 	import Traco from '../ui/Traco.svelte';
 	import BotaoFavorito from '../regras/BotaoFavorito.svelte';
+	import Glosa from '../regras/Glosa.svelte';
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
 	import { partesAtaqueJutsu, partesDanoAtributo, type Parte } from '#lib/rolagens/partes.ts';
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
@@ -238,7 +239,10 @@
 					<div class="-my-2 self-stretch max-md:row-span-2" style:background={t.cor}></div>
 					<Icone id="rank/ic-rank-{j.rank.toLowerCase()}" alt="Rank {j.rank}" />
 					<button type="button" class="flex min-w-0 flex-col gap-0.5 text-left text-fg" aria-expanded={ab} onclick={() => (aberto = ab ? null : j.slug)}>
-						<span class="font-mincho text-[17px] leading-[22px] font-bold">{j.nome} <span class="font-pixel text-xs text-mut max-sm:hidden">{ab ? "▾" : "▸"}</span></span>
+						<span class="flex flex-col">
+							<span class="font-mincho text-[17px] leading-[22px] font-bold">{j.nome} <span class="font-pixel text-xs text-mut max-sm:hidden">{ab ? "▾" : "▸"}</span></span>
+							<Glosa texto={j.traducao} class="text-[13px] leading-[18px]" />
+						</span>
 						<span class="truncate text-[13px] leading-[18px] text-mut">{j.origem} · {j.efeito}</span>
 					</button>
 					<span class="inline-flex h-9 items-center gap-1 border-2 border-ink pr-2.5 text-[13px] font-semibold max-md:hidden" style:background={t.cor} style:color={t.texto}><Icone id={t.icone} />{j.tipo}</span>
@@ -274,6 +278,7 @@
 					<Icone id="rank/ic-rank-{j.rank.toLowerCase()}" alt="Rank {j.rank}" />
 					<span class="flex min-w-0 flex-1 flex-col gap-0.5">
 						<span class="font-mincho text-[17px] leading-[22px] font-bold">{j.nome}</span>
+						<Glosa texto={j.traducao} class="text-[13px] leading-[18px]" />
 						<span class="truncate text-xs leading-4 text-mut">{j.tipo} · {j.origem}</span>
 					</span>
 					{@render custo(j, false)}

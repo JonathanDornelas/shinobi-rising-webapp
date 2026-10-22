@@ -227,12 +227,12 @@
       tracos:
         - *filho-nevoa
     - nome: Jounin
-      arte: { formato: quadro, plano: câmera inclinada }
+      arte: { formato: quadro, plano: por cima do ombro }
       ameaca: 8
       papel: assassino
       resumo: "Mestre do assassinato silencioso: acha o alvo pela respiração, dentro da névoa."
       ataques:
-        - { nome: Espada curta, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+        - { nome: Espada larga, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
         - { slug: sairento-kiringu }
         - { slug: suiryuudan-no-jutsu }
