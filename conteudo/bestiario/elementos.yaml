@@ -747,7 +747,7 @@
       papel: controlador
       perfil: corpo-resistente
       estilo: calculista
-      resumo: "Cospe cal viva no inimigo e espera ela endurecer antes de chegar perto."
+      resumo: "Cospe rochas de lava em brasa e prende quem sobrevive numa cal que endurece em segundos."
       ataques:
         - { nome: Rocha em brasa, alcance: Médio }
       jutsus:

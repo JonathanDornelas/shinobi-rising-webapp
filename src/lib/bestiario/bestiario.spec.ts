@@ -87,7 +87,7 @@ describe('bestiário', () => {
 	it('cada variação é uma ficha separada, com âncora e arte próprias', () => {
 		for (const c of criaturas.filter((c) => c.estagios.length > 1)) {
 			expect(new Set(c.estagios.map((e) => e.slug)).size, c.slug).toBe(c.estagios.length);
-			for (const e of c.estagios) expect(e.arte?.arquivo === null || e.arte?.arquivo === `/bestiario/${c.slug}--${e.slug}.png`, `${c.slug}#${e.slug}`).toBe(true);
+			for (const e of c.estagios) expect(e.arte?.arquivo === null || e.arte!.arquivo.startsWith(`/bestiario/${c.slug}--${e.slug}.png?v=`), `${c.slug}#${e.slug}`).toBe(true);
 		}
 	});
 

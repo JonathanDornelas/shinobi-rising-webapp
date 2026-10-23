@@ -4,6 +4,7 @@
 // conteudo/jutsus.yaml e conteudo/habilidades.yaml (cards). Daqui saem também, derivados dos capítulos, as
 // especializações (cap. 19), o glossário (cap. 22), os equipamentos (caps. 11–13), a referência rápida, a busca e as
 // ligações no texto (referências "cap. N" e siglas do glossário). Sintaxe do Markdown: scripts/livro/md.ts.
+import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -393,10 +394,15 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			return m ? +m[1] / +m[2] : +rotulo;
 		};
 
-		/** Arte em static/; arquivo null se ainda não foi feita. */
+		/**
+		 * Arte em static/; arquivo null se ainda não foi feita. A URL leva o começo do hash do arquivo (?v=): as artes vão
+		 * com cache longo (vercel.json), e uma arte refeita ganha outra URL, em vez de ficar dias presa no navegador.
+		 */
 		const arteDe = (arquivo: string, formato: FormatoArte, plano: string) => {
 			const [largura, altura] = TAMANHO[formato];
-			return { arquivo: existsSync(join(raiz, 'static', arquivo)) ? `/${arquivo}` : null, formato, plano, largura, altura };
+			const caminho = join(raiz, 'static', arquivo);
+			const versao = existsSync(caminho) ? createHash('md5').update(readFileSync(caminho)).digest('hex').slice(0, 8) : null;
+			return { arquivo: versao ? `/${arquivo}?v=${versao}` : null, formato, plano, largura, altura };
 		};
 		const GENTE: TipoCriatura[] = ['shinobi', 'fora da lei', 'guerreiro', 'organização'];
 		/** `varios`: o verbete tem mais de um estágio, e cada um vira uma ficha separada, com arte própria. */

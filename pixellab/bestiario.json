@@ -4500,9 +4500,9 @@
 			"nome": "Especialista em Katon: Genin",
 			"formato": "retrato",
 			"plano": ["de-baixo"],
-			"prompt": "a young genin boy with short messy black hair and a burn scar on one hand, Hidden Leaf forehead protector, olive green Konoha flak vest over a dark navy uniform, training alone on a riverbank at dusk, cheeks puffed, blowing a small fireball over the water, original character, not a famous character from the series",
+			"prompt": "a young genin boy with short messy black hair and a burn scar on one hand, Hidden Leaf forehead protector, dark navy shirt and shorts, no flak vest, on a riverbank at dusk, cheeks puffed, blowing a huge roaring fireball bigger than himself over the water, the fire lighting his face orange, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-katon--genin-12001.png"
+			"escolhida": "especialista-katon--genin-12003.png"
 		},
 		{
 			"slug": "especialista-katon--chunin",
@@ -4545,9 +4545,9 @@
 			"nome": "Especialista em Suiton: Genin",
 			"formato": "retrato",
 			"plano": ["reflexo"],
-			"prompt": "a young genin girl with short teal hair, Hidden Mist forehead protector with four wavy lines, dark grey-green Kiri flak vest, her reflection in a still pond as she shoots a tiny water bullet with her fingers, soaked sleeves, original character, not a famous character from the series",
+			"prompt": "a young genin girl with short teal hair, Hidden Mist forehead protector with four wavy lines, dark grey-green Kiri flak vest, standing on the surface of a pond with both hands in a seal while a spiralling jet of water shoots up from the pond and smashes a wooden training post, water droplets everywhere, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-suiton--genin-12001.png"
+			"escolhida": "especialista-suiton--genin-12003.png"
 		},
 		{
 			"slug": "especialista-suiton--chunin",
@@ -4590,9 +4590,9 @@
 			"nome": "Especialista em Doton: Genin",
 			"formato": "retrato",
 			"plano": ["inteiro"],
-			"prompt": "a stocky young genin boy with a round face and dirty cheeks, Hidden Stone forehead protector, dark red one-sleeve Iwa uniform with a brown flak vest, full body, proudly standing beside a crooked small earth wall he just raised, dust in the air, original character, not a famous character from the series",
+			"prompt": "a stocky young genin boy with a round face and dirty cheeks, Hidden Stone forehead protector, dark red one-sleeve Iwa uniform with a brown flak vest, slamming both palms on the ground as a thick wall of rock bursts up in front of him with rubble flying, kunai bouncing off the rising wall, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-doton--genin-12001.png"
+			"escolhida": "especialista-doton--genin-12003.png"
 		},
 		{
 			"slug": "especialista-doton--chunin",
@@ -4689,9 +4689,9 @@
 			"nome": "Especialista em Fuuton: Chunin",
 			"formato": "faixa",
 			"plano": ["aberto"],
-			"prompt": "a Sunagakure chunin woman with dark skin and a war fan on her back, Hidden Sand forehead protector, beige Suna flak vest with cloth wraps, wide panoramic shot of a canyon as her giant fan sweeps a wall of cutting wind across the battlefield, enemies thrown back, original character, not a famous character from the series",
+			"prompt": "a Sunagakure chunin woman with dark skin and a war fan on her back, Hidden Sand forehead protector, beige Suna flak vest with cloth wraps, wide panoramic shot of a canyon as her giant fan sweeps a white wall of cutting wind across the battlefield, enemies thrown back, full-bleed image with no border or frame, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-fuuton--chunin-12001.png"
+			"escolhida": "especialista-fuuton--chunin-12003.png"
 		},
 		{
 			"slug": "especialista-fuuton--jounin",
@@ -4707,9 +4707,9 @@
 			"nome": "Especialista em Fuuton: Nível Anbu",
 			"formato": "retrato",
 			"plano": ["costas"],
-			"prompt": "an elite wind assassin, original man with a long black scarf and a white cat mask with green markings, forehead protector with a musical note symbol, beige Sound uniform with a thick purple rope belt, seen from behind on the edge of a cliff, long scarf whipping in the wind, watching a convoy far below, original character, not a famous character from the series",
+			"prompt": "an elite wind assassin, original man with a long black scarf and a white cat mask with green markings, forehead protector with a musical note symbol, beige Sound uniform with a thick purple rope belt, seen from behind on a cliff edge, swinging one arm as a huge pale crescent blade of cutting wind slices through a tall pine tree and a rope bridge far below, leaves and splinters flying, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-fuuton--nivel-anbu-12001.png"
+			"escolhida": "especialista-fuuton--nivel-anbu-12003.png"
 		},
 		{
 			"slug": "especialista-fuuton--nivel-kage",
@@ -4770,9 +4770,9 @@
 			"nome": "Especialista em Hyōton: Genin",
 			"formato": "retrato",
 			"plano": ["perfil"],
-			"prompt": "a shy young genin boy with short spiky light-blue hair and freckles, Hidden Mist forehead protector with four wavy lines, dark grey-green Kiri flak vest, profile view holding a cup of tea that is freezing over in his hands, frost spreading on the table, original character, not a famous character from the series",
+			"prompt": "a shy young genin boy with short spiky light-blue hair and freckles, Hidden Mist forehead protector with four wavy lines, dark grey-green Kiri flak vest, kneeling on a wooden floor as sharp blue ice crystals spread from his palms across the room, freezing a bucket of water solid and covering the walls with frost, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-hyoton--genin-12002.png"
+			"escolhida": "especialista-hyoton--genin-12003.png"
 		},
 		{
 			"slug": "especialista-hyoton--chunin",
@@ -4815,18 +4815,18 @@
 			"nome": "Especialista em Yōton: Genin",
 			"formato": "quadro",
 			"plano": ["escorco"],
-			"prompt": "a hot-headed young genin boy with red spiky hair and charred gloves, Hidden Stone forehead protector, dark red one-sleeve Iwa uniform with a brown flak vest, foreshortened angry punch toward the camera, his gloves smoking and glowing orange at the knuckles, original character, not a famous character from the series",
+			"prompt": "a hot-headed young genin boy with red spiky hair and charred gloves, Hidden Stone forehead protector, dark red one-sleeve Iwa uniform with a brown flak vest, foreshortened angry punch toward the camera, his fist dripping with glowing orange molten lava that splashes and hardens into black rock on the ground, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-yoton--genin-12001.png"
+			"escolhida": "especialista-yoton--genin-12003.png"
 		},
 		{
 			"slug": "especialista-yoton--chunin",
 			"nome": "Especialista em Yōton: Chunin",
 			"formato": "retrato",
 			"plano": ["de-baixo"],
-			"prompt": "a chunin boy with a shaved head, thick eyebrows and a dark red scarf, original character, Hidden Stone forehead protector, dark red one-sleeve Iwa uniform with a brown flak vest, low angle as she spits a stream of white quicklime that hardens around an enemy trapped mid-step, original character, not a famous character from the series",
+			"prompt": "a chunin boy with a shaved head, thick eyebrows and a dark red scarf, original character, Hidden Stone forehead protector, dark red one-sleeve Iwa uniform with a brown flak vest, low angle as he spits a stream of glowing orange molten lava that turns into red-hot boulders flying at an enemy, smoking and cooling into black stone where they land, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-yoton--chunin-12002.png"
+			"escolhida": "especialista-yoton--chunin-12003.png"
 		},
 		{
 			"slug": "especialista-yoton--jounin",
@@ -4869,9 +4869,9 @@
 			"nome": "Especialista em Futton: Chunin",
 			"formato": "quadro",
 			"plano": ["de-cima"],
-			"prompt": "a chunin man with a thin moustache and a long dark coat, original character, Hidden Mist forehead protector with four wavy lines, dark grey-green Kiri flak vest, top-down view of acid mist melting the roof of a wooden house while he waits outside, original character, not a famous character from the series",
+			"prompt": "a chunin man with a thin moustache and a long dark coat, original character, Hidden Mist forehead protector with four wavy lines, dark grey-green Kiri flak vest, top-down view of a thick pale yellow-green acidic mist pouring from his mouth over a village street, wooden walls and a cart melting and dripping where the mist touches, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-futton--chunin-12001.png"
+			"escolhida": "especialista-futton--chunin-12003.png"
 		},
 		{
 			"slug": "especialista-futton--jounin",
@@ -4887,9 +4887,9 @@
 			"nome": "Especialista em Futton: Nível Anbu",
 			"formato": "retrato",
 			"plano": ["moldura"],
-			"prompt": "an elite agent with a white mask with steam-like red markings, original character, dark cloak, Hidden Mist forehead protector with four wavy lines, dark grey-green Kiri flak vest, framed by a melting iron door in a castle corridor, acidic steam pouring through the gap, original character, not a famous character from the series",
+			"prompt": "an elite agent with a white mask with steam-like red markings, original character, dark cloak, Hidden Mist forehead protector with four wavy lines, dark grey-green Kiri flak vest, framed by a castle doorway, white boiling steam pouring from his body and hands while the iron door in front of him melts and drips glowing orange, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-futton--nivel-anbu-12001.png"
+			"escolhida": "especialista-futton--nivel-anbu-12003.png"
 		},
 		{
 			"slug": "especialista-futton--nivel-kage",
@@ -4905,9 +4905,9 @@
 			"nome": "Especialista em Ranton: Genin",
 			"formato": "retrato",
 			"plano": ["de-baixo"],
-			"prompt": "a lanky young genin boy with dark skin and white hair, Hidden Cloud forehead protector, white one-shoulder Kumo flak vest over a dark shirt, low angle as he stands knee-deep in a river with small sparks dancing over the water around him, original character, not a famous character from the series",
+			"prompt": "a lanky young genin boy with dark skin and white hair, Hidden Cloud forehead protector, white one-shoulder Kumo flak vest over a dark shirt, low angle, standing knee-deep in a river while crackling blue-white electricity arcs over the water around him in curving beams of light, the water glowing, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-ranton--genin-12001.png"
+			"escolhida": "especialista-ranton--genin-12003.png"
 		},
 		{
 			"slug": "especialista-ranton--chunin",
@@ -4923,9 +4923,9 @@
 			"nome": "Especialista em Ranton: Jounin",
 			"formato": "faixa",
 			"plano": ["aberto"],
-			"prompt": "a jounin woman with short white hair and a long dark scarf, original character, Hidden Cloud forehead protector, white one-shoulder Kumo flak vest over a dark shirt, panoramic view of a valley as a pack of black lightning panthers runs out of her hands toward fleeing enemies, original character, not a famous character from the series",
+			"prompt": "a jounin woman with short white hair and a long dark scarf, original character, Hidden Cloud forehead protector, white one-shoulder Kumo flak vest over a dark shirt, panoramic view of a valley as a pack of panthers made of black lightning with crackling white outlines leaps out of her hands toward fleeing enemies, curving beams of light in the sky, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-ranton--jounin-12001.png"
+			"escolhida": "especialista-ranton--jounin-12003.png"
 		},
 		{
 			"slug": "especialista-ranton--nivel-anbu",
@@ -4950,9 +4950,9 @@
 			"nome": "Especialista em Shakuton: Genin",
 			"formato": "retrato",
 			"plano": ["perfil"],
-			"prompt": "a young genin girl with tanned skin and short dark hair under a head cloth, Hidden Sand forehead protector, beige Suna flak vest with cloth wraps, profile view beside a row of dried-up potted plants, a tiny ball of heat floating above her palm, original character, not a famous character from the series",
+			"prompt": "a young genin girl with tanned skin and short dark hair under a head cloth, Hidden Sand forehead protector, beige Suna flak vest with cloth wraps, on a desert rooftop holding a glowing miniature sun the size of an orange between her palms, the potted plants around her dried and wilted by the heat, the air shimmering, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-shakuton--genin-12001.png"
+			"escolhida": "especialista-shakuton--genin-12003.png"
 		},
 		{
 			"slug": "especialista-shakuton--chunin",
@@ -4968,18 +4968,18 @@
 			"nome": "Especialista em Shakuton: Jounin",
 			"formato": "pagina",
 			"plano": ["silhueta"],
-			"prompt": "a jounin woman with long reddish hair tied back and a calm face, original character, Hidden Sand forehead protector, beige Suna flak vest with cloth wraps, silhouette against a setting sun in the desert with glowing orbs circling her slowly, original character, not a famous character from the series",
+			"prompt": "a jounin woman with long reddish hair tied back and a calm face, original character, Hidden Sand forehead protector, beige Suna flak vest with cloth wraps, standing in the desert at dusk surrounded by five large blazing orbs like small suns orbiting her, heat waves distorting the air, the sand cracked and dry, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-shakuton--jounin-12001.png"
+			"escolhida": "especialista-shakuton--jounin-12003.png"
 		},
 		{
 			"slug": "especialista-shakuton--nivel-anbu",
 			"nome": "Especialista em Shakuton: Nível Anbu",
 			"formato": "retrato",
 			"plano": ["olhos"],
-			"prompt": "an elite assassin, original woman with a bone-white scorpion mask, Hidden Sand forehead protector, beige Suna flak vest with cloth wraps, extreme close-up of her eyes through the mask holes with a tiny sun reflected in each pupil, original character, not a famous character from the series",
+			"prompt": "an elite assassin, original woman with a bone-white scorpion mask, Hidden Sand forehead protector, beige Suna flak vest with cloth wraps, close-up as she reaches toward the camera with an open hand holding a blazing miniature sun, white steam rising from the arm of an enemy she just touched, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-shakuton--nivel-anbu-12001.png"
+			"escolhida": "especialista-shakuton--nivel-anbu-12003.png"
 		},
 		{
 			"slug": "especialista-shakuton--nivel-kage",
@@ -4995,18 +4995,18 @@
 			"nome": "Especialista em Bakuton: Genin",
 			"formato": "retrato",
 			"plano": ["inteiro"],
-			"prompt": "a grinning young genin boy with soot on his face and blown-up bandaged gloves, Hidden Stone forehead protector, dark red one-sleeve Iwa uniform with a brown flak vest, full body after a training accident, smoke rising from his fists, a small crater beside him, original character, not a famous character from the series",
+			"prompt": "a grinning young genin boy with soot on his face and blown-up bandaged gloves, Hidden Stone forehead protector, dark red one-sleeve Iwa uniform with a brown flak vest, punching a boulder that explodes into a bright orange burst of fire and flying rocks, his hair blown back by the blast, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-bakuton--genin-12001.png"
+			"escolhida": "especialista-bakuton--genin-12003.png"
 		},
 		{
 			"slug": "especialista-bakuton--chunin",
 			"nome": "Especialista em Bakuton: Chunin",
 			"formato": "quadro",
 			"plano": ["ombro"],
-			"prompt": "a chunin woman with short black hair, a clay-stained leather apron and a bag of white clay at the hip, original character, Hidden Stone forehead protector, dark red one-sleeve Iwa uniform with a brown flak vest, over-the-shoulder view as she releases small white clay birds that fly toward a distant watchtower, original character, not a famous character from the series",
+			"prompt": "a chunin woman with short black hair, a clay-stained leather apron and a bag of white clay at the hip, original character, Hidden Stone forehead protector, dark red one-sleeve Iwa uniform with a brown flak vest, over-the-shoulder view as small white clay birds she released fly toward a distant watchtower and the first one explodes in a bright orange fireball against its wall, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-bakuton--chunin-12001.png"
+			"escolhida": "especialista-bakuton--chunin-12003.png"
 		},
 		{
 			"slug": "especialista-bakuton--jounin",
@@ -5085,9 +5085,9 @@
 			"nome": "Especialista em Jinton: Genin",
 			"formato": "retrato",
 			"plano": ["de-baixo"],
-			"prompt": "a young genin girl with short messy brown hair, freckles and a missing front tooth, floating a little above the ground, Hidden Stone forehead protector, dark red one-sleeve Iwa uniform with a brown flak vest, low angle as he floats over a rocky training ground holding a pebble, his friends staring up, original character, not a famous character from the series",
+			"prompt": "a young genin girl with short messy brown hair, freckles and a missing front tooth, floating a little above the ground, Hidden Stone forehead protector, dark red one-sleeve Iwa uniform with a brown flak vest, floating a little above a rocky training ground with a tiny flickering cube of white light between her palms turning a pebble into dust, her friends staring up, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-jinton--genin-12002.png"
+			"escolhida": "especialista-jinton--genin-12003.png"
 		},
 		{
 			"slug": "especialista-jinton--chunin",
