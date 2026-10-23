@@ -4770,9 +4770,9 @@
 			"nome": "Especialista em Hyōton: Genin",
 			"formato": "retrato",
 			"plano": ["perfil"],
-			"prompt": "a shy young genin boy with short spiky light-blue hair and freckles, Hidden Mist forehead protector with four wavy lines, dark grey-green Kiri flak vest, kneeling on a wooden floor as sharp blue ice crystals spread from his palms across the room, freezing a bucket of water solid and covering the walls with frost, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
+			"prompt": "a shy young genin boy with short spiky light-blue hair and freckles, Hidden Mist forehead protector with four wavy lines, dark grey-green Kiri flak vest, profile view holding a cup of tea that is freezing over in his hands, frost spreading on the table, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-hyoton--genin-12003.png"
+			"escolhida": "especialista-hyoton--genin-12002.png"
 		},
 		{
 			"slug": "especialista-hyoton--chunin",
