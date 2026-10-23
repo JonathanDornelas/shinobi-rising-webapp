@@ -4545,9 +4545,9 @@
 			"nome": "Especialista em Suiton: Genin",
 			"formato": "retrato",
 			"plano": ["reflexo"],
-			"prompt": "a young genin girl with short teal hair, Hidden Mist forehead protector with four wavy lines, dark grey-green Kiri flak vest, standing on the surface of a pond with both hands in a seal while a spiralling jet of water shoots up from the pond and smashes a wooden training post, water droplets everywhere, the jutsu is large, bright and clearly the focus of the image, original character, not a famous character from the series",
+			"prompt": "a young genin girl with short teal hair, Hidden Mist forehead protector with four wavy lines, dark grey-green Kiri flak vest, her reflection in a still pond as she shoots a tiny water bullet with her fingers, soaked sleeves, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-suiton--genin-12003.png"
+			"escolhida": "especialista-suiton--genin-12001.png"
 		},
 		{
 			"slug": "especialista-suiton--chunin",
@@ -4580,10 +4580,10 @@
 			"slug": "especialista-suiton--nivel-kage",
 			"nome": "Especialista em Suiton: Nível Kage",
 			"formato": "pagina",
-			"plano": ["de-baixo"],
-			"prompt": "a legendary water master, original middle-aged man with long grey hair tied back and a blue kimono, a slashed forehead protector, a worn dark travel cloak, low angle from below as a gigantic waterfall rises from the sea behind him like a wall about to fall, original character, not a famous character from the series",
+			"plano": ["costas"],
+			"prompt": "a legendary water master, original middle-aged man with long grey hair tied back and a blue kimono, a slashed forehead protector, a worn dark travel cloak, seen strictly from behind, sitting alone on top of a small grassy hill, looking down at a ruined village drowned by a flood: calm still water at an absurd height covers the houses up to the rooftops, only broken roofs, a temple gate and treetops stick out of the flat water, no waves at all, grey overcast sky reflected on the water, debris floating, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-suiton--nivel-kage-12001.png"
+			"escolhida": "especialista-suiton--nivel-kage-12004.png"
 		},
 		{
 			"slug": "especialista-doton--genin",
@@ -4832,10 +4832,27 @@
 			"slug": "especialista-yoton--jounin",
 			"nome": "Especialista em Yōton: Jounin",
 			"formato": "pagina",
-			"plano": ["inteiro"],
-			"prompt": "a broad-shouldered jounin woman with braided black hair, her whole body coated in glowing lava armor, original character, Hidden Mist forehead protector with four wavy lines, dark grey-green Kiri flak vest, full body standing in a destroyed village street, molten rock dripping from his fists, original character, not a famous character from the series",
+			"plano": ["ombro"],
+			"prompt": "three Uchiha clan ninjas after a battle: in the background rivers of glowing orange molten lava pour down a rocky slope over fleeing enemy ninjas, smoke and embers rising; in the middle, facing the camera, the young man Atarashi Uchiha (messy black hair, purple high-collared zipped tunic with short sleeves, grey waist sash, tan strap across the chest, black forearm guards, black pants) scratches the back of his head with one hand, eyes half closed and a small embarrassed, slightly guilty smile, like someone who overdid it a little; in the foreground, seen from behind with their backs to the camera and looking at him, Ani Uchiha on the left (long dark navy hair with a side braid, dark sleeveless top with the red and white Uchiha fan crest on her back, pink sleeves, a katana at the waist) and Hayama Uchiha on the right (short black hair, the knot of a Konoha forehead protector, green Konoha flak vest, dark navy sleeves), the lava is clearly visible, all three are original characters from the user's campaign, not famous characters from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-yoton--jounin-12001.png"
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/atarashi-uchiha.png",
+					"pagina": "Atarashi Uchiha (campanha do usuário)",
+					"uso": "the young man in the center facing the camera: copy his face, messy black hair and his whole outfit (purple high-collared zipped tunic, grey waist sash, tan strap across the chest, black forearm guards, black pants), in a new pose with one hand behind his head and an embarrassed small smile"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/ani-uchiha.png",
+					"pagina": "Ani Uchiha (campanha do usuário)",
+					"uso": "the woman in the left foreground seen from behind: copy her long dark navy hair with the side braid and her outfit, with the red and white Uchiha fan crest on the back of her top as in the small drawing"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/hayama-uchiha.png",
+					"pagina": "Hayama Uchiha (campanha do usuário)",
+					"uso": "the man in the right foreground seen from behind: copy his short black hair and his Konoha outfit (green flak vest, dark navy sleeves, forehead protector)"
+				}
+			],
+			"escolhida": "especialista-yoton--jounin-12008.png"
 		},
 		{
 			"slug": "especialista-yoton--nivel-anbu",
@@ -4849,11 +4866,11 @@
 		{
 			"slug": "especialista-yoton--nivel-kage",
 			"nome": "Especialista em Yōton: Nível Kage",
-			"formato": "faixa",
+			"formato": "pagina",
 			"plano": ["aberto"],
-			"prompt": "a legendary lava master, original old woman with short white hair and a soot-black armored coat, a slashed forehead protector, a worn dark travel cloak, panoramic shot of him standing in front of an erupting crater, rivers of lava flowing across a battlefield, original character, not a famous character from the series",
+			"prompt": "a legendary lava master, original old woman with short white hair and a soot-black armored coat, a slashed forehead protector, a worn dark travel cloak, she stands at the edge of a volcano crater facing the camera, small in the frame, both arms raised high and screaming, while behind her the volcano erupts an absurd column of glowing orange lava and black smoke rising into the sky like a nuclear explosion mushroom cloud, lava bombs raining down, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-yoton--nivel-kage-12001.png"
+			"escolhida": "especialista-yoton--nivel-kage-12004.png"
 		},
 		{
 			"slug": "especialista-futton--genin",
@@ -4940,10 +4957,10 @@
 			"slug": "especialista-ranton--nivel-kage",
 			"nome": "Especialista em Ranton: Nível Kage",
 			"formato": "pagina",
-			"plano": ["de-baixo"],
-			"prompt": "a legendary storm master, original old man with dark skin and a long white beard, a slashed forehead protector, a worn dark travel cloak, low angle as he floats inside a ring of black thunderclouds with beams of light falling around him, original character, not a famous character from the series",
+			"plano": ["aberto", "costas"],
+			"prompt": "a legendary storm master, original old man with dark skin and a long white beard, a slashed forehead protector, a worn dark travel cloak, seen strictly from behind and far away, a small figure standing on a rocky ridge watching a massive bolt of black lightning with a white glowing outline strike down from black storm clouds and split a huge mountain in half down the middle, rocks and dust exploding from the crack, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-ranton--nivel-kage-12001.png"
+			"escolhida": "especialista-ranton--nivel-kage-12004.png"
 		},
 		{
 			"slug": "especialista-shakuton--genin",

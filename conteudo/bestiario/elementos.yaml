@@ -180,7 +180,7 @@
         - *suiton-corpo-de-agua-corrente
         - *suiton-chao-encharcado
     - nome: Nível Kage
-      arte: { formato: pagina, plano: de baixo }
+      arte: { formato: pagina, plano: de costas }
       ameaca: 16
       papel: chefe
       perfil: chakra-vasto
@@ -719,7 +719,7 @@
   tipo: shinobi
   origem: Linhagens de Iwa e de Kiri
   vila: null
-  arte: { formato: pagina, plano: corpo inteiro }
+  arte: { formato: pagina, plano: por cima do ombro }
   cena:
     - "O ar treme de calor, e a pedra do chão começa a brilhar em vermelho. Do outro lado do desfiladeiro, o ninja cospe uma bola de lava no rio, e o rio inteiro vira vapor de uma vez, com um grito de chaleira."
   descricao:
@@ -758,12 +758,12 @@
         - *yoton-pele-de-magma
         - &yoton-chao-derretido { nome: Chão derretido, efeito: "Uma vez por cena, derrete uma área de 6 m: quem começa o turno nela sofre o dano da ficha (metade com sucesso na Resistência de AGI)." }
     - nome: Jounin
-      arte: { formato: pagina, plano: corpo inteiro }
+      arte: { formato: pagina, plano: por cima do ombro }
       capa: true
       ameaca: 9
       papel: lutador
       perfil: corpo-robusto
-      resumo: "Veterana que cobre o corpo inteiro de lava e luta de perto, sem medo de nada que queime."
+      resumo: "Veterano que cobre o corpo inteiro de lava e luta de perto, sem medo de nada que queime."
       ataques:
         - { nome: Punho de magma, alcance: Corpo a corpo }
       jutsus:
@@ -792,7 +792,7 @@
         - *yoton-pele-de-magma
         - *yoton-chao-derretido
     - nome: Nível Kage
-      arte: { formato: faixa, plano: plano aberto }
+      arte: { formato: pagina, plano: plano aberto }
       ameaca: 17
       papel: chefe
       perfil: corpo-resistente
@@ -1002,7 +1002,7 @@
         - *ranton-feixe-que-curva
         - *ranton-nuvem-negra
     - nome: Nível Kage
-      arte: { formato: pagina, plano: de baixo }
+      arte: { formato: pagina, plano: plano aberto }
       ameaca: 17
       papel: chefe
       perfil: chakra-vasto
