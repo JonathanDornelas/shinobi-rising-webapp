@@ -8,7 +8,8 @@ export const CAP10 = {
 	fuuton: { capitulo: 10, ancora: 'fuuton-liberacao-de-vento' },
 	medico: { capitulo: 10, ancora: 'ninjutsu-medico' },
 	genjutsu: { capitulo: 10, ancora: 'genjutsu-comuns' },
-	taijutsu: { capitulo: 10, ancora: 'tecnicas-de-taijutsu-combate-corporal' }
+	taijutsu: { capitulo: 10, ancora: 'tecnicas-de-taijutsu-combate-corporal' },
+	combinados: { capitulo: 10, ancora: 'elementos-combinados' }
 };
 /** Fuuinjutsu e Bukijutsu: a tabela dos seis tipos de jutsu (cap. 20). */
 export const TIPOS = { capitulo: 20, ancora: 'os-seis-tipos-de-jutsu' };

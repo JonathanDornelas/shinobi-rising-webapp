@@ -37,7 +37,11 @@ export const ELEMENTO: Record<string, { nome: string; cor: string; traducao: str
 	hyoton: { nome: 'Hyōton', cor: '#7FD3E6', traducao: 'Gelo' },
 	yoton: { nome: 'Yōton', cor: '#B23A12', traducao: 'Lava' },
 	ranton: { nome: 'Ranton', cor: '#3A5BA0', traducao: 'Tempestade' },
-	jiton: { nome: 'Jiton', cor: '#5E6B73', traducao: 'Magnético' }
+	jiton: { nome: 'Jiton', cor: '#5E6B73', traducao: 'Magnético' },
+	futton: { nome: 'Futton', cor: '#8FA9BC', traducao: 'Vapor' },
+	shakuton: { nome: 'Shakuton', cor: '#E3922F', traducao: 'Calor' },
+	bakuton: { nome: 'Bakuton', cor: '#A4472A', traducao: 'Explosão' },
+	jinton: { nome: 'Jinton', cor: '#9C9283', traducao: 'Poeira' }
 };
 
 /** Cor em hex com transparência, para fundos (12%) e bordas (55%) de elemento. */

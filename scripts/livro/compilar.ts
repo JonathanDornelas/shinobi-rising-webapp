@@ -60,8 +60,14 @@ const ELEMENTOS: Record<string, string> = {
 	hyoton: 'hyoton',
 	yoton: 'yoton',
 	ranton: 'ranton',
-	jiton: 'jiton'
+	jiton: 'jiton',
+	futton: 'futton',
+	shakuton: 'shakuton',
+	bakuton: 'bakuton',
+	jinton: 'jinton'
 };
+/** Os cinco básicos têm seção própria no cap. 10; os combinados apontam para Elementos combinados. */
+const BASICOS = ['katon', 'suiton', 'doton', 'raiton', 'fuuton'];
 const VILAS: [RegExp, string, string][] = [
 	[/konohagakure/i, 'Konoha', 'vila/ic-vila-konoha'],
 	[/kirigakure/i, 'Kiri', 'vila/ic-vila-kiri'],
@@ -737,7 +743,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			if (!s) continue;
 			const h = c10.blocos.find((b) => b.tipo === 'h' && normalizar(b.texto).startsWith(n)) as { id: string } | undefined;
 			const variantes = [...new Set([t.termo, semAcentos(t.termo), ...(s === 'fuuton' ? ['Futon'] : [])])];
-			add({ id: `elemento:${s}`, tipo: 'elemento', rotulo: t.termo, nome: t.termo, padroes: variantes.map(escapar), resumo: t.campos.join(' · '), href: h ? `${c10.href}#${h.id}` : `${c10.href}#os-cinco-elementos-basicos`, icone: `elemento/ic-elemento-${s}` });
+			add({ id: `elemento:${s}`, tipo: 'elemento', rotulo: t.termo, nome: t.termo, padroes: variantes.map(escapar), resumo: t.campos.join(' · '), href: h ? `${c10.href}#${h.id}` : `${c10.href}#${BASICOS.includes(s) ? 'os-cinco-elementos-basicos' : 'elementos-combinados'}`, icone: `elemento/ic-elemento-${s}` });
 		}
 
 		// ranks de jutsu (glossário)

@@ -59,6 +59,10 @@ Os seis atributos do sistema.
 | Yōton | Liberação de Lava (KKG: Fogo + Terra) |
 | Ranton | Liberação de Tempestade (KKG: Raio + Água) |
 | Jiton | Liberação Magnética (KKG: Vento + Terra) |
+| Futton | Liberação de Vapor (KKG: Fogo + Água) |
+| Shakuton | Liberação de Calor (KKG: Fogo + Vento) |
+| Bakuton | Liberação de Explosão (KKG: Terra + Raio) |
+| Jinton | Liberação de Poeira (Kekkei Tōta: Terra + Vento + Fogo) |
 
 ## Termos em Japonês: Conceitos Centrais {#termos-em-japones-conceitos-centrais}
 

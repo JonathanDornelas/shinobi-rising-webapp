@@ -31,6 +31,36 @@ Quando dois jutsus se chocam, como um jutsu defensivo usado como Reação contra
 - **Vantagem elemental:** +5 para o lado mais forte
 :::
 
+## Elementos combinados {#elementos-combinados}
+
+Alguns ninjas não escolhem entre dois elementos: nascem com os dois misturados num terceiro. A lava é fogo e terra ao mesmo tempo; o gelo é água e vento. Ninguém aprende um elemento combinado treinando. Ele vem no sangue, como Kekkei Genkai, e o personagem só o tem se o clã dele comprou a combinação com os Pontos de KKG (cap. 8). Quem cria um jutsu novo de elemento combinado paga mais por ele, porque soma o modificador de combinação de dois elementos (cap. 20); os jutsus do catálogo já vêm com o preço feito.
+
+A tabela traz as combinações conhecidas. Uma linhagem ainda mais rara junta três elementos, a Kekkei Tōta, e o mundo ninja conhece uma só: a Poeira, que desfaz em pó tudo o que toca. A linhagem do Magnetismo nunca revelou de onde ele vem; o livro adota o vento e a terra, que movem a areia de ferro. Outros elementos combinados, como o Cristal e o Aço, guardam o segredo até hoje, e o Mestre escolhe os dois elementos se um deles aparecer na mesa.
+
+:::tabela{titulo="Elementos combinados"}
+| Elemento | Junta | Onde aparece |
+| - | - | - |
+| Mokuton (Liberação de Madeira) | Terra e Água | Clã Senju |
+| Hyōton (Liberação de Gelo) | Água e Vento | Clã Yuki |
+| Yōton (Liberação de Lava) | Fogo e Terra | Iwagakure e Kirigakure |
+| Futton (Liberação de Vapor) | Fogo e Água | Kirigakure |
+| Ranton (Liberação de Tempestade) | Água e Raio | Kumogakure |
+| Shakuton (Liberação de Calor) | Fogo e Vento | Sunagakure |
+| Bakuton (Liberação de Explosão) | Terra e Raio | Iwagakure, no Corpo de Explosão |
+| Jiton (Liberação Magnética) | Vento e Terra | Linhagem Sabaku |
+| Jinton (Liberação de Poeira) | Terra, Vento e Fogo | Iwagakure, entre os Tsuchikage (Kekkei Tōta) |
+:::
+
+No choque de jutsus, o elemento combinado conta como os elementos que o formam. Ele tem vantagem contra o que qualquer um deles vence e fica para trás contra o que vence qualquer um deles; quando as duas coisas acontecem contra o mesmo elemento, elas se anulam. A Lava vence o Vento, pelo fogo, e perde para o Raio, pela terra; contra a Água, a terra vence e o fogo perde, e as duas se anulam. Entre dois elementos combinados, compare cada metade de um com cada metade do outro, e leva o reforço quem somar mais vantagens. A Madeira é a exceção que a tabela dos cinco elementos já marca: ela queima, e o Fogo a vence.
+
+:::na-mesa{titulo="Elementos combinados"}
+- **Como se ganha:** Kekkei Genkai de combinação de 2 elementos (cap. 8, 5 PKG)
+- **Jutsu novo:** soma o modificador de combinação de 2 elementos (cap. 20, +5 PJ)
+- **Choque:** conta como os elementos que o formam; vantagem e desvantagem contra o mesmo elemento se anulam
+- **Exceção:** o Fogo vence a Madeira
+- **Kekkei Tōta:** três elementos; a única conhecida é a Poeira
+:::
+
 ## Como Lançar um Jutsu {#como-lancar-um-jutsu}
 
 Lançar um jutsu contra um alvo é um ataque como outro qualquer: um teste da perícia do jutsu, com a proficiência se houver, contra a Defesa do alvo. Jutsus de área não rolam ataque; cada alvo resiste contra a DT do Jutsu (cap. 2).

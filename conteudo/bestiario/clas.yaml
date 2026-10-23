@@ -917,6 +917,7 @@
         - *a32
         - *a33
     - nome: Líder do clã
+      arte: { formato: pagina, plano: de costas }
       ameaca: 12
       papel: chefe
       perfil: chakra-vasto

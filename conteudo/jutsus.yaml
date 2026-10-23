@@ -11930,3 +11930,698 @@
   ancora: jutsus-e-habilidades-do-cla-8
   cla: senju
   elemento: mokuton
+# ---- Jutsus da wiki de Naruto: onda 3 (gerado por scripts/livro/importar-jutsus.ts a partir da especificação da onda)
+- slug: futton-komu-no-jutsu
+  nome: "Futton: Kōmu no Jutsu"
+  traducao: Técnica da Névoa Habilidosa
+  origem: Futton
+  tipo: Ninjutsu
+  rank: B
+  custo: 14 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - "Uma névoa quente sai da boca do ninja e se espalha devagar. Ela é ácida: derrete pele, metal e até barreiras de chakra, e o usuário escolhe o quanto ela corrói."
+  efeito: 3d6 de dano de ácido em todos na área (metade com sucesso na Resistência), que ignora RD e barreiras. Quem falha continua sendo corroído, com o dano contínuo.
+  notas:
+    - Exige a Kekkei Genkai do Futton (Fogo e Água), criada com as regras do cap. 8.4.
+  pj: "dano 3d6 (5) + Curto (1) + esfera 6m (4) + dano contínuo (2) + ignora RD (2): 14 PJ, rank B."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: futton
+- slug: futton-kairiki-muso
+  nome: "Futton: Kairiki Musō"
+  traducao: Força sem Igual
+  origem: Futton
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Sustentado (3 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja leva o próprio chakra ao ponto de fervura. O vapor sai pela pele em jatos, e cada golpe vem empurrado por ele.
+  efeito: Enquanto mantém a técnica, o usuário ganha +2 de FOR e RD 2, e quem o agarra ou o toca se queima no vapor.
+  notas:
+    - Exige a Kekkei Genkai do Futton (Fogo e Água), criada com as regras do cap. 8.4.
+  pj: "sustentado (2) + buff +2 (4) + dura 1 cena (2) + RD 2 (3): 11 PJ, rank B."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: futton
+- slug: funsuiken
+  nome: Funsuiken
+  traducao: Punho da Propulsão em Erupção
+  origem: Futton
+  tipo: Taijutsu
+  rank: C
+  custo: 7 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: FOR (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um jato de vapor sai do cotovelo no instante do soco e o empurra como um canhão. O alvo voa longe.
+  efeito: 3d8 de dano no alvo, que é empurrado para longe e cai se falhar na Resistência de FOR.
+  notas:
+    - "Exige o Futton: Kairiki Musō ativo."
+  pj: "dano 3d8 + FOR (7) + empurra (1) − exige outra técnica (−1): 7 PJ, rank C."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: futton
+- slug: fungokyaku
+  nome: Fungōkyaku
+  traducao: Pé Forte em Erupção
+  origem: Futton
+  tipo: Taijutsu
+  rank: C
+  custo: 7 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: VIG (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O vapor explode do calcanhar, e o chute desce com o peso de uma marreta.
+  efeito: 4d6 de dano no alvo, que fica Atordoado por 1 turno se falhar na Resistência de VIG.
+  notas:
+    - "Exige o Futton: Kairiki Musō ativo."
+  pj: "dano 4d6 + FOR (7) + atordoa (1) − exige outra técnica (−1): 7 PJ, rank C."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: futton
+- slug: shakuton-kajosatsu
+  nome: "Shakuton: Kajōsatsu"
+  traducao: Morte por Vapor Extremo
+  origem: Shakuton
+  tipo: Ninjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Pequenas esferas de fogo, como sóis em miniatura, giram em volta do ninja e voam atrás do alvo. Quando tocam alguém, evaporam a água de dentro do corpo dele.
+  efeito: 3d8 de dano de fogo no alvo, que as esferas perseguem até acertar (acerto automático).
+  notas:
+    - Exige a Kekkei Genkai do Shakuton (Fogo e Vento), criada com as regras do cap. 8.4.
+  pj: "dano 3d8 (7) + Médio (2) + persegue (3): 12 PJ, rank B."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: shakuton
+- slug: shakuton-daijohappa
+  nome: "Shakuton: Daijōhappa"
+  traducao: Grande Explosão de Vapor
+  origem: Shakuton
+  tipo: Ninjutsu
+  rank: A
+  custo: 21 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - As esferas de calor se juntam numa só, enorme, que explode e seca tudo em volta. Do chão, sobe vapor por muito tempo depois.
+  efeito: 6d8 de dano de fogo em todos na área (metade com sucesso na Resistência).
+  notas:
+    - Exige a Kekkei Genkai do Shakuton (Fogo e Vento), criada com as regras do cap. 8.4.
+  pj: "dano 6d8 (15) + Médio (2) + esfera 6m (4): 21 PJ, rank A."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: shakuton
+- slug: bakuton-jiraiken
+  nome: "Bakuton: Jiraiken"
+  traducao: Punho Mina Terrestre
+  origem: Bakuton
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um soco comum, até a explosão. O chakra entra pelo ponto do golpe e detona dentro do corpo do alvo.
+  efeito: "4d8 de dano de explosão no alvo tocado, que ignora RD: a explosão nasce por dentro."
+  notas:
+    - Exige a Kekkei Genkai do Bakuton (Terra e Raio), criada com as regras do cap. 8.4.
+  pj: "dano 4d8 (9) + ignora RD (2): 11 PJ, rank B."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: bakuton
+- slug: bakuton-shogeki
+  nome: "Bakuton: Shōgeki"
+  traducao: Impacto Explosivo
+  origem: Bakuton
+  tipo: Ninjutsu
+  rank: C
+  custo: 6 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja soca o chão, e a explosão revira a terra em volta, derrubando quem estiver perto.
+  efeito: 2d6 de dano em todos na área (metade com sucesso na Resistência), e quem falha na Resistência de FOR cai.
+  notas:
+    - Exige a Kekkei Genkai do Bakuton (Terra e Raio), criada com as regras do cap. 8.4.
+  pj: "dano 2d6 (3) + esfera 3m (2) + empurra (1): 6 PJ, rank C."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: bakuton
+- slug: bakuton-bogyojutsu
+  nome: "Bakuton: Bōgyojutsu"
+  traducao: Técnica de Defesa Explosiva
+  origem: Bakuton
+  tipo: Ninjutsu
+  rank: C
+  custo: 7 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Reação
+  descricao:
+    - Uma explosão pequena na palma, no momento exato, devolve a kunai a quem a jogou ou corta a amarra que prendia um aliado.
+  efeito: Como reação a um ataque, o usuário ganha uma barreira de 20 PV contra ele. Se o ataque era uma arma arremessada, ela volta para quem a lançou.
+  notas:
+    - Exige a Kekkei Genkai do Bakuton (Terra e Raio), criada com as regras do cap. 8.4.
+  pj: "barreira ×2 (4) + reação (3): 7 PJ, rank C."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: bakuton
+- slug: kibaku-nendo
+  nome: Kibaku Nendo
+  traducao: Argila Explosiva
+  origem: Bakuton
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja mistura chakra de explosão à argila e a molda em pássaros, aranhas ou cobras, que vão sozinhos até o alvo e detonam ao chegar.
+  efeito: 3d6 de dano de explosão em todos na área em volta do alvo (metade com sucesso na Resistência). As figuras perseguem o alvo até chegar (acerto automático no centro).
+  notas:
+    - Exige a Kekkei Genkai do Bakuton (Terra e Raio), criada com as regras do cap. 8.4.
+    - Gasta um punhado de argila moldada com chakra.
+  pj: "dano 3d6 (5) + Longo (4) + esfera 3m (2) + persegue (3) − material consumível (−1): 13 PJ, rank B."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: bakuton
+- slug: kibaku-jirai
+  nome: Kibaku Jirai
+  traducao: Minas Explosivas
+  origem: Bakuton
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Minas de argila ficam enterradas no caminho, sem sinal nenhum na terra. Explodem sozinhas quando alguém pisa nelas.
+  efeito: 5d6 de dano de explosão em todos na área (metade com sucesso na Resistência) quando alguém pisa numa mina.
+  notas:
+    - Exige a Kekkei Genkai do Bakuton (Terra e Raio), criada com as regras do cap. 8.4.
+    - Enterrar as minas leva alguns minutos antes da luta. Gasta um punhado de argila moldada com chakra.
+  pj: "dano 5d6 (9) + Curto (1) + esfera 3m (2) − preparação (−2) − material consumível (−1): 9 PJ, rank C."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: bakuton
+- slug: ranton-burakku-hantingu
+  nome: "Ranton: Burakku Hantingu"
+  traducao: Caçada Negra
+  origem: Ranton
+  tipo: Ninjutsu
+  rank: B
+  custo: 18 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único +2
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Panteras de raio negro saem em matilha, guiadas como os feixes da tempestade, cortam quem encontram e se juntam numa só no último golpe.
+  efeito: 4d8 de dano elétrico em até 3 alvos, com uma rolagem por alvo. As panteras perseguem os alvos (acerto automático).
+  notas:
+    - Exige a Kekkei Genkai do Ranton (Água e Raio), criada com as regras do cap. 8.4.
+  pj: "dano 4d8 (9) + Médio (2) + 2 alvos extras (4) + persegue (3): 18 PJ, rank B."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: ranton
+- slug: ranton-seishujin
+  nome: "Ranton: Seishūjin"
+  traducao: Lâmina da Águia Azul
+  origem: Ranton
+  tipo: Ninjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Curto (10m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Feixes de tempestade acertam o alvo primeiro; depois o ninja salta e desce a espada carregada de eletricidade.
+  efeito: 3d10 de dano elétrico no alvo, somado ao dano da espada.
+  notas:
+    - Exige a Kekkei Genkai do Ranton (Água e Raio), criada com as regras do cap. 8.4.
+    - Exige uma espada em mãos.
+  pj: "dano 3d10 (9) + Curto (1) − foco em mãos (−1) + em arma (3): 12 PJ, rank B."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: ranton
+- slug: ranton-raiunkuha
+  nome: "Ranton: Raiunkūha"
+  traducao: Onda Interior da Nuvem de Trovão
+  origem: Ranton
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Sustentado (4 PC/turno)
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Um anel grosso de nuvens de trovão gira em volta do ninja. Ele protege, dispara raios e não deixa ninguém chegar perto.
+  efeito: Enquanto mantém a técnica, o usuário tem uma barreira de 20 PV, e quem entra na área ou começa o turno nela sofre 3d6 de dano elétrico (metade com sucesso na Resistência).
+  notas:
+    - Exige a Kekkei Genkai do Ranton (Água e Raio), criada com as regras do cap. 8.4.
+  pj: "dano 3d6 (5) + esfera 3m (2) + barreira ×2 (4) + sustentado (2): 13 PJ, rank B."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: ranton
+- slug: jinton-genkai-hakuri-no-jutsu
+  nome: "Jinton: Genkai Hakuri no Jutsu"
+  traducao: Técnica do Descolamento do Mundo Primitivo
+  origem: Jinton
+  tipo: Ninjutsu
+  rank: S
+  custo: 35 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - Entre as palmas do ninja surge um cubo de luz branca com uma esfera no centro. Lançado, ele cresce de repente, e tudo o que fica dentro dele vira pó.
+  efeito: 8d10 de dano em todos na área (metade com sucesso na Resistência), que ignora RD e barreiras.
+  notas:
+    - Exige a Kekkei Tōta do Jinton (Terra, Vento e Fogo), criada com as regras do cap. 8.4 e a aprovação do Mestre.
+  pj: "dano 8d10 (25) + Longo (4) + esfera 6m (4) + ignora RD (2): 35 PJ, rank S."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: jinton
+- slug: jinton-bunretsu-genkai-hakuri-no-jutsu
+  nome: "Jinton: Bunretsu Genkai Hakuri no Jutsu"
+  traducao: Técnica do Descolamento Dividido do Mundo Primitivo
+  origem: Jinton
+  tipo: Ninjutsu
+  rank: A
+  custo: 20 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja se divide em dois, joga o alvo para o alto e as duas metades disparam a Poeira ao mesmo tempo, uma de cada lado.
+  efeito: 5d10 de dano em todos na área (metade com sucesso na Resistência), que ignora RD e barreiras.
+  notas:
+    - Exige a Kekkei Tōta do Jinton (Terra, Vento e Fogo), criada com as regras do cap. 8.4 e a aprovação do Mestre.
+    - Exige o Bunretsu no Jutsu ativo.
+  pj: "dano 5d10 (15) + Médio (2) + esfera 3m (2) + ignora RD (2) − exige outra técnica (−1): 20 PJ, rank A."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: jinton
+- slug: yoton-shakugaryugan-no-jutsu
+  nome: "Yōton: Shakugaryūgan no Jutsu"
+  traducao: Técnica da Rocha da Corrente Escaldante
+  origem: Yōton
+  tipo: Ninjutsu
+  rank: B
+  custo: 13 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único +2
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma golfada de lava sai da boca do ninja e endurece no ar em várias rochas ainda em brasa, que voam em leque e derretem o que acertam.
+  efeito: 3d8 de dano de fogo em até 3 alvos, com uma rolagem por alvo.
+  notas:
+    - Exige a Kekkei Genkai do Yōton (Fogo e Terra), criada com as regras do cap. 8.4.
+  pj: "dano 3d8 (7) + Médio (2) + 2 alvos extras (4): 13 PJ, rank B."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: yoton
+- slug: yoton-chakura-modo
+  nome: Yōton Chakura Mōdo
+  traducao: Modo de Chakra da Lava
+  origem: Yōton
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: Sustentado (3 PC/turno)
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma camada de lava cobre o corpo inteiro do ninja. Cada golpe queima, e quem chega perto demais sente a pele arder sem nem ser tocado.
+  efeito: Enquanto mantém a técnica, o usuário ganha +2 de FOR e RD 2, e os golpes corpo a corpo dele queimam.
+  notas:
+    - Exige a Kekkei Genkai do Yōton (Fogo e Terra), criada com as regras do cap. 8.4.
+  pj: "sustentado (2) + buff +2 (4) + dura 1 cena (2) + RD 2 (3): 11 PJ, rank B."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: yoton
+- slug: yoton-shakugaikoken
+  nome: "Yōton: Shakugaikōken"
+  traducao: Punho Blindado Escaldante
+  origem: Yōton
+  tipo: Taijutsu
+  rank: C
+  custo: 10 PE
+  info:
+    - k: Alcance
+      v: Toque
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Taijutsu
+    - k: Resistência
+      v: VIG (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O punho coberto de lava acerta, e mesmo quando erra, o calor queima quem estava perto.
+  efeito: 4d8 de dano de fogo no alvo, que continua queimando, com o dano contínuo, se falhar na Resistência de VIG.
+  notas:
+    - Exige o Yōton Chakura Mōdo ativo.
+  pj: "dano 4d8 + FOR (9) + dano contínuo (2) − exige outra técnica (−1): 10 PJ, rank C."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: yoton
+- slug: yoton-kagandan
+  nome: "Yōton: Kagandan"
+  traducao: Projétil de Rocha de Fogo
+  origem: Yōton
+  tipo: Ninjutsu
+  rank: B
+  custo: 11 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único
+    - k: Ataque
+      v: 1d20 + Ninjutsu
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - Uma única rocha de lava, cuspida de longe, que atravessa a fumaça e cai em cheio no alvo.
+  efeito: 3d8 de dano de fogo no alvo.
+  notas:
+    - Exige a Kekkei Genkai do Yōton (Fogo e Terra), criada com as regras do cap. 8.4.
+  pj: "dano 3d8 (7) + Longo (4): 11 PJ, rank B."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: yoton
+- slug: satetsu-kurogane-no-tsubasa
+  nome: "Satetsu: Kurogane no Tsubasa"
+  traducao: "Areia de Ferro: Asas de Ferro Negro"
+  origem: Jiton
+  tipo: Ninjutsu
+  rank: B
+  custo: 14 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Alvo único +1
+    - k: Ataque
+      v: Automático
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - A areia de ferro forma asas enormes nas costas do ninja. Ele voa com elas, e as penas de ferro se soltam e perseguem o alvo.
+  efeito: 3d8 de dano em até 2 alvos, com uma rolagem por alvo. As penas perseguem os alvos (acerto automático). Enquanto as asas existem, o usuário pode voar.
+  notas:
+    - Exige a Kekkei Genkai do Jiton (Vento e Terra), criada com as regras do cap. 8.4.
+  pj: "dano 3d8 (7) + Médio (2) + 1 alvo extra (2) + persegue (3): 14 PJ, rank B."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: jiton
+- slug: jiton-sakin-taiso
+  nome: "Jiton: Sakin Taisō"
+  traducao: Grande Funeral do Pó de Ouro
+  origem: Jiton
+  tipo: Ninjutsu
+  rank: A
+  custo: 20 PC
+  info:
+    - k: Alcance
+      v: Longo (60m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 6m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: FOR (DT do Jutsu) ao fim de cada turno
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja apoia as palmas no chão, e uma onda de pó de ouro do tamanho de uma maré sobe da terra e desaba sobre os inimigos.
+  efeito: 4d8 de dano em todos na área (metade com sucesso na Resistência). Quem falha fica Imobilizado sob o ouro até vencer a Resistência de FOR ao fim do turno.
+  notas:
+    - Exige a Kekkei Genkai do Jiton (Vento e Terra), criada com as regras do cap. 8.4.
+  pj: "dano 4d8 (9) + Longo (4) + esfera 6m (4) + imobiliza (3): 20 PJ, rank A."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: jiton
+- slug: sakin-shigure
+  nome: Sakin Shigure
+  traducao: Garoa de Pó de Ouro
+  origem: Jiton
+  tipo: Ninjutsu
+  rank: C
+  custo: 9 PC
+  info:
+    - k: Alcance
+      v: Médio (30m)
+    - k: Duração
+      v: Instantâneo
+    - k: Área
+      v: Esfera 3m
+    - k: Ataque
+      v: — (área)
+    - k: Resistência
+      v: Acrobacia (DT do Jutsu)
+    - k: Ação
+      v: Primária
+  descricao:
+    - O pó de ouro sobe no ar, se junta em gotas pesadas e cai sobre o alvo como chuva.
+  efeito: 3d6 de dano em todos na área (metade com sucesso na Resistência).
+  notas:
+    - Exige a Kekkei Genkai do Jiton (Vento e Terra), criada com as regras do cap. 8.4.
+  pj: "dano 3d6 (5) + Médio (2) + esfera 3m (2): 9 PJ, rank C."
+  capitulo: 10
+  ancora: elementos-combinados
+  cla: null
+  elemento: jiton

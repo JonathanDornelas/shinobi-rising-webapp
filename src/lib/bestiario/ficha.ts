@@ -184,7 +184,7 @@ function secundarias(e: EntradaFicha): Pericia[] {
 	return lista;
 }
 
-const ELEMENTO_NOME: Record<string, string> = { katon: 'Katon', suiton: 'Suiton', fuuton: 'Fūton', raiton: 'Raiton', doton: 'Doton', mokuton: 'Mokuton', hyoton: 'Hyōton' };
+const ELEMENTO_NOME: Record<string, string> = { katon: 'Katon', suiton: 'Suiton', fuuton: 'Fūton', raiton: 'Raiton', doton: 'Doton', mokuton: 'Mokuton', hyoton: 'Hyōton', yoton: 'Yōton', futton: 'Futton', ranton: 'Ranton', shakuton: 'Shakuton', bakuton: 'Bakuton', jiton: 'Jiton', jinton: 'Jinton' };
 const ESPECIALIZACAO: Record<string, string> = {
 	'Controle de Chakra': 'especializacao-controle-de-chakra',
 	'Reservatório de Chakra': 'especializacao-reservatorio-de-chakra',

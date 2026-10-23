@@ -1,0 +1,1445 @@
+# Especialistas por elemento: os cinco básicos e os elementos combinados (Kekkei Genkai e a Kekkei Tōta da
+# Poeira). Cada verbete vai do genin ao nível Kage; as combinações estão em Elementos combinados (cap. 10).
+
+- slug: especialista-katon
+  nome: Especialista em Katon
+  tipo: shinobi
+  origem: Qualquer vila, sobretudo Konoha
+  vila: null
+  arte: { formato: quadro, plano: por cima do ombro }
+  cena:
+    - "O cheiro chega primeiro: resina queimando, folhas secas estalando no calor. Do outro lado da clareira, o ninja junta as mãos devagar, enche o peito de ar e sorri. Quando ele sopra, a noite inteira fica laranja."
+  descricao:
+    - "O fogo é o elemento mais comum entre os ninjas e o mais difícil de dominar de verdade. Qualquer genin sabe cuspir uma bola de chamas; poucos sabem moldar um dragão que muda de direção no ar, ou um mar de fogo que não deixa saída. O especialista em Katon vive desse passo a mais. Respira fundo antes de cada luta, conhece o vento como conhece o próprio chakra e sabe que a água é a única coisa que o assusta."
+    - "Esta página traz o especialista em Katon do genin ao nível Kage. Use o molde de vila (Como usar) para dar a ele o sotaque de onde veio: em Konoha, o fogo é tradição de família; em outras vilas, quase sempre é o talento de um só."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: de baixo }
+      ameaca: 2
+      papel: atirador
+      perfil: equilibrado
+      resumo: "Saído da Academia há pouco, já é o primeiro da turma a acender uma fogueira sem fósforo."
+      ataques:
+        - { nome: Bola de fogo, alcance: Médio }
+        - { nome: Kunai, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: hi-no-tama }
+        - { slug: goukakyu-no-jutsu }
+        - { slug: kawarimi-no-jutsu }
+      tracos:
+        - &katon-pulmao-de-fogo { nome: Pulmão de fogo, efeito: "Tem resistência a dano de fogo (sofre metade), e o próprio Katon nunca o queima." }
+    - nome: Chunin
+      arte: { formato: quadro, plano: câmera inclinada }
+      ameaca: 5
+      papel: controlador
+      perfil: chakra-farto
+      resumo: "Cerca o grupo com fogo antes de lutar, e só deixa uma saída: a que ele escolheu."
+      ataques:
+        - { nome: Rajada de fogo, alcance: Médio }
+      jutsus:
+        - { slug: katon-endan }
+        - { slug: goukakyu-no-jutsu }
+        - { slug: hoka-ranbu }
+      tracos:
+        - *katon-pulmao-de-fogo
+        - &katon-muralha-de-chamas { nome: Muralha de chamas, efeito: "Uma vez por cena, ergue uma parede de fogo de até 10 m: quem a atravessa sofre o dano da ficha (metade com sucesso na Resistência de VIG)." }
+    - nome: Jounin
+      arte: { formato: quadro, plano: por cima do ombro }
+      capa: true
+      ameaca: 8
+      papel: lutador
+      perfil: corpo-resistente
+      resumo: "Veterano de guerra que lida com fogo como quem lida com uma espada, de perto e sem medo de se queimar."
+      ataques:
+        - { nome: Punho em brasa, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: karyuu-endan }
+        - { slug: katon-dai-endan }
+        - { slug: katon-haijingakure-no-jutsu }
+        - { slug: katon-bakufu-ranbu }
+      tracos:
+        - *katon-pulmao-de-fogo
+        - *katon-muralha-de-chamas
+    - nome: Nível Anbu
+      arte: { formato: retrato, plano: silhueta }
+      ameaca: 11
+      papel: assassino
+      perfil: equilibrado
+      estilo: vigilante
+      resumo: "Esconde-se na fumaça do próprio fogo e só aparece quando o alvo já está cercado pelas chamas."
+      ataques:
+        - { nome: Tantō em brasa, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: katon-goka-messhitsu }
+        - { slug: katon-haijingakure-no-jutsu }
+        - { slug: katon-goen-no-jutsu }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *katon-pulmao-de-fogo
+        - *katon-muralha-de-chamas
+    - nome: Nível Kage
+      arte: { formato: pagina, plano: plano aberto }
+      ameaca: 16
+      papel: chefe
+      perfil: chakra-vasto
+      estilo: impetuoso
+      resumo: "Uma lenda do fogo, capaz de transformar um vale inteiro numa fornalha com um único sopro."
+      ataques:
+        - { nome: Dragão de fogo, alcance: Médio }
+      jutsus:
+        - { slug: katon-goka-messhitsu }
+        - { slug: katon-ryuen-hoka-no-jutsu }
+        - { slug: katon-goryuka-no-jutsu }
+        - { slug: karyuu-endan }
+      tracos:
+        - *katon-pulmao-de-fogo
+        - &katon-fornalha { nome: Fornalha, efeito: "Uma vez por cena, como ação primária, o fogo cobre uma área de 15 m: cada inimigo resiste com VIG contra a DT da ficha ou sofre o dano da ficha em dobro e fica queimando, com o dano contínuo." }
+  taticas:
+    - "Abre com o jutsu de maior área contra o grupo junto, antes que alguém se espalhe. Fica longe de quem usa Suiton e mira primeiro quem luta com o vento, que só alimenta as chamas dele."
+  ganchos:
+    - "Uma série de incêndios devasta celeiros na fronteira, e todas as cinzas têm o mesmo cheiro de chakra."
+    - "Um velho mestre do fogo procura alguém digno de aprender a técnica que ele nunca ensinou a ninguém."
+    - "Um especialista em Katon foge de uma vila depois de queimar a casa de um conselheiro, e jura que foi armação."
+  tags: [Agressivo, Tático]
+
+- slug: especialista-suiton
+  nome: Especialista em Suiton
+  tipo: shinobi
+  origem: Qualquer vila, sobretudo Kiri
+  vila: null
+  arte: { formato: faixa, plano: plano aberto }
+  cena:
+    - "Não está chovendo, mas o chão está molhado. Poças aparecem onde não havia nenhuma, e todas tremem ao mesmo tempo. A ninja de pé sobre o rio não afunda; o rio é que parece esperar a ordem dela."
+  descricao:
+    - "A água muda de forma, e o especialista em Suiton também. Ele luta melhor perto de um rio, de um lago ou debaixo de chuva, e longe da água cria a própria, puxando a umidade do ar e do chão. Prende inimigos em bolhas, ergue muralhas que engolem o fogo e solta dragões e tubarões que derrubam florestas. É paciente como a maré: espera o inimigo cansar."
+    - "Esta página traz o especialista em Suiton do genin ao nível Kage. Em Kiri, a água é a arma de quase todos; em outras vilas, quem a domina costuma ser chamado para as missões perto do mar."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: reflexo }
+      ameaca: 2
+      papel: atirador
+      perfil: chakra-farto
+      resumo: "Saída da Academia há pouco, ainda se molha inteira tentando segurar uma bala de água."
+      ataques:
+        - { nome: Bala de água, alcance: Médio }
+      jutsus:
+        - { slug: mizu-teppou }
+        - { slug: suiton-mizurappa }
+        - { slug: suiton-homatsu-no-jutsu }
+      tracos:
+        - &suiton-corpo-de-agua-corrente { nome: Água corrente, efeito: "Perto de um rio, lago, mar ou debaixo de chuva, os jutsus de Suiton dele custam 2 PC a menos." }
+    - nome: Chunin
+      arte: { formato: quadro, plano: de cima }
+      ameaca: 5
+      papel: controlador
+      perfil: chakra-farto
+      estilo: calculista
+      resumo: "Prende o inimigo numa bolha de água e espera, de mão estendida, até ele parar de se debater."
+      ataques:
+        - { nome: Jato de água, alcance: Médio }
+      jutsus:
+        - { slug: suiro-no-jutsu }
+        - { slug: suiton-teppodama }
+        - { slug: suijinheki }
+      tracos:
+        - *suiton-corpo-de-agua-corrente
+        - &suiton-chao-encharcado { nome: Chão encharcado, efeito: "Uma vez por cena, alaga uma área de 10 m: quem estiver nela tem desvantagem para se mover e para se esquivar até o fim do próximo turno." }
+    - nome: Jounin
+      arte: { formato: faixa, plano: plano aberto }
+      capa: true
+      ameaca: 8
+      papel: controlador
+      perfil: equilibrado
+      estilo: defensivo
+      resumo: "Veterana das guerras do mar, ergue muralhas de água que apagam qualquer fogo e as derruba sobre quem vem atrás delas."
+      ataques:
+        - { nome: Onda cortante, alcance: Médio }
+      jutsus:
+        - { slug: suiryuudan-no-jutsu }
+        - { slug: suiton-bakusui-shoha }
+        - { slug: suiton-goshokuzame }
+        - { slug: suijinheki }
+      tracos:
+        - *suiton-corpo-de-agua-corrente
+        - *suiton-chao-encharcado
+    - nome: Nível Anbu
+      arte: { formato: retrato, plano: olhos }
+      ameaca: 11
+      papel: assassino
+      perfil: chakra-farto
+      estilo: impetuoso
+      resumo: "Nada sob a superfície até o último momento e sai da água já com a lâmina no pescoço do alvo."
+      ataques:
+        - { nome: Lâmina de água, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: suiton-suidanha }
+        - { slug: suiton-suigadan }
+        - { slug: kirigakure-no-jutsu-ilusorio }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *suiton-corpo-de-agua-corrente
+        - *suiton-chao-encharcado
+    - nome: Nível Kage
+      arte: { formato: pagina, plano: de baixo }
+      ameaca: 16
+      papel: chefe
+      perfil: chakra-vasto
+      estilo: calculista
+      resumo: "Uma lenda da água, que move rios inteiros e afoga exércitos sem sair do lugar."
+      ataques:
+        - { nome: Dragão de água, alcance: Médio }
+      jutsus:
+        - { slug: suiton-daibakufu-no-jutsu }
+        - { slug: suiton-daikodan-no-jutsu }
+        - { slug: suiton-suishoha }
+        - { slug: gufu-suika-no-jutsu }
+      tracos:
+        - *suiton-corpo-de-agua-corrente
+        - &suiton-mare { nome: Maré, efeito: "Uma vez por cena, como ação primária, uma onda varre uma área de 15 m: cada inimigo resiste com FOR contra a DT da ficha ou sofre o dano da ficha e fica **Caído**, e todos na área ficam encharcados (Raiton contra eles causa +1 dado de dano até o fim da cena)." }
+  taticas:
+    - "Puxa a luta para perto da água. Prende o mais perigoso numa prisão de água e cuida dos outros com dragões e ondas. Usa Suiton contra fogo sempre que pode."
+  ganchos:
+    - "Um porto inteiro amanhece sem água nos poços, e a última pessoa vista perto deles andava sobre o mar."
+    - "Uma represa ameaça romper sobre uma aldeia, e o único que pode segurá-la é um especialista em Suiton procurado pela própria vila."
+    - "Um navio mercante chega sem tripulação, com o casco cheio de água por dentro e seco por fora."
+  tags: [Cauteloso, Tático]
+
+- slug: especialista-doton
+  nome: Especialista em Doton
+  tipo: shinobi
+  origem: Qualquer vila, sobretudo Iwa
+  vila: null
+  arte: { formato: pagina, plano: de baixo }
+  cena:
+    - "O chão respira. É o que parece: a terra sobe e desce de leve sob os pés do grupo, como o peito de um bicho dormindo. O ninja agachado lá na frente apoia uma palma na estrada, sem pressa, e a estrada inteira se levanta."
+  descricao:
+    - "A terra é lenta para começar e impossível de parar. O especialista em Doton levanta muralhas, abre buracos, afunda o inimigo na lama e anda debaixo do chão como um peixe na água. Ele quase nunca é o primeiro a atacar, e quase nunca é o último a cair: a terra protege quem confia nela. Teme o raio, que atravessa a pedra como se ela não existisse."
+    - "Esta página traz o especialista em Doton do genin ao nível Kage. Em Iwa, a terra é o primeiro elemento que as crianças aprendem; em outras vilas, o especialista costuma ser o engenheiro das trincheiras e o guarda das muralhas."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: corpo inteiro }
+      ameaca: 2
+      papel: lutador
+      perfil: corpo-resistente
+      estilo: defensivo
+      resumo: "Saído da Academia há pouco, ainda ergue muralhas tortas, mas que não caem."
+      ataques:
+        - { nome: Punho de pedra, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: doryuuheki }
+        - { slug: doton-kengan-no-jutsu }
+        - { slug: doton-renga-no-jutsu }
+      tracos:
+        - &doton-pe-na-terra { nome: Pé na terra, efeito: "Enquanto estiver com os pés no chão, não pode ser empurrado nem derrubado." }
+    - nome: Chunin
+      arte: { formato: quadro, plano: câmera no chão }
+      ameaca: 5
+      papel: controlador
+      perfil: corpo-resistente
+      estilo: calculista
+      resumo: "Afunda o chão debaixo dos pés de quem avança e deixa o grupo preso na lama até os joelhos."
+      ataques:
+        - { nome: Lança de pedra, alcance: Médio }
+      jutsus:
+        - { slug: doryuudan }
+        - { slug: doton-moguragakure-no-jutsu }
+        - { slug: doton-sazareishi }
+      tracos:
+        - *doton-pe-na-terra
+        - &doton-terreno-de-pedra { nome: Terreno de pedra, efeito: "Uma vez por cena, ergue colunas e buracos numa área de 10 m: a área vira terreno difícil, e ele ganha cobertura atrás das colunas." }
+    - nome: Jounin
+      arte: { formato: pagina, plano: de baixo }
+      capa: true
+      ameaca: 8
+      papel: lutador
+      perfil: corpo-robusto
+      resumo: "Veterano das trincheiras, enterra o inimigo entre duas paredes de pedra e segura o golpe com o próprio corpo."
+      ataques:
+        - { nome: Punho de rocha, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: doton-sando-no-jutsu }
+        - { slug: iwa-yado-kuzushi }
+        - { slug: doton-doryu-joheki }
+        - { slug: doton-kengan-no-jutsu }
+      tracos:
+        - *doton-pe-na-terra
+        - *doton-terreno-de-pedra
+    - nome: Nível Anbu
+      arte: { formato: quadro, plano: emoldurado }
+      ameaca: 11
+      papel: assassino
+      perfil: corpo-resistente
+      resumo: "Atravessa o chão como um peixe atravessa a água e só sai da terra para matar."
+      ataques:
+        - { nome: Garra de pedra, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: doton-yomi-numa }
+        - { slug: doton-dochu-eigyo-no-jutsu }
+        - { slug: senpuku }
+        - { slug: meisaigakure-no-jutsu }
+      tracos:
+        - *doton-pe-na-terra
+        - *doton-terreno-de-pedra
+    - nome: Nível Kage
+      arte: { formato: faixa, plano: aéreo }
+      ameaca: 16
+      papel: chefe
+      perfil: corpo-resistente
+      estilo: defensivo
+      resumo: "Uma lenda da terra, que ergue uma muralha do tamanho de uma fronteira e a derruba quando quer."
+      ataques:
+        - { nome: Montanha que cai, alcance: Médio }
+      jutsus:
+        - { slug: doton-banri-doryuheki }
+        - { slug: doton-yomi-numa }
+        - { slug: doton-chokajugan-no-jutsu }
+        - { slug: doton-kekkai-doro-domu }
+      tracos:
+        - *doton-pe-na-terra
+        - &doton-abalo { nome: Abalo, efeito: "Uma vez por cena, como ação primária, faz o chão tremer numa área de 15 m: cada inimigo resiste com AGI contra a DT da ficha ou sofre o dano da ficha e fica **Caído**." }
+  taticas:
+    - "Ergue uma muralha logo no primeiro turno e luta de trás dela. Prende quem avança no chão e esmaga quem fica parado. Foge por debaixo da terra se a luta virar."
+  ganchos:
+    - "Uma estrada de comércio some numa noite, engolida por uma montanha que não estava ali."
+    - "Uma mina desaba com os mineiros dentro, e as paredes do túnel têm marcas de mãos."
+    - "Uma vila pequena contrata o grupo para descobrir quem está cavando debaixo das casas."
+  tags: [Cauteloso, Leal]
+
+- slug: especialista-raiton
+  nome: Especialista em Raiton
+  tipo: shinobi
+  origem: Qualquer vila, sobretudo Kumo
+  vila: null
+  arte: { formato: quadro, plano: por cima do ombro }
+  cena:
+    - "Os cabelos de todo mundo ficam em pé ao mesmo tempo. Um zumbido baixo enche o ar, a kunai na mão de alguém dá um estalo e solta faísca. Quando o ninja do outro lado da ponte se mexe, ninguém vê o movimento, só o clarão."
+  descricao:
+    - "O raio é o elemento mais rápido e o mais cruel. O especialista em Raiton atravessa armaduras, paralisa músculos e chega antes de o inimigo terminar de piscar. Em compensação, gasta chakra como ninguém e odeia o vento, que espalha o raio antes de ele chegar ao alvo. Os melhores aprendem a vestir a eletricidade como uma armadura, e daí em diante ninguém os acompanha."
+    - "Esta página traz o especialista em Raiton do genin ao nível Kage. Em Kumo, o raio anda junto com o taijutsu; em outras vilas, costuma ser o elemento dos assassinos que precisam de um golpe só."
+  estagios:
+    - nome: Genin
+      arte: { formato: quadro, plano: escorço }
+      ameaca: 2
+      papel: lutador
+      perfil: corpo-resistente
+      estilo: impetuoso
+      resumo: "Saída da Academia há pouco, ainda leva choque a cada golpe que dá, e ri disso."
+      ataques:
+        - { nome: Soco elétrico, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: jibashi }
+        - { slug: raigyaku-suihei-choppu }
+      tracos:
+        - &raiton-reflexo-eletrico { nome: Reflexo elétrico, efeito: "Não pode ser surpreendido: sempre age na primeira rodada, mesmo numa emboscada." }
+    - nome: Chunin
+      arte: { formato: retrato, plano: perfil }
+      ameaca: 5
+      papel: atirador
+      perfil: equilibrado
+      resumo: "Corta o campo com lâminas de raio de longe, sem chegar perto, e não perde o alvo de vista."
+      ataques:
+        - { nome: Lâmina de raio, alcance: Médio }
+      jutsus:
+        - { slug: raiton-raiju-tsuiga }
+        - { slug: cho-biburato-raitonto }
+        - { slug: jibashi }
+      tracos:
+        - *raiton-reflexo-eletrico
+        - &raiton-paralisia { nome: Toque paralisante, efeito: "Uma vez por cena, quando acerta um ataque, o alvo resiste com VIG contra a DT da ficha ou fica **Paralisado** por 1 turno." }
+    - nome: Jounin
+      arte: { formato: quadro, plano: por cima do ombro }
+      capa: true
+      ameaca: 8
+      papel: lutador
+      perfil: corpo-resistente
+      estilo: impetuoso
+      resumo: "Veterano que veste o raio como armadura e chega no alvo antes do trovão."
+      ataques:
+        - { nome: Golpe relâmpago, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: raiton-chakura-modo }
+        - { slug: kusanagi-no-tsurugi-chidorigatana }
+        - { slug: raiton-shiden }
+        - { slug: kuroi-kaminari }
+      tracos:
+        - *raiton-reflexo-eletrico
+        - *raiton-paralisia
+    - nome: Nível Anbu
+      arte: { formato: retrato, plano: câmera inclinada }
+      ameaca: 11
+      papel: assassino
+      perfil: equilibrado
+      estilo: vigilante
+      resumo: "Mata com um furo só, no lugar certo, e some antes do trovão chegar."
+      ataques:
+        - { nome: Mão de raio, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: chidori }
+        - { slug: chidori-nagashi }
+        - { slug: raiton-gian }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *raiton-reflexo-eletrico
+        - *raiton-paralisia
+    - nome: Nível Kage
+      arte: { formato: pagina, plano: silhueta }
+      ameaca: 16
+      papel: chefe
+      perfil: corpo-resistente
+      estilo: vigilante
+      resumo: "Uma lenda do raio, que chama o trovão do céu e o derruba sobre quem quiser."
+      ataques:
+        - { nome: Raio do céu, alcance: Longo }
+      jutsus:
+        - { slug: kirin }
+        - { slug: raiton-kangekiha }
+        - { slug: chidori-eiso }
+        - { slug: raiton-kage-bunshin-no-jutsu }
+      tracos:
+        - *raiton-reflexo-eletrico
+        - &raiton-trovao { nome: Trovão, efeito: "Uma vez por cena, como ação primária, um raio cai do céu sobre uma área de 6 m: cada inimigo resiste com AGI contra a DT da ficha ou sofre o dano da ficha em dobro e fica **Paralisado** por 1 turno." }
+  taticas:
+    - "Mira o alvo de mais chakra ou o que usa Doton e o derruba antes de ele reagir. Paralisa quem tenta fugir. Evita quem luta com o vento."
+  ganchos:
+    - "Uma tempestade sem nuvens castiga a mesma colina há três noites, e alguém está treinando no alto dela."
+    - "Um ninja de Kumo pede asilo, com um segredo do raio que a própria vila quer de volta a qualquer preço."
+    - "Um mercador foi morto com um único furo no peito, queimado por dentro."
+  tags: [Agressivo, Brutal]
+
+- slug: especialista-fuuton
+  nome: Especialista em Fuuton
+  tipo: shinobi
+  origem: Qualquer vila, sobretudo Suna
+  vila: null
+  arte: { formato: quadro, plano: perfil }
+  cena:
+    - "Primeiro as folhas param de cair. Ficam suspensas no ar, viradas todas para o mesmo lado. Depois o vento volta, de uma vez, e corta: galhos, cordas, a bandana de alguém, o fio de cabelo que estava no caminho."
+  descricao:
+    - "O vento é invisível, e por isso é o mais traiçoeiro dos elementos. O especialista em Fuuton afia o chakra até ele cortar como lâmina, empurra exércitos para trás com um leque e esmaga o ar em balas de vácuo que atravessam paredes. Vence o raio com facilidade e alimenta o fogo sem querer, e é por isso que luta sempre de olho em quem cospe chamas."
+    - "Esta página traz o especialista em Fuuton do genin ao nível Kage. Em Suna, o vento é o elemento das tempestades de areia; em outras vilas, é o dos que lutam com leques e lâminas de chakra."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: de cima }
+      ameaca: 2
+      papel: atirador
+      perfil: equilibrado
+      estilo: vigilante
+      resumo: "Saído da Academia há pouco, já derruba os colegas com um sopro, e não para de fazer isso."
+      ataques:
+        - { nome: Lâmina de vento, alcance: Médio }
+      jutsus:
+        - { slug: daitoppa }
+        - { slug: futon-shinkujin }
+      tracos:
+        - &fuuton-pes-leves { nome: Pés leves, efeito: "O próprio vento o sustenta: não sofre dano de queda e anda sobre terreno difícil sem perder deslocamento." }
+    - nome: Chunin
+      arte: { formato: faixa, plano: plano aberto }
+      ameaca: 5
+      papel: controlador
+      perfil: chakra-farto
+      estilo: impetuoso
+      resumo: "Varre o campo com uma rajada só e deixa o grupo espalhado, sem chão firme debaixo dos pés."
+      ataques:
+        - { nome: Rajada cortante, alcance: Médio }
+      jutsus:
+        - { slug: kamaitachi-no-jutsu }
+        - { slug: futon-reppusho }
+        - { slug: futon-kakeami }
+      tracos:
+        - *fuuton-pes-leves
+        - &fuuton-olho-do-furacao { nome: Olho do furacão, efeito: "Uma vez por cena, como reação a um ataque à distância, desvia o projétil com uma rajada: o ataque erra." }
+    - nome: Jounin
+      arte: { formato: quadro, plano: perfil }
+      capa: true
+      ameaca: 8
+      papel: atirador
+      perfil: equilibrado
+      resumo: "Veterana que molda o vento em balas de vácuo e acerta o alvo atrás de qualquer parede."
+      ataques:
+        - { nome: Bala de vácuo, alcance: Longo }
+      jutsus:
+        - { slug: futon-shinkugyoku }
+        - { slug: futon-shinkuha }
+        - { slug: daikamaitachi-no-jutsu }
+        - { slug: hien }
+      tracos:
+        - *fuuton-pes-leves
+        - *fuuton-olho-do-furacao
+    - nome: Nível Anbu
+      arte: { formato: retrato, plano: de costas }
+      ameaca: 11
+      papel: assassino
+      perfil: equilibrado
+      estilo: impetuoso
+      resumo: "Corta o pescoço do alvo com uma lâmina de vento que ninguém vê, de longe demais para alguém suspeitar."
+      ataques:
+        - { nome: Lâmina invisível, alcance: Médio, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: kaze-no-yaiba }
+        - { slug: futon-shinku-renpa }
+        - { slug: futon-atsugai }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *fuuton-pes-leves
+        - *fuuton-olho-do-furacao
+    - nome: Nível Kage
+      arte: { formato: pagina, plano: de baixo }
+      ameaca: 16
+      papel: chefe
+      perfil: chakra-farto
+      estilo: vigilante
+      resumo: "Uma lenda do vento, que levanta tempestades no meio do deserto e as solta sobre exércitos inteiros."
+      ataques:
+        - { nome: Tempestade cortante, alcance: Longo }
+      jutsus:
+        - { slug: kaze-no-yaiba }
+        - { slug: futon-shinku-taigyoku }
+        - { slug: futon-okakeami }
+        - { slug: futon-fujin-no-jutsu }
+      tracos:
+        - *fuuton-pes-leves
+        - &fuuton-tornado { nome: Tornado, efeito: "Uma vez por cena, como ação primária, um tornado varre uma linha de 30 m: cada inimigo resiste com FOR contra a DT da ficha ou sofre o dano da ficha em dobro e é jogado longe, **Caído**." }
+  taticas:
+    - "Mantém distância e corta o grupo com lâminas e ondas de vácuo. Derruba quem chega perto com uma rajada. Mira primeiro quem usa Raiton e evita quem usa Katon."
+  ganchos:
+    - "Pipas de guerra cortadas em pleno voo caem sobre um festival, e ninguém viu a lâmina."
+    - "Uma tempestade de vento persegue uma caravana pelo deserto e muda de direção junto com ela."
+    - "Um velho ensina meninos a cortar pedras com o vento, e alguns deles começaram a sumir."
+  tags: [Tático, Agressivo]
+
+- slug: especialista-mokuton
+  nome: Especialista em Mokuton
+  tipo: shinobi
+  origem: Ramos perdidos do clã Senju e laboratórios proibidos
+  vila: null
+  arte: { formato: pagina, plano: de baixo }
+  cena:
+    - "Onde ele pisa, o capim cresce. Não aos poucos: de uma vez, verde demais, até os joelhos. Quando o ninja abre as mãos, raízes da grossura de um braço rompem a estrada e se enroscam devagar em volta das pernas de quem estava parado."
+  descricao:
+    - "A Madeira junta a terra e a água num elemento vivo, que cresce, agarra e não larga. O especialista em Mokuton ergue florestas em segundos, prende inimigos em jaulas de troncos e faz brotar gigantes de madeira, e quase sempre tem a vitalidade que acompanha o elemento: se recupera de ferimentos que matariam outros."
+    - "A combinação de Terra e Água é Kekkei Genkai (cap. 8), e as regras dela estão em Elementos combinados (cap. 10). Fora do clã Senju, a Madeira só aparece em quem herdou o sangue de algum ramo esquecido da família, ou em quem sobreviveu a experimentos que nenhuma vila admite ter feito. Para o clã inteiro, veja Senju."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: de cima }
+      ameaca: 3
+      papel: lutador
+      perfil: corpo-resistente
+      estilo: defensivo
+      resumo: "Saída da Academia há pouco, ainda não sabe por que as plantas crescem quando ela se assusta."
+      ataques:
+        - { nome: Golpe de bastão, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: mokuton-henge }
+        - { slug: doryuuheki }
+        - { slug: suiton-mizurappa }
+      tracos:
+        - &mokuton-madeira-viva { nome: Madeira viva, efeito: "Uma vez por cena, quando sofreria dano de um ataque, um tronco brota entre ele e o golpe: o dano cai pela metade." }
+    - nome: Chunin
+      arte: { formato: quadro, plano: emoldurado }
+      ameaca: 6
+      papel: controlador
+      perfil: equilibrado
+      estilo: defensivo
+      resumo: "Ergue uma jaula de troncos em volta do inimigo e conversa com ele de fora, com toda a calma."
+      ataques:
+        - { nome: Raiz que agarra, alcance: Médio }
+      jutsus:
+        - { slug: mokuton-mokujoheki }
+        - { slug: mokuton-mokusatsu-shibari-no-jutsu }
+        - { slug: moku-bunshin-no-jutsu }
+      tracos:
+        - *mokuton-madeira-viva
+        - &mokuton-vitalidade { nome: Vitalidade, efeito: "No começo de cada turno em que estiver abaixo da metade dos PV, recupera PV igual à ameaça dele." }
+    - nome: Jounin
+      arte: { formato: pagina, plano: de baixo }
+      capa: true
+      ameaca: 9
+      papel: controlador
+      perfil: chakra-farto
+      estilo: calculista
+      resumo: "Veterana que transforma um campo aberto numa floresta de lanças em menos tempo que um selo."
+      ataques:
+        - { nome: Lança de madeira, alcance: Médio }
+      jutsus:
+        - { slug: mokuton-daisoju }
+        - { slug: mokuton-shichuro-no-jutsu }
+        - { slug: mokuton-sashiki-no-jutsu }
+        - { slug: hokage-shiki-jijun-jutsu-kakuan-nitten-suishu }
+      tracos:
+        - *mokuton-madeira-viva
+        - *mokuton-vitalidade
+    - nome: Nível Anbu
+      arte: { formato: retrato, plano: olhos }
+      ameaca: 12
+      papel: assassino
+      perfil: chakra-farto
+      estilo: vigilante
+      resumo: "Agente de elite que escuta pelas raízes e sai de dentro do tronco de uma árvore atrás do alvo."
+      ataques:
+        - { nome: Estaca de madeira, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: mokuton-mokuryu-no-jutsu }
+        - { slug: soshinki }
+        - { slug: mokuton-hotei-no-jutsu }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *mokuton-madeira-viva
+        - *mokuton-vitalidade
+    - nome: Nível Kage
+      arte: { formato: faixa, plano: aéreo }
+      ameaca: 17
+      papel: chefe
+      perfil: chakra-vasto
+      estilo: defensivo
+      resumo: "Uma lenda da Madeira, que cobre uma província inteira de floresta e faz o mato andar."
+      ataques:
+        - { nome: Punho do gigante, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: mokuton-hijutsu-jukai-kotan }
+        - { slug: mokuton-mokujin-no-jutsu }
+        - { slug: mokuton-mokuryu-no-jutsu }
+        - { slug: mokuton-hobi-no-jutsu }
+      tracos:
+        - *mokuton-madeira-viva
+        - *mokuton-vitalidade
+        - &mokuton-floresta-viva { nome: Floresta viva, efeito: "Uma vez por cena, como ação primária, cobre uma área de 30 m de árvores: a área vira terreno difícil para os inimigos, e cada um resiste com FOR contra a DT da ficha ou fica **Imobilizado** nas raízes." }
+  taticas:
+    - "Prende o grupo numa jaula de madeira logo no começo e luta de cima dos troncos. Cura os próprios ferimentos com a vitalidade da Madeira e só foge quando a floresta que criou começa a queimar."
+  ganchos:
+    - "Uma floresta inteira cresceu numa noite em volta de uma aldeia, e ninguém consegue sair."
+    - "Uma criança sem clã nenhum faz flores brotarem quando chora, e gente demais quer descobrir de onde ela veio."
+    - "Os registros de um laboratório abandonado falam de vinte cobaias. Só uma foi encontrada morta."
+  tags: [Cauteloso, Leal]
+
+- slug: especialista-hyoton
+  nome: Especialista em Hyōton
+  tipo: shinobi
+  origem: Clã Yuki e os refúgios da neve
+  vila: null
+  arte: { formato: quadro, plano: câmera inclinada }
+  cena:
+    - "A respiração de todos vira fumaça de repente. A água da poça endurece debaixo das sandálias, os galhos estalam de frio e uma camada fina de gelo sobe pelas lâminas das kunai. A figura de máscara no meio da nevasca nem levanta a voz."
+  descricao:
+    - "O Gelo junta a água e o vento: a água dá a forma, o vento a congela. O especialista em Hyōton cria agulhas, lanças e espelhos de gelo do nada, congela o chão debaixo do inimigo e se move entre os próprios espelhos mais rápido do que os olhos acompanham. O frio não o incomoda; o fogo, sim, e muito."
+    - "A combinação de Água e Vento é Kekkei Genkai (cap. 8), e as regras dela estão em Elementos combinados (cap. 10). O sangue do Gelo é o do clã Yuki, caçado quase até o fim nas guerras de Kiri; quem tem o dom quase sempre o esconde. Para o clã inteiro, veja Yuki."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: perfil }
+      ameaca: 3
+      papel: atirador
+      perfil: chakra-farto
+      resumo: "Saído da Academia há pouco, ainda congela o próprio copo de chá sem querer."
+      ataques:
+        - { nome: Agulhas de gelo, alcance: Médio }
+      jutsus:
+        - { slug: hyousenkou-no-mai }
+        - { slug: mizu-teppou }
+        - { slug: daitoppa }
+      tracos:
+        - &hyoton-sangue-frio { nome: Sangue frio, efeito: "Tem resistência a dano de frio e de gelo (sofre metade), e chão congelado ou neve não o atrapalham." }
+    - nome: Chunin
+      arte: { formato: quadro, plano: reflexo }
+      ameaca: 6
+      papel: controlador
+      perfil: chakra-farto
+      estilo: calculista
+      resumo: "Prende o grupo atrás de paredes de gelo e escolhe com calma por quem vai começar."
+      ataques:
+        - { nome: Lança de gelo, alcance: Médio }
+      jutsus:
+        - { slug: hyoton-tsubame-fubuki }
+        - { slug: hyoton-suishoheki }
+        - { slug: sensatsu-suisho }
+      tracos:
+        - *hyoton-sangue-frio
+        - &hyoton-chao-de-gelo { nome: Chão de gelo, efeito: "Uma vez por cena, congela uma área de 10 m: quem estiver nela resiste com AGI contra a DT da ficha ou fica **Caído**, e a área vira terreno difícil." }
+    - nome: Jounin
+      arte: { formato: quadro, plano: câmera inclinada }
+      capa: true
+      ameaca: 9
+      papel: assassino
+      perfil: chakra-farto
+      estilo: vigilante
+      resumo: "Veterano que some dentro dos próprios espelhos e ataca de todos ao mesmo tempo."
+      ataques:
+        - { nome: Senbon de gelo, alcance: Médio, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: hyoton-makyo-hyosho }
+        - { slug: makyo-hakuhyo }
+        - { slug: hyoton-hyogan-domu }
+        - { slug: hyousenkou-no-mai }
+      tracos:
+        - *hyoton-sangue-frio
+        - *hyoton-chao-de-gelo
+    - nome: Nível Anbu
+      arte: { formato: retrato, plano: silhueta }
+      ameaca: 12
+      papel: controlador
+      perfil: chakra-farto
+      estilo: calculista
+      resumo: "Agente de elite que congela um esquadrão inteiro onde ele está e o deixa para os outros recolherem."
+      ataques:
+        - { nome: Rajada de gelo, alcance: Médio }
+      jutsus:
+        - { slug: hyoton-mangehyo }
+        - { slug: hyoton-hyogan-domu }
+        - { slug: makyo-hakuhyo }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *hyoton-sangue-frio
+        - *hyoton-chao-de-gelo
+    - nome: Nível Kage
+      arte: { formato: pagina, plano: plano aberto }
+      ameaca: 17
+      papel: chefe
+      perfil: chakra-vasto
+      estilo: calculista
+      resumo: "Uma lenda do Gelo, que traz o inverno junto e o deixa para trás quando vai embora."
+      ataques:
+        - { nome: Tempestade de gelo, alcance: Longo }
+      jutsus:
+        - { slug: hyoton-mangehyo }
+        - { slug: hyoton-makyo-hyosho }
+        - { slug: kaze-no-yaiba }
+        - { slug: suiton-suishoha }
+      tracos:
+        - *hyoton-sangue-frio
+        - *hyoton-chao-de-gelo
+        - &hyoton-inverno { nome: Inverno, efeito: "Uma vez por cena, como ação primária, uma nevasca cobre uma área de 30 m até o fim da cena: os inimigos nela têm desvantagem nos ataques à distância e sofrem o dano da ficha no fim de cada turno (metade com sucesso na Resistência de VIG)." }
+  taticas:
+    - "Congela o terreno e prende o mais rápido numa cúpula de espelhos. Ataca de todos os lados com agulhas e nunca fica onde o inimigo acha que ele está."
+  ganchos:
+    - "Uma aldeia do litoral amanhece coberta de gelo em pleno verão."
+    - "Um caçador de Kiri persegue uma criança que congela a água que toca, e o grupo a encontra primeiro."
+    - "Estátuas de gelo de ninjas desaparecidos aparecem, uma por noite, na praça de uma cidade."
+  tags: [Cauteloso, Tático]
+
+- slug: especialista-yoton
+  nome: Especialista em Yōton
+  tipo: shinobi
+  origem: Linhagens de Iwa e de Kiri
+  vila: null
+  arte: { formato: pagina, plano: corpo inteiro }
+  cena:
+    - "O ar treme de calor, e a pedra do chão começa a brilhar em vermelho. Do outro lado do desfiladeiro, o ninja cospe uma bola de lava no rio, e o rio inteiro vira vapor de uma vez, com um grito de chaleira."
+  descricao:
+    - "A Lava junta o fogo e a terra: pedra derretida que queima, gruda e endurece. O especialista em Yōton cospe rochas em brasa, cobre o corpo de magma e prende inimigos em cal que endurece em segundos. É lento para se cansar e rápido para derreter o que estiver no caminho, de uma muralha de terra a uma barreira de chakra."
+    - "A combinação de Fogo e Terra é Kekkei Genkai (cap. 8), e as regras dela estão em Elementos combinados (cap. 10). O sangue da Lava corre em famílias de Iwa e de Kiri, e quase sempre aparece num único herdeiro por geração."
+  estagios:
+    - nome: Genin
+      arte: { formato: quadro, plano: escorço }
+      ameaca: 3
+      papel: lutador
+      perfil: corpo-resistente
+      estilo: impetuoso
+      resumo: "Saído da Academia há pouco, ainda queima as luvas toda vez que fica com raiva."
+      ataques:
+        - { nome: Punho quente, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: hi-no-tama }
+        - { slug: doryuudan }
+        - { slug: katon-endan }
+      tracos:
+        - &yoton-pele-de-magma { nome: Pele de magma, efeito: "Tem resistência a dano de fogo (sofre metade), e quem o agarra se queima: sofre o dano da ficha de novo no começo de cada turno em que continuar segurando." }
+    - nome: Chunin
+      arte: { formato: retrato, plano: de baixo }
+      ameaca: 6
+      papel: controlador
+      perfil: corpo-resistente
+      estilo: calculista
+      resumo: "Cospe cal viva no inimigo e espera ela endurecer antes de chegar perto."
+      ataques:
+        - { nome: Rocha em brasa, alcance: Médio }
+      jutsus:
+        - { slug: yoton-sekkaigyo-no-jutsu }
+        - { slug: yoton-kaisekifu-no-jutsu }
+        - { slug: yoton-kagandan }
+      tracos:
+        - *yoton-pele-de-magma
+        - &yoton-chao-derretido { nome: Chão derretido, efeito: "Uma vez por cena, derrete uma área de 6 m: quem começa o turno nela sofre o dano da ficha (metade com sucesso na Resistência de AGI)." }
+    - nome: Jounin
+      arte: { formato: pagina, plano: corpo inteiro }
+      capa: true
+      ameaca: 9
+      papel: lutador
+      perfil: corpo-robusto
+      resumo: "Veterana que cobre o corpo inteiro de lava e luta de perto, sem medo de nada que queime."
+      ataques:
+        - { nome: Punho de magma, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: yoton-chakura-modo }
+        - { slug: yoton-shakugaikoken }
+        - { slug: yoton-shakugaryugan-no-jutsu }
+        - { slug: yoton-yokai-no-jutsu }
+      tracos:
+        - *yoton-pele-de-magma
+        - *yoton-chao-derretido
+    - nome: Nível Anbu
+      arte: { formato: quadro, plano: aéreo }
+      ameaca: 12
+      papel: atirador
+      perfil: corpo-resistente
+      estilo: vigilante
+      resumo: "Agente de elite que bombardeia o inimigo de longe com rochas em brasa, de cima de um pico."
+      ataques:
+        - { nome: Chuva de rochas, alcance: Longo }
+      jutsus:
+        - { slug: yoton-shakugaryugan-no-jutsu }
+        - { slug: yoton-yokai-no-jutsu }
+        - { slug: katon-goka-messhitsu }
+        - { slug: doton-yomi-numa }
+      tracos:
+        - *yoton-pele-de-magma
+        - *yoton-chao-derretido
+    - nome: Nível Kage
+      arte: { formato: faixa, plano: plano aberto }
+      ameaca: 17
+      papel: chefe
+      perfil: corpo-resistente
+      estilo: impetuoso
+      resumo: "Uma lenda da Lava, que transforma um campo de batalha num vulcão aberto."
+      ataques:
+        - { nome: Punho vulcânico, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: yoton-chakura-modo }
+        - { slug: yoton-shakugaikoken }
+        - { slug: yoton-shakugaryugan-no-jutsu }
+        - { slug: katon-goka-messhitsu }
+        - { slug: doton-banri-doryuheki }
+      tracos:
+        - *yoton-pele-de-magma
+        - *yoton-chao-derretido
+        - &yoton-vulcao { nome: Vulcão, efeito: "Uma vez por cena, como ação primária, a terra se abre numa área de 15 m: cada inimigo resiste com AGI contra a DT da ficha ou sofre o dano da ficha em dobro, e a área vira lava até o fim da cena." }
+  taticas:
+    - "Derrete a cobertura do grupo com as rochas em brasa e cobre o corpo de lava para lutar de perto. Prende os rápidos em cal e não teme o fogo de ninguém."
+  ganchos:
+    - "Uma montanha adormecida volta a fumegar, e os aldeões juram ter visto um homem descendo dela."
+    - "Um ferreiro paga caro para alguém trazer lava de verdade para forjar uma lâmina com nome."
+    - "Uma ponte de pedra derreteu no meio de uma travessia, com uma caravana em cima."
+  tags: [Agressivo, Brutal]
+
+- slug: especialista-futton
+  nome: Especialista em Futton
+  tipo: shinobi
+  origem: Linhagens de Kiri
+  vila: null
+  arte: { formato: pagina, plano: escorço }
+  cena:
+    - "Uma névoa quente sobe da estrada sem chuva nenhuma. Ela cheira a ácido, e a madeira da carroça começa a amolecer onde ela toca. No meio do vapor, uma silhueta de armadura respira devagar, e de cada fresta da armadura sai mais vapor."
+  descricao:
+    - "O Vapor junta o fogo e a água no ponto de fervura. O especialista em Futton solta névoas ácidas que derretem carne, metal e até barreiras de chakra, ou ferve o próprio chakra até o corpo virar uma caldeira que golpeia com jatos de vapor. Gosta de lutas longas: o vapor dele só aumenta."
+    - "A combinação de Fogo e Água é Kekkei Genkai (cap. 8), e as regras dela estão em Elementos combinados (cap. 10). O sangue do Vapor é raro e quase sempre aparece em Kiri, onde a névoa já faz parte da paisagem."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: close }
+      ameaca: 3
+      papel: atirador
+      perfil: equilibrado
+      estilo: vigilante
+      resumo: "Saída da Academia há pouco, ainda embaça os óculos de todo mundo na sala quando se concentra."
+      ataques:
+        - { nome: Bala de água fervente, alcance: Médio }
+      jutsus:
+        - { slug: mizu-teppou }
+        - { slug: hi-no-tama }
+        - { slug: katon-endan }
+      tracos:
+        - &futton-vapor { nome: Vapor, efeito: "Uma vez por turno, quando é acertado corpo a corpo, o atacante resiste com VIG contra a DT da ficha ou fica queimando, com o dano contínuo." }
+    - nome: Chunin
+      arte: { formato: quadro, plano: de cima }
+      ameaca: 6
+      papel: controlador
+      perfil: chakra-farto
+      estilo: calculista
+      resumo: "Cobre o campo de névoa ácida e espera do lado de fora, sem pressa nenhuma."
+      ataques:
+        - { nome: Névoa ácida, alcance: Curto }
+      jutsus:
+        - { slug: futton-komu-no-jutsu }
+        - { slug: suiton-homatsu-no-jutsu }
+        - { slug: goukakyu-no-jutsu }
+      tracos:
+        - *futton-vapor
+        - &futton-nevoa-corrosiva { nome: Névoa corrosiva, efeito: "Enquanto a névoa dele cobre a área, armaduras e barreiras dentro dela perdem 1 de RD por turno." }
+    - nome: Jounin
+      arte: { formato: pagina, plano: escorço }
+      capa: true
+      ameaca: 9
+      papel: lutador
+      perfil: corpo-robusto
+      estilo: impetuoso
+      resumo: "Veterana que ferve o próprio chakra e golpeia como uma caldeira que explode."
+      ataques:
+        - { nome: Golpe a vapor, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: futton-kairiki-muso }
+        - { slug: funsuiken }
+        - { slug: fungokyaku }
+        - { slug: futton-komu-no-jutsu }
+      tracos:
+        - *futton-vapor
+        - *futton-nevoa-corrosiva
+    - nome: Nível Anbu
+      arte: { formato: retrato, plano: emoldurado }
+      ameaca: 12
+      papel: assassino
+      perfil: chakra-farto
+      estilo: vigilante
+      resumo: "Agente de elite que entra pela névoa, derrete a fechadura e sai antes de alguém acordar."
+      ataques:
+        - { nome: Toque ácido, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: futton-komu-no-jutsu }
+        - { slug: suiton-suidanha }
+        - { slug: futton-kairiki-muso }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *futton-vapor
+        - *futton-nevoa-corrosiva
+    - nome: Nível Kage
+      arte: { formato: quadro, plano: silhueta }
+      ameaca: 17
+      papel: chefe
+      perfil: corpo-resistente
+      estilo: calculista
+      resumo: "Uma lenda do Vapor, que ferve um lago inteiro e anda dentro da névoa como se ela fosse a sua casa."
+      ataques:
+        - { nome: Punho fervente, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: futton-komu-no-jutsu }
+        - { slug: futton-kairiki-muso }
+        - { slug: fungokyaku }
+        - { slug: katon-goka-messhitsu }
+        - { slug: suiton-daibakufu-no-jutsu }
+      tracos:
+        - *futton-vapor
+        - *futton-nevoa-corrosiva
+        - &futton-caldeira { nome: Caldeira, efeito: "Uma vez por cena, como ação primária, uma explosão de vapor cobre uma área de 10 m: cada inimigo resiste com VIG contra a DT da ficha ou sofre o dano da ficha em dobro e fica **Cego** por 1 turno." }
+  taticas:
+    - "Abre com a névoa ácida sobre o grupo junto e espera a corrosão trabalhar. Quando alguém atravessa a névoa, ferve o chakra e o recebe na porrada."
+  ganchos:
+    - "Uma névoa que derrete metal cobre um porto, e os navios afundam um por um."
+    - "Uma fonte termal sagrada passou a ferver quem entra nela."
+    - "Um guarda-costas de armadura protege um nobre corrupto, e o vapor da armadura dele já matou três assassinos."
+  tags: [Agressivo, Tático]
+
+- slug: especialista-ranton
+  nome: Especialista em Ranton
+  tipo: shinobi
+  origem: Linhagens de Kumo
+  vila: null
+  arte: { formato: faixa, plano: plano aberto }
+  cena:
+    - "O céu escurece em cima de um único campo. As nuvens descem baixas, pesadas, e de dentro delas saem feixes de luz que não caem em linha reta: dobram no ar, contornam a pedra e acham quem estava escondido atrás dela."
+  descricao:
+    - "A Tempestade junta a água e o raio num elemento que se comporta como luz. O especialista em Ranton dispara feixes que fazem curvas, solta panteras de raio negro que caçam sozinhas e se cerca de nuvens de trovão que ninguém atravessa. Luta de longe, com calma, e não precisa ver o alvo para acertá-lo."
+    - "A combinação de Água e Raio é Kekkei Genkai (cap. 8), e as regras dela estão em Elementos combinados (cap. 10). O sangue da Tempestade é de Kumo, e quem o tem costuma acabar na guarda do Raikage."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: de baixo }
+      ameaca: 3
+      papel: atirador
+      perfil: equilibrado
+      estilo: vigilante
+      resumo: "Saído da Academia há pouco, ainda solta faísca toda vez que entra na água."
+      ataques:
+        - { nome: Jato elétrico, alcance: Médio }
+      jutsus:
+        - { slug: mizu-teppou }
+        - { slug: jibashi }
+        - { slug: suijinheki }
+      tracos:
+        - &ranton-feixe-que-curva { nome: Feixe que curva, efeito: "Os ataques e jutsus à distância dele ignoram cobertura: os feixes fazem a curva." }
+    - nome: Chunin
+      arte: { formato: quadro, plano: câmera inclinada }
+      ameaca: 6
+      papel: lutador
+      perfil: corpo-resistente
+      estilo: impetuoso
+      resumo: "Carrega uma espada larga e acerta o alvo primeiro com a luz, depois com a lâmina."
+      ataques:
+        - { nome: Espada da tempestade, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: ranton-seishujin }
+        - { slug: raiton-raiju-tsuiga }
+        - { slug: suiton-teppodama }
+      tracos:
+        - *ranton-feixe-que-curva
+        - &ranton-nuvem-negra { nome: Nuvem negra, efeito: "Uma vez por cena, cobre uma área de 10 m com nuvens de trovão: os inimigos nela têm desvantagem para enxergar além de 3 m até o fim do próximo turno." }
+    - nome: Jounin
+      arte: { formato: faixa, plano: plano aberto }
+      capa: true
+      ameaca: 9
+      papel: atirador
+      perfil: equilibrado
+      estilo: vigilante
+      resumo: "Veterana que solta panteras de raio negro e deixa que elas cacem sozinhas."
+      ataques:
+        - { nome: Feixe de tempestade, alcance: Longo }
+      jutsus:
+        - { slug: ranton-burakku-hantingu }
+        - { slug: ranton-raiunkuha }
+        - { slug: raiton-kuropansa }
+        - { slug: ranton-seishujin }
+      tracos:
+        - *ranton-feixe-que-curva
+        - *ranton-nuvem-negra
+    - nome: Nível Anbu
+      arte: { formato: retrato, plano: silhueta }
+      ameaca: 12
+      papel: controlador
+      perfil: chakra-farto
+      estilo: calculista
+      resumo: "Agente de elite que dispara um circo de feixes de luz e não erra nenhum."
+      ataques:
+        - { nome: Circo de luz, alcance: Longo }
+      jutsus:
+        - { slug: ranton-reiza-sakasu }
+        - { slug: ranton-burakku-hantingu }
+        - { slug: kuroi-kaminari }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *ranton-feixe-que-curva
+        - *ranton-nuvem-negra
+    - nome: Nível Kage
+      arte: { formato: pagina, plano: de baixo }
+      ameaca: 17
+      papel: chefe
+      perfil: chakra-vasto
+      estilo: defensivo
+      resumo: "Uma lenda da Tempestade, que traz as nuvens consigo e mora dentro delas."
+      ataques:
+        - { nome: Raio da tempestade, alcance: Longo }
+      jutsus:
+        - { slug: ranton-reiza-sakasu }
+        - { slug: ranton-raiunkuha }
+        - { slug: ranton-burakku-hantingu }
+        - { slug: raiton-kangekiha }
+      tracos:
+        - *ranton-feixe-que-curva
+        - *ranton-nuvem-negra
+        - &ranton-olho-da-tempestade { nome: Olho da tempestade, efeito: "Uma vez por cena, como ação primária, cada inimigo a até 30 m que ele consiga ver resiste com AGI contra a DT da ficha ou sofre o dano da ficha em dobro, atingido por um feixe que vem de cima." }
+  taticas:
+    - "Fica longe e dispara feixes que contornam a cobertura do grupo. Cerca-se de nuvens de trovão quando alguém chega perto e solta as panteras atrás de quem tenta fugir."
+  ganchos:
+    - "Uma nuvem negra persegue uma caravana há três dias, e quem sai dela não volta."
+    - "Um guarda de elite de Kumo desertou com um segredo da tempestade, e a vila quer o grupo como caçador."
+    - "Raios caem sempre no mesmo templo, sem chuva nenhuma, e dentro dele alguém medita."
+  tags: [Cauteloso, Tático]
+
+- slug: especialista-shakuton
+  nome: Especialista em Shakuton
+  tipo: shinobi
+  origem: Linhagens de Suna
+  vila: null
+  arte: { formato: pagina, plano: silhueta }
+  cena:
+    - "Pequenos sóis giram em volta dela, devagar, como luas em volta de um planeta. O ar fica seco de repente, e a boca de todo mundo também. Uma das esferas encosta num cavalo, e o cavalo cai seco como uma folha de outono."
+  descricao:
+    - "O Calor junta o fogo e o vento num elemento que não queima por fora: seca por dentro. O especialista em Shakuton cria esferas de calor que giram em volta dele e voam atrás do alvo, e quando tocam alguém, evaporam a água do corpo inteiro. Poucos sobrevivem a um toque, e ninguém esquece o cheiro."
+    - "A combinação de Fogo e Vento é Kekkei Genkai (cap. 8), e as regras dela estão em Elementos combinados (cap. 10). O sangue do Calor é de Suna, e as vilas vizinhas costumam tratar quem o tem como arma de guerra."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: perfil }
+      ameaca: 3
+      papel: atirador
+      perfil: equilibrado
+      estilo: vigilante
+      resumo: "Saída da Academia há pouco, ainda seca as plantas da casa sem querer."
+      ataques:
+        - { nome: Brasa ao vento, alcance: Médio }
+      jutsus:
+        - { slug: hi-no-tama }
+        - { slug: daitoppa }
+        - { slug: kazekiri-no-jutsu }
+      tracos:
+        - &shakuton-esferas-de-calor { nome: Esferas de calor, efeito: "Começa a luta com três esferas girando em volta dele. Como reação, gasta uma para desviar um ataque à distância: o ataque erra." }
+    - nome: Chunin
+      arte: { formato: quadro, plano: de cima }
+      ameaca: 6
+      papel: controlador
+      perfil: chakra-farto
+      estilo: calculista
+      resumo: "Solta as esferas atrás do alvo e não tira os olhos delas até uma encostar."
+      ataques:
+        - { nome: Esfera de calor, alcance: Médio }
+      jutsus:
+        - { slug: shakuton-kajosatsu }
+        - { slug: katon-endan }
+        - { slug: futon-reppusho }
+      tracos:
+        - *shakuton-esferas-de-calor
+        - &shakuton-secura { nome: Secura, efeito: "Quem sofre dano de um jutsu de Shakuton dele resiste com VIG contra a DT da ficha ou ganha um nível de Fadiga." }
+    - nome: Jounin
+      arte: { formato: pagina, plano: silhueta }
+      capa: true
+      ameaca: 9
+      papel: controlador
+      perfil: chakra-farto
+      estilo: defensivo
+      resumo: "Heroína de guerra que seca um esquadrão inteiro sem sair do lugar."
+      ataques:
+        - { nome: Sol em miniatura, alcance: Médio }
+      jutsus:
+        - { slug: shakuton-kajosatsu }
+        - { slug: katon-haisekisho }
+        - { slug: futon-shinkuha }
+        - { slug: katon-bakufu-ranbu }
+      tracos:
+        - *shakuton-esferas-de-calor
+        - *shakuton-secura
+    - nome: Nível Anbu
+      arte: { formato: retrato, plano: olhos }
+      ameaca: 12
+      papel: assassino
+      perfil: chakra-farto
+      estilo: impetuoso
+      resumo: "Agente de elite que toca o alvo uma vez só, e não precisa de uma segunda."
+      ataques:
+        - { nome: Toque que seca, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: shakuton-daijohappa }
+        - { slug: shakuton-kajosatsu }
+        - { slug: kaze-no-yaiba }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *shakuton-esferas-de-calor
+        - *shakuton-secura
+    - nome: Nível Kage
+      arte: { formato: faixa, plano: aéreo }
+      ameaca: 17
+      papel: chefe
+      perfil: chakra-vasto
+      estilo: calculista
+      resumo: "Uma lenda do Calor, que transforma um oásis em deserto e um exército em pó seco."
+      ataques:
+        - { nome: Esfera solar, alcance: Longo }
+      jutsus:
+        - { slug: shakuton-daijohappa }
+        - { slug: shakuton-kajosatsu }
+        - { slug: katon-goka-messhitsu }
+        - { slug: kaze-no-yaiba }
+      tracos:
+        - *shakuton-esferas-de-calor
+        - *shakuton-secura
+        - &shakuton-sol-de-meio-dia { nome: Sol de meio-dia, efeito: "Uma vez por cena, como ação primária, uma esfera enorme explode sobre uma área de 15 m: cada inimigo resiste com VIG contra a DT da ficha ou sofre o dano da ficha em dobro e ganha dois níveis de Fadiga." }
+  taticas:
+    - "Solta as esferas atrás do mais rápido do grupo e fica no centro delas. Junta todas numa explosão só quando o grupo se agrupa."
+  ganchos:
+    - "Corpos secos como múmias aparecem num oásis, todos com uma queimadura redonda na pele."
+    - "Uma heroína de guerra do Calor foi condenada pela própria vila, e o grupo é contratado para escoltá-la até o julgamento."
+    - "Uma tempestade de areia seca um rio inteiro em uma noite."
+  tags: [Tático, Agressivo]
+
+- slug: especialista-bakuton
+  nome: Especialista em Bakuton
+  tipo: shinobi
+  origem: Iwa e o Corpo de Explosão
+  vila: null
+  arte: { formato: pagina, plano: de baixo }
+  cena:
+    - "Um pássaro branco pousa no ombro do sentinela. É pequeno, de argila, e não pisca. O sentinela ainda está tentando entender o que é aquilo quando, do outro lado do muro, alguém junta as mãos e diz, baixinho, uma palavra só."
+  descricao:
+    - "A Explosão junta a terra e o raio num elemento que destrói por dentro. O especialista em Bakuton enche de chakra a argila, o chão ou o próprio punho, e escolhe o momento exato da detonação. Alguns moldam pássaros e aranhas que voam até o alvo; outros preferem um soco, e a explosão nasce dentro de quem foi atingido. Para todos eles, destruir é uma arte."
+    - "A combinação de Terra e Raio é Kekkei Genkai (cap. 8), e as regras dela estão em Elementos combinados (cap. 10). Em Iwa, quem tem o sangue da Explosão quase sempre vai para o Corpo de Explosão, a elite da vila."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: corpo inteiro }
+      ameaca: 3
+      papel: lutador
+      perfil: corpo-resistente
+      estilo: impetuoso
+      resumo: "Saído da Academia há pouco, ainda explode as próprias luvas no treino, e acha graça."
+      ataques:
+        - { nome: Soco que estoura, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: bakuton-shogeki }
+        - { slug: doryuuheki }
+        - { slug: jibashi }
+      tracos:
+        - &bakuton-detonacao { nome: Detonação, efeito: "Uma vez por cena, quando acerta um ataque corpo a corpo, o golpe explode: +1 dado de dano, e o alvo resiste com FOR contra a DT da ficha ou fica **Caído**." }
+    - nome: Chunin
+      arte: { formato: quadro, plano: por cima do ombro }
+      ameaca: 6
+      papel: atirador
+      perfil: equilibrado
+      estilo: vigilante
+      resumo: "Molda pássaros de argila enquanto conversa e os solta quando o grupo menos espera."
+      ataques:
+        - { nome: Pássaro de argila, alcance: Longo }
+      jutsus:
+        - { slug: kibaku-nendo }
+        - { slug: kibaku-jirai }
+        - { slug: bakuton-bogyojutsu }
+      tracos:
+        - *bakuton-detonacao
+        - &bakuton-campo-minado { nome: Campo minado, efeito: "Antes da luta, se teve tempo, enterra minas numa área de 10 m: o primeiro inimigo que entra nela sofre o dano da ficha (metade com sucesso na Resistência de AGI)." }
+    - nome: Jounin
+      arte: { formato: pagina, plano: de baixo }
+      capa: true
+      ameaca: 9
+      papel: lutador
+      perfil: corpo-robusto
+      estilo: impetuoso
+      resumo: "Veterano do Corpo de Explosão que resolve tudo com um soco, e a explosão nasce dentro de quem ele acerta."
+      ataques:
+        - { nome: Punho mina terrestre, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: bakuton-jiraiken }
+        - { slug: kibaku-nendo }
+        - { slug: bakuton-bogyojutsu }
+        - { slug: kibaku-jirai }
+      tracos:
+        - *bakuton-detonacao
+        - *bakuton-campo-minado
+    - nome: Nível Anbu
+      arte: { formato: faixa, plano: aéreo }
+      ameaca: 12
+      papel: atirador
+      perfil: equilibrado
+      estilo: impetuoso
+      resumo: "Agente de elite que voa sobre o inimigo num pássaro de argila e solta as bombas lá de cima."
+      ataques:
+        - { nome: Bombardeio, alcance: Longo }
+      jutsus:
+        - { slug: bunshin-daibakuha }
+        - { slug: gojo-kibaku-fuda }
+        - { slug: kibaku-nendo }
+        - { slug: bakuton-jiraiken }
+      tracos:
+        - *bakuton-detonacao
+        - *bakuton-campo-minado
+    - nome: Nível Kage
+      arte: { formato: quadro, plano: plano aberto }
+      ameaca: 17
+      papel: chefe
+      perfil: corpo-resistente
+      estilo: calculista
+      resumo: "Uma lenda da Explosão, que chama de arte o que os outros chamam de destruição."
+      ataques:
+        - { nome: Grande detonação, alcance: Longo }
+      jutsus:
+        - { slug: bakuton-jiraiken }
+        - { slug: kibaku-nendo }
+        - { slug: bunshin-daibakuha }
+        - { slug: gojo-kibaku-fuda }
+      tracos:
+        - *bakuton-detonacao
+        - *bakuton-campo-minado
+        - &bakuton-obra-prima { nome: Obra-prima, efeito: "Uma vez por cena, como ação primária, detona tudo o que preparou numa área de 30 m: cada inimigo resiste com AGI contra a DT da ficha ou sofre o dano da ficha em dobro e fica **Atordoado** por 1 turno." }
+  taticas:
+    - "Espalha minas e figuras de argila antes da luta e espera o grupo entrar no meio delas. Quando alguém chega perto, explode o soco dentro dele."
+  ganchos:
+    - "Pássaros de argila aparecem pousados nos telhados de uma cidade, um por dia, e ninguém sabe quando vão explodir."
+    - "Um desertor do Corpo de Explosão vende minas no mercado negro, e uma delas matou o filho de um daimyō."
+    - "Uma ponte estratégica precisa cair antes do amanhecer, e o único que pode derrubá-la é um prisioneiro do Bakuton."
+  tags: [Agressivo, Fanático]
+
+- slug: especialista-jiton
+  nome: Especialista em Jiton
+  tipo: shinobi
+  origem: Linhagem Sabaku e outras de Suna
+  vila: null
+  arte: { formato: pagina, plano: plano aberto }
+  cena:
+    - "As kunai escapam das bolsas sozinhas e voam para o lado errado. A areia do chão fica escura, se levanta em fios e se junta em lanças pesadas no ar. Lá atrás, o ninja abre os dedos devagar, como quem toca um instrumento."
+  descricao:
+    - "O Magnetismo dá ao ninja o poder de mover o metal com o chakra. O especialista em Jiton magnetiza a areia de ferro ou o pó de ouro e os molda em lanças, asas, escudos e ondas do tamanho de uma maré. Tudo o que é de metal no campo vira arma dele, e quase nada que é de metal consegue acertá-lo."
+    - "A combinação de Vento e Terra é Kekkei Genkai (cap. 8), e as regras dela estão em Elementos combinados (cap. 10). O Magnetismo é o sangue da linhagem Sabaku de Suna, que já deu mais de um Kazekage. Para o clã inteiro, veja Sabaku."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: de cima }
+      ameaca: 3
+      papel: atirador
+      perfil: equilibrado
+      estilo: vigilante
+      resumo: "Saída da Academia há pouco, ainda atrai todos os talheres da mesa quando fica nervosa."
+      ataques:
+        - { nome: Agulhas de ferro, alcance: Médio }
+      jutsus:
+        - { slug: sakin-shigure }
+        - { slug: daitoppa }
+        - { slug: doryuudan }
+      tracos:
+        - &jiton-atracao { nome: Atração, efeito: "Ataques à distância com armas de metal contra ele têm desvantagem: a areia de ferro desvia as lâminas." }
+    - nome: Chunin
+      arte: { formato: quadro, plano: perfil }
+      ameaca: 6
+      papel: controlador
+      perfil: chakra-farto
+      estilo: defensivo
+      resumo: "Molda a areia de ferro em lanças e escudos e nunca deixa uma lâmina chegar perto."
+      ataques:
+        - { nome: Lança de ferro, alcance: Médio }
+      jutsus:
+        - { slug: satetsu-shigure }
+        - { slug: satetsu-kesshu }
+        - { slug: sakin-shigure }
+      tracos:
+        - *jiton-atracao
+        - &jiton-escudo-de-ferro { nome: Escudo de ferro, efeito: "Uma vez por cena, como reação, ergue uma barreira de areia de ferro: o dano de um ataque cai pela metade." }
+    - nome: Jounin
+      arte: { formato: pagina, plano: plano aberto }
+      capa: true
+      ameaca: 9
+      papel: controlador
+      perfil: chakra-farto
+      estilo: defensivo
+      resumo: "Veterana que voa sobre o deserto em asas de ferro e faz chover penas de metal sobre o inimigo."
+      ataques:
+        - { nome: Penas de ferro, alcance: Médio }
+      jutsus:
+        - { slug: satetsu-kurogane-no-tsubasa }
+        - { slug: satetsu-kesshu }
+        - { slug: satetsu-shigure }
+        - { slug: sakin-shigure }
+      tracos:
+        - *jiton-atracao
+        - *jiton-escudo-de-ferro
+    - nome: Nível Anbu
+      arte: { formato: retrato, plano: câmera inclinada }
+      ameaca: 12
+      papel: controlador
+      perfil: chakra-farto
+      estilo: calculista
+      resumo: "Agente de elite que prende o inimigo sob uma maré de ouro e o deixa lá."
+      ataques:
+        - { nome: Onda de ouro, alcance: Longo }
+      jutsus:
+        - { slug: jiton-sakin-taiso }
+        - { slug: satetsu-kaiho }
+        - { slug: satetsu-kurogane-no-tsubasa }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *jiton-atracao
+        - *jiton-escudo-de-ferro
+    - nome: Nível Kage
+      arte: { formato: faixa, plano: de baixo }
+      ameaca: 17
+      papel: chefe
+      perfil: chakra-vasto
+      estilo: defensivo
+      resumo: "Uma lenda do Magnetismo, que espalha a areia de ferro por um vale inteiro e a faz obedecer como um exército."
+      ataques:
+        - { nome: Areia de ferro, alcance: Longo }
+      jutsus:
+        - { slug: satetsu-kaiho }
+        - { slug: jiton-sakin-taiso }
+        - { slug: satetsu-kurogane-no-tsubasa }
+        - { slug: satetsu-kesshu }
+      tracos:
+        - *jiton-atracao
+        - *jiton-escudo-de-ferro
+        - &jiton-campo-magnetico { nome: Campo magnético, efeito: "Uma vez por cena, como ação primária, cada inimigo a até 15 m com arma ou armadura de metal resiste com FOR contra a DT da ficha ou fica **Imobilizado**, preso ao chão pelo próprio metal." }
+  taticas:
+    - "Desarma o grupo puxando o metal das mãos e das bolsas e lança tudo de volta. Fica atrás de um escudo de areia de ferro e esmaga quem se aproxima com o pó de ouro."
+  ganchos:
+    - "Uma mina de ferro foi esvaziada numa noite, e a areia preta foi vista voando para o deserto."
+    - "Um herdeiro da linhagem Sabaku foi sequestrado, e a vila suspeita que querem o sangue dele, não ele."
+    - "Uma estátua de ouro de um daimyō derreteu em pó, e o pó sumiu."
+  tags: [Cauteloso, Tático]
+
+- slug: especialista-jinton
+  nome: Especialista em Jinton
+  tipo: shinobi
+  origem: Os Tsuchikage de Iwa
+  vila: null
+  arte: { formato: pagina, plano: aéreo }
+  cena:
+    - "Entre as palmas do velho surge um cubo pequeno, de luz branca, com uma esfera girando no meio. Parece um brinquedo. Ele o solta no ar, e o cubo cresce de repente até engolir a torre inteira, e a torre não cai: simplesmente não está mais lá."
+  descricao:
+    - "A Poeira junta a terra, o vento e o fogo, e é a única Kekkei Tōta que o mundo conhece. Tudo o que fica dentro de um jutsu de Jinton vira pó, de carne a montanha, sem fogo e sem barulho. Quem tem esse sangue aprende antes a tornar o próprio corpo leve ou pesado, e voa sobre o campo de batalha como uma pedra que esqueceu de cair."
+    - "A Poeira é Kekkei Tōta: três elementos juntos (Elementos combinados, cap. 10), criada com as regras de Kekkei Genkai do cap. 8 e só com a aprovação do Mestre. Ela sobe dois pontos de ameaça, em vez de um. Em Iwa, esse sangue passou de Tsuchikage para Tsuchikage."
+  estagios:
+    - nome: Genin
+      arte: { formato: retrato, plano: de baixo }
+      ameaca: 4
+      papel: atirador
+      perfil: equilibrado
+      estilo: vigilante
+      resumo: "Saída da Academia há pouco, ainda flutua sem querer quando fica feliz demais."
+      ataques:
+        - { nome: Bala de pedra, alcance: Médio }
+      jutsus:
+        - { slug: doryuudan }
+        - { slug: daitoppa }
+        - { slug: goukakyu-no-jutsu }
+      tracos:
+        - &jinton-pedra-leve { nome: Pedra leve, efeito: "Como ação secundária, fica leve o bastante para flutuar até o fim do turno; voando, ataques corpo a corpo contra ele têm desvantagem." }
+    - nome: Chunin
+      arte: { formato: quadro, plano: câmera inclinada }
+      ameaca: 7
+      papel: controlador
+      perfil: chakra-farto
+      estilo: calculista
+      resumo: "Deixa o inimigo pesado demais para levantar e conversa com ele de cima, flutuando."
+      ataques:
+        - { nome: Pedra pesada, alcance: Médio }
+      jutsus:
+        - { slug: doton-kajugan-no-jutsu }
+        - { slug: doton-keijugan-no-jutsu }
+        - { slug: katon-dai-endan }
+        - { slug: futon-shinkuha }
+      tracos:
+        - *jinton-pedra-leve
+        - &jinton-peso { nome: Peso, efeito: "Uma vez por cena, toca um alvo: ele resiste com FOR contra a DT da ficha ou fica **Caído** e não consegue se levantar até o fim do próximo turno." }
+    - nome: Jounin
+      arte: { formato: pagina, plano: aéreo }
+      capa: true
+      ameaca: 10
+      papel: controlador
+      perfil: chakra-farto
+      estilo: calculista
+      resumo: "Veterano que torna o próprio corpo leve como pena e as rochas pesadas como montanhas."
+      ataques:
+        - { nome: Rocha de peso dobrado, alcance: Longo }
+      jutsus:
+        - { slug: doton-chokajugan-no-jutsu }
+        - { slug: doton-chokeijugan-no-jutsu }
+        - { slug: katon-goka-mekkyaku }
+        - { slug: iwa-bunshin-no-jutsu }
+      tracos:
+        - *jinton-pedra-leve
+        - *jinton-peso
+    - nome: Nível Anbu
+      arte: { formato: retrato, plano: silhueta }
+      ameaca: 13
+      papel: assassino
+      perfil: chakra-farto
+      estilo: vigilante
+      resumo: "Agente de elite que se divide em dois e desfaz o alvo em pó entre as duas metades."
+      ataques:
+        - { nome: Toque de poeira, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
+      jutsus:
+        - { slug: jinton-bunretsu-genkai-hakuri-no-jutsu }
+        - { slug: bunretsu-no-jutsu }
+        - { slug: doton-chokeijugan-no-jutsu }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *jinton-pedra-leve
+        - *jinton-peso
+    - nome: Nível Kage
+      arte: { formato: pagina, plano: de costas }
+      ameaca: 18
+      papel: chefe
+      perfil: chakra-vasto
+      estilo: calculista
+      resumo: "Uma lenda da Poeira, o velho que desfaz exércitos e montanhas com um cubo de luz entre as mãos."
+      ataques:
+        - { nome: Cubo de poeira, alcance: Longo }
+      jutsus:
+        - { slug: jinton-genkai-hakuri-no-jutsu }
+        - { slug: jinton-bunretsu-genkai-hakuri-no-jutsu }
+        - { slug: bunretsu-no-jutsu }
+        - { slug: doton-chokajugan-no-jutsu }
+      tracos:
+        - *jinton-pedra-leve
+        - *jinton-peso
+        - &jinton-mundo-primitivo { nome: Mundo primitivo, efeito: "Uma vez por cena, quando um jutsu de Jinton dele mata um inimigo, não sobra nada: nem corpo, nem arma, nem o chão onde ele estava." }
+  taticas:
+    - "Flutua fora do alcance e mira os alvos de longe. Guarda a Poeira para o momento em que o grupo se junta, e foge voando se a luta virar."
+  ganchos:
+    - "Um pedaço de uma montanha sumiu, cortado num cubo perfeito, e o grupo é mandado para descobrir como."
+    - "Um aprendiz do sangue da Poeira desertou de Iwa, e três vilas querem achá-lo antes das outras."
+    - "Um velho que flutua aparece numa vila pequena pedindo abrigo, e diz que está fugindo da própria família."
+  tags: [Cauteloso, Tático]
