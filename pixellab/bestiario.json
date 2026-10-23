@@ -4833,7 +4833,7 @@
 			"nome": "Especialista em Yōton: Jounin",
 			"formato": "pagina",
 			"plano": ["ombro"],
-			"prompt": "three Uchiha clan ninjas after a battle: in the background rivers of glowing orange molten lava pour down a rocky slope over fleeing enemy ninjas, smoke and embers rising; in the middle, facing the camera, the young man Atarashi Uchiha (messy black hair, purple high-collared zipped tunic with short sleeves, grey waist sash, tan strap across the chest, black forearm guards, black pants) scratches the back of his head with one hand, eyes half closed and a small embarrassed, slightly guilty smile, like someone who overdid it a little; in the foreground, seen from behind with their backs to the camera and looking at him, Ani Uchiha on the left (long dark navy hair with a side braid, dark sleeveless top with the red and white Uchiha fan crest on her back, pink sleeves, a katana at the waist) and Hayama Uchiha on the right (short black hair, the knot of a Konoha forehead protector, green Konoha flak vest, dark navy sleeves), the lava is clearly visible, all three are original characters from the user's campaign, not famous characters from the series",
+			"prompt": "three Uchiha clan ninjas after a battle: in the background a destroyed ninja village with broken wooden houses, collapsed roofs and burning beams is flooded by rivers of glowing orange molten lava flowing through the streets, enemy ninjas fleeing, smoke and embers rising; in the middle, facing the camera, the young man Atarashi Uchiha (messy black hair, purple high-collared zipped tunic with short sleeves, grey waist sash, tan strap across the chest, black forearm guards, black pants) scratches the back of his head with one hand, eyes half closed and a small embarrassed, slightly guilty smile, like someone who overdid it a little; in the foreground, seen from behind with their backs to the camera and looking at him, Ani Uchiha on the left (long dark navy hair with a side braid, dark sleeveless top with the red and white Uchiha fan crest on her back, pink sleeves, a katana at the waist) and Hayama Uchiha on the right (short black hair, the knot of a Konoha forehead protector, green Konoha flak vest, dark navy sleeves), the lava is clearly visible, all three are original characters from the user's campaign, not famous characters from the series",
 			"modelo": "pro",
 			"referencias": [
 				{
@@ -4852,7 +4852,7 @@
 					"uso": "the man in the right foreground seen from behind: copy his short black hair and his Konoha outfit (green flak vest, dark navy sleeves, forehead protector)"
 				}
 			],
-			"escolhida": "especialista-yoton--jounin-12008.png"
+			"escolhida": "especialista-yoton--jounin-12101.png"
 		},
 		{
 			"slug": "especialista-yoton--nivel-anbu",
@@ -4868,9 +4868,9 @@
 			"nome": "Especialista em Yōton: Nível Kage",
 			"formato": "pagina",
 			"plano": ["aberto"],
-			"prompt": "a legendary lava master, original old woman with short white hair and a soot-black armored coat, a slashed forehead protector, a worn dark travel cloak, she stands at the edge of a volcano crater facing the camera, small in the frame, both arms raised high and screaming, while behind her the volcano erupts an absurd column of glowing orange lava and black smoke rising into the sky like a nuclear explosion mushroom cloud, lava bombs raining down, original character, not a famous character from the series",
+			"prompt": "a legendary lava master, original old woman with short white hair wearing dark red Warring States era clan armor like the old Senju armor, segmented red lacquered plates over a dark navy kimono, a slashed forehead protector, a worn dark travel cloak, she stands at the edge of a volcano crater facing the camera, small in the frame, both arms raised high and screaming, while behind her the volcano erupts an absurd column of glowing orange lava and black smoke rising into the sky like a nuclear explosion mushroom cloud, lava bombs raining down, original character, not a famous character from the series",
 			"modelo": "pro",
-			"escolhida": "especialista-yoton--nivel-kage-12004.png"
+			"escolhida": "especialista-yoton--nivel-kage-12112.png"
 		},
 		{
 			"slug": "especialista-futton--genin",
