@@ -61,6 +61,25 @@
       tracos:
         - *a2
         - *a3
+    - nome: Nível Anbu
+      arte:
+        formato: quadro
+        plano: silhueta
+      ameaca: 11
+      papel: controlador
+      perfil: equilibrado
+      estilo: calculista
+      resumo: Prende a sombra do alvo de longe e segura até a equipe chegar.
+      ataques: *a1
+      jutsus:
+        - { slug: kage-kubishibari-no-jutsu }
+        - { slug: kage-nui-no-jutsu }
+        - { slug: kagemane-shuriken-no-jutsu }
+        - { slug: kokuangyou-no-jutsu }
+      tracos:
+        - *a2
+        - *a3
+        - &mascara-anbu { nome: Máscara, efeito: "Testes de Persuasão para arrancar qualquer informação têm desvantagem." }
     - nome: Líder do clã
       ameaca: 11
       papel: chefe
@@ -145,6 +164,25 @@
       tracos:
         - *a5
         - *a6
+    - nome: Nível Anbu
+      arte:
+        formato: retrato
+        plano: escorço
+      ameaca: 11
+      papel: lutador
+      perfil: corpo-resistente
+      estilo: defensivo
+      resumo: Na Anbu aprendeu a crescer só o punho, e só no último instante.
+      ataques: *a4
+      jutsus:
+        - { slug: bubun-baika-no-jutsu }
+        - { slug: choharite }
+        - { slug: choudan-bakugeki }
+        - { slug: nikudan-sensha }
+      tracos:
+        - *a5
+        - *a6
+        - *mascara-anbu
     - nome: Líder do clã
       ameaca: 11
       papel: chefe
@@ -227,6 +265,25 @@
       tracos:
         - *a8
         - *a9
+    - nome: Nível Anbu
+      arte:
+        formato: quadro
+        plano: por cima do ombro
+      ameaca: 11
+      papel: controlador
+      perfil: chakra-farto
+      estilo: vigilante
+      resumo: Entra na cabeça do prisioneiro, e o que ele sabe passa a ser da vila.
+      ataques: *a7
+      jutsus:
+        - { slug: shinranshin-no-jutsu }
+        - { slug: shintenshin-no-jutsu }
+        - { slug: shindenshin-no-jutsu }
+        - { slug: kanchi-kekkai }
+      tracos:
+        - *a8
+        - *a9
+        - *mascara-anbu
     - nome: Líder do clã
       ameaca: 11
       papel: chefe
@@ -312,6 +369,25 @@
       tracos:
         - *a11
         - *a12
+    - nome: Nível Anbu
+      arte:
+        formato: retrato
+        plano: perfil
+      ameaca: 11
+      papel: lutador
+      perfil: corpo-resistente
+      estilo: vigilante
+      resumo: Fareja a trilha de um desertor dias depois de ele passar, com o cão na frente.
+      ataques: *a10
+      jutsus:
+        - { slug: ooiga-gatenga }
+        - { slug: garouga }
+        - { slug: dainamikku-makingu }
+        - { slug: shikyaku-no-jutsu }
+      tracos:
+        - *a11
+        - *a12
+        - *mascara-anbu
     - nome: Líder do clã
       ameaca: 11
       papel: chefe
@@ -396,6 +472,25 @@
       tracos:
         - *a14
         - *a15
+    - nome: Nível Anbu
+      arte:
+        formato: retrato
+        plano: de costas
+      ameaca: 11
+      papel: assassino
+      perfil: chakra-farto
+      estilo: calculista
+      resumo: Solta os insetos na casa do alvo antes de a missão começar.
+      ataques: *a13
+      jutsus:
+        - { slug: kidaichu-mushikui }
+        - { slug: mushi-jamingu-no-jutsu }
+        - { slug: mushi-bunshin-no-jutsu }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *a14
+        - *a15
+        - *mascara-anbu
     - nome: Líder do clã
       ameaca: 11
       papel: chefe
@@ -484,6 +579,25 @@
       tracos:
         - *a17
         - *a18
+    - nome: Nível Anbu
+      arte:
+        formato: quadro
+        plano: emoldurado
+      ameaca: 12
+      papel: assassino
+      perfil: equilibrado
+      estilo: vigilante
+      resumo: Vê através das paredes e fecha o chakra do alvo antes de ele acordar.
+      ataques: *a16
+      jutsus:
+        - { slug: hakke-rokujuyon-sho }
+        - { slug: hakke-kuhekisho }
+        - { slug: jukenho-ichigekishin }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *a17
+        - *a18
+        - *mascara-anbu
     - nome: Líder do clã
       ameaca: 12
       papel: chefe
@@ -595,6 +709,7 @@
         - *a21
         - nome: Mangekyou Sharingan
           efeito: "Pode erguer o Susanoo no estágio Esqueleto e tem uma Habilidade do Mangekyou só dele, um jutsu original de até 30 PJ que o Mestre cria com o cap. 20. Cada uso conta para a cegueira progressiva, com as regras do Clã Uchiha (cap. 8)."
+        - *mascara-anbu
     - nome: Líder do clã
       ameaca: 12
       papel: chefe
@@ -681,6 +796,25 @@
       tracos:
         - *a23
         - *a24
+    - nome: Nível Anbu
+      arte:
+        formato: retrato
+        plano: aéreo
+      ameaca: 11
+      papel: controlador
+      perfil: chakra-farto
+      estilo: defensivo
+      resumo: Ergue a prisão de madeira em volta do alvo enquanto a equipe fecha o cerco.
+      ataques: *a22
+      jutsus:
+        - { slug: mokuton-shichuro-no-jutsu }
+        - { slug: mokuton-mokujoheki }
+        - { slug: moku-bunshin-no-jutsu }
+        - { slug: mokuton-mokusatsu-shibari-no-jutsu }
+      tracos:
+        - *a23
+        - *a24
+        - *mascara-anbu
     - nome: Líder do clã
       ameaca: 11
       papel: chefe
@@ -764,6 +898,25 @@
       tracos:
         - *a26
         - *a27
+    - nome: Nível Anbu
+      arte:
+        formato: quadro
+        plano: câmera inclinada
+      ameaca: 11
+      papel: suporte
+      perfil: chakra-vasto
+      estilo: impetuoso
+      resumo: Sela o que a vila não pode deixar escapar e fecha a barreira em volta da equipe.
+      ataques: *a25
+      jutsus:
+        - { slug: uzumaki-kekkai }
+        - { slug: shisho-fuin }
+        - { slug: kongo-fusa }
+        - { slug: tairyoku-kaifuku }
+      tracos:
+        - *a26
+        - *a27
+        - *mascara-anbu
     - nome: Líder do clã
       ameaca: 11
       papel: chefe
@@ -854,6 +1007,26 @@
         - *a29
         - *a30
       rd: 2
+    - nome: Nível Anbu
+      arte:
+        formato: retrato
+        plano: de baixo
+      ameaca: 12
+      papel: assassino
+      perfil: corpo-resistente
+      estilo: impetuoso
+      resumo: Kiri o manda onde precisa de alguém que não sente dor nem pena.
+      ataques: *a28
+      jutsus:
+        - { slug: tsubaki-no-mai }
+        - { slug: tessenka-no-mai-tsuru }
+        - { slug: karamatsu-no-mai }
+        - { slug: teshi-sendan }
+      tracos:
+        - *a29
+        - *a30
+        - *mascara-anbu
+      rd: 2
     - nome: Líder do clã
       ameaca: 12
       papel: chefe
@@ -939,6 +1112,25 @@
       tracos:
         - *a32
         - *a33
+    - nome: Nível Anbu
+      arte:
+        formato: quadro
+        plano: câmera no chão
+      ameaca: 12
+      papel: assassino
+      perfil: equilibrado
+      estilo: impetuoso
+      resumo: Caça desertores de Kiri e entra na casa do alvo pela fresta da porta.
+      ataques: *a31
+      jutsus:
+        - { slug: joki-boi }
+        - { slug: suiton-bolha-afogadora }
+        - { slug: suika-no-jutsu }
+        - { slug: suiton-mizu-bunshin }
+      tracos:
+        - *a32
+        - *a33
+        - *mascara-anbu
     - nome: Líder do clã
       arte: { formato: pagina, plano: de costas }
       ameaca: 12
@@ -1028,6 +1220,26 @@
         - *a35
         - *a36
       rd: 2
+    - nome: Nível Anbu
+      arte:
+        formato: retrato
+        plano: plano aberto
+      ameaca: 12
+      papel: atirador
+      perfil: equilibrado
+      estilo: vigilante
+      resumo: Guarda os segredos de Suna no deserto, e a areia apaga o rastro dele.
+      ataques: *a34
+      jutsus:
+        - { slug: suna-shigure }
+        - { slug: suna-arare }
+        - { slug: sabaku-kyu }
+        - { slug: sabaku-soso }
+      tracos:
+        - *a35
+        - *a36
+        - *mascara-anbu
+      rd: 2
     - nome: Líder do clã
       ameaca: 12
       papel: chefe
@@ -1114,6 +1326,25 @@
       tracos:
         - *a38
         - *a39
+    - nome: Nível Anbu
+      arte:
+        formato: quadro
+        plano: por cima do ombro
+      ameaca: 12
+      papel: assassino
+      perfil: equilibrado
+      estilo: vigilante
+      resumo: Usa a máscara de caçador de Kiri e mata com agulhas de gelo, sem deixar marca.
+      ataques: *a37
+      jutsus:
+        - { slug: hyoton-makyo-hyosho }
+        - { slug: hyoton-mangehyo }
+        - { slug: sensatsu-suisho }
+        - { slug: hyoton-tsubame-fubuki }
+      tracos:
+        - *a38
+        - *a39
+        - *mascara-anbu
     - nome: Líder do clã
       ameaca: 12
       papel: chefe

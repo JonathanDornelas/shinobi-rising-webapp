@@ -5178,6 +5178,239 @@
 			],
 			"cores_extras": ["#1c2541", "#2e3c63"],
 			"escolhida": "cla-uchiha--nivel-anbu-12203-sharingan.png"
+		},
+		{
+			"slug": "cla-nara--nivel-anbu",
+			"nome": "Nara, estrategista das sombras: Nível Anbu",
+			"formato": "quadro",
+			"plano": ["silhueta"],
+			"prompt": "an original Nara clan ANBU of Konoha, a lean man with black hair tied in the clan's high spiky ponytail, a white deer ANBU mask with red markings, Konoha ANBU uniform as in the anime: grey armored vest over a black sleeveless shirt, the red spiral tattoo on the upper arm, long black arm guards, a tantō on the back, crouching on a tiled rooftop at night with both hands in the Rat seal while his own shadow stretches impossibly long across the moonlit tiles and grabs the shadow of an enemy ninja frozen mid-leap, a huge full moon behind them, original character, not a famous character from the series",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shikaku-nara.png",
+					"pagina": "Shikaku Nara",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/anbu.png",
+					"pagina": "ANBU",
+					"uso": "the Konoha ANBU uniform as drawn in the anime: grey armored vest, black sleeveless shirt, the red spiral tattoo on the shoulder, arm guards and the white animal masks with red markings. Draw a different person and an original mask"
+				}
+			],
+			"escolhida": "cla-nara--nivel-anbu-12301.png"
+		},
+		{
+			"slug": "cla-akimichi--nivel-anbu",
+			"nome": "Akimichi, guerreiro gigante: Nível Anbu",
+			"formato": "retrato",
+			"plano": ["escorco"],
+			"prompt": "an original Akimichi clan ANBU of Konoha, a big heavy-set man with long spiky brown hair and the red swirl marks of the clan on his cheeks, a white ANBU mask with red butterfly-wing markings pushed up on his head, Konoha ANBU uniform as in the anime: grey armored vest over a black sleeveless shirt, the red spiral tattoo on the upper arm, long black arm guards, a tantō on the back, bursting through the paper wall of a dark enemy hideout with only one arm enlarged to a gigantic size by the Partial Expansion jutsu, the huge fist thrust straight at the camera, the rest of his body normal sized behind it, splinters and paper flying, original character, not a famous character from the series",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/choza-akimichi.png",
+					"pagina": "Chōza Akimichi",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/anbu.png",
+					"pagina": "ANBU",
+					"uso": "the Konoha ANBU uniform as drawn in the anime: grey armored vest, black sleeveless shirt, the red spiral tattoo on the shoulder, arm guards and the white animal masks with red markings. Draw a different person and an original mask"
+				}
+			],
+			"escolhida": "cla-akimichi--nivel-anbu-12301.png"
+		},
+		{
+			"slug": "cla-yamanaka--nivel-anbu",
+			"nome": "Yamanaka, invasor de mentes: Nível Anbu",
+			"formato": "quadro",
+			"plano": ["ombro"],
+			"prompt": "an original Yamanaka clan ANBU of Konoha, a woman with pale blond hair in a long braid over her shoulder, a white boar ANBU mask with red markings tied at the side of her head, Konoha ANBU uniform as in the anime: grey armored vest over a black sleeveless shirt, the red spiral tattoo on the upper arm, long black arm guards, a tantō on the back, in a bare stone interrogation room lit by one hanging lamp, her open hand resting on the forehead of an enemy ninja tied to a chair, a soft blue glow of chakra passing from her palm into the prisoner's head, the prisoner's eyes blank, original character, not a famous character from the series",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/inoichi-yamanaka.png",
+					"pagina": "Inoichi Yamanaka",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/anbu.png",
+					"pagina": "ANBU",
+					"uso": "the Konoha ANBU uniform as drawn in the anime: grey armored vest, black sleeveless shirt, the red spiral tattoo on the shoulder, arm guards and the white animal masks with red markings. Draw a different person and an original mask"
+				}
+			],
+			"tamanho": [168, 168]
+		},
+		{
+			"slug": "cla-inuzuka--nivel-anbu",
+			"nome": "Inuzuka, caçador e seu cão: Nível Anbu",
+			"formato": "retrato",
+			"plano": ["perfil"],
+			"prompt": "an original Inuzuka clan ANBU of Konoha, a wiry young woman with short wild brown hair, the red fang marks of the clan on her cheeks, a white wolf ANBU mask with red markings hanging at her neck, Konoha ANBU uniform as in the anime: grey armored vest over a black sleeveless shirt, the red spiral tattoo on the upper arm, long black arm guards, a tantō on the back, running on all fours along a thick tree branch beside her big brown ninja dog that wears a small matching red-marked mask, both sniffing the trail, a misty forest at dawn behind them, original character, not a famous character from the series",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/tsume-inuzuka.png",
+					"pagina": "Tsume Inuzuka",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/anbu.png",
+					"pagina": "ANBU",
+					"uso": "the Konoha ANBU uniform as drawn in the anime: grey armored vest, black sleeveless shirt, the red spiral tattoo on the shoulder, arm guards and the white animal masks with red markings. Draw a different person and an original mask"
+				}
+			],
+			"escolhida": "cla-inuzuka--nivel-anbu-12301.png"
+		},
+		{
+			"slug": "cla-aburame--nivel-anbu",
+			"nome": "Aburame, mestre dos insetos: Nível Anbu",
+			"formato": "retrato",
+			"plano": ["costas"],
+			"prompt": "an original Aburame clan ANBU of Konoha, a tall man with a dark high-collared hooded coat over the Konoha ANBU gear: grey armored vest over a black sleeveless shirt, the red spiral tattoo on the upper arm, long black arm guards, a tantō on the back, standing in the doorway of a dark room where an enemy lord sleeps on a futon, a stream of tiny black kikaichu beetles pouring silently out of his sleeves and flowing across the floor toward the sleeper, moonlight through the paper door, original character, not a famous character from the series",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/shibi-aburame.png",
+					"pagina": "Shibi Aburame",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/anbu.png",
+					"pagina": "ANBU",
+					"uso": "the Konoha ANBU uniform as drawn in the anime: grey armored vest, black sleeveless shirt, the red spiral tattoo on the shoulder, arm guards and the white animal masks with red markings. Draw a different person and an original mask"
+				}
+			],
+			"tamanho": [112, 168],
+			"escolhida": "cla-aburame--nivel-anbu-12301-b.png"
+		},
+		{
+			"slug": "cla-hyuuga--nivel-anbu",
+			"nome": "Hyuuga, guardião do Byakugan: Nível Anbu",
+			"formato": "quadro",
+			"plano": ["moldura"],
+			"prompt": "an original Hyuuga clan ANBU of Konoha, a young man with long straight dark brown hair, a white owl ANBU mask with red markings, the veins of the Byakugan bulging around the eye holes of the mask, Konoha ANBU uniform as in the anime: grey armored vest over a black sleeveless shirt, the red spiral tattoo on the upper arm, long black arm guards, a tantō on the back, seen through a jagged hole broken in a dark wooden wall, standing on the other side and staring straight through the wall at the viewer, one palm raised in the Gentle Fist stance with a faint blue chakra glow, original character, not a famous character from the series",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/neji-hyuga.png",
+					"pagina": "Neji Hyūga",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/anbu.png",
+					"pagina": "ANBU",
+					"uso": "the Konoha ANBU uniform as drawn in the anime: grey armored vest, black sleeveless shirt, the red spiral tattoo on the shoulder, arm guards and the white animal masks with red markings. Draw a different person and an original mask"
+				}
+			],
+			"escolhida": "cla-hyuuga--nivel-anbu-12301.png"
+		},
+		{
+			"slug": "cla-senju--nivel-anbu",
+			"nome": "Senju, herdeiro da madeira: Nível Anbu",
+			"formato": "retrato",
+			"plano": ["aereo"],
+			"prompt": "an original Senju clan ANBU of Konoha, a woman with long dark brown hair in a low ponytail, a white tortoise ANBU mask with red markings, Konoha ANBU uniform as in the anime: grey armored vest over a black sleeveless shirt, the red spiral tattoo on the upper arm, long black arm guards, a tantō on the back, kneeling with both palms on the ground in a forest clearing while thick wooden pillars of the Wood Release burst out of the earth and close into a square wooden cage around an enemy ninja, roots and splinters everywhere, original character, not a famous character from the series",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/hashirama-senju.png",
+					"pagina": "Hashirama Senju",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/anbu.png",
+					"pagina": "ANBU",
+					"uso": "the Konoha ANBU uniform as drawn in the anime: grey armored vest, black sleeveless shirt, the red spiral tattoo on the shoulder, arm guards and the white animal masks with red markings. Draw a different person and an original mask"
+				}
+			],
+			"escolhida": "cla-senju--nivel-anbu-12301.png"
+		},
+		{
+			"slug": "cla-uzumaki--nivel-anbu",
+			"nome": "Uzumaki, mestre dos selos: Nível Anbu",
+			"formato": "quadro",
+			"plano": ["holandes"],
+			"prompt": "an original Uzumaki clan ANBU of Konoha, a young woman with short messy bright red hair, a white ANBU mask with red whirlpool markings, Konoha ANBU uniform as in the anime: grey armored vest over a black sleeveless shirt, the red spiral tattoo on the upper arm, long black arm guards, a tantō on the back, slamming one palm on a huge glowing sealing formula drawn on the stone floor of a dark underground vault, golden chains of chakra bursting from her back and binding a monstrous shadowy creature, sealing script swirling around her, original character, not a famous character from the series",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kushina-uzumaki.png",
+					"pagina": "Kushina Uzumaki",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/anbu.png",
+					"pagina": "ANBU",
+					"uso": "the Konoha ANBU uniform as drawn in the anime: grey armored vest, black sleeveless shirt, the red spiral tattoo on the shoulder, arm guards and the white animal masks with red markings. Draw a different person and an original mask"
+				}
+			],
+			"escolhida": "cla-uzumaki--nivel-anbu-12301.png"
+		},
+		{
+			"slug": "cla-kaguya--nivel-anbu",
+			"nome": "Kaguya, guerreiro dos ossos: Nível Anbu",
+			"formato": "retrato",
+			"plano": ["de-baixo"],
+			"prompt": "an original Kaguya clan hunter-nin of Kirigakure, a pale man with long white hair, Kirigakure hunter-nin outfit: a smooth white mask with the Mist village symbol on the forehead, dark high-collared clothes, standing in a narrow alley in the heavy rain, slowly pulling a long white bone sword out of the palm of his hand, sharp bone spikes jutting from his shoulders and spine through the torn clothes, original character, not a famous character from the series",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kaguya-clan.png",
+					"pagina": "Kaguya Clan",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "cla-kaguya--nivel-anbu-12301.png"
+		},
+		{
+			"slug": "cla-hozuki--nivel-anbu",
+			"nome": "Hozuki, corpo de água: Nível Anbu",
+			"formato": "quadro",
+			"plano": ["chao"],
+			"prompt": "an original Hozuki clan hunter-nin of Kirigakure, a young man with pale blue-white hair and sharp pointed teeth, Kirigakure hunter-nin outfit: a smooth white mask with the Mist village symbol on the forehead, dark high-collared clothes, inside a dark wooden house at night: a thin stream of water creeps under the closed door and rises from a puddle on the floor, taking his shape, his body still half liquid water from the waist down, one hand reaching for the sword on his back, original character, not a famous character from the series",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/mangetsu-hozuki.png",
+					"pagina": "Mangetsu Hōzuki",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "cla-hozuki--nivel-anbu-12301.png"
+		},
+		{
+			"slug": "cla-sabaku--nivel-anbu",
+			"nome": "Sabaku, guardião da areia: Nível Anbu",
+			"formato": "retrato",
+			"plano": ["aberto"],
+			"prompt": "an original Sabaku clan ANBU of Sunagakure, a small figure in a beige hooded cloak and a white mask with red markings, a big sand gourd on his back, standing on top of a dune under a starry night sky while a long wave of sand rises behind him and erases the footprints of his team across the desert, the dark walls of Sunagakure far away on the horizon, original character, not a famous character from the series",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/gaara.png",
+					"pagina": "Gaara",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "cla-sabaku--nivel-anbu-12301.png"
+		},
+		{
+			"slug": "cla-yuki--nivel-anbu",
+			"nome": "Yuki, espelhos de gelo: Nível Anbu",
+			"formato": "quadro",
+			"plano": ["ombro"],
+			"prompt": "an original Yuki clan hunter-nin, a woman with short black hair and pale skin, a thick grey fur-lined coat, Kirigakure hunter-nin outfit: a smooth white mask with the Mist village symbol on the forehead, dark high-collared clothes, seen from just behind her head as she holds three thin ice needles between her fingers and looks across a frozen lake at an enemy ninja trapped up to the chest in the ice, snow falling, cold blue light, original character, not a famous character from the series",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/yuki-clan.png",
+					"pagina": "Yuki Clan",
+					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
+				}
+			],
+			"tamanho": [168, 168]
 		}
 	],
 	"direcao_nota": "Direção (20/10): referências do anime e do mangá de Naruto, e ângulos ousados como os quadros-chave do anime: câmera inclinada, silhueta contra a lua, close nos olhos, escorço, vista aérea, contra-plongée extremo. O personagem no meio de uma ação, fora do centro, cortado pela moldura. Nunca a pose de ficha (de pé, de frente, no centro, fundo simétrico). Rostos originais; criaturas e símbolos canônicos iguais aos do anime.",
