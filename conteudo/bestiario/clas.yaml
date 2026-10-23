@@ -572,6 +572,29 @@
       tracos:
         - *a20
         - *a21
+    - nome: Nível Anbu
+      arte:
+        formato: pagina
+        plano: plano médio
+      ameaca: 12
+      papel: assassino
+      perfil: chakra-farto
+      estilo: vigilante
+      resumo: Serve na Anbu da vila, e a máscara esconde um Mangekyou que quase ninguém viu.
+      ataques:
+        - nome: Tantō
+          alcance: Corpo a corpo
+          efeito: Dano em dobro contra alvo **Desprevenido**.
+      jutsus:
+        - { slug: genjutsu-sharingan }
+        - { slug: katon-hosenka-tsumabeni }
+        - { slug: nehan-shoja-no-jutsu }
+        - { slug: shunshin-no-jutsu }
+      tracos:
+        - *a20
+        - *a21
+        - nome: Mangekyou Sharingan
+          efeito: "Pode erguer o Susanoo no estágio Esqueleto e tem uma Habilidade do Mangekyou só dele, um jutsu original de até 30 PJ que o Mestre cria com o cap. 20. Cada uso conta para a cegueira progressiva, com as regras do Clã Uchiha (cap. 8)."
     - nome: Líder do clã
       ameaca: 12
       papel: chefe

@@ -3629,17 +3629,27 @@
 			"nome": "Mestre de taijutsu: Nível Kage",
 			"formato": "pagina",
 			"plano": ["de-baixo"],
-			"prompt": "a Konoha jounin opening the Eighth Gate, in exactly the pose of the reference: leaping forward on top of a broken rock with one knee raised high, one arm pulled back and the other reaching forward, body leaning into the attack, a towering aura of blood-red steam rising around him like huge flames; original man in his thirties with short spiky black hair standing up (not a bowl haircut, no green jumpsuit), torn olive green Hidden Leaf flak vest over a dark navy uniform, deep red skin, bulging veins, eyes white with tears of rage; the terrain completely destroyed around him: deep craters, shattered boulders, split ground, uprooted burning trees, smoke and flying debris; far away in the background, small and blurred, the bodies of his three genin students lying in the ruins; dark stormy sky, a scene of grief and revenge",
+			"prompt": "Tatsumi Inuzuka, a Konoha jounin of the Inuzuka clan, opening the Eighth Gate on a battlefield of the First Shinobi World War, in exactly the pose of the pose reference: leaping forward on top of a broken rock with one knee raised high, one arm pulled back and the other reaching forward, a towering aura of blood-red steam rising around him like huge flames; young man with spiky dark grey hair, a Konoha forehead protector whose long cloth tails fly in the wind, the Inuzuka marks on his cheeks, a dark grey scarf, a dark olive green Konoha flak vest with the red Uzumaki spiral on the shoulder over a dark navy uniform, deep red skin, bulging veins, eyes white; his big grey and white wolf-like ninja dog leaping beside him; around them a scorched rocky plain full of craters, torn banners and fallen ninjas of Konoha and Iwagakure, smoke and fire; in the background, huge, the Four-Tailed Beast Son Goku (a giant red-furred ape with four tails, a pale green chest and horns) roaring and spewing lava as it fights; dark stormy sky lit orange by the fires, original character from the user's campaign",
 			"modelo": "pro",
 			"referencias": [
 				{
+					"arquivo": "referencias/bestiario/paginas/tatsumi-inuzuka.png",
+					"pagina": "Tatsumi Inuzuka (campanha do usuário)",
+					"uso": "the man and his dog: copy his face, his spiky dark grey hair, the forehead protector with the long cloth tails, the marks on his cheeks, the dark scarf, the flak vest with the spiral on the shoulder, and his big grey and white wolf-like dog. Redraw them in the Naruto anime style, in the pose of the other reference"
+				},
+				{
 					"arquivo": "referencias/bestiario/paginas/pose-oitavo-portao.png",
 					"pagina": "pose-oitavo-portao",
-					"uso": "only the pose and the shape of the blood-red steam aura from this figure: the leap with the raised knee, the arms and the flame-like red steam rising around the body. Draw a different, original person with his own face, hair and clothes (Konoha flak vest and navy uniform), not this character"
+					"uso": "only the pose and the shape of the blood-red steam aura from this figure: the leap with the raised knee, the arms and the flame-like red steam rising around the body. Do not copy this character's face, hair or clothes"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/son-goku.png",
+					"pagina": "Son Gokū",
+					"uso": "the Four-Tailed Beast Son Goku exactly as drawn in the Naruto anime (red fur, four tails, pale green chest, horns, fangs), drawn huge in the background of the battlefield, fighting"
 				}
 			],
-			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a"],
-			"escolhida": "mestre-de-taijutsu--nivel-kage-10302.png"
+			"cores_extras": ["#1c2541", "#2e3c63", "#56622a", "#86964a", "#6b6f78", "#c9ccd1"],
+			"escolhida": "mestre-de-taijutsu--nivel-kage-12203.png"
 		},
 		{
 			"slug": "mestre-do-selo--genin",
@@ -5141,6 +5151,33 @@
 			"prompt": "a tall legendary old woman with long grey hair tied low, seen from behind, original character, plain brown robe, seen from behind floating in the sky, holding a small glowing white cube toward a mountain in the distance, original character, not a famous character from the series",
 			"modelo": "pro",
 			"escolhida": "especialista-jinton--nivel-kage-12001.png"
+		},
+		{
+			"slug": "cla-uchiha--nivel-anbu",
+			"nome": "Uchiha, portador do Sharingan: Nível Anbu",
+			"formato": "pagina",
+			"plano": ["close"],
+			"prompt": "Izo Uchiha, a young Konoha ANBU of the Uchiha clan, in exactly the pose of the pose reference: one gloved hand lifting his white ANBU mask away from his face, the mask still covering part of it, looking straight at the viewer with cold calm; messy black hair with long bangs that fall over one side of his face and hide one eye, pale skin, no cloth face mask; the single visible eye is large, detailed and the focus of the image, a classic Sharingan: a red iris with a black pupil and three black tomoe around it, glowing like a light source, the red light spilling on the eyelid and a short streak of red light trailing from the eye; the mask is an original white porcelain crow mask with a short beak and red markings; Konoha ANBU uniform as in the anime: grey armored vest over a black sleeveless high-necked shirt, bare shoulders with the red ANBU spiral tattoo on the upper arm, long black arm guards, the hilt of a tantō over his shoulder; dark night background, cold moonlight from the side, an original character from the user's campaign, not a famous character from the series",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/izo-uchiha.png",
+					"pagina": "Izo Uchiha (campanha do usuário)",
+					"uso": "the young man: copy his face, his messy black hair and the long bangs that cover one of his eyes. Dress him in the Konoha ANBU uniform instead of these clothes, in the pose of the pose reference"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/pose-anbu-mascara.png",
+					"pagina": "pose da máscara Anbu",
+					"uso": "only the pose, the framing and the mood: the hand lifting the ANBU mask away from the face, the dark background with drifting flakes. Do not copy this character's silver hair, cloth face mask or face: the man has black hair and an uncovered face"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/anbu.png",
+					"pagina": "ANBU",
+					"uso": "the Konoha ANBU uniform as drawn in the anime: grey armored vest, black sleeveless shirt, the red spiral tattoo on the shoulder, arm guards and the white masks with red markings. Draw a different person and an original mask"
+				}
+			],
+			"cores_extras": ["#1c2541", "#2e3c63"],
+			"escolhida": "cla-uchiha--nivel-anbu-12203-sharingan.png"
 		}
 	],
 	"direcao_nota": "Direção (20/10): referências do anime e do mangá de Naruto, e ângulos ousados como os quadros-chave do anime: câmera inclinada, silhueta contra a lua, close nos olhos, escorço, vista aérea, contra-plongée extremo. O personagem no meio de uma ação, fora do centro, cortado pela moldura. Nunca a pose de ficha (de pé, de frente, no centro, fundo simétrico). Rostos originais; criaturas e símbolos canônicos iguais aos do anime.",
