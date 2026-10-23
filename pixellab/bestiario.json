@@ -5227,7 +5227,7 @@
 			"formato": "quadro",
 			"plano": ["ombro"],
 			"prompt": "an original Yamanaka clan ANBU of Konoha, a woman with pale blond hair in a long braid over her shoulder, a white boar ANBU mask with red markings tied at the side of her head, Konoha ANBU uniform as in the anime: grey armored vest over a black sleeveless shirt, the red spiral tattoo on the upper arm, long black arm guards, a tantō on the back, in a bare stone interrogation room lit by one hanging lamp, her open hand resting on the forehead of an enemy ninja tied to a chair, a soft blue glow of chakra passing from her palm into the prisoner's head, the prisoner's eyes blank, original character, not a famous character from the series",
-			"modelo": "pro",
+			"modelo": "pixflux",
 			"referencias": [
 				{
 					"arquivo": "referencias/bestiario/paginas/inoichi-yamanaka.png",
@@ -5240,7 +5240,7 @@
 					"uso": "the Konoha ANBU uniform as drawn in the anime: grey armored vest, black sleeveless shirt, the red spiral tattoo on the shoulder, arm guards and the white animal masks with red markings. Draw a different person and an original mask"
 				}
 			],
-			"tamanho": [168, 168]
+			"escolhida": "cla-yamanaka--nivel-anbu-12403.png"
 		},
 		{
 			"slug": "cla-inuzuka--nivel-anbu",
@@ -5402,7 +5402,7 @@
 			"formato": "quadro",
 			"plano": ["ombro"],
 			"prompt": "an original Yuki clan hunter-nin, a woman with short black hair and pale skin, a thick grey fur-lined coat, Kirigakure hunter-nin outfit: a smooth white mask with the Mist village symbol on the forehead, dark high-collared clothes, seen from just behind her head as she holds three thin ice needles between her fingers and looks across a frozen lake at an enemy ninja trapped up to the chest in the ice, snow falling, cold blue light, original character, not a famous character from the series",
-			"modelo": "pro",
+			"modelo": "pixflux",
 			"referencias": [
 				{
 					"arquivo": "referencias/bestiario/paginas/yuki-clan.png",
@@ -5410,7 +5410,7 @@
 					"uso": "style guide for this ninja clan as drawn in the Naruto anime: the family traits. Draw a DIFFERENT member of the clan, an original character, not this character. Change the pose, the camera angle and the scene"
 				}
 			],
-			"tamanho": [168, 168]
+			"escolhida": "cla-yuki--nivel-anbu-12401.png"
 		}
 	],
 	"direcao_nota": "Direção (20/10): referências do anime e do mangá de Naruto, e ângulos ousados como os quadros-chave do anime: câmera inclinada, silhueta contra a lua, close nos olhos, escorço, vista aérea, contra-plongée extremo. O personagem no meio de uma ação, fora do centro, cortado pela moldura. Nunca a pose de ficha (de pé, de frente, no centro, fundo simétrico). Rostos originais; criaturas e símbolos canônicos iguais aos do anime.",
