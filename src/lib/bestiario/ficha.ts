@@ -5,7 +5,7 @@
 //  - o atributo principal do papel sobe com a ameaça, até +10 (o teto do atributo de clã); o treino de perícia não passa
 //    de +5 e a proficiência não passa de Lendário (+5), como no cap. 3.
 // Poucas perícias (até 4), uma ou duas especializações (só quem tem treino ninja) e até duas proficiências.
-import type { PapelCriatura, PerfilCriatura, TipoCriatura } from '../livro/tipos.ts';
+import type { EstiloCriatura, PapelCriatura, PerfilCriatura, TipoCriatura } from '../livro/tipos.ts';
 
 export type Atributo = 'for' | 'agi' | 'vig' | 'int' | 'ctr' | 'esp';
 export const ATRIBUTOS: Atributo[] = ['for', 'agi', 'vig', 'int', 'ctr', 'esp'];
@@ -97,9 +97,22 @@ export const PERFIS: Record<PerfilCriatura, { nome: string; pv: number; pc: numb
 	'chakra-vasto': { nome: 'Chakra vasto', pv: 0.9, pc: 1.6, vig: -2, esp: 2 }
 };
 
+/**
+ * Estilos de luta (Como usar): trocam Defesa, Iniciativa e DT entre si, na conta de 1 de Defesa = 1 de DT = 2 de
+ * Iniciativa. A Iniciativa é a AGI da ficha, e a Acrobacia segue a Defesa, então a ficha acompanha sozinha.
+ */
+export const ESTILOS: Record<EstiloCriatura, { nome: string; defesa: number; iniciativa: number; dt: number }> = {
+	impetuoso: { nome: 'Impetuoso', defesa: -1, iniciativa: 2, dt: 0 },
+	defensivo: { nome: 'Defensivo', defesa: 1, iniciativa: -2, dt: 0 },
+	calculista: { nome: 'Calculista', defesa: 0, iniciativa: -2, dt: 1 },
+	vigilante: { nome: 'Vigilante', defesa: 0, iniciativa: 2, dt: -1 }
+};
+
 const limitar = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
 /** Atributo principal do papel: +2 na ameaça 2, +6 na 10, +10 na 20. */
 export const principal = (ameaca: number) => limitar(Math.round(1 + ameaca * 0.45), 1, 10);
+/** Atributo comum, o que não é o forte do papel: -1 até a ameaça 2, +1 na 8, +2 na 12. */
+export const atributoComum = (ameaca: number) => Math.max(-1, Math.round(principal(ameaca) / 3) - 1);
 /** Treino das perícias secundárias e nível das proficiências pela ameaça (1 a 5). */
 const treino = (ameaca: number) => limitar(Math.round(ameaca / 4) + 1, 1, 5);
 /**
@@ -132,7 +145,7 @@ function periciaDoAtaque(e: EntradaFicha): { pericia: Pericia; atributo: Atribut
 /** Atributos pelo papel: o principal sobe com a ameaça; AGI é a Iniciativa. */
 function atributosDe(e: EntradaFicha): Record<Atributo, number> {
 	const p = principal(e.ameaca);
-	const base = Math.max(-1, Math.round(p / 3) - 1);
+	const base = atributoComum(e.ameaca);
 	const a: Record<Atributo, number> = { for: base, agi: e.iniciativa, vig: base, int: base, ctr: base, esp: base };
 	const fera = !NINJA.includes(e.tipo);
 	if (fera) Object.assign(a, { for: p, vig: p - 1, esp: Math.max(0, p - 3), int: -2, ctr: e.jutsus.length ? Math.max(0, p - 3) : -1 });

@@ -3,7 +3,7 @@ import bestiarioJson from '#lib/livro/gerado/bestiario.json';
 import type { Bestiario, Bloco, Celula, Criatura, EstagioCriatura } from '#lib/livro/tipos.ts';
 import { ataqueNpc } from '#lib/npcs/gerador.ts';
 import { RANKS_NPC, TAGS_NPC } from '#lib/npcs/dados.ts';
-import { PERFIS } from './ficha.ts';
+import { atributoComum, ESTILOS, peDe, PERFIS } from './ficha.ts';
 import { npcDoVerbete } from './npc.ts';
 
 const { comoUsar, criaturas } = bestiarioJson as Bestiario;
@@ -37,7 +37,7 @@ describe('bestiário', () => {
 		expect(new Set(criaturas.map((c) => c.slug)).size).toBe(criaturas.length);
 	});
 
-	it.each(daTabela.map(([c, e]) => [`${c.slug} · ${e.nome}`, e] as const))('%s segue a linha da ameaça, o papel e o perfil', (_, e) => {
+	it.each(daTabela.map(([c, e]) => [`${c.slug} · ${e.nome}`, e] as const))('%s segue a linha da ameaça, o papel, o perfil e o estilo', (_, e) => {
 		const l = linha(e.ameacaRotulo);
 		const fatorPv = e.papel === 'lutador' ? 1.25 : e.papel === 'atirador' || e.papel === 'assassino' ? 0.75 : e.papel === 'chefe' ? 2 : 1;
 		const bonus = e.papel === 'atirador' ? 1 : e.papel === 'assassino' ? 2 : 0;
@@ -50,11 +50,27 @@ describe('bestiário', () => {
 		// PE pela conta do cap. 6: 20 + 5 por ponto de VIG + 3 por nível depois do 1º (a ameaça faz o papel do nível)
 		const vig = e.combate.ficha.atributos.vig;
 		expect(e.combate.pe).toBe(20 + 5 * Math.max(0, vig) + 3 * Math.max(0, Math.floor(e.ameaca) - 1));
-		expect(e.combate.defesa).toBe(l.defesa);
-		expect(e.combate.iniciativa).toBe(l.iniciativa);
-		expect(e.combate.dt).toBe(l.dt + (e.papel === 'controlador' ? 1 : 0));
+		// as setas do quadro comparam com um adversário comum da mesma ameaça: a linha da tabela e o PE do VIG comum
+		expect(e.combate.referencia).toEqual({ pv: l.pv, pc: l.pc, pe: peDe(e.ameaca, atributoComum(e.ameaca)), defesa: l.defesa, iniciativa: l.iniciativa, dt: l.dt });
+		const estilo = e.estilo ? ESTILOS[e.estilo] : { defesa: 0, iniciativa: 0, dt: 0 };
+		expect(e.combate.defesa).toBe(l.defesa + estilo.defesa);
+		expect(e.combate.iniciativa).toBe(l.iniciativa + estilo.iniciativa);
+		expect(e.combate.dt).toBe(l.dt + (e.papel === 'controlador' ? 1 : 0) + estilo.dt);
 		expect(e.combate.ataques[0].acerto).toBe(l.ataque + bonus);
 		expect(e.combate.ataques[0].dano).toBe(dano);
+	});
+
+	it('os estilos trocam um ponto por outro, sem mudar a ameaça (1 de Defesa = 1 de DT = 2 de Iniciativa)', () => {
+		for (const [id, x] of Object.entries(ESTILOS)) expect(x.defesa + x.dt + x.iniciativa / 2, id).toBe(0);
+	});
+
+	it('toda ficha que é mais forte que a tabela em algum número é mais fraca em outro (as setas do quadro)', () => {
+		const A = ['pv', 'pc', 'pe', 'defesa', 'iniciativa', 'dt'] as const;
+		for (const [c, e] of estagios) {
+			const k = e.combate;
+			const lado = A.map((a) => (k[a] === null || k.referencia[a] === null ? 0 : Math.sign(k[a]! - k.referencia[a]!)));
+			if (lado.includes(1)) expect(lado, `${c.slug}#${e.slug} só tem ▲`).toContain(-1);
+		}
 	});
 
 	it('as invocações seguem as fichas do cap. 14, na ameaça que o Como usar dá a cada tamanho', () => {
@@ -63,6 +79,8 @@ describe('bestiário', () => {
 			expect(ficha[e.ameaca], `${c.slug} · ${e.nome}`).toBeDefined();
 			expect([e.combate.pv, e.combate.defesa]).toEqual([ficha[e.ameaca].pv, ficha[e.ameaca].defesa]);
 			expect(e.combate.pe, 'a ficha do cap. 14 não tem PE').toBeNull();
+			const l = linha(e.ameacaRotulo);
+			expect(e.combate.referencia).toMatchObject({ pv: l.pv, defesa: l.defesa, iniciativa: l.iniciativa, dt: l.dt, pe: null });
 		}
 	});
 

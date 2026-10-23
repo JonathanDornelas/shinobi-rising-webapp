@@ -1,6 +1,6 @@
 ---
 titulo: Como usar o bestiário
-resumo: A escala de ameaça, os papéis de combate, os perfis de corpo e chakra, o orçamento de encontro, os níveis e os moldes de vila e de clã, para o Mestre montar lutas justas com os adversários do bestiário.
+resumo: A escala de ameaça, os papéis de combate, os perfis de corpo e chakra, os estilos de luta, o orçamento de encontro, os níveis e os moldes de vila e de clã, para o Mestre montar lutas justas com os adversários do bestiário.
 ---
 
 :::cena
@@ -17,7 +17,7 @@ Todo adversário tem uma ameaça, de 1 a 20, na mesma escala dos níveis dos per
 
 Os ranks das fichas resumidas (cap. 23.2) cabem dentro da escala. O genin está na ameaça 1, o chunin na 4, o jounin na 7, o Anbu na 9 e o lendário na 13. Abaixo do genin ficam as frações: ameaça 1/2 para bandidos e feras comuns, e 1/4 para quem mal sabe segurar uma faca.
 
-A tabela abaixo dá os números de partida de cada ameaça. Comece por ela, ajuste pelo papel e pelo perfil do adversário (veja a seguir) e dê a ele um ou dois jutsus marcantes. Os jutsus seguem o mesmo limite dos personagens: rank B a partir da ameaça 6, rank A a partir da 11 e rank S a partir da 15.
+A tabela abaixo dá os números de partida de cada ameaça. Comece por ela, ajuste pelo papel, pelo perfil e pelo estilo do adversário (veja a seguir) e dê a ele um ou dois jutsus marcantes. Os jutsus seguem o mesmo limite dos personagens: rank B a partir da ameaça 6, rank A a partir da 11 e rank S a partir da 15.
 
 :::tabela{titulo="Números por ameaça"}
 | Ameaça | PV | PC | Defesa | Ataque | Dano por golpe | DT | Iniciativa |
@@ -101,6 +101,30 @@ O perfil vale para o estágio, não para a categoria inteira. O genin de uma vil
 - **A ameaça não muda:** o corpo aguenta a luta curta; o chakra aguenta a longa
 :::
 
+## O estilo de luta {#estilos}
+
+O perfil diz de onde vem o fôlego. O estilo diz como o adversário gasta esse fôlego quando a luta começa. Um ninja de Iwa fecha a guarda e espera o erro do outro; um jinchuuriki em fúria salta antes de pensar; um mestre do selo só age quando a armadilha está pronta. Os três podem ter a mesma ameaça, e nenhum deles luta igual.
+
+Todo estilo troca uma coisa por outra entre a Defesa, a Iniciativa e a DT, e por isso também não muda a ameaça. A Iniciativa é a AGI da ficha, e a Acrobacia acompanha a Defesa, então os atributos e as perícias mudam junto. Quem não tem estilo luta como a tabela manda.
+
+:::tabela{titulo="Estilos de luta"}
+| Estilo | Como luta | Quem tem | Ajuste |
+| - | - | - | - |
+| Impetuoso | Ataca primeiro e abre a guarda | Jinchuuriki, portadores da marca, os ninjas mais afoitos de Kumo, Oto e Taki | Iniciativa +2, Defesa -1 |
+| Defensivo | Fecha a guarda e espera o erro do outro | Iwa, os Sabaku, os Hyuuga veteranos, quem não tem pressa nenhuma | Defesa +1, Iniciativa -2 |
+| Calculista | Prepara cada técnica antes de agir | Mestres do selo, ilusionistas, Nara, os Kages que vencem pelo chakra | DT +1, Iniciativa -2 |
+| Vigilante | Vê primeiro e age primeiro, sem tempo de preparar a técnica | Batedores, sensores, o Byakugan, a chuva que sente | Iniciativa +2, DT -1 |
+:::
+
+O estilo é o que costuma equilibrar os fortes. O lutador já ganha PV, e o chefe dobra os PV e age duas vezes: sem estilo, a ficha deles só mostra vantagens. Com estilo, mostra também onde eles abrem uma brecha, e é ali que o grupo deve mirar.
+
+:::na-mesa{titulo="Estilo"}
+- **Troca:** 1 de Defesa vale 1 de DT e 2 de Iniciativa
+- **Impetuoso:** Iniciativa +2, Defesa -1 · **Defensivo:** Defesa +1, Iniciativa -2
+- **Calculista:** DT +1, Iniciativa -2 · **Vigilante:** Iniciativa +2, DT -1
+- **A ameaça não muda:** o estilo mostra a brecha; o grupo decide se a explora
+:::
+
 ## Montando um encontro {#orcamento}
 
 Para saber se uma luta é justa, some os níveis dos personagens do grupo. Essa soma é o orçamento. Depois some a ameaça dos adversários que você quer colocar na cena e compare.
@@ -160,7 +184,7 @@ Os animais do bestiário são todos invocações. Além das espécies famosas do
 
 ## Como ler um verbete {#verbete}
 
-O bestiário vai em ordem alfabética, um adversário por página, e dá para folhear de um para o outro. Cada verbete começa pela arte e por uma cena curta, contada do ponto de vista de quem encontra o adversário. Depois vem quem ele é no mundo e o quadro de combate: ameaça, papel, perfil, PV, PC, Defesa, Iniciativa, ataques, jutsus e traços. Os ataques já trazem o acerto e o dano prontos para rolar.
+O bestiário vai em ordem alfabética, um adversário por página, e dá para folhear de um para o outro. Cada verbete começa pela arte e por uma cena curta, contada do ponto de vista de quem encontra o adversário. Depois vem quem ele é no mundo e o quadro de combate: ameaça, papel, perfil, estilo, PV, PC, Defesa, Iniciativa, ataques, jutsus e traços. Os ataques já trazem o acerto e o dano prontos para rolar. Uma seta ao lado de um número diz que ele está acima (▲) ou abaixo (▼) do de um adversário comum da mesma ameaça, o da tabela: o papel, o perfil e a ficha explicam a diferença.
 
 Quase todo adversário tem níveis ou variações, e o verbete traz uma ficha separada para cada um, com arte, resumo, jutsus e números próprios. Um ninja de vila vai de Genin a Kage; um ninja de clã, de Genin a Líder do clã; uma invocação, da pequena ao chefe da espécie; uma marca amaldiçoada, de adormecida à segunda forma. As fichas vêm logo depois do texto do verbete, uma depois da outra, da menor ameaça para a maior.
 

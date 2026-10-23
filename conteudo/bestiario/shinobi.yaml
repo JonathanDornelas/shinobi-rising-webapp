@@ -89,6 +89,7 @@
       ameaca: 16
       papel: chefe
       perfil: chakra-vasto
+      estilo: defensivo
       resumo: "A lenda viva da medicina ninja, que cura qualquer ferida e quebra qualquer osso."
       ataques:
         - { nome: Soco de chakra, alcance: Corpo a corpo }
@@ -185,6 +186,7 @@
       ameaca: 16
       papel: chefe
       perfil: chakra-vasto
+      estilo: calculista
       resumo: "Um segundo no mundo real, três dias dentro da ilusão dele."
       ataques:
         - { nome: Lâmina ilusória, alcance: Curto }
@@ -220,6 +222,7 @@
       ameaca: 2
       papel: controlador
       perfil: equilibrado
+      estilo: calculista
       resumo: "Aprendiz de selamento que ainda borra a tinta, mas já sabe esconder uma armadilha."
       ataques:
         - { nome: Pergaminho de armas, alcance: Médio }
@@ -280,6 +283,7 @@
       ameaca: 16
       papel: chefe
       perfil: chakra-vasto
+      estilo: calculista
       resumo: "Guarda uma prisão de selos que poderia trancar até uma Besta com Cauda."
       ataques:
         - { nome: Pergaminho de armas, alcance: Médio }
@@ -315,6 +319,7 @@
       ameaca: 2
       papel: atirador
       perfil: equilibrado
+      estilo: impetuoso
       resumo: "Ainda carrega as armas na bolsa, não em pergaminhos, e já acerta o alvo de olhos fechados."
       ataques:
         - { nome: Arma arremessada, alcance: Médio }
@@ -379,6 +384,7 @@
       ameaca: 16
       papel: chefe
       perfil: equilibrado
+      estilo: impetuoso
       resumo: "Mil armas no ar ao mesmo tempo, e uma lendária na mão."
       ataques:
         - { nome: Arma lendária, alcance: Corpo a corpo, efeito: "Ignora a RD do alvo." }
@@ -513,6 +519,7 @@
       ameaca: 2
       papel: atirador
       perfil: equilibrado
+      estilo: vigilante
       resumo: "Ainda luta com uma marionete pequena, emprestada da oficina da vila."
       ataques:
         - { nome: Marionete pequena, alcance: Curto }
@@ -528,6 +535,7 @@
       ameaca: 5
       papel: atirador
       perfil: equilibrado
+      estilo: vigilante
       resumo: "Já tem uma marionete humanoide só sua, com lâminas e veneno escondidos."
       ataques:
         - { nome: Marionete humanoide, alcance: Curto, efeito: "O alvo resiste com VIG contra a DT 15 ou sofre o Veneno Forte (cap. 11)." }
@@ -646,6 +654,7 @@
       ameaca: 4
       papel: lutador
       perfil: equilibrado
+      estilo: impetuoso
       resumo: "A marca ainda está quieta no pescoço. Por enquanto."
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo }
@@ -658,6 +667,7 @@
       ameaca: 8
       papel: lutador
       perfil: chakra-farto
+      estilo: impetuoso
       resumo: "As chamas pretas cobrem metade do corpo, e o chakra pesa no ar."
       ataques:
         - { nome: Golpe da marca, alcance: Corpo a corpo }
@@ -706,6 +716,7 @@
       ameaca: 6
       papel: lutador
       perfil: chakra-vasto
+      estilo: impetuoso
       resumo: "O chakra da besta escapa pela pele, vermelho e quente."
       ataques:
         - { nome: Golpe selvagem, alcance: Corpo a corpo }
@@ -717,6 +728,7 @@
       ameaca: 9
       papel: lutador
       perfil: chakra-vasto
+      estilo: impetuoso
       resumo: "Um manto de chakra com orelhas e uma cauda cobre o corpo."
       ataques:
         - { nome: Garras de chakra, alcance: Curto }
@@ -727,6 +739,7 @@
       ameaca: 13
       papel: chefe
       perfil: chakra-vasto
+      estilo: impetuoso
       resumo: "A pele some sob o chakra, as caudas se multiplicam e a besta quase toma conta."
       ataques:
         - { nome: Braços de chakra, alcance: Médio }

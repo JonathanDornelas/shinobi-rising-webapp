@@ -21,6 +21,7 @@
       ameaca: 8
       papel: lutador
       perfil: equilibrado
+      estilo: defensivo
       resumo: "Ainda aprende a ficar parado o bastante para a natureza entrar."
       ataques:
         - &golpe-natureza { nome: Golpe da natureza, alcance: Corpo a corpo, efeito: "A energia natural estende o golpe: acerta alvos a até 3 m." }
@@ -38,6 +39,7 @@
       ameaca: 11
       papel: lutador
       perfil: chakra-farto
+      estilo: vigilante
       resumo: "Domina o modo, e quem o ensinou luta ao lado dele."
       ataques:
         - *golpe-natureza
@@ -58,6 +60,7 @@
       ameaca: 16
       papel: chefe
       perfil: chakra-vasto
+      estilo: calculista
       resumo: "Um dos poucos humanos que os mestres do senjutsu tratam como igual."
       ataques:
         - { nome: Golpe da natureza, alcance: Corpo a corpo, efeito: "A energia natural estende o golpe: acerta alvos a até 6 m." }

@@ -15,6 +15,7 @@ import type {
 	Criatura,
 	EstagioCriatura,
 	FormatoArte,
+	EstiloCriatura,
 	PapelCriatura,
 	PerfilCriatura,
 	RankNpc,
@@ -42,7 +43,7 @@ import type {
 	TipoTermo,
 	Trecho
 } from '../../src/lib/livro/tipos.ts';
-import { fichaCompleta, peDe, PERFIS } from '../../src/lib/bestiario/ficha.ts';
+import { atributoComum, ESTILOS, fichaCompleta, peDe, PERFIS } from '../../src/lib/bestiario/ficha.ts';
 import { lerDoc, lerYaml, trechosDeMd } from './md.ts';
 
 export const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -341,6 +342,8 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			papel: PapelCriatura;
 			/** Perfil de PV e PC; o do estágio vale sobre o do verbete, e o padrão é equilibrado. */
 			perfil?: PerfilCriatura;
+			/** Estilo de luta: troca Defesa, Iniciativa e DT entre si (o do estágio vale sobre o do verbete). */
+			estilo?: EstiloCriatura;
 			ficha?: keyof typeof FICHAS;
 			membros?: number;
 			resumo?: string;
@@ -397,6 +400,10 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			const rotulo = f ? String(f.ameaca) : String(e.ameaca);
 			const perfil = f ? null : (e.perfil ?? y.perfil ?? 'equilibrado');
 			if (perfil && !PERFIS[perfil]) avisar(`Bestiário: perfil desconhecido em ${y.slug}: ${perfil}`);
+			// as invocações seguem a ficha do cap. 14 inteira, sem estilo
+			const estilo = f ? null : (e.estilo ?? y.estilo ?? null);
+			if (estilo && !ESTILOS[estilo]) avisar(`Bestiário: estilo desconhecido em ${y.slug}: ${estilo}`);
+			const est = estilo ? ESTILOS[estilo] : { defesa: 0, iniciativa: 0, dt: 0 };
 			let base: { pv: number; pc: number | null; defesa: number; iniciativa: number; dt: number; acerto: number; dano: string; nota: string | null };
 			if (f) base = { pv: f.pv, pc: null, defesa: f.defesa, iniciativa: f.iniciativa, dt: f.dt, acerto: f.acerto, dano: f.dano, nota: [`Usa a ficha ${/^Chefe/.test(f.titulo) ? 'do' : 'da'} ${f.titulo} (cap. 14).`, f.restricao && `${f.restricao.replace(/\.$/, '')}.`].filter(Boolean).join(' ') };
 			else {
@@ -406,9 +413,9 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 				base = {
 					pv: Math.round(l.pv * (FATOR_PV[e.papel] ?? 1) * p.pv),
 					pc: y.tipo === 'fauna' ? null : Math.round(l.pc * p.pc),
-					defesa: l.defesa,
-					iniciativa: l.iniciativa,
-					dt: l.dt + (e.papel === 'controlador' ? 1 : 0),
+					defesa: l.defesa + est.defesa,
+					iniciativa: l.iniciativa + est.iniciativa,
+					dt: l.dt + (e.papel === 'controlador' ? 1 : 0) + est.dt,
 					acerto: l.ataque + (BONUS_ATAQUE[e.papel] ?? 0),
 					dano: fraco ? linha(rotulo, 2).dano : l.dano,
 					nota: null
@@ -450,6 +457,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 				ameacaRotulo: rotulo,
 				papel: e.papel,
 				perfil,
+				estilo,
 				rank: rankDe(ameaca),
 				membros: e.membros ?? 1,
 				resumo: e.resumo ? trechosDeMd(e.resumo) : null,
@@ -458,6 +466,8 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 					pc: e.pc !== undefined ? e.pc : base.pc,
 					// as invocações usam a ficha do cap. 14, que não tem PE
 					pe: f ? null : peDe(ameaca, ficha.atributos.vig),
+					// um adversário comum da mesma ameaça, para as setas do quadro de combate
+					referencia: (({ pv, pc, defesa, iniciativa, dt }) => ({ pv, pc: y.tipo === 'fauna' ? null : pc, pe: f ? null : peDe(ameaca, atributoComum(ameaca)), defesa, iniciativa, dt }))(linha(rotulo)),
 					defesa,
 					iniciativa,
 					dt: e.dt ?? base.dt,

@@ -2,7 +2,7 @@
 	// Quadro de combate de um estágio do verbete, no espírito do "Na mesa": a barra escura com a ameaça, os números
 	// grandes, os atributos, as perícias, especializações e proficiências, os ataques prontos para rolar (chips de dado),
 	// os jutsus lado a lado e os traços. Atributos, perícias e jutsus abrem o cartão do léxico no hover, como no livro.
-	import { ATRIBUTOS, NIVEIS_PROFICIENCIA, PERFIS } from '#lib/bestiario/ficha.ts';
+	import { ATRIBUTOS, ESTILOS, NIVEIS_PROFICIENCIA, PERFIS } from '#lib/bestiario/ficha.ts';
 	import { PAPEIS } from '#lib/bestiario/npc.ts';
 	import type { Criatura, EstagioCriatura } from '#lib/livro/tipos.ts';
 	import DadoInline from '../leitura/DadoInline.svelte';
@@ -22,19 +22,43 @@
 	const usos = $derived(k.jutsus.filter((j) => !j.slug && !j.rank));
 	// a proficiência no jutsu marcante repete o nome dele: a tradução vem da lista de jutsus do estágio
 	const traducaoDe = (slug: string) => k.jutsus.find((j) => j.slug === slug)?.traducao ?? null;
-	// o perfil puxa os PV e os PC para cima ou para baixo da tabela de ameaça: a seta mostra para que lado
 	const perfil = $derived(estagio.perfil && estagio.perfil !== 'equilibrado' ? PERFIS[estagio.perfil] : null);
-	const seta = (fator: number | undefined) => (!fator || fator === 1 ? null : fator > 1 ? 'acima' : 'abaixo');
+	const estilo = $derived(estagio.estilo ? ESTILOS[estagio.estilo] : null);
+	const fator = (n: number) => n.toLocaleString('pt-BR');
+	const troca = (e: NonNullable<typeof estilo>) =>
+		(
+			[
+				['Defesa', e.defesa],
+				['Iniciativa', e.iniciativa],
+				['DT', e.dt]
+			] as const
+		)
+			.filter(([, v]) => v)
+			.map(([nome, v]) => `${nome} ${v > 0 ? '+' : '−'}${Math.abs(v)}`)
+			.join(', ');
+	// cada número contra o de um adversário comum da mesma ameaça (a tabela do Como usar): a seta diz onde ele é mais
+	// forte (▲) ou mais fraco (▼); o papel, o perfil e a ficha explicam o porquê
+	const r = $derived(k.referencia);
 	const numeros = $derived(
-		[
-			['PV', k.pv, seta(perfil?.pv)],
-			['PC', k.pc ?? '—', k.pc ? seta(perfil?.pc) : null],
-			...(k.pe !== null ? [['PE', k.pe, null]] : []),
-			['Defesa', k.defesa, null],
-			['Iniciativa', `+${k.iniciativa}`, null],
-			['DT', k.dt, null],
-			...(k.rd ? [['RD', k.rd, null]] : [])
-		] as [string, string | number, 'acima' | 'abaixo' | null][]
+		(
+			[
+				['PV', k.pv, r.pv],
+				['PC', k.pc, r.pc],
+				...(k.pe !== null ? [['PE', k.pe, r.pe]] : []),
+				['Defesa', k.defesa, r.defesa],
+				['Iniciativa', k.iniciativa, r.iniciativa],
+				['DT', k.dt, r.dt],
+				...(k.rd ? [['RD', k.rd, null]] : [])
+			] as [string, number | null, number | null][]
+		).map(([rotulo, valor, ref]) => {
+			const mostrar = (n: number) => (rotulo === 'Iniciativa' ? (n < 0 ? `−${-n}` : `+${n}`) : String(n));
+			return {
+				rotulo,
+				texto: valor === null ? '—' : mostrar(valor),
+				lado: valor === null || ref === null || valor === ref ? null : valor > ref ? ('acima' as const) : ('abaixo' as const),
+				comum: ref === null ? null : mostrar(ref)
+			};
+		})
 	);
 </script>
 
@@ -44,19 +68,23 @@
 		<span class="font-pixel text-[11px] leading-none font-bold tracking-[.16em] text-[#D9A82B]">AMEAÇA {estagio.ameacaRotulo}</span>
 		<span class="h-3.5 w-0.5 flex-none bg-[#D9A82B] opacity-50" aria-hidden="true"></span>
 		<span class="font-mincho text-[15px] leading-5 font-bold text-b0fg">{estagio.nome !== criatura.nome ? `${estagio.nome} · ` : ''}{PAPEIS[estagio.papel]}{estagio.membros > 1 ? ` · ${estagio.membros} membros` : ''}</span>
-		{#if perfil}
-			<a class="ml-auto text-[13px] leading-5 text-[#D9A82B] underline decoration-dotted underline-offset-2 hover:text-b0fg" href="/regras/bestiario/como-usar#perfis" title="PV ×{perfil.pv.toLocaleString('pt-BR')} e PC ×{perfil.pc.toLocaleString('pt-BR')} da tabela de ameaça">{perfil.nome}</a>
+		{#if perfil || estilo}
+			<span class="ml-auto flex flex-wrap gap-x-1.5 text-[13px] leading-5 text-[#D9A82B]">
+				{#if perfil}<a class="underline decoration-dotted underline-offset-2 hover:text-b0fg" href="/regras/bestiario/como-usar#perfis" title="PV ×{fator(perfil.pv)} e PC ×{fator(perfil.pc)} da tabela de ameaça">{perfil.nome}</a>{/if}
+				{#if perfil && estilo}<span aria-hidden="true">·</span>{/if}
+				{#if estilo}<a class="underline decoration-dotted underline-offset-2 hover:text-b0fg" href="/regras/bestiario/como-usar#estilos" title={troca(estilo)}>{estilo.nome}</a>{/if}
+			</span>
 		{/if}
 	</div>
 	{#if estagio.resumo}<p class="m-0 border-b border-b3 px-3 py-2 text-sm leading-5 text-pretty text-mut italic"><Texto trechos={estagio.resumo} /></p>{/if}
 
 	<dl class="m-0 grid grid-cols-3 border-b-2 border-b3">
-		{#each numeros as [rotulo, valor, lado], i (rotulo)}
-			<div class="flex flex-col items-center gap-0.5 px-1 py-2 {i % 2 ? 'bg-b2' : ''}">
+		{#each numeros as { rotulo, texto, lado, comum }, i (rotulo)}
+			<div class="flex flex-col items-center gap-0.5 px-1 py-2 {i % 2 ? 'bg-b2' : ''}" title={comum === null ? undefined : `Um adversário comum de ameaça ${estagio.ameacaRotulo} tem ${comum}`}>
 				<dt class="t-rotulo-sm text-mut">
-					{rotulo}{#if lado}<span class="ml-0.5 {lado === 'acima' ? 'text-[var(--vermelhao)]' : 'text-mut'}" aria-hidden="true">{lado === 'acima' ? '▲' : '▼'}</span><span class="sr-only"> ({lado} da tabela)</span>{/if}
+					{rotulo}{#if lado}<span class="ml-0.5 {lado === 'acima' ? 'text-[var(--vermelhao)]' : 'text-mut'}" aria-hidden="true">{lado === 'acima' ? '▲' : '▼'}</span><span class="sr-only"> ({lado} do comum da ameaça, {comum})</span>{/if}
 				</dt>
-				<dd class="t-num m-0 text-[22px] leading-6 font-bold text-title">{valor}</dd>
+				<dd class="t-num m-0 text-[22px] leading-6 font-bold text-title">{texto}</dd>
 			</div>
 		{/each}
 	</dl>

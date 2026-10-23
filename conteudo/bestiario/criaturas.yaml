@@ -30,6 +30,7 @@
   tipo: criatura
   ameaca: 9
   papel: lutador
+  estilo: defensivo
   origem: Campos de batalha
   vila: null
   arte: { formato: retrato, plano: close }
@@ -67,6 +68,7 @@
     - nome: Shukaku, o Uma Cauda
       ameaca: 12
       papel: chefe
+      estilo: defensivo
       resumo: "O tanuki de areia, de marcas azuis pelo corpo, barulhento e imprevisível."
       ataques:
         - { nome: Patada de areia, alcance: Médio }
@@ -77,6 +79,7 @@
     - nome: Matatabi, o Duas Caudas
       ameaca: 13
       papel: chefe
+      estilo: impetuoso
       resumo: "O gato de chamas azuis, de olhos de cores diferentes, rápido e orgulhoso."
       ataques:
         - { nome: Garras de fogo azul, alcance: Corpo a corpo, efeito: "O alvo fica **Em chamas**." }
@@ -86,6 +89,7 @@
     - nome: Isobu, o Três Caudas
       ameaca: 14
       papel: chefe
+      estilo: defensivo
       resumo: "A tartaruga de casco espinhoso, que vive no fundo de lagos e cria corais."
       rd: 4
       ataques:
@@ -97,6 +101,7 @@
     - nome: Son Gokū, o Quatro Caudas
       ameaca: 15
       papel: chefe
+      estilo: impetuoso
       resumo: "O grande macaco de pelo vermelho, orgulhoso, que cospe lava."
       ataques:
         - { nome: Punho de lava, alcance: Corpo a corpo, efeito: "O alvo fica **Em chamas**." }
@@ -106,6 +111,7 @@
     - nome: Kokuō, o Cinco Caudas
       ameaca: 16
       papel: chefe
+      estilo: impetuoso
       resumo: "Meio cavalo, meio golfinho, de chifres longos e corpo envolto em vapor."
       ataques:
         - { nome: Chifrada, alcance: Corpo a corpo, efeito: "Se correu até o alvo, ele resiste com FOR contra a DT 20 ou é jogado longe e fica **Caído**." }
@@ -115,6 +121,7 @@
     - nome: Saiken, o Seis Caudas
       ameaca: 17
       papel: chefe
+      estilo: calculista
       resumo: "A lesma branca gigante, de gosma corrosiva e bolhas de ácido."
       ataques:
         - { nome: Gosma corrosiva, alcance: Médio, efeito: "Corrói armas e armaduras: o alvo perde a RD até o fim da cena." }
@@ -125,6 +132,7 @@
     - nome: Chōmei, o Sete Caudas
       ameaca: 18
       papel: chefe
+      estilo: vigilante
       resumo: "O besouro gigante de asas brilhantes, que voa e cega com o pó das escamas."
       ataques:
         - { nome: Chifre de besouro, alcance: Corpo a corpo }
@@ -135,6 +143,7 @@
     - nome: Gyūki, o Oito Caudas
       ameaca: 19
       papel: chefe
+      estilo: defensivo
       resumo: "O touro de chifres curvos e caudas de polvo, de uma força que derruba montanhas."
       ataques:
         - { nome: Tentáculos, alcance: Médio, efeito: "O alvo resiste com FOR contra a DT 22 ou fica **Imobilizado**." }
@@ -144,6 +153,7 @@
     - nome: Kurama, o Nove Caudas
       ameaca: 20
       papel: chefe
+      estilo: calculista
       resumo: "A raposa de nove caudas, a mais forte das bestas, que sente o ódio no coração das pessoas."
       ataques:
         - { nome: Garras da raposa, alcance: Médio }
@@ -164,6 +174,7 @@
   tipo: criatura
   ameaca: 6
   papel: lutador
+  estilo: impetuoso
   origem: Laboratórios escondidos
   vila: null
   arte: { formato: retrato, plano: plano médio }
@@ -188,6 +199,7 @@
   tipo: criatura
   ameaca: 5
   papel: lutador
+  estilo: defensivo
   pc: null
   rd: 2
   origem: Feito por Doton

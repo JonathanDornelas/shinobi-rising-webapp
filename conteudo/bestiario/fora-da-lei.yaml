@@ -18,6 +18,7 @@
       ameaca: 2
       papel: assassino
       perfil: equilibrado
+      estilo: impetuoso
       resumo: "Desertou cedo, antes de entender direito o que estava traindo."
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
@@ -48,6 +49,7 @@
       ameaca: 8
       papel: assassino
       perfil: equilibrado
+      estilo: vigilante
       resumo: "Veterano que traiu a vila por um motivo que só ele conhece, e tem provas."
       ataques:
         - { nome: Katana, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
@@ -82,6 +84,7 @@
       ameaca: 16
       papel: chefe
       perfil: chakra-vasto
+      estilo: impetuoso
       resumo: "Renegado de rank S, no topo do livro bingo de cinco vilas."
       ataques:
         - { nome: Katana, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
@@ -230,6 +233,7 @@
       ameaca: 2
       papel: assassino
       perfil: equilibrado
+      estilo: vigilante
       resumo: "Olheiro que só observa, conta e repassa o que viu."
       ataques:
         - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 13 ou sofre o Veneno Comum (cap. 11)." }
@@ -276,6 +280,7 @@
       ameaca: 11
       papel: assassino
       perfil: equilibrado
+      estilo: vigilante
       resumo: "Vive há anos com o rosto de outra pessoa, e a família dela não percebeu."
       ataques:
         - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 18 ou sofre o Veneno Letal de Sasori (cap. 11)." }
@@ -294,6 +299,7 @@
       ameaca: 16
       papel: chefe
       perfil: chakra-farto
+      estilo: calculista
       resumo: "Infiltrado no conselho de uma grande vila, e ninguém desconfia dele."
       ataques:
         - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 20 ou sofre o Veneno Letal de Sasori (cap. 11)." }

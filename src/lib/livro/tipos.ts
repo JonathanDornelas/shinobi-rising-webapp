@@ -263,6 +263,8 @@ export type TipoCriatura = 'shinobi' | 'fora da lei' | 'guerreiro' | 'organizaç
 export type PapelCriatura = 'lutador' | 'atirador' | 'controlador' | 'suporte' | 'assassino' | 'bando' | 'chefe';
 /** Onde a força do adversário mora: no corpo (mais PV, menos PC) ou no chakra (o contrário). Não muda a ameaça. */
 export type PerfilCriatura = 'corpo-robusto' | 'corpo-resistente' | 'equilibrado' | 'chakra-farto' | 'chakra-vasto';
+/** Como o adversário se porta na luta: troca Defesa, Iniciativa e DT entre si, sem mudar a ameaça. */
+export type EstiloCriatura = 'impetuoso' | 'defensivo' | 'calculista' | 'vigilante';
 /** Formato da arte do verbete: a página muda de diagramação conforme ele (faixa no topo, retrato ao lado etc.). */
 export type FormatoArte = 'faixa' | 'retrato' | 'quadro' | 'pagina';
 export type RankNpc = 'genin' | 'chunin' | 'jounin' | 'anbu' | 'lendario';
@@ -311,6 +313,8 @@ export interface EstagioCriatura {
 	papel: PapelCriatura;
 	/** Perfil de PV e PC (Como usar); null nas invocações, que usam a ficha do cap. 14. */
 	perfil: PerfilCriatura | null;
+	/** Estilo de luta (Como usar); null quando não tem, e nas invocações. */
+	estilo: EstiloCriatura | null;
 	/** Rank da ficha resumida (cap. 23.2) equivalente à ameaça, para criar o NPC na campanha. */
 	rank: RankNpc;
 	membros: number;
@@ -321,6 +325,11 @@ export interface EstagioCriatura {
 		pc: number | null;
 		/** Pontos de Estamina, que pagam o taijutsu e o bukijutsu: saem do VIG da ficha (cap. 6); null nas invocações. */
 		pe: number | null;
+		/**
+		 * Os números de um adversário comum da mesma ameaça (tabela "Números por ameaça"; o PE com o VIG comum), para o
+		 * quadro marcar com uma seta o que está acima ou abaixo dele.
+		 */
+		referencia: { pv: number; pc: number | null; pe: number | null; defesa: number; iniciativa: number; dt: number };
 		defesa: number;
 		iniciativa: number;
 		dt: number;
