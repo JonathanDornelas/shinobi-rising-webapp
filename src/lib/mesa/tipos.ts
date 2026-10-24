@@ -26,6 +26,13 @@ export interface JutsuMesa {
 	ataque: RolagemPronta | null;
 	dano: RolagemPronta | null;
 	cura: string | null;
+	/** Para o tooltip de ação (HUD): tipo, elemento, ação, duração, tradução e o texto do efeito. */
+	tipo?: string;
+	elemento?: string | null;
+	acao?: string;
+	duracao?: string;
+	traducao?: string;
+	efeito?: string;
 	/** Traço do bestiário: o texto inteiro e se é uma vez por cena. */
 	texto?: string;
 	porCena?: boolean;
@@ -45,6 +52,8 @@ export interface ArmaMesa {
 	/** alcance em metros: 1 corpo a corpo, 2 haste, 10/30 arremesso */
 	alcance: number;
 	rotuloAlcance: string;
+	/** propriedades da arma no catálogo (Versátil, Rajada...) */
+	propriedades?: string[];
 	ataque: RolagemPronta;
 	dano: RolagemPronta | null;
 }

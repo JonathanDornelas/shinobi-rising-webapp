@@ -277,3 +277,20 @@ describe('terreno difícil (cap. 4, Terreno)', () => {
 		expect(custoTrechos([[0, 0], [3, 0], [3, 3]], t([3, 1]))).toBe(7);
 	});
 });
+
+describe('HUD de ação (dados e elemento)', () => {
+	it('lê a expressão e a faixa de dano', async () => {
+		const { lerDados } = await import('./hud.ts');
+		expect(lerDados('2d6+3')).toEqual({ dados: [{ n: 2, lados: 6 }], mod: 3, min: 5, max: 15 });
+		expect(lerDados('1d20+4')?.max).toBe(24);
+		expect(lerDados('3d8+1d6−2')).toMatchObject({ min: 2, max: 28 });
+		expect(lerDados('Médio')).toBeNull();
+	});
+	it('pinta o dano pelo elemento do jutsu ou pelo nome', async () => {
+		const { corElemento } = await import('./hud.ts');
+		expect(corElemento('katon')?.nome).toBe('Fogo');
+		expect(corElemento(null, 'Dano · Suiton: Suiryūdan no Jutsu')?.nome).toBe('Água');
+		expect(corElemento(null, 'Dano · Hyōton: Tsubame Fubuki')?.nome).toBe('Gelo');
+		expect(corElemento(null, 'Dano · Kunai')).toBeNull();
+	});
+});

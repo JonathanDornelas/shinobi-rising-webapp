@@ -1,9 +1,12 @@
 <script lang="ts" module>
+	import type { JutsuMesa } from '#lib/mesa/tipos.ts';
+
 	/** O que a Mesa oferece à aba de jutsus da ficha completa (medir com a régua, usar com alvos). */
 	export interface JutsusNaMesa {
 		medir: (slug: string) => void;
 		usar: (slug: string) => Promise<boolean>;
 		podeMedir: (slug: string) => boolean;
+		hud: (slug: string) => JutsuMesa | null;
 	}
 </script>
 
@@ -24,6 +27,8 @@
 	import BarraRecursos from '../ficha/BarraRecursos.svelte';
 	import Icone from '../ui/Icone.svelte';
 	import Retrato from '../ui/Retrato.svelte';
+	import VerImagem from '../ui/VerImagem.svelte';
+	import { urlRetrato } from '#lib/personagem/retrato.ts';
 	import Girando from '../ui/Girando.svelte';
 	import { rankSugerido } from '#lib/campanhas/dominio.ts';
 	import { VILAS } from '#lib/personagem/dados.ts';
@@ -118,6 +123,7 @@
 		['log', 'REGISTRO']
 	];
 	let aba = $state<Aba>('visao');
+	let ampliada = $state(false);
 
 	// a janela: começa grande e centrada; o topo arrasta, o canto redimensiona
 	const largura = Math.min(940, (typeof innerWidth === 'number' ? innerWidth : 1200) - 64);
@@ -149,7 +155,7 @@
 	style:display={min ? 'none' : undefined}
 >
 	<div class="flex flex-none cursor-move touch-none items-center gap-2.5 border-b-2 border-b3 bg-b0 py-1.5 pr-1.5 pl-2 select-none" role="presentation" onpointerdown={pegar} onpointermove={arrastar} onpointerup={() => (arrasto = null)}>
-		{#if p}<Retrato nome={p.nome || '?'} foto={p.retrato} tamanho={40} />{/if}
+		{#if p}<button type="button" class="flex-none cursor-zoom-in p-0 disabled:cursor-default" disabled={!p.retrato} title={p.retrato ? 'Ver o retrato inteiro' : undefined} aria-label="Ver o retrato de {p.nome} inteiro" onclick={() => (ampliada = true)}><Retrato nome={p.nome || '?'} foto={p.retrato} tamanho={40} /></button>{/if}
 		<div class="flex min-w-0 flex-1 flex-col">
 			<span class="truncate font-mincho text-lg leading-6 font-bold">{p?.nome ?? 'Ficha completa'}</span>
 			{#if p && f}<span class="truncate text-xs leading-4 text-mut">{[dados?.catalogo.cla ? `Clã ${dados.catalogo.cla.nome}` : null, vila?.nome.replace(/gakure$/, ''), `Nível ${p.nivel}`, rankSugerido(p.nivel).split(' ')[0]].filter(Boolean).join(' · ')}</span>{/if}
@@ -176,7 +182,7 @@
 			<div class="flex flex-col gap-5 px-3 pt-4 pb-6" role="tabpanel">
 				{#if aba === 'visao'}<AbaVisao {f} aoAbrirJutsus={() => (aba = 'jutsus')} />
 				{:else if aba === 'pericias'}<AbaPericias {f} />
-				{:else if aba === 'jutsus'}<AbaJutsus {f} mesa={{ medir: (j) => naMesa.medir(j.slug), usar: (j) => naMesa.usar(j.slug), podeMedir: (j) => naMesa.podeMedir(j.slug) }} />
+				{:else if aba === 'jutsus'}<AbaJutsus {f} mesa={{ medir: (j) => naMesa.medir(j.slug), usar: (j) => naMesa.usar(j.slug), podeMedir: (j) => naMesa.podeMedir(j.slug), hud: (j) => naMesa.hud(j.slug) }} />
 				{:else if aba === 'cla'}<AbaCla {f} />
 				{:else if aba === 'equip'}<AbaEquipamento {f} />
 				{:else if aba === 'prog'}<AbaProgressao {f} pt={p.pt} xp={p.xp} registros={dados!.registros} pedidos={dados!.pedidos} aoTreinar={() => window.open(`/campanhas/${campanha}/personagens/${pid}?treino=1`, '_blank')} />
@@ -194,3 +200,5 @@
 		{/if}
 	{/if}
 </div>
+
+{#if ampliada && p?.retrato}<VerImagem src={urlRetrato(p.retrato)!} alt={p.nome} aoFechar={() => (ampliada = false)} />{/if}

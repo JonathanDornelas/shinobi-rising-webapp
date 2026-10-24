@@ -8,6 +8,7 @@
 	import type { CorMesa } from '#lib/supabase/banco.ts';
 	import { custoCaminho, custoTrechos, infoMovimento, provocaReacao, quadradosEmVolta, trechos, type Quadrado } from '#lib/mesa/geometria.ts';
 	import type { Mesa } from '#lib/mesa/mesa.svelte.ts';
+	import { urlImagemMesa } from '#lib/mesa/imagens.ts';
 	import { calcularMolde, nomeCurto, type UiMesa } from '#lib/mesa/ui.svelte.ts';
 
 	let {
@@ -41,6 +42,7 @@
 	const cena = $derived(mesa.cena);
 	const L = $derived(cena?.largura ?? 40);
 	const A = $derived(cena?.altura ?? 30);
+	const fundo = $derived(urlImagemMesa(cena?.fundo));
 	const s = $derived(BASE * ui.zoom);
 	const F = (px: number) => px / s;
 	const visiveis = $derived(mesa.tokens);
@@ -443,12 +445,16 @@
 		</defs>
 		<g transform="translate({-ui.vx * s} {-ui.vy * s}) scale({s})">
 			<rect x="0" y="0" width={L} height={A} style="fill: var(--b1)" />
-			{#each { length: L + 1 } as _, i (i)}
-				<line x1={i} y1="0" x2={i} y2={A} style="stroke: var(--fg)" stroke-opacity={i % 5 ? 0.09 : 0.18} stroke-width={F(1)} />
-			{/each}
-			{#each { length: A + 1 } as _, j (j)}
-				<line x1="0" y1={j} x2={L} y2={j} style="stroke: var(--fg)" stroke-opacity={j % 5 ? 0.09 : 0.18} stroke-width={F(1)} />
-			{/each}
+			<!-- fundo do quadro: o mapa estica na cena inteira, sob a grade -->
+			{#if fundo}<image href={fundo} x="0" y="0" width={L} height={A} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} />{/if}
+			{#if cena?.grade !== false}
+				{#each { length: L + 1 } as _, i (i)}
+					<line x1={i} y1="0" x2={i} y2={A} style="stroke: var(--fg)" stroke-opacity={(i % 5 ? 0.09 : 0.18) * (fundo ? 1.6 : 1)} stroke-width={F(1)} />
+				{/each}
+				{#each { length: A + 1 } as _, j (j)}
+					<line x1="0" y1={j} x2={L} y2={j} style="stroke: var(--fg)" stroke-opacity={(j % 5 ? 0.09 : 0.18) * (fundo ? 1.6 : 1)} stroke-width={F(1)} />
+				{/each}
+			{/if}
 
 			{#if terrenoVisivel.size}
 				{@const d = [...terrenoVisivel].map((k) => `M${k.replace(',', ' ')}h1v1h-1z`).join('')}

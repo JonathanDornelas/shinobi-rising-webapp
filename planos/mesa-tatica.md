@@ -582,6 +582,17 @@ O popover da ferramenta Medir traz: Régua livre · Deslocamento · Corpo a corp
     conta o custo.
 - **Deslocamento** = 8 m + AGI (mínimo 5 m; NPC do bestiário pela AGI da ficha, NPC rápido 10 m). O Sprint dobra.
 - **Quadrado:** forma de área nova (centro num ponto no alcance, lado no card), para barreiras de quatro cantos.
+- **Cena narrativa** (menu da cena, MODO TÁTICA / NARRATIVA): a imagem da cena aparece para todos no lugar do quadro,
+  com o fundo desfocado e o nome da cena, e só o chat de rolagens fica ao lado.
+  - A imagem é uma arte do livro (capas das vilas e aberturas de capítulo) ou uma enviada pelo Mestre.
+  - O envio vai em webp, com até 2048 px, para o bucket público `mesa/<campanha>/`; só o Mestre envia e apaga.
+- **Fundo do quadro:** uma imagem esticada na cena inteira, sob a grade, com opacidade e a grade opcional.
+- **Criar cena:** VAZIA, COM O GRUPO ou ESCOLHER (só os personagens marcados entram e jogam).
+- **Foto ampliada:** clicar no retrato (ficha rápida, ficha completa, página da ficha) abre a imagem com zoom e arrasto.
+- **HUD de ação** (inspirado no Baldur's Gate 3):
+  - os dados aparecem com a arte do dado e o dano na cor do elemento, nas linhas da ficha rápida, na régua e no chat;
+  - passar o mouse num jutsu ou arma mostra o tooltip: faixa de dano, efeito, alcance/área/duração/resistência, ação
+    e custo.
 - **Crescer** (cap. 4: Baika e Lobo de Duas Cabeças ficam Grandes; Chou Baika e Lobo de Três Cabeças, Enormes): USAR na
   ficha rápida cresce o token pela duração do jutsu.
   - O espaço novo cobre o antigo, no encaixe livre mais perto do centro, e o token guarda o tamanho normal

@@ -13,7 +13,10 @@
 	import { pvDosMembros, recursoDosMembros } from '#lib/npcs/dados.ts';
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
-	import type { Json, MesaToken, Npc, Rolagem } from '#lib/supabase/banco.ts';
+	import type { Json, MesaCena, MesaToken, Npc, Rolagem } from '#lib/supabase/banco.ts';
+	import { IMAGENS_DO_LIVRO, enviarImagemMesa, urlImagemMesa } from '#lib/mesa/imagens.ts';
+	import { corElemento, lerDados } from '#lib/mesa/hud.ts';
+	import DadoHud from '#lib/componentes/mesa/DadoHud.svelte';
 	import ElencoMesa, { type ItemNpc } from '#lib/componentes/mesa/ElencoMesa.svelte';
 	import FichaRapida, { type AcoesFicha, type DadosFicha } from '#lib/componentes/mesa/FichaRapida.svelte';
 	import FichaCompleta, { type JutsusNaMesa } from '#lib/componentes/mesa/FichaCompleta.svelte';
@@ -210,6 +213,7 @@
 	const jutsuDaFicha = (pid: string, slug: string) => fichas.find((f) => f.id === pid)?.jutsus.find((j) => j.slug === slug) ?? null;
 	// os jutsus da ficha completa usam a régua e o USAR da Mesa; MEDIR minimiza a janela para o quadro aparecer
 	const naMesa: JutsusNaMesa = {
+		hud: (slug) => (fichaCompleta ? jutsuDaFicha(fichaCompleta.pid, slug) : null),
 		podeMedir: (slug) => {
 			const j = fichaCompleta && jutsuDaFicha(fichaCompleta.pid, slug);
 			return !!j && temRegua(j.regua);
@@ -438,26 +442,51 @@
 	}
 
 	// ------------------------------------------------------------------ cenas (Mestre)
-	let novaCena = $state({ nome: 'Nova cena', largura: 40, altura: 30, grupo: false });
+	// começar vazia, com o grupo todo ou só com quem o Mestre escolher (vira a lista de quem joga nesta cena)
+	type Comeco = 'vazia' | 'grupo' | 'escolher';
+	const cenaNova = () => ({ nome: 'Nova cena', largura: 40, altura: 30, comeco: 'vazia' as Comeco, escolhidos: data.personagens.map((p) => p.id) });
+	let novaCena = $state(cenaNova());
 	let textoModal = $state('');
 	let limparTodosConfirma = $state(false);
 	async function criarCena() {
 		const { data: c, error } = await supabase()
 			.from('mesa_cenas')
-			.insert({ campanha_id: campanha, nome: novaCena.nome.trim().slice(0, 60) || 'Nova cena', largura: Math.max(5, Math.min(200, novaCena.largura)), altura: Math.max(5, Math.min(200, novaCena.altura)), ativa: !data.cenas.length })
+			.insert({ campanha_id: campanha, nome: novaCena.nome.trim().slice(0, 60) || 'Nova cena', largura: Math.max(5, Math.min(200, novaCena.largura)), altura: Math.max(5, Math.min(200, novaCena.altura)), ativa: !data.cenas.length, participantes: novaCena.comeco === 'escolher' ? novaCena.escolhidos : null })
 			.select('*')
 			.single();
 		if (error || !c) return void toasts.mostrar('Não foi possível criar a cena.', 'erro');
 		ui.modal = null;
-		const grupo = novaCena.grupo;
+		const grupo = novaCena.comeco !== 'vazia';
 		await goto(`?cena=${c.id}`, { refreshAll: true });
 		if (grupo) await colocarOGrupo();
 	}
+	// ---- cena narrativa e fundo do quadro (imagens do livro ou enviadas pelo Mestre)
+	const narrativa = $derived(cena?.modo === 'narrativa');
+	$effect(() => {
+		if (narrativa) untrack(() => (ui.painelAberto = true));
+	});
+	let enviando = $state(false);
+	const escolherImagem = (alvo: 'imagem' | 'fundo', caminho: string | null) => mesa.patchCena({ [alvo]: caminho } as Partial<MesaCena>);
+	async function enviarImagem(alvo: 'imagem' | 'fundo', e: Event) {
+		const entrada = e.currentTarget as HTMLInputElement;
+		const arquivo = entrada.files?.[0];
+		entrada.value = '';
+		if (!arquivo) return;
+		enviando = true;
+		try {
+			await escolherImagem(alvo, await enviarImagemMesa(campanha, arquivo, alvo === 'imagem' ? 'narrativa' : 'fundo'));
+		} catch (erro) {
+			toasts.mostrar(erro instanceof Error && /grande/.test(erro.message) ? erro.message : 'Não foi possível enviar a imagem.', 'erro');
+		}
+		enviando = false;
+	}
+	const nomeImagem = (c: string | null) => (!c ? null : (IMAGENS_DO_LIVRO.find((i) => i.caminho === c)?.nome ?? 'enviada'));
+
 	async function duplicar() {
 		if (!cena) return;
 		const { data: c, error } = await supabase()
 			.from('mesa_cenas')
-			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [] })
+			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [], modo: cena.modo, imagem: cena.imagem, fundo: cena.fundo, fundo_opacidade: cena.fundo_opacidade, grade: cena.grade })
 			.select('*')
 			.single();
 		if (error || !c) return void toasts.mostrar('Não foi possível duplicar a cena.', 'erro');
@@ -620,15 +649,27 @@
 		{/if}
 		{#if ui.mira && molde}
 			{@const j = ui.mira.jutsu}
+			{@const el = corElemento(j.elemento, j.nome)}
 			{@const st = molde.forma === 'alvos' && !molde.quem.length ? 'Escolha o alvo no quadro' : !molde.ok ? `Fora do alcance · ${molde.dist} m de ${j.regua.alcance} m` : ui.mira.fixa || molde.forma === 'alvos' ? 'Dentro do alcance' : 'Clique no quadro para fixar'}
 			<section aria-label="Régua de jutsu" class="pointer-events-auto flex w-[600px] max-w-full flex-col border-2 bg-b2 shadow-[4px_4px_0_var(--b0)] {celular ? 'hidden' : ''}" style="border-color: {molde.ok ? corCss(mesa.corDe(mesa.donoDe(molde.lancador))) : 'var(--mesa-vermelhao)'}">
-				<div class="flex items-center gap-2.5 border-b-2 border-b3 bg-b0 py-1.5 pr-2.5 pl-1.5">
+				<div class="flex items-center gap-2.5 border-b-2 border-b3 bg-b0 py-1.5 pr-2.5 pl-1.5" style:background={el ? `linear-gradient(90deg, ${el.cor}33, var(--b0) 65%)` : undefined}>
 					<Icone id={j.rank ? `rank/ic-rank-${j.rank.toLowerCase()}` : 'callout/ic-callout-destaque'} alt={j.rank ? `Rank ${j.rank}` : 'Habilidade'} />
 					<span class="min-w-0 flex-1 font-mincho text-[17px] leading-[22px] font-bold">{j.nome}</span>
 					{#if j.custo}<span class="font-pixel text-[13px] leading-none font-bold text-info">{j.custo} {j.unidade}</span>{:else if j.porCena}<span class="font-pixel text-[13px] leading-none font-bold text-warn">1×/CENA</span>{/if}
 					<span class="font-pixel text-[13px] leading-none font-bold text-mut">{j.regua.rotuloAlcance}</span>
 					<button type="button" class="h-8 w-8 font-pixel text-sm" aria-label="Cancelar régua (Esc)" title="Cancelar · Esc" onclick={() => (ui.mira = null)}>✕</button>
 				</div>
+				<!-- HUD: a faixa de dano com o dado na cor do elemento, o ataque, a resistência e a ação -->
+				{#if j.ataque || j.dano || j.cura || j.resistencia}
+					{@const fx = j.dano ? lerDados(j.dano.expr) : null}
+					<div class="flex flex-wrap items-center gap-x-3.5 gap-y-1 border-b-2 border-b3 px-2.5 py-1.5">
+						{#if fx}<span class="font-mincho text-[15px] leading-5 font-bold">{fx.min}~{fx.max} de dano</span>{/if}
+						{#if j.dano}<DadoHud expr={j.dano.expr} cor={el?.cor} tipo={el?.nome} />{:else if j.cura}<DadoHud expr={j.cura} cor="#7FB069" tipo="cura" />{/if}
+						{#if j.ataque}<span class="flex items-center gap-1 text-xs font-semibold text-mut">Ataque <DadoHud expr={j.ataque.expr} tamanho={18} /></span>{/if}
+						{#if j.resistencia}<span class="text-xs leading-4 font-semibold text-mut">Resistência: {j.resistencia}</span>{/if}
+						<span class="ml-auto flex items-center gap-1.5 text-xs font-semibold"><span class="h-2.5 w-2.5 rounded-full {/reação/i.test(j.acao ?? '') ? 'bg-[#e8692e]' : /secund/i.test(j.acao ?? '') ? 'bg-[#f2c14e]' : 'bg-[#7fb069]'}"></span>{j.acao || 'Primária'}</span>
+					</div>
+				{/if}
 				<div class="flex flex-wrap items-center gap-3 px-2.5 py-2">
 					<span class="font-pixel text-[13px] leading-none font-bold">{j.area || 'Alvo único'}</span>
 					{#if molde.forma !== 'cena'}<span class="font-pixel text-[13px] leading-none font-bold text-acc">{molde.dist} m</span>{/if}
@@ -737,6 +778,22 @@
 	<div aria-live="polite" class="sr-only">{ui.anuncio}</div>
 {/snippet}
 
+<!-- cena narrativa: a imagem para todos (o fundo desfocado preenche as sobras), o nome da cena embaixo -->
+{#snippet telaNarrativa()}
+	{@const src = urlImagemMesa(cena?.imagem)}
+	<div class="relative min-w-0 flex-1 overflow-hidden bg-b0" aria-label="Narrativa: {cena?.nome ?? ''}" role="img">
+		{#if src}
+			<img {src} alt="" aria-hidden="true" class="absolute inset-0 h-full w-full scale-110 object-cover opacity-35 blur-2xl" />
+			<img {src} alt="" class="relative h-full w-full object-contain" style:image-rendering={cena?.imagem?.startsWith('/') ? 'pixelated' : 'auto'} />
+		{:else}
+			<div class="flex h-full items-center justify-center px-6 text-center text-[15px] text-mut">{data.mestre ? 'Escolha a imagem da narrativa em Configurações da cena.' : 'O Mestre está narrando.'}</div>
+		{/if}
+		<div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(14,11,10,.92)] to-transparent px-6 pt-12 pb-5">
+			<span class="font-mincho text-[28px] leading-9 font-bold text-papel max-md:text-xl">{cena?.nome}</span>
+		</div>
+	</div>
+{/snippet}
+
 {#snippet fichasAbertas()}
 	{#each ui.fichas.filter((f) => !f.min) as janela (janela.token)}
 		{@const t = mesa.tokens.find((k) => k.id === janela.token)}
@@ -755,9 +812,13 @@
 			{#if minhaFichaId}<button type="button" class="min-h-10 border-2 border-b3 px-2 font-pixel text-[11px] font-bold" onclick={() => abrirFichaCompleta(minhaFichaId!)}>FICHA</button>{/if}
 		</div>
 		<div class="relative min-h-0 flex-1">
-			<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} onSoltar={colocar} />
-			{@render barras()}
-			{@render sobreQuadro()}
+			{#if narrativa}
+				{@render telaNarrativa()}
+			{:else}
+				<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} onSoltar={colocar} />
+				{@render barras()}
+				{@render sobreQuadro()}
+			{/if}
 			<div class="pointer-events-none absolute inset-x-2 bottom-2 flex flex-col gap-1.5">
 				{#if ui.mira && molde}
 					<div class="pointer-events-auto flex flex-col gap-1.5 border-2 bg-b2 px-2.5 py-2 shadow-[4px_4px_0_var(--b0)]" style="border-color: {molde.ok ? corCss(mesa.corDe(mesa.donoDe(molde.lancador))) : 'var(--mesa-vermelhao)'}">
@@ -845,7 +906,7 @@
 						</a>
 					{/each}
 					<div class="grid grid-cols-2 gap-1 border-t-2 border-b3 p-2">
-						<button type="button" class="min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" onclick={() => ((novaCena = { nome: 'Nova cena', largura: 40, altura: 30, grupo: false }), (ui.modal = { tipo: 'nova' }), (ui.pop = null))}>NOVA CENA</button>
+						<button type="button" class="min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" onclick={() => ((novaCena = cenaNova()), (ui.modal = { tipo: 'nova' }), (ui.pop = null))}>NOVA CENA</button>
 						<button type="button" class="min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" disabled={!cena} onclick={duplicar}>DUPLICAR</button>
 						<button type="button" class="min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" disabled={!cena} onclick={() => cena && ((textoModal = cena.nome), (ui.modal = { tipo: 'renomear', cena: cena.id }), (ui.pop = null))}>RENOMEAR</button>
 						<button type="button" class="min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" disabled={!cena} onclick={() => cena && ((textoModal = ''), (ui.modal = { tipo: 'excluir', cena: cena.id }), (ui.pop = null))}>EXCLUIR</button>
@@ -856,7 +917,7 @@
 			{#if ui.pop === 'gear' && cena}
 				<div role="menu" aria-label="Configurações da cena" class="{pop} top-14 right-2 w-[280px]">
 					<span class="px-3 pt-2.5 pb-1.5 font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">CENA</span>
-					{#each [['travada', 'Travar a mesa (só o Mestre move)'], ['coordenadas', 'Coordenadas nas bordas'], ['mostrar_pv', 'Mostrar PV ao grupo']] as const as [k, n] (k)}
+					{#each [['travada', 'Travar a mesa (só o Mestre move)'], ['coordenadas', 'Coordenadas nas bordas'], ['mostrar_pv', 'Mostrar PV ao grupo'], ['grade', 'Mostrar a grade']] as const as [k, n] (k)}
 						<button type="button" role="menuitemcheckbox" aria-checked={cena[k]} class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-left text-sm font-semibold" onclick={() => mesa.patchCena({ [k]: !cena[k] })}>
 							<span class="font-pixel text-sm font-bold {cena[k] ? 'text-ok' : 'text-mut'}">{cena[k] ? '☒' : '☐'}</span>{n}
 						</button>
@@ -864,6 +925,17 @@
 					<button type="button" class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-left text-sm font-semibold" onclick={abrirParticipantes}>
 						<span class="font-pixel text-sm font-bold text-mut">☰</span>Quem joga nesta cena · {cena.participantes ? `${participantes.length} de ${data.personagens.length}` : 'todos'}
 					</button>
+					<span class="border-t-2 border-b2 px-3 pt-2.5 pb-1.5 font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">MODO DA CENA</span>
+					<div role="radiogroup" aria-label="Modo da cena" class="mx-3 mb-2.5 flex border-2 border-b3">
+						{#each [['tatica', 'TÁTICA'], ['narrativa', 'NARRATIVA']] as const as [m, n] (m)}
+							<button type="button" role="radio" aria-checked={cena.modo === m} class="min-h-9 flex-1 font-pixel text-[11px] font-bold {cena.modo === m ? 'bg-grena text-papel' : 'text-mut'}" onclick={() => mesa.patchCena({ modo: m })}>{n}</button>
+						{/each}
+					</div>
+					<button type="button" class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-left text-sm font-semibold" onclick={() => ((ui.modal = { tipo: 'imagem', alvo: 'imagem' }), (ui.pop = null))}><span class="font-pixel text-sm font-bold text-mut">▣</span>Imagem da narrativa · {nomeImagem(cena.imagem) ?? 'nenhuma'}</button>
+					<button type="button" class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-left text-sm font-semibold" onclick={() => ((ui.modal = { tipo: 'imagem', alvo: 'fundo' }), (ui.pop = null))}><span class="font-pixel text-sm font-bold text-mut">▦</span>Fundo do quadro · {nomeImagem(cena.fundo) ?? 'nenhum'}</button>
+					{#if cena.fundo}
+						<label class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-sm font-semibold">Opacidade do fundo<input type="range" min="10" max="100" step="5" value={Math.round(cena.fundo_opacidade * 100)} onchange={(e) => mesa.patchCena({ fundo_opacidade: +e.currentTarget.value / 100 })} class="min-w-0 flex-1" /></label>
+					{/if}
 					<button type="button" class="min-h-11 border-t-2 border-b2 px-3 text-left text-sm font-semibold text-link" onclick={() => {
 						if (!limparTodosConfirma) return void (limparTodosConfirma = true);
 						mesa.limparTracos(true);
@@ -918,6 +990,9 @@
 
 		<!-- isolate: as janelas de ficha empilham entre si aqui dentro e não passam por cima dos menus da barra -->
 		<div class="relative isolate flex min-h-0 flex-1">
+			{#if narrativa}
+				{@render telaNarrativa()}
+			{:else}
 			{#if ui.elencoAberto}
 				<ElencoMesa {mesa} {ui} personagens={participantes} npcs={itensNpc} bind:pastas {subDe} onAbrir={abrirDoElenco} onColocar={colocar} onMoverNpc={moverNpc} onBestiario={() => (ui.modal = { tipo: 'bestiario' })} />
 			{:else}
@@ -954,6 +1029,7 @@
 				</div>
 				{@render fichasAbertas()}
 			</div>
+			{/if}
 
 			{#if ui.painelAberto}
 				<PainelMesa {mesa} {ui} {rolagens} {comoQuem} onRolar={rolarLivre} />
@@ -1044,8 +1120,30 @@
 
 {#if ui.modal}
 	<div class="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(10,8,7,.72)] p-4" role="presentation" onclick={(e) => e.target === e.currentTarget && (ui.modal = null)}>
-		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'jutsu' ? 'w-[560px]' : 'w-[440px]'} max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_#000]">
-			{#if ui.modal.tipo === 'jutsu'}
+		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'imagem' ? 'w-[560px]' : 'w-[440px]'} max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_#000]">
+			{#if ui.modal.tipo === 'imagem' && cena}
+				{@const alvo = ui.modal.alvo}
+				{@const atual = cena[alvo]}
+				<div class="border-b-2 border-[var(--vermelhao-lo)] bg-b0 px-3.5 py-2.5 font-pixel text-[13px] leading-none font-bold tracking-[0.1em] text-title">{alvo === 'imagem' ? 'IMAGEM DA NARRATIVA' : 'FUNDO DO QUADRO'}</div>
+				<div class="flex flex-col gap-3 p-4">
+					<span class="text-sm leading-5 text-mut">{alvo === 'imagem' ? 'Aparece para todos quando a cena está no modo narrativa, com o chat de rolagens ao lado.' : 'Fica sob a grade, esticado na cena inteira. A opacidade e a grade ficam nas configurações da cena.'}</span>
+					<div class="grid max-h-[340px] grid-cols-3 gap-1.5 overflow-y-auto">
+						{#each IMAGENS_DO_LIVRO as im (im.caminho)}
+							<button type="button" aria-pressed={atual === im.caminho} class="flex flex-col gap-1 border-2 p-1 text-left {atual === im.caminho ? 'border-fg bg-b3' : 'border-b3'}" onclick={() => escolherImagem(alvo, im.caminho)}>
+								<img src={im.caminho} alt="" loading="lazy" class="aspect-[5/2] w-full object-cover" style="image-rendering: pixelated" />
+								<span class="text-[11px] leading-none font-semibold">{im.nome}</span>
+							</button>
+						{/each}
+					</div>
+					{#if atual && !atual.startsWith('/')}<span class="text-xs leading-4 font-semibold text-ok">Usando a imagem que você enviou.</span>{/if}
+				</div>
+				<div class="flex flex-wrap items-center gap-2 border-t-2 border-b3 px-4 py-3">
+					<label class="btn-jogo min-h-11 cursor-pointer" aria-busy={enviando}>{enviando ? 'ENVIANDO…' : 'ENVIAR IMAGEM'}<input type="file" accept="image/png,image/jpeg,image/webp" class="sr-only" disabled={enviando} onchange={(e) => enviarImagem(alvo, e)} /></label>
+					<span class="flex-1"></span>
+					<button type="button" class="btn-jogo min-h-11" disabled={!atual} onclick={() => escolherImagem(alvo, null)}>SEM IMAGEM</button>
+					<button type="button" class="btn-jogo btn-primario min-h-11" onclick={() => (ui.modal = null)}>PRONTO</button>
+				</div>
+			{:else if ui.modal.tipo === 'jutsu'}
 				{@const j = ui.modal.j}
 				<div class="flex items-center gap-2 border-b-2 border-[var(--vermelhao-lo)] bg-b0 py-1 pr-1 pl-3.5">
 					<span class="flex-1 font-pixel text-[13px] leading-none font-bold tracking-[0.1em] text-title">{j.texto != null ? 'HABILIDADE' : 'JUTSU'}</span>
@@ -1077,10 +1175,23 @@
 					<div class="flex flex-col gap-1.5">
 						<span class="font-pixel text-xs font-bold tracking-[0.08em] text-mut">COMEÇAR</span>
 						<div role="radiogroup" class="flex border-2 border-b3">
-							{#each [[false, 'VAZIA'], [true, 'COM O GRUPO']] as const as [g, n] (n)}
-								<button type="button" role="radio" aria-checked={novaCena.grupo === g} class="min-h-10 flex-1 font-pixel text-xs font-bold {novaCena.grupo === g ? 'bg-grena text-papel' : ''}" onclick={() => (novaCena.grupo = g)}>{n}</button>
+							{#each [['vazia', 'VAZIA'], ['grupo', 'COM O GRUPO'], ['escolher', 'ESCOLHER']] as const as [g, n] (n)}
+								<button type="button" role="radio" aria-checked={novaCena.comeco === g} class="min-h-10 flex-1 font-pixel text-xs font-bold {novaCena.comeco === g ? 'bg-grena text-papel' : ''}" onclick={() => (novaCena.comeco = g)}>{n}</button>
 							{/each}
 						</div>
+						{#if novaCena.comeco === 'escolher'}
+							<div class="flex max-h-[220px] flex-col gap-1 overflow-y-auto">
+								{#each data.personagens as p (p.id)}
+									{@const on = novaCena.escolhidos.includes(p.id)}
+									<button type="button" role="checkbox" aria-checked={on} class="flex min-h-10 items-center gap-2 border-2 px-2 text-left text-sm font-semibold {on ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={() => (novaCena.escolhidos = on ? novaCena.escolhidos.filter((x) => x !== p.id) : [...novaCena.escolhidos, p.id])}>
+										<span class="font-pixel text-sm">{on ? '☒' : '☐'}</span><span class="h-3 w-3 flex-none" style="background: {corCss(mesa.corDe(p.jogadorId))}"></span>{p.nome}
+									</button>
+								{:else}
+									<span class="text-sm text-mut">Nenhum personagem aprovado na campanha ainda.</span>
+								{/each}
+							</div>
+							<span class="text-xs leading-4 text-mut">Só eles entram e jogam nesta cena; os outros assistem. Dá para mudar depois em "Quem joga nesta cena".</span>
+						{/if}
 					</div>
 				</div>
 				<div class="flex justify-end gap-2 border-t-2 border-b3 px-4 py-3">

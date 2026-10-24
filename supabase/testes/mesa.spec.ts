@@ -190,3 +190,22 @@ describe('terreno difícil', () => {
 		await expect(banco.como(kaito, `update mesa_cenas set terreno = '{"x": 1}'::jsonb where id = $1`, [ponte])).rejects.toThrow(/check/);
 	});
 });
+
+describe('cena narrativa e fundo do quadro', () => {
+	it('o Mestre põe a cena em narrativa, com imagem do livro ou da pasta da campanha', async () => {
+		await banco.como(kaito, `update mesa_cenas set modo = 'narrativa', imagem = '/capitulos/cap-04.png', fundo = $2, fundo_opacidade = 0.6, grade = false where id = $1`, [ponte, `${campanha}/fundo-1.webp`]);
+		expect(await um(banco.como(bruno, `select modo, imagem, fundo, grade from mesa_cenas where id = $1`, [ponte]))).toEqual({ modo: 'narrativa', imagem: '/capitulos/cap-04.png', fundo: `${campanha}/fundo-1.webp`, grade: false });
+		await expect(banco.como(kaito, `update mesa_cenas set imagem = 'https://exemplo.com/x.png' where id = $1`, [ponte])).rejects.toThrow(/imagem_valida/);
+		await expect(banco.como(kaito, `update mesa_cenas set fundo = $2 where id = $1`, [ponte, '00000000-0000-0000-0000-000000000000/x.webp'])).rejects.toThrow(/fundo_valido/);
+		expect(await banco.como(bruno, `update mesa_cenas set modo = 'tatica' where id = $1 returning id`, [ponte])).toEqual([]);
+		await banco.como(kaito, `update mesa_cenas set modo = 'tatica', imagem = null, fundo = null, fundo_opacidade = 1, grade = true where id = $1`, [ponte]);
+	});
+
+	it('só o Mestre envia e apaga imagens na pasta da campanha', async () => {
+		await banco.como(kaito, `insert into storage.objects (bucket_id, name) values ('mesa', $1)`, [`${campanha}/mapa.webp`]);
+		await expect(banco.como(bruno, `insert into storage.objects (bucket_id, name) values ('mesa', $1)`, [`${campanha}/outro.webp`])).rejects.toThrow(/row-level security/);
+		await expect(banco.como(kaito, `insert into storage.objects (bucket_id, name) values ('mesa', $1)`, ['nada/x.webp'])).rejects.toThrow(/row-level security/);
+		expect(await banco.como(bruno, `delete from storage.objects where name = $1 returning id`, [`${campanha}/mapa.webp`])).toEqual([]);
+		expect(await banco.como(kaito, `delete from storage.objects where name = $1 returning id`, [`${campanha}/mapa.webp`])).toHaveLength(1);
+	});
+});

@@ -28,6 +28,8 @@
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import Modal from '#lib/componentes/ui/Modal.svelte';
 	import Retrato from '#lib/componentes/ui/Retrato.svelte';
+	import VerImagem from '#lib/componentes/ui/VerImagem.svelte';
+	import { urlRetrato } from '#lib/personagem/retrato.ts';
 	import EnviarRetrato from '#lib/componentes/personagem/EnviarRetrato.svelte';
 	import ExcluirFicha from '#lib/componentes/personagem/ExcluirFicha.svelte';
 	import CapaFicha from '#lib/componentes/personagem/CapaFicha.svelte';
@@ -114,6 +116,7 @@
 	// svelte-ignore state_referenced_locally
 	let treinando = $state(page.url.searchParams.get('treino') === '1' && !!data.completa?.dono);
 	let menu = $state(false);
+	let ampliada = $state(false);
 	let excluindo = $state(false);
 
 	// toast do último ajuste (com Desfazer)
@@ -198,7 +201,7 @@
 		<div class:grayscale={falecido}><CapaFicha ficha={p.id} capa={p.capa} vila={f.dados.vila.id} podeTrocar={p.dono && !data.arquivada} /></div>
 		<header class="flex flex-wrap items-start gap-5 border-b-2 border-b3 px-4 py-5 max-sm:gap-x-3 max-sm:gap-y-4 max-sm:py-4 md:px-6" class:grayscale={falecido}>
 			<div class="relative flex flex-none flex-col items-start gap-2 max-sm:w-16 max-sm:items-center max-sm:gap-1.5">
-				<Retrato nome={p.nome || '?'} foto={p.retrato} tamanho={128} class="max-sm:h-16! max-sm:w-16!" />
+				<button type="button" class="cursor-zoom-in p-0 disabled:cursor-default" disabled={!p.retrato} title={p.retrato ? 'Ver o retrato inteiro' : undefined} aria-label="Ver o retrato de {p.nome} inteiro" onclick={() => (ampliada = true)}><Retrato nome={p.nome || '?'} foto={p.retrato} tamanho={128} class="max-sm:h-16! max-sm:w-16!" /></button>
 				{#if falecido}<span class="absolute inset-x-[-2px] bottom-3 border-y-2 border-[#5E6B73] bg-[#1A1A1A] py-[5px] text-center font-pixel text-xs font-bold tracking-[0.1em] text-papel">MEMORIAL</span>{/if}
 				{#if p.dono && !data.arquivada && !falecido}<EnviarRetrato ficha={p.id} atual={p.retrato} compacto />{/if}
 			</div>
@@ -323,6 +326,7 @@
 		</div>
 	{/if}
 
+	{#if ampliada && p.retrato}<VerImagem src={urlRetrato(p.retrato)!} alt={p.nome} aoFechar={() => (ampliada = false)} />{/if}
 	{#if excluindo}<ExcluirFicha ficha={{ id: p.id, nome: p.nome, retrato: p.retrato, campanha_id: k.id, npc: p.npc }} deOutro={!p.dono} aoFechar={() => (excluindo = false)} />{/if}
 	{#if treinando}<GavetaTreino {f} pt={p.pt} aprovacaoTreino={aprovacao.treino} aoFechar={() => (treinando = false)} />{/if}
 

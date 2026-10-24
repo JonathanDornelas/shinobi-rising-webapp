@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import type { ExtrasNpc, FichaMesa, JutsuMesa, RolagemPronta } from '#lib/mesa/tipos.ts';
+	import type { ArmaMesa, ExtrasNpc, FichaMesa, JutsuMesa, RolagemPronta } from '#lib/mesa/tipos.ts';
 	import type { MesaToken, Npc, NpcRevelado } from '#lib/supabase/banco.ts';
 
 	/** O que a ficha rápida mostra, conforme quem olha (planos/mesa-tatica.md, 3.8). */
@@ -43,6 +43,10 @@
 	import { alcanceCorpo } from '#lib/mesa/geometria.ts';
 	import type { FichaAberta, UiMesa } from '#lib/mesa/ui.svelte.ts';
 	import Icone from '../ui/Icone.svelte';
+	import VerImagem from '../ui/VerImagem.svelte';
+	import DadoHud from './DadoHud.svelte';
+	import TooltipAcao from './TooltipAcao.svelte';
+	import { corElemento } from '#lib/mesa/hud.ts';
 
 	let {
 		mesa,
@@ -55,6 +59,23 @@
 		celular = false
 	}: { mesa: Mesa; ui: UiMesa; token: MesaToken; janela: FichaAberta; dados: DadosFicha; acoes: AcoesFicha; foto?: string | null; celular?: boolean } = $props();
 
+	let ampliada = $state(false);
+	// tooltip de ação (HUD): ao lado da janela, na altura da linha, depois de um instante com o mouse parado
+	let dica = $state<{ acao: JutsuMesa | ArmaMesa; ancora: DOMRect } | null>(null);
+	let dicaTimer: ReturnType<typeof setTimeout> | undefined;
+	function mostrarDica(acao: JutsuMesa | ArmaMesa, linha: HTMLElement) {
+		if (celular) return;
+		clearTimeout(dicaTimer);
+		dicaTimer = setTimeout(() => {
+			const j = linha.closest('[role=dialog]')?.getBoundingClientRect() ?? linha.getBoundingClientRect();
+			const l = linha.getBoundingClientRect();
+			dica = { acao, ancora: new DOMRect(j.left, l.top, j.width, l.height) };
+		}, 350);
+	}
+	function esconderDica() {
+		clearTimeout(dicaTimer);
+		dica = null;
+	}
 	const ESTADOS_DA_MESA = ['caido', 'sangrando', 'atordoado', 'imobilizado', 'envenenado', 'em-chamas'];
 	const FAIXAS = ['Ileso', 'Ferido', 'Muito ferido', 'Caído'];
 	const cor = $derived(corCss(mesa.corDe(mesa.donoDe(token))));
@@ -174,14 +195,21 @@
 	const btn = 'min-h-8 border-2 border-field bg-transparent px-2 font-pixel text-[11px] leading-none font-bold text-fg disabled:cursor-not-allowed disabled:opacity-50';
 </script>
 
-{#snippet linhaAcao(icone: string | null, nome: string, meta: string, aviso: string | null, botoes: { n: string; acao: () => void; dica?: string; desab?: boolean }[], ver?: () => void)}
-	<div class="flex items-center gap-2 border-b-2 border-b1 px-3 py-1.5">
+{#snippet linhaAcao(icone: string | null, nome: string, meta: string, aviso: string | null, botoes: { n: string; acao: () => void; dica?: string; desab?: boolean }[], ver?: () => void, hud?: JutsuMesa | ArmaMesa)}
+	<div class="flex items-center gap-2 border-b-2 border-b1 px-3 py-1.5" role="group" onmouseenter={(e) => hud && mostrarDica(hud, e.currentTarget)} onmouseleave={esconderDica}>
 		{#if icone}<Icone id={icone} />{/if}
 		<div class="flex min-w-0 flex-1 flex-col gap-0.5">
 			{#if ver}
 				<button type="button" class="self-start text-left text-sm leading-[18px] font-semibold underline decoration-field decoration-dotted underline-offset-[3px] hover:text-title hover:decoration-current" title="Ver o jutsu inteiro" onclick={ver}>{nome}</button>
 			{:else}
 				<span class="text-sm leading-[18px] font-semibold">{nome}</span>
+			{/if}
+			{#if hud && (hud.ataque || hud.dano || ('cura' in hud && hud.cura))}
+				{@const el = 'regua' in hud ? corElemento(hud.elemento, hud.nome) : null}
+				<span class="flex flex-wrap items-center gap-x-2.5 gap-y-0.5">
+					{#if hud.ataque}<DadoHud expr={hud.ataque.expr} tamanho={18} />{/if}
+					{#if hud.dano}<DadoHud expr={hud.dano.expr} cor={el?.cor} tamanho={18} />{:else if 'cura' in hud && hud.cura}<DadoHud expr={hud.cura} cor="#7FB069" tamanho={18} />{/if}
+				</span>
 			{/if}
 			{#if meta}<span class="text-xs leading-4 text-mut">{meta}</span>{/if}
 			{#if aviso}<span class="text-xs leading-4 font-semibold text-warn">{aviso}</span>{/if}
@@ -221,7 +249,7 @@
 	<div class="flex min-h-0 flex-1 flex-col overflow-auto">
 		<div class="flex items-center gap-3 p-3">
 			<div class="relative flex h-14 w-14 flex-none items-center justify-center border-[3px] bg-b1 font-pixel text-lg font-bold" style="border-color: {cor}">
-				{#if foto}<img src={foto} alt="" class="h-full w-full object-cover" />{:else}{token.sigla || token.nome.slice(0, 2).toUpperCase()}{/if}
+				{#if foto}<button type="button" class="h-full w-full cursor-zoom-in p-0" title="Ver a imagem inteira" aria-label="Ver a imagem de {token.nome} inteira" onclick={() => (ampliada = true)}><img src={foto} alt="" class="h-full w-full object-cover" /></button>{:else}{token.sigla || token.nome.slice(0, 2).toUpperCase()}{/if}
 				{#if dados.tipo === 'pc' && dados.ficha.cla}<Icone id="cla/ic-cla-{dados.ficha.cla}" class="absolute -right-3.5 -bottom-3.5" />{/if}
 			</div>
 			<div class="flex min-w-0 flex-1 flex-col gap-1">
@@ -364,16 +392,16 @@
 				</div>
 				{#if aba === 'acoes' && dados.tipo === 'pc'}
 					{#each dados.ficha.armas as a (a.nome)}
-						{@render linhaAcao(null, a.nome, `Ataque ${a.ataque.expr.replace('1d20', '')} · Dano ${a.dano?.expr ?? '—'} · ${a.rotuloAlcance}`, null, [
+						{@render linhaAcao(null, a.nome, a.rotuloAlcance, null, [
 							{ n: 'MEDIR', acao: () => acoes.aneis(token, a.alcance <= 2 ? a.alcance : 0, a.alcance > 2 ? [{ r: a.alcance, rotulo: `${a.nome} · ${a.alcance} m` }] : [], a.nome) },
 							{ n: 'USAR', acao: () => { acoes.rolar(token, a.ataque, 'ataque', true); if (a.dano) acoes.rolar(token, a.dano, 'dano', false); } }
-						])}
+						], undefined, a)}
 					{/each}
 					{#each dados.ficha.jutsus.filter((j) => j.ataque || j.dano || j.resistencia).slice(0, 4) as j (j.slug)}
 						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, `${j.custo} ${j.unidade} · ${j.alcance} · ${j.area}`, null, [
 							{ n: 'MEDIR', acao: () => acoes.medirJutsu(token, j), desab: !temRegua(j.regua), dica: temRegua(j.regua) ? 'Liga a régua de jutsu' : 'Alcance especial: sem régua' },
 							{ n: 'USAR', acao: () => acoes.usarJutsu(token, j) }
-						], () => acoes.verJutsu(j))}
+						], () => acoes.verJutsu(j), j)}
 					{/each}
 					{@render linhaAcao('recurso/ic-recurso-pe', 'Esquiva Ativa', 'Reação · 10 PE · Acrobacia vira a Defesa', null, [{ n: 'USAR', acao: () => acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 10) }, 'Esquiva Ativa: −10 PE'), desab: atual.pe < 10 }])}
 					{@render linhaAcao('recurso/ic-recurso-defesa', 'Defesa Total', 'Ação primária · +5 na Defesa e na Defesa Mental até o seu próximo turno', null, [])}
@@ -384,10 +412,10 @@
 					</div>
 				{:else if aba === 'acoes' && dados.tipo === 'npc' && dados.extras?.ataques.length}
 					{#each dados.extras.ataques as a (a.nome)}
-						{@render linhaAcao(null, a.nome, `Ataque ${a.ataque.expr.replace('1d20', '')} · Dano ${a.dano?.expr ?? '—'} · ${a.rotuloAlcance}`, null, [
+						{@render linhaAcao(null, a.nome, a.rotuloAlcance, null, [
 							{ n: 'MEDIR', acao: () => acoes.aneis(token, a.alcance <= 2 ? Math.max(a.alcance, alcanceCorpo(token.tamanho)) : 0, a.alcance > 2 ? [{ r: a.alcance, rotulo: `${a.nome} · ${a.alcance} m` }] : [], a.nome) },
 							{ n: 'USAR', acao: () => { acoes.rolar(token, a.ataque, 'ataque', true); if (a.dano) acoes.rolar(token, a.dano, 'dano', false); } }
-						])}
+						], undefined, a)}
 					{/each}
 					<div class="flex flex-wrap gap-1 px-3 py-2">
 						<button type="button" class={btn} onclick={() => acoes.aneis(token, alcanceCorpo(token.tamanho), [{ r: deslNpc, rotulo: `Mover · ${deslNpc} m` }, { r: 2 * deslNpc, rotulo: `Com sprint · ${2 * deslNpc} m` }], 'Deslocamento')}>DESLOCAMENTO</button>
@@ -399,7 +427,7 @@
 						{@render linhaAcao('callout/ic-callout-destaque', h.nome, h.texto ?? '', h.porCena ? (usada ? 'Já usada nesta cena' : 'Uma vez por cena') : null, [
 							...(temRegua(h.regua) ? [{ n: 'MEDIR', acao: () => acoes.medirJutsu(token, h), dica: `${h.area} · ${h.alcance}` }] : []),
 							...(usavel ? [{ n: 'USAR', acao: () => acoes.usarJutsu(token, h), dica: h.resistencia ?? undefined }] : [])
-						], () => acoes.verJutsu(h))}
+						], () => acoes.verJutsu(h), h)}
 					{/each}
 				{:else if aba === 'acoes' && dados.tipo === 'npc' && ataqueNpc}
 					{@render linhaAcao(null, 'Ataque', ataqueNpc.texto || 'Sem ataque anotado', null, [
@@ -415,7 +443,7 @@
 						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, `${j.custo} ${j.unidade} · ${j.alcance} · ${j.area}${j.resistencia ? ` · ${j.resistencia}` : ''}`, temRegua(j.regua) ? null : 'Alcance especial: sem régua', [
 							{ n: 'MEDIR', acao: () => acoes.medirJutsu(token, j), desab: !temRegua(j.regua), dica: temRegua(j.regua) ? 'Liga a régua de jutsu' : 'Alcance especial: sem régua' },
 							{ n: 'USAR', acao: () => acoes.usarJutsu(token, j) }
-						], () => acoes.verJutsu(j))}
+						], () => acoes.verJutsu(j), j)}
 					{/each}
 				{:else if aba === 'jutsus' && dados.tipo === 'pc'}
 					{#each dados.ficha.jutsus as j (j.slug)}
@@ -423,7 +451,7 @@
 						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, `${j.custo} ${j.unidade} · ${j.alcance} · ${j.area}`, temRegua(j.regua) ? (falta ? `Faltam ${j.custo - (j.unidade === 'PE' ? atual.pe : atual.pc)} ${j.unidade}` : null) : 'Alcance especial: sem régua', [
 							{ n: 'MEDIR', acao: () => acoes.medirJutsu(token, j), desab: !temRegua(j.regua), dica: temRegua(j.regua) ? 'Liga a régua de jutsu' : 'Alcance especial: sem régua' },
 							{ n: 'USAR', acao: () => acoes.usarJutsu(token, j), desab: falta }
-						], () => acoes.verJutsu(j))}
+						], () => acoes.verJutsu(j), j)}
 					{/each}
 				{:else if aba === 'pericias' && dados.tipo === 'pc'}
 					{#each dados.ficha.pericias as p (p.nome)}
@@ -483,3 +511,6 @@
 		{/if}
 	</div>
 </div>
+
+{#if ampliada && foto}<VerImagem src={foto} alt={token.nome} aoFechar={() => (ampliada = false)} />{/if}
+{#if dica}<TooltipAcao acao={dica.acao} ancora={dica.ancora} />{/if}

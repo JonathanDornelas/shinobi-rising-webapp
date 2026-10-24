@@ -8,6 +8,7 @@
 	import { corCss } from '#lib/mesa/cores.ts';
 	import type { Mesa } from '#lib/mesa/mesa.svelte.ts';
 	import type { UiMesa } from '#lib/mesa/ui.svelte.ts';
+	import { corElemento, temArte } from '#lib/mesa/hud.ts';
 	import Icone from '../ui/Icone.svelte';
 
 	let {
@@ -95,6 +96,7 @@
 			{#each lista as r (r.id)}
 				{@const crit = r.d20 === 20}
 				{@const falha = r.d20 === 1}
+				{@const el = r.tipo === 'dano' ? corElemento(null, r.rotulo) : null}
 				<div class="border-2 bg-b1 {r.substituida ? 'opacity-60' : ''}" style="border-color: {crit ? 'var(--acc)' : falha ? 'var(--err)' : 'var(--b3)'}">
 					<button type="button" class="grid w-full grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-2 px-2 py-1.5 text-left" aria-label="{r.quem}: {r.rotulo}, total {r.total}" onclick={() => marcar(r)}>
 						<span class="flex h-8 w-8 items-center justify-center border-2 font-pixel text-[11px] font-bold" style="border-color: {corDoAutor(r)}">{sigla(r.quem)}</span>
@@ -103,14 +105,24 @@
 							<span class="text-[13px] leading-[17px] font-medium">{r.rotulo}</span>
 							<span class="flex flex-wrap items-center gap-1">
 								<span class="font-pixel text-xs leading-none font-bold text-mut">{r.expressao}</span>
+								<!-- cada dado rolado como o próprio dado (HUD), com o número por cima; o dano na cor do elemento -->
 								{#each r.detalhe as d, i (i)}
 									{#if 'valores' in d}
 										{#each d.valores as v, j (j)}
 											{@const usado = d.usados.includes(v)}
-											<span class="inline-flex h-[22px] min-w-[22px] items-center justify-center border-2 px-[3px] font-pixel text-xs leading-none font-bold {usado ? '' : 'text-mut line-through'}" style="border-color: {!usado ? 'var(--b3)' : d.lados === 20 && v === 20 ? 'var(--acc)' : d.lados === 20 && v === 1 ? 'var(--err)' : 'var(--field)'}">{v}</span>
+											{@const cor = d.lados === 20 && v === 20 ? 'var(--acc)' : d.lados === 20 && v === 1 ? 'var(--err)' : r.tipo === 'cura' ? '#7FB069' : (el?.cor ?? '#fff')}
+											{#if temArte(d.lados)}
+												<span class="relative inline-flex h-7 w-7 items-center justify-center {usado ? '' : 'opacity-40'}" title="d{d.lados}: {v}{usado ? '' : ' (descartado)'}">
+													<img src="/dados/d{d.lados}.png" width="28" height="28" alt="" class="absolute inset-0 [image-rendering:pixelated]" />
+													<b class="relative font-pixel text-[13px] leading-none [text-shadow:-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000,1px_1px_0_#000] {usado ? '' : 'line-through'}" style:color={cor}>{v}</b>
+												</span>
+											{:else}
+												<span class="inline-flex h-[22px] min-w-[22px] items-center justify-center border-2 px-[3px] font-pixel text-xs leading-none font-bold {usado ? '' : 'text-mut line-through'}" style="border-color: {!usado ? 'var(--b3)' : 'var(--field)'}">{v}</span>
+											{/if}
 										{/each}
 									{/if}
 								{/each}
+								{#if el}<span class="text-xs leading-none font-semibold" style:color={el.cor}>{el.nome}</span>{/if}
 							</span>
 							{#if crit || falha || r.pd || r.oculta}
 								<span class="flex flex-wrap gap-1">

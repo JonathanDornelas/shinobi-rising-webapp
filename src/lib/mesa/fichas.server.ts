@@ -43,6 +43,12 @@ export function jutsusDoNpc(n: { jutsus: string[] | null; acerto: number | null;
 				regua: reguaDoCard(j.info),
 				turnos: duracaoEmTurnos(v('Duração')),
 				tamanho: tamanhoDoEfeito(efeito),
+				tipo: j.tipo,
+				elemento: j.elemento ?? null,
+				acao: v('Ação'),
+				duracao: v('Duração'),
+				traducao: j.traducao,
+				efeito,
 				resistencia: res && res !== '—' ? (n.dt != null ? res.replace(/DT do Jutsu/i, `DT ${n.dt}`) : res) : null,
 				ataque: /^1d20/.test(v('Ataque')) && n.acerto != null ? { expr: teste(n.acerto), rotulo: `Ataque · ${j.nome}`, partes: [] } : null,
 				dano: dano ? { expr: dano.dados, rotulo: `Dano · ${j.nome}`, partes: [] } : null,
@@ -79,6 +85,7 @@ export function extrasDoNpc(n: { bestiario: string | null }): ExtrasNpc | null {
 					nome,
 					alcance: md.m,
 					rotuloAlcance: md.rotulo,
+					propriedades: arma?.propriedades,
 					ataque: { expr: teste(a.acerto), rotulo: `Ataque · ${nome}`, partes: [] },
 					dano: { expr: a.dano.replace(/\s+/g, ''), rotulo: `Dano · ${nome}`, partes: [] }
 				};
@@ -156,6 +163,12 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 				regua: reguaDoCard(j.info),
 				turnos: duracaoEmTurnos(v('Duração')),
 				tamanho: tamanhoDoEfeito(j.efeito),
+				tipo: j.tipo,
+				elemento: j.elemento ?? null,
+				acao: v('Ação'),
+				duracao: v('Duração'),
+				traducao: j.traducao,
+				efeito: j.efeito,
 				resistencia: v('Resistência') && v('Resistência') !== '—' ? v('Resistência') : null,
 				ataque: base === null ? null : { expr: teste(base + bonus), rotulo: `Ataque · ${j.nome}`, partes: partesAtaqueJutsu(pericia!, base, bonus) },
 				dano: dano ? { expr: somar(dano.dados, valorAtr), rotulo: `Dano · ${j.nome}`, partes: partesDanoAtributo(atributo, valorAtr) } : null,
@@ -181,6 +194,7 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 				nome,
 				alcance: md.m,
 				rotuloAlcance: md.rotulo,
+				propriedades: arma?.propriedades,
 				ataque: { expr: teste(base + bonus), rotulo: `Ataque · ${nome}`, partes: buki ? [...partesPericia(buki, !!distancia), ...(bonus ? ([['Proficiência', `+${bonus}`]] as Parte[]) : [])] : [] },
 				dano: danoBase ? { expr: somar(danoBase, calc.atributos[atr] + (bonus ? 1 : 0)), rotulo: `Dano · ${nome}`, partes: [...partesDanoAtributo(atr, calc.atributos[atr]), ...(bonus ? ([['Proficiência', '+1']] as Parte[]) : [])] } : null
 			};

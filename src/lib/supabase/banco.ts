@@ -418,6 +418,13 @@ export type MesaCena = {
 	participantes: string[] | null;
 	/** Terreno difícil marcado pelo Mestre: [[x, y], ...] (cap. 4, Terreno). */
 	terreno: [number, number][];
+	/** Tática (o quadro) ou narrativa (a imagem para todos, com o chat ao lado). */
+	modo: 'tatica' | 'narrativa';
+	/** Imagem da narrativa e fundo do quadro: /covers/..., /capitulos/... ou <campanha>/<nome>.webp no bucket mesa. */
+	imagem: string | null;
+	fundo: string | null;
+	fundo_opacidade: number;
+	grade: boolean;
 	criada_em: string;
 };
 

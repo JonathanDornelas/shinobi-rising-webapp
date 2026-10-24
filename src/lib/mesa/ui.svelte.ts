@@ -31,7 +31,7 @@ export interface FichaAberta {
 }
 
 export type Pop = null | 'medir' | 'jutsu' | 'lapis' | 'cor' | 'cena' | 'gear';
-export type Modal = null | { tipo: 'nova' } | { tipo: 'excluir'; cena: string } | { tipo: 'renomear'; cena: string } | { tipo: 'participantes' } | { tipo: 'bestiario' } | { tipo: 'jutsu'; j: JutsuMesa };
+export type Modal = null | { tipo: 'nova' } | { tipo: 'excluir'; cena: string } | { tipo: 'renomear'; cena: string } | { tipo: 'participantes' } | { tipo: 'bestiario' } | { tipo: 'jutsu'; j: JutsuMesa } | { tipo: 'imagem'; alvo: 'imagem' | 'fundo' };
 
 export class UiMesa {
 	ferramenta = $state<Ferramenta>('mover');
