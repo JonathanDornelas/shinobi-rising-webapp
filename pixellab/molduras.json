@@ -1,5 +1,5 @@
 {
-	"_sobre": "Molduras de token da Mesa (L11): anel decorativo em volta do retrato. Gerar: node scripts/bestiario.cjs --lista molduras --seed <n> --todos. Depois, o miolo opaco é esvaziado (Katon), cada uma é enquadrada num quadrado justo e vai para static/molduras/<id>.png (npm run imagens:otimizar -- molduras); o raio do furo de cada uma fica em src/lib/mesa/molduras.ts. Escolhidas: seed 5101 (Selo: 5103).",
+	"_sobre": "Molduras de token da Mesa (L11): anel decorativo em volta do retrato. Gerar: node scripts/bestiario.cjs --lista molduras --seed <n> --todos. Depois, o miolo opaco é esvaziado, cada uma é enquadrada num quadrado justo e afinada por dentro (apaga até 74% do raio e redesenha 1 px de contorno escuro), e vai para static/molduras/<id>.png (npm run imagens:otimizar -- molduras); o raio do furo de cada uma fica em src/lib/mesa/molduras.ts. Escolhidas: seed 5101 (Selo: 5103) e, finas, 5201 (Pergaminho, Folhas, Raiton, Madeira).",
 	"estilo": ", Naruto anime and manga theme, ninja world, game UI token border, pixel art, crisp pixels, clean readable silhouette",
 	"paleta": [
 		"#1a1a1a",
@@ -40,7 +40,7 @@
 			"width": 128,
 			"height": 128,
 			"uso": "moldura redonda do token (miolo transparente)",
-			"prompt": "a single circular ring frame seen from the front, perfectly round and centered, thick decorated border, the whole middle of the circle is empty and plain, nothing inside the ring, round token border for a portrait"
+			"prompt": "a single circular ring frame seen from the front, perfectly round and centered, thin narrow decorated border band, slim elegant ring, the whole middle of the circle is empty and plain, nothing inside the ring, round token border for a portrait"
 		}
 	},
 	"planos": {},
@@ -155,6 +155,11 @@
 				"#b3322a",
 				"#1a1a1a"
 			]
+		},
+		{
+			"slug": "madeira",
+			"formato": "moldura",
+			"prompt": "ring of carved dark brown wood with visible wood grain, bound by thin black iron bands, like a wooden training post or village gate, sturdy ninja village woodwork"
 		}
 	]
 }

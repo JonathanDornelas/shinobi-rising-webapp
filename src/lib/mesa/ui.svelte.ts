@@ -2,7 +2,7 @@
 // do molde de jutsu, que o quadro desenha e a barra da régua descreve.
 import type { MesaToken } from '#lib/supabase/banco.ts';
 import type { JutsuMesa } from './tipos.ts';
-import { distancia, distanciaEntre, moldeDirecional, moldeParede, naArea, quadradosEsfera, angulo, type Quadrado } from './geometria.ts';
+import { distancia, distanciaEntre, moldeDirecional, moldeParede, moldeQuadrado, naArea, quadradosEsfera, angulo, type Quadrado } from './geometria.ts';
 import type { Ferramenta, Mesa } from './mesa.svelte.ts';
 
 /** A mira de um jutsu (régua de jutsu): o lançador, o ponto mirado e as escolhas da forma. */
@@ -72,6 +72,7 @@ export class UiMesa {
 		this.pop = f === 'medir' ? 'medir' : f === 'lapis' || f === 'apontar' ? 'lapis' : null;
 		if (f === 'apontar') this.modoLapis = 'apontar';
 		if (f === 'lapis') this.modoLapis = 'lapis';
+		if (f === 'terreno') this.avisar('Arraste para marcar terreno difícil; comece num quadrado marcado para apagar.');
 	}
 
 	abrirFicha(token: string, aba: string | null = null) {
@@ -139,6 +140,12 @@ export function calcularMolde(mira: Mira, mesa: Mesa, visiveis: MesaToken[]): Mo
 		quadrados = m.quadrados;
 		contorno = m.contorno;
 		dist = distanciaEntre(c, { x: Math.floor(mira.px), y: Math.floor(mira.py), tamanho: 1 });
+	} else if (forma === 'quadrado') {
+		const m = moldeQuadrado(mira.tx, mira.ty, r.n, L, A);
+		quadrados = m.quadrados;
+		contorno = m.contorno;
+		dist = distanciaEntre(c, alvo);
+		ok = dist <= alcance;
 	} else if (forma === 'parede') {
 		const m = moldeParede(mira.tx, mira.ty, r.n, mira.giro, L, A);
 		quadrados = m.quadrados;

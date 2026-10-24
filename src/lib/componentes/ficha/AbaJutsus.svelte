@@ -22,7 +22,16 @@
 	import { partesAtaqueJutsu, partesDanoAtributo, type Parte } from '#lib/rolagens/partes.ts';
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 
-	let { f }: { f: FichaJogo } = $props();
+	/**
+	 * Dentro da Mesa: MEDIR liga a régua do jutsu (e a janela da ficha minimiza), e USAR vai pelo caminho da Mesa
+	 * (alvos na régua, crescer o token); usar devolve false quando o personagem não está na cena.
+	 */
+	interface NaMesa {
+		medir: (j: JutsuFicha) => void;
+		usar: (j: JutsuFicha) => Promise<boolean>;
+		podeMedir: (j: JutsuFicha) => boolean;
+	}
+	let { f, mesa }: { f: FichaJogo; mesa?: NaMesa } = $props();
 	const RANKS = ['E', 'D', 'C', 'B', 'A', 'S'];
 	const lista = $derived(f.calc.jutsus.map((s) => f.catalogo.jutsus.find((j) => j.slug === s)).filter((j): j is JutsuFicha => !!j));
 	const tipos = $derived([...new Set(lista.map((j) => j.tipo))]);
@@ -133,13 +142,22 @@
 {/snippet}
 
 {#snippet botaoUsar(j: JutsuFicha, classe: string)}
+	{#if mesa}
+		<div class="flex flex-col gap-1 {classe}">
+			{#if mesa.podeMedir(j)}<button type="button" class="btn-jogo min-h-8 w-full border-2 border-b3 px-3 text-xs" title="Liga a régua do jutsu no quadro e minimiza a ficha" onclick={() => mesa.medir(j)}>MEDIR</button>{/if}
+			{@render usarBotao(j, 'w-full')}
+		</div>
+	{:else}{@render usarBotao(j, classe)}{/if}
+{/snippet}
+
+{#snippet usarBotao(j: JutsuFicha, classe: string)}
 	{@const s = situacao(j)}
 	<button
 		type="button"
 		class="btn-jogo min-h-9 px-3 text-xs {classe} {s.usavel ? 'btn-primario' : 'bg-b3 text-mut'}"
 		disabled={!s.usavel}
 		title={s.bloqueadoRank ? 'Esgotado: sem jutsus de Rank B ou superior' : s.falta > 0 ? `Faltam ${s.falta} ${s.c.unidade}` : !f.editavel ? 'Ficha somente leitura' : 'Gasta o custo e já rola o ataque e o dano'}
-		onclick={() => usar(j)}>USAR · {s.c.final} {s.c.unidade}</button
+		onclick={async () => (mesa && (await mesa.usar(j))) || usar(j)}>USAR · {s.c.final} {s.c.unidade}</button
 	>
 {/snippet}
 

@@ -9,16 +9,17 @@ export interface Moldura {
 }
 
 export const MOLDURAS: Moldura[] = [
-	{ id: 'hitaiate', nome: 'Hitaiate', interno: 0.64 },
-	{ id: 'kunai', nome: 'Kunai', interno: 0.73 },
-	{ id: 'shuriken', nome: 'Shuriken', interno: 0.58 },
-	{ id: 'pergaminho', nome: 'Pergaminho', interno: 0.65 },
-	{ id: 'selo', nome: 'Selo', interno: 0.7 },
-	{ id: 'folhas', nome: 'Folhas', interno: 0.62 },
-	{ id: 'katon', nome: 'Katon', interno: 0.69 },
-	{ id: 'raiton', nome: 'Raiton', interno: 0.63 },
-	{ id: 'shimenawa', nome: 'Shimenawa', interno: 0.73 },
-	{ id: 'anbu', nome: 'Anbu', interno: 0.74 }
+	{ id: 'hitaiate', nome: 'Hitaiate', interno: 0.75 },
+	{ id: 'kunai', nome: 'Kunai', interno: 0.74 },
+	{ id: 'shuriken', nome: 'Shuriken', interno: 0.75 },
+	{ id: 'pergaminho', nome: 'Pergaminho', interno: 0.88 },
+	{ id: 'selo', nome: 'Selo', interno: 0.75 },
+	{ id: 'folhas', nome: 'Folhas', interno: 0.74 },
+	{ id: 'katon', nome: 'Katon', interno: 0.74 },
+	{ id: 'raiton', nome: 'Raiton', interno: 0.74 },
+	{ id: 'shimenawa', nome: 'Shimenawa', interno: 0.75 },
+	{ id: 'anbu', nome: 'Anbu', interno: 0.75 },
+	{ id: 'madeira', nome: 'Madeira', interno: 0.74 }
 ];
 
 /** Só ids conhecidos viram imagem (o valor vem do perfil e do broadcast). */

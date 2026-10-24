@@ -7,9 +7,11 @@
 	import AbaAnotacoes from '#lib/componentes/ficha/AbaAnotacoes.svelte';
 	import AbaCla from '#lib/componentes/ficha/AbaCla.svelte';
 	import AbaEquipamento from '#lib/componentes/ficha/AbaEquipamento.svelte';
+	import AbaHistoria from '#lib/componentes/ficha/AbaHistoria.svelte';
 	import AbaJutsus from '#lib/componentes/ficha/AbaJutsus.svelte';
 	import AbaPericias from '#lib/componentes/ficha/AbaPericias.svelte';
 	import AbaProgressao from '#lib/componentes/ficha/AbaProgressao.svelte';
+	import AbaRegistro from '#lib/componentes/ficha/AbaRegistro.svelte';
 	import AbaVisao from '#lib/componentes/ficha/AbaVisao.svelte';
 	import BarraRecursos from '#lib/componentes/ficha/BarraRecursos.svelte';
 	import GavetaTreino from '#lib/componentes/ficha/GavetaTreino.svelte';
@@ -30,13 +32,13 @@
 	import ExcluirFicha from '#lib/componentes/personagem/ExcluirFicha.svelte';
 	import CapaFicha from '#lib/componentes/personagem/CapaFicha.svelte';
 	import { APROVACAO_PADRAO, rankSugerido } from '#lib/campanhas/dominio.ts';
-	import { BACKGROUNDS, ELEMENTOS, VILAS } from '#lib/personagem/dados.ts';
+	import { ELEMENTOS, VILAS } from '#lib/personagem/dados.ts';
 	import { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
 	import { progressoXp, type EstadoJogo, type ItemInventario } from '#lib/personagem/progressao.ts';
 	import { normalizarFicha, type FichaDados } from '#lib/personagem/regras.ts';
 	import { hrefEditar, hrefNivel } from '#lib/personagem/status.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
-	import { dataCurta, numero, tempoRelativo } from '#lib/formatar.ts';
+	import { dataCurta, numero } from '#lib/formatar.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
 	import type { PageProps } from './$types';
 
@@ -305,38 +307,10 @@
 			{:else if aba === 'cla'}<AbaCla {f} />
 			{:else if aba === 'equip'}<AbaEquipamento {f} />
 			{:else if aba === 'prog'}<AbaProgressao {f} pt={p.pt} xp={p.xp} registros={data.registros} pedidos={data.pedidos} aoTreinar={() => (treinando = true)} />
-			{:else if aba === 'hist'}
-				{@const bg = BACKGROUNDS.find((b) => b.id === f.dados.background.id)}
-				<div class="grid items-start gap-6 lg:grid-cols-[minmax(0,760px)_minmax(0,1fr)]">
-					<div class="flex flex-col gap-3.5">
-						<span class="t-rotulo text-xs">Background · {f.dados.background.id === 'proprio' ? f.dados.background.proprio.nome : (bg?.nome ?? '—')}</span>
-						<p class="m-0 text-[17px] leading-[29px]">{f.dados.background.id === 'proprio' ? f.dados.background.proprio.traco : `${bg?.bonus ?? ''}. ${bg?.traco ?? ''}`}</p>
-						{#if f.dados.conceito.aparencia}<span class="t-rotulo mt-1.5 text-xs">Aparência</span><p class="m-0 text-[17px] leading-[29px]">{f.dados.conceito.aparencia}</p>{/if}
-						{#if f.dados.conceito.origem || f.dados.conceito.idade}
-							<span class="t-rotulo mt-1.5 text-xs">Origem</span>
-							<p class="m-0 text-[17px] leading-[29px]">{[f.dados.conceito.origem, f.dados.conceito.idade ? `${f.dados.conceito.idade} anos` : ''].filter(Boolean).join(' · ')}</p>
-						{/if}
-					</div>
-					<div class="flex flex-col gap-2.5">
-						<div class="painel flex flex-col gap-1 px-3.5 py-3"><span class="t-rotulo text-xs">Time</span><span class="text-[15px] font-semibold">{f.dados.time || '—'}</span></div>
-						<div class="painel flex flex-col gap-1 px-3.5 py-3"><span class="t-rotulo text-xs">Sensei</span><span class="text-[15px] font-semibold">{f.dados.sensei || '—'}</span></div>
-					</div>
-				</div>
+			{:else if aba === 'hist'}<AbaHistoria {f} />
 			{:else if aba === 'notas'}
 				<AbaAnotacoes ficha={p.id} inicial={p.anotacoes ?? ''} editavel={p.dono && !data.arquivada} />
-			{:else}
-				<ul class="painel-sombra m-0 list-none p-0">
-					{#each data.registros as r (r.id)}
-						<li class="grid grid-cols-[32px_minmax(0,140px)_minmax(0,1fr)_auto] items-center gap-3 border-b-2 border-b3 px-3.5 py-1.5 last:border-b-0 max-md:grid-cols-[32px_minmax(0,1fr)_auto]">
-							<Icone id={r.icone} />
-							<span class="truncate text-sm font-semibold max-md:hidden">{r.ator?.nome ?? '—'}</span>
-							<span class="text-sm leading-5"><span class="font-semibold md:hidden">{r.ator?.nome ?? '—'}: </span>{r.texto}</span>
-							<span class="text-xs whitespace-nowrap text-mut">{tempoRelativo(r.criado_em)}</span>
-						</li>
-					{:else}
-						<li class="p-3.5 text-sm text-mut">Nada registrado ainda.</li>
-					{/each}
-				</ul>
+			{:else}<AbaRegistro registros={data.registros} />
 			{/if}
 		</div>
 	</main>

@@ -13,7 +13,7 @@ export default [
 		traducao: 'Estilo Fogo: Pilha Ardente de Cinzas',
 		dano: [3, 8],
 		alcance: 'medio',
-		area: 'esfera6',
+		area: 'cone-grande',
 		comp: { cega: 1 },
 		descricao: 'O ninja cospe uma nuvem densa de cinza quente que se espalha pelo campo. Basta um estalo dos dentes, como uma pederneira, para a nuvem inteira pegar fogo de uma vez.',
 		efeito: '3d8 de dano de fogo em todos dentro da nuvem (metade com sucesso na Resistência). Quem falha também fica Cego por 1 turno, com os olhos cheios de cinza.'
@@ -62,7 +62,7 @@ export default [
 		traducao: 'Estilo Fogo: Grande Aniquilação por Fogo',
 		dano: [4, 8],
 		alcance: 'medio',
-		area: 'esfera6',
+		area: 'cone-grande',
 		descricao: 'Uma muralha de fogo tão larga que engole o horizonte. Para escapar, não basta pular para o lado: é preciso sair da frente dela por inteiro.',
 		efeito: '4d8 de dano de fogo em todos na área (metade com sucesso na Resistência). O chão fica em brasa e fumegando por um bom tempo depois.'
 	},

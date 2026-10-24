@@ -34,6 +34,8 @@ export interface JutsuMesa {
 /** O que a ficha do bestiário dá a um NPC importado: tamanho, todos os ataques e os traços usáveis. */
 export interface ExtrasNpc {
 	tamanho: 1 | 3 | 6 | 10;
+	/** 8 m + AGI da ficha do bestiário (+5 m com Velocidade); 10 m quando ela não tem atributos */
+	deslocamento: number;
 	ataques: ArmaMesa[];
 	habilidades: JutsuMesa[];
 }
@@ -67,4 +69,8 @@ export interface FichaMesa {
 	/** Kawarimi (5 m), fios da marionete (30 m), sensor (50 m): atalhos de medida */
 	distancias: [string, number][];
 	notas: string;
+	/** A mochila (aba EQUIP. da ficha rápida): itens, carga e ryo; selado = guardado num pergaminho */
+	inventario: { nome: string; qtd: number; grupo: string; icone: string; nota: string | null; selado: boolean }[];
+	carga: { atual: number; max: number };
+	ryo: number;
 }

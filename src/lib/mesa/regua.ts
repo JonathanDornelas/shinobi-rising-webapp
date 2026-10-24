@@ -1,7 +1,7 @@
 // L11 · Mesa: a régua de jutsu lê o alcance e a área do próprio card (planos/mesa-tatica.md, seção 3.6). Os textos do
 // catálogo seguem as tabelas do cap. 20; os poucos fora do padrão ("Qualquer marca", "Visão") ficam sem régua.
 
-export type FormaArea = 'alvos' | 'esfera' | 'cone' | 'linha' | 'cone-linha' | 'parede' | 'cena' | 'nenhuma';
+export type FormaArea = 'alvos' | 'esfera' | 'cone' | 'linha' | 'cone-linha' | 'parede' | 'quadrado' | 'cena' | 'nenhuma';
 
 export interface Regua {
 	/** Alcance em metros; 0 = pessoal (a área sai do usuário); null = alcance especial, sem régua. */
@@ -11,7 +11,7 @@ export interface Regua {
 	/** O alcance é o da arma empunhada. */
 	daArma?: boolean;
 	forma: FormaArea;
-	/** Esfera: raio; cone e linha: comprimento; parede: comprimento. */
+	/** Esfera: raio; cone e linha: comprimento; parede: comprimento; quadrado: lado. */
 	n: number;
 	/** cone-linha: comprimento do cone e da linha. */
 	cone?: number;
@@ -51,6 +51,8 @@ export function lerArea(texto: string): Pick<Regua, 'forma' | 'n' | 'cone' | 'li
 	if (/cone pequeno/i.test(t)) return { forma: 'cone', n: 3 };
 	const cone = /cone[^\d]*(\d+)\s?m/i.exec(t);
 	if (/cone m[ée]dio/i.test(t) || cone) return { forma: 'cone', n: cone ? +cone[1] : 10 };
+	const quadrado = /quadrado(?: de)?\s*(\d+)\s?m/i.exec(t);
+	if (quadrado) return { forma: 'quadrado', n: +quadrado[1] };
 	const esfera = /esfera(?: de)?\s*(\d+)\s?m/i.exec(t);
 	if (esfera) return { forma: 'esfera', n: +esfera[1], emSi: /em torno de si|em volta d[oe] usu[áa]rio|em torno do usu[áa]rio/i.test(t) };
 	const linha = /linha(?: reta)?\s*\(?(?:de\s*)?(\d+)\s?m/i.exec(t);

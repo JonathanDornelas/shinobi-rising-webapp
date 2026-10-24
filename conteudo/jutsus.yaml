@@ -1358,7 +1358,7 @@
     - k: Duração
       v: Instantâneo
     - k: Área
-      v: Esfera 3m
+      v: Cone médio (10m)
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -1369,7 +1369,7 @@
     - "A técnica de iniciação do clã: um Uchiha só é considerado adulto depois de dominá-la. O ninja enche o peito, faz os selos e solta o fogo como um dragão."
   efeito: 2d6+2 de dano de fogo em área; incendeia madeira, papel e tecido.
   notas: []
-  pj: "dano 2d6+2 (5) + Médio (2) + Esfera 3m (2): 9 PJ, rank C."
+  pj: "dano 2d6+2 (5) + Médio (2) + Cone médio (2): 9 PJ, rank C."
   capitulo: 8
   ancora: jutsus-e-habilidades-do-cla-7
   cla: uchiha
@@ -1503,7 +1503,7 @@
     - k: Duração
       v: Sustentado (4 PC/turno)
     - k: Área
-      v: Esfera 15m
+      v: Quadrado 30m
     - k: Ataque
       v: —
     - k: Resistência
@@ -1514,7 +1514,7 @@
     - Uma muralha de chamas fecha o campo de batalha. Pela tradição, quatro Uchiha a erguem juntos, um em cada canto da área.
   efeito: Ninguém entra ou sai sem atravessar as chamas (4d6 de dano ao cruzar). Com outros usuários, até 4, o custo se divide entre eles.
   notas: []
-  pj: "Esfera 15m (8) + dano 4d6 (7) + sustentado (2): 17 PJ, rank B."
+  pj: "Quadrado 30m (8) + dano 4d6 (7) + sustentado (2): 17 PJ, rank B."
   capitulo: 8
   ancora: jutsus-e-habilidades-do-cla-7
   cla: uchiha
@@ -1590,7 +1590,7 @@
     - k: Duração
       v: Sustentado (4 PC/turno)
     - k: Área
-      v: Esfera 6m
+      v: Quadrado 12m
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -1601,7 +1601,7 @@
     - Exige Mokuton. Troncos sobem da terra e se trançam numa jaula em volta de quem estiver ali dentro.
   efeito: Quem falhar na Resistência fica Imobilizado dentro da jaula (40 PV) enquanto ela for mantida.
   notas: []
-  pj: "imobiliza (3) + Esfera 6m (4) + Médio (2) + sustentado (2) + jaula resistente (2): 13 PJ, rank B."
+  pj: "imobiliza (3) + Quadrado 12m (4) + Médio (2) + sustentado (2) + jaula resistente (2): 13 PJ, rank B."
   capitulo: 8
   ancora: jutsus-e-habilidades-do-cla-8
   cla: senju
@@ -2869,7 +2869,7 @@
     - k: Duração
       v: Instantâneo
     - k: Área
-      v: Esfera 3m
+      v: Cone médio (10m)
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -2880,7 +2880,7 @@
     - O ninja enche o peito e solta uma bola de fogo do tamanho de uma carroça. É a marca de iniciação dos Uchiha.
   efeito: "2d6+2 de dano de fogo em área. Pode incendiar madeira, papel e tecido. Selos: Tigre, Cavalo, Macaco, Tigre."
   notas: []
-  pj: "dano 2d6+2 (5) + Médio (2) + Esfera 3m (2): 9 PJ, rank C."
+  pj: "dano 2d6+2 (5) + Médio (2) + Cone médio (2): 9 PJ, rank C."
   capitulo: 10
   ancora: katon-liberacao-de-fogo
   cla: null
@@ -3742,7 +3742,7 @@
     - k: Duração
       v: Instantâneo
     - k: Área
-      v: Esfera 3m
+      v: Cone médio (10m)
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -3753,7 +3753,7 @@
     - O ninja enche o peito e solta uma bola de fogo do tamanho de uma carroça. É a marca de iniciação dos Uchiha.
   efeito: 2d6+2 de dano de fogo em área. Pode incendiar madeira, papel e tecido.
   notas: []
-  pj: dano 2d6+2 (5) + Médio (2) + Esfera 3m (2) = 9 PJ → Rank C, 9 PC.
+  pj: dano 2d6+2 (5) + Médio (2) + Cone médio (2) = 9 PJ → Rank C, 9 PC.
   capitulo: 20
   ancora: exemplo-de-ficha-pronta
   cla: null
@@ -3917,7 +3917,7 @@
     - k: Duração
       v: Instantâneo
     - k: Área
-      v: Esfera 6m
+      v: Cone grande (15m)
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -3928,7 +3928,7 @@
     - O ninja cospe uma nuvem densa de cinza quente que se espalha pelo campo. Basta um estalo dos dentes, como uma pederneira, para a nuvem inteira pegar fogo de uma vez.
   efeito: 3d8 de dano de fogo em todos dentro da nuvem (metade com sucesso na Resistência). Quem falha também fica Cego por 1 turno, com os olhos cheios de cinza.
   notas: []
-  pj: "dano 3d8 (7) + Médio (2) + esfera 6m (4) + cega (2): 15 PJ, rank B."
+  pj: "dano 3d8 (7) + Médio (2) + cone grande (15m) (4) + cega (2): 15 PJ, rank B."
   capitulo: 10
   ancora: katon-liberacao-de-fogo
   cla: null
@@ -4034,7 +4034,7 @@
     - k: Duração
       v: Instantâneo
     - k: Área
-      v: Esfera 6m
+      v: Cone grande (15m)
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -4045,7 +4045,7 @@
     - "Uma muralha de fogo tão larga que engole o horizonte. Para escapar, não basta pular para o lado: é preciso sair da frente dela por inteiro."
   efeito: 4d8 de dano de fogo em todos na área (metade com sucesso na Resistência). O chão fica em brasa e fumegando por um bom tempo depois.
   notas: []
-  pj: "dano 4d8 (9) + Médio (2) + esfera 6m (4): 15 PJ, rank B."
+  pj: "dano 4d8 (9) + Médio (2) + cone grande (15m) (4): 15 PJ, rank B."
   capitulo: 10
   ancora: katon-liberacao-de-fogo
   cla: null
@@ -4622,7 +4622,7 @@
     - k: Duração
       v: Instantâneo
     - k: Área
-      v: Esfera 3m
+      v: Cone médio (10m)
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -4633,7 +4633,7 @@
     - O ninja cospe um líquido grosso e grudento que cobre o chão. Quem pisa nele fica colado.
   efeito: Quem estiver na área ou entrar nela fica Imobilizado, preso no xarope, até vencer uma Resistência de FOR ao fim do turno.
   notas: []
-  pj: "Médio (2) + esfera 3m (2) + imobiliza (3): 7 PJ, rank C."
+  pj: "Médio (2) + cone médio (2) + imobiliza (3): 7 PJ, rank C."
   capitulo: 10
   ancora: suiton-liberacao-de-agua
   cla: null
@@ -6501,7 +6501,7 @@
     - k: Duração
       v: 1 cena
     - k: Área
-      v: Esfera 15m
+      v: Quadrado 30m
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -6513,7 +6513,7 @@
   efeito: Cria uma barreira em forma de caixa, com 50 PV, em volta da área. Enquanto ela estiver de pé, nada a atravessa, por dentro ou por fora, e quem encosta nas paredes é jogado para trás.
   notas:
     - Exige quatro usuários nos quatro cantos da área, que gastam a ação no mesmo turno e dividem o custo.
-  pj: "Curto (1) + esfera 15m (8) + barreira ×5 (10) − exige outra técnica (−1) − preparação (−1): 17 PJ, rank B."
+  pj: "Curto (1) + quadrado 30m (8) + barreira ×5 (10) − exige outra técnica (−1) − preparação (−1): 17 PJ, rank B."
   capitulo: 20
   ancora: os-seis-tipos-de-jutsu
   cla: null
@@ -6531,7 +6531,7 @@
     - k: Duração
       v: 1 cena
     - k: Área
-      v: Esfera 15m
+      v: Quadrado 30m
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -6543,7 +6543,7 @@
   efeito: Cria uma barreira em forma de caixa, com 100 PV, em volta da área. Enquanto ela estiver de pé, nada a atravessa, por dentro ou por fora.
   notas:
     - Exige quatro usuários nos quatro cantos da área, que gastam a ação no mesmo turno e dividem o custo.
-  pj: "Curto (1) + esfera 15m (8) + barreira ×10 (20) − exige outra técnica (−1) − preparação (−1): 27 PJ, rank A."
+  pj: "Curto (1) + quadrado 30m (8) + barreira ×10 (20) − exige outra técnica (−1) − preparação (−1): 27 PJ, rank A."
   capitulo: 20
   ancora: os-seis-tipos-de-jutsu
   cla: null
@@ -8494,7 +8494,7 @@
     - k: Duração
       v: Instantâneo
     - k: Área
-      v: Esfera 15m
+      v: Cone enorme (30m)
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -8505,7 +8505,7 @@
     - Um mar de fogo sai da boca do ninja e cobre uma área enorme. Não há para onde correr dentro dele.
   efeito: 4d8 de dano de fogo em todos na área (metade com sucesso na Resistência).
   notas: []
-  pj: "dano 4d8 (9) + Médio (2) + esfera 15m (8): 19 PJ, rank A."
+  pj: "dano 4d8 (9) + Médio (2) + cone enorme (30m) (8): 19 PJ, rank A."
   capitulo: 10
   ancora: katon-liberacao-de-fogo
   cla: null
@@ -9402,7 +9402,7 @@
     - k: Duração
       v: Instantâneo
     - k: Área
-      v: Esfera 3m
+      v: Cone médio (10m)
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -9414,7 +9414,7 @@
   efeito: 2d6 de dano em todos na área, que ficam Imobilizados na cal até vencer a Resistência de FOR ao fim do turno.
   notas:
     - Exige a Kekkei Genkai do Yōton (Liberação de Lava), criada com as regras do cap. 8.4.
-  pj: "dano 2d6 (3) + Médio (2) + esfera 3m (2) + imobiliza (3): 10 PJ, rank C."
+  pj: "dano 2d6 (3) + Médio (2) + cone médio (2) + imobiliza (3): 10 PJ, rank C."
   capitulo: 10
   ancora: ninjutsu-geral-sem-elemento
   cla: null
@@ -11264,7 +11264,7 @@
     - k: Duração
       v: Instantâneo
     - k: Área
-      v: Esfera 3m
+      v: Cone médio (10m)
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -11275,7 +11275,7 @@
     - O ninja transforma o chakra num óleo grudento e cospe uma massa enorme dele. Quem é atingido mal consegue se mexer, e água comum não lava.
   efeito: Quem estiver na área fica Imobilizado no óleo até vencer a Resistência de FOR ao fim do turno. O óleo pega fogo com qualquer chama.
   notas: []
-  pj: "Médio (2) + esfera 3m (2) + imobiliza (3): 7 PJ, rank C."
+  pj: "Médio (2) + cone médio (2) + imobiliza (3): 7 PJ, rank C."
   capitulo: 10
   ancora: ninjutsu-geral-sem-elemento
   cla: null
@@ -11501,7 +11501,7 @@
     - k: Duração
       v: Instantâneo
     - k: Área
-      v: Esfera 6m
+      v: Cone grande (15m)
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -11513,7 +11513,7 @@
   efeito: 3d8 de dano em todos na área (metade com sucesso na Resistência).
   notas:
     - Exige um contrato com as serpentes (cap. 14).
-  pj: "dano 3d8 (7) + Longo (4) + esfera 6m (4): 15 PJ, rank B."
+  pj: "dano 3d8 (7) + Longo (4) + cone grande (15m) (4): 15 PJ, rank B."
   capitulo: 10
   ancora: ninjutsu-geral-sem-elemento
   cla: null
@@ -11677,7 +11677,7 @@
     - k: Duração
       v: Instantâneo
     - k: Área
-      v: Esfera 6m
+      v: Cone grande (15m)
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -11689,7 +11689,7 @@
   efeito: Quem estiver na área e falhar na Resistência fica Paralisado por 1 turno.
   notas:
     - Exige dois usuários em Modo Sennin coaxando juntos.
-  pj: "Médio (2) + esfera 6m (4) + paralisa (2) − exige outra técnica (−1): 7 PJ, rank C."
+  pj: "Médio (2) + cone grande (15m) (4) + paralisa (2) − exige outra técnica (−1): 7 PJ, rank C."
   capitulo: 10
   ancora: ninjutsu-geral-sem-elemento
   cla: null
@@ -11707,7 +11707,7 @@
     - k: Duração
       v: Instantâneo
     - k: Área
-      v: Esfera 6m
+      v: Cone grande (15m)
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -11719,7 +11719,7 @@
   efeito: 6d8 de dano de fogo em todos na área (metade com sucesso na Resistência). Quem falha continua queimando, com o dano contínuo.
   notas:
     - Exige três usuários (óleo, Katon e Fuuton), ao menos um em Modo Sennin, gastando a ação no mesmo turno e dividindo o custo.
-  pj: "dano 6d8 (15) + Longo (4) + esfera 6m (4) + dano contínuo (2) − exige outra técnica (−1) + dois elementos (5): 29 PJ, rank A."
+  pj: "dano 6d8 (15) + Longo (4) + cone grande (15m) (4) + dano contínuo (2) − exige outra técnica (−1) + dois elementos (5): 29 PJ, rank A."
   capitulo: 10
   ancora: ninjutsu-geral-sem-elemento
   cla: null
@@ -11737,7 +11737,7 @@
     - k: Duração
       v: Instantâneo
     - k: Área
-      v: Esfera 15m
+      v: Cone enorme (30m)
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -11749,7 +11749,7 @@
   efeito: Quem estiver na área e falhar na Resistência fica Cego por 1 turno.
   notas:
     - Exige o Modo Sennin ativo (cap. 15).
-  pj: "Médio (2) + esfera 15m (8) + cega (2) − exige outra técnica (−1): 11 PJ, rank B."
+  pj: "Médio (2) + cone enorme (30m) (8) + cega (2) − exige outra técnica (−1): 11 PJ, rank B."
   capitulo: 10
   ancora: ninjutsu-geral-sem-elemento
   cla: null
@@ -11974,7 +11974,7 @@
     - k: Duração
       v: Instantâneo
     - k: Área
-      v: Esfera 6m
+      v: Cone grande (15m)
     - k: Ataque
       v: — (área)
     - k: Resistência
@@ -11986,7 +11986,7 @@
   efeito: 3d6 de dano de ácido em todos na área (metade com sucesso na Resistência), que ignora RD e barreiras. Quem falha continua sendo corroído, com o dano contínuo.
   notas:
     - Exige a Kekkei Genkai do Futton (Fogo e Água), criada com as regras do cap. 8.4.
-  pj: "dano 3d6 (5) + Curto (1) + esfera 6m (4) + dano contínuo (2) + ignora RD (2): 14 PJ, rank B."
+  pj: "dano 3d6 (5) + Curto (1) + cone grande (15m) (4) + dano contínuo (2) + ignora RD (2): 14 PJ, rank B."
   capitulo: 10
   ancora: elementos-combinados
   cla: null

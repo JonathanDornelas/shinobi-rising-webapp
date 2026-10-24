@@ -536,6 +536,12 @@ Rota: `/campanhas/[id]/mesa`. Entra no menu da campanha logo abaixo do painel, c
   - NPC revelado visto por um jogador;
   - minimizada (chip);
   - campo de dano aplicado: o PV desce com a contagem rápida do brief, seção 2.7.
+- **Ficha completa** (botão FICHA COMPLETA na ficha rápida; MINHA FICHA na barra, para o jogador):
+  - Abre numa janela grande, arrastável, redimensionável e minimizável, com as abas da página da ficha.
+  - O jogador abre só a dele e o Mestre, qualquer uma (`/campanhas/[id]/mesa/ficha/[pid]`; 403 para os outros).
+  - O estado é o mesmo da ficha rápida.
+  - Na aba Jutsus, MEDIR liga a régua e minimiza a janela, e USAR vai pelo caminho da Mesa.
+- Aba EQUIP. na ficha rápida do personagem: a mochila por grupo, com carga e ryo.
 - O nome do jutsu (e da habilidade do bestiário) é clicável e abre o card inteiro num modal. O card vem de
   `/campanhas/[id]/mesa/jutsu/[slug]`, que responde com o catálogo ou com o jutsu criado na campanha (`jc-<id>`).
 - Armas com mais de um modo de uso (cap. 12) viram uma linha por modo, por exemplo "Kunai" (corpo a corpo, FOR) e
@@ -570,6 +576,12 @@ O popover da ferramenta Medir traz: Régua livre · Deslocamento · Corpo a corp
     escolheu; quem escolheu fica com a dele. Com "Todos os tokens" (`moldura_universal`), vale em todo token, por cima da
     escolha dos jogadores. A opção "Padrão" do jogador segue a moldura da mesa.
   - Com moldura, o anel vai a 0,56 do lado e o retrato encolhe para caber no furo (`interno` em `src/lib/mesa/molduras.ts`).
+- **Terreno difícil** (ferramenta T, só o Mestre): arrastar pinta, e começar num quadrado marcado apaga.
+  - Fica na cena (`mesa_cenas.terreno`); LIMPAR TERRENO DIFÍCIL fica no menu da cena.
+  - O arrasto e a régua mostram, abaixo da metragem, o deslocamento gasto ("terreno difícil: 4 m custam 7 m"); o turno
+    conta o custo.
+- **Deslocamento** = 8 m + AGI (mínimo 5 m; NPC do bestiário pela AGI da ficha, NPC rápido 10 m). O Sprint dobra.
+- **Quadrado:** forma de área nova (centro num ponto no alcance, lado no card), para barreiras de quatro cantos.
 - **Crescer** (cap. 4: Baika e Lobo de Duas Cabeças ficam Grandes; Chou Baika e Lobo de Três Cabeças, Enormes): USAR na
   ficha rápida cresce o token pela duração do jutsu.
   - O espaço novo cobre o antigo, no encaixe livre mais perto do centro, e o token guarda o tamanho normal

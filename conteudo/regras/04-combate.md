@@ -26,7 +26,7 @@ No seu turno, você tem uma Ação Primária e uma Ação Secundária. A primár
 
 Fora do seu turno, você ainda tem uma Reação, para esquivar, defender, dar um golpe de oportunidade ou usar jutsus de reação, como o Kawarimi (Substituição). E há as ações livres, que quase não custam tempo: falar uma frase curta, soltar um item ou ativar um efeito descrito como livre. Desses efeitos livres de jutsu ou habilidade, só um por turno.
 
-Mover-se com a ação secundária leva você até o seu Deslocamento, que é de 10 m para quase todo ninja. Sprintar, com a ação primária, soma o dobro disso. A seção Movimento e Distância, logo abaixo, explica como medir.
+Mover-se com a ação secundária leva você até o seu Deslocamento, que é de 8 m mais a sua AGI. Sprintar, com a ação primária, soma o mesmo tanto outra vez, e o caminho da rodada dobra. A seção Movimento e Distância, logo abaixo, explica como medir.
 
 Uma cena é um trecho contínuo de ação, com o mesmo objetivo e no mesmo lugar: um combate, uma infiltração, uma perseguição. Efeitos que valem “por cena” se renovam quando ela termina.
 
@@ -36,7 +36,7 @@ Uma cena é um trecho contínuo de ação, com o mesmo objetivo e no mesmo lugar
 - **Reação:** uma, fora do seu turno; esquivar, defender, golpe de oportunidade, jutsus de reação como o Kawarimi
 - **Ações livres:** frase curta, soltar item, ativar efeito livre (no máximo um efeito livre de jutsu ou habilidade por turno)
 - **Ação Completa:** a primária e a secundária do mesmo turno
-- **Deslocamento:** mover (ação secundária) vai até o seu Deslocamento (10 m); sprintar (ação primária) soma o dobro (20 m)
+- **Deslocamento:** mover (ação secundária) vai até o seu Deslocamento (8 m + AGI); sprintar (ação primária) soma o Deslocamento outra vez (com 10 m, 20 m na rodada)
 - **Cena:** ação contínua com o mesmo objetivo e local; efeitos “por cena” se renovam ao fim dela
 :::
 
@@ -56,15 +56,17 @@ Quadrados que se tocam, inclusive pela quina, são adjacentes. É até onde cheg
 
 ### Deslocamento {#deslocamento}
 
-Todo personagem tem um Deslocamento de 10 m, anotado na ficha. Algumas técnicas mexem nesse valor: a Especialização Velocidade soma 5 m, e o 5º Portão o triplica enquanto está aberto.
+Todo personagem tem um Deslocamento de 8 m mais a sua AGI, anotado na ficha, e nunca menos de 5 m: com AGI 2, são 10 m; com AGI -1, 7 m. Algumas técnicas mexem nesse valor: a Especialização Velocidade soma 5 m, e o 5º Portão o triplica enquanto está aberto.
 
-Mover-se com a ação secundária leva você até o seu Deslocamento. Sprintar, com a ação primária, soma o dobro dele: com 10 m, são mais 20 m, e o ninja cruza 30 m numa rodada. Dá para dividir o caminho e andar uma parte antes e outra depois da ação primária, desde que o total não passe do que as suas ações dão. Quem tem duas ações secundárias por turno, como na Velocidade nível 2, pode se mover duas vezes.
+Mover-se com a ação secundária leva você até o seu Deslocamento. Sprintar, com a ação primária, soma o Deslocamento mais uma vez: com 10 m, o ninja cruza 20 m numa rodada. Dá para dividir o caminho e andar uma parte antes e outra depois da ação primária, desde que o total não passe do que as suas ações dão. Quem tem duas ações secundárias por turno, como na Velocidade nível 2, pode se mover duas vezes.
 
 Aliados não atrapalham: dá para passar pelo espaço deles. Inimigos fecham o caminho, a não ser para as criaturas Enormes e Colossais (veja Tamanho e Espaço), e ninguém termina o movimento no espaço de outra criatura. Quem está Caído levanta com a ação secundária ou rasteja, como em terreno difícil.
 
 ### Terreno {#terreno}
 
 Escombros, mata fechada, lama, gelo e o chão revirado por um jutsu de Terra são terreno difícil: cada metro custa 2 m de deslocamento. Nadar e escalar sem chakra também.
+
+Quem cria o terreno com um jutsu, como o chão revirado do Doton, o gelo do Hyōton ou as raízes do Mokuton, anda nele sem custo. E alguns clãs andam em casa: os Yuki no gelo e na neve, os Sabaku na areia, os Hōzuki na água e na lama, onde também nadam sem custo, e os Senju na mata fechada e na madeira do Mokuton.
 
 Paredes, troncos e a superfície da água, não. Todo ninja aprende cedo a prender o chakra na sola dos pés, e anda numa parede ou num lago como em chão firme. O truque depende de chakra e de foco: quem fica sem PC, Atordoado, Paralisado ou inconsciente cai da parede ou afunda.
 
@@ -88,9 +90,9 @@ Se uma criatura gigante não couber no mapa, o Mestre pode encolhê-la: o espaç
 
 ### Áreas {#areas}
 
-Os jutsus de área usam quatro formas. A esfera pega tudo a até a distância indicada de um ponto, contada como no deslocamento. Esse ponto precisa estar no alcance do jutsu; quando o card diz "em torno de si", o ponto é o próprio usuário, que fica de fora. O cone sai do usuário e vai abrindo até ter, na ponta, a largura igual ao comprimento. A linha sai do usuário e tem 1 m de largura. A parede é uma faixa de 1 m de espessura, posicionada dentro do alcance.
+Os jutsus de área usam cinco formas. A esfera pega tudo a até a distância indicada de um ponto, contada como no deslocamento. Esse ponto precisa estar no alcance do jutsu; quando o card diz "em torno de si", o ponto é o próprio usuário, que fica de fora. O cone sai do usuário e vai abrindo até ter, na ponta, a largura igual ao comprimento: é a forma do que sai do corpo sem parar, como o fogo do Goukakyu. A linha sai do usuário e tem 1 m de largura. A parede é uma faixa de 1 m de espessura, posicionada dentro do alcance. O quadrado tem o centro num ponto dentro do alcance e o lado indicado no card, como as barreiras de quatro cantos do Shishienjin.
 
-A esfera atinge os quadrados que estão dentro da contagem. O cone, a linha e a parede atingem os quadrados cujo centro fica dentro da forma. Uma criatura grande é atingida se qualquer quadrado dela estiver na área. E quando um texto fala em "área de 10 m de raio", é o mesmo que uma esfera de 10 m.
+A esfera atinge os quadrados que estão dentro da contagem, e o quadrado, os que ficam dentro dele. O cone, a linha e a parede atingem os quadrados cujo centro fica dentro da forma. Uma criatura grande é atingida se qualquer quadrado dela estiver na área. E quando um texto fala em "área de 10 m de raio", é o mesmo que uma esfera de 10 m.
 
 ### Movimento Forçado {#movimento-forcado}
 
@@ -98,19 +100,27 @@ Um jato de água, uma rajada de vento ou um chute bem dado tiram qualquer um do 
 
 Ninguém empurra o que é grande demais: o efeito só move quem é, no máximo, um tamanho maior que quem o causa. Um ninja, que é Médio, empurra até uma criatura Grande; a Kurama, Colossal, não sai do lugar com um jato de água.
 
+### Queda e Afogamento {#queda-e-afogamento}
+
+Um ninja aprende a cair antes de aprender a lutar. Até 6 m, ele cai de pé e sem dano. Acima disso, sofre 1d6 de dano a cada 3 m além dos 6, até o máximo de 20d6: uma queda de 9 m dá 1d6, e uma de 15 m dá 3d6. Quem cai pode gastar a Reação num teste de Acrobacia (DT 15) e, se passar, sofre só a metade.
+
+Debaixo d'água, o ar acaba. Um ninja prende o fôlego por 10 rodadas, mais 2 por ponto de VIG. Esgotado o fôlego, ganha 1 nível de Fadiga no começo de cada turno até voltar a respirar: no Colapso desmaia, e no último nível pode morrer (veja Fadiga).
+
 :::na-mesa{titulo="Movimento e distância"}
 - **Grade:** 1 quadrado = 1 m
 - **Diagonal:** alterna 1 m e 2 m (4 diagonais = 6 m)
 - **Adjacente:** os 8 quadrados em volta; alcance de Toque e corpo a corpo
-- **Deslocamento:** 10 m (+5 m com Velocidade; triplica no 5º Portão)
+- **Deslocamento:** 8 m + AGI, no mínimo 5 m (+5 m com Velocidade; triplica no 5º Portão)
 - **Mover:** ação secundária, até o Deslocamento
-- **Sprintar:** ação primária, mais o dobro do Deslocamento
-- **Terreno difícil:** cada metro custa 2 m (escombros, lama, gelo; nadar e escalar sem chakra)
+- **Sprintar:** ação primária, mais uma vez o Deslocamento (a rodada dobra)
+- **Terreno difícil:** cada metro custa 2 m (escombros, lama, gelo; nadar e escalar sem chakra); quem criou o terreno não paga, nem os clãs em casa (Yuki no gelo, Sabaku na areia, Hōzuki na água e na lama, Senju na mata)
 - **Paredes e água:** chão firme para ninjas; cai ou afunda quem fica sem PC, Atordoado, Paralisado ou inconsciente
 - **Tamanho:** Pequeno e Médio 1 × 1; Grande 3 × 3; Enorme 6 × 6 (alcança 2 m); Colossal 10 × 10 (alcança 3 m)
 - **Passar por cima:** Enorme e Colossal atravessam criaturas Médias ou menores, como terreno difícil
-- **Áreas:** esfera = raio a partir de um ponto no alcance; cone com a ponta tão larga quanto o comprimento; linha de 1 m de largura
+- **Áreas:** esfera = raio a partir de um ponto no alcance; cone com a ponta tão larga quanto o comprimento; linha de 1 m de largura; quadrado com o centro num ponto no alcance
 - **Empurrar ou puxar sem distância:** 3 m em linha reta; só move quem é até um tamanho maior que quem empurra
+- **Queda:** até 6 m sem dano; 1d6 a cada 3 m além disso (máx. 20d6); Acrobacia DT 15 (Reação) corta à metade
+- **Fôlego:** 10 rodadas + 2 por ponto de VIG; sem ar, +1 nível de Fadiga por turno
 :::
 
 ## Ataque e Defesa {#ataque-e-defesa}
@@ -150,11 +160,11 @@ Quando um ataque vem na sua direção, você pode gastar a sua Reação e 10 PE 
 
 ### Defesa Total {#defesa-total}
 
-Às vezes a melhor jogada é não atacar. Gastando a sua ação primária e 10 PE, você se fecha em guarda e ganha +5 na Defesa e na Defesa Mental até o começo do seu próximo turno. Segurar a guarda fechada também gasta o corpo, e é por isso que ela serve para o momento certo, não para todos os turnos.
+Às vezes a melhor jogada é não atacar. Gastando a sua ação primária, você se fecha em guarda e ganha +5 na Defesa e na Defesa Mental até o começo do seu próximo turno. O preço é a própria ação: quem se defende não ataca.
 
 ### Combo Taijutsu {#combo-taijutsu}
 
-Um golpe que entra abre espaço para o próximo. Depois de acertar um ataque de Taijutsu, você pode gastar 5 PE e a sua ação secundária para encadear um segundo ataque, com -5 na rolagem.
+Um golpe que entra abre espaço para o próximo. Depois de acertar um ataque de Taijutsu, você pode gastar 5 PE e a sua ação secundária para encadear um segundo ataque, com -5 na rolagem. Esse segundo golpe tem de ser do corpo: um jutsu do tipo Taijutsu ou um golpe desarmado. Arma e jutsu de outro tipo não entram no combo.
 
 ### Golpe de Oportunidade (Reação) {#golpe-de-oportunidade-reacao}
 
@@ -164,8 +174,8 @@ Quem sabe sair de perto não provoca nada. O Shunshin, o Kawarimi e o teletransp
 
 :::na-mesa{titulo="Manobras de combate"}
 - **Esquiva Ativa:** Reação e 10 PE; teste de Acrobacia substitui a Defesa contra um ataque
-- **Defesa Total:** ação primária e 10 PE; +5 na Defesa e na Defesa Mental até o seu próximo turno
-- **Combo Taijutsu:** ação secundária e 5 PE, depois de acertar um Taijutsu; segundo ataque com -5
+- **Defesa Total:** ação primária; +5 na Defesa e na Defesa Mental até o seu próximo turno
+- **Combo Taijutsu:** ação secundária e 5 PE, depois de acertar um Taijutsu; segundo ataque com -5, só jutsu de Taijutsu ou golpe desarmado
 - **Golpe de Oportunidade:** Reação, quando um inimigo sai do seu alcance corpo a corpo andando; golpe básico, sem jutsu e sem PE (Shunshin, Kawarimi, teletransporte e empurrões não provocam)
 :::
 
@@ -177,7 +187,7 @@ A kunai entra fundo. Um estalo, uma nuvem de fumaça, e no chão sobra só um tr
 
 Todo genin aprende a Substituição na Academia, e nenhum veterano deixa de usá-la. O segredo não é a velocidade: é ler o atacante e enganá-lo no último instante.
 
-O Kawarimi é uma Reação especial, declarada no instante em que um ataque acerta você, antes de o dano ser aplicado. O atacante já rolou e acertou; agora é a sua vez. Faça um teste de Percepção (somando a proficiência em Kawarimi no Jutsu, se tiver). Se o total igualar ou superar o total do ataque, você troca de lugar com um objeto a até 5 metros e escapa do golpe. Se ficar abaixo, o ataque acerta normalmente e os PC são gastos à toa.
+O Kawarimi é uma Reação especial, declarada no instante em que um ataque acerta você, antes de o dano ser aplicado. O atacante já rolou e acertou; agora é a sua vez. Faça um teste de Percepção (somando a proficiência em Kawarimi no Jutsu, se tiver). Para escapar, o total precisa superar o do ataque e, depois, superar também um teste de Percepção do atacante, que tenta enxergar a troca. Vencendo os dois, você troca de lugar com um objeto a até 5 metros e escapa do golpe. Perdendo qualquer um, o ataque acerta normalmente e os PC são gastos à toa.
 
 O truque cansa. A primeira Substituição da cena custa 3 PC, a segunda 5 e a terceira 8. Não existe quarta.
 
@@ -185,8 +195,8 @@ E ele não funciona sempre. Sem um objeto a até 5 metros (em campo aberto, no a
 
 :::na-mesa{titulo="Kawarimi"}
 - **Quando:** depois que o ataque acerta, antes do dano (Reação)
-- **Teste:** 1d20 + Percepção (+ proficiência em Kawarimi) contra o total do ataque
-- **Sucesso:** troca de lugar com um objeto a até 5 m e evita o ataque
+- **Teste:** 1d20 + Percepção (+ proficiência em Kawarimi); precisa superar o total do ataque e, depois, a Percepção do atacante
+- **Sucesso:** vencendo os dois, troca de lugar com um objeto a até 5 m e evita o ataque
 - **Custo na cena:** 3 PC no 1º uso, 5 PC no 2º, 8 PC no 3º (máximo de 3 usos)
 - **Falha sozinho:** sem objeto a até 5 m; desprevenido (sem agir na rodada anterior, dormindo, em Genjutsu); 20 natural do atacante; atacante em furtividade
 - **Não combina:** com a Esquiva Ativa na mesma rodada
@@ -235,7 +245,7 @@ Os contadores zeram quando o personagem volta a ter PV positivos.
 
 Ninguém precisa morrer sozinho. Um personagem adjacente pode gastar a sua ação primária para tentar estabilizar um aliado Inconsciente, com um teste de Medicina: DT 12 de mãos vazias, DT 10 com um kit médico. Se passar, o aliado fica Estabilizado na hora e para de rolar Saves, mas continua inconsciente, em 0 PV. Se falhar, nada acontece, e dá para tentar de novo no turno seguinte.
 
-Uma cura de verdade resolve mais rápido. Qualquer cura que devolva PV, como o Shōsen Jutsu ou uma Pílula de Cura, desperta o aliado na hora e zera os contadores de Save.
+Uma cura de verdade resolve mais rápido. Qualquer cura que devolva PV, como o Shōsen Jutsu ou uma Pílula de Cura, desperta o aliado na hora e zera os contadores de Save. A cura conta a partir de 0, não do negativo: um aliado em -8 PV que recebe 10 de cura fica com 10 PV.
 
 ### Dano em Personagem Inconsciente {#dano-em-personagem-inconsciente}
 

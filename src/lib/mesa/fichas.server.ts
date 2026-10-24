@@ -6,11 +6,12 @@ import { jutsusDaFicha } from '#lib/jutsus/servidor.ts';
 import { equipamentos, jutsus as catalogoJutsus } from '#lib/livro/dados.server.ts';
 import { catalogoFicha } from '#lib/personagem/catalogo.server.ts';
 import { NIVEIS_PROFICIENCIA } from '#lib/personagem/dados.ts';
-import { custoJutsu, estadoAtual, ficha, inventarioInicial, type EstadoJogo, type ItemInventario } from '#lib/personagem/progressao.ts';
+import { cargaInventario, custoJutsu, estadoAtual, ficha, inventarioInicial, type EstadoJogo, type ItemInventario } from '#lib/personagem/progressao.ts';
 import { linhasPericia, type FichaDados, type ItemLoja } from '#lib/personagem/regras.ts';
 import { curaDoEfeito, danoDoEfeito, periciaDoAtaque, somar, teste, totalPericia } from '#lib/rolagens/expressoes.ts';
 import { partesAtaqueJutsu, partesDanoAtributo, partesPericia, type Parte } from '#lib/rolagens/partes.ts';
 import { ehVersatil, modosDaArma, nomeDoModo, type ModoArma } from './armas.ts';
+import { deslocamentoPorAgi } from './geometria.ts';
 import { duracaoEmTurnos, reguaDoCard, tamanhoDoEfeito } from './regua.ts';
 import type { ArmaMesa, ExtrasNpc, FichaMesa, JutsuMesa } from './tipos.ts';
 import bestiario from '#lib/livro/gerado/bestiario.json';
@@ -64,6 +65,7 @@ export function extrasDoNpc(n: { bestiario: string | null }): ExtrasNpc | null {
 	const k = e.combate;
 	return {
 		tamanho: TAMANHOS[e.tamanho ?? 'medio'].espaco,
+		deslocamento: k.ficha ? deslocamentoPorAgi(k.ficha.atributos.agi, k.ficha.especializacoes.some((s) => /velocidade/i.test(s.nome))) : 10,
 		ataques: k.ataques.flatMap((a) => {
 			// o alcance da ficha, mais o outro modo da arma do catálogo (a Kunai "corpo a corpo" também é arremessada)
 			const m = metrosDoAlcance(a.alcance);
@@ -162,7 +164,8 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 		});
 
 	const buki = linhas.find((l) => l.id === 'bukijutsu');
-	const inventario = ((p.inventario as ItemInventario[] | null) ?? inventarioInicial(dados, loja)).filter((i) => i.grupo === 'Armas' && !i.selado);
+	const mochila = (p.inventario as ItemInventario[] | null) ?? inventarioInicial(dados, loja);
+	const inventario = mochila.filter((i) => i.grupo === 'Armas' && !i.selado);
 	// uma linha por modo de uso: a Kunai (Versátil) tem o golpe e o arremesso (cap. 12)
 	const armas: ArmaMesa[] = [...new Map(inventario.map((i) => [i.nome, i])).values()].flatMap((i) => {
 		const arma = armaDoCatalogo(i.nome);
@@ -211,11 +214,14 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 		defesa: r.defesa,
 		defesaMental: r.defesaMental,
 		iniciativa: r.iniciativa,
-		deslocamento: 10 + (velocidade ? 5 : 0),
+		deslocamento: deslocamentoPorAgi(calc.atributos.AGI, velocidade > 0),
 		jutsus,
 		armas,
 		pericias: linhas.map((l) => ({ nome: l.nome, expr: teste(l.total), partes: partesPericia(l) })),
 		distancias,
-		notas: p.anotacoes ?? ''
+		notas: p.anotacoes ?? '',
+		inventario: mochila.map((i) => ({ nome: i.qualidade ? `${i.nome} (${i.qualidade})` : i.nome, qtd: i.qtd, grupo: i.grupo, icone: i.icone, nota: i.nota ?? null, selado: !!i.selado })),
+		carga: { atual: Math.round(cargaInventario(mochila) * 10) / 10, max: r.cargaMax },
+		ryo: p.ryo
 	};
 }

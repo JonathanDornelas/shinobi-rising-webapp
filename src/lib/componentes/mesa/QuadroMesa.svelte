@@ -6,7 +6,7 @@
 	import { CORES, corCss } from '#lib/mesa/cores.ts';
 	import { CONDICOES } from '#lib/personagem/dados.ts';
 	import type { CorMesa } from '#lib/supabase/banco.ts';
-	import { distanciaEntre, infoMovimento, provocaReacao, quadradosEmVolta, trechos, type Quadrado } from '#lib/mesa/geometria.ts';
+	import { custoCaminho, custoTrechos, infoMovimento, provocaReacao, quadradosEmVolta, trechos, type Quadrado } from '#lib/mesa/geometria.ts';
 	import type { Mesa } from '#lib/mesa/mesa.svelte.ts';
 	import { calcularMolde, nomeCurto, type UiMesa } from '#lib/mesa/ui.svelte.ts';
 
@@ -126,6 +126,18 @@
 	let segurar: ReturnType<typeof setTimeout> | undefined;
 	let espaco = false;
 	let hoverTimer: ReturnType<typeof setTimeout> | undefined;
+	/** Terreno difícil sendo pintado (só o Mestre): o primeiro quadrado decide se o arrasto põe ou tira. */
+	let pintura = $state<{ por: boolean; feitos: Set<string> } | null>(null);
+	const terrenoVisivel = $derived(pintura ? pintura.feitos : mesa.terreno);
+	function pintar(g: Quadrado) {
+		if (!pintura) return;
+		const k = `${g[0]},${g[1]}`;
+		if (pintura.feitos.has(k) === pintura.por) return;
+		const feitos = new Set(pintura.feitos);
+		if (pintura.por) feitos.add(k);
+		else feitos.delete(k);
+		pintura = { ...pintura, feitos };
+	}
 
 	$effect(() => {
 		const baixo = (e: KeyboardEvent) => e.code === 'Space' && (espaco = true);
@@ -200,6 +212,11 @@
 				else if (k) ui.avisar('Esse traço é de outra pessoa.');
 				break;
 			}
+			case 'terreno':
+				if (!mesa.mestre || mesa.somenteLeitura) break;
+				pintura = { por: !mesa.terreno.has(`${g[0]},${g[1]}`), feitos: new Set(mesa.terreno) };
+				pintar(g);
+				break;
 		}
 	}
 
@@ -231,6 +248,7 @@
 			}
 			return;
 		}
+		if (pintura) return pintar(g);
 		const m = ui.mira;
 		if (m && !m.fixa) {
 			ui.mira = { ...m, tx: g[0], ty: g[1], px: p.mx, py: p.my, travar: e.shiftKey };
@@ -269,17 +287,24 @@
 			return;
 		}
 		pan = null;
+		if (pintura) {
+			const feitos = pintura.feitos;
+			pintura = null;
+			mesa.definirTerreno([...feitos].map((k) => k.split(',').map(Number) as [number, number]));
+			return;
+		}
 		if (arrasto) {
 			const t = mesa.tokens.find((k) => k.id === arrasto!.id);
 			const a = arrasto;
 			arrasto = null;
 			mesa.enviar('fantasma', null, true);
 			if (t && (a.x !== t.x || a.y !== t.y)) {
-				const metros = distanciaEntre(t, { x: a.x, y: a.y, tamanho: t.tamanho });
+				// o turno conta o deslocamento gasto: no terreno difícil, cada metro custa 2
+				const { custo } = custoCaminho(t, a, mesa.terreno);
 				const D = deslocamentoDe(t);
-				const info = infoMovimento(metros, mesa.daVez.has(t.id) ? t.movido : 0, D);
+				const info = infoMovimento(custo, mesa.daVez.has(t.id) ? t.movido : 0, D);
 				ui.anuncio = info.faixa === 'normal' ? `${t.nome}: ${info.total} m andados, sobram ${D - info.total} m` : info.faixa === 'sprint' ? `${t.nome}: ${info.total} m andados, com sprint` : `${t.nome}: ${info.texto}`;
-				mesa.mover(t.id, a.x, a.y, metros);
+				mesa.mover(t.id, a.x, a.y, custo);
 			}
 			return;
 		}
@@ -338,13 +363,13 @@
 	const infoArrasto = $derived.by(() => {
 		if (!arrasto || !arrastado || (arrasto.x === arrastado.x && arrasto.y === arrastado.y)) return null;
 		const destino = { x: arrasto.x, y: arrasto.y, tamanho: arrastado.tamanho };
-		const metros = distanciaEntre(arrastado, destino);
-		const info = infoMovimento(metros, mesa.daVez.has(arrastado.id) ? arrastado.movido : 0, deslocamentoDe(arrastado));
+		const { metros, custo } = custoCaminho(arrastado, destino, mesa.terreno);
+		const info = infoMovimento(custo, mesa.daVez.has(arrastado.id) ? arrastado.movido : 0, deslocamentoDe(arrastado));
 		const pc = !!arrastado.personagem_id || (!arrastado.npc_id && !!arrastado.dono_id);
 		const inimigos = visiveis.filter((e) => e.id !== arrastado.id && e.visivel && (pc ? !!e.npc_id && !e.aliado : !!e.personagem_id || (!e.npc_id && !!e.dono_id)));
 		const reacao = provocaReacao(arrastado, destino, inimigos).map((e) => nomeCurto(e.nome));
 		const cor = info.faixa === 'normal' ? corCss(mesa.corDe(mesa.donoDe(arrastado))) : info.faixa === 'sprint' ? 'var(--acc)' : 'var(--mesa-vermelhao)';
-		return { ...info, cor, reacao: reacao.length ? `provoca reação de ${reacao.join(', ')}` : '' };
+		return { ...info, cor, reacao: reacao.length ? `provoca reação de ${reacao.join(', ')}` : '', terreno: custo > metros ? `terreno difícil: ${metros} m custam ${custo} m` : '' };
 	});
 	const aneis = $derived.by(() => {
 		const a = ui.aneis;
@@ -354,7 +379,7 @@
 	});
 	const reguaMinha = $derived(ui.regua ? { pontos: ui.regua.cur ? [...ui.regua.pontos, ui.regua.cur] : ui.regua.pontos, feita: ui.regua.feita, fixa: ui.regua.fixa, t: ui.regua.t } : null);
 	const cursor = $derived(
-		arrasto || pan ? 'grabbing' : ui.mira && !ui.mira.fixa ? 'crosshair' : ui.ferramenta === 'mover' ? 'default' : ui.ferramenta === 'borracha' ? 'cell' : 'crosshair'
+		arrasto || pan ? 'grabbing' : ui.mira && !ui.mira.fixa ? 'crosshair' : ui.ferramenta === 'mover' ? 'default' : ui.ferramenta === 'borracha' || ui.ferramenta === 'terreno' ? 'cell' : 'crosshair'
 	);
 	const corMolde = $derived(molde ? (molde.ok ? corCss(mesa.corDe(mesa.donoDe(molde.lancador))) : 'var(--mesa-vermelhao)') : '');
 	const letras = (i: number) => (i < 26 ? String.fromCharCode(65 + i) : String.fromCharCode(65 + Math.floor(i / 26) - 1) + String.fromCharCode(65 + (i % 26)));
@@ -411,6 +436,10 @@
 					<line x1="0" y1="0" x2="0" y2="0.35" style="stroke: var(--mesa-{c.id})" stroke-width="0.06" stroke-opacity="0.7" />
 				</pattern>
 			{/each}
+			<!-- terreno difícil: cruzinhas de cascalho -->
+			<pattern id="terreno" width="0.5" height="0.5" patternUnits="userSpaceOnUse">
+				<path d="M0.12 0.12l0.14 0.14M0.26 0.12l-0.14 0.14" style="stroke: var(--mesa-siena)" stroke-width="0.045" stroke-opacity="0.9" />
+			</pattern>
 		</defs>
 		<g transform="translate({-ui.vx * s} {-ui.vy * s}) scale({s})">
 			<rect x="0" y="0" width={L} height={A} style="fill: var(--b1)" />
@@ -420,6 +449,12 @@
 			{#each { length: A + 1 } as _, j (j)}
 				<line x1="0" y1={j} x2={L} y2={j} style="stroke: var(--fg)" stroke-opacity={j % 5 ? 0.09 : 0.18} stroke-width={F(1)} />
 			{/each}
+
+			{#if terrenoVisivel.size}
+				{@const d = [...terrenoVisivel].map((k) => `M${k.replace(',', ' ')}h1v1h-1z`).join('')}
+				<path {d} style="fill: var(--mesa-siena)" fill-opacity="0.14" pointer-events="none" />
+				<path {d} fill="url(#terreno)" pointer-events="none" />
+			{/if}
 
 			{#each mesa.efeitos as ef (ef.id)}
 				{@const c = corCss(mesa.corDe(ef.autor_id))}
@@ -470,7 +505,7 @@
 					<rect x="0" y="0" width={L} height={A} fill="url(#hachura-{molde.ok ? (mesa.corDe(mesa.donoDe(molde.lancador)) ?? 'ardosia') : 'vermelhao'})" pointer-events="none" />
 				{/if}
 				{#if molde.contorno}<polygon points={molde.contorno.map((p) => p.join(',')).join(' ')} fill="none" style="stroke: {corMolde}" stroke-width={F(2)} pointer-events="none" />{/if}
-				{#if molde.forma === 'esfera' && !ui.mira.jutsu.regua.emSi || molde.forma === 'parede'}
+				{#if molde.forma === 'esfera' && !ui.mira.jutsu.regua.emSi || molde.forma === 'parede' || molde.forma === 'quadrado'}
 					<rect x={ui.mira.tx + 0.1} y={ui.mira.ty + 0.1} width="0.8" height="0.8" fill="none" style="stroke: {corMolde}" stroke-width={F(3)} pointer-events="none" />
 					{@render rotulo(ui.mira.tx + 1.2, ui.mira.ty + 0.5, `${molde.dist} m`, corMolde)}
 				{/if}
@@ -562,8 +597,11 @@
 			{/each}
 
 			{#if arrasto && infoArrasto}
-				{@render rotulo(arrasto.x + (arrastado?.tamanho ?? 1) / 2, arrasto.y - 0.3, infoArrasto.texto, infoArrasto.cor, 'meio')}
-				{#if infoArrasto.reacao}{@render rotulo(arrasto.x + (arrastado?.tamanho ?? 1) / 2, arrasto.y - 0.3 - F(26), infoArrasto.reacao, 'var(--mesa-vermelhao)', 'meio')}{/if}
+				<!-- com terreno difícil, o custo maior fica logo abaixo da metragem -->
+				{@const sobe = infoArrasto.terreno ? F(26) : 0}
+				{@render rotulo(arrasto.x + (arrastado?.tamanho ?? 1) / 2, arrasto.y - 0.3 - sobe, infoArrasto.texto, infoArrasto.cor, 'meio')}
+				{#if infoArrasto.terreno}{@render rotulo(arrasto.x + (arrastado?.tamanho ?? 1) / 2, arrasto.y - 0.3, infoArrasto.terreno, 'var(--mesa-siena)', 'meio')}{/if}
+				{#if infoArrasto.reacao}{@render rotulo(arrasto.x + (arrastado?.tamanho ?? 1) / 2, arrasto.y - 0.3 - sobe - F(26), infoArrasto.reacao, 'var(--mesa-vermelhao)', 'meio')}{/if}
 			{/if}
 
 			{#each [...(reguaMinha ? [[mesa.eu, reguaMinha] as const] : []), ...Object.entries(mesa.reguas)] as [u, r] (u)}
@@ -571,13 +609,15 @@
 				{@const pts = r.pontos}
 				{@const seg = trechos(pts)}
 				{@const total = seg.reduce((a, b) => a + b, 0)}
+				{@const custo = mesa.terreno.size ? custoTrechos(pts, mesa.terreno) : total}
 				{@const ult = pts[pts.length - 1]}
 				{#if pts.length}
 					<g opacity={r.feita && !r.fixa ? Math.max(0, 1 - (agora - r.t) / 3000) : 1} pointer-events="none">
 						<polyline points={pts.map((q) => `${q[0] + 0.5},${q[1] + 0.5}`).join(' ')} fill="none" style="stroke: {c}" stroke-width={F(3)} stroke-dasharray="{F(10)} {F(4)}" />
 						{#each pts as q, i (i)}<rect x={q[0] + 0.5 - F(5)} y={q[1] + 0.5 - F(5)} width={F(10)} height={F(10)} style="fill: {c}" />{/each}
 						{@render rotulo(ult[0] + 0.5, ult[1] - 0.35, seg.length > 1 ? `${seg.join(' + ')} = ${total} m` : `${total} m`, c, 'meio')}
-						{@render rotulo(ult[0] + 0.5, ult[1] + 1.45, `${mesa.membro(u)?.nome ?? '?'} medindo`, c, 'meio')}
+						{#if custo > total}{@render rotulo(ult[0] + 0.5, ult[1] - 0.35 + F(26), `terreno difícil: custa ${custo} m`, 'var(--mesa-siena)', 'meio')}{/if}
+						{@render rotulo(ult[0] + 0.5, ult[1] + 1.45 + (custo > total ? F(26) : 0), `${mesa.membro(u)?.nome ?? '?'} medindo`, c, 'meio')}
 					</g>
 				{/if}
 			{/each}

@@ -3,7 +3,7 @@ import jutsus from '#lib/livro/gerado/jutsus.json';
 import bestiario from '#lib/livro/gerado/bestiario.json';
 import type { Criatura } from '#lib/livro/tipos.ts';
 import { TAMANHOS } from '#lib/bestiario/npc.ts';
-import { alcanceCorpo, distancia, distanciaEntre, infoMovimento, moldeDirecional, moldeParede, naArea, provocaReacao, quadradosEsfera, trechos } from './geometria.ts';
+import { alcanceCorpo, custoCaminho, custoTrechos, deslocamentoPorAgi, distancia, distanciaEntre, infoMovimento, moldeQuadrado, moldeDirecional, moldeParede, naArea, provocaReacao, quadradosEsfera, trechos } from './geometria.ts';
 import { modosDaArma, nomeDoModo } from './armas.ts';
 import { molduraDoToken } from './molduras.ts';
 import { habilidadeDoTraco } from './habilidades.ts';
@@ -61,8 +61,17 @@ describe('moldes de área', () => {
 describe('movimento', () => {
 	it('dentro do Deslocamento, no sprint e além do limite', () => {
 		expect(infoMovimento(7, 0, 10)).toMatchObject({ faixa: 'normal', texto: '7 m · sobram 3 m' });
-		expect(infoMovimento(8, 6, 10)).toMatchObject({ faixa: 'sprint', texto: '14 m · Sprint: +20 m' });
-		expect(infoMovimento(34, 0, 10)).toMatchObject({ faixa: 'alem', texto: '4 m além do limite' });
+		// o Sprint soma o Deslocamento outra vez: com 10 m, 20 m na rodada
+		expect(infoMovimento(8, 6, 10)).toMatchObject({ faixa: 'sprint', texto: '14 m · Sprint: +10 m' });
+		expect(infoMovimento(24, 0, 10)).toMatchObject({ faixa: 'alem', texto: '4 m além do limite' });
+	});
+
+	it('o Deslocamento é 8 m + AGI, no mínimo 5 m, e a Velocidade soma 5 m', () => {
+		expect(deslocamentoPorAgi(2)).toBe(10);
+		expect(deslocamentoPorAgi(0)).toBe(8);
+		expect(deslocamentoPorAgi(-1)).toBe(7);
+		expect(deslocamentoPorAgi(-5)).toBe(5);
+		expect(deslocamentoPorAgi(3, true)).toBe(16);
 	});
 
 	it('sair de perto de um inimigo provoca golpe de oportunidade', () => {
@@ -228,5 +237,43 @@ describe('técnicas de crescer (cap. 4, Tamanho e Espaço)', () => {
 	it('nenhum outro jutsu muda o tamanho', () => {
 		const comTamanho = (jutsus as { slug: string; efeito: { t: string }[] }[]).filter((j) => tamanhoDoEfeito((j.efeito ?? []).map((t) => t.t).join('')));
 		expect(comTamanho.map((j) => j.slug).sort()).toEqual(['baika-no-jutsu', 'chou-baika-no-jutsu', 'jinjuu-konbi-henge-soutourou', 'jinjuu-kongou-henge-santourou']);
+	});
+});
+
+describe('quadrado (cap. 4, Áreas)', () => {
+	it('o card "Quadrado 30m" vira a forma quadrado, com o lado em metros', () => {
+		expect(lerArea('Quadrado 30m')).toEqual({ forma: 'quadrado', n: 30 });
+		expect(lerArea('Cone grande (15m)')).toEqual({ forma: 'cone', n: 15 });
+		expect(lerArea('Cone enorme (30m)')).toEqual({ forma: 'cone', n: 30 });
+	});
+	it('o quadrado tem o centro no ponto e fica dentro da cena', () => {
+		const q = moldeQuadrado(10, 10, 6, 40, 30);
+		expect(q.quadrados).toHaveLength(36);
+		expect(q.contorno).toEqual([[8, 8], [14, 8], [14, 14], [8, 14]]);
+		expect(moldeQuadrado(0, 0, 6, 40, 30).quadrados).toHaveLength(16);
+	});
+	it('as barreiras de quatro cantos e os sopros do catálogo usam as formas novas', () => {
+		const area = (slug: string) => (jutsus as { slug: string; info: { k: string; v: string }[] }[]).find((j) => j.slug === slug)?.info.find((i) => i.k === 'Área')?.v;
+		expect(area('shishienjin')).toBe('Quadrado 30m');
+		expect(area('katon-goukakyu-no-jutsu')).toBe('Cone médio (10m)');
+		expect(area('katon-goka-messhitsu')).toBe('Cone enorme (30m)');
+	});
+});
+
+describe('terreno difícil (cap. 4, Terreno)', () => {
+	const t = (...q: [number, number][]) => new Set(q.map(([x, y]) => `${x},${y}`));
+	it('sem terreno, o custo é a metragem de sempre (diagonais alternam 1 e 2)', () => {
+		expect(custoCaminho({ x: 0, y: 0, tamanho: 1 }, { x: 4, y: 4 }, t())).toEqual({ metros: 6, custo: 6 });
+		expect(custoCaminho({ x: 0, y: 0, tamanho: 1 }, { x: 5, y: 0 }, t())).toEqual({ metros: 5, custo: 5 });
+	});
+	it('cada metro em terreno difícil custa 2', () => {
+		expect(custoCaminho({ x: 0, y: 0, tamanho: 1 }, { x: 5, y: 0 }, t([2, 0], [3, 0]))).toEqual({ metros: 5, custo: 7 });
+	});
+	it('o token grande conta o canto e paga se qualquer quadrado pisar no terreno', () => {
+		expect(custoCaminho({ x: 0, y: 0, tamanho: 3 }, { x: 2, y: 0 }, t())).toEqual({ metros: 2, custo: 2 });
+		expect(custoCaminho({ x: 0, y: 0, tamanho: 3 }, { x: 2, y: 0 }, t([4, 2]))).toEqual({ metros: 2, custo: 3 });
+	});
+	it('a régua soma o custo de cada trecho', () => {
+		expect(custoTrechos([[0, 0], [3, 0], [3, 3]], t([3, 1]))).toBe(7);
 	});
 });

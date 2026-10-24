@@ -12,6 +12,7 @@ import {
 	ehPergaminhoMestre,
 	livrePergaminho,
 	pesoItem,
+	curar,
 	descansar,
 	estadoAtual,
 	ficha,
@@ -81,7 +82,7 @@ export class FichaJogo {
 		const a = this.atual;
 		// PV pode ficar negativo (cap. 4); PC e PE param em 0.
 		const minimo = k === 'pv' ? -this.max.pv : 0;
-		const novo = Math.min(this.max[k], Math.max(minimo, a[k] + delta));
+		const novo = Math.min(this.max[k], Math.max(minimo, curar(k, a[k], delta)));
 		if (novo === a[k]) return;
 		const extra: EstadoJogo = {};
 		if (k === 'pv' && novo > 0 && a.pv <= 0) extra.saves = { sucessos: 0, falhas: 0 };

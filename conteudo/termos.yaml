@@ -197,7 +197,7 @@
   rotulo: Defesa Total
   nome: Defesa Total
   padroes: [Defesa Total]
-  resumo: Usa a ação primária e 10 PE. +5 em Defesa e em Defesa Mental até o início do seu próximo turno.
+  resumo: Usa a ação primária. +5 em Defesa e em Defesa Mental até o início do seu próximo turno.
   href: /regras/combate#defesa-total
   icone: recurso/ic-recurso-defesa
 - id: regra:iniciativa
@@ -217,7 +217,7 @@
   rotulo: Ação Secundária
   nome: Ação Secundária
   padroes: ['[Aa](?:ção|ções) [Ss]ecundárias?']
-  resumo: 1 por turno. Mover até o seu Deslocamento (10 m), sacar item, dar um comando simples a aliado ou marionete.
+  resumo: 1 por turno. Mover até o seu Deslocamento (8 m + AGI), sacar item, dar um comando simples a aliado ou marionete.
   href: /regras/combate#acoes-por-turno
 - id: regra:acao-livre
   rotulo: Ação Livre
@@ -241,13 +241,13 @@
   rotulo: Deslocamento
   nome: Deslocamento
   padroes: [Deslocamento]
-  resumo: 'Quanto o personagem anda com a ação secundária: 10 m, mais bônus (Velocidade +5 m; 5º Portão triplica). Sprintar soma o dobro.'
+  resumo: 'Quanto o personagem anda com a ação secundária: 8 m + AGI, no mínimo 5 m (Velocidade +5 m; 5º Portão triplica). Sprintar soma o Deslocamento outra vez.'
   href: /regras/combate#deslocamento
 - id: regra:terreno-dificil
   rotulo: Terreno difícil
   nome: Terreno difícil
   padroes: ['[Tt]erreno difícil']
-  resumo: Escombros, mata fechada, lama, gelo; nadar ou escalar sem chakra. Cada metro custa 2 m de deslocamento.
+  resumo: Escombros, mata fechada, lama, gelo; nadar ou escalar sem chakra. Cada metro custa 2 m de deslocamento; quem criou o terreno e os clãs em casa não pagam.
   href: /regras/combate#terreno
 - id: regra:golpe-de-oportunidade
   rotulo: Golpe de Oportunidade

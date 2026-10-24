@@ -181,3 +181,12 @@ describe('moldura da mesa e token crescido', () => {
 		expect(await um(banco.como(bruno, `select moldura, moldura_universal from campanhas where id = $1`, [campanha]))).toEqual({ moldura: 'hitaiate', moldura_universal: true });
 	});
 });
+
+describe('terreno difícil', () => {
+	it('só o Mestre marca o terreno da cena, e o grupo vê', async () => {
+		await banco.como(kaito, `update mesa_cenas set terreno = '[[3,4],[3,5]]'::jsonb where id = $1`, [ponte]);
+		expect(await banco.como(bruno, `update mesa_cenas set terreno = '[]'::jsonb where id = $1 returning id`, [ponte])).toEqual([]);
+		expect(await um(banco.como(bruno, `select terreno from mesa_cenas where id = $1`, [ponte]))).toEqual({ terreno: [[3, 4], [3, 5]] });
+		await expect(banco.como(kaito, `update mesa_cenas set terreno = '{"x": 1}'::jsonb where id = $1`, [ponte])).rejects.toThrow(/check/);
+	});
+});

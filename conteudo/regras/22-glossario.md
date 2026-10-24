@@ -136,7 +136,7 @@ Os seis atributos do sistema.
 | Ação Secundária | Mover (até o Deslocamento), sacar item, comando simples a aliado |
 | Ação Livre | Falar uma frase curta, soltar um item, efeitos descritos como livres |
 | Reação | Ação fora do seu turno (1 por rodada): esquivar, Kawarimi, golpe de oportunidade |
-| Deslocamento | Quanto o personagem anda com a ação secundária: 10 m, mais bônus; sprintar soma o dobro |
+| Deslocamento | Quanto o personagem anda com a ação secundária: 8 m + AGI (mínimo 5 m), mais bônus; sprintar soma o Deslocamento outra vez |
 | Adjacente | Os 8 quadrados em volta, inclusive as diagonais; alcance de Toque e corpo a corpo |
 | Tamanho | Pequeno, Médio, Grande, Enorme ou Colossal: o espaço no quadro (1, 1, 3, 6 e 10 quadrados de lado) e o alcance corpo a corpo |
 | Terreno difícil | Escombros, lama, gelo, nadar ou escalar sem chakra: cada metro custa 2 m |

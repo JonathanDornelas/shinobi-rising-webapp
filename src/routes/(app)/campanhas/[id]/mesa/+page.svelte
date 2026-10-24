@@ -16,6 +16,8 @@
 	import type { Json, MesaToken, Npc, Rolagem } from '#lib/supabase/banco.ts';
 	import ElencoMesa, { type ItemNpc } from '#lib/componentes/mesa/ElencoMesa.svelte';
 	import FichaRapida, { type AcoesFicha, type DadosFicha } from '#lib/componentes/mesa/FichaRapida.svelte';
+	import FichaCompleta, { type JutsusNaMesa } from '#lib/componentes/mesa/FichaCompleta.svelte';
+	import type { EstadoJogo } from '#lib/personagem/progressao.ts';
 	import PainelMesa from '#lib/componentes/mesa/PainelMesa.svelte';
 	import BuscaBestiario from '#lib/componentes/npc/BuscaBestiario.svelte';
 	import { npcDoVerbete } from '#lib/bestiario/npc.ts';
@@ -123,7 +125,7 @@
 		if (cena?.mostrar_pv && p?.pv != null && p.pv_max) return { pv: p.pv, max: p.pv_max };
 		return null;
 	}
-	const deslocamentoDe = (t: MesaToken) => fichaDe(t)?.deslocamento ?? 10;
+	const deslocamentoDe = (t: MesaToken) => fichaDe(t)?.deslocamento ?? (t.npc_id ? data.extrasNpc[t.npc_id]?.deslocamento : undefined) ?? 10;
 	/** Caminho no Storage (retratos) ou arte do bestiário (/bestiario/…) → URL. */
 	const url = (s: string | null | undefined) => (!s ? null : s.startsWith('/') ? s : urlRetrato(s));
 	function fotoDe(t: MesaToken): string | null {
@@ -197,6 +199,48 @@
 	function rolar(t: MesaToken, r: { expr: string; rotulo: string; partes: [string, string][] }, tipo: 'teste' | 'ataque' | 'dano' | 'cura' | 'iniciativa', d20: boolean, origem = 'Mesa') {
 		return rolador.rolar({ campanha, expressao: r.expr, rotulo: r.rotulo, personagem: t.personagem_id, npc: data.mestre ? t.npc_id : null, d20, tipo, origem, partes: r.partes });
 	}
+	// ficha completa numa janela grande: o jogador abre a dele, o Mestre qualquer uma; minimizada, fica montada
+	let fichaCompleta = $state<{ pid: string; nome: string; min: boolean } | null>(null);
+	const minhaFichaId = $derived(fichas.find((f) => f.jogadorId === data.eu)?.id ?? null);
+	function abrirFichaCompleta(pid: string) {
+		if (fichaCompleta?.pid === pid) return void (fichaCompleta = { ...fichaCompleta, min: false });
+		fichaCompleta = { pid, nome: fichas.find((f) => f.id === pid)?.nome ?? 'Ficha', min: false };
+	}
+	const tokenDaFicha = (pid: string) => mesa.tokens.find((t) => t.personagem_id === pid && !t.ligado_a) ?? null;
+	const jutsuDaFicha = (pid: string, slug: string) => fichas.find((f) => f.id === pid)?.jutsus.find((j) => j.slug === slug) ?? null;
+	// os jutsus da ficha completa usam a régua e o USAR da Mesa; MEDIR minimiza a janela para o quadro aparecer
+	const naMesa: JutsusNaMesa = {
+		podeMedir: (slug) => {
+			const j = fichaCompleta && jutsuDaFicha(fichaCompleta.pid, slug);
+			return !!j && temRegua(j.regua);
+		},
+		medir: (slug) => {
+			if (!fichaCompleta) return;
+			const t = tokenDaFicha(fichaCompleta.pid);
+			const j = jutsuDaFicha(fichaCompleta.pid, slug);
+			if (!t) return void ui.avisar('Coloque o personagem na cena para medir o jutsu.');
+			if (!j) return;
+			medirJutsu(t, j);
+			fichaCompleta = { ...fichaCompleta, min: true };
+		},
+		usar: async (slug) => {
+			const t = fichaCompleta && tokenDaFicha(fichaCompleta.pid);
+			const j = fichaCompleta && jutsuDaFicha(fichaCompleta.pid, slug);
+			if (!t || !j) return false;
+			await usarJutsu(t, j);
+			return true;
+		}
+	};
+	/** A ficha completa mudou o estado (salvo por ela): a ficha rápida e o token acompanham. */
+	function estadoDaCompleta(pid: string, estado: EstadoJogo) {
+		const f = fichas.find((x) => x.id === pid);
+		if (!f) return;
+		f.estado = estado;
+		const condicoes = estado.condicoes ?? [];
+		const ferimento = faixa(estado.pv ?? f.max.pv, f.max.pv);
+		mesa.tokens = mesa.tokens.map((t) => (t.personagem_id === pid ? { ...t, condicoes, ferimento } : t));
+	}
+
 	// card inteiro do jutsu (clique no nome, na ficha rápida): buscado uma vez por slug; a habilidade do bestiário já
 	// traz o texto e não tem card
 	const cards = new Map<string, Jutsu | null>();
@@ -271,6 +315,7 @@
 		usarJutsu,
 		verJutsu,
 		voltarAoNormal: (t) => mesa.voltarAoNormal(t),
+		abrirFichaCompleta,
 		aneis: (t, corpo, lista, titulo) => {
 			ui.aneis = { token: t.id, corpo, lista, titulo };
 			ui.mira = null;
@@ -412,7 +457,7 @@
 		if (!cena) return;
 		const { data: c, error } = await supabase()
 			.from('mesa_cenas')
-			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas })
+			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [] })
 			.select('*')
 			.single();
 		if (error || !c) return void toasts.mostrar('Não foi possível duplicar a cena.', 'erro');
@@ -465,7 +510,7 @@
 			return;
 		}
 		if (e.ctrlKey || e.metaKey || e.altKey) return;
-		const ferramentas: Record<string, Ferramenta> = { v: 'mover', m: 'medir', l: 'lapis', p: 'apontar', e: 'borracha' };
+		const ferramentas: Record<string, Ferramenta> = { v: 'mover', m: 'medir', l: 'lapis', p: 'apontar', e: 'borracha', ...(data.mestre ? { t: 'terreno' as const } : {}) };
 		const k = e.key.toLowerCase();
 		if (ferramentas[k] && !ui.mira) return void ui.escolher(ferramentas[k]);
 		if (e.key === 'Escape') {
@@ -530,13 +575,15 @@
 	}
 	const selTok = $derived(mesa.tokens.find((t) => t.id === ui.sel) ?? null);
 	const selFicha = $derived(selTok ? fichaDe(selTok) : null);
-	const FERRAMENTAS: { id: Ferramenta; nome: string; tecla: string; d: string }[] = [
+	const FERRAMENTAS_TODOS: { id: Ferramenta; nome: string; tecla: string; d: string }[] = [
 		{ id: 'mover', nome: 'Mover', tecla: 'V', d: 'M5 3v16l4-4 3 7 3-1-3-7h6z' },
 		{ id: 'medir', nome: 'Medir', tecla: 'M', d: 'M2 16L16 2l6 6L8 22z M7 11l2 2 M10 8l2 2 M13 5l2 2' },
 		{ id: 'lapis', nome: 'Lápis', tecla: 'L', d: 'M3 21l1-5L16 4l4 4L8 20z M14 6l4 4' },
 		{ id: 'apontar', nome: 'Apontar', tecla: 'P', d: 'M12 3v4 M12 17v4 M3 12h4 M17 12h4 M12 8a4 4 0 1 0 0.01 0' },
 		{ id: 'borracha', nome: 'Borracha', tecla: 'E', d: 'M9 20h12 M3 15l9-9 6 6-8 8H8z M8 10l6 6' }
 	];
+	// terreno difícil (cap. 4): só o Mestre marca; arrastar sobre o marcado apaga
+	const FERRAMENTAS = $derived(data.mestre ? [...FERRAMENTAS_TODOS, { id: 'terreno' as Ferramenta, nome: 'Terreno difícil', tecla: 'T', d: 'M2 20h20 M4 20l5-9 3 4 3-6 5 11 M7 16h2 M14 17h2' }] : FERRAMENTAS_TODOS);
 	let mobil = $state<null | 'elenco' | 'chat'>(null);
 	const FAIXAS = ['Ileso', 'Ferido', 'Muito ferido', 'Caído'];
 	const pop = 'absolute z-30 flex flex-col border-2 border-b3 bg-b0 shadow-[4px_4px_0_#000]';
@@ -705,6 +752,7 @@
 			<span class="flex-1 truncate font-mincho text-base leading-none font-bold">{cena?.nome ?? 'Mesa'}</span>
 			<span class="flex items-center gap-1 font-pixel text-xs leading-none font-bold text-mut"><span class="h-2 w-2 bg-ok"></span>{mesa.online.length}</span>
 			{#if mesa.iniciativa.ativa}<span class="font-pixel text-xs leading-none font-bold text-acc">R{mesa.iniciativa.rodada}</span>{/if}
+			{#if minhaFichaId}<button type="button" class="min-h-10 border-2 border-b3 px-2 font-pixel text-[11px] font-bold" onclick={() => abrirFichaCompleta(minhaFichaId!)}>FICHA</button>{/if}
 		</div>
 		<div class="relative min-h-0 flex-1">
 			<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} onSoltar={colocar} />
@@ -721,6 +769,7 @@
 						</div>
 					</div>
 				{/if}
+				{#if fichaCompleta?.min}{@render chipFicha('pointer-events-auto min-h-11')}{/if}
 				{#if ultima && !mobil && !ui.fichas.length}
 					<button type="button" class="pointer-events-auto flex min-h-11 items-center gap-2 border-2 border-[var(--vermelhao-lo)] bg-b0 pr-2.5 pl-1 text-left" onclick={() => ((mobil = 'chat'), (ui.naoVistas = 0))}>
 						<Icone id="dado/ic-dado-d20" />
@@ -769,6 +818,7 @@
 				{/if}
 			</nav>
 			<span class="flex-1"></span>
+			{#if minhaFichaId}<button type="button" class="flex min-h-10 items-center gap-1.5 border-2 border-b3 bg-b2 px-2.5 font-pixel text-xs font-bold hover:border-mut" title="A sua ficha inteira numa janela grande" onclick={() => abrirFichaCompleta(minhaFichaId!)}>MINHA FICHA ⤢</button>{/if}
 			<div aria-label="Quem está na mesa" class="flex items-center gap-1.5">
 				{#each data.membros as m (m.id)}
 					{@const on = mesa.online.includes(m.id) || m.id === data.eu}
@@ -799,6 +849,7 @@
 						<button type="button" class="min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" disabled={!cena} onclick={duplicar}>DUPLICAR</button>
 						<button type="button" class="min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" disabled={!cena} onclick={() => cena && ((textoModal = cena.nome), (ui.modal = { tipo: 'renomear', cena: cena.id }), (ui.pop = null))}>RENOMEAR</button>
 						<button type="button" class="min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" disabled={!cena} onclick={() => cena && ((textoModal = ''), (ui.modal = { tipo: 'excluir', cena: cena.id }), (ui.pop = null))}>EXCLUIR</button>
+						<button type="button" class="col-span-2 min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" disabled={!cena || !mesa.terreno.size} onclick={() => ((ui.pop = null), mesa.definirTerreno([]))}>LIMPAR TERRENO DIFÍCIL</button>
 					</div>
 				</div>
 			{/if}
@@ -823,7 +874,7 @@
 			{#if ui.pop === 'cor'}
 				{@const atual = data.mestre ? mesa.molduraMesa.id : (mesa.membro(data.eu)?.moldura ?? null)}
 				{@const daMesa = molduraPorId(mesa.molduraMesa.id)}
-				<div role="dialog" aria-label="Sua cor na campanha" class="{pop} top-14 right-28 max-h-[calc(100%-64px)] w-[300px] gap-2.5 overflow-y-auto p-3">
+				<div role="dialog" aria-label="Sua cor na campanha" class="{pop.replace('z-30', 'z-[70]')} top-14 right-28 max-h-[calc(100dvh-72px)] w-[300px] gap-2.5 overflow-y-auto p-3">
 					<span class="font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">SUA COR NA CAMPANHA</span>
 					<div class="grid grid-cols-3 gap-1.5">
 						{#each CORES as c (c.id)}
@@ -865,7 +916,8 @@
 			{/if}
 		</div>
 
-		<div class="relative flex min-h-0 flex-1">
+		<!-- isolate: as janelas de ficha empilham entre si aqui dentro e não passam por cima dos menus da barra -->
+		<div class="relative isolate flex min-h-0 flex-1">
 			{#if ui.elencoAberto}
 				<ElencoMesa {mesa} {ui} personagens={participantes} npcs={itensNpc} bind:pastas {subDe} onAbrir={abrirDoElenco} onColocar={colocar} onMoverNpc={moverNpc} onBestiario={() => (ui.modal = { tipo: 'bestiario' })} />
 			{:else}
@@ -884,6 +936,7 @@
 					<button type="button" class="h-9 w-9 border-l-2 border-b3 font-pixel text-sm font-bold" aria-label="Ajustar à tela" title="Ajustar à tela" onclick={() => quadro?.ajustar()}>⤢</button>
 				</div>
 				<div class="absolute right-[220px] bottom-3 left-3 z-[6] flex flex-wrap items-end gap-1.5">
+					{#if fichaCompleta?.min}{@render chipFicha('min-h-9')}{/if}
 					{#each ui.fichas.filter((f) => f.min) as f (f.token)}
 						{@const t = mesa.tokens.find((k) => k.id === f.token)}
 						{#if t}
@@ -962,6 +1015,31 @@
 			{/if}
 		</div>
 	</div>
+{/if}
+
+{#snippet chipFicha(classe: string)}
+	<div class="flex items-center border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[4px_4px_0_var(--b0)] {classe}">
+		<button type="button" class="min-h-9 px-2.5 text-[13px] font-semibold" onclick={() => fichaCompleta && (fichaCompleta = { ...fichaCompleta, min: false })}>▴ Ficha completa · {fichaCompleta?.nome}</button>
+		<button type="button" class="h-9 w-8 border-l-2 border-b3 font-pixel text-xs" aria-label="Fechar ficha completa" onclick={() => (fichaCompleta = null)}>✕</button>
+	</div>
+{/snippet}
+
+{#if fichaCompleta}
+	{#key fichaCompleta.pid}
+		{@const pid = fichaCompleta.pid}
+		<FichaCompleta
+			{campanha}
+			{pid}
+			min={fichaCompleta.min}
+			{celular}
+			estado={fichas.find((f) => f.id === pid)?.estado ?? null}
+			{naMesa}
+			aoEstado={(e) => estadoDaCompleta(pid, e)}
+			aoMinimizar={() => fichaCompleta && (fichaCompleta = { ...fichaCompleta, min: true })}
+			aoFechar={() => (fichaCompleta = null)}
+			aoCarregar={(nome) => fichaCompleta && (fichaCompleta = { ...fichaCompleta, nome })}
+		/>
+	{/key}
 {/if}
 
 {#if ui.modal}

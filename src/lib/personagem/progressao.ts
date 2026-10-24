@@ -341,6 +341,9 @@ export interface EstadoAtual {
 	situacao: 'bem' | 'caido' | 'morte';
 }
 
+/** Soma um ajuste ao recurso; a cura de quem está com PV negativo conta a partir de 0 (cap. 4, Estabilizar Aliado Caído). */
+export const curar = (k: 'pv' | 'pc' | 'pe', atual: number, delta: number) => (k === 'pv' && delta > 0 && atual < 0 ? delta : atual + delta);
+
 export function estadoAtual(e: EstadoJogo | null | undefined, max: { pv: number; pc: number; pe: number; pic: number }): EstadoAtual {
 	const pv = e?.pv ?? max.pv;
 	return {

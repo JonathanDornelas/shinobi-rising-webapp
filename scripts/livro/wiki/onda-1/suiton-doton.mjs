@@ -106,7 +106,7 @@ export default [
 		nome: 'Suiton: Mizuame Nabara',
 		traducao: 'Estilo Água: Captura do Campo de Xarope de Amido',
 		alcance: 'medio',
-		area: 'esfera3',
+		area: 'cone-medio',
 		comp: { imobiliza: 1 },
 		info: { resistencia: 'FOR (DT do Jutsu) ao fim de cada turno' },
 		descricao: 'O ninja cospe um líquido grosso e grudento que cobre o chão. Quem pisa nele fica colado.',

@@ -63,8 +63,13 @@ export const AREAS = [
 	{ id: 'cone', nome: 'Cone pequeno', nota: 'Triângulo de 3m à sua frente', pj: 1 },
 	{ id: 'esfera3', nome: 'Esfera 3m', nota: 'Círculo de 3m de raio', pj: 2 },
 	{ id: 'cone-medio', nome: 'Cone médio / Linha 30m', nota: 'Cone de 10m ou linha de 30m', pj: 2 },
+	{ id: 'quadrado6', nome: 'Quadrado 6m', nota: 'Quadrado de 6m de lado', pj: 2 },
 	{ id: 'esfera6', nome: 'Esfera 6m', nota: 'Círculo de 6m de raio', pj: 4 },
+	{ id: 'cone-grande', nome: 'Cone grande (15m)', nota: 'Cone de 15m', pj: 4 },
+	{ id: 'quadrado12', nome: 'Quadrado 12m', nota: 'Quadrado de 12m de lado', pj: 4 },
 	{ id: 'esfera15', nome: 'Esfera 15m', nota: 'Devastação localizada', pj: 8 },
+	{ id: 'cone-enorme', nome: 'Cone enorme (30m)', nota: 'Cone de 30m', pj: 8 },
+	{ id: 'quadrado30', nome: 'Quadrado 30m', nota: 'Quadrado de 30m de lado', pj: 8 },
 	{ id: 'massiva', nome: 'Massiva (100m+)', nota: 'Apenas Rank S: apaga terreno', pj: 15 }
 ] as const;
 export type Area = (typeof AREAS)[number]['id'];

@@ -29,7 +29,7 @@ export default [
 		traducao: 'Estilo Ebulição: Técnica da Névoa Qualificada',
 		dano: [3, 6],
 		alcance: 'curto',
-		area: 'esfera6',
+		area: 'cone-grande',
 		comp: { continuo: 1, ignora: 1 },
 		descricao: 'Uma névoa quente sai da boca do ninja e se espalha devagar. Ela é ácida: derrete pele, metal e até barreiras de chakra, e o usuário escolhe o quanto ela corrói.',
 		efeito: '3d6 de dano de ácido em todos na área (metade com sucesso na Resistência), que ignora RD e barreiras. Quem falha continua sendo corroído, com o dano contínuo.',

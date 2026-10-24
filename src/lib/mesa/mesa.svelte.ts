@@ -11,7 +11,7 @@ import { coresDosMembros } from './cores.ts';
 import type { Quadrado } from './geometria.ts';
 import { molduraDoToken, molduraPorId } from './molduras.ts';
 
-export type Ferramenta = 'mover' | 'medir' | 'lapis' | 'apontar' | 'borracha';
+export type Ferramenta = 'mover' | 'medir' | 'lapis' | 'apontar' | 'borracha' | 'terreno';
 
 export interface MembroMesa {
 	id: string;
@@ -87,6 +87,8 @@ export class Mesa {
 	cena = $derived(this.cenas.find((c) => c.id === this.cenaId) ?? null);
 	cores = $derived(coresDosMembros(this.membros));
 	iniciativa = $derived<IniciativaCena>(this.cena?.iniciativa ?? {});
+	/** Quadrados de terreno difícil da cena, como "x,y" */
+	terreno = $derived(new Set((this.cena?.terreno ?? []).map(([x, y]) => `${x},${y}`)));
 	get travada() {
 		return !!this.cena?.travada && !this.mestre;
 	}
@@ -151,6 +153,8 @@ export class Mesa {
 					return;
 				}
 				const c = p.new as MesaCena;
+				// o terreno grande pode chegar de fora do aviso quando não mudou: fica o que já estava
+				if (!Array.isArray(c.terreno)) c.terreno = this.cenas.find((x) => x.id === c.id)?.terreno ?? [];
 				this.cenas = lista(this.cenas, c);
 				// o Mestre ativou outra cena: quem joga vai junto
 				if (!this.mestre && c.ativa && c.id !== cena) this.trocouCena++;
@@ -404,6 +408,11 @@ export class Mesa {
 			this.cenas = antes;
 			toasts.mostrar('Não foi possível salvar a cena.', 'erro');
 		}
+	}
+
+	/** Terreno difícil (só o Mestre): a lista inteira de quadrados da cena. */
+	definirTerreno(quadrados: [number, number][]) {
+		return this.patchCena({ terreno: quadrados.slice(0, 10000) });
 	}
 
 	async definirCor(cor: CorMesa) {

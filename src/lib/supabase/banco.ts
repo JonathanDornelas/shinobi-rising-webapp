@@ -416,6 +416,8 @@ export type MesaCena = {
 	iniciativa: IniciativaCena;
 	/** Fichas que jogam nesta cena; null = todo o grupo. */
 	participantes: string[] | null;
+	/** Terreno difícil marcado pelo Mestre: [[x, y], ...] (cap. 4, Terreno). */
+	terreno: [number, number][];
 	criada_em: string;
 };
 

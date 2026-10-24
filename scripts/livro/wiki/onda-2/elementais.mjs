@@ -18,7 +18,7 @@ export default [
 		traducao: 'Estilo Fogo: Grande Devastação por Fogo',
 		dano: [4, 8],
 		alcance: 'medio',
-		area: 'esfera15',
+		area: 'cone-enorme',
 		descricao: 'Um mar de fogo sai da boca do ninja e cobre uma área enorme. Não há para onde correr dentro dele.',
 		efeito: '4d8 de dano de fogo em todos na área (metade com sucesso na Resistência).'
 	},
@@ -377,7 +377,7 @@ export default [
 		traducao: 'Estilo Fusão: Técnica da Calcificação',
 		dano: [2, 6],
 		alcance: 'medio',
-		area: 'esfera3',
+		area: 'cone-medio',
 		comp: { imobiliza: 1 },
 		info: { resistencia: 'FOR (DT do Jutsu) ao fim de cada turno' },
 		descricao: 'O ninja cospe uma massa de cal viva que machuca e endurece em segundos, prendendo quem ela cobre.',

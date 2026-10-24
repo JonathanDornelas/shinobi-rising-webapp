@@ -36,7 +36,7 @@ Abaixo do cabeçalho vem a linha de informação, com seis campos sempre iguais.
 | - | - | - |
 | Alcance | Distância máxima de uso | Pessoal · Toque · Curto (10 m) · Médio (30 m) · Longo (60 m) · Muito Distante (100 m+) |
 | Duração | Quanto dura, ou o custo de manutenção | Instantâneo · 3 turnos · 1 cena · Sustentado (X PC por turno) · Permanente (selo) |
-| Área | Forma e alcance do efeito | Alvo único · Alvos adicionais · Cone 3m · Esfera 3m · Esfera 6m · Linha 10m |
+| Área | Forma e alcance do efeito | Alvo único · Alvos adicionais · Cone 3m · Esfera 3m · Quadrado 6m · Linha 10m |
 | Ataque | Rolagem do usuário | 1d20 + Ninjutsu · 1d20 + Taijutsu · — (área) · Automático |
 | Resistência | Como o alvo evita ou reduz o efeito | Acrobacia (DT do Jutsu) · FOR (DT do Jutsu) · ESP (DT do Jutsu) · — |
 | Ação | Quanto do turno ele custa | Primária · Secundária · Reação · Completa (turno inteiro) |
@@ -136,11 +136,16 @@ Para jutsus que causam dano direto ou curam aliados, calcule o dano médio e pro
 | Cone pequeno | Triângulo de 3 m à sua frente | 1 |
 | Esfera 3m | Tudo num círculo de 3 m de raio | 2 |
 | Cone médio / Linha 30m | Cone de 10 m ou linha de 30 m | 2 |
+| Quadrado 6m | Tudo num quadrado de 6 m de lado | 2 |
 | Esfera 6m | Tudo num círculo de 6 m de raio | 4 |
+| Cone grande | Cone de 15 m | 4 |
+| Quadrado 12m | Tudo num quadrado de 12 m de lado | 4 |
 | Esfera 15m | Devastação localizada | 8 |
+| Cone enorme | Cone de 30 m | 8 |
+| Quadrado 30m | Tudo num quadrado de 30 m de lado | 8 |
 | Massiva (100 m+) | Só rank S; apaga o terreno | 15+ |
 
-A esfera conta o raio a partir de um ponto dentro do alcance (ou do próprio usuário, "em torno de si"). O cone sai do usuário e tem, na ponta, a largura igual ao comprimento; a linha tem 1 m de largura. O cap. 4 (Movimento e Distância) mostra como cada forma cai no quadro.
+A esfera conta o raio a partir de um ponto dentro do alcance (ou do próprio usuário, "em torno de si"). O cone sai do usuário e tem, na ponta, a largura igual ao comprimento; a linha tem 1 m de largura. O quadrado tem o centro num ponto dentro do alcance e serve para barreiras e campos de cantos marcados, como o Shishienjin; o lado dele é o dobro do raio da esfera de mesmo preço. O cap. 4 (Movimento e Distância) mostra como cada forma cai no quadro.
 
 #### Efeitos Especiais (condições no alvo) {#efeitos-especiais-condicoes-no-alvo}
 
