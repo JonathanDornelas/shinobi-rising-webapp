@@ -1,0 +1,92 @@
+# Bestiário · companheiros de clã: o cão ninja do Inuzuka, com a ficha de cada estágio da tabela de Companheiros do clã
+# (cap. 8). A ficha vale como está (campo ficha: cao-filhote, cao-adulto-jovem...), para o jogador Inuzuka e para os cães
+# dos Inuzuka inimigos. Formato de cada verbete: veja o cabeçalho de shinobi.yaml.
+- slug: cao-ninja-do-inuzuka
+  nome: Cão ninja do Inuzuka
+  tipo: invocação
+  origem: Clã Inuzuka
+  vila: konoha
+  arte: { formato: quadro, plano: câmera no chão }
+  cena:
+    - "O filhote late para o vento, rabo para cima, e corre na frente do menino até o portão da Academia. Dez anos depois, o mesmo cão tem o tamanho de um cavalo, e quando ele late, os inimigos já sabem que foram achados."
+  descricao:
+    - "O cão ninja do Inuzuka não é invocado: nasce perto do dono, cresce com ele e luta ao lado dele a vida inteira. Estas são as fichas do companheiro do clã (cap. 8), do filhote ao lendário. O jogador Inuzuka usa a ficha do estágio que o nível dele dá, e o Mestre usa as mesmas para os cães dos Inuzuka inimigos."
+  personalidade:
+    - "Leal até o fim e mais esperto do que parece. Sente o humor do dono antes dele, rosna para quem o ameaça e só come depois que o dono come."
+  estagios:
+    - nome: Filhote
+      papel: lutador
+      ficha: cao-filhote
+      resumo: "Pequeno, barulhento e já de faro afiado."
+      ataques:
+        - { nome: Mordida, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: tsuuga }
+      tracos:
+        - &faro-inuzuka { nome: Faro, efeito: "Rastreia pelo cheiro: tem vantagem para achar e seguir quem já farejou." }
+        - &tecnicas-conjuntas { nome: Técnicas conjuntas, efeito: "Os jutsus do clã que ele faz junto com o dono são pagos pelo dono (cap. 14)." }
+    - nome: Adulto Jovem
+      papel: lutador
+      ficha: cao-adulto-jovem
+      resumo: "Já acompanha o dono no Gatsūga sem errar o giro."
+      ataques:
+        - { nome: Mordida, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: gatsuuga }
+      tracos:
+        - *faro-inuzuka
+        - *tecnicas-conjuntas
+    - nome: Adulto
+      papel: lutador
+      ficha: cao-adulto
+      resumo: "Do tamanho de um lobo grande, e luta como a metade de uma dupla."
+      ataques:
+        - { nome: Mordida, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: gatsuuga }
+        - { slug: garouga }
+      tracos:
+        - *faro-inuzuka
+        - *tecnicas-conjuntas
+    - nome: Veterano
+      papel: lutador
+      ficha: cao-veterano
+      resumo: "Cicatrizes no focinho e nenhuma pressa: escolhe a hora de morder."
+      ataques:
+        - { nome: Mordida, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: garouga }
+        - { slug: jinjuu-konbi-henge-soutourou }
+      tracos:
+        - *faro-inuzuka
+        - *tecnicas-conjuntas
+    - nome: Alfa
+      papel: lutador
+      ficha: cao-alfa
+      resumo: "Os outros cães baixam a cabeça quando ele passa."
+      ataques:
+        - { nome: Mordida, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: ooiga-gatenga }
+        - { slug: jinjuu-konbi-henge-soutourou }
+      tracos:
+        - *faro-inuzuka
+        - *tecnicas-conjuntas
+    - nome: Lendário
+      papel: lutador
+      ficha: cao-lendario
+      resumo: "Um cão de quem o clã inteiro conta histórias."
+      ataques:
+        - { nome: Mordida, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: ooiga-gatenga }
+        - { slug: jinjuu-kongou-henge-santourou }
+      tracos:
+        - *faro-inuzuka
+        - *tecnicas-conjuntas
+  taticas:
+    - "Luta colado no dono: ataca quem o ataca, derruba quem foge e guia o dono pelo cheiro quando a fumaça cobre tudo."
+  ganchos:
+    - "Um cão ninja chega sozinho à vila, ferido, com a bandana do dono amarrada no pescoço."
+    - "Um filhote recusa o dono que o clã escolheu para ele e passa a seguir um forasteiro."
+  tags: [Leal, Agressivo]

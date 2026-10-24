@@ -4,9 +4,12 @@
 # Formato de um verbete (vale para todos os arquivos desta pasta):
 #   slug, nome, tipo (shinobi, fora da lei, guerreiro, organização, fauna, invocação, criatura), origem, vila (konoha...)
 #   arte: { formato: faixa | retrato | quadro | pagina, plano }   (o arquivo é static/bestiario/<slug>.png)
-#   cena, descricao, taticas, ganchos: Markdown de uma linha cada; tags: as da ficha resumida (cap. 23.2)
+#   cena, descricao, taticas, ganchos: Markdown de uma linha cada; tags: as da ficha resumida (cap. 23.2);
+#   personalidade (invocações): o temperamento da espécie, também uma linha por parágrafo
 #   a ficha de combate: ameaca + papel (os números saem da tabela de ameaça do Como usar, ajustada pelo papel),
-#     ou ficha: pequena | media | grande | chefe (invocações: os números do cap. 14);
+#     ou ficha: pequena | media | grande | chefe (invocações: a ficha do tamanho no cap. 14, ajustada pelo papel e
+#     pelo estilo; o Chefe da Espécie é um tamanho, não o papel de chefe) | cao-filhote... cao-lendario (o cão ninja do
+#     Inuzuka: a tabela de Companheiros do cap. 8, como está);
 #     ataques (o primeiro usa o acerto e o dano da tabela; os outros podem trazer dano próprio), jutsus (slug do
 #     catálogo ou nome + nota), tracos; exceções raras: pv, pc, defesa, iniciativa, dt, rd, membros, nota.
 #   estagios: quando o adversário tem níveis (Genin, Chunin, Jounin, nível Anbu e nível Kage: ameaça 2, 5, 8, 11 e 16)
@@ -63,7 +66,7 @@
         - { slug: saikan-chushutsu-no-jutsu }
         - { slug: shosen-jutsu }
         - { slug: chakra-no-mesu }
-        - { slug: okasho }
+        - { slug: kakuran-taijutsu }
       tracos:
         - *triagem
         - &antidotos { nome: Antídotos, efeito: "Como ação secundária, tira um aliado ao alcance da condição **Envenenado**." }
@@ -94,9 +97,9 @@
       ataques:
         - { nome: Soco de chakra, alcance: Corpo a corpo }
       jutsus:
-        - { slug: byakugo-no-in }
-        - { slug: sozo-saisei }
-        - { slug: okasho }
+        - { slug: saisei-kekkai }
+        - { slug: chikatsu-saisei-no-jutsu }
+        - { slug: chakra-no-mesu }
         - { slug: tsutenkyaku }
       tracos:
         - *cirurgia
@@ -131,7 +134,7 @@
         - { nome: Kunai, alcance: Corpo a corpo }
       jutsus:
         - { slug: kirigakure-no-jutsu-ilusorio }
-        - { slug: utakata }
+        - { slug: kasumi-jusha-no-jutsu }
         - { slug: kai }
       tracos:
         - &mente-treinada { nome: Mente treinada, efeito: "Tem vantagem para perceber um genjutsu e para se libertar dele." }
@@ -160,7 +163,7 @@
       jutsus:
         - { slug: magen-jubaku-satsu }
         - { slug: kokuangyou-no-jutsu }
-        - { slug: magen-kyouten-chiten }
+        - { slug: magen-kokoni-arazu-no-jutsu }
         - { slug: kasumi-jusha-no-jutsu }
       tracos:
         - *mente-treinada
@@ -174,13 +177,13 @@
       ataques:
         - { nome: Kunai, alcance: Corpo a corpo }
       jutsus:
-        - { slug: nehan-shoja-no-jutsu }
+        - { slug: magen-kokoni-arazu-no-jutsu }
         - { slug: kokuangyou-no-jutsu }
         - { slug: magen-jubaku-satsu }
         - { slug: magen-narakumi-no-jutsu }
       tracos:
         - *isca
-        - { nome: Ilusão em massa, efeito: "Uma vez por cena, cada inimigo numa área de 6 m resiste com ESP contra a DT 19 ou fica **Em Genjutsu** até se libertar." }
+        - { nome: Ilusão em massa, efeito: "Uma vez por cena, cada inimigo numa área de 6 m de raio resiste com ESP contra a DT 19 ou fica **Em Genjutsu** até se libertar." }
     - nome: Nível Kage
       arte: { formato: pagina, plano: plano aberto }
       ameaca: 16
@@ -191,14 +194,14 @@
       ataques:
         - { nome: Lâmina ilusória, alcance: Curto }
       jutsus:
-        - { slug: nehan-shoja-no-jutsu }
+        - { slug: magen-jubaku-satsu }
         - { slug: magen-kokoni-arazu-no-jutsu }
         - { slug: kokuangyou-no-jutsu }
-        - { slug: magen-kyouten-chiten }
+        - { slug: magen-narakumi-no-jutsu }
       tracos:
         - *isca
         - { nome: Mundo de ilusão, efeito: "Uma vez por cena, como ação primária, olha nos olhos de um alvo: ele resiste com ESP contra a DT 21 ou fica **Em Genjutsu** e, quando se libertar, ganha dois níveis de Fadiga." }
-        - { nome: Ilusão em massa, efeito: "Uma vez por cena, cada inimigo numa área de 12 m resiste com ESP contra a DT 21 ou fica **Em Genjutsu** até se libertar." }
+        - { nome: Ilusão em massa, efeito: "Uma vez por cena, cada inimigo numa área de 12 m de raio resiste com ESP contra a DT 21 ou fica **Em Genjutsu** até se libertar." }
   taticas:
     - "Fica longe, invisível na multidão ou atrás de aliados, e prende o personagem mais forte numa ilusão logo no começo. Depois cuida dos outros, um por um."
   ganchos:
@@ -270,8 +273,8 @@
       ataques:
         - { nome: Pergaminho de armas, alcance: Médio }
       jutsus:
-        - { slug: hiraishin-no-jutsu }
-        - { slug: hiraishingiri }
+        - { slug: shisekiyojin }
+        - { slug: tenchu }
         - { slug: shishienjin }
         - { slug: kekkaifu-gansoko }
       tracos:
@@ -342,7 +345,7 @@
         - { slug: sogazan }
         - { slug: joro-senbon }
       tracos:
-        - { nome: Chuva de aço, efeito: "Uma vez por cena, solta o pergaminho inteiro: cada um numa área de 6 m faz uma Resistência de Acrobacia contra a DT 15 e sofre 2d8 de dano, ou metade se passar." }
+        - { nome: Chuva de aço, efeito: "Uma vez por cena, solta o pergaminho inteiro: cada um numa área de 6 m de raio faz uma Resistência de Acrobacia contra a DT 15 e sofre 2d8 de dano, ou metade se passar." }
         - *recolher
     - nome: Jounin
       arte: { formato: retrato, plano: por cima do ombro }
@@ -359,7 +362,7 @@
         - { slug: kusari-sogazan }
         - { slug: kage-shuriken-no-jutsu }
       tracos:
-        - { nome: Chuva de aço, efeito: "Uma vez por cena, solta o pergaminho inteiro: cada um numa área de 6 m faz uma Resistência de Acrobacia contra a DT 16 e sofre 3d8 de dano, ou metade se passar." }
+        - { nome: Chuva de aço, efeito: "Uma vez por cena, solta o pergaminho inteiro: cada um numa área de 6 m de raio faz uma Resistência de Acrobacia contra a DT 16 e sofre 3d8 de dano, ou metade se passar." }
         - *recolher
     - nome: Nível Anbu
       arte: { formato: quadro, plano: escorço }
@@ -374,9 +377,9 @@
         - { slug: akurobatto }
         - { slug: issen }
         - { slug: iaigiri }
-        - { slug: tsukikage }
+        - { slug: sogazan }
       tracos:
-        - { nome: Chuva de aço, efeito: "Uma vez por cena, solta o pergaminho inteiro: cada um numa área de 9 m faz uma Resistência de Acrobacia contra a DT 18 e sofre 4d8 de dano, ou metade se passar." }
+        - { nome: Chuva de aço, efeito: "Uma vez por cena, solta o pergaminho inteiro: cada um numa área de 9 m de raio faz uma Resistência de Acrobacia contra a DT 18 e sofre 4d8 de dano, ou metade se passar." }
         - { nome: Arsenal invocado, efeito: "Troca de arma sem gastar ação, quantas vezes quiser no turno." }
         - *recolher
     - nome: Nível Kage
@@ -390,12 +393,12 @@
         - { nome: Arma lendária, alcance: Corpo a corpo, efeito: "Ignora a RD do alvo." }
         - { nome: Arma do arsenal, alcance: Médio }
       jutsus:
-        - { slug: shuriken-kage-bunshin-no-jutsu }
+        - { slug: kage-bunshin-no-jutsu }
         - { slug: mikazuki-no-mai }
         - { slug: akurobatto }
         - { slug: yojinbo }
       tracos:
-        - { nome: Mil lâminas, efeito: "Duas vezes por cena, solta o arsenal inteiro: cada um numa área de 12 m faz uma Resistência de Acrobacia contra a DT 20 e sofre 6d8 de dano, ou metade se passar." }
+        - { nome: Mil lâminas, efeito: "Duas vezes por cena, solta o arsenal inteiro: cada um numa área de 12 m de raio faz uma Resistência de Acrobacia contra a DT 20 e sofre 6d8 de dano, ou metade se passar." }
         - { nome: Arsenal invocado, efeito: "Troca de arma sem gastar ação, quantas vezes quiser no turno." }
         - *recolher
   taticas:
@@ -441,7 +444,7 @@
       jutsus:
         - { slug: konoha-shofu }
         - { slug: konoha-daisenpuu }
-        - { slug: dynamic-entry }
+        - { slug: konoha-daikaiten }
       tracos:
         - *pesos
         - { nome: Portões internos, efeito: "Pode abrir até o 2º portão interno, com as regras do cap. 16." }
@@ -454,10 +457,10 @@
       ataques:
         - { nome: Sequência de golpes, alcance: Corpo a corpo }
       jutsus:
-        - { slug: omote-renge }
+        - { slug: konoha-tsumuji-senpu }
         - { slug: konoha-goriki-senpu }
         - { slug: konoha-kaigansho }
-        - { slug: suiken }
+        - { slug: kakuran-taijutsu }
       tracos:
         - *pesos
         - { nome: Portões internos, efeito: "Pode abrir até o 3º portão interno, com as regras do cap. 16." }
@@ -472,7 +475,7 @@
       jutsus:
         - { slug: sotenkyaku }
         - { slug: hoka-ranbu }
-        - { slug: omote-renge }
+        - { slug: konoha-tsumuji-senpu }
         - { slug: konoha-otoshi }
       tracos:
         - *pesos
@@ -489,7 +492,7 @@
         - { slug: sotenkyaku }
         - { slug: konoha-kaigansho }
         - { slug: konoha-goriki-senpu }
-        - { slug: kage-buyo }
+        - { slug: konoha-tsumuji-senpu }
         - { slug: hayanie }
       tracos:
         - *pesos
@@ -599,7 +602,7 @@
         - { slug: akahigi-kiki-sankaku }
         - { nome: Jutsu guardado na marionete, nota: "A marionete humana foi um ninja de verdade e ainda guarda um jutsu dele (cap. 13): escolha um de rank A do catálogo." }
       tracos:
-        - { nome: Exército de marionetes, efeito: "Uma vez por cena, solta dezenas de marionetes de uma vez: cada inimigo numa área de 12 m resiste com Acrobacia contra a DT 21 e sofre 6d8 de dano, ou metade se passar." }
+        - { nome: Exército de marionetes, efeito: "Uma vez por cena, solta dezenas de marionetes de uma vez: cada inimigo numa área de 12 m de raio resiste com Acrobacia contra a DT 21 e sofre 6d8 de dano, ou metade se passar." }
         - { nome: Corpo de marionete, efeito: "Não sente dor, não sangra e é imune a **Envenenado**. Só um núcleo escondido no peito ainda é vivo, e um acerto crítico contra ele o derruba na hora." }
         - *escudo-madeira
   taticas:
@@ -686,10 +689,10 @@
       ataques:
         - { nome: Garras da segunda forma, alcance: Corpo a corpo }
       jutsus:
-        - { slug: chidori }
-        - { slug: chidori-nagashi }
+        - { slug: raiton-kangekiha }
+        - { slug: kuroi-kaminari }
         - { slug: senei-tajashu }
-        - { slug: katon-goka-mekkyaku }
+        - { slug: katon-kibaku-enjin }
       tracos:
         - { nome: Asas, efeito: "Voa." }
         - { nome: Preço, efeito: "No fim da cena, ganha dois níveis de Fadiga. Se chegar ao nível 5, o corpo não aguenta." }

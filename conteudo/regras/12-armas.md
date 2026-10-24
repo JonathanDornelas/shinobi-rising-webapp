@@ -20,7 +20,7 @@ Para criar armas próprias, veja a Forja (cap. 21). As marionetes, mais complexa
 
 ## Catálogo de Armas {#catalogo-de-armas}
 
-As armas estão divididas em quatro grupos. No ataque, o dano soma FOR quando o golpe é corpo a corpo e AGI quando é à distância (cap. 4).
+As armas estão divididas em quatro grupos. No ataque, o dano soma FOR quando o golpe é corpo a corpo e AGI quando é à distância (cap. 4). Corpo a corpo alcança os quadrados adjacentes; as armas de haste, como a Naginata e o Manriki, alcançam até 2 m, e continuam sendo corpo a corpo. Curto, Médio e Longo são os mesmos 10 m, 30 m e 60 m dos jutsus.
 
 ### Armas de Distância {#armas-de-distancia}
 
@@ -47,7 +47,7 @@ As armas estão divididas em quatro grupos. No ataque, o dano soma FOR quando o 
 | - | - | - | - | - | - |
 | Katana/Espada | 1d8 | Corpo a corpo | Pesado | 5.000 ryo | Afiada |
 | Nodachi | 1d10 | Corpo a corpo | Pesado | 8.000 ryo | Afiada, Pesada |
-| Naginata | 1d8 | Médio | Pesado | 4.500 ryo | Varredura |
+| Naginata | 1d8 | Haste (2 m) | Pesado | 4.500 ryo | Varredura |
 | Bo (bastão) | 1d6 | Corpo a corpo | Médio | 1.500 ryo | Atordoante |
 | Yari (lança) | 1d8 | Corpo a corpo / curto | Pesado | 2.000 ryo | Versátil, Perfurante |
 
@@ -56,7 +56,7 @@ As armas estão divididas em quatro grupos. No ataque, o dano soma FOR quando o 
 | Arma | Dano | Alcance | Peso | Preço | Propriedades |
 | - | - | - | - | - | - |
 | Kusarigama | 1d6 | Corpo a corpo / curto | Médio | 6.000 ryo | Desarmante |
-| Manriki (chicote) | 1d4 | Médio | Leve | 3.000 ryo | Desarmante |
+| Manriki (chicote) | 1d4 | Haste (2 m) | Leve | 3.000 ryo | Desarmante |
 | Tonfa | 1d4 | Corpo a corpo | Leve | 1.000 ryo | Defensiva, Marcial |
 | Sai | 1d4 | Corpo a corpo | Leve | 1.500 ryo | Versátil, Discreta, Leve |
 | Hanbo (bastão curto) | 1d6 | Corpo a corpo | Leve | 500 ryo | Discreta, Atordoante |

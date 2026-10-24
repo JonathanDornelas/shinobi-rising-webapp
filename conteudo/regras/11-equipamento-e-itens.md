@@ -25,7 +25,7 @@ O básico de qualquer mochila ninja, com preço, peso e efeito.
 | Pílula militar | 5.000 ryo | Insig. | +2 nas rolagens por 3 turnos; 2 níveis de fadiga depois de 1 hora |
 | Antídoto comum | 500 ryo | Leve | Anula venenos comuns |
 | Antídoto raro | 5.000 ryo | Leve | Anula venenos avançados |
-| Bomba de fumaça | 300 ryo | Leve | Encobre 5 m por 3 turnos |
+| Bomba de fumaça | 300 ryo | Leve | Encobre um quadrado de 5 m × 5 m por 3 turnos (cap. 4) |
 | Fio ninja (50 m) | 200 ryo | Insig. | Armadilhas e escalada |
 | Kan no Kami (Papel Sensível) | 800 ryo | Insig. | Revela o tipo elemental do chakra de um ninja |
 | Papel Explosivo | 1.000 ryo | Insig. | 1d10 de dano de explosão em área após 1 turno; pode ser preso em qualquer superfície ou arma |

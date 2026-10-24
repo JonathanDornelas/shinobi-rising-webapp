@@ -118,6 +118,16 @@
 	--termo-arma: #a9bccf;
 	--termo-jutsu: #e8806f;
 	--termo-cla: #d9a82b;
+	/* L11 · Mesa: cor de cada membro (lápis, anel do token, régua, avatar) */
+	--mesa-vermelhao: #e8806f;
+	--mesa-anil: #7f9be0;
+	--mesa-ameixa: #b784c6;
+	--mesa-sakura: #e48ba8;
+	--mesa-siena: #d08a62;
+	--mesa-mostarda: #e0bc4a;
+	--mesa-musgo: #8dba6a;
+	--mesa-petroleo: #5fbfbf;
+	--mesa-ardosia: #a3b0b8;
 }
 
 [data-theme='washi'] {
@@ -160,6 +170,15 @@
 	--termo-arma: #44576b;
 	--termo-jutsu: #8b2e20;
 	--termo-cla: #7f6000;
+	--mesa-vermelhao: #c44536;
+	--mesa-anil: #3b5ba5;
+	--mesa-ameixa: #7b3f8c;
+	--mesa-sakura: #c2577a;
+	--mesa-siena: #a0522d;
+	--mesa-mostarda: #b08a12;
+	--mesa-musgo: #4e7a2e;
+	--mesa-petroleo: #1f7a7a;
+	--mesa-ardosia: #5e6b73;
 }
 
 /* Cores de marca, iguais nos dois temas; o tema do usuário (perfil) pode trocar o acento e o raio. */

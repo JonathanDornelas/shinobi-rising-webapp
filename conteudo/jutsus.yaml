@@ -1,7 +1,7 @@
 # Jutsus do livro, na ordem em que aparecem. descricao/efeito/notas são Markdown de uma linha.
 - slug: kage-mane-no-jutsu
   nome: Kage Mane no Jutsu
-  traducao: Técnica de Imitação da Sombra
+  traducao: Técnica de Imitação pela Sombra
   origem: Clã Nara
   tipo: Ninjutsu
   rank: C
@@ -177,7 +177,7 @@
   elemento: null
 - slug: baika-no-jutsu
   nome: Baika no Jutsu
-  traducao: Técnica da Multiplicação Corporal
+  traducao: Técnica do Tamanho Múltiplo
   origem: Clã Akimichi
   tipo: Ninjutsu
   rank: D
@@ -197,7 +197,7 @@
       v: Primária
   descricao:
     - O Akimichi enche o corpo de chakra e cresce, em partes ou por inteiro. A força do clã começa no tamanho.
-  efeito: +2 na Defesa enquanto durar. É o pré-requisito das técnicas avançadas do clã, como o Nikudan Sensha.
+  efeito: Você fica Grande (3 × 3) e ganha +2 na Defesa enquanto durar. É o pré-requisito das técnicas avançadas do clã, como o Nikudan Sensha.
   notas: []
   pj: "+2 na Defesa por 3 turnos (4): 4 PJ, rank D."
   capitulo: 8
@@ -313,7 +313,7 @@
       v: Secundária
   descricao:
     - "O Baika levado ao extremo: o corpo cresce até proporções colossais, e só a presença do Akimichi já domina o campo."
-  efeito: "Enquanto ativo: +3 na Defesa, +2 FOR e 10 PV temporários. Os bônus podem passar dos limites normais de atributo."
+  efeito: "Enquanto ativo, você fica Enorme (6 × 6, alcance de 2 m) e ganha +3 na Defesa, +2 FOR e 10 PV temporários. Os bônus podem passar dos limites normais de atributo."
   notas: []
   pj: "+3 na Defesa (6) + +2 FOR (4) + 10 PV temporários (2) + ação secundária (2): 14 PJ, rank B."
   capitulo: 8
@@ -588,7 +588,7 @@
   elemento: null
 - slug: shikyaku-no-jutsu
   nome: Shikyaku no Jutsu
-  traducao: Técnica das Quatro Patas
+  traducao: Técnica das Quatro Pernas
   origem: Clã Inuzuka
   tipo: Ninjutsu
   rank: D
@@ -726,7 +726,7 @@
       v: Primária
   descricao:
     - "A cooperação levada ao auge: humano e cão fundem as suas formas numa só criatura bestial, de duas cabeças."
-  efeito: "Usuário e cão se fundem num lobo gigante de duas cabeças, uma única criatura com os PV do usuário mais metade dos PV do cão: +2 na Defesa, +2 FOR e +2 nas rolagens de ataque de Taijutsu."
+  efeito: "Usuário e cão se fundem num lobo gigante de duas cabeças, uma única criatura com os PV do usuário mais metade dos PV do cão. A criatura fica Grande (3 × 3) e ganha +2 na Defesa, +2 FOR e +2 nas rolagens de ataque de Taijutsu."
   notas:
     - As técnicas do clã que exigem usuário e cão passam a ser executadas pela forma fundida e causam +1 dado de dano da mesma categoria (3d8 vira 4d8). É o pré-requisito das técnicas avançadas.
   pj: "+2 na Defesa (4) + +2 FOR (4) + +2 em ataques (4) + +1 dado nas técnicas (3): 15 PJ, rank B."
@@ -814,7 +814,7 @@
       v: Primária
   descricao:
     - "Uma evolução rara da transformação combinada: o Inuzuka e dois cães se fundem numa criatura colossal de três cabeças, com instintos e sentidos unificados."
-  efeito: "Exige o Inuzuka Ryu no Kizuna (dois cães), ou um Kage Bunshin no lugar do segundo cão. Os três se fundem num lobo colossal: +3 FOR, +3 na Defesa e +2 nas rolagens de ataque de Taijutsu."
+  efeito: "Exige o Inuzuka Ryu no Kizuna (dois cães), ou um Kage Bunshin no lugar do segundo cão. Os três se fundem num lobo colossal, que fica Enorme (6 × 6, alcance de 2 m) e ganha +3 FOR, +3 na Defesa e +2 nas rolagens de ataque de Taijutsu."
   notas:
     - As técnicas do clã que causam dano recebem +2 dados da mesma categoria (3d8 vira 5d8), e o usuário tem vantagem em Percepção e Rastreamento.
   pj: "+3 FOR (6) + +3 na Defesa (6) + +2 em ataques (4) + +2 dados nas técnicas (5) + vantagem em percepção (2): 23 PJ, rank A."
@@ -912,7 +912,7 @@
   elemento: null
 - slug: hijutsu-mushiyose
   nome: "Hijutsu: Mushiyose"
-  traducao: Invocação de Insetos
+  traducao: "Hijutsu: Invocação de Insetos"
   origem: Clã Aburame
   tipo: Ninjutsu
   rank: D
@@ -970,7 +970,7 @@
   elemento: null
 - slug: hijutsu-mushidama
   nome: "Hijutsu: Mushidama"
-  traducao: Esfera de Insetos
+  traducao: "Hijutsu: Esfera de Insetos"
   origem: Clã Aburame
   tipo: Ninjutsu
   rank: B
@@ -1057,7 +1057,7 @@
   elemento: null
 - slug: hijutsu-mushitatsumaki
   nome: "Hijutsu: Mushitatsumaki"
-  traducao: Tornado de Insetos
+  traducao: "Hijutsu: Tornado de Insetos"
   origem: Clã Aburame
   tipo: Ninjutsu
   rank: A
@@ -1347,7 +1347,7 @@
   elemento: null
 - slug: katon-goukakyu-no-jutsu
   nome: "Katon: Goukakyu no Jutsu"
-  traducao: Grande Bola de Fogo
+  traducao: "Estilo Fogo: Técnica da Grande Bola de Fogo"
   origem: Clã Uchiha
   tipo: Ninjutsu
   rank: C
@@ -1376,7 +1376,7 @@
   elemento: katon
 - slug: katon-hosenka-no-jutsu
   nome: "Katon: Hōsenka no Jutsu"
-  traducao: Chamas das Flores de Fênix
+  traducao: "Estilo Fogo: Técnica Flor de Fênix"
   origem: Clã Uchiha
   tipo: Ninjutsu
   rank: C
@@ -1463,7 +1463,7 @@
   elemento: null
 - slug: katon-ryuka-no-jutsu
   nome: "Katon: Ryūka no Jutsu"
-  traducao: Dragão de Fogo
+  traducao: "Estilo Fogo: Técnica do Dragão de Fogo"
   origem: Clã Uchiha
   tipo: Ninjutsu
   rank: B
@@ -1550,7 +1550,7 @@
   elemento: null
 - slug: mokuton-mokujoheki
   nome: "Mokuton: Mokujōheki"
-  traducao: "Liberação de Madeira: Bloqueio da Parede de Madeira"
+  traducao: "Estilo Madeira: Bloqueio da Parede de Madeira"
   origem: Clã Senju
   tipo: Ninjutsu
   rank: B
@@ -1579,7 +1579,7 @@
   elemento: mokuton
 - slug: mokuton-shichuro-no-jutsu
   nome: "Mokuton: Shichūrō no Jutsu"
-  traducao: "Liberação de Madeira: Técnica da Prisão de Quatro Pilares"
+  traducao: "Estilo Madeira: Técnica da Prisão de Quatro Pilares"
   origem: Clã Senju
   tipo: Ninjutsu
   rank: B
@@ -1608,7 +1608,7 @@
   elemento: mokuton
 - slug: mokuton-hijutsu-jukai-kotan
   nome: "Mokuton Hijutsu: Jukai Kōtan"
-  traducao: "Arte Secreta da Liberação de Madeira: Nascimento do Mundo de Árvores"
+  traducao: "Hijutsu do Estilo Madeira: Nascimento do Mundo de Árvores"
   origem: Clã Senju
   tipo: Ninjutsu
   rank: A
@@ -2131,7 +2131,7 @@
   elemento: suiton
 - slug: suiton-gosuiwan-no-jutsu
   nome: "Suiton: Gōsuiwan no Jutsu"
-  traducao: Técnica do Grande Braço de Água
+  traducao: "Estilo Água: Técnica do Grande Braço de Água"
   origem: Clã Hozuki
   tipo: Ninjutsu
   rank: B
@@ -2160,7 +2160,7 @@
   elemento: suiton
 - slug: suiton-tate-eboshi
   nome: "Suiton: Tate Eboshi"
-  traducao: "Liberação de Água: Onda Erguida"
+  traducao: "Estilo Água: Enterro das Crianças do Chapéu de Corvo"
   origem: Clã Hozuki
   tipo: Ninjutsu
   rank: B
@@ -2479,7 +2479,7 @@
   elemento: null
 - slug: hyoton-suishoheki
   nome: "Hyōton: Suishōheki"
-  traducao: "Liberação de Gelo: Parede de Cristal"
+  traducao: "Estilo Gelo: Parede de Cristal"
   origem: Clã Yuki
   tipo: Ninjutsu
   rank: C
@@ -2508,7 +2508,7 @@
   elemento: hyoton
 - slug: hyoton-tsubame-fubuki
   nome: "Hyōton: Tsubame Fubuki"
-  traducao: "Liberação de Gelo: Nevasca de Andorinhas"
+  traducao: "Estilo Gelo: Andorinha da Tempestade de Neve"
   origem: Clã Yuki
   tipo: Ninjutsu
   rank: C
@@ -2566,7 +2566,7 @@
   elemento: hyoton
 - slug: hyoton-hyogan-domu
   nome: "Hyōton: Hyōgan Dōmu"
-  traducao: "Liberação de Gelo: Domo de Iceberg"
+  traducao: "Estilo Gelo: Domo de Iceberg"
   origem: Clã Yuki
   tipo: Ninjutsu
   rank: B
@@ -2595,7 +2595,7 @@
   elemento: hyoton
 - slug: hyoton-mangehyo
   nome: "Hyōton: Mangehyō"
-  traducao: "Liberação de Gelo: Dez Mil Pétalas de Gelo"
+  traducao: "Estilo Gelo: Dez Mil Pétalas de Gelo"
   origem: Clã Yuki
   tipo: Ninjutsu
   rank: A
@@ -2653,7 +2653,7 @@
   elemento: null
 - slug: henge-no-jutsu
   nome: Henge no Jutsu
-  traducao: Técnica da Transformação
+  traducao: Técnica de Transformação
   origem: Academia
   tipo: Ninjutsu
   rank: E
@@ -2682,7 +2682,7 @@
   elemento: null
 - slug: bunshin-no-jutsu
   nome: Bunshin no Jutsu
-  traducao: Técnica do Clone
+  traducao: Técnica de Clonagem
   origem: Academia
   tipo: Ninjutsu
   rank: E
@@ -2711,7 +2711,7 @@
   elemento: null
 - slug: kawarimi-no-jutsu
   nome: Kawarimi no Jutsu
-  traducao: Técnica da Substituição
+  traducao: Técnica de Substituição
   origem: Academia
   tipo: Ninjutsu
   rank: E
@@ -3001,6 +3001,36 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+- slug: kirigakure-no-jutsu
+  nome: Kirigakure no Jutsu
+  traducao: Técnica de Ocultação na Névoa
+  origem: Suiton
+  tipo: Ninjutsu
+  rank: B
+  custo: 12 PC
+  info:
+    - k: Alcance
+      v: Pessoal
+    - k: Duração
+      v: 1 cena
+    - k: Área
+      v: Esfera 15m em torno de si
+    - k: Ataque
+      v: —
+    - k: Resistência
+      v: —
+    - k: Ação
+      v: Primária
+  descricao:
+    - O ninja solta uma névoa espessa pela boca, ou a ergue de um rio próximo, e ela engole o campo de batalha. É a marca registrada de Kirigakure, a Vila Oculta da Névoa.
+  efeito: "A névoa cobre uma esfera de 15 m em volta do usuário até o fim da cena: quem está dentro dela fica Encoberto Pesadamente, e os ataques contra quem está dentro, ou feitos de dentro, têm -5."
+  notas:
+    - Sensores de chakra enxergam através da névoa (cap. 4). Um vento forte, ou um jutsu de Fuuton de área, a dispersa.
+  pj: "Esfera 15m (8) + encobre a visão (2) + dura a cena (2): 12 PJ, rank B."
+  capitulo: 10
+  ancora: suiton-liberacao-de-agua
+  cla: null
+  elemento: suiton
 - slug: doryuuheki
   nome: Doryuuheki
   traducao: Muralha de Terra
@@ -3148,7 +3178,7 @@
   elemento: raiton
 - slug: raikiri
   nome: Raikiri
-  traducao: Lâmina de Raio
+  traducao: Cortador de Relâmpago
   origem: Raiton
   tipo: Ninjutsu
   rank: A
@@ -3382,7 +3412,7 @@
   elemento: null
 - slug: magen-narakumi-no-jutsu
   nome: "Magen: Narakumi no Jutsu"
-  traducao: Visão do Inferno
+  traducao: "Ilusão Demoníaca: Técnica da Visão do Inferno"
   origem: Genjutsu
   tipo: Genjutsu
   rank: C
@@ -3411,7 +3441,7 @@
   elemento: null
 - slug: magen-jubaku-satsu
   nome: "Magen: Jubaku Satsu"
-  traducao: Prisão das Árvores
+  traducao: "Ilusão Demoníaca: Aprisionamento da Árvore Assassina"
   origem: Genjutsu
   tipo: Genjutsu
   rank: C
@@ -3498,7 +3528,7 @@
   elemento: null
 - slug: kokuangyou-no-jutsu
   nome: Kokuangyou no Jutsu
-  traducao: Caminho da Escuridão
+  traducao: Técnica do Trazedor da Escuridão
   origem: Genjutsu
   tipo: Genjutsu
   rank: B
@@ -3527,7 +3557,7 @@
   elemento: null
 - slug: sairento-kiringu
   nome: Sairento Kiringu
-  traducao: Som Letal Ilusório
+  traducao: Assassinato Silencioso
   origem: Genjutsu
   tipo: Genjutsu
   rank: B
@@ -3817,7 +3847,7 @@
   elemento: null
 - slug: suiton-mizurappa
   nome: "Suiton: Mizurappa"
-  traducao: Jato de Água Violenta
+  traducao: "Estilo Água: Ondas Furiosas"
   origem: Suiton
   tipo: Ninjutsu
   rank: D
@@ -3876,7 +3906,7 @@
 # ---- Jutsus da wiki de Naruto: onda 1 (gerado por scripts/livro/importar-jutsus.ts a partir da especificação da onda)
 - slug: katon-haisekisho
   nome: "Katon: Haisekishō"
-  traducao: Queimada da Cinza Acumulada
+  traducao: "Estilo Fogo: Pilha Ardente de Cinzas"
   origem: Katon
   tipo: Ninjutsu
   rank: B
@@ -3905,7 +3935,7 @@
   elemento: katon
 - slug: katon-goryuka-no-jutsu
   nome: "Katon: Gōryūka no Jutsu"
-  traducao: Técnica do Grande Fogo do Dragão
+  traducao: "Estilo Fogo: Técnica do Grande Dragão de Fogo"
   origem: Katon
   tipo: Ninjutsu
   rank: B
@@ -3934,7 +3964,7 @@
   elemento: katon
 - slug: katon-endan
   nome: "Katon: Endan"
-  traducao: Projétil de Chamas
+  traducao: "Estilo Fogo: Bomba de Chamas"
   origem: Katon
   tipo: Ninjutsu
   rank: C
@@ -3963,7 +3993,7 @@
   elemento: katon
 - slug: katon-dai-endan
   nome: "Katon: Dai Endan"
-  traducao: Grande Projétil de Chamas
+  traducao: "Estilo Fogo: Grande Bala de Chama"
   origem: Katon
   tipo: Ninjutsu
   rank: B
@@ -3993,7 +4023,7 @@
   elemento: katon
 - slug: katon-goka-mekkyaku
   nome: "Katon: Gōka Mekkyaku"
-  traducao: Grande Aniquilação de Fogo
+  traducao: "Estilo Fogo: Grande Aniquilação por Fogo"
   origem: Katon
   tipo: Ninjutsu
   rank: B
@@ -4022,7 +4052,7 @@
   elemento: katon
 - slug: katon-bakufu-ranbu
   nome: "Katon: Bakufū Ranbu"
-  traducao: Dança Selvagem da Onda de Choque
+  traducao: "Estilo Fogo: Dança Selvagem da Onda Explosiva"
   origem: Katon
   tipo: Ninjutsu
   rank: B
@@ -4051,7 +4081,7 @@
   elemento: katon
 - slug: katon-zukokku
   nome: "Katon: Zukokku"
-  traducao: Trabalho Árduo e Inteligente
+  traducao: "Estilo Fogo: Dor de Cabeça"
   origem: Katon
   tipo: Ninjutsu
   rank: B
@@ -4080,7 +4110,7 @@
   elemento: katon
 - slug: katon-gamayu-endan
   nome: "Katon: Gamayu Endan"
-  traducao: Projétil de Chamas com Óleo de Sapo
+  traducao: "Estilo Fogo: Bomba de Chamas do Óleo de Sapo"
   origem: Katon
   tipo: Ninjutsu
   rank: B
@@ -4110,7 +4140,7 @@
   elemento: katon
 - slug: katon-hosenka-tsumabeni
   nome: "Katon: Hōsenka Tsumabeni"
-  traducao: Unhas Carmesins da Flor da Fênix
+  traducao: "Estilo Fogo: Técnica Flor de Fênix: Garra Escarlate"
   origem: Clã Uchiha
   tipo: Ninjutsu
   rank: B
@@ -4168,7 +4198,7 @@
   elemento: fuuton
 - slug: daikamaitachi-no-jutsu
   nome: Daikamaitachi no Jutsu
-  traducao: Técnica da Grande Doninha-Foice
+  traducao: Técnica da Grande Foice da Doninha
   origem: Fuuton
   tipo: Ninjutsu
   rank: B
@@ -4198,7 +4228,7 @@
   elemento: fuuton
 - slug: kamaitachi-no-jutsu
   nome: Kamaitachi no Jutsu
-  traducao: Técnica da Doninha-Foice
+  traducao: Técnica da Foice da Doninha
   origem: Fuuton
   tipo: Ninjutsu
   rank: C
@@ -4228,7 +4258,7 @@
   elemento: fuuton
 - slug: futon-reppusho
   nome: "Fūton: Reppūshō"
-  traducao: Palma do Vendaval
+  traducao: "Estilo Vento: Palma Vendaval"
   origem: Fuuton
   tipo: Ninjutsu
   rank: C
@@ -4257,7 +4287,7 @@
   elemento: fuuton
 - slug: futon-atsugai
   nome: "Fūton: Atsugai"
-  traducao: Dano por Pressão
+  traducao: "Estilo Vento: Pressão Nociva"
   origem: Fuuton
   tipo: Ninjutsu
   rank: B
@@ -4286,7 +4316,7 @@
   elemento: fuuton
 - slug: futon-shinkugyoku
   nome: "Fūton: Shinkūgyoku"
-  traducao: Esfera de Vácuo
+  traducao: "Estilo Vento: Esfera de Vácuo"
   origem: Fuuton
   tipo: Ninjutsu
   rank: B
@@ -4404,7 +4434,7 @@
   elemento: suiton
 - slug: suiton-senshokuko
   nome: "Suiton: Senshokukō"
-  traducao: Mil Tubarões Famintos
+  traducao: "Estilo Água: Mil Tubarões de Alimentação"
   origem: Suiton
   tipo: Ninjutsu
   rank: B
@@ -4434,7 +4464,7 @@
   elemento: suiton
 - slug: suiton-bakusui-shoha
   nome: "Suiton: Bakusui Shōha"
-  traducao: Onda Explosiva de Água
+  traducao: "Estilo Água: Onda de Choque Explosiva de Água"
   origem: Suiton
   tipo: Ninjutsu
   rank: B
@@ -4463,7 +4493,7 @@
   elemento: suiton
 - slug: suiton-daibakufu-no-jutsu
   nome: "Suiton: Daibakufu no Jutsu"
-  traducao: Técnica da Grande Cachoeira
+  traducao: "Estilo Água: Técnica da Grande Cachoeira"
   origem: Suiton
   tipo: Ninjutsu
   rank: A
@@ -4493,7 +4523,7 @@
   elemento: suiton
 - slug: suiton-goshokuzame
   nome: "Suiton: Goshokuzame"
-  traducao: Cinco Tubarões Famintos
+  traducao: "Estilo Água: Cinco Tubarões Famintos"
   origem: Suiton
   tipo: Ninjutsu
   rank: B
@@ -4523,7 +4553,7 @@
   elemento: suiton
 - slug: suiton-teppodama
   nome: "Suiton: Teppōdama"
-  traducao: Tiro de Água
+  traducao: "Estilo Água: Tiro da Arma"
   origem: Suiton
   tipo: Ninjutsu
   rank: C
@@ -4552,7 +4582,7 @@
   elemento: suiton
 - slug: suiton-suigadan
   nome: "Suiton: Suigadan"
-  traducao: Projétil das Presas de Água
+  traducao: "Estilo Água: Bomba da Presa de Água"
   origem: Suiton
   tipo: Ninjutsu
   rank: B
@@ -4581,7 +4611,7 @@
   elemento: suiton
 - slug: suiton-mizuame-nabara
   nome: "Suiton: Mizuame Nabara"
-  traducao: Campo de Captura do Xarope
+  traducao: "Estilo Água: Captura do Campo de Xarope de Amido"
   origem: Suiton
   tipo: Ninjutsu
   rank: C
@@ -4610,7 +4640,7 @@
   elemento: suiton
 - slug: suiton-suikodan-no-jutsu
   nome: "Suiton: Suikōdan no Jutsu"
-  traducao: Técnica do Projétil do Tubarão de Água
+  traducao: "Estilo Água: Técnica da Bomba do Tubarão de Água"
   origem: Suiton
   tipo: Ninjutsu
   rank: B
@@ -4639,7 +4669,7 @@
   elemento: suiton
 - slug: suiton-takitsubo-no-jutsu
   nome: "Suiton: Takitsubo no Jutsu"
-  traducao: Técnica da Bacia da Cachoeira
+  traducao: "Estilo Água: Técnica da Bacia da Cachoeira"
   origem: Suiton
   tipo: Ninjutsu
   rank: C
@@ -4697,7 +4727,7 @@
   elemento: suiton
 - slug: gufu-suika-no-jutsu
   nome: Gufū Suika no Jutsu
-  traducao: Técnica do Vórtice de Água do Tufão
+  traducao: Técnica do Vórtex do Tufão de Água
   origem: Suiton
   tipo: Ninjutsu
   rank: B
@@ -4727,7 +4757,7 @@
   elemento: suiton
 - slug: suiton-daikodan-no-jutsu
   nome: "Suiton: Daikōdan no Jutsu"
-  traducao: Técnica do Grande Projétil do Tubarão
+  traducao: "Estilo Água: Técnica da Grande Bomba do Tubarão"
   origem: Suiton
   tipo: Ninjutsu
   rank: A
@@ -4756,7 +4786,7 @@
   elemento: suiton
 - slug: doton-kengan-no-jutsu
   nome: "Doton: Kengan no Jutsu"
-  traducao: Técnica do Punho de Rocha
+  traducao: "Estilo Terra: Técnica do Punho Rochoso"
   origem: Doton
   tipo: Taijutsu
   rank: D
@@ -4785,7 +4815,7 @@
   elemento: doton
 - slug: doton-sando-no-jutsu
   nome: "Doton: Sando no Jutsu"
-  traducao: Técnica do Sanduíche
+  traducao: "Estilo Terra: Técnica Sanduíche"
   origem: Doton
   tipo: Ninjutsu
   rank: B
@@ -4814,7 +4844,7 @@
   elemento: doton
 - slug: doton-shinju-zanshu-no-jutsu
   nome: "Doton: Shinjū Zanshu no Jutsu"
-  traducao: Técnica da Decapitação do Duplo Suicídio
+  traducao: "Estilo Terra: Técnica da Decapitação Suicida"
   origem: Doton
   tipo: Ninjutsu
   rank: D
@@ -4844,7 +4874,7 @@
   elemento: doton
 - slug: doton-doryu-joheki
   nome: "Doton: Doryū Jōheki"
-  traducao: Muralha Fortificada de Terra
+  traducao: "Estilo Terra: Muralha de Terra"
   origem: Doton
   tipo: Ninjutsu
   rank: B
@@ -4873,7 +4903,7 @@
   elemento: doton
 - slug: doton-doryo-dango
   nome: "Doton: Doryō Dango"
-  traducao: Bolinho do Mausoléu de Terra
+  traducao: "Estilo Terra: Bolinho Mausoléu de Terra"
   origem: Doton
   tipo: Ninjutsu
   rank: B
@@ -4902,7 +4932,7 @@
   elemento: doton
 - slug: doton-doryukatsu
   nome: "Doton: Doryūkatsu"
-  traducao: Divisão do Fluxo de Terra
+  traducao: "Estilo Terra: Divisão do Fluxo de Terra"
   origem: Doton
   tipo: Ninjutsu
   rank: B
@@ -4931,7 +4961,7 @@
   elemento: doton
 - slug: doton-kajugan-no-jutsu
   nome: "Doton: Kajūgan no Jutsu"
-  traducao: Técnica da Rocha de Peso Aumentado
+  traducao: "Estilo Terra: Técnica da Rocha Ponderada"
   origem: Doton
   tipo: Ninjutsu
   rank: B
@@ -4960,7 +4990,7 @@
   elemento: doton
 - slug: doton-moguragakure-no-jutsu
   nome: "Doton: Moguragakure no Jutsu"
-  traducao: Técnica de Esconder-se como Toupeira
+  traducao: "Estilo Terra: Técnica de Ocultação da Toupeira"
   origem: Doton
   tipo: Ninjutsu
   rank: C
@@ -4989,7 +5019,7 @@
   elemento: doton
 - slug: doton-goremu-no-jutsu
   nome: "Doton: Gōremu no Jutsu"
-  traducao: Técnica do Golem
+  traducao: "Estilo Terra: Técnica do Golem"
   origem: Doton
   tipo: Ninjutsu
   rank: C
@@ -5018,7 +5048,7 @@
   elemento: doton
 - slug: doton-kaido-shokutsu
   nome: "Doton: Kaido Shōkutsu"
-  traducao: Escavação da Terra que se Ergue
+  traducao: "Estilo Terra: Escavação em Solo Aberto"
   origem: Doton
   tipo: Ninjutsu
   rank: B
@@ -5047,7 +5077,7 @@
   elemento: doton
 - slug: doton-keijugan-no-jutsu
   nome: "Doton: Keijūgan no Jutsu"
-  traducao: Técnica da Rocha de Peso Reduzido
+  traducao: "Estilo Terra: Técnica da Rocha Leve"
   origem: Doton
   tipo: Ninjutsu
   rank: B
@@ -5076,7 +5106,7 @@
   elemento: doton
 - slug: doton-retsudo-tensho
   nome: "Doton: Retsudo Tenshō"
-  traducao: Palma que Rasga e Gira a Terra
+  traducao: "Estilo Terra: Torneamento da Palma Rasgadora de Terra"
   origem: Doton
   tipo: Ninjutsu
   rank: C
@@ -5105,7 +5135,7 @@
   elemento: doton
 - slug: doton-yomi-numa
   nome: "Doton: Yomi Numa"
-  traducao: Pântano do Submundo
+  traducao: "Estilo Terra: Pântano Infernal"
   origem: Doton
   tipo: Ninjutsu
   rank: A
@@ -5134,7 +5164,7 @@
   elemento: doton
 - slug: doton-dochu-eigyo-no-jutsu
   nome: "Doton: Dochū Eigyo no Jutsu"
-  traducao: Técnica do Peixe que Nada sob a Terra
+  traducao: "Estilo Terra: Técnica da Projeção do Peixe Subterrâneo"
   origem: Doton
   tipo: Ninjutsu
   rank: C
@@ -5163,7 +5193,7 @@
   elemento: doton
 - slug: doton-dochu-senko
   nome: "Doton: Dochū Senkō"
-  traducao: Viagem Subterrânea
+  traducao: "Estilo Terra: Deslocamento Subterrâneo"
   origem: Doton
   tipo: Ninjutsu
   rank: C
@@ -5192,7 +5222,7 @@
   elemento: doton
 - slug: doton-kekkai-doro-domu
   nome: "Doton Kekkai: Dorō Dōmu"
-  traducao: Cúpula da Prisão de Terra do Vazio Magnífico
+  traducao: "Barreira Estilo Terra: Prisão Cúpula de Terra"
   origem: Doton
   tipo: Ninjutsu
   rank: B
@@ -5221,7 +5251,7 @@
   elemento: doton
 - slug: chidori-senbon
   nome: Chidori Senbon
-  traducao: Agulhas dos Mil Pássaros
+  traducao: Senbon dos Mil Pássaros
   origem: Raiton
   tipo: Ninjutsu
   rank: A
@@ -5251,7 +5281,7 @@
   elemento: raiton
 - slug: chidori-eiso
   nome: Chidori Eisō
-  traducao: Lança Afiada dos Mil Pássaros
+  traducao: Lança de Chidori
   origem: Raiton
   tipo: Ninjutsu
   rank: A
@@ -5281,7 +5311,7 @@
   elemento: raiton
 - slug: chidori-nagashi
   nome: Chidori Nagashi
-  traducao: Corrente dos Mil Pássaros
+  traducao: Corrente de Chidori
   origem: Raiton
   tipo: Ninjutsu
   rank: A
@@ -5311,7 +5341,7 @@
   elemento: raiton
 - slug: kusanagi-no-tsurugi-chidorigatana
   nome: "Kusanagi no Tsurugi: Chidorigatana"
-  traducao: Espada dos Mil Pássaros
+  traducao: "Espada de Kusanagi: Lâmina de Chidori"
   origem: Raiton
   tipo: Ninjutsu
   rank: B
@@ -5341,7 +5371,7 @@
   elemento: raiton
 - slug: raiton-chakura-modo
   nome: Raiton Chakura Mōdo
-  traducao: Modo de Chakra do Raio
+  traducao: Modo de Chakra de Liberação de Relâmpago
   origem: Raiton
   tipo: Ninjutsu
   rank: B
@@ -5370,7 +5400,7 @@
   elemento: raiton
 - slug: raiton-gian
   nome: "Raiton: Gian"
-  traducao: Falsa Escuridão
+  traducao: "Estilo Relâmpago: Falsa Escuridão"
   origem: Raiton
   tipo: Ninjutsu
   rank: B
@@ -5399,7 +5429,7 @@
   elemento: raiton
 - slug: raiton-raiju-tsuiga
   nome: "Raiton: Raijū Tsuiga"
-  traducao: Presa Rastreadora da Fera de Raio
+  traducao: "Estilo Relâmpago: Perseguição de Garras da Besta Relâmpago"
   origem: Raiton
   tipo: Ninjutsu
   rank: C
@@ -5428,7 +5458,7 @@
   elemento: raiton
 - slug: raiton-kuropansa
   nome: "Raiton: Kuropansa"
-  traducao: Pantera Negra
+  traducao: "Estilo Relâmpago: Pantera Negra"
   origem: Raiton
   tipo: Ninjutsu
   rank: B
@@ -5457,7 +5487,7 @@
   elemento: raiton
 - slug: kuroi-kaminari
   nome: Kuroi Kaminari
-  traducao: Raio Negro
+  traducao: Relâmpago Negro
   origem: Raiton
   tipo: Ninjutsu
   rank: B
@@ -5486,7 +5516,7 @@
   elemento: raiton
 - slug: jigokuzuki
   nome: Jigokuzuki
-  traducao: Estocada do Inferno
+  traducao: Facada Infernal
   origem: Raiton
   tipo: Taijutsu
   rank: B
@@ -5546,7 +5576,7 @@
   elemento: raiton
 - slug: raigyaku-suihei-choppu
   nome: Raigyaku Suihei Choppu
-  traducao: Golpe Horizontal da Opressão do Raio
+  traducao: Corte Horizontal de Relâmpago Violento
   origem: Raiton
   tipo: Taijutsu
   rank: C
@@ -5576,7 +5606,7 @@
   elemento: raiton
 - slug: raitoningu-sutoreto
   nome: Raitoningu Sutorēto
-  traducao: Direto de Raio
+  traducao: Relâmpago Reto
   origem: Raiton
   tipo: Taijutsu
   rank: C
@@ -5695,7 +5725,7 @@
   elemento: null
 - slug: tsutenkyaku
   nome: Tsūtenkyaku
-  traducao: Pé Celestial da Dor
+  traducao: Pé da Dor Celestial
   origem: Taijutsu
   tipo: Taijutsu
   rank: C
@@ -5724,7 +5754,7 @@
   elemento: null
 - slug: konoha-goriki-senpu
   nome: Konoha Gōriki Senpū
-  traducao: Redemoinho Forte da Folha
+  traducao: Poderoso Furacão da Folha
   origem: Taijutsu
   tipo: Taijutsu
   rank: B
@@ -5782,7 +5812,7 @@
   elemento: null
 - slug: shishi-rendan
   nome: Shishi Rendan
-  traducao: Sequência do Leão
+  traducao: Rajada de Leões
   origem: Taijutsu
   tipo: Taijutsu
   rank: C
@@ -5841,7 +5871,7 @@
   elemento: null
 - slug: ninpo-shinken-shirahadori
   nome: "Ninpō: Shinken Shirahadori"
-  traducao: Bloqueio da Lâmina com as Mãos Nuas
+  traducao: "Arte Ninja: Verdadeira Captura de Espada com as Mãos Nuas"
   origem: Taijutsu
   tipo: Taijutsu
   rank: C
@@ -5900,7 +5930,7 @@
   elemento: null
 - slug: hien
   nome: Hien
-  traducao: Andorinha Voadora
+  traducao: Voo da Andorinha
   origem: Fuuton
   tipo: Ninjutsu
   rank: B
@@ -5930,7 +5960,7 @@
   elemento: fuuton
 - slug: choharite
   nome: Chōharite
-  traducao: Tapa Super Aberto
+  traducao: Super Bofetada
   origem: Clã Akimichi
   tipo: Taijutsu
   rank: B
@@ -5959,7 +5989,7 @@
   elemento: null
 - slug: konoha-tsumuji-senpu
   nome: Konoha Tsumuji Senpū
-  traducao: Redemoinho Espiral da Folha
+  traducao: Choque do Furacão da Folha
   origem: Taijutsu
   tipo: Taijutsu
   rank: C
@@ -5989,7 +6019,7 @@
   elemento: null
 - slug: rakanken
   nome: Rakanken
-  traducao: Punho do Arhat
+  traducao: Punho Arhat
   origem: Taijutsu
   tipo: Taijutsu
   rank: C
@@ -6018,7 +6048,7 @@
   elemento: null
 - slug: suiken
   nome: Suiken
-  traducao: Punho Bêbado
+  traducao: Punho Embriagado
   origem: Taijutsu
   tipo: Taijutsu
   rank: C
@@ -6107,7 +6137,7 @@
   elemento: null
 - slug: kawazu-kumite
   nome: Kawazu Kumite
-  traducao: Kata do Sapo
+  traducao: Kumite do Sapo
   origem: Taijutsu
   tipo: Taijutsu
   rank: C
@@ -6137,7 +6167,7 @@
   elemento: null
 - slug: kasumi-jusha-no-jutsu
   nome: Kasumi Jūsha no Jutsu
-  traducao: Técnica dos Servos de Névoa
+  traducao: Técnica dos Servos de Neblina
   origem: Genjutsu
   tipo: Genjutsu
   rank: D
@@ -6196,7 +6226,7 @@
   elemento: null
 - slug: magen-kokoni-arazu-no-jutsu
   nome: "Magen: Kokoni Arazu no Jutsu"
-  traducao: "Ilusão Demoníaca: Técnica do Lugar que Não Está Aqui"
+  traducao: "Ilusão Demoníaca: Técnica do Não-Está-Aqui"
   origem: Genjutsu
   tipo: Genjutsu
   rank: C
@@ -6225,7 +6255,7 @@
   elemento: null
 - slug: nehan-shoja-no-jutsu
   nome: Nehan Shōja no Jutsu
-  traducao: Técnica do Templo do Nirvana
+  traducao: Técnica do Templo de Nirvana
   origem: Genjutsu
   tipo: Genjutsu
   rank: A
@@ -6254,7 +6284,7 @@
   elemento: null
 - slug: sozo-saisei
   nome: Sōzō Saisei
-  traducao: Renascimento da Criação
+  traducao: Regeneração da Criação
   origem: Ninjutsu Médico
   tipo: Ninjutsu
   rank: S
@@ -6284,7 +6314,7 @@
   elemento: null
 - slug: chikatsu-saisei-no-jutsu
   nome: Chikatsu Saisei no Jutsu
-  traducao: Técnica de Regeneração e Ressuscitação
+  traducao: Técnica da Cura Regenerativa
   origem: Ninjutsu Médico
   tipo: Ninjutsu
   rank: A
@@ -6343,7 +6373,7 @@
   elemento: null
 - slug: saikan-chushutsu-no-jutsu
   nome: Saikan Chūshutsu no Jutsu
-  traducao: Técnica de Extração da Doença Delicada
+  traducao: Técnica de Extração Delicada de Doença
   origem: Ninjutsu Médico
   tipo: Ninjutsu
   rank: B
@@ -6372,7 +6402,7 @@
   elemento: null
 - slug: ranshinsho
   nome: Ranshinshō
-  traducao: Desordem dos Caminhos do Corpo
+  traducao: Choque da Desorientação
   origem: Ninjutsu Médico
   tipo: Ninjutsu
   rank: A
@@ -6430,7 +6460,7 @@
   elemento: null
 - slug: byakugo-no-in
   nome: Byakugō no In
-  traducao: Selo da Força de Cem
+  traducao: Selo da Força de Uma Centena
   origem: Ninjutsu Médico
   tipo: Fuuinjutsu
   rank: S
@@ -6460,7 +6490,7 @@
   elemento: null
 - slug: shishienjin
   nome: Shishienjin
-  traducao: Formação das Quatro Chamas Violeta
+  traducao: Formação das Quatro Chamas Púrpuras
   origem: Fuuinjutsu
   tipo: Fuuinjutsu
   rank: B
@@ -6490,7 +6520,7 @@
   elemento: null
 - slug: shisekiyojin
   nome: Shisekiyōjin
-  traducao: Formação dos Quatro Yang Vermelhos
+  traducao: Formação dos Quatro Sóis Vermelhos
   origem: Fuuinjutsu
   tipo: Fuuinjutsu
   rank: A
@@ -6520,7 +6550,7 @@
   elemento: null
 - slug: kekkai-tengai-hojin
   nome: "Kekkai: Tengai Hōjin"
-  traducao: "Barreira: Formação da Abóbada"
+  traducao: "Barreira: Formação da Cobertura"
   origem: Fuuinjutsu
   tipo: Fuuinjutsu
   rank: B
@@ -6579,7 +6609,7 @@
   elemento: null
 - slug: nunoshibari-no-jutsu
   nome: Nunoshibari no Jutsu
-  traducao: Técnica da Amarração com Pano
+  traducao: Técnica da Ligação de Pano
   origem: Fuuinjutsu
   tipo: Fuuinjutsu
   rank: C
@@ -6609,7 +6639,7 @@
   elemento: null
 - slug: gojo-kibaku-fuda
   nome: Gojō Kibaku Fuda
-  traducao: Etiquetas Explosivas que se Multiplicam
+  traducao: Multiplicação Mútua dos Amuletos Explosivos
   origem: Fuuinjutsu
   tipo: Fuuinjutsu
   rank: A
@@ -6639,7 +6669,7 @@
   elemento: null
 - slug: ura-shisho-fuin
   nome: Ura Shishō Fūin
-  traducao: Selamento Reverso dos Quatro Símbolos
+  traducao: Técnica do Selo de Quatro Símbolos Reverso
   origem: Fuuinjutsu
   tipo: Fuuinjutsu
   rank: S
@@ -6669,7 +6699,7 @@
   elemento: null
 - slug: fuka-hoin
   nome: Fūka Hōin
-  traducao: Método de Selamento do Fogo
+  traducao: Método de Selamento de Fogo
   origem: Fuuinjutsu
   tipo: Fuuinjutsu
   rank: C
@@ -6699,7 +6729,7 @@
   elemento: null
 - slug: kurohigi-kiki-ippatsu
   nome: Kurohigi Kiki Ippatsu
-  traducao: "Técnica Secreta Negra: Um Tiro da Máquina"
+  traducao: "Técnica Preta Secreta: Maquinário de Tiro Único"
   origem: Kugutsu
   tipo: Kugutsu
   rank: B
@@ -6729,7 +6759,7 @@
   elemento: null
 - slug: kurohigi-kiki-sanpatsu
   nome: "Kurohigi: Kiki Sanpatsu"
-  traducao: "Técnica Secreta Negra: Três Tiros da Máquina"
+  traducao: "Técnica Preta Secreta: Maquinário de Tiro Triplo"
   origem: Kugutsu
   tipo: Kugutsu
   rank: A
@@ -6759,7 +6789,7 @@
   elemento: null
 - slug: kiko-junbu
   nome: Kikō Junbū
-  traducao: Bloqueio do Escudo Mecânico
+  traducao: Escudo da Luz Mecânica
   origem: Kugutsu
   tipo: Kugutsu
   rank: B
@@ -6789,7 +6819,7 @@
   elemento: null
 - slug: senju-sobu
   nome: Senju Sōbu
-  traducao: Força de Manipulação das Mil Mãos
+  traducao: Honra Militar das Mil Mãos
   origem: Kugutsu
   tipo: Kugutsu
   rank: C
@@ -6848,7 +6878,7 @@
   elemento: null
 - slug: akahigi-hyakki-no-soen
   nome: "Akahigi: Hyakki no Sōen"
-  traducao: "Técnica Secreta Vermelha: Espetáculo das Cem Marionetes"
+  traducao: "Técnica Vermelha Secreta: Performance das Cem Marionetes"
   origem: Kugutsu
   tipo: Kugutsu
   rank: S
@@ -6878,7 +6908,7 @@
   elemento: null
 - slug: shirohigi-jikki-chikamatsu-no-shu
   nome: "Shirohigi: Jikki Chikamatsu no Shū"
-  traducao: "Técnica Secreta Branca: As Dez Marionetes de Chikamatsu"
+  traducao: "Técnica Branca Secreta: A Coleção de Dez Marionetes de Chikamatsu"
   origem: Kugutsu
   tipo: Kugutsu
   rank: S
@@ -6908,7 +6938,7 @@
   elemento: null
 - slug: soen-hitomi-goku
   nome: "Sōen: Hitomi Gokū"
-  traducao: "Espetáculo de Marionete: A Façanha com um Corpo Humano"
+  traducao: "Performance da Marionete: Conquista Habilidosa com um Corpo Humano"
   origem: Kugutsu
   tipo: Kugutsu
   rank: B
@@ -6938,7 +6968,7 @@
   elemento: null
 - slug: sanbo-kyukai
   nome: Sanbō Kyūkai
-  traducao: Esmagamento por Sucção dos Três Tesouros
+  traducao: Destruição Sugadora dos Três Tesouros
   origem: Kugutsu
   tipo: Kugutsu
   rank: B
@@ -6998,7 +7028,7 @@
   elemento: null
 - slug: kusari-sogazan
   nome: "Kusari: Sōgazan"
-  traducao: "Correntes: Corte das Presas Gêmeas"
+  traducao: "Corrente: Corte das Presas Gêmeas"
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: C
@@ -7028,7 +7058,7 @@
   elemento: null
 - slug: issen
   nome: Issen
-  traducao: Lampejo
+  traducao: Flash
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: B
@@ -7088,7 +7118,7 @@
   elemento: null
 - slug: iaido
   nome: Iaidō
-  traducao: O Caminho do Saque
+  traducao: Iaidō
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: C
@@ -7148,7 +7178,7 @@
   elemento: null
 - slug: kumo-ryu-uragiri
   nome: Kumo-Ryū Uragiri
-  traducao: Decapitação Reversa do Estilo da Nuvem
+  traducao: Corte Pelo Verso ao Estilo da Nuvem
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: C
@@ -7177,7 +7207,7 @@
   elemento: null
 - slug: kage-shuriken-no-jutsu
   nome: Kage Shuriken no Jutsu
-  traducao: Técnica da Shuriken da Sombra
+  traducao: Técnica da Shuriken das Sombras
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: D
@@ -7206,7 +7236,7 @@
   elemento: null
 - slug: shikomishindan
   nome: Shikomishindan
-  traducao: Tiro de Agulhas Preparadas
+  traducao: Tiro Preparado de Agulhas
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: C
@@ -7236,7 +7266,7 @@
   elemento: null
 - slug: joro-senbon
   nome: Jōro Senbon
-  traducao: Chuva de Senbon
+  traducao: Chuveiro de Agulhas
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: C
@@ -7266,7 +7296,7 @@
   elemento: null
 - slug: shuriken-kage-bunshin-no-jutsu
   nome: Shuriken Kage Bunshin no Jutsu
-  traducao: Técnica do Clone das Sombras da Shuriken
+  traducao: Técnica do Clone da Sombra de Shuriken
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: A
@@ -7295,7 +7325,7 @@
   elemento: null
 - slug: hari-jizo
   nome: Hari Jizō
-  traducao: Jizō de Agulhas
+  traducao: Agulhas Jizou
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: B
@@ -7324,7 +7354,7 @@
   elemento: null
 - slug: jagei-jubaku
   nome: Jagei Jubaku
-  traducao: Feitiço da Prisão do Olhar da Serpente
+  traducao: Maldição do Olhar da Serpente
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: C
@@ -7353,7 +7383,7 @@
   elemento: null
 - slug: senei-jashu
   nome: Sen'ei Jashu
-  traducao: Mãos das Serpentes das Sombras Ocultas
+  traducao: Mãos de Serpente Oculta na Sombra
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: C
@@ -7382,7 +7412,7 @@
   elemento: null
 - slug: senei-tajashu
   nome: Sen'ei Tajashu
-  traducao: Muitas Mãos das Serpentes das Sombras Ocultas
+  traducao: Mãos de Múltiplas Serpentes Ocultas na Sombra
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: B
@@ -7411,7 +7441,7 @@
   elemento: null
 - slug: kuchiyose-rashomon
   nome: "Kuchiyose: Rashōmon"
-  traducao: "Invocação: Portão Rashōmon"
+  traducao: "Invocação: Rashōmon"
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: B
@@ -7471,7 +7501,7 @@
   elemento: null
 - slug: hiraishin-no-jutsu
   nome: Hiraishin no Jutsu
-  traducao: Técnica do Deus do Trovão Voador
+  traducao: Técnica do Raijin Voador
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: A
@@ -7501,7 +7531,7 @@
   elemento: null
 - slug: hiraishingiri
   nome: Hiraishingiri
-  traducao: Corte do Deus do Trovão Voador
+  traducao: Corte do Raijin Voador
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: B
@@ -7561,7 +7591,7 @@
   elemento: null
 - slug: kuchiyose-doton-tsuiga-no-jutsu
   nome: "Kuchiyose: Doton: Tsuiga no Jutsu"
-  traducao: "Invocação: Técnica das Presas Rastreadoras"
+  traducao: "Invocação: Estilo Terra: Técnica de Perseguição de Garras"
   origem: Doton
   tipo: Ninjutsu
   rank: B
@@ -7621,7 +7651,7 @@
   elemento: fuuton
 - slug: zankuha
   nome: Zankūha
-  traducao: Ondas de Ar Decapitantes
+  traducao: Ondas Sonoras Decapitadoras
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: D
@@ -7651,7 +7681,7 @@
   elemento: null
 - slug: zankukyokuha
   nome: Zankūkyokuha
-  traducao: Ondas de Ar Decapitantes Extremas
+  traducao: Extremas Ondas Sonoras Decapitadoras
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: C
@@ -7681,7 +7711,7 @@
   elemento: null
 - slug: kyomeisen
   nome: Kyōmeisen
-  traducao: Broca do Eco Ressonante
+  traducao: Eco da Broca Ressonante
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: C
@@ -7711,7 +7741,7 @@
   elemento: null
 - slug: taju-kage-bunshin-no-jutsu
   nome: Tajū Kage Bunshin no Jutsu
-  traducao: Técnica dos Múltiplos Clones das Sombras
+  traducao: Técnica dos Múltiplos Clones da Sombra
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: A
@@ -7771,7 +7801,7 @@
   elemento: null
 - slug: karasu-bunshin-no-jutsu
   nome: Karasu Bunshin no Jutsu
-  traducao: Técnica do Clone de Corvos
+  traducao: Técnica do Clone de Corvo
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: C
@@ -7801,7 +7831,7 @@
   elemento: null
 - slug: oboro-bunshin-no-jutsu
   nome: Oboro Bunshin no Jutsu
-  traducao: Técnica do Clone de Bruma
+  traducao: Técnica do Clone de Neblina
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: D
@@ -7861,7 +7891,7 @@
   elemento: null
 - slug: raiton-kage-bunshin-no-jutsu
   nome: "Raiton: Kage Bunshin no Jutsu"
-  traducao: "Raiton: Técnica do Clone das Sombras"
+  traducao: "Estilo Relâmpago: Técnica Clone das Sombras"
   origem: Raiton
   tipo: Ninjutsu
   rank: A
@@ -7891,7 +7921,7 @@
   elemento: raiton
 - slug: sanzengarasu-no-jutsu
   nome: Sanzengarasu no Jutsu
-  traducao: Técnica dos Mil Corvos que se Espalham
+  traducao: Técnica dos Mil Corvos Dispersos
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: C
@@ -7920,7 +7950,7 @@
   elemento: null
 - slug: mokuton-mokuryu-no-jutsu
   nome: "Mokuton: Mokuryū no Jutsu"
-  traducao: "Mokuton: Técnica do Dragão de Madeira"
+  traducao: "Estilo Madeira: Técnica do Dragão de Madeira"
   origem: Clã Senju
   tipo: Ninjutsu
   rank: A
@@ -7979,7 +8009,7 @@
   elemento: mokuton
 - slug: mokuton-daisoju
   nome: "Mokuton: Daisōju"
-  traducao: "Mokuton: Grande Árvore de Lanças"
+  traducao: "Estilo Madeira: Lança da Grande Árvore"
   origem: Clã Senju
   tipo: Ninjutsu
   rank: B
@@ -8008,7 +8038,7 @@
   elemento: mokuton
 - slug: hokage-shiki-jijun-jutsu-kakuan-nitten-suishu
   nome: "Hokage-Shiki Jijun Jutsu: Kakuan Nitten Suishu"
-  traducao: "Técnica do Estilo Hokage: Mãos que Trazem a Paz"
+  traducao: "Técnica Sexagenária do Estilo Hokage: Kakuan Entrando na Sociedade com Mãos Trazendo Felicidade"
   origem: Clã Senju
   tipo: Ninjutsu
   rank: B
@@ -8037,7 +8067,7 @@
   elemento: mokuton
 - slug: mokuton-sashiki-no-jutsu
   nome: "Mokuton: Sashiki no Jutsu"
-  traducao: "Mokuton: Técnica das Estacas"
+  traducao: "Estilo Madeira: Técnica Cortante"
   origem: Clã Senju
   tipo: Ninjutsu
   rank: B
@@ -8066,7 +8096,7 @@
   elemento: mokuton
 - slug: mokuton-mokujin-no-jutsu
   nome: "Mokuton: Mokujin no Jutsu"
-  traducao: "Mokuton: Técnica do Gigante de Madeira"
+  traducao: "Estilo Madeira: Técnica do Homem de Madeira"
   origem: Clã Senju
   tipo: Ninjutsu
   rank: A
@@ -8095,7 +8125,7 @@
   elemento: mokuton
 - slug: satetsu-kaiho
   nome: Satetsu Kaihō
-  traducao: Método do Mundo da Areia de Ferro
+  traducao: Ordem Mundial da Areia de Ferro
   origem: Jiton
   tipo: Ninjutsu
   rank: A
@@ -8125,7 +8155,7 @@
   elemento: jiton
 - slug: satetsu-kesshu
   nome: Satetsu Kesshū
-  traducao: Assalto da Areia de Ferro Reunida
+  traducao: Assalto da Areia de Ferro
   origem: Jiton
   tipo: Ninjutsu
   rank: B
@@ -8155,7 +8185,7 @@
   elemento: jiton
 - slug: satetsu-shigure
   nome: Satetsu Shigure
-  traducao: Garoa da Areia de Ferro
+  traducao: Chuva de Areia de Ferro
   origem: Jiton
   tipo: Ninjutsu
   rank: B
@@ -8185,7 +8215,7 @@
   elemento: jiton
 - slug: odama-rasengan
   nome: Ōdama Rasengan
-  traducao: Rasengan de Bola Grande
+  traducao: Rasengan Gigante
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: A
@@ -8215,7 +8245,7 @@
   elemento: null
 - slug: rasenrengan
   nome: Rasenrengan
-  traducao: Esferas Espirais em Série
+  traducao: Rajada Rasengan
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: A
@@ -8245,7 +8275,7 @@
   elemento: null
 - slug: choju-giga
   nome: Chōjū Giga
-  traducao: Desenho que Imita as Super Feras
+  traducao: Caricatura da Super Besta
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: B
@@ -8304,7 +8334,7 @@
   elemento: null
 - slug: kanashibari-no-jutsu
   nome: Kanashibari no Jutsu
-  traducao: Técnica da Paralisia Temporária
+  traducao: Técnica de Paralisia
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: D
@@ -8363,7 +8393,7 @@
   elemento: null
 - slug: meisaigakure-no-jutsu
   nome: Meisaigakure no Jutsu
-  traducao: Técnica de Esconder-se com Camuflagem
+  traducao: Técnica de Ocultação com Camuflagem
   origem: Doton
   tipo: Ninjutsu
   rank: B
@@ -8422,7 +8452,7 @@
   elemento: null
 - slug: sojasosai-no-jutsu
   nome: Sōjasōsai no Jutsu
-  traducao: Técnica da Morte Mútua das Serpentes Gêmeas
+  traducao: Técnica da Morte Mútua das Cobras Gêmeas
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: A
@@ -8453,7 +8483,7 @@
 # ---- Jutsus da wiki de Naruto: onda 2 (gerado por scripts/livro/importar-jutsus.ts a partir da especificação da onda)
 - slug: katon-goka-messhitsu
   nome: "Katon: Gōka Messhitsu"
-  traducao: Grande Destruição de Fogo
+  traducao: "Estilo Fogo: Grande Devastação por Fogo"
   origem: Katon
   tipo: Ninjutsu
   rank: A
@@ -8482,7 +8512,7 @@
   elemento: katon
 - slug: katon-ryuen-hoka-no-jutsu
   nome: "Katon: Ryūen Hōka no Jutsu"
-  traducao: Técnica da Canção das Chamas do Dragão
+  traducao: "Estilo Fogo: Técnica da Canção do Dragão de Chamas"
   origem: Katon
   tipo: Ninjutsu
   rank: B
@@ -8511,7 +8541,7 @@
   elemento: katon
 - slug: katon-haijingakure-no-jutsu
   nome: "Katon: Haijingakure no Jutsu"
-  traducao: Técnica de Esconder-se nas Cinzas
+  traducao: "Estilo Fogo: Técnica de Ocultação nas Cinzas"
   origem: Katon
   tipo: Ninjutsu
   rank: B
@@ -8540,7 +8570,7 @@
   elemento: katon
 - slug: katon-goen-no-jutsu
   nome: "Katon: Gōen no Jutsu"
-  traducao: Técnica da Grande Chama
+  traducao: "Estilo Fogo: Técnica da Grande Chama"
   origem: Katon
   tipo: Ninjutsu
   rank: B
@@ -8569,7 +8599,7 @@
   elemento: katon
 - slug: katon-kibaku-enjin
   nome: "Katon: Kibaku Enjin"
-  traducao: Formação das Chamas Explosivas
+  traducao: "Estilo Fogo: Formação de Chama Explosiva"
   origem: Katon
   tipo: Ninjutsu
   rank: B
@@ -8628,7 +8658,7 @@
   elemento: fuuton
 - slug: futon-shinkuha
   nome: "Fūton: Shinkūha"
-  traducao: Onda de Vácuo
+  traducao: "Estilo Vento: Onda de Vácuo"
   origem: Fuuton
   tipo: Ninjutsu
   rank: B
@@ -8657,7 +8687,7 @@
   elemento: fuuton
 - slug: futon-shinkujin
   nome: "Fūton: Shinkūjin"
-  traducao: Lâmina de Vácuo
+  traducao: "Estilo Vento: Lâmina de Vácuo"
   origem: Fuuton
   tipo: Ninjutsu
   rank: C
@@ -8687,7 +8717,7 @@
   elemento: fuuton
 - slug: futon-fujin-no-jutsu
   nome: "Fūton: Fūjin no Jutsu"
-  traducao: Técnica da Nuvem de Poeira
+  traducao: "Estilo Vento: Técnica da Nuvem de Poeira"
   origem: Fuuton
   tipo: Ninjutsu
   rank: B
@@ -8716,7 +8746,7 @@
   elemento: fuuton
 - slug: futon-kakeami
   nome: "Fūton: Kakeami"
-  traducao: Rede de Lançar
+  traducao: "Estilo Vento: Lançamento da Rede"
   origem: Fuuton
   tipo: Ninjutsu
   rank: C
@@ -8746,7 +8776,7 @@
   elemento: fuuton
 - slug: futon-okakeami
   nome: "Fūton: Ōkakeami"
-  traducao: Grande Rede de Lançar
+  traducao: "Estilo Vento: Rede de Arremesso Grande"
   origem: Fuuton
   tipo: Ninjutsu
   rank: B
@@ -8805,7 +8835,7 @@
   elemento: suiton
 - slug: ukojizai-no-jutsu
   nome: Ukojizai no Jutsu
-  traducao: Técnica do Tigre da Chuva à Vontade
+  traducao: Técnica do Tigre à Vontade na Chuva
   origem: Suiton
   tipo: Ninjutsu
   rank: C
@@ -8835,7 +8865,7 @@
   elemento: suiton
 - slug: mujin-meisai
   nome: Mujin Meisai
-  traducao: Cobertura Desconcertante sem Pó
+  traducao: Capa da Desconcertante Superfície sem Pó
   origem: Suiton
   tipo: Ninjutsu
   rank: B
@@ -8864,7 +8894,7 @@
   elemento: suiton
 - slug: suiton-hahonryu
   nome: "Suiton: Hahonryū"
-  traducao: Torrente que Rasga
+  traducao: "Estilo Água: Torrente Dilacerante"
   origem: Suiton
   tipo: Ninjutsu
   rank: B
@@ -8893,7 +8923,7 @@
   elemento: suiton
 - slug: suiton-suishoha
   nome: "Suiton: Suishōha"
-  traducao: Onda de Água que Colide
+  traducao: "Estilo Água: Colisão da Onda de Água"
   origem: Suiton
   tipo: Ninjutsu
   rank: A
@@ -8922,7 +8952,7 @@
   elemento: suiton
 - slug: suiton-suijinchu
   nome: "Suiton: Suijinchū"
-  traducao: Pilar da Formação de Água
+  traducao: "Estilo Água: Formação do Pilar de Água"
   origem: Suiton
   tipo: Ninjutsu
   rank: C
@@ -8951,7 +8981,7 @@
   elemento: suiton
 - slug: suiton-suidanha
   nome: "Suiton: Suidanha"
-  traducao: Onda de Água Cortante
+  traducao: "Estilo Água: Ondas de Águas Cortantes"
   origem: Suiton
   tipo: Ninjutsu
   rank: A
@@ -8980,7 +9010,7 @@
   elemento: suiton
 - slug: suiton-homatsu-no-jutsu
   nome: "Suiton: Hōmatsu no Jutsu"
-  traducao: Técnica das Bolhas
+  traducao: "Estilo Água: Técnica de Bolhas"
   origem: Suiton
   tipo: Ninjutsu
   rank: C
@@ -9009,7 +9039,7 @@
   elemento: suiton
 - slug: doton-daichidokaku
   nome: "Doton: Daichidōkaku"
-  traducao: Grande Núcleo da Terra em Movimento
+  traducao: "Estilo Terra: Grande Movimentação do Núcleo da Terra"
   origem: Doton
   tipo: Ninjutsu
   rank: B
@@ -9038,7 +9068,7 @@
   elemento: doton
 - slug: doton-renga-no-jutsu
   nome: "Doton: Renga no Jutsu"
-  traducao: Técnica dos Tijolos de Treino
+  traducao: "Estilo Terra: Técnica da Prática do Tijolo"
   origem: Doton
   tipo: Ninjutsu
   rank: D
@@ -9067,7 +9097,7 @@
   elemento: doton
 - slug: doton-sazareishi
   nome: "Doton: Sazareishi"
-  traducao: Cascalho
+  traducao: "Estilo Terra: Cascalho"
   origem: Doton
   tipo: Ninjutsu
   rank: C
@@ -9096,7 +9126,7 @@
   elemento: doton
 - slug: doton-otoshibuta
   nome: "Doton: Otoshibuta"
-  traducao: Tampa que Cai
+  traducao: "Estilo Terra: Tampa Caída"
   origem: Doton
   tipo: Ninjutsu
   rank: B
@@ -9155,7 +9185,7 @@
   elemento: doton
 - slug: doton-chokajugan-no-jutsu
   nome: "Doton: Chōkajūgan no Jutsu"
-  traducao: Técnica da Rocha de Peso Superaumentado
+  traducao: "Estilo Terra: Técnica da Rocha Super Pesada"
   origem: Doton
   tipo: Ninjutsu
   rank: B
@@ -9184,7 +9214,7 @@
   elemento: doton
 - slug: doton-chokeijugan-no-jutsu
   nome: "Doton: Chōkeijūgan no Jutsu"
-  traducao: Técnica da Rocha de Peso Superreduzido
+  traducao: "Estilo Terra: Técnica da Rocha Super Leve"
   origem: Doton
   tipo: Ninjutsu
   rank: B
@@ -9213,7 +9243,7 @@
   elemento: doton
 - slug: iwa-bunshin-no-jutsu
   nome: Iwa Bunshin no Jutsu
-  traducao: Técnica do Clone de Pedra
+  traducao: Técnica do Clone de Rocha
   origem: Doton
   tipo: Ninjutsu
   rank: C
@@ -9242,7 +9272,7 @@
   elemento: doton
 - slug: doton-banri-doryuheki
   nome: "Doton: Banri Doryūheki"
-  traducao: Muralha de Terra dos Dez Mil Ri
+  traducao: "Estilo Terra: Parede de Lama de Dez Mil Ri"
   origem: Doton
   tipo: Ninjutsu
   rank: A
@@ -9272,7 +9302,7 @@
   elemento: doton
 - slug: raiton-kangekiha
   nome: "Raiton: Kangekiha"
-  traducao: Onda da Inspiração
+  traducao: "Estilo Relâmpago: Onda de Inspiração"
   origem: Raiton
   tipo: Ninjutsu
   rank: A
@@ -9302,7 +9332,7 @@
   elemento: raiton
 - slug: raiton-shiden
   nome: "Raiton: Shiden"
-  traducao: Eletricidade Roxa
+  traducao: "Estilo Relâmpago: Eletricidade Roxa"
   origem: Raiton
   tipo: Ninjutsu
   rank: B
@@ -9331,7 +9361,7 @@
   elemento: raiton
 - slug: yoton-yokai-no-jutsu
   nome: "Yōton: Yōkai no Jutsu"
-  traducao: Técnica da Aparição Derretida
+  traducao: "Estilo Dissolução: Técnica da Solução Misteriosa"
   origem: Yōton
   tipo: Ninjutsu
   rank: B
@@ -9361,7 +9391,7 @@
   elemento: yoton
 - slug: yoton-sekkaigyo-no-jutsu
   nome: "Yōton: Sekkaigyō no Jutsu"
-  traducao: Técnica da Cal Viva que Endurece
+  traducao: "Estilo Fusão: Técnica da Calcificação"
   origem: Yōton
   tipo: Ninjutsu
   rank: C
@@ -9391,7 +9421,7 @@
   elemento: yoton
 - slug: yoton-kaisekifu-no-jutsu
   nome: "Yōton: Kaisekifū no Jutsu"
-  traducao: Técnica do Selo de Pedra e Cinza
+  traducao: "Estilo Fusão: Técnica do Selo da Pedra de Cinzas"
   origem: Yōton
   tipo: Ninjutsu
   rank: C
@@ -9421,7 +9451,7 @@
   elemento: yoton
 - slug: ranton-reiza-sakasu
   nome: "Ranton: Reizā Sākasu"
-  traducao: Circo de Laser
+  traducao: "Estilo Tempestade: Laser Circus"
   origem: Ranton
   tipo: Ninjutsu
   rank: A
@@ -9451,7 +9481,7 @@
   elemento: ranton
 - slug: kusa-boheki
   nome: Kūsa Bōheki
-  traducao: Muralha Protetora de Areia no Ar
+  traducao: Muro Defensivo de Areia Aérea
   origem: Linhagem Sabaku
   tipo: Ninjutsu
   rank: B
@@ -9509,7 +9539,7 @@
   elemento: null
 - slug: sabaku-fuyu
   nome: Sabaku Fuyū
-  traducao: Suspensão do Deserto
+  traducao: Flutuação de Areia
   origem: Linhagem Sabaku
   tipo: Ninjutsu
   rank: C
@@ -9625,7 +9655,7 @@
   elemento: null
 - slug: gokusa-maiso
   nome: Gokusa Maisō
-  traducao: Enterro na Prisão de Areia
+  traducao: Enterro da Prisão de Areia
   origem: Linhagem Sabaku
   tipo: Ninjutsu
   rank: B
@@ -9741,7 +9771,7 @@
   elemento: null
 - slug: sensa-kaibyo
   nome: Sensa Kaibyō
-  traducao: Gato de Areia Escondido
+  traducao: Imagem do Gato Escondido na Areia
   origem: Linhagem Sabaku
   tipo: Ninjutsu
   rank: C
@@ -9770,7 +9800,7 @@
   elemento: null
 - slug: kagemane-kage-shibari-no-jutsu
   nome: Kagemane Kage Shibari no Jutsu
-  traducao: Técnica da Amarra da Sombra que Imita
+  traducao: Técnica de Contenção da Sombra pela Imitação da Sombra
   origem: Clã Nara
   tipo: Ninjutsu
   rank: C
@@ -9799,7 +9829,7 @@
   elemento: null
 - slug: jukenho-ichigekishin
   nome: Jūkenhō Ichigekishin
-  traducao: "Arte do Punho Gentil: Corpo de um Só Golpe"
+  traducao: "Estilo do Punho Suave: Impacto Corporal"
   origem: Clã Hyuuga
   tipo: Taijutsu
   rank: C
@@ -9858,7 +9888,7 @@
   elemento: suiton
 - slug: kagura-shingan
   nome: Kagura Shingan
-  traducao: Olho da Mente da Kagura
+  traducao: Olho da Mente de Kagura
   origem: Clã Uzumaki
   tipo: Ninjutsu
   rank: B
@@ -9916,7 +9946,7 @@
   elemento: null
 - slug: shinten-kugutsu-juin-no-jutsu
   nome: Shinten Kugutsu Juin no Jutsu
-  traducao: Técnica do Selo Amaldiçoado da Marionete da Mente
+  traducao: Técnica de Transferência da Mente por um Boneco Amaldiçoado
   origem: Clã Yamanaka
   tipo: Ninjutsu
   rank: C
@@ -9976,7 +10006,7 @@
   elemento: null
 - slug: soshuga
   nome: Sōshūga
-  traducao: Garra Dupla do Nunchaku
+  traducao: Presas Gêmeas Atacando
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: D
@@ -10006,7 +10036,7 @@
   elemento: null
 - slug: hayanie
   nome: Hayanie
-  traducao: Sacrifício Antecipado
+  traducao: Sacrifício Precoce
   origem: Taijutsu
   tipo: Taijutsu
   rank: C
@@ -10035,7 +10065,7 @@
   elemento: null
 - slug: kakuran-taijutsu
   nome: Kakuran Taijutsu
-  traducao: Taijutsu da Perturbação
+  traducao: Taijutsu de Agitação
   origem: Taijutsu
   tipo: Taijutsu
   rank: C
@@ -10064,7 +10094,7 @@
   elemento: null
 - slug: hoka-ranbu
   nome: Hōka Ranbu
-  traducao: Dança Selvagem do Fogo que Sobe
+  traducao: Dança Selvagem do Fluxo de Fogo
   origem: Taijutsu
   tipo: Taijutsu
   rank: C
@@ -10122,7 +10152,7 @@
   elemento: null
 - slug: konoha-kaigansho
   nome: Konoha Kaiganshō
-  traducao: Ascensão da Folha que Destrói a Rocha
+  traducao: Ascensão Destruidora de Rocha da Folha
   origem: Taijutsu
   tipo: Taijutsu
   rank: B
@@ -10270,7 +10300,7 @@
   elemento: null
 - slug: tsukikage
   nome: Tsukikage
-  traducao: Luz da Lua
+  traducao: Luar
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: C
@@ -10300,7 +10330,7 @@
   elemento: null
 - slug: yojinbo
   nome: Yōjinbō
-  traducao: Risco da Lâmina Dançante
+  traducao: Risco da Dança da Lâmina
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: C
@@ -10330,7 +10360,7 @@
   elemento: null
 - slug: iaigiri
   nome: Iaigiri
-  traducao: Corte do Saque
+  traducao: Decapitação de Iai
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: B
@@ -10390,7 +10420,7 @@
   elemento: null
 - slug: hisenken
   nome: Hisenken
-  traducao: Espada Giratória Voadora
+  traducao: Espada Rotativa Voadora
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: B
@@ -10420,7 +10450,7 @@
   elemento: null
 - slug: chigiri-toho-honenuki
   nome: "Chigiri Tōhō: Honenuki"
-  traducao: "Arte da Espada da Névoa Sangrenta: Mutilação dos Ossos"
+  traducao: "Arte da Espada da Névoa Sangrenta: Mutilação de Ossos"
   origem: Kirigakure
   tipo: Bukijutsu
   rank: B
@@ -10480,7 +10510,7 @@
   elemento: fuuton
 - slug: hagama-no-mai-rakuko-no-yaiba
   nome: "Hagama no Mai: Rakukō no Yaiba"
-  traducao: "Dança da Foice: Lâmina que Cai"
+  traducao: "Dança da Lâmina de Foice: Queda Descendente da Lâmina"
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: C
@@ -10510,7 +10540,7 @@
   elemento: null
 - slug: kumo-ryu-omotegiri
   nome: Kumo-Ryū Omotegiri
-  traducao: Decapitação Frontal do Estilo da Nuvem
+  traducao: Corte Frontal ao Estilo da Nuvem
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: C
@@ -10540,7 +10570,7 @@
   elemento: null
 - slug: kumo-ryu-mikazukigiri
   nome: Kumo-Ryū Mikazukigiri
-  traducao: Decapitação da Lua Crescente do Estilo da Nuvem
+  traducao: Corte da Lua Crescente ao Estilo da Nuvem
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: B
@@ -10570,7 +10600,7 @@
   elemento: null
 - slug: kumo-ryu-kaengiri
   nome: Kumo-Ryū Kaengiri
-  traducao: Decapitação Flamejante do Estilo da Nuvem
+  traducao: Corta-Chamas ao Estilo da Nuvem
   origem: Katon
   tipo: Ninjutsu
   rank: B
@@ -10600,7 +10630,7 @@
   elemento: katon
 - slug: cho-biburato-raitonto
   nome: Chō Biburāto Raitontō
-  traducao: Espadas de Raio Supervibrantes
+  traducao: Espadas do Estilo Raio Super Vibrantes
   origem: Raiton
   tipo: Ninjutsu
   rank: C
@@ -10630,7 +10660,7 @@
   elemento: raiton
 - slug: bubitorappu
   nome: Būbītorappu
-  traducao: Armadilha
+  traducao: Cilada
   origem: Fuuinjutsu
   tipo: Fuuinjutsu
   rank: C
@@ -10660,7 +10690,7 @@
   elemento: null
 - slug: tenchu
   nome: Tenchū
-  traducao: Castigo Celestial
+  traducao: Punição Celestial
   origem: Fuuinjutsu
   tipo: Fuuinjutsu
   rank: B
@@ -10690,7 +10720,7 @@
   elemento: null
 - slug: kage-senbon
   nome: Kage Senbon
-  traducao: Senbon da Sombra
+  traducao: Agulhas das Sombras
   origem: Bukijutsu
   tipo: Bukijutsu
   rank: D
@@ -10719,7 +10749,7 @@
   elemento: null
 - slug: chakura-kontororu-baku
   nome: "Chakura Kontorōru: Baku"
-  traducao: "Controle de Chakra: Amarra"
+  traducao: "Controle de Chakra: Amarrar"
   origem: Fuuinjutsu
   tipo: Fuuinjutsu
   rank: D
@@ -10779,7 +10809,7 @@
   elemento: null
 - slug: isshi-tojin
   nome: Isshi Tōjin
-  traducao: Formação da Luz do Fio
+  traducao: Formação das Cordas de Luz
   origem: Fuuinjutsu
   tipo: Fuuinjutsu
   rank: C
@@ -10808,7 +10838,7 @@
   elemento: null
 - slug: saisei-kekkai
   nome: Saisei Kekkai
-  traducao: Barreira que se Regenera
+  traducao: Barreira de Auto-Reparação
   origem: Fuuinjutsu
   tipo: Fuuinjutsu
   rank: A
@@ -10838,7 +10868,7 @@
   elemento: null
 - slug: kekkaifu-gansoko
   nome: "Kekkaifu: Gansōkō"
-  traducao: "Talismã de Barreira: Olho Blindado"
+  traducao: "Barreira Talismã: Olho Blindado"
   origem: Kirigakure
   tipo: Fuuinjutsu
   rank: B
@@ -10897,7 +10927,7 @@
   elemento: null
 - slug: jigo-jubaku-no-in
   nome: Jigō Jubaku no In
-  traducao: Selo da Prisão da Própria Maldição
+  traducao: Selo de Auto-Amaldiçoamento
   origem: Fuuinjutsu
   tipo: Fuuinjutsu
   rank: C
@@ -10926,7 +10956,7 @@
   elemento: null
 - slug: inyu-shometsu
   nome: In'yu Shōmetsu
-  traducao: Destruição das Feridas pela Cura Yin
+  traducao: Redução e Cura de Ferimentos Yin
   origem: Ninjutsu Médico
   tipo: Ninjutsu
   rank: A
@@ -10985,7 +11015,7 @@
   elemento: doton
 - slug: raiton-raigen-raikochu
   nome: "Raiton: Raigen Raikōchū"
-  traducao: "Ilusão de Raio: Pilar do Clarão"
+  traducao: "Estilo Relâmpago: Alicerce de Relâmpago Ilusório"
   origem: Genjutsu
   tipo: Genjutsu
   rank: C
@@ -11014,7 +11044,7 @@
   elemento: raiton
 - slug: utakata
   nome: Utakata
-  traducao: Efêmero
+  traducao: "Genjutsu: Efêmero"
   origem: Genjutsu
   tipo: Genjutsu
   rank: D
@@ -11043,7 +11073,7 @@
   elemento: null
 - slug: magen-gama-rinsho
   nome: "Magen: Gama Rinshō"
-  traducao: "Ilusão Demoníaca: Canto do Confronto dos Sapos"
+  traducao: "Ilusão Demoníaca: Confronto do Canto de Sapo"
   origem: Genjutsu
   tipo: Genjutsu
   rank: B
@@ -11133,7 +11163,7 @@
   elemento: null
 - slug: kugutsu-no-jutsu-gishu-senbon
   nome: "Kugutsu no Jutsu: Gishu Senbon"
-  traducao: "Técnica da Marionete: Senbon do Braço Postiço"
+  traducao: "Técnica de Marionetes: Agulhas do Braço Protético"
   origem: Kugutsu
   tipo: Kugutsu
   rank: B
@@ -11163,7 +11193,7 @@
   elemento: null
 - slug: akahigi-kiki-sankaku
   nome: "Akahigi: Kiki Sankaku"
-  traducao: "Técnica Secreta Vermelha: Triângulos da Máquina"
+  traducao: "Técnica Vermelha Secreta: Maquinário Triangular"
   origem: Kugutsu
   tipo: Kugutsu
   rank: B
@@ -11193,7 +11223,7 @@
   elemento: null
 - slug: kugutsu-haruchugeki
   nome: "Kugutsu: Haruchūgeki"
-  traducao: "Marionete: Golpe de Castigo da Primavera"
+  traducao: "Marionete: Ataque de Punição da Primavera"
   origem: Kugutsu
   tipo: Kugutsu
   rank: B
@@ -11223,7 +11253,7 @@
   elemento: null
 - slug: gamayudan
   nome: Gamayudan
-  traducao: Projétil de Óleo de Sapo
+  traducao: Bomba do Óleo de Sapo
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: C
@@ -11252,7 +11282,7 @@
   elemento: null
 - slug: gamadaira-kageayatsuri-no-jutsu
   nome: "Gamadaira: Kageayatsuri no Jutsu"
-  traducao: "Achatamento do Sapo: Técnica de Manipular a Sombra"
+  traducao: Técnica de Manipulação da Sombra do Sapo Achatado
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: B
@@ -11281,7 +11311,7 @@
   elemento: null
 - slug: gamagakure-no-jutsu
   nome: Gamagakure no Jutsu
-  traducao: Técnica de Esconder-se num Sapo
+  traducao: Técnica de Ocultação Batráquia
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: C
@@ -11311,7 +11341,7 @@
   elemento: null
 - slug: kekkai-gama-hyoro
   nome: "Kekkai: Gama Hyōrō"
-  traducao: "Barreira: Prisão da Cabaça de Sapo"
+  traducao: "Barreira: Cabaça-Prisão do Batráquio"
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: B
@@ -11341,7 +11371,7 @@
   elemento: null
 - slug: kaeru-kaeru-no-jutsu
   nome: Kaeru Kaeru no Jutsu
-  traducao: Técnica de Virar Sapo
+  traducao: Técnica da Transformação em Batráquio
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: C
@@ -11400,7 +11430,7 @@
   elemento: null
 - slug: kuchiyose-yatai-kuzushi-no-jutsu
   nome: "Kuchiyose: Yatai Kuzushi no Jutsu"
-  traducao: "Invocação: Técnica do Destruidor de Barracas"
+  traducao: "Invocação: Técnica da Casa Caiu"
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: B
@@ -11490,7 +11520,7 @@
   elemento: null
 - slug: kebari-senbon
   nome: Kebari Senbon
-  traducao: Senbon de Agulhas de Cabelo
+  traducao: Mil Agulhas de Cabelo
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: C
@@ -11578,7 +11608,7 @@
   elemento: null
 - slug: bunretsu-no-jutsu
   nome: Bunretsu no Jutsu
-  traducao: Técnica da Fissão
+  traducao: Técnica de Divisão
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: A
@@ -11607,7 +11637,7 @@
   elemento: null
 - slug: tenso-no-jutsu
   nome: Tensō no Jutsu
-  traducao: Técnica da Transferência Celestial
+  traducao: Técnica de Transferência Celestial
   origem: Ninjutsu
   tipo: Ninjutsu
   rank: B
@@ -11636,7 +11666,7 @@
   elemento: null
 - slug: senpo-kawazu-naki
   nome: "Senpō: Kawazu Naki"
-  traducao: "Arte Sábia: Coaxar do Sapo"
+  traducao: "Arte Eremita: Lamento do Sapo"
   origem: Senjutsu
   tipo: Ninjutsu
   rank: C
@@ -11696,7 +11726,7 @@
   elemento: katon
 - slug: senpo-futon-sunabokori
   nome: "Senpō: Fūton Sunabokori"
-  traducao: "Arte Sábia: Fuuton, Nuvem de Poeira"
+  traducao: "Arte Sábia: Nuvem de Poeira da Liberação de Vento"
   origem: Senjutsu
   tipo: Ninjutsu
   rank: B
@@ -11756,7 +11786,7 @@
   elemento: null
 - slug: mokuton-henge
   nome: "Mokuton: Henge"
-  traducao: "Mokuton: Transformação"
+  traducao: "Estilo Madeira: Transformação"
   origem: Clã Senju
   tipo: Ninjutsu
   rank: D
@@ -11785,7 +11815,7 @@
   elemento: mokuton
 - slug: mokuton-mokusatsu-shibari-no-jutsu
   nome: "Mokuton: Mokusatsu Shibari no Jutsu"
-  traducao: "Mokuton: Técnica da Amarra que Sufoca"
+  traducao: "Estilo Madeira: Técnica do Laço Estrangulador"
   origem: Clã Senju
   tipo: Ninjutsu
   rank: C
@@ -11814,7 +11844,7 @@
   elemento: mokuton
 - slug: mokuton-hobi-no-jutsu
   nome: "Mokuton: Hōbi no Jutsu"
-  traducao: "Mokuton: Técnica do Hōbi"
+  traducao: "Estilo Madeira: Técnica Hōbi"
   origem: Clã Senju
   tipo: Ninjutsu
   rank: B
@@ -11843,7 +11873,7 @@
   elemento: mokuton
 - slug: mokuton-hotei-no-jutsu
   nome: "Mokuton: Hotei no Jutsu"
-  traducao: "Mokuton: Técnica do Hotei"
+  traducao: "Estilo Madeira: Técnica Hotei"
   origem: Clã Senju
   tipo: Ninjutsu
   rank: B
@@ -11872,7 +11902,7 @@
   elemento: mokuton
 - slug: soshinki
   nome: Sōshinki
-  traducao: Madeira Transmissora
+  traducao: Transmissão de Madeira
   origem: Clã Senju
   tipo: Ninjutsu
   rank: C
@@ -11902,7 +11932,7 @@
   elemento: mokuton
 - slug: senpo-mokuton-shin-susenju
   nome: "Senpō Mokuton: Shin Sūsenju"
-  traducao: "Arte Sábia Mokuton: Verdadeiras Milhares de Mãos"
+  traducao: As Verdadeiras Mil Mãos
   origem: Clã Senju
   tipo: Ninjutsu
   rank: S
@@ -11933,7 +11963,7 @@
 # ---- Jutsus da wiki de Naruto: onda 3 (gerado por scripts/livro/importar-jutsus.ts a partir da especificação da onda)
 - slug: futton-komu-no-jutsu
   nome: "Futton: Kōmu no Jutsu"
-  traducao: Técnica da Névoa Habilidosa
+  traducao: "Estilo Ebulição: Técnica da Névoa Qualificada"
   origem: Futton
   tipo: Ninjutsu
   rank: B
@@ -11963,7 +11993,7 @@
   elemento: futton
 - slug: futton-kairiki-muso
   nome: "Futton: Kairiki Musō"
-  traducao: Força sem Igual
+  traducao: "Liberação de Fervura: Força Inigualável"
   origem: Futton
   tipo: Ninjutsu
   rank: B
@@ -12023,7 +12053,7 @@
   elemento: futton
 - slug: fungokyaku
   nome: Fungōkyaku
-  traducao: Pé Forte em Erupção
+  traducao: Erupção do Pé Forte
   origem: Futton
   tipo: Taijutsu
   rank: C
@@ -12053,7 +12083,7 @@
   elemento: futton
 - slug: shakuton-kajosatsu
   nome: "Shakuton: Kajōsatsu"
-  traducao: Morte por Vapor Extremo
+  traducao: "Estilo Calor: Assassinato de Vapor Extremo"
   origem: Shakuton
   tipo: Ninjutsu
   rank: B
@@ -12113,7 +12143,7 @@
   elemento: shakuton
 - slug: bakuton-jiraiken
   nome: "Bakuton: Jiraiken"
-  traducao: Punho Mina Terrestre
+  traducao: "Estilo Explosão: Punho de Mina Terrestre"
   origem: Bakuton
   tipo: Ninjutsu
   rank: B
@@ -12143,7 +12173,7 @@
   elemento: bakuton
 - slug: bakuton-shogeki
   nome: "Bakuton: Shōgeki"
-  traducao: Impacto Explosivo
+  traducao: "Estilo Explosão: Impacto"
   origem: Bakuton
   tipo: Ninjutsu
   rank: C
@@ -12234,7 +12264,7 @@
   elemento: bakuton
 - slug: kibaku-jirai
   nome: Kibaku Jirai
-  traducao: Minas Explosivas
+  traducao: Minas Terrestres Explosivas
   origem: Bakuton
   tipo: Ninjutsu
   rank: C
@@ -12265,7 +12295,7 @@
   elemento: bakuton
 - slug: ranton-burakku-hantingu
   nome: "Ranton: Burakku Hantingu"
-  traducao: Caçada Negra
+  traducao: "Estilo Tempestade: Caçada Negra"
   origem: Ranton
   tipo: Ninjutsu
   rank: B
@@ -12326,7 +12356,7 @@
   elemento: ranton
 - slug: ranton-raiunkuha
   nome: "Ranton: Raiunkūha"
-  traducao: Onda Interior da Nuvem de Trovão
+  traducao: "Estilo Tempestade: Onda Interna da Nuvem Tempestuosa"
   origem: Ranton
   tipo: Ninjutsu
   rank: B
@@ -12356,7 +12386,7 @@
   elemento: ranton
 - slug: jinton-genkai-hakuri-no-jutsu
   nome: "Jinton: Genkai Hakuri no Jutsu"
-  traducao: Técnica do Descolamento do Mundo Primitivo
+  traducao: "Estilo Pó: Técnica do Desprendimento do Mundo Primitivo"
   origem: Jinton
   tipo: Ninjutsu
   rank: S
@@ -12386,7 +12416,7 @@
   elemento: jinton
 - slug: jinton-bunretsu-genkai-hakuri-no-jutsu
   nome: "Jinton: Bunretsu Genkai Hakuri no Jutsu"
-  traducao: Técnica do Descolamento Dividido do Mundo Primitivo
+  traducao: "Estilo Pó: Técnica de Divisão do Desprendimento do Mundo Primitivo"
   origem: Jinton
   tipo: Ninjutsu
   rank: A
@@ -12417,7 +12447,7 @@
   elemento: jinton
 - slug: yoton-shakugaryugan-no-jutsu
   nome: "Yōton: Shakugaryūgan no Jutsu"
-  traducao: Técnica da Rocha da Corrente Escaldante
+  traducao: "Estilo Fusão: Técnica do Rio de Rochas Flamejantes"
   origem: Yōton
   tipo: Ninjutsu
   rank: B
@@ -12447,7 +12477,7 @@
   elemento: yoton
 - slug: yoton-chakura-modo
   nome: Yōton Chakura Mōdo
-  traducao: Modo de Chakra da Lava
+  traducao: Modo de Chakra de Liberação de Lava
   origem: Yōton
   tipo: Ninjutsu
   rank: B
@@ -12567,7 +12597,7 @@
   elemento: jiton
 - slug: jiton-sakin-taiso
   nome: "Jiton: Sakin Taisō"
-  traducao: Grande Funeral do Pó de Ouro
+  traducao: "Liberação de Magnetismo: Funeral Imperial de Pó de Ouro"
   origem: Jiton
   tipo: Ninjutsu
   rank: A
@@ -12597,7 +12627,7 @@
   elemento: jiton
 - slug: sakin-shigure
   nome: Sakin Shigure
-  traducao: Garoa de Pó de Ouro
+  traducao: Chuva de Pó de Ouro
   origem: Jiton
   tipo: Ninjutsu
   rank: C

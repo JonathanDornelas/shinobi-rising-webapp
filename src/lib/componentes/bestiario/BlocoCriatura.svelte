@@ -3,7 +3,7 @@
 	// grandes, os atributos, as perícias, especializações e proficiências, os ataques prontos para rolar (chips de dado),
 	// os jutsus lado a lado e os traços. Atributos, perícias e jutsus abrem o cartão do léxico no hover, como no livro.
 	import { ATRIBUTOS, ESTILOS, NIVEIS_PROFICIENCIA, PERFIS } from '#lib/bestiario/ficha.ts';
-	import { PAPEIS } from '#lib/bestiario/npc.ts';
+	import { PAPEIS, TAMANHOS } from '#lib/bestiario/npc.ts';
 	import type { Criatura, EstagioCriatura } from '#lib/livro/tipos.ts';
 	import DadoInline from '../leitura/DadoInline.svelte';
 	import Termo from '../leitura/Termo.svelte';
@@ -67,7 +67,7 @@
 		<Icone id="dado/ic-dado-d20" />
 		<span class="font-pixel text-[11px] leading-none font-bold tracking-[.16em] text-[#D9A82B]">AMEAÇA {estagio.ameacaRotulo}</span>
 		<span class="h-3.5 w-0.5 flex-none bg-[#D9A82B] opacity-50" aria-hidden="true"></span>
-		<span class="font-mincho text-[15px] leading-5 font-bold text-b0fg">{estagio.nome !== criatura.nome ? `${estagio.nome} · ` : ''}{PAPEIS[estagio.papel]}{estagio.membros > 1 ? ` · ${estagio.membros} membros` : ''}</span>
+		<span class="font-mincho text-[15px] leading-5 font-bold text-b0fg">{estagio.nome !== criatura.nome ? `${estagio.nome} · ` : ''}{PAPEIS[estagio.papel]}{estagio.membros > 1 ? ` · ${estagio.membros} membros` : ''}{estagio.tamanho && estagio.tamanho !== 'medio' ? ` · ${TAMANHOS[estagio.tamanho].rotulo}` : ''}</span>
 		{#if perfil || estilo}
 			<span class="ml-auto flex flex-wrap gap-x-1.5 text-[13px] leading-5 text-[#D9A82B]">
 				{#if perfil}<a class="underline decoration-dotted underline-offset-2 hover:text-b0fg" href="/regras/bestiario/como-usar#perfis" title="PV ×{fator(perfil.pv)} e PC ×{fator(perfil.pc)} da tabela de ameaça">{perfil.nome}</a>{/if}

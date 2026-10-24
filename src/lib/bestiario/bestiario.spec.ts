@@ -73,15 +73,45 @@ describe('bestiário', () => {
 		}
 	});
 
-	it('as invocações seguem as fichas do cap. 14, na ameaça que o Como usar dá a cada tamanho', () => {
-		const ficha: Record<number, { pv: number; defesa: number }> = { 2: { pv: 20, defesa: 13 }, 5: { pv: 50, defesa: 16 }, 10: { pv: 100, defesa: 18 }, 16: { pv: 200, defesa: 22 } };
-		for (const [c, e] of estagios.filter(([c]) => c.tipo === 'invocação')) {
-			expect(ficha[e.ameaca], `${c.slug} · ${e.nome}`).toBeDefined();
-			expect([e.combate.pv, e.combate.defesa]).toEqual([ficha[e.ameaca].pv, ficha[e.ameaca].defesa]);
+	it('as invocações partem da ficha do tamanho (cap. 14), ajustada pelo papel e pelo estilo da espécie', () => {
+		// a ficha de cada tamanho do cap. 14, na ameaça que o Como usar dá a ele
+		const base: Record<number, { pv: number; defesa: number; iniciativa: number; acerto: number; dano: string; dt: number }> = {
+			2: { pv: 20, defesa: 13, iniciativa: 2, acerto: 4, dano: '1d6+2', dt: 13 },
+			5: { pv: 50, defesa: 16, iniciativa: 3, acerto: 6, dano: '2d6+3', dt: 15 },
+			10: { pv: 100, defesa: 18, iniciativa: 2, acerto: 8, dano: '3d8+4', dt: 17 },
+			16: { pv: 200, defesa: 22, iniciativa: 4, acerto: 12, dano: '5d10+6', dt: 21 }
+		};
+		for (const [c, e] of estagios.filter(([c]) => c.tipo === 'invocação' && c.slug !== 'cao-ninja-do-inuzuka')) {
+			const nome = `${c.slug} · ${e.nome}`;
+			const b = base[e.ameaca];
+			expect(b, nome).toBeDefined();
+			expect(e.papel, `${nome}: o Chefe da Espécie é um tamanho, não o papel de chefe`).not.toBe('chefe');
+			const fatorPv = e.papel === 'lutador' ? 1.25 : e.papel === 'atirador' || e.papel === 'assassino' ? 0.75 : 1;
+			const bonus = e.papel === 'atirador' ? 1 : e.papel === 'assassino' ? 2 : 0;
+			const estilo = e.estilo ? ESTILOS[e.estilo] : { defesa: 0, iniciativa: 0, dt: 0 };
+			const fraco = e.papel === 'controlador' || e.papel === 'suporte';
+			expect(e.combate.pv, nome).toBe(Math.round(b.pv * fatorPv));
+			expect(e.combate.defesa, nome).toBe(b.defesa + estilo.defesa);
+			expect(e.combate.iniciativa, nome).toBe(b.iniciativa + estilo.iniciativa);
+			expect(e.combate.dt, nome).toBe(b.dt + (e.papel === 'controlador' ? 1 : 0) + estilo.dt);
+			expect(e.combate.ataques[0].acerto, nome).toBe(b.acerto + bonus);
+			expect(e.combate.ataques[0].dano, nome).toBe(fraco ? linha(e.ameacaRotulo, 2).dano : b.dano);
 			expect(e.combate.pe, 'a ficha do cap. 14 não tem PE').toBeNull();
 			const l = linha(e.ameacaRotulo);
 			expect(e.combate.referencia).toMatchObject({ pv: l.pv, defesa: l.defesa, iniciativa: l.iniciativa, dt: l.dt, pe: null });
 		}
+	});
+
+	it('o cão ninja do Inuzuka usa a tabela de Companheiros do clã (cap. 8) como está', () => {
+		const cao = criaturas.find((c) => c.slug === 'cao-ninja-do-inuzuka')!;
+		expect(cao.estagios.map((e) => [e.nome, e.combate.pv, e.combate.defesa, e.combate.ataques[0].acerto, e.combate.ataques[0].dano])).toEqual([
+			['Filhote', 20, 13, 4, '1d6+1'],
+			['Adulto Jovem', 40, 15, 6, '1d8+2'],
+			['Adulto', 60, 16, 7, '2d6+3'],
+			['Veterano', 80, 17, 9, '2d8+3'],
+			['Alfa', 100, 19, 11, '2d10+4'],
+			['Lendário', 125, 21, 13, '3d8+5']
+		]);
 	});
 
 	it('cada variação é uma ficha separada, com âncora e arte próprias', () => {
@@ -126,6 +156,11 @@ describe('bestiário', () => {
 				const a = ataqueNpc(n.ataque);
 				expect(a.acerto).toBe(`1d20+${e.combate.ataques[0].acerto}`);
 				expect(a.dano).toBe(e.combate.ataques[0].dano);
+				// os campos da Mesa cabem nas restrições da tabela (migração mesa_ajustes)
+				expect(n.jutsus.length).toBeLessThanOrEqual(24);
+				expect(n.dt).toBe(e.combate.dt);
+				if (n.arte) expect(n.arte.startsWith('/bestiario/') && n.arte.length <= 200, c.slug).toBe(true);
+				expect(n.bestiario!.length).toBeLessThanOrEqual(120);
 			});
 	});
 

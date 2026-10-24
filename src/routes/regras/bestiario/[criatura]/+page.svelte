@@ -61,6 +61,13 @@
 	{#each c.descricao as p, i (i)}<p class="m-0 text-pretty"><Texto trechos={p} /></p>{/each}
 {/snippet}
 
+{#snippet personalidade()}
+	{#if c.personalidade.length}
+		<h2 class="t-h2 m-0">Personalidade</h2>
+		{#each c.personalidade as p, i (i)}<p class="m-0 text-pretty"><Texto trechos={p} /></p>{/each}
+	{/if}
+{/snippet}
+
 {#snippet comoLuta()}
 	<h2 class="t-h2 m-0">Como luta</h2>
 	{#each c.taticas as p, i (i)}<p class="m-0 text-pretty"><Texto trechos={p} /></p>{/each}
@@ -100,9 +107,9 @@
 		<div class="grid grid-cols-[minmax(0,1fr)] gap-x-10 gap-y-6 text-[length:var(--leitura)] leading-[var(--leitura-linha)] md:grid-cols-2">
 			{#if f === 'faixa'}
 				<div class="flex flex-col gap-4">{@render cabecalho()}<Cena c={c.cena} />{@render descricao()}</div>
-				<div class="flex flex-col gap-4">{@render comoLuta()}{@render ganchos()}</div>
+				<div class="flex flex-col gap-4">{@render personalidade()}{@render comoLuta()}{@render ganchos()}</div>
 			{:else}
-				<div class="flex flex-col gap-4">{@render comoLuta()}</div>
+				<div class="flex flex-col gap-4">{@render personalidade()}{@render comoLuta()}</div>
 				<div class="flex flex-col gap-4">{@render ganchos()}</div>
 			{/if}
 		</div>
@@ -152,6 +159,7 @@
 					<div class="flex flex-col gap-4">
 						<Cena c={c.cena} />
 						{@render descricao()}
+						{#if c.personalidade.length}<div class="mt-2 flex flex-col gap-4">{@render personalidade()}</div>{/if}
 						<div class="mt-2 flex flex-col gap-4">{@render comoLuta()}</div>
 						<div class="mt-2 flex flex-col gap-4">{@render ganchos()}</div>
 					</div>

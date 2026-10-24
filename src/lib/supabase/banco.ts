@@ -18,6 +18,8 @@ export type Preferencias = {
 	email?: Partial<Record<'submissoes' | 'decisoes' | 'comentarios' | 'recompensas', boolean>>;
 	/** Favoritos (slugs), em src/lib/estado/favoritos.svelte.ts. */
 	favoritos?: { jutsus?: string[] };
+	/** Moldura dos tokens na Mesa (src/lib/mesa/molduras.ts). */
+	moldura?: string | null;
 }
 
 export type VilaCampanha = {
@@ -60,6 +62,9 @@ export type Campanha = {
 	pacotes: string[];
 	aprovacao: Aprovacao;
 	regras_mesa: string;
+	/** Moldura dos tokens na Mesa escolhida pelo Mestre: NPCs e quem não escolheu; universal = todos os tokens. */
+	moldura: string | null;
+	moldura_universal: boolean;
 	mestre_id: string | null;
 	arquivada_em: string | null;
 	criada_em: string;
@@ -71,7 +76,11 @@ export type Membro = {
 	usuario_id: string;
 	papel: Papel;
 	entrou_em: string;
+	/** Cor na Mesa (lápis, anel do token, régua, avatar); única na campanha. */
+	cor: CorMesa | null;
 }
+
+export type CorMesa = 'vermelhao' | 'anil' | 'ameixa' | 'sakura' | 'siena' | 'mostarda' | 'musgo' | 'petroleo' | 'ardosia';
 
 export type Convite = {
 	id: string;
@@ -121,6 +130,8 @@ export type Personagem = {
 	retrato: string | null;
 	/** NPC com ficha completa (do Mestre, fora do grupo). */
 	npc: boolean;
+	/** Pasta de NPCs (só para NPCs de ficha completa). */
+	pasta_id: string | null;
 	/** Paisagem do topo da ficha; null = a da vila. */
 	capa: string | null;
 	/** Caderno do dono (o Mestre lê). */
@@ -198,8 +209,19 @@ export type Npc = {
 	revelado: boolean;
 	membros: number;
 	pv_atual: number[];
+	/** PE máximo e PC/PE atuais de cada membro (vazio = cheio), como o pv_atual. */
+	pe: number;
+	pc_atual: number[];
+	pe_atual: number[];
 	/** Foto no bucket de retratos (retratos/<id do NPC>/…). */
 	retrato: string | null;
+	pasta_id: string | null;
+	/** Do bestiário: jutsus do catálogo (slugs), acerto dos ataques, DT, arte e verbete de origem ("slug#estágio"). */
+	jutsus: string[];
+	acerto: number | null;
+	dt: number | null;
+	arte: string | null;
+	bestiario: string | null;
 	criado_em: string;
 	atualizado_em: string;
 };
@@ -368,6 +390,79 @@ export type ConvitePendente = {
 	criado_em: string;
 };
 
+/** L11 · Mesa: pasta de NPCs (até 3 níveis). */
+export type NpcPasta = { id: string; campanha_id: string; pai_id: string | null; nome: string; ordem: number; criada_em: string };
+
+/** Ordem de iniciativa da cena, a mesma para todos. */
+export type IniciativaCena = {
+	ativa?: boolean;
+	rodada?: number;
+	vez?: number;
+	ordem?: { nome: string; valor: number; personagem_id?: string | null; npc_id?: string | null }[];
+	/** O Mestre limpou a ordem: a prévia só conta as iniciativas roladas depois disso. */
+	limpa_em?: string;
+};
+
+export type MesaCena = {
+	id: string;
+	campanha_id: string;
+	nome: string;
+	largura: number;
+	altura: number;
+	ativa: boolean;
+	travada: boolean;
+	mostrar_pv: boolean;
+	coordenadas: boolean;
+	iniciativa: IniciativaCena;
+	/** Fichas que jogam nesta cena; null = todo o grupo. */
+	participantes: string[] | null;
+	criada_em: string;
+};
+
+export type MesaToken = {
+	id: string;
+	cena_id: string;
+	campanha_id: string;
+	personagem_id: string | null;
+	npc_id: string | null;
+	membro: number | null;
+	ligado_a: string | null;
+	dono_id: string | null;
+	nome: string;
+	sigla: string;
+	retrato: string | null;
+	tamanho: 1 | 3 | 6 | 10;
+	/** Crescido por um jutsu (Baika no Jutsu): o tamanho normal e os turnos que faltam para voltar. */
+	tamanho_base: 1 | 3 | 6 | 10 | null;
+	crescido_turnos: number | null;
+	x: number;
+	y: number;
+	visivel: boolean;
+	aliado: boolean;
+	condicoes: string[];
+	/** 0 ileso, 1 ferido, 2 muito ferido, 3 caído. */
+	ferimento: number;
+	pv: number | null;
+	pv_max: number | null;
+	movido: number;
+	criado_em: string;
+	atualizado_em: string;
+};
+
+export type MesaTraco = { id: string; cena_id: string; autor_id: string; espessura: number; pontos: [number, number][]; criado_em: string };
+
+export type MesaEfeito = {
+	id: string;
+	cena_id: string;
+	autor_id: string;
+	nome: string;
+	quadrados: [number, number][];
+	rotulo_x: number;
+	rotulo_y: number;
+	turnos: number | null;
+	criado_em: string;
+};
+
 type Tabela<Row, Obrigatorios extends keyof Row, Relacoes extends unknown[] = []> = {
 	Row: Row;
 	Insert: Partial<Row> & Pick<Row, Obrigatorios>;
@@ -412,6 +507,11 @@ export type Database = {
 			npcs: Tabela<Npc, 'campanha_id', [Rel<'npcs_campanha_id_fkey', 'campanha_id', 'campanhas'>]>;
 			rolagens: Tabela<Rolagem, 'campanha_id' | 'quem' | 'rotulo' | 'expressao' | 'detalhe' | 'total', [Rel<'rolagens_campanha_id_fkey', 'campanha_id', 'campanhas'>]>;
 			atividades: Tabela<Atividade, 'campanha_id' | 'tipo' | 'texto', [Rel<'atividades_campanha_id_fkey', 'campanha_id', 'campanhas'>]>;
+			npc_pastas: Tabela<NpcPasta, 'campanha_id' | 'nome'>;
+			mesa_cenas: Tabela<MesaCena, 'campanha_id' | 'nome'>;
+			mesa_tokens: Tabela<MesaToken, 'cena_id' | 'campanha_id' | 'nome'>;
+			mesa_tracos: Tabela<MesaTraco, 'cena_id' | 'pontos'>;
+			mesa_efeitos: Tabela<MesaEfeito, 'cena_id' | 'nome' | 'quadrados'>;
 		};
 		Views: { [_ in never]: never };
 		Functions: {
@@ -465,6 +565,10 @@ export type Database = {
 				Args: { campanha: string; expressao: string; rotulo: string; personagem?: string | null; modo?: ModoRolagem; oculta?: boolean; npc?: string | null; tipo?: TipoRolagem; origem?: string | null; partes?: Json };
 				Returns: Rolagem;
 			};
+			definir_cor: { Args: { campanha: string; cor: CorMesa }; Returns: undefined };
+			pasta_da_ficha: { Args: { ficha: string; pasta: string | null }; Returns: undefined };
+			ativar_cena: { Args: { cena: string }; Returns: undefined };
+			pv_da_cena: { Args: { cena: string }; Returns: { token_id: string; pv: number | null; pv_max: number | null }[] };
 			definir_situacao: { Args: { ficha: string; situacao: SituacaoFicha; epitafio?: string | null }; Returns: undefined };
 		};
 		Enums: { papel: Papel; tipo_convite: TipoConvite; status_convite: StatusConvite; status_ficha: StatusFicha; status_cla: StatusCla; status_criacao: StatusCriacao };

@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { crc32, deflateSync, inflateSync } from 'node:zlib';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'static');
-const PASTAS = ['bestiario', 'capitulos', 'covers', 'dados', 'icons', 'illustrations'];
+const PASTAS = ['bestiario', 'capitulos', 'covers', 'dados', 'icons', 'illustrations', 'molduras'];
 
 interface Imagem {
 	largura: number;

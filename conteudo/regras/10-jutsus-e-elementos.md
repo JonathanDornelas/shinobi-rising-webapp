@@ -127,6 +127,8 @@ Para aprender, há um nível mínimo: rank B no nível 6, rank A no 11 e rank S 
 
 ::jutsu{slug="suiryuudan-no-jutsu"}
 
+::jutsu{slug="kirigakure-no-jutsu"}
+
 ### Doton (Liberação de Terra) {#doton-liberacao-de-terra}
 
 ::jutsu{slug="doryuuheki"}

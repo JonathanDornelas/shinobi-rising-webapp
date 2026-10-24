@@ -36,8 +36,8 @@ Cada portão dá mais poder e cobra mais caro, a cada turno e na hora de fechar.
 | 2º | Kyūmon (Cura) | +3 (6) | Dano +1d6 (substitui o anterior); +2 AGI; recupera 1d6 PV ao abrir | 1 nível de Fadiga |
 | 3º | Seimon (Vida) | +5 (11) | Dano +2d6; +1 ataque por turno (pele rubra) | 2 níveis de Fadiga |
 | 4º | Shōmon (Dor) | +7 (18) | Dano +3d6; +4 AGI (total) | 1d8 PV |
-| 5º | Tomon (Limite) | +10 (28) | Dano +4d6; +2 ataques por turno (total); deslocamento triplicado | 1d12 PV |
-| 6º | Keimon (Visão) | +12 (40) | Dano +5d6; os ataques geram ondas de choque (área de 3 m, Resistência de Acrobacia para metade) | 2d10 PV |
+| 5º | Tomon (Limite) | +10 (28) | Dano +4d6; +2 ataques por turno (total); Deslocamento triplicado | 1d12 PV |
+| 6º | Keimon (Visão) | +12 (40) | Dano +5d6; os ataques geram ondas de choque (área de 3 m de raio em volta do alvo, Resistência de Acrobacia para metade) | 2d10 PV |
 | 7º | Kyōmon (Maravilha) | +15 (55) | Dano +6d6; +4 de Defesa | 3d12 PV |
 | 8º | Shimon (Morte) | Nenhum por 3 turnos | Todo ataque é crítico; 3 ataques por turno; ignora Defesa e RD | Morte |
 

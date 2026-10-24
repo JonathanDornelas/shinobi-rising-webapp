@@ -178,9 +178,11 @@ O Sennin só aparece a partir do nível Jounin, porque o Modo Sennin exige níve
 
 ## As invocações do cap. 14 {#invocacoes}
 
-As invocações já têm ficha própria no cap. 14, e o bestiário usa a mesma ficha quando uma delas aparece do lado inimigo. Na escala, a Invocação Pequena equivale à ameaça 2, a Média à 5, a Grande à 10 e o Chefe da Espécie à 16. Cada espécie de contrato tem a sua página, com os quatro tamanhos. O que muda de uma espécie para outra são os traços: o sapo tem a lâmina e o salto, a cobra tem o veneno e o bote, a lesma tem o ácido e a cura.
+As invocações partem das fichas do cap. 14, uma para cada tamanho. Na escala, a Invocação Pequena equivale à ameaça 2, a Média à 5, a Grande à 10 e o Chefe da Espécie à 16. Cada espécie ajusta a ficha do tamanho com o papel e o estilo dela, do mesmo jeito que qualquer adversário, e tem traços e personalidade próprios: o sapo bate e salta, a cobra envenena e dá o bote, a lesma cura e se divide. Invocações não têm chakra, então não têm perfil nem PE.
 
-Os animais do bestiário são todos invocações. Além das espécies famosas do cap. 14, o livro traz outras, como permite a linha Outra da tabela de espécies: lobos, ursos, tigres, javalis, aranhas e centopeias. Um lobo que aparece na neve tem um invocador por perto, e achar esse invocador é metade da luta.
+O Chefe da Espécie é um tamanho, não o papel de chefe: ele usa o papel da espécie. Um chefe dos sapos é um lutador enorme, não um adversário que age duas vezes por rodada.
+
+Os animais do bestiário são todos invocações. Estão aqui as espécies de contrato do mangá, as outras que a linha Outra da tabela de espécies permite (lobos, ursos, tigres e javalis), as criaturas chamadas sem contrato, como o molusco da miragem, os Doki e as invocações do Rinnegan, e o cão ninja do Inuzuka, com a ficha de cada estágio do cap. 8. As fichas servem aos dois lados: o jogador com contrato usa a da sua espécie, no tamanho que a especialização libera, e o Mestre usa a mesma quando a invocação aparece do lado inimigo. Um lobo que aparece na neve tem um invocador por perto, e achar esse invocador é metade da luta.
 
 ## Como ler um verbete {#verbete}
 

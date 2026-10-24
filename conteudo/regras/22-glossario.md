@@ -133,9 +133,16 @@ Os seis atributos do sistema.
 | Esquiva Ativa | Reação e 10 PE: 1d20 + Acrobacia substitui a Defesa contra um ataque |
 | Iniciativa | 1d20 + AGI (define a ordem dos turnos em combate) |
 | Ação Primária | Atacar, lançar jutsu, sprintar, comandar marionete em manobra completa |
-| Ação Secundária | Mover (até 10 m), sacar item, comando simples a aliado |
+| Ação Secundária | Mover (até o Deslocamento), sacar item, comando simples a aliado |
 | Ação Livre | Falar uma frase curta, soltar um item, efeitos descritos como livres |
-| Reação | Ação fora do seu turno (1 por rodada) |
+| Reação | Ação fora do seu turno (1 por rodada): esquivar, Kawarimi, golpe de oportunidade |
+| Deslocamento | Quanto o personagem anda com a ação secundária: 10 m, mais bônus; sprintar soma o dobro |
+| Adjacente | Os 8 quadrados em volta, inclusive as diagonais; alcance de Toque e corpo a corpo |
+| Tamanho | Pequeno, Médio, Grande, Enorme ou Colossal: o espaço no quadro (1, 1, 3, 6 e 10 quadrados de lado) e o alcance corpo a corpo |
+| Terreno difícil | Escombros, lama, gelo, nadar ou escalar sem chakra: cada metro custa 2 m |
+| Golpe de oportunidade | Reação: golpe corpo a corpo básico quando um inimigo sai do seu alcance andando |
+| Cobertura | Meia (-2 no ataque) ou total (não pode ser alvo), conforme o que há entre os dois |
+| Movimento forçado | Ser empurrado ou puxado; sem distância no efeito, 3 m em linha reta |
 | Cena | Trecho contínuo de ação com o mesmo objetivo e no mesmo lugar |
 | RD | Redução de Dano; fontes diferentes não se somam (vale a maior) |
 | Fadiga | 5 níveis acumulativos: Cansado, Exausto, Esgotado, Colapso, Risco de morte |

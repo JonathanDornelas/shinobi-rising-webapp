@@ -1,8 +1,9 @@
 <script lang="ts">
 	// P3 · Equipamento: inventário por grupo, carga (cap. 11), ryo, comprar (debita) e adicionar (espólio, não debita).
+	// Pergaminhos de armazenamento: selar (1 PC) tira o item da mochila e ele deixa de pesar; invocar (1 PC) devolve.
 	import { numero } from '#lib/formatar.ts';
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
-	import type { ItemInventario } from '#lib/personagem/progressao.ts';
+	import { capacidadePergaminho, conteudoPergaminho, ehPergaminhoMestre, livrePergaminho, type ItemInventario } from '#lib/personagem/progressao.ts';
 	import type { ItemLoja } from '#lib/personagem/regras.ts';
 	import { corQualidade } from '#lib/equipamentos/dados.ts';
 	import { somar } from '#lib/rolagens/expressoes.ts';
@@ -21,6 +22,8 @@
 	const sobra = $derived(f.carga - max);
 	const peso = (i: { qtd: number; peso: number; conjunto?: number }) => (i.conjunto ? Math.ceil(i.qtd / i.conjunto) * 0.5 : i.peso * i.qtd);
 	const fmt = (n: number) => String(n).replace('.', ',');
+	/** Pergaminhos que guardam itens (as pilhas aparecem uma vez; um sai da pilha ao selar). */
+	const pergaminhos = $derived(f.inventario.filter((i) => !i.selado && capacidadePergaminho(i) != null));
 
 	let loja = $state<'comprar' | 'adicionar' | null>(null);
 	let filtro = $state('');
@@ -45,7 +48,7 @@
 <div class="grid items-start gap-5 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
 	<div class="flex flex-col gap-3.5">
 		{#each GRUPOS as g (g.id)}
-			{@const lista = f.inventario.filter((i) => i.grupo === g.id)}
+			{@const lista = f.inventario.filter((i) => i.grupo === g.id && !i.selado)}
 			{#if lista.length}
 				<section class="painel-sombra" aria-label={g.id}>
 					<div class="flex items-center gap-2 border-b-2 border-b3 px-3.5 py-2.5">
@@ -55,6 +58,8 @@
 					</div>
 					<ul class="m-0 list-none p-0">
 						{#each lista as i (i.id)}
+							{@const cap = capacidadePergaminho(i)}
+							{@const destinos = pergaminhos.filter((p) => p.id !== i.id && livrePergaminho(f.inventario, p) >= peso(i))}
 							<li class="grid grid-cols-[32px_minmax(0,1fr)_auto_56px] items-center gap-3 border-b-2 border-b3 px-3.5 py-1 last:border-b-0" style:box-shadow={corQualidade(i.qualidade) ? `inset 4px 0 0 ${corQualidade(i.qualidade)}` : undefined} title={i.qualidade && i.qualidade !== 'Comum' ? `Qualidade ${i.qualidade}` : undefined}>
 								<Icone id={i.icone} />
 								<span class="flex min-w-0 flex-col gap-0.5">
@@ -70,8 +75,45 @@
 									<span class="t-num w-9 text-center text-[15px]">×{i.qtd}</span>
 									{#if f.editavel}<button type="button" class="btn-icone h-8 w-8 font-pixel" aria-label="Mais 1 {i.nome} (sem custo)" onclick={() => f.alterarQtd(i.id, 1)}>+</button>{/if}
 								</span>
-								<span class="text-right text-[13px] font-semibold text-mut">{fmt(peso(i))}</span>
-							</li>
+									<span class="text-right text-[13px] font-semibold text-mut">{fmt(peso(i))}</span>
+									{#if cap != null}
+										{@const dentro = conteudoPergaminho(f.inventario, i.id)}
+										{@const usado = cap - livrePergaminho(f.inventario, i)}
+										<div class="col-span-4 mb-1.5 ml-11 flex flex-col gap-1.5 border-l-2 border-b3 pl-3">
+											<div class="flex items-center gap-2">
+												<span class="font-pixel text-[11px] font-bold tracking-[0.06em] text-mut">GUARDA {fmt(usado)} / {cap}{i.qtd > 1 ? ' (CADA)' : ''}</span>
+												<div class="relative h-2.5 flex-1 border-2 border-b3 bg-b1" aria-hidden="true"><div class="absolute inset-y-0 left-0 bg-info" style:width="{Math.min(100, (usado / cap) * 100)}%"></div></div>
+											</div>
+											{#each dentro as d (d.id)}
+												<div class="flex items-center gap-2 text-[13px]">
+													<Icone id={d.icone} />
+													<span class="min-w-0 flex-1 truncate font-medium">{d.nome} <span class="text-mut">×{d.qtd} · {fmt(peso(d))}</span></span>
+													{#if f.editavel}<button type="button" class="btn-jogo btn-contorno min-h-8 px-2 text-[11px]" title="{ehPergaminhoMestre(i) ? 'Ação primária' : 'Ação secundária'} e 1 PC" disabled={f.atual.pc < 1} onclick={() => f.invocar(d.id)}>INVOCAR · 1 PC</button>{/if}
+												</div>
+											{:else}
+												<span class="text-xs text-mut">Vazio. Selar custa {ehPergaminhoMestre(i) ? 'uma ação completa' : '1 ação'} e 1 PC; invocar, {ehPergaminhoMestre(i) ? 'a ação primária' : 'a ação secundária'} e 1 PC.</span>
+											{/each}
+										</div>
+									{/if}
+									{#if f.editavel && pergaminhos.some((p) => p.id !== i.id) && !(cap != null && conteudoPergaminho(f.inventario, i.id).length)}
+										<div class="col-span-4 mb-1.5 ml-11 flex items-center gap-2">
+											<select
+												class="campo h-8 w-auto max-w-full pr-7 text-xs"
+												aria-label="Selar {i.nome} num pergaminho"
+												disabled={!destinos.length || f.atual.pc < 1}
+												value=""
+												onchange={(e) => {
+													const p = e.currentTarget.value;
+													e.currentTarget.value = '';
+													if (p) f.selar(i.id, p);
+												}}
+											>
+												<option value="">{destinos.length ? (f.atual.pc < 1 ? 'Sem PC para selar' : 'Selar em… (1 PC)') : 'Não cabe em nenhum pergaminho'}</option>
+												{#each destinos as p (p.id)}<option value={p.id}>{p.nome} · {fmt(livrePergaminho(f.inventario, p))} livre</option>{/each}
+											</select>
+										</div>
+									{/if}
+								</li>
 						{/each}
 					</ul>
 				</section>

@@ -70,7 +70,7 @@
       ataques:
         - { nome: Tantō em brasa, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: katon-goka-messhitsu }
+        - { slug: karyuu-endan }
         - { slug: katon-haijingakure-no-jutsu }
         - { slug: katon-goen-no-jutsu }
         - { slug: shunshin-no-jutsu }
@@ -87,13 +87,13 @@
       ataques:
         - { nome: Dragão de fogo, alcance: Médio }
       jutsus:
-        - { slug: katon-goka-messhitsu }
-        - { slug: katon-ryuen-hoka-no-jutsu }
+        - { slug: katon-kibaku-enjin }
+        - { slug: katon-haisekisho }
         - { slug: katon-goryuka-no-jutsu }
         - { slug: karyuu-endan }
       tracos:
         - *katon-pulmao-de-fogo
-        - &katon-fornalha { nome: Fornalha, efeito: "Uma vez por cena, como ação primária, o fogo cobre uma área de 15 m: cada inimigo resiste com VIG contra a DT da ficha ou sofre o dano da ficha em dobro e fica queimando, com o dano contínuo." }
+        - &katon-fornalha { nome: Fornalha, efeito: "Uma vez por cena, como ação primária, o fogo cobre uma área de 15 m de raio: cada inimigo resiste com VIG contra a DT da ficha ou sofre o dano da ficha em dobro e fica queimando, com o dano contínuo." }
   taticas:
     - "Abre com o jutsu de maior área contra o grupo junto, antes que alguém se espalhe. Fica longe de quem usa Suiton e mira primeiro quem luta com o vento, que só alimenta as chamas dele."
   ganchos:
@@ -143,7 +143,7 @@
         - { slug: suijinheki }
       tracos:
         - *suiton-corpo-de-agua-corrente
-        - &suiton-chao-encharcado { nome: Chão encharcado, efeito: "Uma vez por cena, alaga uma área de 10 m: quem estiver nela tem desvantagem para se mover e para se esquivar até o fim do próximo turno." }
+        - &suiton-chao-encharcado { nome: Chão encharcado, efeito: "Uma vez por cena, alaga uma área de 10 m de raio: quem estiver nela tem desvantagem para se mover e para se esquivar até o fim do próximo turno." }
     - nome: Jounin
       arte: { formato: faixa, plano: plano aberto }
       capa: true
@@ -156,8 +156,8 @@
         - { nome: Onda cortante, alcance: Médio }
       jutsus:
         - { slug: suiryuudan-no-jutsu }
-        - { slug: suiton-bakusui-shoha }
-        - { slug: suiton-goshokuzame }
+        - { slug: gufu-suika-no-jutsu }
+        - { slug: suiton-hahonryu }
         - { slug: suijinheki }
       tracos:
         - *suiton-corpo-de-agua-corrente
@@ -190,12 +190,12 @@
         - { nome: Dragão de água, alcance: Médio }
       jutsus:
         - { slug: suiton-daibakufu-no-jutsu }
-        - { slug: suiton-daikodan-no-jutsu }
+        - { slug: suiton-suidanha }
         - { slug: suiton-suishoha }
         - { slug: gufu-suika-no-jutsu }
       tracos:
         - *suiton-corpo-de-agua-corrente
-        - &suiton-mare { nome: Maré, efeito: "Uma vez por cena, como ação primária, uma onda varre uma área de 15 m: cada inimigo resiste com FOR contra a DT da ficha ou sofre o dano da ficha e fica **Caído**, e todos na área ficam encharcados (Raiton contra eles causa +1 dado de dano até o fim da cena)." }
+        - &suiton-mare { nome: Maré, efeito: "Uma vez por cena, como ação primária, uma onda varre uma área de 15 m de raio: cada inimigo resiste com FOR contra a DT da ficha ou sofre o dano da ficha e fica **Caído**, e todos na área ficam encharcados (Raiton contra eles causa +1 dado de dano até o fim da cena)." }
   taticas:
     - "Puxa a luta para perto da água. Prende o mais perigoso numa prisão de água e cuida dos outros com dragões e ondas. Usa Suiton contra fogo sempre que pode."
   ganchos:
@@ -246,7 +246,7 @@
         - { slug: doton-sazareishi }
       tracos:
         - *doton-pe-na-terra
-        - &doton-terreno-de-pedra { nome: Terreno de pedra, efeito: "Uma vez por cena, ergue colunas e buracos numa área de 10 m: a área vira terreno difícil, e ele ganha cobertura atrás das colunas." }
+        - &doton-terreno-de-pedra { nome: Terreno de pedra, efeito: "Uma vez por cena, ergue colunas e buracos numa área de 10 m de raio: a área vira terreno difícil, e ele ganha cobertura atrás das colunas." }
     - nome: Jounin
       arte: { formato: pagina, plano: de baixo }
       capa: true
@@ -296,7 +296,7 @@
         - { slug: doton-kekkai-doro-domu }
       tracos:
         - *doton-pe-na-terra
-        - &doton-abalo { nome: Abalo, efeito: "Uma vez por cena, como ação primária, faz o chão tremer numa área de 15 m: cada inimigo resiste com AGI contra a DT da ficha ou sofre o dano da ficha e fica **Caído**." }
+        - &doton-abalo { nome: Abalo, efeito: "Uma vez por cena, como ação primária, faz o chão tremer numa área de 15 m de raio: cada inimigo resiste com AGI contra a DT da ficha ou sofre o dano da ficha e fica **Caído**." }
   taticas:
     - "Ergue uma muralha logo no primeiro turno e luta de trás dela. Prende quem avança no chão e esmaga quem fica parado. Foge por debaixo da terra se a luta virar."
   ganchos:
@@ -340,7 +340,7 @@
       ataques:
         - { nome: Lâmina de raio, alcance: Médio }
       jutsus:
-        - { slug: raiton-raiju-tsuiga }
+        - { slug: shunshin-no-jutsu }
         - { slug: cho-biburato-raitonto }
         - { slug: jibashi }
       tracos:
@@ -357,9 +357,9 @@
       ataques:
         - { nome: Golpe relâmpago, alcance: Corpo a corpo }
       jutsus:
-        - { slug: raiton-chakura-modo }
-        - { slug: kusanagi-no-tsurugi-chidorigatana }
-        - { slug: raiton-shiden }
+        - { slug: raiton-gian }
+        - { slug: raiton-kuropansa }
+        - { slug: jibashi }
         - { slug: kuroi-kaminari }
       tracos:
         - *raiton-reflexo-eletrico
@@ -374,8 +374,8 @@
       ataques:
         - { nome: Mão de raio, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: chidori }
-        - { slug: chidori-nagashi }
+        - { slug: raiton-kangekiha }
+        - { slug: kuroi-kaminari }
         - { slug: raiton-gian }
         - { slug: shunshin-no-jutsu }
       tracos:
@@ -391,13 +391,13 @@
       ataques:
         - { nome: Raio do céu, alcance: Longo }
       jutsus:
-        - { slug: kirin }
+        - { slug: kuroi-kaminari }
         - { slug: raiton-kangekiha }
-        - { slug: chidori-eiso }
-        - { slug: raiton-kage-bunshin-no-jutsu }
+        - { slug: raiton-gian }
+        - { slug: raiton-kuropansa }
       tracos:
         - *raiton-reflexo-eletrico
-        - &raiton-trovao { nome: Trovão, efeito: "Uma vez por cena, como ação primária, um raio cai do céu sobre uma área de 6 m: cada inimigo resiste com AGI contra a DT da ficha ou sofre o dano da ficha em dobro e fica **Paralisado** por 1 turno." }
+        - &raiton-trovao { nome: Trovão, efeito: "Uma vez por cena, como ação primária, um raio cai do céu sobre uma área de 6 m de raio: cada inimigo resiste com AGI contra a DT da ficha ou sofre o dano da ficha em dobro e fica **Paralisado** por 1 turno." }
   taticas:
     - "Mira o alvo de mais chakra ou o que usa Doton e o derruba antes de ele reagir. Paralisa quem tenta fugir. Evita quem luta com o vento."
   ganchos:
@@ -461,7 +461,7 @@
         - { slug: futon-shinkugyoku }
         - { slug: futon-shinkuha }
         - { slug: daikamaitachi-no-jutsu }
-        - { slug: hien }
+        - { slug: kazanami }
       tracos:
         - *fuuton-pes-leves
         - *fuuton-olho-do-furacao
@@ -602,7 +602,7 @@
       tracos:
         - *mokuton-madeira-viva
         - *mokuton-vitalidade
-        - &mokuton-floresta-viva { nome: Floresta viva, efeito: "Uma vez por cena, como ação primária, cobre uma área de 30 m de árvores: a área vira terreno difícil para os inimigos, e cada um resiste com FOR contra a DT da ficha ou fica **Imobilizado** nas raízes." }
+        - &mokuton-floresta-viva { nome: Floresta viva, efeito: "Uma vez por cena, como ação primária, cobre de árvores uma área de 30 m de raio: a área vira terreno difícil para os inimigos, e cada um resiste com FOR contra a DT da ficha ou fica **Imobilizado** nas raízes." }
   taticas:
     - "Prende o grupo numa jaula de madeira logo no começo e luta de cima dos troncos. Cura os próprios ferimentos com a vitalidade da Madeira e só foge quando a floresta que criou começa a queimar."
   ganchos:
@@ -652,7 +652,7 @@
         - { slug: sensatsu-suisho }
       tracos:
         - *hyoton-sangue-frio
-        - &hyoton-chao-de-gelo { nome: Chão de gelo, efeito: "Uma vez por cena, congela uma área de 10 m: quem estiver nela resiste com AGI contra a DT da ficha ou fica **Caído**, e a área vira terreno difícil." }
+        - &hyoton-chao-de-gelo { nome: Chão de gelo, efeito: "Uma vez por cena, congela uma área de 10 m de raio: quem estiver nela resiste com AGI contra a DT da ficha ou fica **Caído**, e a área vira terreno difícil." }
     - nome: Jounin
       arte: { formato: quadro, plano: câmera inclinada }
       capa: true
@@ -705,7 +705,7 @@
       tracos:
         - *hyoton-sangue-frio
         - *hyoton-chao-de-gelo
-        - &hyoton-inverno { nome: Inverno, efeito: "Uma vez por cena, como ação primária, uma nevasca cobre uma área de 30 m até o fim da cena: os inimigos nela têm desvantagem nos ataques à distância e sofrem o dano da ficha no fim de cada turno (metade com sucesso na Resistência de VIG)." }
+        - &hyoton-inverno { nome: Inverno, efeito: "Uma vez por cena, como ação primária, uma nevasca cobre uma área de 30 m de raio até o fim da cena: os inimigos nela têm desvantagem nos ataques à distância e sofrem o dano da ficha no fim de cada turno (metade com sucesso na Resistência de VIG)." }
   taticas:
     - "Congela o terreno e prende o mais rápido numa cúpula de espelhos. Ataca de todos os lados com agulhas e nunca fica onde o inimigo acha que ele está."
   ganchos:
@@ -756,7 +756,7 @@
         - { slug: yoton-kagandan }
       tracos:
         - *yoton-pele-de-magma
-        - &yoton-chao-derretido { nome: Chão derretido, efeito: "Uma vez por cena, derrete uma área de 6 m: quem começa o turno nela sofre o dano da ficha (metade com sucesso na Resistência de AGI)." }
+        - &yoton-chao-derretido { nome: Chão derretido, efeito: "Uma vez por cena, derrete uma área de 6 m de raio: quem começa o turno nela sofre o dano da ficha (metade com sucesso na Resistência de AGI)." }
     - nome: Jounin
       arte: { formato: pagina, plano: por cima do ombro }
       capa: true
@@ -786,7 +786,7 @@
       jutsus:
         - { slug: yoton-shakugaryugan-no-jutsu }
         - { slug: yoton-yokai-no-jutsu }
-        - { slug: katon-goka-messhitsu }
+        - { slug: karyuu-endan }
         - { slug: doton-yomi-numa }
       tracos:
         - *yoton-pele-de-magma
@@ -804,12 +804,12 @@
         - { slug: yoton-chakura-modo }
         - { slug: yoton-shakugaikoken }
         - { slug: yoton-shakugaryugan-no-jutsu }
-        - { slug: katon-goka-messhitsu }
+        - { slug: karyuu-endan }
         - { slug: doton-banri-doryuheki }
       tracos:
         - *yoton-pele-de-magma
         - *yoton-chao-derretido
-        - &yoton-vulcao { nome: Vulcão, efeito: "Uma vez por cena, como ação primária, a terra se abre numa área de 15 m: cada inimigo resiste com AGI contra a DT da ficha ou sofre o dano da ficha em dobro, e a área vira lava até o fim da cena." }
+        - &yoton-vulcao { nome: Vulcão, efeito: "Uma vez por cena, como ação primária, a terra se abre numa área de 15 m de raio: cada inimigo resiste com AGI contra a DT da ficha ou sofre o dano da ficha em dobro, e a área vira lava até o fim da cena." }
   taticas:
     - "Derrete a cobertura do grupo com as rochas em brasa e cobre o corpo de lava para lutar de perto. Prende os rápidos em cal e não teme o fogo de ninguém."
   ganchos:
@@ -909,12 +909,12 @@
         - { slug: futton-komu-no-jutsu }
         - { slug: futton-kairiki-muso }
         - { slug: fungokyaku }
-        - { slug: katon-goka-messhitsu }
+        - { slug: karyuu-endan }
         - { slug: suiton-daibakufu-no-jutsu }
       tracos:
         - *futton-vapor
         - *futton-nevoa-corrosiva
-        - &futton-caldeira { nome: Caldeira, efeito: "Uma vez por cena, como ação primária, uma explosão de vapor cobre uma área de 10 m: cada inimigo resiste com VIG contra a DT da ficha ou sofre o dano da ficha em dobro e fica **Cego** por 1 turno." }
+        - &futton-caldeira { nome: Caldeira, efeito: "Uma vez por cena, como ação primária, uma explosão de vapor cobre uma área de 10 m de raio: cada inimigo resiste com VIG contra a DT da ficha ou sofre o dano da ficha em dobro e fica **Cego** por 1 turno." }
   taticas:
     - "Abre com a névoa ácida sobre o grupo junto e espera a corrosão trabalhar. Quando alguém atravessa a névoa, ferve o chakra e o recebe na porrada."
   ganchos:
@@ -961,11 +961,11 @@
         - { nome: Espada da tempestade, alcance: Corpo a corpo }
       jutsus:
         - { slug: ranton-seishujin }
-        - { slug: raiton-raiju-tsuiga }
+        - { slug: jibashi }
         - { slug: suiton-teppodama }
       tracos:
         - *ranton-feixe-que-curva
-        - &ranton-nuvem-negra { nome: Nuvem negra, efeito: "Uma vez por cena, cobre uma área de 10 m com nuvens de trovão: os inimigos nela têm desvantagem para enxergar além de 3 m até o fim do próximo turno." }
+        - &ranton-nuvem-negra { nome: Nuvem negra, efeito: "Uma vez por cena, cobre uma área de 10 m de raio com nuvens de trovão: os inimigos nela têm desvantagem para enxergar além de 3 m até o fim do próximo turno." }
     - nome: Jounin
       arte: { formato: faixa, plano: plano aberto }
       capa: true
@@ -1117,12 +1117,12 @@
       jutsus:
         - { slug: shakuton-daijohappa }
         - { slug: shakuton-kajosatsu }
-        - { slug: katon-goka-messhitsu }
+        - { slug: karyuu-endan }
         - { slug: kaze-no-yaiba }
       tracos:
         - *shakuton-esferas-de-calor
         - *shakuton-secura
-        - &shakuton-sol-de-meio-dia { nome: Sol de meio-dia, efeito: "Uma vez por cena, como ação primária, uma esfera enorme explode sobre uma área de 15 m: cada inimigo resiste com VIG contra a DT da ficha ou sofre o dano da ficha em dobro e ganha dois níveis de Fadiga." }
+        - &shakuton-sol-de-meio-dia { nome: Sol de meio-dia, efeito: "Uma vez por cena, como ação primária, uma esfera enorme explode sobre uma área de 15 m de raio: cada inimigo resiste com VIG contra a DT da ficha ou sofre o dano da ficha em dobro e ganha dois níveis de Fadiga." }
   taticas:
     - "Solta as esferas atrás do mais rápido do grupo e fica no centro delas. Junta todas numa explosão só quando o grupo se agrupa."
   ganchos:
@@ -1168,12 +1168,12 @@
       ataques:
         - { nome: Pássaro de argila, alcance: Longo }
       jutsus:
-        - { slug: kibaku-nendo }
+        - { slug: bakuton-jiraiken }
         - { slug: kibaku-jirai }
         - { slug: bakuton-bogyojutsu }
       tracos:
         - *bakuton-detonacao
-        - &bakuton-campo-minado { nome: Campo minado, efeito: "Antes da luta, se teve tempo, enterra minas numa área de 10 m: o primeiro inimigo que entra nela sofre o dano da ficha (metade com sucesso na Resistência de AGI)." }
+        - &bakuton-campo-minado { nome: Campo minado, efeito: "Antes da luta, se teve tempo, enterra minas numa área de 10 m de raio: o primeiro inimigo que entra nela sofre o dano da ficha (metade com sucesso na Resistência de AGI)." }
     - nome: Jounin
       arte: { formato: pagina, plano: de baixo }
       capa: true
@@ -1186,7 +1186,7 @@
         - { nome: Punho mina terrestre, alcance: Corpo a corpo }
       jutsus:
         - { slug: bakuton-jiraiken }
-        - { slug: kibaku-nendo }
+        - { slug: bakuton-shogeki }
         - { slug: bakuton-bogyojutsu }
         - { slug: kibaku-jirai }
       tracos:
@@ -1204,7 +1204,7 @@
       jutsus:
         - { slug: bunshin-daibakuha }
         - { slug: gojo-kibaku-fuda }
-        - { slug: kibaku-nendo }
+        - { slug: kibaku-jirai }
         - { slug: bakuton-jiraiken }
       tracos:
         - *bakuton-detonacao
@@ -1220,13 +1220,13 @@
         - { nome: Grande detonação, alcance: Longo }
       jutsus:
         - { slug: bakuton-jiraiken }
-        - { slug: kibaku-nendo }
+        - { slug: kibaku-jirai }
         - { slug: bunshin-daibakuha }
         - { slug: gojo-kibaku-fuda }
       tracos:
         - *bakuton-detonacao
         - *bakuton-campo-minado
-        - &bakuton-obra-prima { nome: Obra-prima, efeito: "Uma vez por cena, como ação primária, detona tudo o que preparou numa área de 30 m: cada inimigo resiste com AGI contra a DT da ficha ou sofre o dano da ficha em dobro e fica **Atordoado** por 1 turno." }
+        - &bakuton-obra-prima { nome: Obra-prima, efeito: "Uma vez por cena, como ação primária, detona tudo o que preparou numa área de 30 m de raio: cada inimigo resiste com AGI contra a DT da ficha ou sofre o dano da ficha em dobro e fica **Atordoado** por 1 turno." }
   taticas:
     - "Espalha minas e figuras de argila antes da luta e espera o grupo entrar no meio delas. Quando alguém chega perto, explode o soco dentro dele."
   ganchos:
@@ -1396,7 +1396,7 @@
       jutsus:
         - { slug: doton-chokajugan-no-jutsu }
         - { slug: doton-chokeijugan-no-jutsu }
-        - { slug: katon-goka-mekkyaku }
+        - { slug: katon-kibaku-enjin }
         - { slug: iwa-bunshin-no-jutsu }
       tracos:
         - *jinton-pedra-leve

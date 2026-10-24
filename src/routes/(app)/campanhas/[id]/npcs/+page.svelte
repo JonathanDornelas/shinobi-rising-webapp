@@ -5,7 +5,9 @@
 	import { goto, refreshAll, replaceState } from '$app/navigation';
 	import { page } from '$app/state';
 	import { npcDoVerbete } from '#lib/bestiario/npc.ts';
+	import BuscaBestiario from '#lib/componentes/npc/BuscaBestiario.svelte';
 	import EditorNpc from '#lib/componentes/npc/EditorNpc.svelte';
+	import PastasNpcs from '#lib/componentes/npc/PastasNpcs.svelte';
 	import BarraRolagem from '#lib/componentes/rolagens/BarraRolagem.svelte';
 	import BotaoRolar from '#lib/componentes/rolagens/BotaoRolar.svelte';
 	import SeloStatus from '#lib/componentes/personagem/SeloStatus.svelte';
@@ -20,7 +22,7 @@
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
 	import type { Json, Npc } from '#lib/supabase/banco.ts';
-	import type { Bestiario } from '#lib/livro/tipos.ts';
+	import type { Bestiario, Criatura } from '#lib/livro/tipos.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -35,11 +37,54 @@
 		npcs = structuredClone(data.npcs);
 	});
 
+	// pastas (as mesmas da Mesa): clicar filtra; arrastar um card para a pasta move o NPC
+	// svelte-ignore state_referenced_locally
+	let pastas = $state(data.pastas);
+	let pastaSel = $state('todas');
+	const descendentes = (id: string): string[] => pastas.filter((p) => p.pai_id === id).flatMap((p) => [p.id, ...descendentes(p.id)]);
+	const naPasta = (n: Npc, sel: string) =>
+		sel === 'todas' || (sel === 'sem' ? !n.pasta_id || !pastas.some((p) => p.id === n.pasta_id) : !!n.pasta_id && [sel, ...descendentes(sel)].includes(n.pasta_id));
+	const contar = (sel: string) => npcs.filter((n) => naPasta(n, sel)).length;
+	async function moverNpc(id: string, pasta: string | null) {
+		// pasta excluída: o banco já subiu o conteúdo; aqui só acompanha
+		if (id.startsWith('pasta:')) {
+			const velha = id.slice(6);
+			for (const n of npcs) if (n.pasta_id === velha) n.pasta_id = pasta;
+			return;
+		}
+		const n = npcs.find((x) => x.id === id);
+		if (!n || n.pasta_id === pasta) return;
+		const antes = n.pasta_id;
+		n.pasta_id = pasta;
+		const { error } = await supabase().from('npcs').update({ pasta_id: pasta }).eq('id', id);
+		if (error) {
+			n.pasta_id = antes;
+			toasts.mostrar('Não foi possível mover o NPC.', 'erro');
+		}
+	}
+
+	// importar do bestiário pela busca: o NPC entra na pasta aberta, com jutsus, acerto, DT e arte
+	let buscandoBestiario = $state(false);
+	let importando = $state(false);
+	async function importar(c: Criatura, estagio: number) {
+		importando = true;
+		const pasta = pastaSel !== 'todas' && pastaSel !== 'sem' ? pastaSel : null;
+		const { data: criado, error } = await supabase()
+			.from('npcs')
+			.insert({ campanha_id: k.id, ...npcDoVerbete(c, estagio), pasta_id: pasta })
+			.select('*')
+			.single();
+		importando = false;
+		if (error || !criado) return void toasts.mostrar('Não foi possível importar o NPC.', 'erro');
+		npcs = [...npcs, criado as Npc];
+		toasts.mostrar(`${(criado as Npc).nome} entrou na lista de NPCs.`, 'sucesso');
+	}
+
 	let filtroRank = $state('');
 	let filtroTag = $state('');
 	let filtroVisivel = $state<'' | 'revelado' | 'privado'>('');
 	const visiveis = $derived(
-		npcs.filter((n) => (!filtroRank || n.rank === filtroRank) && (!filtroTag || n.tags.includes(filtroTag)) && (!filtroVisivel || (filtroVisivel === 'revelado') === n.revelado))
+		npcs.filter((n) => naPasta(n, pastaSel) && (!filtroRank || n.rank === filtroRank) && (!filtroTag || n.tags.includes(filtroTag)) && (!filtroVisivel || (filtroVisivel === 'revelado') === n.revelado))
 	);
 
 	// ---------------------------------------------------------------- editar, criar, excluir
@@ -164,8 +209,10 @@
 	}
 	const restaurar = (n: Npc) => {
 		n.pv_atual = [];
+		n.pc_atual = [];
+		n.pe_atual = [];
 		clearTimeout(temporizadores.get(n.id));
-		supabase().from('npcs').update({ pv_atual: [] }).eq('id', n.id).then();
+		supabase().from('npcs').update({ pv_atual: [], pc_atual: [], pe_atual: [] }).eq('id', n.id).then();
 	};
 </script>
 
@@ -173,6 +220,7 @@
 	<div class="flex flex-wrap items-center gap-2">
 		<h1 class="m-0 flex-1 font-mincho text-[30px] leading-[38px] font-bold max-md:text-2xl">{mestre ? 'NPCs' : 'NPCs conhecidos'}</h1>
 		{#if mestre && ativa}
+			<button type="button" class="btn-jogo btn-contorno text-[13px]" onclick={() => (buscandoBestiario = true)}>DO BESTIÁRIO</button>
 			<button type="button" class="btn-jogo btn-contorno text-[13px]" onclick={() => novo(true)}>NOVA TROPA GENÉRICA</button>
 			<button type="button" class="btn-jogo btn-primario com-icone text-[13px]" aria-haspopup="dialog" onclick={() => (escolhendo = true)}><Icone id="acao/ic-acao-novo-npc" />NOVO NPC</button>
 		{/if}
@@ -200,6 +248,12 @@
 	{/if}
 
 	{#if mestre}
+		<div class="flex flex-col gap-3.5 md:grid md:grid-cols-[240px_minmax(0,1fr)] md:items-start">
+		<PastasNpcs campanha={k.id} bind:pastas bind:sel={pastaSel} {contar} {ativa} onMoverNpc={moverNpc} />
+		<div class="flex min-w-0 flex-col gap-3.5">
+		{#if pastaSel !== 'todas'}
+			<span class="text-[13px] font-semibold text-mut">NPCs › {pastaSel === 'sem' ? 'Sem pasta' : (pastas.find((p) => p.id === pastaSel)?.nome ?? '')} <button type="button" class="link ml-2 text-xs" onclick={() => (pastaSel = 'todas')}>ver todos</button></span>
+		{/if}
 		{#if npcs.length}
 			<div class="flex flex-wrap gap-2">
 				<select class="campo h-10 w-auto pr-8 text-[13px]" aria-label="Rank" bind:value={filtroRank}>
@@ -221,7 +275,7 @@
 			<ul class="m-0 grid list-none gap-3.5 p-0 md:grid-cols-2 xl:grid-cols-3">
 				{#each visiveis as n (n.id)}
 					{@const pvs = pvDosMembros(n)}
-					<li class="flex flex-col border-2 border-frame bg-b2 shadow-[4px_4px_0_var(--ink)]">
+					<li class="flex flex-col border-2 border-frame bg-b2 shadow-[4px_4px_0_var(--ink)]" draggable={ativa} ondragstart={(e) => e.dataTransfer?.setData('text/x-npc', n.id)} title="Arraste para uma pasta">
 						<div class="flex items-start gap-2.5 border-b-2 border-b3 px-3.5 py-3">
 							<Retrato nome={n.nome || '?'} foto={n.retrato} tamanho={40} />
 							<button type="button" class="flex min-w-0 flex-1 flex-col gap-0.5 text-left" onclick={() => (editando = n)}>
@@ -273,6 +327,12 @@
 							</div>
 							<div class="flex items-center gap-2">
 								<button type="button" class="link text-xs font-semibold" onclick={() => (editando = n)}>Editar ficha</button>
+								{#if pastas.length && ativa}
+									<select class="campo h-8 w-auto max-w-[150px] pr-7 text-xs" aria-label="Mover para pasta" value={n.pasta_id ?? ''} onchange={(e) => moverNpc(n.id, e.currentTarget.value || null)}>
+										<option value="">Sem pasta</option>
+										{#each pastas as p (p.id)}<option value={p.id}>{p.nome}</option>{/each}
+									</select>
+								{/if}
 								<span class="flex-1"></span>
 								{#if n.pv_atual.length}<button type="button" class="btn-jogo btn-fantasma min-h-8 text-xs" disabled={!ativa} onclick={() => restaurar(n)}>RESTAURAR</button>{/if}
 							</div>
@@ -287,6 +347,8 @@
 				<span class="text-sm text-mut">A ficha resumida (cap. 23.2) se preenche em 2 minutos: identidade, combate, tags e ganchos.</span>
 			</div>
 		{/if}
+		</div>
+		</div>
 	{:else if data.revelados.length}
 		<ul class="m-0 grid list-none gap-3.5 p-0 md:grid-cols-2 xl:grid-cols-3">
 			{#each data.revelados as n (n.id)}
@@ -351,14 +413,24 @@
 					<span class="text-[13px] leading-[19px] text-mut">Uma ficha como a de um jogador, no criador de personagem: atributos, perícias, jutsus e inventário. Para vilões e aliados centrais.</span>
 				</button>
 			</div>
-			<a href="/regras/bestiario" class="painel cartao-link flex items-center gap-3 p-3 text-fg">
+			<button type="button" class="painel cartao-link flex items-center gap-3 p-3 text-left text-fg" onclick={() => ((escolhendo = false), (buscandoBestiario = true))}>
 				<Icone id="nav/ic-nav-npcs" />
 				<span class="flex min-w-0 flex-1 flex-col">
 					<span class="font-mincho text-[17px] leading-6 font-bold">Do bestiário</span>
-					<span class="text-[13px] leading-[19px] text-mut">Escolha um adversário pronto, com ameaça, táticas e ganchos, e use o botão Usar na campanha.</span>
+					<span class="text-[13px] leading-[19px] text-mut">Busque um adversário pronto e importe com um clique: números, jutsus, ganchos e a arte.</span>
 				</span>
 				<span class="font-pixel text-sm font-bold text-mut">▸</span>
-			</a>
+			</button>
+		</div>
+	</Modal>
+{/if}
+
+{#if buscandoBestiario}
+	<Modal rotulo="Importar do bestiário" largura={560} aoFechar={() => (buscandoBestiario = false)}>
+		<div class="flex flex-col gap-3 p-5">
+			<h2 class="t-h3 m-0">Importar do bestiário</h2>
+			<p class="m-0 text-sm text-mut">Clique num adversário para criar o NPC{pastaSel !== 'todas' && pastaSel !== 'sem' ? ` na pasta “${pastas.find((p) => p.id === pastaSel)?.nome ?? ''}”` : ''}. Dá para importar vários seguidos.</p>
+			<BuscaBestiario onEscolher={importar} onFechar={() => (buscandoBestiario = false)} ocupado={importando} />
 		</div>
 	</Modal>
 {/if}

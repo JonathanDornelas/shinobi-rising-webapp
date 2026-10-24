@@ -1,0 +1,160 @@
+{
+	"_sobre": "Molduras de token da Mesa (L11): anel decorativo em volta do retrato. Gerar: node scripts/bestiario.cjs --lista molduras --seed <n> --todos. Depois, o miolo opaco é esvaziado (Katon), cada uma é enquadrada num quadrado justo e vai para static/molduras/<id>.png (npm run imagens:otimizar -- molduras); o raio do furo de cada uma fica em src/lib/mesa/molduras.ts. Escolhidas: seed 5101 (Selo: 5103).",
+	"estilo": ", Naruto anime and manga theme, ninja world, game UI token border, pixel art, crisp pixels, clean readable silhouette",
+	"paleta": [
+		"#1a1a1a",
+		"#2b1a14",
+		"#5c1e15",
+		"#8b2e20",
+		"#c44536",
+		"#e07a5f",
+		"#fbf7f0",
+		"#f4e4d6",
+		"#d9c2a7",
+		"#a88b6a",
+		"#bf9000",
+		"#f2c14e",
+		"#069bbd",
+		"#7fd3e6",
+		"#38761d",
+		"#7fb069",
+		"#674ea7",
+		"#a895d6",
+		"#7f6000",
+		"#8d6e3f",
+		"#5e6b73",
+		"#a7b4bc",
+		"#e8692e",
+		"#2e6fd1",
+		"#ffffff"
+	],
+	"modelo": "pixflux",
+	"parametros": {
+		"no_background": true,
+		"outline": "single color black outline",
+		"shading": "medium shading",
+		"detail": "highly detailed"
+	},
+	"formatos": {
+		"moldura": {
+			"width": 128,
+			"height": 128,
+			"uso": "moldura redonda do token (miolo transparente)",
+			"prompt": "a single circular ring frame seen from the front, perfectly round and centered, thick decorated border, the whole middle of the circle is empty and plain, nothing inside the ring, round token border for a portrait"
+		}
+	},
+	"planos": {},
+	"verbetes": [
+		{
+			"slug": "hitaiate",
+			"nome": "Bandana ninja",
+			"formato": "moldura",
+			"prompt": "ring made of a ninja forehead protector, polished engraved steel plates with rivets linked around the circle, dark navy blue cloth band wrapped between the plates",
+			"cores_extras": [
+				"#1c2541",
+				"#2e3c63",
+				"#c9ccd1",
+				"#8a9099"
+			]
+		},
+		{
+			"slug": "shuriken",
+			"nome": "Shurikens",
+			"formato": "moldura",
+			"prompt": "iron ring with eight four-pointed steel shuriken throwing stars evenly spaced around it, sharp silver blades pointing outward",
+			"cores_extras": [
+				"#c9ccd1",
+				"#8a9099",
+				"#4a4f57"
+			]
+		},
+		{
+			"slug": "kunai",
+			"nome": "Kunais",
+			"formato": "moldura",
+			"prompt": "ring of eight steel kunai knives arranged around a circle pointing outward, their ring handles tied together with a red rope",
+			"cores_extras": [
+				"#c9ccd1",
+				"#8a9099",
+				"#b3322a"
+			]
+		},
+		{
+			"slug": "pergaminho",
+			"nome": "Pergaminho",
+			"formato": "moldura",
+			"prompt": "ring made of an unrolled cream paper scroll curved into a circle, red edges, black brush seal script and small sealing symbols written along it, wooden scroll ends",
+			"cores_extras": [
+				"#efe3c8",
+				"#b3322a",
+				"#5c3a1e"
+			]
+		},
+		{
+			"slug": "selo",
+			"nome": "Selo de fuuinjutsu",
+			"formato": "moldura",
+			"prompt": "ring of overlapping cream paper ofuda seal tags with black brush seal script, fuuinjutsu sealing talismans tied around a thin black iron circle, small red seal marks",
+			"cores_extras": [
+				"#7fd3ff",
+				"#2e6fd1",
+				"#1a1a1a"
+			]
+		},
+		{
+			"slug": "folhas",
+			"nome": "Folhas da floresta",
+			"formato": "moldura",
+			"prompt": "wreath of green leaves and thin branches forming a ring, tied with a small red string, forest of the hidden leaf village",
+			"cores_extras": [
+				"#3f7d32",
+				"#7fb069",
+				"#b3322a"
+			]
+		},
+		{
+			"slug": "chamas",
+			"nome": "Chamas",
+			"formato": "moldura",
+			"prompt": "ring of roaring orange, red and yellow fire flames forming a circle, fire style katon flames",
+			"cores_extras": [
+				"#e8692e",
+				"#f2c14e",
+				"#b3322a"
+			]
+		},
+		{
+			"slug": "raio",
+			"nome": "Raios",
+			"formato": "moldura",
+			"prompt": "ring of crackling blue and white lightning bolts and electric sparks forming a circle, lightning style raiton",
+			"cores_extras": [
+				"#7fd3ff",
+				"#ffffff",
+				"#3a5ba0"
+			]
+		},
+		{
+			"slug": "shimenawa",
+			"nome": "Corda sagrada",
+			"formato": "moldura",
+			"prompt": "thick braided straw shimenawa sacred rope tied in a circle, white zigzag paper shide streamers hanging from it, shinto shrine",
+			"cores_extras": [
+				"#d9b56a",
+				"#a67c3d",
+				"#ffffff"
+			]
+		},
+		{
+			"slug": "anbu",
+			"nome": "Anbu",
+			"formato": "moldura",
+			"prompt": "white porcelain ring painted with red tribal stripes like an Anbu animal mask, a small black tanto sword handle crossing at the bottom",
+			"cores_extras": [
+				"#f2efe8",
+				"#b3322a",
+				"#1a1a1a"
+			]
+		}
+	]
+}

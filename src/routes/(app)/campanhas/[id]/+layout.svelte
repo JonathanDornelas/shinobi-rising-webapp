@@ -7,10 +7,13 @@
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import { PAPEL, rotuloEra } from '#lib/campanhas/dominio.ts';
 	import { dataCurta } from '#lib/formatar.ts';
+	import { page } from '$app/state';
 	import type { LayoutProps } from './$types';
 
 	let { data, children }: LayoutProps = $props();
 	const c = $derived(data.campanha);
+	// a Mesa ocupa a tela toda: sem sub-cabeçalho nem menu da campanha
+	const naMesa = $derived(page.url.pathname.endsWith('/mesa'));
 	// o painel de rolagens (em qualquer tela) acompanha a última campanha aberta
 	$effect(() => {
 		const mesa = { id: c.id, nome: c.nome };
@@ -18,6 +21,9 @@
 	});
 </script>
 
+{#if naMesa}
+	{@render children()}
+{:else}
 <div class="flex min-h-14 items-center gap-3 border-b-2 border-ink bg-b2 px-4 md:px-6">
 	<a href="/campanhas/{c.id}" class="min-w-0 truncate font-mincho text-lg leading-6 font-bold text-fg md:text-[22px] md:leading-[30px]">{c.nome}</a>
 	<span class="border-2 border-b3 px-[7px] py-[5px] font-pixel text-xs leading-none font-semibold tracking-[0.06em] whitespace-nowrap text-mut max-md:hidden">{rotuloEra(c)}</span>
@@ -45,3 +51,4 @@
 		{@render children()}
 	</div>
 </div>
+{/if}

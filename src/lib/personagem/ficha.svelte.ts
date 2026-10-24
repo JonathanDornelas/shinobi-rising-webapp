@@ -6,8 +6,12 @@ import type { Json } from '#lib/supabase/banco.ts';
 import type { CatalogoFicha } from './catalogo.server.ts';
 import { CONDICOES } from './dados.ts';
 import {
+	capacidadePergaminho,
 	cargaInventario,
 	custoJutsu,
+	ehPergaminhoMestre,
+	livrePergaminho,
+	pesoItem,
 	descansar,
 	estadoAtual,
 	ficha,
@@ -227,8 +231,71 @@ export class FichaJogo {
 		if (!i || !this.editavel) return;
 		i.qtd = Math.max(0, i.qtd + delta);
 		const nome = i.nome;
-		if (i.qtd === 0) this.inventario = this.inventario.filter((x) => x.id !== id);
-		await this.salvarInventario(`${delta < 0 ? 'Usou/descartou' : 'Ajustou'} ${Math.abs(delta)}× ${nome}`);
+		let solto = '';
+		if (i.qtd === 0) {
+			// um pergaminho que se perde solta tudo o que guardava (cap. 11)
+			const dentro = this.inventario.filter((x) => x.selado === id);
+			for (const x of dentro) this.soltar(x);
+			if (dentro.length) solto = `; soltou ${dentro.map((x) => x.nome).join(', ')}`;
+			this.inventario = this.inventario.filter((x) => x.id !== id);
+		}
+		await this.salvarInventario(`${delta < 0 ? 'Usou/descartou' : 'Ajustou'} ${Math.abs(delta)}× ${nome}${solto}`);
+	}
+
+	// ------------------------------------------------------------------ pergaminhos de armazenamento (cap. 11)
+	/** Volta um item selado para a mochila, juntando com a pilha igual se houver. */
+	private soltar(item: ItemInventario) {
+		const base = item.id.split('~')[0];
+		const pilha = this.inventario.find((x) => x !== item && !x.selado && x.id === base);
+		if (pilha) {
+			pilha.qtd += item.qtd;
+			this.inventario = this.inventario.filter((x) => x !== item);
+		} else {
+			delete item.selado;
+			if (!this.inventario.some((x) => x !== item && x.id === base)) item.id = base;
+		}
+	}
+
+	/** Selar: 1 ação e 1 PC (no Pergaminho Mestre, uma ação completa). O item some da mochila e não pesa mais. */
+	async selar(itemId: string, pergaminhoId: string) {
+		if (!this.editavel) return;
+		const item = this.inventario.find((x) => x.id === itemId);
+		let perg = this.inventario.find((x) => x.id === pergaminhoId);
+		if (!item || !perg || item.selado || item === perg) return;
+		if (capacidadePergaminho(perg) == null) return void toasts.mostrar('Esse pergaminho não guarda itens.', 'erro');
+		if (capacidadePergaminho(item) != null && this.inventario.some((x) => x.selado === item.id)) return void toasts.mostrar('Esvazie o pergaminho antes de selá-lo em outro.', 'aviso');
+		if (this.atual.pc < 1) return void toasts.mostrar('Selar custa 1 PC, e você está sem chakra.', 'erro');
+		// pergaminhos empilhados: um deles sai da pilha para guardar o item
+		if (perg.qtd > 1) {
+			perg.qtd -= 1;
+			this.inventario.push({ ...$state.snapshot(perg), id: `${perg.id.split('~')[0]}~${Math.random().toString(36).slice(2, 8)}`, qtd: 1 });
+			perg = this.inventario[this.inventario.length - 1];
+		}
+		const livre = livrePergaminho(this.inventario, perg);
+		if (pesoItem(item) > livre) {
+			return void toasts.mostrar(`Não cabe: ${String(pesoItem(item)).replace('.', ',')} de carga, e o pergaminho tem ${String(livre).replace('.', ',')} livre.`, 'aviso');
+		}
+		// o item selado ganha um id próprio, para uma compra nova da mesma coisa não cair dentro do pergaminho
+		item.id = `${item.id.split('~')[0]}~s${Math.random().toString(36).slice(2, 8)}`;
+		item.selado = perg.id;
+		const acao = ehPergaminhoMestre(perg) ? 'ação completa' : '1 ação';
+		this.mudar({ ...this.estado, pc: this.atual.pc - 1 }, `Selou ${item.qtd}× ${item.nome} no ${perg.nome} (${acao}, −1 PC)`, 'item/ic-item-pergaminho-basico');
+		await this.salvarInventario(`Selou ${item.qtd}× ${item.nome} no ${perg.nome}`);
+	}
+
+	/** Invocar: ação secundária e 1 PC (no Pergaminho Mestre, a ação primária). O item volta para a mão. */
+	async invocar(itemId: string) {
+		if (!this.editavel) return;
+		const item = this.inventario.find((x) => x.id === itemId);
+		if (!item?.selado) return;
+		if (this.atual.pc < 1) return void toasts.mostrar('Invocar custa 1 PC, e você está sem chakra.', 'erro');
+		const perg = this.inventario.find((x) => x.id === item.selado);
+		const nome = item.nome;
+		const qtd = item.qtd;
+		this.soltar(item);
+		const acao = perg && ehPergaminhoMestre(perg) ? 'ação primária' : 'ação secundária';
+		this.mudar({ ...this.estado, pc: this.atual.pc - 1 }, `Invocou ${qtd}× ${nome} (${acao}, −1 PC)`, 'item/ic-item-pergaminho-basico');
+		await this.salvarInventario(`Invocou ${qtd}× ${nome}${perg ? ` do ${perg.nome}` : ''}`);
 	}
 
 	async ajustarRyo(delta: number) {

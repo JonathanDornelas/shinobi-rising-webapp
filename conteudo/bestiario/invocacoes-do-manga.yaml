@@ -1,0 +1,510 @@
+# Bestiário · as outras invocações do mangá: as espécies e criaturas que a wiki de Naruto classifica como invocação
+# (Classification=Summon) e que aparecem no mangá, fora as que já têm verbete em invocacoes.yaml e
+# invocacoes-outras.yaml. As espécies de contrato têm os quatro tamanhos do cap. 14; as criaturas únicas têm uma ficha
+# só; as do Rinnegan não têm contrato. Os números partem da ficha do tamanho (campo ficha), ajustada pelo papel e pelo
+# estilo; os chefes são genéricos, sem o nome de um personagem. Formato de cada verbete: veja o cabeçalho de shinobi.yaml.
+- slug: corvos
+  nome: Corvos mensageiros
+  tipo: invocação
+  origem: Torres antigas e templos abandonados
+  vila: null
+  arte: { formato: retrato, plano: silhueta }
+  cena:
+    - "Um corvo pousa no parapeito, depois outro, depois mais dez. Nenhum faz barulho. O maior deles inclina a cabeça e olha para o ninja que acabou de entrar no quarto, como quem já sabia que ele vinha."
+  descricao:
+    - "Os corvos assinam contrato com poucas famílias, e o contrato passa de pai para filho. Levam recados que ninguém mais consegue ler, vigiam de longe e somem num bater de asas. Os ninjas de genjutsu gostam deles: um bando de corvos confunde o olho e esconde quem está no meio dele."
+  personalidade:
+    - "Discretos e desconfiados. Falam pouco, guardam segredos por décadas e servem à família do invocador, não só a ele; quem trai a família perde o contrato."
+  estagios:
+    - nome: Corvo mensageiro
+      papel: suporte
+      estilo: vigilante
+      ficha: pequena
+      resumo: "Leva o recado e não esquece o rosto de ninguém."
+      ataques:
+        - { nome: Bicada, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: kirigakure-no-jutsu-ilusorio }
+      tracos:
+        - &voo-corvo { nome: Voo, efeito: "Voa, e entrega recados na metade do tempo do seu tamanho (cap. 14)." }
+    - nome: Bando de corvos
+      papel: controlador
+      estilo: vigilante
+      ficha: media
+      resumo: "Uma nuvem preta de asas que esconde o invocador."
+      ataques:
+        - { nome: Bicadas, alcance: Curto }
+      jutsus:
+        - { slug: magen-narakumi-no-jutsu }
+        - { slug: kirigakure-no-jutsu-ilusorio }
+      tracos:
+        - *voo-corvo
+        - { nome: Nuvem de asas, efeito: "Uma vez por rodada, cobre um aliado a até 6 m: ataques contra ele têm desvantagem até o começo do próximo turno do bando." }
+    - nome: Corvo ancião
+      papel: controlador
+      estilo: vigilante
+      ficha: grande
+      resumo: "Do tamanho de um homem, com olhos que parecem ver através de qualquer ilusão."
+      ataques:
+        - { nome: Garras, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: magen-narakumi-no-jutsu }
+      tracos:
+        - *voo-corvo
+        - &revoada { nome: Revoada, efeito: "Uma vez por cena, quando seria atingido, desfaz-se num bando de corvos e volta a se formar a até 10 m: o ataque erra." }
+        - { nome: Invocado, efeito: "Ao chegar a 0 PV, é desinvocado. Não pode ser invocado de novo por 24 horas (cap. 14)." }
+    - nome: Corvo patriarca
+      papel: controlador
+      estilo: calculista
+      ficha: chefe
+      resumo: "O mais velho do ninho, que lembra o nome de todos os invocadores da família."
+      ataques:
+        - { nome: Garras negras, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: magen-jubaku-satsu }
+      tracos:
+        - *voo-corvo
+        - *revoada
+        - { nome: Olho que desfaz ilusões, efeito: "Aliados a até 10 m dele têm vantagem para resistir a genjutsu." }
+  taticas:
+    - "Os corvos não brigam de frente. Cobrem o invocador, cegam o inimigo com asas e genjutsu e levam embora quem estiver ferido."
+  ganchos:
+    - "Um corvo traz ao grupo uma mensagem assinada por alguém que morreu há anos."
+    - "Uma família perdeu o contrato com os corvos, e os corvos querem saber por quê."
+  tags: [Cauteloso, Leal]
+
+- slug: corujas
+  nome: Corujas da noite
+  tipo: invocação
+  origem: Florestas antigas e torres de vigia
+  vila: null
+  arte: { formato: quadro, plano: olhos }
+  cena:
+    - "Os olhos amarelos aparecem primeiro, no alto do galho, redondos como duas luas. A coruja vira a cabeça quase de costas, devagar, e o ninja escondido atrás da árvore entende que foi visto desde o começo."
+  descricao:
+    - "As corujas veem no escuro o que os outros só adivinham e voam sem fazer um som. Servem a ninjas de reconhecimento e a quem trabalha à noite: vigiam o acampamento, seguem um alvo por quilômetros e avisam antes que alguém chegue perto."
+  personalidade:
+    - "Solenes e cheias de manias. Detestam ser chamadas de dia, corrigem a pronúncia do invocador e sabem mais do que contam; respondem a uma pergunta com outra."
+  estagios:
+    - nome: Corujinha
+      papel: suporte
+      estilo: vigilante
+      ficha: pequena
+      resumo: "Vigia de olhos grandes que não pisca."
+      ataques:
+        - { nome: Garras, alcance: Corpo a corpo }
+      tracos:
+        - &voo-silencioso { nome: Voo silencioso, efeito: "Voa sem fazer barulho: tem vantagem em Furtividade no ar." }
+        - &visao-noturna { nome: Visão noturna, efeito: "Enxerga no escuro como se fosse dia." }
+    - nome: Coruja caçadora
+      papel: atirador
+      estilo: vigilante
+      ficha: media
+      resumo: "Mergulha do escuro sem que ninguém a ouça."
+      ataques:
+        - { nome: Mergulho, alcance: Médio }
+      jutsus:
+        - { slug: daitoppa }
+      tracos:
+        - *voo-silencioso
+        - *visao-noturna
+    - nome: Coruja gigante
+      papel: controlador
+      estilo: calculista
+      ficha: grande
+      resumo: "Abre as asas, e o mundo escurece."
+      ataques:
+        - { nome: Garras, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: kokuangyou-no-jutsu }
+      tracos:
+        - *visao-noturna
+        - { nome: Olhar que prende, efeito: "Uma vez por cena, um alvo a até 10 m que a olhe nos olhos resiste com ESP contra a DT 19 ou fica **Paralisado** por 1 turno." }
+        - { nome: Invocada, efeito: "Ao chegar a 0 PV, é desinvocada. Não pode ser invocada de novo por 24 horas (cap. 14)." }
+    - nome: Grande coruja
+      papel: controlador
+      estilo: calculista
+      ficha: chefe
+      resumo: "A velha da floresta, que vê o golpe antes de ele vir."
+      ataques:
+        - { nome: Garras, alcance: Corpo a corpo }
+      jutsus:
+        - { slug: kokuangyou-no-jutsu }
+        - { slug: magen-jubaku-satsu }
+      tracos:
+        - *visao-noturna
+        - { nome: Olhar que prende, efeito: "Uma vez por cena, um alvo a até 10 m que a olhe nos olhos resiste com ESP contra a DT 23 ou fica **Paralisado** por 1 turno." }
+        - { nome: Presságio, efeito: "Uma vez por cena, depois que um inimigo rola um ataque, ela o obriga a rolar de novo e ficar com o pior resultado." }
+  taticas:
+    - "Ficam no alto, longe da luta, vigiando e avisando. A grande coruja prende o inimigo mais perigoso com o olhar e deixa o resto para o invocador."
+  ganchos:
+    - "Uma coruja aparece de dia, assustada, e não quer voltar para a floresta."
+    - "Alguém está caçando as corujas de uma floresta antiga, e os ninjas que tinham o contrato estão perdendo a visão à noite."
+  tags: [Cauteloso, Tático]
+
+- slug: doninhas
+  nome: Doninhas do vento
+  tipo: invocação
+  origem: Planaltos de vento e desfiladeiros
+  vila: null
+  arte: { formato: faixa, plano: plano aberto }
+  cena:
+    - "O vento muda de direção de repente. Alguma coisa pequena passa entre as árvores, rápida demais para ser vista, e um segundo depois três troncos tombam, cortados limpos na altura do peito."
+  descricao:
+    - "As doninhas do vento vivem onde o ar nunca para. São pequenas, rápidas e carregam uma foice do tamanho delas, e o corte vem junto com a ventania. Ninjas de Fūton gostam do contrato: uma doninha transforma uma rajada comum numa tempestade de lâminas."
+  personalidade:
+    - "Rápidas, brincalhonas e um pouco exibidas. Somem antes de alguém entender o que aconteceu e voltam rindo; gostam de vento forte e de invocadores ousados, e se entediam com ordens cautelosas."
+  estagios:
+    - nome: Doninha pequena
+      papel: assassino
+      estilo: impetuoso
+      ficha: pequena
+      resumo: "Corta a corda e some antes do barulho."
+      ataques:
+        - { nome: Foice pequena, alcance: Corpo a corpo }
+      tracos:
+        - &esquiva-vento { nome: Esquiva no vento, efeito: "Tem vantagem para escapar de jutsus de área." }
+    - nome: Doninha da foice
+      papel: assassino
+      estilo: impetuoso
+      ficha: media
+      resumo: "Some no vento e corta de onde ninguém está olhando."
+      ataques:
+        - { nome: Foice, alcance: Curto }
+      jutsus:
+        - { slug: kazekiri-no-jutsu }
+      tracos:
+        - *esquiva-vento
+    - nome: Doninha da tempestade
+      papel: atirador
+      estilo: vigilante
+      ficha: grande
+      resumo: "Uma foice e um furacão."
+      ataques:
+        - { nome: Lâmina de vento, alcance: Longo }
+      jutsus:
+        - { slug: kazanami }
+        - { slug: daitoppa }
+      tracos:
+        - *esquiva-vento
+        - &laminas-ventania { nome: Lâminas na ventania, efeito: "Os jutsus de Fūton de um aliado a até 10 m causam um dado de dano a mais." }
+        - { nome: Invocada, efeito: "Ao chegar a 0 PV, é desinvocada. Não pode ser invocada de novo por 24 horas (cap. 14)." }
+    - nome: Senhora dos ventos
+      papel: atirador
+      estilo: vigilante
+      ficha: chefe
+      resumo: "A velha da foice, que abre um desfiladeiro com um golpe."
+      ataques:
+        - { nome: Ventania cortante, alcance: Longo }
+      jutsus:
+        - { slug: kazanami }
+        - { slug: kaze-no-yaiba }
+      tracos:
+        - *esquiva-vento
+        - *laminas-ventania
+        - { nome: Furacão, efeito: "Uma vez por cena, uma linha de 30 m à frente: cada um nela resiste com Acrobacia contra a DT 20 ou sofre o dano do ataque e fica **Caído**." }
+  taticas:
+    - "Cortam e somem. A pequena incomoda, a grande abre caminho com a ventania para o invocador passar, e nenhuma fica parada para levar um golpe."
+  ganchos:
+    - "Uma doninha perdeu a foice numa aposta com um ninja e quer o grupo como testemunha da revanche."
+    - "O pergaminho do contrato das doninhas foi rasgado ao meio, e cada metade está com um ninja de uma vila inimiga."
+  tags: [Agressivo, Tático]
+
+- slug: salamandras
+  nome: Salamandras do pântano
+  tipo: invocação
+  origem: Pântanos e rios de água parada do País da Chuva
+  vila: null
+  arte: { formato: faixa, plano: câmera no chão }
+  cena:
+    - "A água do pântano não se mexe. Então uma bolha sobe, depois outra, e o cheiro doce chega antes da névoa roxa. Quando os ninjas percebem que estão tossindo, a salamandra já abriu os olhos."
+  descricao:
+    - "As salamandras dormem por dias no fundo da água parada e guardam, numa bolsa dentro do corpo, um veneno que vira névoa. Quem as invoca costuma lutar mascarado. Uma salamandra grande envenena um vale inteiro, e é por isso que o contrato é raro e temido."
+  personalidade:
+    - "Silenciosas e preguiçosas. Ficam horas paradas e só se mexem quando querem; obedecem a quem aguenta o veneno delas e desprezam quem foge da névoa."
+  estagios:
+    - nome: Salamandra pequena
+      papel: assassino
+      ficha: pequena
+      resumo: "Morde o tornozelo e some na lama."
+      ataques:
+        - { nome: Mordida, alcance: Corpo a corpo, efeito: "O alvo resiste com VIG contra a DT 13 ou fica **Envenenado** até o fim do próximo turno." }
+      tracos:
+        - &anfibia { nome: Anfíbia, efeito: "Respira debaixo da água e tem vantagem em Furtividade dentro dela." }
+    - nome: Salamandra da névoa
+      papel: controlador
+      estilo: calculista
+      ficha: media
+      resumo: "Cospe a névoa e espera."
+      ataques:
+        - { nome: Cuspe, alcance: Curto }
+      jutsus:
+        - { slug: dokugiri }
+        - { slug: mizu-teppou }
+      tracos:
+        - *anfibia
+    - nome: Salamandra gigante
+      papel: controlador
+      estilo: calculista
+      ficha: grande
+      resumo: "O vale inteiro vira névoa roxa."
+      ataques:
+        - { nome: Bote, alcance: Curto }
+      jutsus:
+        - { slug: dokugiri }
+        - { slug: suijinheki }
+      tracos:
+        - *anfibia
+        - { nome: Névoa venenosa, efeito: "Uma vez por cena, solta a névoa num raio de 20 m em volta, que dura 3 rodadas: quem a respira resiste com VIG contra a DT 19 no começo de cada turno ou fica **Envenenado**." }
+        - { nome: Invocada, efeito: "Ao chegar a 0 PV, é desinvocada. Não pode ser invocada de novo por 24 horas (cap. 14)." }
+    - nome: Salamandra anciã
+      papel: controlador
+      estilo: calculista
+      ficha: chefe
+      resumo: "Dorme há um século no fundo do rio, e acordá-la custa caro."
+      ataques:
+        - { nome: Bote, alcance: Médio }
+      jutsus:
+        - { slug: dokugiri }
+        - { slug: suiryuudan-no-jutsu }
+      tracos:
+        - *anfibia
+        - { nome: Névoa venenosa, efeito: "Uma vez por cena, solta a névoa num raio de 40 m em volta, que dura 3 rodadas: quem a respira resiste com VIG contra a DT 23 no começo de cada turno ou fica **Envenenado**." }
+        - { nome: Pele de lodo, efeito: "RD 3 contra golpes corpo a corpo." }
+  taticas:
+    - "Nunca começam a luta. Esperam o inimigo entrar na névoa, e o invocador fica longe, ou de máscara, deixando o veneno trabalhar."
+  ganchos:
+    - "Um vilarejo à beira do rio adoece todo verão, e uma criança jura ter visto um olho enorme debaixo da água."
+    - "Um ninja mascarado quer comprar o contrato das salamandras e paga o preço que pedirem."
+  tags: [Cauteloso, Brutal]
+
+- slug: bakus
+  nome: Bakus devoradores
+  tipo: invocação
+  origem: Templos esquecidos e cavernas de incenso
+  vila: null
+  arte: { formato: quadro, plano: de baixo }
+  cena:
+    - "O bicho tem tromba de anta, corpo de urso e olhos de quem acabou de acordar. Ele boceja. Só que o bocejo não acaba: o ar inteiro do pátio começa a correr para dentro da boca dele, e as telhas vão junto."
+  descricao:
+    - "Os bakus comem sonhos, dizem as lendas, e comem também o ar, as pedras e o que estiver na frente quando abrem a boca de verdade. O contrato passa por templos antigos e por ninjas que trabalham nas sombras. Um baku grande suga uma casa inteira e não devolve nada."
+  personalidade:
+    - "Sonolentos e esfomeados. Só acordam para comer e tratam o invocador como quem trouxe o jantar; com fome, não distinguem amigo de inimigo."
+  estagios:
+    - nome: Baku pequeno
+      papel: suporte
+      estilo: defensivo
+      ficha: pequena
+      resumo: "Come o pesadelo de quem dorme ao lado."
+      ataques:
+        - { nome: Tromba, alcance: Corpo a corpo }
+      tracos:
+        - &comer-sonhos { nome: Comer sonhos, efeito: "Encosta a tromba num aliado preso num genjutsu e encerra o efeito; isso gasta a ação dele." }
+    - nome: Baku jovem
+      papel: controlador
+      estilo: defensivo
+      ficha: media
+      resumo: "Abre a boca, e o vento muda de lado."
+      ataques:
+        - { nome: Tromba, alcance: Corpo a corpo }
+      tracos:
+        - *comer-sonhos
+        - { nome: Sucção, efeito: "Uma vez por rodada, puxa um alvo a até 10 m em linha reta para perto dele; o alvo resiste com FOR contra a DT 16 para ficar onde está." }
+    - nome: Baku gigante
+      papel: controlador
+      estilo: defensivo
+      ficha: grande
+      resumo: "Suga telhado, muro e quem estiver atrás deles."
+      ataques:
+        - { nome: Pisão, alcance: Corpo a corpo }
+      tracos:
+        - *comer-sonhos
+        - { nome: Grande sucção, efeito: "Uma vez por cena, um cone de 30 m à frente: cada um nele resiste com FOR contra a DT 18 ou é puxado até ele e sofre o dano do ataque." }
+        - { nome: Invocado, efeito: "Ao chegar a 0 PV, é desinvocado. Não pode ser invocado de novo por 24 horas (cap. 14)." }
+    - nome: Baku ancião
+      papel: controlador
+      estilo: defensivo
+      ficha: chefe
+      resumo: "O que dorme debaixo do templo e só acorda com muita fome."
+      ataques:
+        - { nome: Pisão, alcance: Corpo a corpo }
+      tracos:
+        - *comer-sonhos
+        - { nome: Grande sucção, efeito: "Uma vez por cena, um cone de 60 m à frente: cada um nele resiste com FOR contra a DT 22 ou é puxado até ele e sofre o dano do ataque." }
+        - { nome: Barriga sem fundo, efeito: "O que ele engole não volta: jutsus de projétil lançados contra ele têm desvantagem." }
+  taticas:
+    - "Ficam perto do invocador e abrem a boca quando o inimigo se agrupa. Desfazem os genjutsu dos aliados antes de qualquer outra coisa."
+  ganchos:
+    - "Os monges de um templo dormem há três dias e não acordam: alguém soltou o baku do porão."
+    - "Um ninja de uma divisão secreta usa um baku para apagar da cabeça das testemunhas o que elas viram."
+  tags: [Brutal, Cauteloso]
+
+- slug: molusco-da-miragem
+  nome: Molusco da miragem
+  tipo: invocação
+  origem: Fundo do mar e baías de água quente
+  vila: null
+  arte: { formato: faixa, plano: plano aberto }
+  cena:
+    - "A neblina sobe da praia sem que ninguém veja de onde. No meio dela aparece uma vila que não estava lá, com luzes acesas e cheiro de comida. Os ninjas andam na direção dela. Debaixo da areia, a concha se abre um pouco mais."
+  descricao:
+    - "O molusco gigante não luta. Ele abre a concha e solta uma névoa morna que mostra a quem a respira o que ele quiser. Os invocadores o usam para esconder exércitos, atrair inimigos para armadilhas e sumir com uma cidade inteira do mapa por uma noite."
+  personalidade:
+    - "Imóvel e indiferente. Não fala e só abre a concha quando o invocador manda; se é atacado, fecha e espera passar."
+  ficha: grande
+  papel: controlador
+  estilo: defensivo
+  resumo: "Uma concha do tamanho de uma casa e uma névoa cheia de mentiras."
+  ataques:
+    - { nome: Jato de água, alcance: Médio }
+  tracos:
+    - { nome: Miragem, efeito: "Com a concha aberta, a névoa cobre 100 m em volta: quem está nela vê o que o molusco quer e precisa de uma Resistência de ESP contra a DT 18 para perceber a ilusão." }
+    - { nome: Concha, efeito: "Fechado, tem RD 10, mas a névoa some." }
+    - { nome: Invocado, efeito: "Ao chegar a 0 PV, é desinvocado. Não pode ser invocado de novo por 24 horas (cap. 14)." }
+  taticas:
+    - "Fica longe da luta, enterrado ou no raso, e deixa a miragem trabalhar. Se o grupo acha a concha, ela fecha, e a névoa some."
+  ganchos:
+    - "Uma caravana jura que passou a noite numa vila que não existe em mapa nenhum."
+    - "Um exército inteiro se esconde atrás de uma miragem numa baía, e só um velho pescador desconfia."
+  tags: [Cauteloso, Covarde]
+
+- slug: doki
+  nome: Doki
+  tipo: invocação
+  origem: Chamados por uma melodia
+  vila: null
+  arte: { formato: pagina, plano: de baixo }
+  cena:
+    - "A flauta toca três notas, e três vultos enormes saem do chão, com faixas nos olhos e correntes nos braços. Não olham para ninguém. Esperam a próxima nota, e quando ela vem, se mexem juntos."
+  descricao:
+    - "Os Doki são três demônios de corpo enorme e olhos vendados, sem vontade própria. Obedecem só ao som que os chama, uma melodia de flauta, de sino ou de voz, e param quando o som para. Dentro deles vivem espíritos famintos, que saem pela boca e roem o chakra de quem pegam."
+  personalidade:
+    - "Não têm vontade. Obedecem ao som que os chama e ficam imóveis quando ele para; não falam, não sentem dor e não fogem."
+  ficha: media
+  papel: bando
+  membros: 3
+  resumo: "Três demônios vendados que se mexem no ritmo da música."
+  ataques:
+    - { nome: Punho de ferro, alcance: Corpo a corpo }
+  tracos:
+    - { nome: Sob a melodia, efeito: "Só agem enquanto o invocador toca: se ele for interrompido ou ficar **Atordoado**, os Doki ficam parados até a música voltar." }
+    - { nome: Espíritos famintos, efeito: "Uma vez por cena, um Doki solta os espíritos num alvo a até 10 m: ele resiste com ESP contra a DT 15 ou perde 2d6 PC." }
+    - { nome: Invocados, efeito: "Ao chegar a 0 PV, cada um é desinvocado. Não podem ser invocados de novo por 24 horas (cap. 14)." }
+  taticas:
+    - "Andam juntos, em linha, na frente de quem toca, e protegem a música acima de tudo. O jeito de pará-los é calar o invocador."
+  ganchos:
+    - "Um músico de passagem chega à vila com uma flauta antiga, e à noite três sombras grandes andam pelas ruas."
+    - "O invocador morreu, mas a melodia ficou escrita num pergaminho, e alguém aprendeu a tocá-la."
+  tags: [Fanático, Brutal]
+
+- slug: invocacoes-do-rinnegan
+  nome: Invocações do Rinnegan
+  tipo: invocação
+  origem: Chamadas pelo Caminho Animal e pelo Caminho Naraka
+  vila: null
+  arte: { formato: pagina, plano: aéreo }
+  cena:
+    - "O ninja de olhos em anéis espalma a mão no chão, sem sangue e sem pergaminho. A fumaça vem grossa, e de dentro dela saem um rinoceronte com hastes de metal no focinho, um pássaro com bico de broca e um cão de três cabeças, todos com os mesmos olhos em anéis do invocador."
+  descricao:
+    - "Quem tem o Rinnegan não precisa de contrato. As feras do Caminho Animal são animais mortos e reanimados, com hastes de chakra cravadas no corpo e os olhos do invocador, e obedecem como bonecos. Os dois maiores chamados não são animais: um rei de pedra que julga as almas e uma estátua oca, maior que uma montanha, que nenhum ninja deveria ver de perto."
+  personalidade:
+    - "Não têm vontade. As feras repetem o que o Rinnegan manda e não sentem dor nem medo; o rei julga quem mente, e a estátua só obedece ao dono dos olhos."
+  estagios:
+    - nome: Camaleão de cauda de cobra
+      papel: assassino
+      estilo: impetuoso
+      ficha: media
+      resumo: "Some na paisagem e leva o invocador escondido dentro da boca."
+      ataques:
+        - { nome: Língua, alcance: Curto }
+      tracos:
+        - &olhos-rinnegan { nome: Olhos do Rinnegan, efeito: "Vê o que o invocador e as outras feras veem: nenhuma delas fica **Desprevenida** enquanto outra puder ver o atacante." }
+        - { nome: Invisível, efeito: "Parado, fica invisível: ataques contra ele têm desvantagem até ele atacar." }
+    - nome: Rinoceronte gigante
+      papel: lutador
+      estilo: impetuoso
+      ficha: grande
+      resumo: "Um muro de couro que derruba casas na corrida."
+      ataques:
+        - { nome: Chifre, alcance: Corpo a corpo, efeito: "Se correu em linha reta até o alvo, ele resiste com FOR contra a DT 17 ou é jogado longe e fica **Caído**." }
+      tracos:
+        - *olhos-rinnegan
+    - nome: Boi gigante
+      papel: lutador
+      estilo: defensivo
+      ficha: grande
+      resumo: "Chifres que racham pedra e um pescoço que não dobra."
+      ataques:
+        - { nome: Chifrada, alcance: Corpo a corpo }
+      tracos:
+        - *olhos-rinnegan
+        - { nome: Couro grosso, efeito: "RD 2." }
+    - nome: Panda gigante
+      papel: lutador
+      estilo: defensivo
+      ficha: grande
+      resumo: "Pesado, lento e impossível de derrubar."
+      ataques:
+        - { nome: Patada, alcance: Corpo a corpo }
+      tracos:
+        - *olhos-rinnegan
+        - { nome: Abraço, efeito: "Quando acerta, o alvo resiste com FOR contra a DT 17 ou fica **Imobilizado** até se soltar." }
+    - nome: Crustáceo gigante
+      papel: lutador
+      estilo: defensivo
+      ficha: grande
+      resumo: "Pinças de aço numa carapaça que nenhuma lâmina atravessa."
+      ataques:
+        - { nome: Pinças, alcance: Corpo a corpo }
+      tracos:
+        - *olhos-rinnegan
+        - { nome: Carapaça, efeito: "RD 3." }
+    - nome: Pássaro-broca gigante
+      papel: atirador
+      estilo: vigilante
+      ficha: grande
+      resumo: "Um bico em espiral que fura muralha e leva o invocador pelos ares."
+      ataques:
+        - { nome: Bico de broca, alcance: Médio }
+      tracos:
+        - *olhos-rinnegan
+        - { nome: Voo, efeito: "Voa e carrega o invocador nas costas." }
+    - nome: Cão de várias cabeças
+      papel: lutador
+      estilo: vigilante
+      ficha: grande
+      resumo: "Cada golpe que recebe vira mais um cão."
+      ataques:
+        - { nome: Mordidas, alcance: Corpo a corpo }
+      tracos:
+        - *olhos-rinnegan
+        - { nome: Divide-se, efeito: "Uma vez por rodada, quando sofre dano, um cão menor (a ficha de Invocação Média do cap. 14, sem traços) se solta dele e age na iniciativa do invocador." }
+    - nome: Rei do Inferno
+      papel: suporte
+      estilo: defensivo
+      ficha: grande
+      resumo: "O rei de pedra que julga a alma de quem mente."
+      ataques:
+        - { nome: Língua de chamas, alcance: Curto }
+      tracos:
+        - { nome: Julgamento, efeito: "Prende um alvo **Imobilizado** e faz uma pergunta: se ele mentir, resiste com ESP contra a DT 17 ou tem a alma arrancada e cai a 0 PV." }
+        - { nome: Restauração, efeito: "Uma vez por cena, engole um aliado caído a até 10 m e o devolve no fim do turno com todos os PV." }
+    - nome: Estátua Demoníaca do Caminho Exterior
+      papel: lutador
+      estilo: defensivo
+      ficha: chefe
+      resumo: "Uma casca oca, maior que montanha, que arranca a alma de quem toca."
+      ataques:
+        - { nome: Punho colossal, alcance: Médio }
+      tracos:
+        - { nome: Sem vontade, efeito: "Só se mexe pelo Rinnegan: se o invocador cair, ela para." }
+        - { nome: Dragões da alma, efeito: "Uma vez por cena, solta dragões de chakra em até três alvos a até 30 m: cada um resiste com VIG contra a DT 21 ou perde metade dos PV atuais." }
+        - { nome: Colosso, efeito: "RD 5. Não pode ser empurrada nem derrubada." }
+  taticas:
+    - "As feras cercam o grupo por todos os lados ao mesmo tempo, porque veem pelos mesmos olhos. O rei fica atrás, devolvendo quem cai. A estátua só aparece quando o invocador quer acabar com tudo."
+  ganchos:
+    - "Um rinoceronte com hastes de metal no focinho foi visto andando sozinho pela estrada, sem nenhum invocador por perto."
+    - "Alguém de olhos em anéis apareceu no País da Chuva, e as feras voltaram a andar pelas cidades."
+  tags: [Fanático, Tático]

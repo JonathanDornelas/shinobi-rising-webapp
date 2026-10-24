@@ -48,7 +48,7 @@ Todo personagem começa com 1 Especialização no nível 1, na criação. Ganha 
 
 | Nível | Benefício |
 | - | - |
-| 1 | +2 Iniciativa; +5 m de deslocamento |
+| 1 | +2 Iniciativa; +5 m no Deslocamento |
 | 2 | +2 Iniciativa; 2 ações secundárias por turno; +2 em testes de Acrobacia e Atletismo |
 | 3 | +4 Iniciativa (total); uma vez por combate, ganha uma ação primária extra no primeiro turno |
 

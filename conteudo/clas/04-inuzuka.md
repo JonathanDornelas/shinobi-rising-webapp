@@ -52,7 +52,7 @@ Nenhum, mas o vínculo simbiótico com o cão é hereditário e sobrenatural.
 
 #### Companheiros {#companheiros}
 
-O cão ninja Inuzuka é o companheiro central — recebido no nível 1 e crescendo junto. Ele age na iniciativa do dono e não tem PC próprio: as técnicas conjuntas são pagas pelo dono (cap. 14). O segundo cão (Vínculo da Matilha) começa um estágio abaixo.
+O cão ninja Inuzuka é o companheiro central — recebido no nível 1 e crescendo junto. Ele age na iniciativa do dono e não tem PC próprio: as técnicas conjuntas são pagas pelo dono (cap. 14). O segundo cão (Vínculo da Matilha) começa um estágio abaixo. A ficha completa de cada estágio, com atributos, perícias e jutsus, está no bestiário: [Cão ninja do Inuzuka](/regras/bestiario/cao-ninja-do-inuzuka).
 
 | Estágio do cão | Nível do dono | PV | Defesa | Ataque |
 | - | - | - | - | - |

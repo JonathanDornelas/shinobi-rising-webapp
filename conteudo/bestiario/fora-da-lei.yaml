@@ -71,8 +71,8 @@
       ataques:
         - { nome: Katana, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: kusanagi-no-tsurugi-chidorigatana }
-        - { slug: chidori-eiso }
+        - { slug: raiton-gian }
+        - { slug: raiton-kangekiha }
         - { slug: sairento-kiringu }
         - { slug: kage-bunshin-no-jutsu }
       tracos:
@@ -89,9 +89,9 @@
       ataques:
         - { nome: Katana, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: kirin }
-        - { slug: chidori-nagashi }
-        - { slug: katon-goka-messhitsu }
+        - { slug: raiton-kangekiha }
+        - { slug: kuroi-kaminari }
+        - { slug: karyuu-endan }
         - { slug: kokuangyou-no-jutsu }
       tracos:
         - *fuga-preparada
@@ -120,7 +120,7 @@
     - { nome: Katana, alcance: Corpo a corpo }
   jutsus:
     - { slug: iaido }
-    - { slug: zanko }
+    - { slug: sogazan }
   tracos:
     - { nome: Iaijutsu, efeito: "O primeiro ataque da cena saca e corta numa só ação, com vantagem." }
     - { nome: Sem mestre, efeito: "Luta pelo pagamento. Uma oferta melhor, com um teste de Persuasão contra a DT 15, o faz trocar de lado." }
@@ -305,8 +305,8 @@
         - { nome: Agulha envenenada, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**. O alvo resiste com VIG contra a DT 20 ou sofre o Veneno Letal de Sasori (cap. 11)." }
       jutsus:
         - { slug: henge-no-jutsu }
-        - { slug: nehan-shoja-no-jutsu }
-        - { slug: karasu-bunshin-no-jutsu }
+        - { slug: magen-kokoni-arazu-no-jutsu }
+        - { slug: oboro-bunshin-no-jutsu }
         - { slug: kokuangyou-no-jutsu }
       tracos:
         - *mil-rostos
@@ -335,7 +335,7 @@
   ataques:
     - { nome: Katana com chakra, alcance: Corpo a corpo, efeito: "Ignora a RD do alvo." }
   jutsus:
-    - { slug: chakura-to-maichimonji }
+    - { slug: iaido }
     - { slug: yojinbo }
   tracos:
     - { nome: Armadura de placas, efeito: "RD 2." }

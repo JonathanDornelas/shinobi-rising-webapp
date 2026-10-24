@@ -79,7 +79,8 @@ function itensUtilitarios(): ItemLoja[] {
 	}
 	itens.push(
 		{ id: 'item-pergaminho-basico', nome: 'Pergaminho básico (5 de carga)', preco: 1000, peso: 0.5, grupo: 'Itens utilitários', icone: 'item/ic-item-pergaminho-basico' },
-		{ id: 'item-pergaminho-avancado', nome: 'Pergaminho avançado (15 de carga)', preco: 8000, peso: 0.5, grupo: 'Itens utilitários', icone: 'item/ic-item-pergaminho-avancado' }
+		{ id: 'item-pergaminho-avancado', nome: 'Pergaminho avançado (15 de carga)', preco: 8000, peso: 0.5, grupo: 'Itens utilitários', icone: 'item/ic-item-pergaminho-avancado' },
+		{ id: 'item-pergaminho-mestre', nome: 'Pergaminho mestre (30 de carga)', preco: 25000, peso: 0.5, grupo: 'Itens utilitários', icone: 'item/ic-item-pergaminho-mestre' }
 	);
 	return itens;
 }

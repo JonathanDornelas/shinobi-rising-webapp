@@ -24,3 +24,6 @@ export const MAX_TAGS = 3;
 export const nomeRank = (r: string) => RANKS_NPC.find((x) => x.id === r)?.nome ?? r;
 /** PV atual de cada membro (o que não foi registrado está cheio). */
 export const pvDosMembros = (n: Pick<Npc, 'pv' | 'membros' | 'pv_atual'>) => Array.from({ length: n.membros }, (_, i) => n.pv_atual[i] ?? n.pv);
+/** PV, PC ou PE de cada membro (o máximo quando não foi mexido). */
+export const recursoDosMembros = (n: Pick<Npc, 'pv' | 'pc' | 'pe' | 'membros' | 'pv_atual' | 'pc_atual' | 'pe_atual'>, k: 'pv' | 'pc' | 'pe') =>
+	Array.from({ length: n.membros }, (_, i) => (n[`${k}_atual`] ?? [])[i] ?? n[k] ?? 0);

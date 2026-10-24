@@ -51,7 +51,7 @@
         - { nome: Lâmina curva, alcance: Corpo a corpo }
       jutsus:
         - { slug: kokuangyou-no-jutsu }
-        - { slug: suiton-goshokuzame }
+        - { slug: suiryuudan-no-jutsu }
         - { slug: futon-okakeami }
         - { slug: katon-goen-no-jutsu }
       tracos:
@@ -67,8 +67,8 @@
       ataques:
         - { nome: Lâmina curva, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: chidori-senbon }
-        - { slug: hien }
+        - { slug: raiton-kangekiha }
+        - { slug: kazanami }
         - { slug: sairento-kiringu }
         - { slug: kage-bunshin-no-jutsu }
       tracos:
@@ -86,8 +86,8 @@
         - { nome: Golpe do líder, alcance: Médio }
       jutsus:
         - { slug: ranton-reiza-sakasu }
-        - { slug: kuchiyose-goju-rashomon }
-        - { slug: taju-kage-bunshin-no-jutsu }
+        - { slug: shisekiyojin }
+        - { slug: kage-bunshin-no-jutsu }
         - { slug: kokuangyou-no-jutsu }
         - { nome: Técnica do líder, nota: "Uma técnica de rank S que define a organização, escolhida pelo Mestre no catálogo ou criada com as regras do cap. 20." }
       tracos:

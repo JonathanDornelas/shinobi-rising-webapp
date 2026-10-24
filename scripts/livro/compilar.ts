@@ -16,6 +16,7 @@ import type {
 	Criatura,
 	EstagioCriatura,
 	FormatoArte,
+	TamanhoCriatura,
 	EstiloCriatura,
 	PapelCriatura,
 	PerfilCriatura,
@@ -312,8 +313,9 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			return linhas.get(ordem[Math.max(0, i - abaixo)])!;
 		};
 
-		// fichas de invocação do cap. 14; a ameaça de cada tamanho é a que o Como usar dá (Pequena 2, Média 5, Grande 10, Chefe 16)
-		type Ficha = { titulo: string; ameaca: number; pv: number; defesa: number; iniciativa: number; acerto: number; dano: string; dt: number; jutsus: string; restricao: string | null };
+		// fichas de invocação do cap. 14; a ameaça de cada tamanho é a que o Como usar dá (Pequena 2, Média 5, Grande 10, Chefe 16).
+		// `exata`: a ficha vale como está (o cão do Inuzuka); sem ela, é a base do tamanho, que o papel e o estilo da espécie ajustam
+		type Ficha = { titulo: string; ameaca: number; pv: number; defesa: number; iniciativa: number; acerto: number; dano: string; dt: number; jutsus: string | null; nota: string; exata: boolean };
 		const ficha = (id: string, ameaca: number): Ficha => {
 			const s = secao(cap(14).blocos, (_, i) => i === id);
 			const t = tabelaEm(s.blocos);
@@ -321,8 +323,10 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			const v = Object.fromEntries(t.linhas.map((l) => [celTexto(l[0]), celTexto(l[1])]));
 			const atq = (v['Ataque básico'] ?? '').match(/\+(\d+)\s*para acertar\s*·\s*(.+)$/);
 			if (!atq) throw new Error(`Bestiário: ataque básico ilegível na ficha ${id}`);
+			const titulo = s.titulo.texto.replace(/\s*\(.*\)\s*$/, '');
+			const restricao = v['Restrição'] ?? null;
 			return {
-				titulo: s.titulo.texto.replace(/\s*\(.*\)\s*$/, ''),
+				titulo,
 				ameaca,
 				pv: +v.PV,
 				defesa: +v.Defesa,
@@ -331,14 +335,35 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 				dano: atq[2].replace(/\s+/g, ''),
 				dt: +(v.Jutsus.match(/DT (\d+)/)?.[1] ?? 0),
 				jutsus: v.Jutsus,
-				restricao: v['Restrição'] ?? null
+				nota: [`Base: a ficha ${/^Chefe/.test(titulo) ? 'do' : 'da'} ${titulo} (cap. 14), com o papel e o estilo da espécie.`, restricao && `${restricao.replace(/\.$/, '')}.`].filter(Boolean).join(' '),
+				exata: false
 			};
 		};
-		const FICHAS = {
+		// o cão ninja do Clã Inuzuka (cap. 8, Companheiros): uma ficha por estágio, que vale como está; a ameaça é o meio da
+		// faixa de nível do dono, e a Iniciativa e a DT vêm da tabela de ameaça (no jogo, o cão age na iniciativa do dono)
+		const companheiro = (() => {
+			const { blocos: inuzuka } = lerDoc(readFileSync(join(CONTEUDO, 'clas', '04-inuzuka.md'), 'utf8'));
+			const t = tabelaEm(secao(inuzuka, (_, id) => id === 'companheiros').blocos);
+			if (!t) throw new Error('Bestiário: tabela do cão ninja não encontrada no Clã Inuzuka (cap. 8)');
+			return Object.fromEntries(
+				t.linhas.map((l): [string, Ficha] => {
+					const [estagio, nivel, pv, defesa, ataque] = l.map(celTexto);
+					const [de, ate] = nivel.split(/[–-]/).map(Number);
+					const atq = ataque.match(/\+(\d+)\s*·\s*(.+)$/);
+					if (!atq) throw new Error(`Bestiário: ataque ilegível no cão ninja ${estagio}`);
+					const ameaca = Math.floor((de + ate) / 2);
+					const { iniciativa, dt } = linha(String(ameaca));
+					const nota = `Ficha do cão ninja ${estagio} do Clã Inuzuka (cap. 8), para donos de nível ${nivel}. No jogo, ele age na iniciativa do dono.`;
+					return [`cao-${slug(estagio)}`, { titulo: estagio, ameaca, pv: +pv, defesa: +defesa, iniciativa, acerto: +atq[1], dano: atq[2].replace(/\s+/g, ''), dt, jutsus: null, nota, exata: true }];
+				})
+			);
+		})();
+		const FICHAS: Record<string, Ficha> = {
 			pequena: ficha('invocacao-pequena-especializacao-nivel-1', 2),
 			media: ficha('invocacao-media-especializacao-nivel-2', 5),
 			grande: ficha('invocacao-grande-especializacao-nivel-3', 10),
-			chefe: ficha('chefe-da-especie-especializacao-nivel-3-aprovacao-do-chefe', 16)
+			chefe: ficha('chefe-da-especie-especializacao-nivel-3-aprovacao-do-chefe', 16),
+			...companheiro
 		};
 
 		type JutsuYaml = { slug?: string; nome?: string; nota?: string };
@@ -353,6 +378,8 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			estilo?: EstiloCriatura;
 			ficha?: keyof typeof FICHAS;
 			membros?: number;
+			/** Tamanho (cap. 4); sem ele, vem da ficha de invocação (o chefe é Enorme) ou é Médio. */
+			tamanho?: TamanhoCriatura;
 			resumo?: string;
 			pv?: number;
 			pc?: number | null;
@@ -379,6 +406,8 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			arte: { formato: FormatoArte; plano: string };
 			cena: string[];
 			descricao: string[];
+			/** O temperamento da espécie (invocações): como trata quem a chama e o que a irrita. */
+			personalidade?: string[];
 			estagios?: EstagioYaml[];
 			taticas: string[];
 			ganchos: string[];
@@ -406,21 +435,36 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 		};
 		const GENTE: TipoCriatura[] = ['shinobi', 'fora da lei', 'guerreiro', 'organização'];
 		/** `varios`: o verbete tem mais de um estágio, e cada um vira uma ficha separada, com arte própria. */
+		// tamanho das fichas de invocação do cap. 14 no quadro (cap. 4): o Chefe da Espécie é Enorme
+		const TAMANHO_DA_FICHA: Partial<Record<keyof typeof FICHAS, TamanhoCriatura>> = { pequena: 'pequeno', media: 'medio', grande: 'grande', chefe: 'enorme', 'cao-filhote': 'pequeno' };
 		const estagioDe = (y: CriaturaYaml, e: EstagioYaml, varios: boolean): EstagioCriatura => {
 			const f = e.ficha ? FICHAS[e.ficha] : null;
 			if (e.ficha && !f) avisar(`Bestiário: ficha de invocação desconhecida em ${y.slug}: ${e.ficha}`);
 			const rotulo = f ? String(f.ameaca) : String(e.ameaca);
 			const perfil = f ? null : (e.perfil ?? y.perfil ?? 'equilibrado');
 			if (perfil && !PERFIS[perfil]) avisar(`Bestiário: perfil desconhecido em ${y.slug}: ${perfil}`);
-			// as invocações seguem a ficha do cap. 14 inteira, sem estilo
-			const estilo = f ? null : (e.estilo ?? y.estilo ?? null);
+			// as invocações não têm chakra (sem perfil), mas têm estilo; a ficha exata (o cão do Inuzuka) vale como está
+			const estilo = f?.exata ? null : (e.estilo ?? y.estilo ?? null);
 			if (estilo && !ESTILOS[estilo]) avisar(`Bestiário: estilo desconhecido em ${y.slug}: ${estilo}`);
 			const est = estilo ? ESTILOS[estilo] : { defesa: 0, iniciativa: 0, dt: 0 };
+			const fraco = e.papel === 'controlador' || e.papel === 'suporte';
+			if (f && !f.exata && e.papel === 'chefe') avisar(`Bestiário: invocação com papel de chefe em ${y.slug} (o Chefe da Espécie é um tamanho; use o papel da espécie)`);
 			let base: { pv: number; pc: number | null; defesa: number; iniciativa: number; dt: number; acerto: number; dano: string; nota: string | null };
-			if (f) base = { pv: f.pv, pc: null, defesa: f.defesa, iniciativa: f.iniciativa, dt: f.dt, acerto: f.acerto, dano: f.dano, nota: [`Usa a ficha ${/^Chefe/.test(f.titulo) ? 'do' : 'da'} ${f.titulo} (cap. 14).`, f.restricao && `${f.restricao.replace(/\.$/, '')}.`].filter(Boolean).join(' ') };
+			if (f?.exata) base = { pv: f.pv, pc: null, defesa: f.defesa, iniciativa: f.iniciativa, dt: f.dt, acerto: f.acerto, dano: f.dano, nota: f.nota };
+			else if (f)
+				// a ficha do tamanho, com o papel e o estilo da espécie, como qualquer adversário (Como usar)
+				base = {
+					pv: Math.round(f.pv * (FATOR_PV[e.papel] ?? 1)),
+					pc: null,
+					defesa: f.defesa + est.defesa,
+					iniciativa: f.iniciativa + est.iniciativa,
+					dt: f.dt + (e.papel === 'controlador' ? 1 : 0) + est.dt,
+					acerto: f.acerto + (BONUS_ATAQUE[e.papel] ?? 0),
+					dano: fraco ? linha(rotulo, 2).dano : f.dano,
+					nota: f.nota
+				};
 			else {
 				const l = linha(rotulo);
-				const fraco = e.papel === 'controlador' || e.papel === 'suporte';
 				const p = PERFIS[perfil!] ?? PERFIS.equilibrado;
 				base = {
 					pv: Math.round(l.pv * (FATOR_PV[e.papel] ?? 1) * p.pv),
@@ -438,7 +482,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 				if (j.slug && !card) avisar(`Bestiário: jutsu desconhecido em ${y.slug}: ${j.slug}`);
 				return { slug: card?.slug ?? null, nome: card?.nome ?? j.nome ?? j.slug ?? '', traducao: card?.traducao || null, rank: card?.rank ?? null, custo: card?.custo ?? null, nota: j.nota ?? null };
 			});
-			if (f) js.push({ slug: null, nome: 'Usos de jutsu', traducao: null, rank: null, custo: null, nota: f.jutsus });
+			if (f?.jutsus) js.push({ slug: null, nome: 'Usos de jutsu', traducao: null, rank: null, custo: null, nota: f.jutsus });
 			const ameaca = valor(rotulo);
 			const ataques = e.ataques.map((a) => ({ nome: a.nome, alcance: a.alcance, acerto: a.acerto ?? base.acerto, dano: (a.dano ?? base.dano).replace(/\s+/g, ''), efeito: a.efeito ? trechosDeMd(a.efeito) : null }));
 			const defesa = e.defesa ?? base.defesa;
@@ -472,6 +516,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 				estilo,
 				rank: rankDe(ameaca),
 				membros: e.membros ?? 1,
+				tamanho: e.tamanho ?? y.tamanho ?? (e.ficha ? TAMANHO_DA_FICHA[e.ficha] : undefined) ?? 'medio',
 				resumo: e.resumo ? trechosDeMd(e.resumo) : null,
 				combate: {
 					pv: e.pv ?? base.pv,
@@ -500,7 +545,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			.flatMap((a) => lerYaml(readFileSync(join(CONTEUDO, 'bestiario', a), 'utf8')) as CriaturaYaml[])
 			.map((y): Criatura => {
 				if (y.vila && !NOME_VILA[y.vila]) avisar(`Bestiário: vila desconhecida em ${y.slug}: ${y.vila}`);
-				const { slug: _s, tipo: _t, origem: _o, vila: _v, arte: _a, cena: _c, descricao: _d, estagios: lista, taticas: _ta, ganchos: _g, tags: _tg, ...ficha } = y;
+				const { slug: _s, tipo: _t, origem: _o, vila: _v, arte: _a, cena: _c, descricao: _d, personalidade: _p, estagios: lista, taticas: _ta, ganchos: _g, tags: _tg, ...ficha } = y;
 				const doYaml = lista ?? [{ ...ficha, papel: ficha.papel!, ataques: ficha.ataques ?? [] } as EstagioYaml];
 				const estagios = doYaml.map((e) => estagioDe(y, e, doYaml.length > 1));
 				const min = Math.min(...estagios.map((e) => e.ameaca));
@@ -528,6 +573,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 					arte,
 					cena: y.cena.map(trechosDeMd),
 					descricao: y.descricao.map(trechosDeMd),
+					personalidade: (y.personalidade ?? []).map(trechosDeMd),
 					estagios,
 					ameacaFaixa: min === max ? rotulo(min) : `${rotulo(min)} a ${rotulo(max)}`,
 					ameacaMin: min,

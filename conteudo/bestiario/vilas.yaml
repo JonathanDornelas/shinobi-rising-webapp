@@ -75,7 +75,7 @@
       ataques:
         - { nome: Tantō, alcance: Corpo a corpo, efeito: "Dano em dobro contra alvo **Desprevenido**." }
       jutsus:
-        - { slug: chidori }
+        - { slug: raiton-kangekiha }
         - { slug: ansatsu-jutsu }
         - { slug: katon-haijingakure-no-jutsu }
         - { slug: shunshin-no-jutsu }
@@ -92,11 +92,11 @@
       ataques:
         - { nome: Golpe do Hokage, alcance: Corpo a corpo }
       jutsus:
-        - { slug: rasengan }
-        - { slug: hiraishin-no-jutsu }
-        - { slug: katon-goka-messhitsu }
-        - { slug: taju-kage-bunshin-no-jutsu }
-        - { slug: shuriken-kage-bunshin-no-jutsu }
+        - { slug: bunshin-daibakuha }
+        - { slug: shisekiyojin }
+        - { slug: karyuu-endan }
+        - { slug: kage-bunshin-no-jutsu }
+        - { slug: gojo-kibaku-fuda }
       tracos:
         - &ordem-kage { nome: Ordem do Kage, efeito: "Uma vez por rodada, como ação secundária, dá uma ordem: um aliado da vila que possa ouvi-lo faz um ataque na hora, como reação." }
         - { nome: Escolta, efeito: "Quase nunca está sozinho: dois Anbu (ficha acima) entram na luta na primeira rodada." }
@@ -167,7 +167,7 @@
         - { slug: futon-kakeami }
       tracos:
         - *filhos-deserto
-        - { nome: Tempestade de areia, efeito: "Uma vez por cena, levanta uma tempestade numa área de 12 m: quem não é de Suna resiste com VIG contra a DT 17 ou fica **Cego** dentro dela até o fim do próximo turno." }
+        - { nome: Tempestade de areia, efeito: "Uma vez por cena, levanta uma tempestade numa área de 12 m de raio: quem não é de Suna resiste com VIG contra a DT 17 ou fica **Cego** dentro dela até o fim do próximo turno." }
     - nome: Escorpiões do Deserto
       arte: { formato: faixa, plano: câmera no chão }
       ameaca: 11
@@ -198,7 +198,7 @@
         - { slug: satetsu-shigure }
         - { slug: satetsu-kesshu }
         - { slug: futon-shinku-taigyoku }
-        - { nome: "Fuuton: Grande Tempestade", nota: "Técnica de rank S do Kazekage: um vendaval que varre uma área de 18 m (use a DT e o dano da ficha, com Resistência de Acrobacia para metade)." }
+        - { nome: "Fuuton: Grande Tempestade", nota: "Técnica de rank S do Kazekage: um vendaval que varre uma área de 18 m de raio (use a DT e o dano da ficha, com Resistência de Acrobacia para metade)." }
       tracos:
         - *ordem-kage
         - { nome: Escolta, efeito: "Quase nunca está sozinho: dois Escorpiões do Deserto (ficha acima) entram na luta na primeira rodada." }
@@ -296,10 +296,10 @@
         - { nome: Golpe da Mizukage, alcance: Corpo a corpo }
       jutsus:
         - { slug: yoton-yokai-no-jutsu }
-        - { slug: suiton-daikodan-no-jutsu }
+        - { slug: suiton-daibakufu-no-jutsu }
         - { slug: suiton-suishoha }
         - { slug: gufu-suika-no-jutsu }
-        - { nome: "Suiton: Névoa Ácida", nota: "Técnica de rank S da Mizukage: uma névoa que corrói tudo o que toca numa área de 12 m (use a DT e o dano da ficha, com Resistência de VIG para metade)." }
+        - { nome: "Suiton: Névoa Ácida", nota: "Técnica de rank S da Mizukage: uma névoa que corrói tudo o que toca numa área de 12 m de raio (use a DT e o dano da ficha, com Resistência de VIG para metade)." }
       tracos:
         - *ordem-kage
         - { nome: Escolta, efeito: "Quase nunca está sozinha: dois Oinin (ficha acima) entram na luta na primeira rodada." }
@@ -360,9 +360,9 @@
       ataques:
         - { nome: Golpe relâmpago, alcance: Corpo a corpo }
       jutsus:
-        - { slug: raiton-chakura-modo }
-        - { slug: raitoningu-sutoreto }
-        - { slug: erubo }
+        - { slug: raiton-gian }
+        - { slug: kumogakure-taijutsu-okami-ringu }
+        - { slug: jibashi }
         - { slug: kuroi-kaminari }
       tracos:
         - &investida { nome: Investida relâmpago, efeito: "Uma vez por cena, se move e ataca com a mesma ação primária, e o ataque tem vantagem." }
@@ -393,10 +393,10 @@
       ataques:
         - { nome: Punho do Raikage, alcance: Corpo a corpo }
       jutsus:
-        - { slug: raiton-rariatto }
-        - { slug: girochin-doroppu }
-        - { slug: jigokuzuki }
-        - { slug: raiga-bomu }
+        - { slug: raiton-kangekiha }
+        - { slug: raiton-gian }
+        - { slug: raiton-kuropansa }
+        - { slug: kuroi-kaminari }
         - { nome: "Raiton: Armadura de Raio", nota: "Técnica de rank S do Raikage: cobre o corpo de eletricidade por uma cena, e quem o acerta corpo a corpo sofre 2d10 de dano." }
       tracos:
         - *ordem-kage
@@ -479,7 +479,7 @@
         - { slug: doton-dochu-senko }
       tracos:
         - *pe-no-chao
-        - { nome: Detonação, efeito: "Uma vez por cena, detona todas as etiquetas que espalhou: cada um numa área de 6 m resiste com Acrobacia contra a DT 18 e sofre 4d8 de dano, ou metade se passar." }
+        - { nome: Detonação, efeito: "Uma vez por cena, detona todas as etiquetas que espalhou: cada um numa área de 6 m de raio resiste com Acrobacia contra a DT 18 e sofre 4d8 de dano, ou metade se passar." }
     - nome: Tsuchikage
       ameaca: 16
       papel: chefe
@@ -656,7 +656,7 @@
       ataques:
         - { nome: Onda sonora, alcance: Médio, efeito: "O alvo resiste com VIG contra a DT 17 ou fica **Atordoado**." }
       jutsus:
-        - { slug: mateki-mugen-onsa }
+        - { slug: magen-jubaku-satsu }
         - { slug: magen-narakumi-no-jutsu }
         - { slug: zankukyokuha }
         - { slug: kokuangyou-no-jutsu }
@@ -692,7 +692,7 @@
         - { slug: senei-tajashu }
         - { slug: sojasosai-no-jutsu }
         - { slug: mandara-no-jin }
-        - { slug: kuchiyose-sanju-rashomon }
+        - { slug: shisekiyojin }
         - { nome: Troca de pele, nota: "Técnica proibida dos laboratórios de Oto: uma vez por cena, quando cairia a 0 PV, sai da própria pele e volta com metade dos PV." }
       tracos:
         - *ordem-kage
@@ -772,7 +772,7 @@
       ataques:
         - { nome: Espada da cachoeira, alcance: Corpo a corpo }
       jutsus:
-        - { slug: suiton-bakusui-shoha }
+        - { slug: suiton-daibakufu-no-jutsu }
         - { slug: suiton-hahonryu }
         - { slug: kage-bunshin-no-jutsu }
         - { slug: shunshin-no-jutsu }
@@ -793,7 +793,7 @@
         - { slug: katon-zukokku }
         - { slug: raiton-gian }
         - { slug: suiton-suidanha }
-        - { nome: "Suiton: Queda da Cachoeira", nota: "Técnica de rank S do líder de Taki: a cachoeira inteira desaba sobre uma área de 12 m (use a DT e o dano da ficha, com Resistência de FOR para metade)." }
+        - { nome: "Suiton: Queda da Cachoeira", nota: "Técnica de rank S do líder de Taki: a cachoeira inteira desaba sobre uma área de 12 m de raio (use a DT e o dano da ficha, com Resistência de FOR para metade)." }
       tracos:
         - *ordem-kage
         - { nome: Escolta, efeito: "Quase nunca está sozinho: dois Guardiões da Água do Herói (ficha acima) entram na luta na primeira rodada." }

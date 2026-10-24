@@ -217,7 +217,7 @@
   rotulo: Ação Secundária
   nome: Ação Secundária
   padroes: ['[Aa](?:ção|ções) [Ss]ecundárias?']
-  resumo: 1 por turno. Mover até 10 m, sacar item, dar um comando simples a aliado ou marionete.
+  resumo: 1 por turno. Mover até o seu Deslocamento (10 m), sacar item, dar um comando simples a aliado ou marionete.
   href: /regras/combate#acoes-por-turno
 - id: regra:acao-livre
   rotulo: Ação Livre
@@ -235,8 +235,38 @@
   rotulo: Reação
   nome: Reação
   padroes: [Reação, Reações]
-  resumo: 1 por rodada, fora do seu turno. Esquivar, defender, jutsus de reação como o Kawarimi.
+  resumo: 1 por rodada, fora do seu turno. Esquivar, defender, golpe de oportunidade, jutsus de reação como o Kawarimi.
   href: /regras/combate#acoes-por-turno
+- id: regra:deslocamento
+  rotulo: Deslocamento
+  nome: Deslocamento
+  padroes: [Deslocamento]
+  resumo: 'Quanto o personagem anda com a ação secundária: 10 m, mais bônus (Velocidade +5 m; 5º Portão triplica). Sprintar soma o dobro.'
+  href: /regras/combate#deslocamento
+- id: regra:terreno-dificil
+  rotulo: Terreno difícil
+  nome: Terreno difícil
+  padroes: ['[Tt]erreno difícil']
+  resumo: Escombros, mata fechada, lama, gelo; nadar ou escalar sem chakra. Cada metro custa 2 m de deslocamento.
+  href: /regras/combate#terreno
+- id: regra:golpe-de-oportunidade
+  rotulo: Golpe de Oportunidade
+  nome: Golpe de Oportunidade
+  padroes: ['[Gg]olpes? de [Oo]portunidade']
+  resumo: 'Reação: golpe corpo a corpo básico quando um inimigo sai do seu alcance andando. Shunshin, Kawarimi, teletransporte e empurrões não provocam.'
+  href: /regras/combate#golpe-de-oportunidade-reacao
+- id: regra:cobertura
+  rotulo: Cobertura
+  nome: Cobertura
+  padroes: ['[Mm]eia cobertura', '[Cc]obertura total', '[Cc]obertura']
+  resumo: 'Meia cobertura (mureta, tronco, outra criatura): -2 no ataque. Cobertura total (parede inteira): não pode ser alvo.'
+  href: /regras/combate#cobertura
+- id: regra:movimento-forcado
+  rotulo: Movimento Forçado
+  nome: Movimento Forçado
+  padroes: ['[Mm]ovimento [Ff]orçado']
+  resumo: Ser empurrado ou puxado. Sem distância no efeito, são 3 m em linha reta; não gasta deslocamento e não provoca golpe de oportunidade.
+  href: /regras/combate#movimento-forcado
 - id: regra:esquiva-ativa
   rotulo: Esquiva Ativa
   nome: Esquiva Ativa

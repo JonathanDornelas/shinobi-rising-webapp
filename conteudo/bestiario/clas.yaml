@@ -702,7 +702,7 @@
       jutsus:
         - { slug: genjutsu-sharingan }
         - { slug: katon-hosenka-tsumabeni }
-        - { slug: nehan-shoja-no-jutsu }
+        - { slug: kokuangyou-no-jutsu }
         - { slug: shunshin-no-jutsu }
       tracos:
         - *a20
@@ -719,7 +719,7 @@
       ataques: *a19
       jutsus:
         - { slug: uchiha-kaenjin }
-        - { slug: katon-goka-messhitsu }
+        - { slug: karyuu-endan }
         - { slug: katon-ryuka-no-jutsu }
         - { slug: genjutsu-sharingan }
       tracos:

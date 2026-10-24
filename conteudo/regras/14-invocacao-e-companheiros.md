@@ -72,7 +72,7 @@ Quanto maior a criatura, mais chakra ela cobra para atravessar.
 
 ### Estatísticas de Invocações Comuns {#estatisticas-de-invocacoes-comuns}
 
-As fichas abaixo valem para as invocações comuns de cada tamanho.
+As fichas abaixo são a base de cada tamanho. Cada espécie ajusta essa base com o papel e o estilo dela, do mesmo jeito que os adversários do bestiário, e traz traços e uma personalidade próprios: o sapo bate e salta, a cobra envenena, a lesma cura. A ficha pronta de cada espécie, em cada tamanho, está no [Bestiário](/regras/bestiario), e é ela que o jogador usa: quem tem o contrato chama a sua espécie no tamanho que a Especialização Invocação libera. No bestiário, o Chefe da Espécie é um tamanho, com o papel da espécie, e não o papel de chefe dos adversários.
 
 #### Invocação Pequena (Especialização nível 1) {#invocacao-pequena-especializacao-nivel-1}
 
@@ -119,14 +119,23 @@ As fichas abaixo valem para as invocações comuns de cada tamanho.
 
 | Espécie | Local | Características |
 | - | - | - |
-| Sapos (Monte Myōboku) | Montanhas sagradas | Suiton, Senjutsu, força bruta |
-| Cobras (Ryūchi) | Caverna sagrada | Veneno, infiltração, Senjutsu |
-| Lesmas (Shikkotsu) | Floresta de Cura | Cura, divisão corporal, defesa |
-| Cães | Vários | Rastreamento, equipe, combate ágil |
-| Macacos | Florestas montanhosas | Versatilidade, combate, sabedoria |
-| Águias / Falcões | Picos altos | Reconhecimento aéreo, mensageiros |
-| Tartarugas | Ilha-Tartaruga | Defesa, longevidade, combate ranqueado |
-| Outra | Definir com o Mestre | Variável |
+| [Sapos (Monte Myōboku)](/regras/bestiario/sapos-de-myoboku) | Montanhas sagradas | Suiton, Senjutsu, força bruta |
+| [Cobras (Ryūchi)](/regras/bestiario/cobras-de-ryuchi) | Caverna sagrada | Veneno, infiltração, Senjutsu |
+| [Lesmas (Shikkotsu)](/regras/bestiario/lesmas-de-shikkotsu) | Floresta de Cura | Cura, divisão corporal, defesa |
+| [Cães](/regras/bestiario/caes-ninja) | Vários | Rastreamento, equipe, combate ágil |
+| [Macacos](/regras/bestiario/macacos-guerreiros) | Florestas montanhosas | Versatilidade, combate, sabedoria |
+| [Águias / Falcões](/regras/bestiario/aguias-e-falcoes) | Picos altos | Reconhecimento aéreo, mensageiros |
+| [Tartarugas](/regras/bestiario/tartarugas) | Ilha-Tartaruga | Defesa, longevidade, combate ranqueado |
+| [Corvos](/regras/bestiario/corvos) | Torres e templos abandonados | Mensageiros, genjutsu, vigilância |
+| [Corujas](/regras/bestiario/corujas) | Florestas antigas | Visão noturna, reconhecimento, genjutsu |
+| [Doninhas](/regras/bestiario/doninhas) | Planaltos de vento | Fūton, velocidade, corte |
+| [Salamandras](/regras/bestiario/salamandras) | Pântanos | Veneno, névoa, emboscada |
+| [Bakus](/regras/bestiario/bakus) | Templos esquecidos | Sucção, quebra de genjutsu |
+| [Aranhas](/regras/bestiario/aranhas) | Cavernas e florestas fechadas | Teia, emboscada, controle |
+| [Centopeias](/regras/bestiario/centopeias) | Florestas úmidas | Carapaça, emboscada |
+| Outra | Definir com o Mestre | Variável; o bestiário traz [lobos](/regras/bestiario/lobos), [ursos](/regras/bestiario/ursos), [tigres](/regras/bestiario/tigres) e [javalis](/regras/bestiario/javalis) |
+
+Algumas invocações não se fazem por contrato. O [molusco da miragem](/regras/bestiario/molusco-da-miragem) e os [Doki](/regras/bestiario/doki) são chamados por técnicas próprias, e as [invocações do Rinnegan](/regras/bestiario/invocacoes-do-rinnegan) só respondem a quem tem esses olhos. Elas aparecem no bestiário para o Mestre, do lado inimigo.
 
 ### Jutsus Elementais {#jutsus-elementais}
 

@@ -339,21 +339,6 @@
 			"prompt": "an abandoned wooden combat puppet lying in a dusty workshop, cracked dark wooden face with a hinged jaw full of teeth, three glass eyes, messy dark hair, hidden blades sliding out of its arms, cut chakra threads hanging from its joints, a faint blue glow returning in its eyes"
 		},
 		{
-			"slug": "cadaver-edo-tensei",
-			"nome": "Cadáver de Edo Tensei",
-			"tipo": "criatura",
-			"formato": "retrato",
-			"plano": ["close"],
-			"partir_de": {
-				"arquivo": "cadaver-edo-tensei-7806.png",
-				"forca": 170
-			},
-			"pendente": "8 tentativas sem o visual do Edo Tensei (rachaduras, pele cinza, esclera preta). O nome da técnica puxa revividos famosos (saiu um Hashirama). O img2img a partir da 7806 (força 170, seeds 7807 e 7808) manteve o rosto e ignorou as rachaduras. Próximo: a ferramenta edit_image do PixelLab sobre a 7806, ou uma imagem de referência.",
-			"fiel": ["pele cinza rachada como papel seco, cinzas se soltando", "esclera preta, como os revividos pela Edo Tensei", "uniforme shinobi velho e rasgado, rosto original", "campo de batalha com armas cravadas no chão"],
-			"prompt": "the face of an undead ninja soldier raised from the grave, a stocky middle-aged man with short spiky grey hair, a square jaw and stubble, his skin dusty grey and covered in a web of thin black cracks like dry cracked clay, black eyeballs with small white pupils, pieces of his cheek crumbling into ash, cold empty stare, collar of an old torn green flak vest, swirling ash, battlefield with broken weapons stuck in the ground, grey sky",
-			"escolhida": "cadaver-edo-tensei-7801.png"
-		},
-		{
 			"slug": "divisao-das-sombras--agente",
 			"nome": "Agente da Sombra",
 			"formato": "retrato",
@@ -467,14 +452,6 @@
 				}
 			],
 			"escolhida": "experimento-proibido-9301.png"
-		},
-		{
-			"slug": "golem-de-terra",
-			"nome": "Golem de terra",
-			"formato": "quadro",
-			"plano": ["perfil"],
-			"prompt": "a giant moss-covered golem of rock and mud sitting dormant in a quiet forest clearing like a small hill, birds nesting on its shoulder, a ninja carving a glowing seal on its chest",
-			"escolhida": "golem-de-terra-9301.png"
 		},
 		{
 			"slug": "guarda-costas",

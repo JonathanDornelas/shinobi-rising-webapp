@@ -89,7 +89,7 @@ export interface Componente {
 
 export const EFEITOS: Componente[] = [
 	{ id: 'atordoa', nome: 'Atordoa por 1 turno', pj: 1, tipo: 'liga', resistencia: 'VIG' },
-	{ id: 'empurra', nome: 'Empurra ou derruba', pj: 1, tipo: 'liga', resistencia: 'FOR' },
+	{ id: 'empurra', nome: 'Empurra (3 m, se o jutsu não disser) ou derruba', pj: 1, tipo: 'liga', resistencia: 'FOR' },
 	{ id: 'paralisa', nome: 'Paralisa por 1 turno', pj: 2, tipo: 'liga', resistencia: 'VIG' },
 	{ id: 'imobiliza', nome: 'Imobiliza (preso até vencer a Resistência)', pj: 3, tipo: 'liga', resistencia: 'FOR' },
 	{ id: 'controla', nome: 'Controla as ações do alvo', pj: 6, tipo: 'liga', resistencia: 'ESP' },

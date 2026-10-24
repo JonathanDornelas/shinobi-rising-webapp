@@ -1,0 +1,454 @@
+<script lang="ts" module>
+	import type { ExtrasNpc, FichaMesa, JutsuMesa, RolagemPronta } from '#lib/mesa/tipos.ts';
+	import type { MesaToken, Npc, NpcRevelado } from '#lib/supabase/banco.ts';
+
+	/** O que a ficha rápida mostra, conforme quem olha (planos/mesa-tatica.md, 3.8). */
+	export type DadosFicha =
+		| { tipo: 'pc'; ficha: FichaMesa; editavel: boolean }
+		| { tipo: 'publico'; sub: string }
+		| { tipo: 'npc'; npc: Npc; jutsus: JutsuMesa[]; extras: ExtrasNpc | null }
+		| { tipo: 'revelado'; npc: NpcRevelado | null }
+		| { tipo: 'livre'; editavel: boolean };
+
+	export interface AcoesFicha {
+		estadoPc: (f: FichaMesa, patch: Partial<FichaMesa['estado']>, descricao: string) => void;
+		pvNpc: (n: Npc, membro: number, pv: number) => void;
+		recursoNpc: (n: Npc, membro: number, k: 'pv' | 'pc' | 'pe', valor: number) => void;
+		token: (t: MesaToken, patch: Partial<MesaToken>) => void;
+		medirJutsu: (t: MesaToken, j: JutsuMesa) => void;
+		usarJutsu: (t: MesaToken, j: JutsuMesa) => void;
+		/** abre o card inteiro do jutsu (ou o texto da habilidade) num modal */
+		verJutsu: (j: JutsuMesa) => void;
+		voltarAoNormal: (t: MesaToken) => void;
+		aneis: (t: MesaToken, corpo: number, lista: { r: number; rotulo: string }[], titulo: string) => void;
+		rolar: (t: MesaToken, r: RolagemPronta, tipo: 'teste' | 'ataque' | 'dano' | 'cura' | 'iniciativa', d20: boolean) => void;
+		centralizar: (t: MesaToken) => void;
+		remover: (t: MesaToken) => void;
+		clone: (t: MesaToken) => void;
+		notasNpc: (n: Npc, notas: string) => void;
+	}
+</script>
+
+<script lang="ts">
+	// L11 · M3 · CMP-42 · Ficha rápida: janela arrastável sobre o quadro (até 3), minimizável em chip; no celular, painel
+	// inferior em duas alturas. Recursos com o campo "−7 / +5", estados, fadiga, abas de ações, jutsus, perícias e notas.
+	import { CONDICOES } from '#lib/personagem/dados.ts';
+	import { teste } from '#lib/rolagens/expressoes.ts';
+	import { corCss } from '#lib/mesa/cores.ts';
+	import type { Mesa } from '#lib/mesa/mesa.svelte.ts';
+	import { temRegua } from '#lib/mesa/regua.ts';
+	import { alcanceCorpo } from '#lib/mesa/geometria.ts';
+	import type { FichaAberta, UiMesa } from '#lib/mesa/ui.svelte.ts';
+	import Icone from '../ui/Icone.svelte';
+
+	let {
+		mesa,
+		ui,
+		token,
+		janela,
+		dados,
+		acoes,
+		foto = null,
+		celular = false
+	}: { mesa: Mesa; ui: UiMesa; token: MesaToken; janela: FichaAberta; dados: DadosFicha; acoes: AcoesFicha; foto?: string | null; celular?: boolean } = $props();
+
+	const ESTADOS_DA_MESA = ['caido', 'sangrando', 'atordoado', 'imobilizado', 'envenenado', 'em-chamas'];
+	const FAIXAS = ['Ileso', 'Ferido', 'Muito ferido', 'Caído'];
+	const cor = $derived(corCss(mesa.corDe(mesa.donoDe(token))));
+	const dono = $derived(mesa.membro(mesa.donoDe(token)));
+	const ehNpcTropa = $derived(dados.tipo === 'npc' && dados.npc.membros > 1);
+	const editavel = $derived(!mesa.somenteLeitura && ((dados.tipo === 'pc' && dados.editavel) || dados.tipo === 'npc' || (dados.tipo === 'livre' && dados.editavel)));
+	let alta = $state(false);
+
+	// ------------------------------------------------------------------ números
+	const atual = $derived.by(() => {
+		if (dados.tipo === 'pc') {
+			const e = dados.ficha.estado;
+			const m = dados.ficha.max;
+			return { pv: e.pv ?? m.pv, pc: e.pc ?? m.pc, pe: e.pe ?? m.pe, max: m, fadiga: e.fadiga ?? 0, condicoes: e.condicoes ?? [] };
+		}
+		if (dados.tipo === 'npc') {
+			const n = dados.npc;
+			const i = (token.membro ?? 1) - 1;
+			return { pv: n.pv_atual[i] ?? n.pv, pc: n.pc_atual?.[i] ?? n.pc, pe: n.pe_atual?.[i] ?? n.pe ?? 0, max: { pv: n.pv, pc: n.pc, pe: n.pe ?? 0 }, fadiga: 0, condicoes: token.condicoes };
+		}
+		return { pv: token.pv ?? 1, pc: 0, pe: 0, max: { pv: token.pv_max ?? 1, pc: 0, pe: 0 }, fadiga: 0, condicoes: token.condicoes };
+	});
+	const barras = $derived(
+		(
+			[
+				['PV', 'pv', 'var(--vermelhao)'],
+				['PC', 'pc', '#2d7fb8'],
+				['PE', 'pe', '#d29a1e']
+			] as const
+		)
+			.filter(([, k]) => atual.max[k] > 0)
+			.map(([rot, k, c]) => ({ rot, k, c, v: atual[k], max: atual.max[k], cheios: Math.max(0, Math.min(10, Math.round((atual[k] / atual.max[k]) * 10))) }))
+	);
+
+	/** Recurso do campo rápido: PV, PC ou PE (personagem e NPC; o clone só tem PV). */
+	let recurso = $state<'pv' | 'pc' | 'pe'>('pv');
+	const recursos = $derived<('pv' | 'pc' | 'pe')[]>(dados.tipo === 'pc' || dados.tipo === 'npc' ? barras.map((b) => b.k) : ['pv']);
+	function aplicar() {
+		const m = /^\s*([+\-−])\s*(\d+)\s*$/.exec(janela.dano);
+		if (!m) {
+			ui.avisar('Escreva −7 para tirar ou +5 para devolver.');
+			return;
+		}
+		const k = recursos.includes(recurso) ? recurso : 'pv';
+		const delta = (m[1] === '+' ? 1 : -1) * +m[2];
+		const max = atual.max[k];
+		// o PV pode ir abaixo de zero (até menos o máximo, cap. 4); PC e PE param no zero
+		const novo = Math.max(k === 'pv' ? -max : 0, Math.min(max, atual[k] + delta));
+		const sigla = k.toUpperCase();
+		if (dados.tipo === 'pc') {
+			const fadiga = k === 'pe' && novo === 0 && atual.pe > 0 ? { fadiga: Math.min(5, atual.fadiga + 1) } : {};
+			acoes.estadoPc(dados.ficha, { [k]: novo, ...fadiga }, `${delta > 0 ? '+' : '−'}${Math.abs(delta)} ${sigla} na Mesa. ${sigla} ${novo}/${max}`);
+		} else if (dados.tipo === 'npc') acoes.recursoNpc(dados.npc, token.membro ?? 1, k, novo);
+		else acoes.token(token, { pv: novo });
+		ui.mudarFicha(token.id, { dano: '' });
+	}
+
+	function alternarEstado(id: string) {
+		const tem = atual.condicoes.includes(id);
+		const lista = tem ? atual.condicoes.filter((c) => c !== id) : [...atual.condicoes, id];
+		const nome = CONDICOES.find((c) => c.id === id)?.nome ?? id;
+		if (dados.tipo === 'pc') acoes.estadoPc(dados.ficha, { condicoes: lista }, `Condição “${nome}” ${tem ? 'removida' : 'marcada'}`);
+		else acoes.token(token, { condicoes: lista });
+	}
+
+	function fadiga(n: number) {
+		if (dados.tipo !== 'pc') return;
+		const novo = atual.fadiga === n ? n - 1 : n;
+		acoes.estadoPc(dados.ficha, { fadiga: novo }, `Fadiga ${novo}`);
+	}
+
+	// ------------------------------------------------------------------ abas
+	type Aba = 'acoes' | 'jutsus' | 'habilidades' | 'pericias' | 'notas';
+	const abas = $derived<[Aba, string][]>(
+		dados.tipo === 'pc' && dados.editavel
+			? [['acoes', 'AÇÕES'], ['jutsus', 'JUTSUS'], ['pericias', 'PERÍCIAS'], ['notas', 'NOTAS']]
+			: dados.tipo === 'npc'
+				? ([
+						['acoes', 'AÇÕES'],
+						...(dados.jutsus.length ? [['jutsus', 'JUTSUS']] : []),
+						...(dados.extras?.habilidades.length ? [['habilidades', 'HABILIDADES']] : []),
+						['notas', 'NOTAS']
+					] as [Aba, string][])
+				: []
+	);
+	const aba = $derived<Aba | null>((abas.find((a) => a[0] === janela.aba)?.[0] ?? abas[0]?.[0]) || null);
+
+	/** Ataque do NPC rápido: "1d20 + 7 → 1d8 + 4" vira dois botões. */
+	const ataqueNpc = $derived.by(() => {
+		if (dados.tipo !== 'npc') return null;
+		const t = dados.npc.ataque.replace(/−/g, '-');
+		const a = /1d20\s*([+-]\s*\d+)?/i.exec(t);
+		const resto = a ? t.slice(a.index + a[0].length) : t;
+		const d = /(\d+d\d+(?:\s*[+-]\s*\d+)?)/i.exec(resto);
+		return { ataque: a ? a[0].replace(/\s+/g, '') : null, dano: d ? d[1].replace(/\s+/g, '') : null, texto: dados.npc.ataque };
+	});
+
+	const estadosVisiveis = $derived(CONDICOES.filter((c) => ESTADOS_DA_MESA.includes(c.id) || atual.condicoes.includes(c.id)));
+	const sub = $derived(
+		dados.tipo === 'pc' ? dados.ficha.sub : dados.tipo === 'publico' ? dados.sub : dados.tipo === 'npc' ? [dados.npc.funcao, `NPC · ${dados.npc.rank}`].filter(Boolean).join(' · ') : dados.tipo === 'revelado' ? (dados.npc?.funcao ?? 'NPC') : 'Ligado ao personagem'
+	);
+
+	// ------------------------------------------------------------------ janela arrastável
+	let arrasto: { x: number; y: number; jx: number; jy: number } | null = null;
+	function pegar(e: PointerEvent) {
+		if (celular) return;
+		(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+		arrasto = { x: e.clientX, y: e.clientY, jx: janela.x, jy: janela.y };
+	}
+	function arrastar(e: PointerEvent) {
+		if (!arrasto) return;
+		ui.mudarFicha(token.id, { x: Math.max(0, arrasto.jx + e.clientX - arrasto.x), y: Math.max(0, arrasto.jy + e.clientY - arrasto.y) });
+	}
+	const btn = 'min-h-8 border-2 border-field bg-transparent px-2 font-pixel text-[11px] leading-none font-bold text-fg disabled:cursor-not-allowed disabled:opacity-50';
+</script>
+
+{#snippet linhaAcao(icone: string | null, nome: string, meta: string, aviso: string | null, botoes: { n: string; acao: () => void; dica?: string; desab?: boolean }[], ver?: () => void)}
+	<div class="flex items-center gap-2 border-b-2 border-b1 px-3 py-1.5">
+		{#if icone}<Icone id={icone} />{/if}
+		<div class="flex min-w-0 flex-1 flex-col gap-0.5">
+			{#if ver}
+				<button type="button" class="self-start text-left text-sm leading-[18px] font-semibold underline decoration-field decoration-dotted underline-offset-[3px] hover:text-title hover:decoration-current" title="Ver o jutsu inteiro" onclick={ver}>{nome}</button>
+			{:else}
+				<span class="text-sm leading-[18px] font-semibold">{nome}</span>
+			{/if}
+			{#if meta}<span class="text-xs leading-4 text-mut">{meta}</span>{/if}
+			{#if aviso}<span class="text-xs leading-4 font-semibold text-warn">{aviso}</span>{/if}
+		</div>
+		{#each botoes as b (b.n)}
+			<button type="button" class="{btn} {celular ? 'min-h-11 px-2.5' : ''}" title={b.dica} disabled={b.desab} onclick={b.acao}>{b.n}</button>
+		{/each}
+	</div>
+{/snippet}
+
+<div
+	role="dialog"
+	tabindex="-1"
+	aria-label="Ficha rápida de {token.nome}"
+	class={celular
+		? 'absolute inset-x-0 bottom-16 z-20 flex flex-col border-t-2 bg-b2 shadow-[0_-4px_0_var(--b0)]'
+		: 'absolute flex h-[560px] max-h-[calc(100%-16px)] min-h-[240px] w-[380px] max-w-[calc(100%-16px)] min-w-[300px] resize flex-col overflow-hidden border-2 bg-b2 shadow-[8px_8px_0_#000]'}
+	style:border-color={cor}
+	style:height={celular ? (alta ? 'calc(100% - 64px)' : '50%') : undefined}
+	style:left={celular ? undefined : `${janela.x}px`}
+	style:top={celular ? undefined : `${janela.y}px`}
+	style:z-index={celular ? undefined : janela.z}
+	title={celular ? undefined : 'Arraste o canto de baixo à direita para redimensionar'}
+	onpointerdown={() => ui.focarFicha(token.id)}
+>
+	{#if celular}
+		<button type="button" class="flex h-7 flex-none items-center justify-center" aria-label={alta ? 'Meia altura' : 'Tela cheia'} onclick={() => (alta = !alta)}><span class="h-1.5 w-12 bg-field"></span></button>
+	{:else}
+		<div class="flex flex-none cursor-move touch-none items-center gap-2 border-b-2 border-b3 bg-b0 py-1 pr-1 pl-2 select-none" role="presentation" onpointerdown={pegar} onpointermove={arrastar} onpointerup={() => (arrasto = null)}>
+			<svg width="12" height="20" viewBox="0 0 12 20" aria-hidden="true" class="flex-none fill-mut"><rect x="0" y="2" width="4" height="4" /><rect x="8" y="2" width="4" height="4" /><rect x="0" y="8" width="4" height="4" /><rect x="8" y="8" width="4" height="4" /><rect x="0" y="14" width="4" height="4" /><rect x="8" y="14" width="4" height="4" /></svg>
+			<span class="flex-1 font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">FICHA RÁPIDA</span>
+			<button type="button" class="h-8 w-8 font-pixel text-sm" aria-label="Minimizar" title="Minimizar" onpointerdown={(e) => e.stopPropagation()} onclick={() => ui.mudarFicha(token.id, { min: true })}>▁</button>
+			<button type="button" class="h-8 w-8 font-pixel text-sm" aria-label="Fechar" title="Fechar" onpointerdown={(e) => e.stopPropagation()} onclick={() => ui.fecharFicha(token.id)}>✕</button>
+		</div>
+	{/if}
+
+	<div class="flex min-h-0 flex-1 flex-col overflow-auto">
+		<div class="flex items-center gap-3 p-3">
+			<div class="relative flex h-14 w-14 flex-none items-center justify-center border-[3px] bg-b1 font-pixel text-lg font-bold" style="border-color: {cor}">
+				{#if foto}<img src={foto} alt="" class="h-full w-full object-cover" />{:else}{token.sigla || token.nome.slice(0, 2).toUpperCase()}{/if}
+				{#if dados.tipo === 'pc' && dados.ficha.cla}<Icone id="cla/ic-cla-{dados.ficha.cla}" class="absolute -right-3.5 -bottom-3.5" />{/if}
+			</div>
+			<div class="flex min-w-0 flex-1 flex-col gap-1">
+				<span class="font-mincho text-xl leading-[26px] font-bold">{token.nome}</span>
+				<span class="text-[13px] leading-[18px] text-mut">{sub}</span>
+				<span class="inline-flex items-center gap-1.5 self-start border-2 px-1.5 py-[3px] text-xs leading-none font-semibold" style="border-color: {cor}"><span class="h-2 w-2" style="background: {cor}"></span>{dono?.nome ?? 'Mestre'}</span>
+			</div>
+			{#if celular}<button type="button" class="h-11 w-11 border-2 border-b3 font-pixel text-sm" aria-label="Fechar ficha" onclick={() => ui.fecharFicha(token.id)}>✕</button>{/if}
+		</div>
+
+		{#if dados.tipo === 'publico' || dados.tipo === 'revelado'}
+			<div class="mx-3 mb-2.5 flex items-center gap-2.5 border-2 border-b3 bg-b1 px-2.5 py-2">
+				<span class="font-pixel text-xs leading-none font-bold tracking-[0.08em] text-mut">ESTADO</span>
+				<span class="font-pixel text-base leading-none font-bold">{mesa.pvs[token.id]?.pv != null ? `${mesa.pvs[token.id].pv}/${mesa.pvs[token.id].pv_max} PV` : FAIXAS[token.ferimento]}</span>
+			</div>
+			{#if dados.tipo === 'revelado' && dados.npc}
+				<div class="mx-3 mb-2.5 flex flex-col gap-1.5 text-sm leading-5">
+					{#if dados.npc.funcao}<span><b>Função:</b> {dados.npc.funcao}</span>{/if}
+					{#if dados.npc.aparencia}<span><b>Aparência:</b> {dados.npc.aparencia}</span>{/if}
+				</div>
+			{/if}
+			<span class="mx-3 mb-3 text-xs leading-[17px] text-mut italic">{dados.tipo === 'publico' ? 'Resumo público. Os números ficam com o dono e o Mestre.' : 'Card público do NPC.'}</span>
+		{:else}
+			{#if ehNpcTropa && dados.tipo === 'npc'}
+				<div role="radiogroup" aria-label="Membro da tropa" class="mx-3 mb-2.5 grid grid-cols-4 gap-1">
+					{#each mesa.tokens.filter((t) => t.npc_id === dados.npc.id).sort((a, b) => (a.membro ?? 0) - (b.membro ?? 0)) as m (m.id)}
+						{@const pv = dados.npc.pv_atual[(m.membro ?? 1) - 1] ?? dados.npc.pv}
+						{@const cheios = Math.max(0, Math.round((pv / dados.npc.pv) * 5))}
+						<button type="button" role="radio" aria-checked={m.id === token.id} class="flex flex-col items-center gap-1 border-2 px-0.5 py-1.5 {m.id === token.id ? 'border-[var(--vermelhao)] bg-grena' : 'border-b3'}" onclick={() => ui.fichas = ui.fichas.map((f) => (f.token === token.id ? { ...f, token: m.id } : f))}>
+							<span class="font-pixel text-sm leading-none font-bold">#{m.membro}</span>
+							<span class="flex gap-px">{#each { length: 5 } as _, i (i)}<span class="h-1.5 w-1.5 {i < cheios ? 'bg-[var(--vermelhao)]' : 'bg-b0'}"></span>{/each}</span>
+							<span class="font-pixel text-[11px] leading-none font-bold text-mut">{pv}/{dados.npc.pv}</span>
+						</button>
+					{/each}
+				</div>
+			{/if}
+			<div class="flex flex-col gap-1.5 px-3 pb-2.5">
+				{#each barras as b (b.k)}
+					<div class="grid grid-cols-[32px_28px_minmax(0,1fr)_56px] items-center gap-1.5">
+						<Icone id="recurso/ic-recurso-{b.k}" />
+						<span class="font-pixel text-xs leading-none font-bold text-mut">{b.rot}</span>
+						<div class="flex h-3.5 gap-0.5 border-2 border-b3 bg-b0 p-0.5">
+							{#each { length: 10 } as _, i (i)}<span class="flex-1" style="background: {i < b.cheios ? b.c : 'var(--b0)'}; box-shadow: {i < b.cheios ? 'inset 0 3px 0 rgba(255,255,255,.3)' : 'none'}"></span>{/each}
+						</div>
+						<span class="t-num text-right font-pixel text-sm leading-none font-bold">{b.v}/{b.max}</span>
+					</div>
+				{/each}
+				{#if editavel}
+					<div class="mt-0.5 flex items-center gap-1.5">
+						{#if recursos.length > 1}
+							<div role="radiogroup" aria-label="Recurso" class="flex flex-none border-2 border-b3">
+								{#each recursos as k (k)}
+									<button type="button" role="radio" aria-checked={recurso === k} class="h-8 px-1.5 font-pixel text-[11px] font-bold {recurso === k ? 'bg-grena text-papel' : 'text-mut'}" onclick={() => (recurso = k)}>{k.toUpperCase()}</button>
+								{/each}
+							</div>
+						{/if}
+						<input
+							value={janela.dano}
+							oninput={(e) => ui.mudarFicha(token.id, { dano: e.currentTarget.value })}
+							onkeydown={(e) => e.key === 'Enter' && aplicar()}
+							placeholder="−7 ou +5"
+							aria-label="Tirar ou devolver {recurso.toUpperCase()}"
+							class="h-9 min-w-0 flex-1 border-2 border-b3 bg-b1 px-2 font-pixel text-[15px] leading-none font-bold text-fg"
+						/>
+						<button type="button" class={btn} onclick={aplicar}>APLICAR</button>
+						{#if dados.tipo === 'pc' && dados.ficha.pd > 0}
+							<span class="flex gap-px font-pixel text-[15px] font-bold text-acc" title="{dados.ficha.pd} PD" aria-label="{dados.ficha.pd} Pontos de Destino">{'★'.repeat(dados.ficha.pd)}</span>
+						{/if}
+					</div>
+				{/if}
+			</div>
+
+			{#if dados.tipo === 'pc' || dados.tipo === 'npc'}
+				{@const est = dados.tipo === 'pc'
+					? [['Defesa', String(dados.ficha.defesa), 'recurso/ic-recurso-defesa'], ['Def. mental', String(dados.ficha.defesaMental), 'recurso/ic-recurso-defesa-mental'], ['Iniciativa', `+${dados.ficha.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', `${dados.ficha.deslocamento} m`, 'esp/ic-esp-velocidade']]
+					: [['Defesa', String(dados.npc.defesa), 'recurso/ic-recurso-defesa'], ['Iniciativa', `${dados.npc.iniciativa >= 0 ? '+' : ''}${dados.npc.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', '10 m', 'esp/ic-esp-velocidade']]}
+				<div class="mx-3 mb-2.5 grid grid-cols-2 gap-1">
+					{#each est as [k, v, ic] (k)}
+						<div class="flex items-center gap-1.5 border-2 border-b3 bg-b1 py-0.5 pr-1.5 pl-0.5">
+							<Icone id={ic} />
+							<span class="flex-1 text-xs leading-none font-medium text-mut">{k}</span>
+							<b class="font-pixel text-base leading-none whitespace-nowrap">{v}</b>
+							{#if k === 'Iniciativa' && editavel}
+								<button type="button" class="h-8 w-8 border-2 border-b3 p-0" aria-label="Rolar iniciativa" title="Rolar iniciativa" onclick={() => acoes.rolar(token, { expr: teste(dados.tipo === 'pc' ? dados.ficha.iniciativa : dados.npc.iniciativa), rotulo: 'Iniciativa', partes: [] }, 'iniciativa', true)}><Icone id="dado/ic-dado-d20" class="-m-0.5" /></button>
+							{/if}
+						</div>
+					{/each}
+				</div>
+			{/if}
+
+			{#if mesa.mestre && !mesa.somenteLeitura}
+				<!-- tamanho no quadro (cap. 4): o do bestiário entra sozinho; o Mestre ajusta ou encolhe para caber -->
+				<div class="mx-3 mb-2.5 flex items-center gap-1.5">
+					<span class="font-pixel text-[11px] leading-none font-bold tracking-[0.06em] text-mut">TAMANHO</span>
+					<div role="radiogroup" aria-label="Tamanho no quadro" class="flex border-2 border-b3">
+						{#each [[1, '1×1'], [3, '3×3'], [6, '6×6'], [10, '10×10']] as const as [n, rot] (n)}
+							<button type="button" role="radio" aria-checked={token.tamanho === n} class="h-8 px-2 font-pixel text-[11px] font-bold {token.tamanho === n ? 'bg-grena text-papel' : 'text-mut'}" onclick={() => {
+								const L = mesa.cena?.largura ?? 40;
+								const A = mesa.cena?.altura ?? 30;
+								// o tamanho escolhido aqui vira o normal (desfaz o crescido por jutsu)
+								acoes.token(token, { tamanho: n, tamanho_base: null, crescido_turnos: null, x: Math.max(0, Math.min(token.x, L - n)), y: Math.max(0, Math.min(token.y, A - n)) });
+							}}>{rot}</button>
+						{/each}
+					</div>
+				</div>
+			{/if}
+			{#if token.tamanho_base != null}
+				<!-- crescido por um jutsu (Baika no Jutsu): volta sozinho quando os turnos acabam -->
+				<div class="mx-3 mb-2.5 flex items-center gap-2 border-2 border-[var(--acc)] bg-b1 py-1 pr-1 pl-2">
+					<span class="flex-1 text-xs leading-4 font-semibold">Crescido: {token.tamanho}×{token.tamanho}{token.crescido_turnos != null ? `, faltam ${token.crescido_turnos} ${token.crescido_turnos === 1 ? 'turno' : 'turnos'}` : ''}</span>
+					{#if editavel}<button type="button" class={btn} onclick={() => acoes.voltarAoNormal(token)}>VOLTAR AO NORMAL</button>{/if}
+				</div>
+			{/if}
+			{#if editavel}
+				<div class="mx-3 mb-2.5 flex flex-wrap gap-1">
+					{#each estadosVisiveis as s (s.id)}
+						{@const on = atual.condicoes.includes(s.id)}
+						<button type="button" aria-pressed={on} title={s.efeito} class="flex min-h-9 items-center gap-0.5 border-2 pr-2 text-xs leading-none font-semibold {on ? 'border-[var(--vermelhao)] bg-grena' : 'border-b3'}" onclick={() => alternarEstado(s.id)}>
+							<Icone id="estado/ic-estado-{s.id}" />{on ? '✓ ' : ''}{s.nome}
+						</button>
+					{/each}
+				</div>
+			{/if}
+			{#if dados.tipo === 'pc' && editavel}
+				<div class="mx-3 mb-2.5 flex items-center gap-1.5">
+					<Icone id="recurso/ic-recurso-fadiga" />
+					<span class="font-pixel text-xs leading-none font-bold text-mut">FADIGA</span>
+					{#each { length: 5 } as _, i (i)}<button type="button" aria-label="Fadiga {i + 1}" class="h-5 w-5 border-2 border-field p-0 {i < atual.fadiga ? 'bg-warn' : 'bg-b0'}" onclick={() => fadiga(i + 1)}></button>{/each}
+				</div>
+			{/if}
+
+			{#if abas.length && aba}
+				<div role="tablist" class="flex border-y-2 border-b3 bg-b0">
+					{#each abas as [id, n] (id)}
+						<button type="button" role="tab" aria-selected={aba === id} class="flex-1 font-pixel text-[11px] leading-none font-bold tracking-[0.05em] {celular ? 'min-h-11' : 'min-h-9'} {aba === id ? 'bg-b2 text-title' : 'text-mut'}" onclick={() => ui.mudarFicha(token.id, { aba: id })}>{n}</button>
+					{/each}
+				</div>
+				{#if aba === 'acoes' && dados.tipo === 'pc'}
+					{#each dados.ficha.armas as a (a.nome)}
+						{@render linhaAcao(null, a.nome, `Ataque ${a.ataque.expr.replace('1d20', '')} · Dano ${a.dano?.expr ?? '—'} · ${a.rotuloAlcance}`, null, [
+							{ n: 'MEDIR', acao: () => acoes.aneis(token, a.alcance <= 2 ? a.alcance : 0, a.alcance > 2 ? [{ r: a.alcance, rotulo: `${a.nome} · ${a.alcance} m` }] : [], a.nome) },
+							{ n: 'USAR', acao: () => { acoes.rolar(token, a.ataque, 'ataque', true); if (a.dano) acoes.rolar(token, a.dano, 'dano', false); } }
+						])}
+					{/each}
+					{#each dados.ficha.jutsus.filter((j) => j.ataque || j.dano || j.resistencia).slice(0, 4) as j (j.slug)}
+						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, `${j.custo} ${j.unidade} · ${j.alcance} · ${j.area}`, null, [
+							{ n: 'MEDIR', acao: () => acoes.medirJutsu(token, j), desab: !temRegua(j.regua), dica: temRegua(j.regua) ? 'Liga a régua de jutsu' : 'Alcance especial: sem régua' },
+							{ n: 'USAR', acao: () => acoes.usarJutsu(token, j) }
+						], () => acoes.verJutsu(j))}
+					{/each}
+					{@render linhaAcao('recurso/ic-recurso-pe', 'Esquiva Ativa', 'Reação · 10 PE · Acrobacia vira a Defesa', null, [{ n: 'USAR', acao: () => acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 10) }, 'Esquiva Ativa: −10 PE'), desab: atual.pe < 10 }])}
+					{@render linhaAcao('recurso/ic-recurso-defesa', 'Defesa Total', 'Ação primária · 10 PE · +5 na Defesa', null, [{ n: 'USAR', acao: () => acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 10) }, 'Defesa Total: −10 PE'), desab: atual.pe < 10 }])}
+					{@render linhaAcao('pericia/ic-pericia-taijutsu', 'Combo Taijutsu', 'Ação secundária · 5 PE · segundo ataque com −5', null, [{ n: 'USAR', acao: () => acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 5) }, 'Combo Taijutsu: −5 PE'), desab: atual.pe < 5 }])}
+					<div class="flex flex-wrap gap-1 px-3 py-2">
+						<button type="button" class={btn} onclick={() => acoes.aneis(token, 0, [{ r: dados.ficha.deslocamento, rotulo: `Mover · ${dados.ficha.deslocamento} m` }, { r: dados.ficha.deslocamento * 3, rotulo: `Com sprint · ${dados.ficha.deslocamento * 3} m` }], 'Deslocamento')}>DESLOCAMENTO</button>
+						{#each dados.ficha.distancias as [n, r] (n)}<button type="button" class={btn} onclick={() => acoes.aneis(token, 0, [{ r, rotulo: `${n} · ${r} m` }], n)}>{n.toUpperCase()}</button>{/each}
+					</div>
+				{:else if aba === 'acoes' && dados.tipo === 'npc' && dados.extras?.ataques.length}
+					{#each dados.extras.ataques as a (a.nome)}
+						{@render linhaAcao(null, a.nome, `Ataque ${a.ataque.expr.replace('1d20', '')} · Dano ${a.dano?.expr ?? '—'} · ${a.rotuloAlcance}`, null, [
+							{ n: 'MEDIR', acao: () => acoes.aneis(token, a.alcance <= 2 ? Math.max(a.alcance, alcanceCorpo(token.tamanho)) : 0, a.alcance > 2 ? [{ r: a.alcance, rotulo: `${a.nome} · ${a.alcance} m` }] : [], a.nome) },
+							{ n: 'USAR', acao: () => { acoes.rolar(token, a.ataque, 'ataque', true); if (a.dano) acoes.rolar(token, a.dano, 'dano', false); } }
+						])}
+					{/each}
+					<div class="flex flex-wrap gap-1 px-3 py-2">
+						<button type="button" class={btn} onclick={() => acoes.aneis(token, alcanceCorpo(token.tamanho), [{ r: 10, rotulo: 'Mover · 10 m' }, { r: 30, rotulo: 'Com sprint · 30 m' }], 'Deslocamento')}>DESLOCAMENTO</button>
+					</div>
+				{:else if aba === 'habilidades' && dados.tipo === 'npc' && dados.extras}
+					{#each dados.extras.habilidades as h (h.slug)}
+						{@const usada = ui.usadas.includes(`${token.id}:${h.slug}`)}
+						{@const usavel = !!(h.dano || h.cura || h.resistencia)}
+						{@render linhaAcao('callout/ic-callout-destaque', h.nome, h.texto ?? '', h.porCena ? (usada ? 'Já usada nesta cena' : 'Uma vez por cena') : null, [
+							...(temRegua(h.regua) ? [{ n: 'MEDIR', acao: () => acoes.medirJutsu(token, h), dica: `${h.area} · ${h.alcance}` }] : []),
+							...(usavel ? [{ n: 'USAR', acao: () => acoes.usarJutsu(token, h), dica: h.resistencia ?? undefined }] : [])
+						], () => acoes.verJutsu(h))}
+					{/each}
+				{:else if aba === 'acoes' && dados.tipo === 'npc' && ataqueNpc}
+					{@render linhaAcao(null, 'Ataque', ataqueNpc.texto || 'Sem ataque anotado', null, [
+						...(ataqueNpc.ataque ? [{ n: 'ATAQUE', acao: () => acoes.rolar(token, { expr: ataqueNpc!.ataque!, rotulo: `Ataque · ${token.nome}`, partes: [] }, 'ataque', true) }] : []),
+						...(ataqueNpc.dano ? [{ n: 'DANO', acao: () => acoes.rolar(token, { expr: ataqueNpc!.dano!, rotulo: `Dano · ${token.nome}`, partes: [] }, 'dano', false) }] : [])
+					])}
+					{#if dados.npc.especial}{@render linhaAcao(null, 'Especial', dados.npc.especial, null, [])}{/if}
+					<div class="flex flex-wrap gap-1 px-3 py-2">
+						<button type="button" class={btn} onclick={() => acoes.aneis(token, alcanceCorpo(token.tamanho), [{ r: 10, rotulo: 'Mover · 10 m' }, { r: 30, rotulo: 'Com sprint · 30 m' }], 'Deslocamento')}>DESLOCAMENTO</button>
+					</div>
+				{:else if aba === 'jutsus' && dados.tipo === 'npc'}
+					{#each dados.jutsus as j (j.slug)}
+						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, `${j.custo} ${j.unidade} · ${j.alcance} · ${j.area}${j.resistencia ? ` · ${j.resistencia}` : ''}`, temRegua(j.regua) ? null : 'Alcance especial: sem régua', [
+							{ n: 'MEDIR', acao: () => acoes.medirJutsu(token, j), desab: !temRegua(j.regua), dica: temRegua(j.regua) ? 'Liga a régua de jutsu' : 'Alcance especial: sem régua' },
+							{ n: 'USAR', acao: () => acoes.usarJutsu(token, j) }
+						], () => acoes.verJutsu(j))}
+					{/each}
+				{:else if aba === 'jutsus' && dados.tipo === 'pc'}
+					{#each dados.ficha.jutsus as j (j.slug)}
+						{@const falta = j.custo > (j.unidade === 'PE' ? atual.pe : atual.pc)}
+						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, `${j.custo} ${j.unidade} · ${j.alcance} · ${j.area}`, temRegua(j.regua) ? (falta ? `Faltam ${j.custo - (j.unidade === 'PE' ? atual.pe : atual.pc)} ${j.unidade}` : null) : 'Alcance especial: sem régua', [
+							{ n: 'MEDIR', acao: () => acoes.medirJutsu(token, j), desab: !temRegua(j.regua), dica: temRegua(j.regua) ? 'Liga a régua de jutsu' : 'Alcance especial: sem régua' },
+							{ n: 'USAR', acao: () => acoes.usarJutsu(token, j), desab: falta }
+						], () => acoes.verJutsu(j))}
+					{/each}
+				{:else if aba === 'pericias' && dados.tipo === 'pc'}
+					{#each dados.ficha.pericias as p (p.nome)}
+						{@render linhaAcao(null, p.nome, p.expr, null, [{ n: 'ROLAR', acao: () => acoes.rolar(token, { expr: p.expr, rotulo: p.nome, partes: p.partes }, 'teste', true) }])}
+					{/each}
+				{:else if aba === 'notas'}
+					<div class="flex flex-col gap-2 px-3 py-2.5">
+						{#if dados.tipo === 'npc'}
+							{#each [['Especial', dados.npc.especial], ['Tags', dados.npc.tags.join(', ')], ['Quer', dados.npc.quer], ['Segredo', dados.npc.segredo]].filter((x) => x[1]) as [k, v] (k)}
+								<div class="flex flex-col gap-0.5"><span class="font-pixel text-[11px] leading-none font-bold tracking-[0.08em] text-title">{k.toUpperCase()}</span><span class="text-[13px] leading-[18px]">{v}</span></div>
+							{/each}
+							<label class="flex flex-col gap-1">
+								<span class="font-pixel text-[11px] leading-none font-bold tracking-[0.08em] text-mut">NOTAS DO MESTRE</span>
+								<textarea rows="3" class="resize-y border-2 border-b3 bg-b1 p-2 text-[13px] leading-[18px] text-fg" value={dados.npc.notas} onchange={(e) => acoes.notasNpc(dados.npc, e.currentTarget.value)}></textarea>
+							</label>
+						{:else if dados.tipo === 'pc'}
+							<span class="font-pixel text-[11px] leading-none font-bold tracking-[0.08em] text-mut">ANOTAÇÕES DA FICHA</span>
+							<p class="text-[13px] leading-[18px] whitespace-pre-line">{dados.ficha.notas || 'Nada anotado ainda. As anotações ficam na ficha completa.'}</p>
+						{/if}
+					</div>
+				{/if}
+			{/if}
+		{/if}
+	</div>
+
+	<div class="flex flex-none flex-wrap gap-1 border-t-2 border-b3 bg-b1 px-3 py-2">
+		{#if dados.tipo === 'pc'}<a class="min-h-8 px-2 text-xs leading-8 font-semibold text-link underline underline-offset-[3px]" href="/campanhas/{mesa.campanha}/personagens/{dados.ficha.id}" target="_blank" rel="noopener">Abrir ficha completa ↗</a>{/if}
+		{#if dados.tipo === 'npc'}<a class="min-h-8 px-2 text-xs leading-8 font-semibold text-link underline underline-offset-[3px]" href="/campanhas/{mesa.campanha}/npcs" target="_blank" rel="noopener">Abrir NPCs ↗</a>{/if}
+		<button type="button" class="min-h-8 px-2 text-xs font-semibold text-link underline underline-offset-[3px]" onclick={() => acoes.centralizar(token)}>Centralizar no mapa</button>
+		{#if (dados.tipo === 'pc' && dados.editavel && token.dono_id === mesa.eu) || (mesa.mestre && dados.tipo === 'pc')}
+			<button type="button" class="min-h-8 px-2 text-xs font-semibold text-link underline underline-offset-[3px]" onclick={() => acoes.clone(token)}>Criar clone</button>
+		{/if}
+		{#if mesa.mestre || (token.ligado_a && token.dono_id === mesa.eu)}
+			<button type="button" class="min-h-8 px-2 text-xs font-semibold text-link underline underline-offset-[3px]" onclick={() => acoes.remover(token)}>Remover da cena</button>
+		{/if}
+	</div>
+</div>

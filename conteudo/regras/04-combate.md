@@ -24,20 +24,93 @@ Um combate se divide em rodadas de cerca de 6 segundos. Quando ele começa, todo
 
 No seu turno, você tem uma Ação Primária e uma Ação Secundária. A primária é para o que decide a luta: atacar, lançar um jutsu, sprintar ou comandar uma marionete numa manobra completa. A secundária cuida do resto: mover-se, sacar um item, dar um comando simples a um aliado ou a uma marionete. Gastar as duas na mesma coisa é uma Ação Completa.
 
-Fora do seu turno, você ainda tem uma Reação, para esquivar, defender ou usar jutsus de reação, como o Kawarimi (Substituição). E há as ações livres, que quase não custam tempo: falar uma frase curta, soltar um item ou ativar um efeito descrito como livre. Desses efeitos livres de jutsu ou habilidade, só um por turno.
+Fora do seu turno, você ainda tem uma Reação, para esquivar, defender, dar um golpe de oportunidade ou usar jutsus de reação, como o Kawarimi (Substituição). E há as ações livres, que quase não custam tempo: falar uma frase curta, soltar um item ou ativar um efeito descrito como livre. Desses efeitos livres de jutsu ou habilidade, só um por turno.
 
-Cada ação secundária de movimento leva você até 10 m, e sprintar, com a ação primária, soma mais 20 m.
+Mover-se com a ação secundária leva você até o seu Deslocamento, que é de 10 m para quase todo ninja. Sprintar, com a ação primária, soma o dobro disso. A seção Movimento e Distância, logo abaixo, explica como medir.
 
 Uma cena é um trecho contínuo de ação, com o mesmo objetivo e no mesmo lugar: um combate, uma infiltração, uma perseguição. Efeitos que valem “por cena” se renovam quando ela termina.
 
 :::na-mesa{titulo="Ações por turno" ref="acoes"}
 - **Ação Primária:** uma por turno; atacar, lançar jutsu, sprintar, comandar marionete em manobra completa
 - **Ação Secundária:** uma por turno; mover, sacar item, comando simples a aliado ou marionete
-- **Reação:** uma, fora do seu turno; esquivar, defender, jutsus de reação como o Kawarimi
+- **Reação:** uma, fora do seu turno; esquivar, defender, golpe de oportunidade, jutsus de reação como o Kawarimi
 - **Ações livres:** frase curta, soltar item, ativar efeito livre (no máximo um efeito livre de jutsu ou habilidade por turno)
 - **Ação Completa:** a primária e a secundária do mesmo turno
-- **Deslocamento:** até 10 m por ação secundária de movimento; sprintar (ação primária) dá +20 m
+- **Deslocamento:** mover (ação secundária) vai até o seu Deslocamento (10 m); sprintar (ação primária) soma o dobro (20 m)
 - **Cena:** ação contínua com o mesmo objetivo e local; efeitos “por cena” se renovam ao fim dela
+:::
+
+## Movimento e Distância {#movimento-e-distancia}
+
+:::cena
+A ponte range sob os pés do genin. O inimigo espera do outro lado, a uns vinte metros, e entre os dois há só tábuas soltas e o rio lá embaixo. Ele não corre pela ponte: corre pela lateral dela, de cabeça para baixo, preso pelo chakra das solas.
+:::
+
+Num combate shinobi, saber onde cada um está vale tanto quanto saber quem é mais forte. Toda distância deste livro é em metros, e na mesa ela vira quadrados: num mapa quadriculado, cada quadrado vale 1 m.
+
+### Medir no Quadro {#medir-no-quadro}
+
+Para medir, conte os quadrados entre um ponto e outro. Em linha reta, cada quadrado vale 1 m. Na diagonal, eles alternam: o primeiro vale 1 m, o segundo 2 m, o terceiro de novo 1 m, e assim por diante. Quatro passos na diagonal somam 6 m, bem perto da distância de verdade. Na Mesa do app, a régua faz essa conta sozinha.
+
+Quadrados que se tocam, inclusive pela quina, são adjacentes. É até onde chegam um golpe corpo a corpo e um jutsu de Toque. Para os outros alcances, conte do seu quadrado até o do alvo; se ele ocupa vários, vale o mais próximo. Os nomes Curto (10 m), Médio (30 m), Longo (60 m) e Muito Distante (100 m ou mais) valem igual para jutsus e armas.
+
+### Deslocamento {#deslocamento}
+
+Todo personagem tem um Deslocamento de 10 m, anotado na ficha. Algumas técnicas mexem nesse valor: a Especialização Velocidade soma 5 m, e o 5º Portão o triplica enquanto está aberto.
+
+Mover-se com a ação secundária leva você até o seu Deslocamento. Sprintar, com a ação primária, soma o dobro dele: com 10 m, são mais 20 m, e o ninja cruza 30 m numa rodada. Dá para dividir o caminho e andar uma parte antes e outra depois da ação primária, desde que o total não passe do que as suas ações dão. Quem tem duas ações secundárias por turno, como na Velocidade nível 2, pode se mover duas vezes.
+
+Aliados não atrapalham: dá para passar pelo espaço deles. Inimigos fecham o caminho, a não ser para as criaturas Enormes e Colossais (veja Tamanho e Espaço), e ninguém termina o movimento no espaço de outra criatura. Quem está Caído levanta com a ação secundária ou rasteja, como em terreno difícil.
+
+### Terreno {#terreno}
+
+Escombros, mata fechada, lama, gelo e o chão revirado por um jutsu de Terra são terreno difícil: cada metro custa 2 m de deslocamento. Nadar e escalar sem chakra também.
+
+Paredes, troncos e a superfície da água, não. Todo ninja aprende cedo a prender o chakra na sola dos pés, e anda numa parede ou num lago como em chão firme. O truque depende de chakra e de foco: quem fica sem PC, Atordoado, Paralisado ou inconsciente cai da parede ou afunda.
+
+### Tamanho e Espaço {#tamanho-e-espaco}
+
+Toda criatura tem um tamanho, anotado na ficha do bestiário: Pequeno, Médio, Grande, Enorme ou Colossal. Ninjas são Médios. O tamanho diz quantos quadrados a criatura ocupa e até onde ela alcança corpo a corpo: as Pequenas, Médias e Grandes chegam aos quadrados adjacentes ao espaço delas; as Enormes, a 2 m dele; as Colossais, a 3 m.
+
+| Tamanho | Espaço no quadro | Alcance corpo a corpo | Exemplos |
+| - | - | - | - |
+| Pequeno | 1 × 1 | adjacente | cão de bolso, sapo bebê |
+| Médio | 1 × 1 | adjacente | ninjas, cão ninja adulto |
+| Grande | 3 × 3 | adjacente | lobo gigante, sapo guerreiro |
+| Enorme | 6 × 6 | 2 m | os chefes das espécies: Gamabunta, Manda, Katsuyu |
+| Colossal | 10 × 10 | 3 m | as Bestas com Cauda, de Shukaku a Kurama |
+
+O tamanho também pesa no caminho. Uma criatura Enorme ou Colossal passa por cima de criaturas Médias ou menores, aliadas ou não, e conta o espaço delas como terreno difícil; só não pode terminar o movimento ali. E o que é grande demais não sai do lugar: um empurrão ou um puxão só move quem é, no máximo, um tamanho maior que quem o causa (veja Movimento Forçado).
+
+Algumas técnicas mudam o tamanho por um tempo, como o Baika no Jutsu dos Akimichi e as transformações em lobo dos Inuzuka. O espaço cresce em volta do centro da criatura e volta ao normal quando o efeito acaba.
+
+Se uma criatura gigante não couber no mapa, o Mestre pode encolhê-la: o espaço no quadro não muda a ficha.
+
+### Áreas {#areas}
+
+Os jutsus de área usam quatro formas. A esfera pega tudo a até a distância indicada de um ponto, contada como no deslocamento. Esse ponto precisa estar no alcance do jutsu; quando o card diz "em torno de si", o ponto é o próprio usuário, que fica de fora. O cone sai do usuário e vai abrindo até ter, na ponta, a largura igual ao comprimento. A linha sai do usuário e tem 1 m de largura. A parede é uma faixa de 1 m de espessura, posicionada dentro do alcance.
+
+A esfera atinge os quadrados que estão dentro da contagem. O cone, a linha e a parede atingem os quadrados cujo centro fica dentro da forma. Uma criatura grande é atingida se qualquer quadrado dela estiver na área. E quando um texto fala em "área de 10 m de raio", é o mesmo que uma esfera de 10 m.
+
+### Movimento Forçado {#movimento-forcado}
+
+Um jato de água, uma rajada de vento ou um chute bem dado tiram qualquer um do lugar. Quando o efeito diz que empurra ou puxa e não diz quanto, são 3 m em linha reta, para longe de quem empurrou ou na direção de quem puxou. O alvo para no primeiro obstáculo ou criatura do caminho. Ser empurrado não gasta o deslocamento de ninguém e não provoca golpe de oportunidade.
+
+Ninguém empurra o que é grande demais: o efeito só move quem é, no máximo, um tamanho maior que quem o causa. Um ninja, que é Médio, empurra até uma criatura Grande; a Kurama, Colossal, não sai do lugar com um jato de água.
+
+:::na-mesa{titulo="Movimento e distância"}
+- **Grade:** 1 quadrado = 1 m
+- **Diagonal:** alterna 1 m e 2 m (4 diagonais = 6 m)
+- **Adjacente:** os 8 quadrados em volta; alcance de Toque e corpo a corpo
+- **Deslocamento:** 10 m (+5 m com Velocidade; triplica no 5º Portão)
+- **Mover:** ação secundária, até o Deslocamento
+- **Sprintar:** ação primária, mais o dobro do Deslocamento
+- **Terreno difícil:** cada metro custa 2 m (escombros, lama, gelo; nadar e escalar sem chakra)
+- **Paredes e água:** chão firme para ninjas; cai ou afunda quem fica sem PC, Atordoado, Paralisado ou inconsciente
+- **Tamanho:** Pequeno e Médio 1 × 1; Grande 3 × 3; Enorme 6 × 6 (alcança 2 m); Colossal 10 × 10 (alcança 3 m)
+- **Passar por cima:** Enorme e Colossal atravessam criaturas Médias ou menores, como terreno difícil
+- **Áreas:** esfera = raio a partir de um ponto no alcance; cone com a ponta tão larga quanto o comprimento; linha de 1 m de largura
+- **Empurrar ou puxar sem distância:** 3 m em linha reta; só move quem é até um tamanho maior que quem empurra
 :::
 
 ## Ataque e Defesa {#ataque-e-defesa}
@@ -83,10 +156,17 @@ Quando um ataque vem na sua direção, você pode gastar a sua Reação e 10 PE 
 
 Um golpe que entra abre espaço para o próximo. Depois de acertar um ataque de Taijutsu, você pode gastar 5 PE e a sua ação secundária para encadear um segundo ataque, com -5 na rolagem.
 
+### Golpe de Oportunidade (Reação) {#golpe-de-oportunidade-reacao}
+
+Dar as costas a quem está com a lâmina na mão custa caro. Quando um inimigo que você vê sai do seu alcance corpo a corpo usando o próprio deslocamento, você pode gastar a sua Reação num golpe corpo a corpo básico, com arma ou desarmado, sem jutsu e sem gastar PE. Como a Reação é uma só, o golpe disputa a vez com a Esquiva Ativa e o Kawarimi.
+
+Quem sabe sair de perto não provoca nada. O Shunshin, o Kawarimi e o teletransporte deixam o inimigo para trás sem abrir a guarda, e ser empurrado ou puxado também não conta.
+
 :::na-mesa{titulo="Manobras de combate"}
 - **Esquiva Ativa:** Reação e 10 PE; teste de Acrobacia substitui a Defesa contra um ataque
 - **Defesa Total:** ação primária e 10 PE; +5 na Defesa e na Defesa Mental até o seu próximo turno
 - **Combo Taijutsu:** ação secundária e 5 PE, depois de acertar um Taijutsu; segundo ataque com -5
+- **Golpe de Oportunidade:** Reação, quando um inimigo sai do seu alcance corpo a corpo andando; golpe básico, sem jutsu e sem PE (Shunshin, Kawarimi, teletransporte e empurrões não provocam)
 :::
 
 ### Selo de Substituição (Kawarimi) {#selo-de-substituicao-kawarimi}
@@ -196,9 +276,9 @@ Alguns itens e jutsus criam encobrimento de propósito, e alguns ninjas enxergam
 
 | Fonte | Efeito |
 | - | - |
-| Bomba de Fumaça (item, 300 ryo) | Fumaça densa numa área de 5 m × 5 m por 3 turnos: Encoberto Pesadamente para quem está dentro e contra quem está dentro. Lançar custa uma ação. |
-| Kirigakure no Jutsu Ilusório (rank D, 4 PC) | Névoa ilusória numa área de 10 m por 3 turnos: Encoberto Levemente. Gasto baixo, efeito modesto. |
-| Kirigakure no Jutsu Real (rank B, 12 PC) | Névoa real numa área de 30 m por uma cena: Encoberto Pesadamente. É a marca registrada de Kirigakure. |
+| Bomba de Fumaça (item, 300 ryo) | Fumaça densa num quadrado de 5 m × 5 m, a até 10 m de quem lança, por 3 turnos: Encoberto Pesadamente para quem está dentro e contra quem está dentro. Lançar custa uma ação. |
+| Kirigakure no Jutsu Ilusório (Genjutsu, rank D, 5 PC) | Névoa ilusória numa esfera de 6 m por 3 turnos. Quem falha na Resistência de ESP tem -2 nos ataques, como contra alvos Encobertos Levemente, e -3 em Percepção. Gasto baixo, efeito modesto. |
+| Kirigakure no Jutsu (Suiton, rank B, 12 PC) | Névoa real numa esfera de 15 m em torno do usuário, por uma cena: Encoberto Pesadamente. É a marca registrada de Kirigakure. |
 | Doton: Doryūheki (Muralha de Terra, rank C) | Bloqueia toda a linha de visão, como cobertura física. Para atacar através dela, é preciso destruí-la antes. |
 | Sensores de chakra (Especialização Sensor e Kekkei Genkai sensoriais, como o Byakugan) | Ignoram o encobrimento visual, porque “veem” pelo chakra. Mas podem ser enganados por Mascarar Chakra (cap. 5). |
 
@@ -207,6 +287,16 @@ Alguns itens e jutsus criam encobrimento de propósito, e alguns ninjas enxergam
 Escuridão e fumaça são aliadas de quem quer sumir. Encobrimento Pesado e Cegueira Total dão -3 na DT dos testes de Furtividade, a favor de quem se esconde, no lugar do modificador padrão da tabela do cap. 5. E quem está encoberto pode entrar em Furtividade com a ação primária sem precisar quebrar o contato visual antes: a fumaça ou a escuridão já fizeram isso.
 
 Sensores estragam o truque. Contra um Sensor de Chakra ativo, o encobrimento visual não ajuda na Furtividade, e você precisa também Mascarar Chakra.
+
+### Cobertura {#cobertura}
+
+O encobrimento esconde; a cobertura protege. Uma mureta, um tronco caído ou outra criatura entre você e o atacante dão meia cobertura, e o ataque tem -2, como contra um alvo Encoberto Levemente. Os dois -2 não somam. Uma parede inteira, como a Doryūheki, dá cobertura total: não dá para mirar quem está atrás dela, e um jutsu de área só o atinge se ele estiver dentro da área, sem a parede no meio. Técnicas que ignoram cobertura passam pelas duas.
+
+:::na-mesa{titulo="Cobertura"}
+- **Meia cobertura:** mureta, tronco, outra criatura no caminho; -2 no ataque (não soma com Encoberto Levemente)
+- **Cobertura total:** parede inteira; não pode ser alvo, e a área só pega se ele estiver dentro dela, sem a parede no meio
+- **Ignora cobertura:** jutsus com esse componente (cap. 20) passam pelas duas
+:::
 
 ## Estados Especiais {#estados-especiais}
 

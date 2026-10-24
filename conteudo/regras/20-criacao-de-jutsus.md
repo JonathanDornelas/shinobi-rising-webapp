@@ -140,12 +140,14 @@ Para jutsus que causam dano direto ou curam aliados, calcule o dano médio e pro
 | Esfera 15m | Devastação localizada | 8 |
 | Massiva (100 m+) | Só rank S; apaga o terreno | 15+ |
 
+A esfera conta o raio a partir de um ponto dentro do alcance (ou do próprio usuário, "em torno de si"). O cone sai do usuário e tem, na ponta, a largura igual ao comprimento; a linha tem 1 m de largura. O cap. 4 (Movimento e Distância) mostra como cada forma cai no quadro.
+
 #### Efeitos Especiais (condições no alvo) {#efeitos-especiais-condicoes-no-alvo}
 
 | Efeito | PJ |
 | - | - |
 | Atordoa por 1 turno | 1 |
-| Empurra ou derruba | 1 |
+| Empurra (3 m, se o jutsu não disser) ou derruba | 1 |
 | Paralisa por 1 turno | 2 |
 | Imobiliza (preso até vencer a Resistência) | 3 |
 | Controla as ações do alvo (Resistência ao fim de cada turno) | 6 |

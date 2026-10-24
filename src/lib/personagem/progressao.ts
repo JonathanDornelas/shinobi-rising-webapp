@@ -378,6 +378,8 @@ export interface ItemInventario {
 	/** Arma forjada: nome da qualidade (moldura) e o dano já com a qualidade. */
 	qualidade?: string;
 	dano?: string;
+	/** Selado num pergaminho de armazenamento (id do pergaminho): não pesa na mochila (cap. 11). */
+	selado?: string;
 }
 
 const grupoDe = (i: Pick<ItemLoja, 'grupo' | 'nome'>): ItemInventario['grupo'] =>
@@ -410,8 +412,28 @@ export function inventarioInicial(f: FichaDados, loja: ItemLoja[]): ItemInventar
 	return [...base, ...f.equipamento.compras.map((c) => da(c.id, c.qtd)).filter((x): x is ItemInventario => !!x)];
 }
 
-export const cargaInventario = (itens: ItemInventario[]) =>
-	itens.reduce((t, i) => t + (i.conjunto ? Math.ceil(i.qtd / i.conjunto) * 0.5 : i.peso * i.qtd), 0);
+export const pesoItem = (i: Pick<ItemInventario, 'qtd' | 'peso' | 'conjunto'>) => (i.conjunto ? Math.ceil(i.qtd / i.conjunto) * 0.5 : i.peso * i.qtd);
+/** O que está selado num pergaminho não pesa: o pergaminho pesa só o próprio peso (cap. 11). */
+export const cargaInventario = (itens: ItemInventario[]) => itens.reduce((t, i) => t + (i.selado ? 0 : pesoItem(i)), 0);
+
+/**
+ * Pergaminho de armazenamento (cap. 11, Tabela de Pergaminhos): capacidade em unidades de carga, lida do nome da loja
+ * ("Pergaminho básico (5 de carga)") ou do tipo. null para o que não guarda itens (pergaminho de jutsu, explosivo).
+ */
+export function capacidadePergaminho(i: Pick<ItemInventario, 'nome' | 'grupo'>): number | null {
+	if (i.grupo !== 'Pergaminhos' || /jutsu|explosivo/i.test(i.nome)) return null;
+	const m = /\((\d+) de carga\)/i.exec(i.nome);
+	if (m) return +m[1];
+	if (/b[áa]sico/i.test(i.nome)) return 5;
+	if (/avan[çc]ado/i.test(i.nome)) return 15;
+	if (/mestre/i.test(i.nome)) return 30;
+	return null;
+}
+export const conteudoPergaminho = (itens: ItemInventario[], pergaminho: string) => itens.filter((i) => i.selado === pergaminho);
+export const livrePergaminho = (itens: ItemInventario[], p: ItemInventario) =>
+	(capacidadePergaminho(p) ?? 0) - conteudoPergaminho(itens, p.id).reduce((t, i) => t + pesoItem(i), 0);
+/** O Pergaminho Mestre é mais lento: selar é uma ação completa e invocar, a ação primária. */
+export const ehPergaminhoMestre = (p: Pick<ItemInventario, 'nome'>) => /mestre/i.test(p.nome);
 
 // ------------------------------------------------------------------ resumo para a ficha
 

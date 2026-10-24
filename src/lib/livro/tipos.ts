@@ -268,6 +268,8 @@ export type EstiloCriatura = 'impetuoso' | 'defensivo' | 'calculista' | 'vigilan
 /** Formato da arte do verbete: a página muda de diagramação conforme ele (faixa no topo, retrato ao lado etc.). */
 export type FormatoArte = 'faixa' | 'retrato' | 'quadro' | 'pagina';
 export type RankNpc = 'genin' | 'chunin' | 'jounin' | 'anbu' | 'lendario';
+/** Tamanho (cap. 4, Tamanho e Espaço): o espaço no quadro e o alcance corpo a corpo. */
+export type TamanhoCriatura = 'pequeno' | 'medio' | 'grande' | 'enorme' | 'colossal';
 
 export interface AtaqueCriatura {
 	nome: string;
@@ -318,6 +320,7 @@ export interface EstagioCriatura {
 	/** Rank da ficha resumida (cap. 23.2) equivalente à ameaça, para criar o NPC na campanha. */
 	rank: RankNpc;
 	membros: number;
+	tamanho: TamanhoCriatura;
 	/** O que muda neste estágio, em uma frase. */
 	resumo: Trecho[] | null;
 	combate: {
@@ -356,6 +359,8 @@ export interface Criatura {
 	arte: ArteVerbete;
 	cena: Trecho[][];
 	descricao: Trecho[][];
+	/** O temperamento da espécie (invocações); vazio nos demais verbetes. */
+	personalidade: Trecho[][];
 	estagios: EstagioCriatura[];
 	/** Faixa de ameaça dos estágios ("2 a 16" ou só "6"). */
 	ameacaFaixa: string;
