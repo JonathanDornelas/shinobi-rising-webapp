@@ -5,6 +5,7 @@
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 	import { sessao } from '#lib/estado/sessao.svelte.ts';
 	import AvisoRolagem from './AvisoRolagem.svelte';
+	import Dados3D from './Dados3D.svelte';
 	import JanelaRolagens from './JanelaRolagens.svelte';
 
 	$effect(() => {
@@ -14,6 +15,7 @@
 
 {#if sessao.usuario}
 	<AvisoRolagem />
+	<Dados3D />
 	<!-- na Mesa, o painel de rolagens já fica na tela -->
 	{#if !page.url.pathname.endsWith('/mesa')}<JanelaRolagens />{/if}
 {/if}

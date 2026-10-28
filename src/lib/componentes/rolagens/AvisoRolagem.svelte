@@ -4,6 +4,8 @@
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 	import { conta, destaque } from '#lib/rolagens/expressoes.ts';
 	import DadoGirando from './DadoGirando.svelte';
+	import FacesDados from './FacesDados.svelte';
+	import { corDaRolagem } from '#lib/rolagens/registro.ts';
 
 	const r = $derived(rolador.aviso);
 	const d = $derived(r ? destaque(r) : null);
@@ -11,7 +13,7 @@
 
 </script>
 
-{#if rolador.rolando || r}
+{#if (rolador.rolando && !rolador.usar3d) || r}
 	<div
 		role="status"
 		aria-live="polite"
@@ -26,6 +28,7 @@
 			<div class="flex min-w-0 flex-1 flex-col gap-0.5">
 				<span class="truncate text-[15px] leading-5"><b class="font-semibold">{r.quem}</b> · {r.rotulo}</span>
 				<span class="truncate text-xs leading-4 text-mut">{r.expressao} · {conta(r.detalhe)}</span>
+				<FacesDados detalhe={r.detalhe} tamanho={26} cor={corDaRolagem(r)} />
 				{#if MODO[r.modo] || r.oculta || d}
 					<span class="flex flex-wrap gap-1.5 font-pixel text-[11px] leading-none font-bold">
 						{#if d === 'critico'}<span class="bg-acc px-1 py-0.5 text-accfg">20 NATURAL · CRÍTICO</span>{:else if d === 'falha'}<span class="bg-err px-1 py-0.5 text-errfg">1 NATURAL · FALHA</span>{/if}

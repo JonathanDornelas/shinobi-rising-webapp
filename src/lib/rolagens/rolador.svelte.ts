@@ -1,6 +1,8 @@
 // Rolador e registro de rolagens (L10): manda a expressão para rolar() (o sorteio é no servidor), anima o dado,
 // acompanha ao vivo as rolagens de todas as campanhas de quem está logado (Realtime, filtrado pelo RLS) e guarda o
 // estado da janela flutuante (R2), que abre em qualquer tela pelo botão do canto ou pela tecla R.
+// Cada pessoa escolhe como as rolagens aparecem: o aviso em pixel no canto (padrão) ou os dados 3D na tela inteira,
+// com som nas batidas (Dados3D.svelte). A escolha fica neste navegador.
 import type { RealtimeChannel } from '@supabase/supabase-js';
 import { gravar, ler } from '#lib/estado/armazenamento.ts';
 import { toasts } from '#lib/estado/toasts.svelte.ts';
@@ -56,6 +58,9 @@ const GIRO = 900;
 const AVISO = 7000;
 const JANELA_PADRAO: Janela = { aberta: false, minimizada: false, x: null, y: null, w: 420, h: 640, alturaMovel: 420 };
 
+/** Como as rolagens aparecem na tela. */
+export type EstiloDados = 'pixel' | '3d';
+
 class Rolador {
 	modo = $state<Exclude<ModoRolagem, 'critico'>>('normal');
 	oculta = $state(false);
@@ -77,6 +82,12 @@ class Rolador {
 	naoVistas = $state(0);
 	/** Expressão vinda de um dado no texto das regras (n muda a cada pedido): o rolador da janela a recebe. */
 	sugestao = $state<{ expr: string; n: number } | null>(null);
+	/** Aviso em pixel no canto ou dados 3D na tela inteira. */
+	estilo = $state<EstiloDados>('pixel');
+	/** Som das batidas dos dados 3D. */
+	som = $state(true);
+	/** Rolagem que os dados 3D vão jogar agora (n muda a cada lance, mesmo da mesma rolagem). */
+	lance = $state<{ r: Rolagem; n: number } | null>(null);
 	/** Ficha aberta agora (para o PD gasto no registro aparecer nela sem recarregar). */
 	fichaAberta: { id: string; aoGastarPd: (pd: number) => void } | null = null;
 
@@ -89,6 +100,23 @@ class Rolador {
 		const m = ler<{ id: string; nome: string } | null>('mesa', null);
 		if (m && /^[0-9a-f-]{36}$/i.test(m.id)) this.mesa = m;
 		this.janela = { ...JANELA_PADRAO, ...ler<Partial<Janela>>('janela-rolagens', {}) };
+		const d = ler<{ estilo?: EstiloDados; som?: boolean }>('dados', {});
+		this.estilo = d.estilo === '3d' ? '3d' : 'pixel';
+		this.som = d.som !== false;
+	}
+
+	/** Os dados 3D valem agora? (quem pede menos movimento fica no aviso em pixel) */
+	get usar3d() {
+		return this.estilo === '3d' && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+	}
+	escolherEstilo(estilo: EstiloDados) {
+		this.estilo = estilo;
+		if (estilo === '3d') this.dispensar();
+		gravar('dados', { estilo, som: this.som });
+	}
+	alternarSom(som = !this.som) {
+		this.som = som;
+		gravar('dados', { estilo: this.estilo, som });
 	}
 
 	/** Com sessão: campanhas, fichas e a assinatura ao vivo de todas as rolagens visíveis. */
@@ -152,7 +180,8 @@ class Rolador {
 				origem: p.origem ?? null,
 				partes: (p.partes ?? []) as unknown as Json
 			}),
-			new Promise((ok) => setTimeout(ok, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : GIRO))
+			// com os dados 3D, eles giram no lugar do dado do aviso: sem espera
+			new Promise((ok) => setTimeout(ok, this.usar3d || matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : GIRO))
 		]);
 		this.rolando = null;
 		if (error || !data) {
@@ -193,6 +222,11 @@ class Rolador {
 			if (mostrar && r.autor_id !== this.eu && (!this.janela.aberta || this.janela.minimizada)) this.naoVistas++;
 		}
 		if (!mostrar || this.rolando) return;
+		// dados 3D: todas as rolagens visíveis rolam na tela, como numa mesa de verdade
+		if (this.usar3d) {
+			this.lance = { r, n: (this.lance?.n ?? 0) + 1 };
+			return;
+		}
 		// rolagens dos outros não pulam na tela quando a janela de rolagens já está aberta
 		if (r.autor_id !== this.eu && this.janela.aberta && !this.janela.minimizada) return;
 		this.aviso = r;
@@ -215,6 +249,13 @@ class Rolador {
 	dispensar() {
 		clearTimeout(this.temporizador);
 		this.aviso = null;
+	}
+
+	/** Os dados 3D falharam (sem WebGL): esta rolagem e as próximas vão para o aviso em pixel. */
+	voltarAoPixel(r: Rolagem | null) {
+		this.estilo = 'pixel';
+		this.lance = null;
+		if (r) this.receber(r, true);
 	}
 
 	definirMesa(m: { id: string; nome: string }) {

@@ -11,6 +11,7 @@
 	import { corElemento } from '#lib/mesa/hud.ts';
 	import { corDaRolagem, dataHora } from '#lib/rolagens/registro.ts';
 	import FacesDados from '../rolagens/FacesDados.svelte';
+	import EscolhaDados from '../rolagens/EscolhaDados.svelte';
 	import Icone from '../ui/Icone.svelte';
 
 	let {
@@ -180,6 +181,7 @@
 					{/if}
 				</div>
 			{/if}
+			<EscolhaDados compacto />
 		</div>
 	{:else}
 		<div class="flex min-h-0 flex-1 flex-col overflow-auto">

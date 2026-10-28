@@ -8,6 +8,7 @@
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 	import { ROTULO_MARCA, marcas } from '#lib/rolagens/registro.ts';
 	import FacesDados from './FacesDados.svelte';
+	import EscolhaDados from './EscolhaDados.svelte';
 
 	let { compacto = false, campanhaInicial = null }: { compacto?: boolean; campanhaInicial?: string | null } = $props();
 
@@ -162,6 +163,8 @@
 		<button type="button" class="btn-jogo btn-primario com-icone min-h-[52px] justify-center text-[15px]" disabled={!!rolador.rolando || !campanha} onclick={rolar}><img src="/icons/dado/ic-dado-d20-32.png" width="32" height="32" alt="" class="[image-rendering:pixelated]" />ROLAR</button>
 		{#if campanha}<span class="text-xs text-mut">{comoQuem} · {campanha.nome}</span>{:else}<span class="text-xs text-mut">Entre numa campanha para rolar dados.</span>{/if}
 	{/if}
+
+	<EscolhaDados {compacto} />
 
 	{#if ultima}
 		{@const m = marcas(ultima)[0]}
