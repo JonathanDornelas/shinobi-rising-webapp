@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { desvioDoRelogio, lerLink, linkDe, posicaoAgora, precisaAcertar, uriSpotify } from './musica.ts';
+import { desvioDoRelogio, lerLink, linkDe, posicaoAgora, limitarPosicao, precisaAcertar, uriSpotify, vizinho } from './musica.ts';
 
 describe('jukebox: leitura do link', () => {
 	it('YouTube: vídeo em todos os formatos de link', () => {
@@ -57,5 +57,29 @@ describe('jukebox: posição', () => {
 		expect(precisaAcertar(10, 12)).toBe(false);
 		expect(precisaAcertar(10, 14.5)).toBe(true);
 		expect(precisaAcertar(20, 15)).toBe(true);
+	});
+});
+
+describe('jukebox: navegação na lista', () => {
+	it('próxima e anterior respeitam o começo e o fim', () => {
+		expect(vizinho(2, 10, 1)).toBe(3);
+		expect(vizinho(9, 10, 1)).toBeNull();
+		expect(vizinho(0, 10, -1)).toBe(0);
+		expect(vizinho(5, 10, -1)).toBe(4);
+	});
+	it('sem saber o total, só limita o começo e o teto do banco', () => {
+		expect(vizinho(7, 0, 1)).toBe(8);
+		expect(vizinho(999, 0, 1)).toBe(999);
+		expect(vizinho(0, 0, -1)).toBe(0);
+	});
+});
+
+describe('jukebox: posição que o banco aceita', () => {
+	it('ao vivo vale 0 e o resto fica entre 0 e 86 399 s', () => {
+		expect(limitarPosicao(19462930, true)).toBe(0);
+		expect(limitarPosicao(19462930)).toBe(86399);
+		expect(limitarPosicao(-5)).toBe(0);
+		expect(limitarPosicao(125.4)).toBe(125.4);
+		expect(limitarPosicao(Number.NaN)).toBe(0);
 	});
 });

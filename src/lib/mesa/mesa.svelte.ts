@@ -8,6 +8,7 @@ import { ordemIniciativa } from '#lib/rolagens/registro.ts';
 import { supabase } from '#lib/supabase/cliente.ts';
 import type { CorMesa, IniciativaCena, MesaArte, MesaCena, MesaCenaPasta, MesaEfeito, MesaJukebox, MesaObjeto, MesaToken, MesaTraco, Papel, Rolagem } from '#lib/supabase/banco.ts';
 import { mascararCena } from './cenas.ts';
+import { limitarPosicao } from './musica.ts';
 import { limpar as limparRuns } from './nevoa.ts';
 import { coresDosMembros } from './cores.ts';
 import type { Quadrado } from './geometria.ts';
@@ -525,6 +526,8 @@ export class Mesa {
 		const antes = this.jukebox;
 		const base = antes ?? ({ campanha_id: this.campanha, lista: false, titulo: null, tocando: false, posicao: 0, indice: 0 } as Partial<MesaJukebox>);
 		const novo = { ...base, ...patch, campanha_id: this.campanha };
+		// o banco guarda de 0 a 86 399 s (ao vivo e vídeos de dias inteiros passavam disso e a gravação falhava)
+		novo.posicao = limitarPosicao(novo.posicao ?? 0);
 		if (!novo.fonte || !novo.ref) return false;
 		this.jukebox = { ...(novo as MesaJukebox), desde: new Date().toISOString(), atualizada_em: new Date().toISOString() };
 		const { error } = await sb().from('mesa_jukebox').upsert(novo as MesaJukebox);

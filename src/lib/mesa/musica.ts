@@ -74,3 +74,20 @@ export const desvioDoRelogio = (servidorIso: string, antesMs: number, depoisMs: 
 
 /** Vale corrigir? Passou de 3 s de diferença, a música salta; menos que isso, deixa tocar (a rede oscila). */
 export const precisaAcertar = (atual: number, esperado: number, folga = 3) => Math.abs(atual - esperado) > folga;
+
+/**
+ * A faixa vizinha numa lista: `null` quando passa do fim (a lista acabou). Sem saber o total (0), só confere o começo,
+ * e quem toca decide o que fazer ao passar do fim.
+ */
+export function vizinho(indice: number, total: number, passo: 1 | -1): number | null {
+	const alvo = indice + passo;
+	if (alvo < 0) return 0;
+	if (total > 0 && alvo >= total) return null;
+	return Math.min(alvo, 999);
+}
+
+/**
+ * A posição que o banco aceita (0 a 86 399 s). Transmissões ao vivo contam a posição desde o começo da transmissão
+ * (milhões de segundos) e o banco recusava a gravação: ao vivo vale 0, e o resto é limitado ao teto.
+ */
+export const limitarPosicao = (segundos: number, aoVivo = false) => (aoVivo || !Number.isFinite(segundos) ? 0 : Math.min(86399, Math.max(0, segundos)));
