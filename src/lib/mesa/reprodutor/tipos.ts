@@ -1,4 +1,4 @@
-// O contrato do reprodutor de música da Mesa: o mesmo para o YouTube e para o Spotify. A tela e a sincronização só
+// O contrato do reprodutor de música da Mesa: hoje só o YouTube, e outra fonte entra com o mesmo contrato. A tela e a sincronização só
 // falam com isto (tocar, pausar, buscar, ir para a faixa, volume); cada fonte esconde o seu player oficial e traduz.
 import type { FonteMusica } from '../musica.ts';
 
@@ -31,18 +31,18 @@ export interface EstadoReprodutor {
  * O que o reprodutor avisa:
  *  - estado: tocou ou pausou (por quem mexeu no player, não só por nós)
  *  - faixa: a lista passou para outra faixa sozinha
- *  - fim: a música (ou a faixa, no Spotify) terminou
+ *  - fim: a música terminou
  *  - erro: não dá para tocar (vídeo bloqueado, link inválido…)
  *  - bloqueado: o navegador não deixou tocar sem um clique
  */
 export type EventoReprodutor = 'estado' | 'faixa' | 'fim' | 'erro' | 'bloqueado';
 
 export interface Reprodutor {
-	readonly fonte: 'youtube' | 'spotify';
+	readonly fonte: 'youtube';
 	estado(): EstadoReprodutor;
 	/** as faixas da lista que a fonte consegue listar (vazio no YouTube, que só diz quantas são) */
 	faixas(): FaixaInfo[];
-	/** o volume pode ser mudado pelo site? (o Spotify não deixa) */
+	/** o volume pode ser mudado pelo site? */
 	readonly temVolume: boolean;
 	tocar(): void;
 	pausar(): void;

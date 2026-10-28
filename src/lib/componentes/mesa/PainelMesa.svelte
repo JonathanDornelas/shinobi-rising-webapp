@@ -67,8 +67,8 @@
 	// iniciativa: a ordem salva na cena, ou a prévia das rolagens recentes
 	const ordem = $derived(
 		mesa.iniciativa.ativa && mesa.iniciativa.ordem?.length
-			? mesa.iniciativa.ordem.map((o, i) => ({ nome: o.nome, valor: o.valor, vez: i === (mesa.iniciativa.vez ?? 0) }))
-			: ordemIniciativa(rolagens, mesa.campanha, 6, new Date(), mesa.iniciativa.limpa_em ?? null).map((o) => ({ nome: o.quem, valor: o.total, vez: false }))
+			? mesa.iniciativa.ordem.map((o, i) => ({ nome: mesa.quemDe(o), valor: o.valor, vez: i === (mesa.iniciativa.vez ?? 0) }))
+			: ordemIniciativa(rolagens, mesa.campanha, 6, new Date(), mesa.iniciativa.limpa_em ?? null).map((o) => ({ nome: mesa.quemDe({ quem: o.quem, npc_id: o.chave }), valor: o.total, vez: false }))
 	);
 	const btn = 'min-h-8 border-2 px-1.5 font-pixel text-[11px] leading-none font-bold';
 </script>
@@ -101,10 +101,10 @@
 				{@const falha = r.d20 === 1}
 				{@const el = r.tipo === 'dano' ? corElemento(null, r.rotulo) : null}
 				<div class="relative border-2 bg-b1 pb-3 {r.substituida ? 'opacity-60' : ''}" style="border-color: {crit ? 'var(--acc)' : falha ? 'var(--err)' : 'var(--b3)'}">
-					<button type="button" class="grid w-full grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-2 px-2 py-1.5 text-left" aria-label="{r.quem}: {r.rotulo}, total {r.total}" onclick={() => marcar(r)}>
-						<span class="flex h-8 w-8 items-center justify-center border-2 font-pixel text-[11px] font-bold" style="border-color: {corDoAutor(r)}">{sigla(r.quem)}</span>
+					<button type="button" class="grid w-full grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-2 px-2 py-1.5 text-left" aria-label="{mesa.quemDe(r)}: {r.rotulo}, total {r.total}" onclick={() => marcar(r)}>
+						<span class="flex h-8 w-8 items-center justify-center border-2 font-pixel text-[11px] font-bold" style="border-color: {corDoAutor(r)}">{sigla(mesa.quemDe(r))}</span>
 						<span class="flex min-w-0 flex-col gap-[3px]">
-							<span class="truncate font-mincho text-sm leading-[18px] font-bold" title={r.quem}>{r.quem}</span>
+							<span class="truncate font-mincho text-sm leading-[18px] font-bold" title={mesa.quemDe(r)}>{mesa.quemDe(r)}</span>
 							<span class="text-[13px] leading-[17px] font-medium">{r.rotulo}</span>
 							<span class="flex flex-wrap items-center gap-1">
 								<span class="font-pixel text-xs leading-none font-bold text-mut">{r.expressao}</span>

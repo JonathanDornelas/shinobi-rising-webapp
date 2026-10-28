@@ -130,6 +130,8 @@ export type Personagem = {
 	retrato: string | null;
 	/** NPC com ficha completa (do Mestre, fora do grupo). */
 	npc: boolean;
+	/** Ficha de NPC com o nome escondido do grupo (ver Npc.nome_oculto). */
+	nome_oculto: boolean;
 	/** Pasta de NPCs (só para NPCs de ficha completa). */
 	pasta_id: string | null;
 	/** Paisagem do topo da ficha; null = a da vila. */
@@ -208,6 +210,8 @@ export type Npc = {
 	notas: string;
 	revelado: boolean;
 	membros: number;
+	/** O Mestre esconde o nome: o grupo vê "???" (o banco troca em tokens, rolagens e iniciativa). */
+	nome_oculto: boolean;
 	pv_atual: number[];
 	/** PE máximo e PC/PE atuais de cada membro (vazio = cheio), como o pv_atual. */
 	pe: number;
@@ -480,7 +484,7 @@ export type MesaArte = {
 	criada_em: string;
 };
 
-/** A música da campanha: o Mestre cola o link e todos ouvem igual (youtube: id do vídeo ou da lista; spotify: "tipo/id"). */
+/** A música da campanha: o Mestre cola o link e todos ouvem igual (youtube: id do vídeo ou da lista; spotify: legado, o banco ainda aceita mas o jukebox não toca mais). */
 export type MesaJukebox = {
 	campanha_id: string;
 	fonte: 'youtube' | 'spotify';
@@ -505,6 +509,8 @@ export type MesaToken = {
 	dono_id: string | null;
 	nome: string;
 	sigla: string;
+	/** O nome está escondido do grupo: o token guarda "???" e o Mestre lê o nome verdadeiro do NPC. */
+	nome_oculto: boolean;
 	retrato: string | null;
 	tamanho: 1 | 3 | 6 | 10;
 	/** Crescido por um jutsu (Baika no Jutsu): o tamanho normal e os turnos que faltam para voltar. */
@@ -632,6 +638,7 @@ export type Database = {
 			nova_versao_equipamento: { Args: { equipamento: string }; Returns: string };
 			receber_equipamentos: { Args: { ficha: string; inventario: Json; equipamentos: string[] }; Returns: undefined };
 			registrar_excecao: { Args: { tipo: string; alvo: string; justificativa: string }; Returns: undefined };
+			definir_nome_oculto: { Args: { alvo: 'npc' | 'ficha'; id: string; oculto: boolean }; Returns: undefined };
 			npcs_revelados: { Args: { campanha: string }; Returns: NpcRevelado[] };
 			assumir_pre_gerado: { Args: { ficha: string }; Returns: undefined };
 			conceder_jutsu: { Args: { ficha: string; slug: string; nome: string; custo_pt?: number }; Returns: undefined };

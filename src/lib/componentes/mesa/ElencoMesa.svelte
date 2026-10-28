@@ -281,6 +281,7 @@
 						{/if}
 					{:else if l.tipo === 'npc'}
 						{@const dentro = naCena(l.n)}
+						{@const escondido = !!mesa.ocultos[l.n.id]}
 						{@const t = mesa.tokens.find((k) => (l.n.tipo === 'npc' ? k.npc_id === l.n.id : k.personagem_id === l.n.id))}
 						<div role="treeitem" aria-selected="false" tabindex="-1" draggable="true" class="flex min-h-10 cursor-grab items-center gap-1.5 py-0.5 pr-1.5" style="padding-left: {pad}" title="Arraste para o quadro ou para outra pasta" ondragstart={(e) => arrastar(e, { tipo: l.n.tipo, id: l.n.id })}>
 							<button type="button" class="flex min-w-0 flex-1 items-center gap-2 text-left" onclick={() => (t ? onAbrir(t) : onColocar(JSON.stringify({ tipo: l.n.tipo, id: l.n.id })))}>
@@ -293,6 +294,7 @@
 									<span class="flex items-center gap-1.5"><span class="border-2 border-field px-[3px] py-0.5 font-pixel text-[10px] leading-none font-bold tracking-[0.05em] text-mut">{RANK[l.n.rank] ?? l.n.rank.toUpperCase()}</span><span class="text-[11px] leading-[14px] text-mut">{dentro ? 'na cena' : ''}</span></span>
 								</span>
 							</button>
+							<button type="button" aria-pressed={escondido} class="flex h-8 w-8 flex-none items-center justify-center border-2 font-pixel text-[11px] leading-none font-bold {escondido ? 'border-warn text-warn' : 'border-b3 text-mut'}" aria-label={escondido ? 'Mostrar o nome aos jogadores' : 'Esconder o nome dos jogadores'} title={escondido ? 'Nome escondido: os jogadores veem ???. Clique para mostrar.' : 'Esconder o nome dos jogadores (???)'} onclick={() => mesa.definirNomeOculto(l.n.tipo, l.n.id, !escondido)}>???</button>
 							{#if t}
 								<button type="button" class="flex h-8 w-8 flex-none items-center justify-center border-2 border-b3" aria-label={t.visivel ? 'Esconder' : 'Revelar'} onclick={() => olho(t)}>{@render olhoSvg(!t.visivel)}</button>
 							{/if}

@@ -106,6 +106,16 @@
 	const cena = $derived(mesa.cena);
 	const ativa = $derived(data.cenas.find((c) => c.ativa) ?? mesa.cenas.find((c) => c.ativa) ?? null);
 
+	// o Mestre sabe o nome verdadeiro de cada NPC e ficha de NPC e o que está escondido do grupo ("???" nos outros)
+	$effect(() => {
+		if (!data.mestre) return;
+		const reais: Record<string, string> = {};
+		const ocultos: Record<string, boolean> = {};
+		for (const n of npcs) ((reais[n.id] = n.nome), (ocultos[n.id] = !!n.nome_oculto));
+		for (const f of data.npcFichas) ((reais[f.id] = f.nome), (ocultos[f.id] = !!f.nome_oculto));
+		untrack(() => mesa.definirNomes(reais, ocultos));
+	});
+
 	// ------------------------------------------------------------------ rolagens (servidor + ao vivo)
 	const rolagens = $derived.by(() => {
 		const vivo = rolador.recentes.filter((r) => r.campanha_id === campanha);
@@ -731,6 +741,17 @@
 	const FERRAMENTAS = $derived(GRUPOS.flatMap((g) => g.itens));
 	const OPCOES_PROPRIAS = ['alfinete', 'texto', 'nevoa', 'objeto'];
 	const temMusica = $derived(data.mestre || !!mesa.jukebox);
+	const musicaVisivel = $derived(!ui.musicaOculta && (ui.pop === 'musica' || !!mesa.jukebox));
+	// o ícone esconde o cartão (a música segue tocando) e mostra de novo, já aberto
+	function alternarMusica() {
+		if (musicaVisivel) {
+			ui.musicaOculta = true;
+			if (ui.pop === 'musica') ui.pop = null;
+		} else {
+			ui.musicaOculta = false;
+			ui.pop = 'musica';
+		}
+	}
 	let mobil = $state<null | 'elenco' | 'chat' | 'ferr'>(null);
 	const FAIXAS = ['Ileso', 'Ferido', 'Muito ferido', 'Caído'];
 	const pop = 'absolute z-30 flex flex-col border-2 border-b3 bg-b0 shadow-[4px_4px_0_#000]';
@@ -756,7 +777,7 @@
 		<span class="my-0.5 h-0.5 w-7 flex-none bg-b3"></span>
 		<span aria-hidden="true" class="font-pixel text-[9px] leading-none font-bold tracking-[0.06em] text-mut">MESA</span>
 		{#if temMusica}
-			<button type="button" aria-pressed={ui.pop === 'musica'} aria-label="Música da mesa" title="Música da mesa (YouTube e Spotify)" class="relative flex h-10 w-10 flex-none items-center justify-center border-2 {ui.pop === 'musica' ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3 text-fg'}" onclick={() => (ui.pop = ui.pop === 'musica' ? null : 'musica')}>
+			<button type="button" aria-pressed={musicaVisivel} aria-label="Música da mesa" title={musicaVisivel ? 'Esconder o cartão da música (ela continua tocando)' : 'Mostrar o cartão da música'} class="relative flex h-10 w-10 flex-none items-center justify-center border-2 {musicaVisivel ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3 text-fg'}" onclick={alternarMusica}>
 				<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" class="fill-none stroke-current stroke-2 [stroke-linecap:square]"><path d="M9 18V5l11-2v13 M9 18a3 3 0 1 1-3-3 M20 16a3 3 0 1 1-3-3" /></svg>
 				{#if mesa.jukebox?.tocando}<span aria-hidden="true" class="absolute -top-1 -right-1 h-2.5 w-2.5 bg-ok"></span>{/if}
 			</button>
@@ -975,7 +996,7 @@
 				{#if ultima && !mobil && !ui.fichas.length}
 					<button type="button" class="pointer-events-auto flex min-h-11 items-center gap-2 border-2 border-[var(--vermelhao-lo)] bg-b0 pr-2.5 pl-1 text-left" onclick={() => ((mobil = 'chat'), (ui.naoVistas = 0))}>
 						<Icone id="dado/ic-dado-d20" />
-						<span class="min-w-0 flex-1 truncate text-[13px] leading-[17px] font-medium">{ultima.quem} · {ultima.rotulo}</span>
+						<span class="min-w-0 flex-1 truncate text-[13px] leading-[17px] font-medium">{mesa.quemDe(ultima)} · {ultima.rotulo}</span>
 						<b class="font-pixel text-xl leading-none">{ultima.total}</b>
 					</button>
 				{/if}
@@ -1014,7 +1035,7 @@
 				{/each}
 				<span class="font-pixel text-[11px] leading-none font-bold tracking-[0.1em] text-title">MESA</span>
 				<div class="grid grid-cols-5 gap-1.5">
-					{#if temMusica}<button type="button" class="flex min-h-14 flex-col items-center justify-center gap-1 border-2 border-b3 font-pixel text-[10px] leading-none font-bold" onclick={() => ((ui.pop = 'musica'), (mobil = null))}>♪ MÚSICA</button>{/if}
+					{#if temMusica}<button type="button" class="flex min-h-14 flex-col items-center justify-center gap-1 border-2 border-b3 font-pixel text-[10px] leading-none font-bold" onclick={() => ((ui.musicaOculta = false), (ui.pop = 'musica'), (mobil = null))}>♪ MÚSICA</button>{/if}
 					{#if data.mestre}<button type="button" class="flex min-h-14 flex-col items-center justify-center gap-1 border-2 border-b3 font-pixel text-[10px] leading-none font-bold" onclick={() => ((mobil = null), (ui.modal = { tipo: 'artes' }))}>▣ ARTES</button>{/if}
 					<button type="button" class="flex min-h-14 flex-col items-center justify-center gap-1 border-2 border-b3 font-pixel text-[10px] leading-none font-bold" onclick={() => mesa.desfazerUltimo()}>↶ DESFAZER</button>
 				</div>
@@ -1204,7 +1225,7 @@
 					{/each}
 					{#if !ui.painelAberto && ultima}
 						<button type="button" class="flex min-h-9 items-center gap-2.5 border-2 border-[var(--vermelhao-lo)] bg-b0 pr-2.5 pl-1" onclick={() => ((ui.painelAberto = true), (ui.naoVistas = 0))}>
-							<Icone id="dado/ic-dado-d20" /><span class="text-[13px] leading-none font-medium">{ultima.quem} · {ultima.rotulo}</span><b class="font-pixel text-lg leading-none">{ultima.total}</b>
+							<Icone id="dado/ic-dado-d20" /><span class="text-[13px] leading-none font-medium">{mesa.quemDe(ultima)} · {ultima.rotulo}</span><b class="font-pixel text-lg leading-none">{ultima.total}</b>
 						</button>
 					{/if}
 				</div>

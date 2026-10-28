@@ -1,10 +1,10 @@
-// Jukebox da Mesa: o Mestre cola um link do YouTube ou do Spotify e todos ouvem igual. Aqui ficam a leitura do link
+// Jukebox da Mesa: o Mestre cola um link do YouTube e todos ouvem igual. Aqui ficam a leitura do link
 // (só ids conhecidos entram no banco e no player) e a conta de onde a música está agora.
 import type { MesaJukebox } from '#lib/supabase/banco.ts';
 
 export interface FonteMusica {
-	fonte: 'youtube' | 'spotify';
-	/** youtube: id do vídeo (11) ou da lista; spotify: "tipo/id" */
+	fonte: 'youtube';
+	/** id do vídeo (11) ou da lista */
 	ref: string;
 	lista: boolean;
 	/** item da lista (começando em 0), quando o link aponta um */
@@ -13,16 +13,14 @@ export interface FonteMusica {
 
 const ID_VIDEO = /^[A-Za-z0-9_-]{11}$/;
 const ID_LISTA = /^[A-Za-z0-9_-]{12,64}$/;
-const ID_SPOTIFY = /^[A-Za-z0-9]{10,40}$/;
-const TIPOS_SPOTIFY = ['track', 'album', 'playlist', 'episode', 'show', 'artist'];
-const LISTAS_SPOTIFY = ['album', 'playlist', 'show', 'artist'];
 
-/** Lê um link (ou URI) do YouTube ou do Spotify; null quando não é um dos dois ou o id não confere. */
+/** O texto é um link do Spotify? (o jukebox toca só YouTube; serve para explicar o porquê) */
+export const ehSpotify = (texto: string) => /(^spotify:)|(^|\/\/|\.)(open\.spotify\.com|spotify\.link)\b/i.test(texto.trim());
+
+/** Lê um link do YouTube; null quando não é um ou o id não confere. */
 export function lerLink(texto: string): FonteMusica | null {
 	const t = texto.trim();
 	if (!t || t.length > 300) return null;
-	const uri = /^spotify:(track|album|playlist|episode|show|artist):([A-Za-z0-9]+)$/.exec(t);
-	if (uri) return spotify(uri[1], uri[2]);
 	let u: URL;
 	try {
 		u = new URL(/^[a-z]+:\/\//i.test(t) ? t : `https://${t}`);
@@ -30,10 +28,6 @@ export function lerLink(texto: string): FonteMusica | null {
 		return null;
 	}
 	const host = u.hostname.toLowerCase().replace(/^(www\.|m\.|music\.)/, '');
-	if (host === 'open.spotify.com' || host === 'spotify.link') {
-		const p = u.pathname.split('/').filter(Boolean).filter((s) => !/^intl-/.test(s));
-		return p.length >= 2 ? spotify(p[0], p[1]) : null;
-	}
 	if (host === 'youtu.be') return video(u.pathname.split('/')[1], u);
 	if (host === 'youtube.com' || host === 'youtube-nocookie.com') {
 		const lista = u.searchParams.get('list');
@@ -52,15 +46,8 @@ export function lerLink(texto: string): FonteMusica | null {
 function video(id: string | null | undefined, _u: URL): FonteMusica | null {
 	return id && ID_VIDEO.test(id) ? { fonte: 'youtube', ref: id, lista: false, indice: 0 } : null;
 }
-function spotify(tipo: string, id: string): FonteMusica | null {
-	return TIPOS_SPOTIFY.includes(tipo) && ID_SPOTIFY.test(id) ? { fonte: 'spotify', ref: `${tipo}/${id}`, lista: LISTAS_SPOTIFY.includes(tipo), indice: 0 } : null;
-}
-
-/** A URI que o player do Spotify carrega ("spotify:track:ID"). */
-export const uriSpotify = (ref: string) => `spotify:${ref.replace('/', ':')}`;
 /** O link para abrir fora da mesa (o título da música, quando o player não diz). */
-export const linkDe = (j: Pick<MesaJukebox, 'fonte' | 'ref' | 'lista'>) =>
-	j.fonte === 'spotify' ? `https://open.spotify.com/${j.ref}` : j.lista ? `https://www.youtube.com/playlist?list=${j.ref}` : `https://www.youtube.com/watch?v=${j.ref}`;
+export const linkDe = (j: Pick<MesaJukebox, 'ref' | 'lista'>) => (j.lista ? `https://www.youtube.com/playlist?list=${j.ref}` : `https://www.youtube.com/watch?v=${j.ref}`);
 
 /** Onde a música está agora, em segundos: a posição guardada mais o tempo corrido no relógio do servidor, se toca. */
 export function posicaoAgora(j: Pick<MesaJukebox, 'tocando' | 'posicao' | 'desde'>, agoraServidorMs: number): number {

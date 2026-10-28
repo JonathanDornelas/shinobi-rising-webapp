@@ -182,6 +182,28 @@
 		editando = null;
 		await refreshAll();
 	}
+	async function alternarNome(n: Npc) {
+		n.nome_oculto = !n.nome_oculto;
+		const { error } = await supabase().from('npcs').update({ nome_oculto: n.nome_oculto }).eq('id', n.id);
+		if (error) {
+			n.nome_oculto = !n.nome_oculto;
+			return toasts.mostrar('Não foi possível mudar o nome do NPC.', 'erro');
+		}
+		toasts.mostrar(n.nome_oculto ? `Os jogadores veem ??? no lugar de ${n.nome}.` : `${n.nome} voltou a ter o nome à mostra.`, 'info');
+	}
+	// a ficha completa de NPC: o valor local vale até a página recarregar
+	let nomesFicha = $state<Record<string, boolean>>({});
+	const fichaOculta = (p: { id: string; nome_oculto?: boolean }) => nomesFicha[p.id] ?? !!p.nome_oculto;
+	async function alternarNomeFicha(p: { id: string; nome: string; nome_oculto?: boolean }) {
+		const novo = !fichaOculta(p);
+		nomesFicha[p.id] = novo;
+		const { error } = await supabase().rpc('definir_nome_oculto', { alvo: 'ficha', id: p.id, oculto: novo });
+		if (error) {
+			nomesFicha[p.id] = !novo;
+			return toasts.mostrar('Não foi possível mudar o nome do NPC.', 'erro');
+		}
+		toasts.mostrar(novo ? `Os jogadores veem ??? no lugar de ${p.nome || 'o NPC'}.` : 'O nome voltou a ficar à mostra.', 'info');
+	}
 	async function alternarVisivel(n: Npc) {
 		n.revelado = !n.revelado;
 		const { error } = await supabase().from('npcs').update({ revelado: n.revelado }).eq('id', n.id);
@@ -241,6 +263,7 @@
 							</span>
 							<SeloStatus status={p.status} />
 						</a>
+						<button type="button" class="link mt-1 text-xs font-semibold" aria-pressed={fichaOculta(p)} disabled={!ativa} onclick={() => alternarNomeFicha(p)}>{fichaOculta(p) ? 'Nome escondido (???) · mostrar' : 'Esconder o nome dos jogadores'}</button>
 					</li>
 				{/each}
 			</ul>
@@ -327,6 +350,7 @@
 							</div>
 							<div class="flex items-center gap-2">
 								<button type="button" class="link text-xs font-semibold" onclick={() => (editando = n)}>Editar ficha</button>
+								<button type="button" class="link text-xs font-semibold" aria-pressed={n.nome_oculto} disabled={!ativa} title="Os jogadores veem ??? no lugar do nome" onclick={() => alternarNome(n)}>{n.nome_oculto ? 'Nome: ???' : 'Esconder nome'}</button>
 								{#if pastas.length && ativa}
 									<select class="campo h-8 w-auto max-w-[150px] pr-7 text-xs" aria-label="Mover para pasta" value={n.pasta_id ?? ''} onchange={(e) => moverNpc(n.id, e.currentTarget.value || null)}>
 										<option value="">Sem pasta</option>

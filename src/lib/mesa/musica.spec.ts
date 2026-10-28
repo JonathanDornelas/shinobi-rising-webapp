@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { desvioDoRelogio, lerLink, linkDe, posicaoAgora, limitarPosicao, precisaAcertar, uriSpotify, vizinho } from './musica.ts';
+import { desvioDoRelogio, lerLink, linkDe, posicaoAgora, limitarPosicao, precisaAcertar, vizinho, ehSpotify } from './musica.ts';
 
 describe('jukebox: leitura do link', () => {
 	it('YouTube: vídeo em todos os formatos de link', () => {
@@ -23,11 +23,12 @@ describe('jukebox: leitura do link', () => {
 		expect(lerLink('https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ')).toMatchObject({ lista: false, ref: 'dQw4w9WgXcQ' });
 	});
 
-	it('Spotify: links, links com idioma e URIs', () => {
-		expect(lerLink('https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC?si=x')).toEqual({ fonte: 'spotify', ref: 'track/4uLU6hMCjMI75M1A2tKUQC', lista: false, indice: 0 });
-		expect(lerLink('https://open.spotify.com/intl-pt/playlist/37i9dQZF1DXcBWIGoYBM5M')).toEqual({ fonte: 'spotify', ref: 'playlist/37i9dQZF1DXcBWIGoYBM5M', lista: true, indice: 0 });
-		expect(lerLink('spotify:album:1DFixLWuPkv3KT3TnV35m3')).toMatchObject({ ref: 'album/1DFixLWuPkv3KT3TnV35m3', lista: true });
-		expect(uriSpotify('track/4uLU6hMCjMI75M1A2tKUQC')).toBe('spotify:track:4uLU6hMCjMI75M1A2tKUQC');
+	it('Spotify não toca mais: o link volta nulo e dá para explicar o porquê', () => {
+		for (const l of ['https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC?si=x', 'https://open.spotify.com/intl-pt/playlist/37i9dQZF1DXcBWIGoYBM5M', 'spotify:album:1DFixLWuPkv3KT3TnV35m3']) {
+			expect(lerLink(l), l).toBeNull();
+			expect(ehSpotify(l), l).toBe(true);
+		}
+		expect(ehSpotify('https://www.youtube.com/watch?v=dQw4w9WgXcQ')).toBe(false);
 	});
 
 	it('o que não é música conhecida volta nulo', () => {
@@ -36,8 +37,8 @@ describe('jukebox: leitura do link', () => {
 	});
 
 	it('o link de volta abre a mesma música', () => {
-		expect(linkDe({ fonte: 'youtube', ref: 'dQw4w9WgXcQ', lista: false })).toBe('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-		expect(linkDe({ fonte: 'spotify', ref: 'track/abc', lista: false })).toBe('https://open.spotify.com/track/abc');
+		expect(linkDe({ ref: 'dQw4w9WgXcQ', lista: false })).toBe('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+		expect(linkDe({ ref: 'PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI', lista: true })).toBe('https://www.youtube.com/playlist?list=PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI');
 	});
 });
 

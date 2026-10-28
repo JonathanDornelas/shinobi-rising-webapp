@@ -1,5 +1,5 @@
 <script lang="ts">
-	// Jukebox da Mesa: o Mestre cola um link do YouTube ou do Spotify e todos ouvem igual. Nenhum vídeo ou player aparece:
+	// Jukebox da Mesa: o Mestre cola um link do YouTube e todos ouvem igual. Nenhum vídeo ou player aparece:
 	// cada navegador toca o player oficial escondido (reprodutor/) e o cartão mostra só a faixa, a barra, os botões e o
 	// volume. O estado vive na campanha (tocar, pausar, posição, faixa da lista) com a hora do servidor, então quem
 	// entra depois acerta sozinho; o Mestre controla, cada pessoa liga e desliga o próprio som ("OUVIR").
@@ -7,7 +7,7 @@
 	import { ler, gravar as guardar } from '#lib/estado/armazenamento.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 	import type { Mesa } from '#lib/mesa/mesa.svelte.ts';
-	import { desvioDoRelogio, lerLink, limitarPosicao, linkDe, posicaoAgora, precisaAcertar, vizinho, type FonteMusica } from '#lib/mesa/musica.ts';
+	import { desvioDoRelogio, ehSpotify, lerLink, limitarPosicao, linkDe, posicaoAgora, precisaAcertar, vizinho, type FonteMusica } from '#lib/mesa/musica.ts';
 	import { criarReprodutor } from '#lib/mesa/reprodutor/fabrica.ts';
 	import { relogio, type EstadoReprodutor, type FaixaInfo, type EventoReprodutor, type Reprodutor } from '#lib/mesa/reprodutor/tipos.ts';
 	import type { UiMesa } from '#lib/mesa/ui.svelte.ts';
@@ -37,7 +37,7 @@
 	onMount(async () => {
 		const a = Date.now();
 		const { data } = await supabase().rpc('agora_servidor');
-		if (data) desvio = desvioDoRelogio(data, a, Date.now());
+		if (data) mesa.desvio = desvio = desvioDoRelogio(data, a, Date.now());
 	});
 
 	// o reprodutor muda de mãos sem ser observado por dentro: só a troca dele avisa a tela
@@ -74,6 +74,13 @@
 		falha = '';
 		carregando = true;
 		const x = j;
+		// uma música do Spotify, de quando o jukebox o tocava, ficou gravada na campanha
+		if (x.fonte !== 'youtube') {
+			carregando = false;
+			chave = '';
+			falha = 'Esta música é do Spotify, que saiu do jukebox. O Mestre pode colar um link do YouTube.';
+			return;
+		}
 		const fonte: FonteMusica = { fonte: x.fonte, ref: x.ref, lista: x.lista, indice: x.indice };
 		try {
 			const novo = await criarReprodutor({
@@ -135,6 +142,28 @@
 		if (x.tocando) bloqueio = setTimeout(() => r && !r.estado().tocando && j?.tocando && !r.estado().erro && (bloqueado = true), 5000);
 	}
 
+	// quem entrou na faixa depois (o player demora a carregar) alcança o ponto onde a mesa está, com folga curta
+	let acertos: ReturnType<typeof setTimeout>[] = [];
+	function agendarAcerto() {
+		acertos.forEach(clearTimeout);
+		acertos = [];
+		if (mesa.mestre || !j?.tocando) return;
+		for (const ms of [1200, 2800, 5500]) {
+			acertos.push(
+				setTimeout(() => {
+					const x = j;
+					const s = r?.estado();
+					if (!x?.tocando || !r || !s?.pronto || !s.tocando || s.aoVivo || (x.lista && s.indice !== x.indice)) return;
+					const esperado = posicaoAgora(x, agora());
+					if (precisaAcertar(s.posicao, esperado, 0.8)) {
+						silenciar();
+						r.buscar(esperado);
+					}
+				}, ms)
+			);
+		}
+	}
+
 	// o Mestre: tocar, pausar, faixas e posição
 	async function alternar() {
 		if (!j) return;
@@ -172,7 +201,7 @@
 	async function buscarTitulo(f: FonteMusica): Promise<string | null> {
 		try {
 			const alvo = linkDe(f);
-			const resp = await fetch(f.fonte === 'youtube' ? `https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(alvo)}` : `https://open.spotify.com/oembed?url=${encodeURIComponent(alvo)}`);
+			const resp = await fetch(`https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(alvo)}`);
 			if (!resp.ok) return null;
 			const d = (await resp.json()) as { title?: string };
 			return d.title ? String(d.title).slice(0, 120) : null;
@@ -182,7 +211,7 @@
 	}
 	async function tocar() {
 		const f = lerLink(link);
-		if (!f) return void (erroLink = 'Cole um link do YouTube (vídeo ou lista) ou do Spotify.');
+		if (!f) return void (erroLink = ehSpotify(link) ? 'O jukebox toca só YouTube por enquanto. Cole um link do YouTube (vídeo ou lista).' : 'Cole um link do YouTube (vídeo ou lista).');
 		erroLink = '';
 		const ok = await mesa.mudarJukebox({ fonte: f.fonte, ref: f.ref, lista: f.lista, indice: f.indice, posicao: 0, tocando: true, titulo: null });
 		if (!ok) return;
@@ -208,6 +237,7 @@
 		if (!x) return;
 		void [x.tocando, x.posicao, x.desde, x.indice, r];
 		untrack(sincronizar);
+		untrack(agendarAcerto);
 	});
 	$effect(() => {
 		void volume;
@@ -222,16 +252,19 @@
 		const i = setInterval(atualizar, 500);
 		return () => clearInterval(i);
 	});
-	onMount(() => () => destruir());
+	onMount(() => () => {
+		acertos.forEach(clearTimeout);
+		destruir();
+	});
 
 	/** A faixa atual aparece na lista mesmo quando ela é longa. */
 	function seguir(no: HTMLElement, ativo: boolean) {
 		if (ativo) no.scrollIntoView({ block: 'nearest' });
 		return { update: (a: boolean) => a && no.scrollIntoView({ block: 'nearest' }) };
 	}
-	const titulo = $derived(est.titulo || j?.titulo || (j ? (j.fonte === 'spotify' ? 'Spotify' : 'YouTube') : 'Sem música'));
+	const titulo = $derived(est.titulo || j?.titulo || (j ? 'YouTube' : 'Sem música'));
 	const quemToca = $derived(j && ouvindo ? (j.tocando ? est.tocando || carregando : false) : false);
-	const visivel = $derived(aberto || !!j);
+	const visivel = $derived(!ui.musicaOculta && (aberto || !!j));
 	const pct = $derived(est.duracao > 0 ? Math.min(100, (est.posicao / est.duracao) * 100) : 0);
 	const btn = 'flex min-h-9 flex-1 items-center justify-center border-2 border-b3 font-pixel text-sm font-bold disabled:opacity-40';
 </script>
@@ -250,13 +283,13 @@
 
 		<div class="flex flex-col gap-2 p-2.5">
 			{#if !j}
-				<span class="text-xs leading-4 text-mut">{mesa.mestre ? 'Cole um link do YouTube (vídeo ou lista) ou do Spotify (faixa, álbum, lista ou podcast) e todos ouvem junto.' : 'Nenhuma música por enquanto. O Mestre escolhe e ela toca para todos.'}</span>
+				<span class="text-xs leading-4 text-mut">{mesa.mestre ? 'Cole um link do YouTube (vídeo ou lista) e todos ouvem junto.' : 'Nenhuma música por enquanto. O Mestre escolhe e ela toca para todos.'}</span>
 			{:else if !ouvindo}
 				<span class="text-xs leading-4 text-mut">{j.tocando ? 'Está tocando para a mesa.' : 'A música está pausada.'} Aperte OUVIR para tocar aqui; só você ouve.</span>
 			{:else}
 				<div class="flex flex-col gap-0.5">
 					<span class="truncate text-sm leading-5 font-semibold" title={titulo}>{carregando ? 'Carregando…' : titulo}</span>
-					<span class="truncate text-xs leading-4 text-mut">{[est.artista, j.lista && est.total ? `faixa ${est.indice + 1} de ${est.total}` : j.lista ? `faixa ${est.indice + 1}` : null].filter(Boolean).join(' · ') || (j.fonte === 'spotify' ? 'Spotify' : 'YouTube')}</span>
+					<span class="truncate text-xs leading-4 text-mut">{[est.artista, j.lista && est.total ? `faixa ${est.indice + 1} de ${est.total}` : j.lista ? `faixa ${est.indice + 1}` : null].filter(Boolean).join(' · ') || 'YouTube'}</span>
 				</div>
 				<!-- a barra: o Mestre clica para pular; os outros só acompanham -->
 				<div class="flex items-center gap-2 font-pixel text-[11px] font-bold text-mut">
@@ -293,8 +326,6 @@
 				{#if j && ouvindo}
 					{#if r?.temVolume}
 						<label class="flex items-center gap-2 text-xs font-semibold text-mut">Volume<input type="range" min="0" max="100" step="5" bind:value={volume} class="min-w-0 flex-1" aria-label="Volume da música" /><span class="w-8 text-right font-pixel">{volume}</span></label>
-					{:else if j.fonte === 'spotify'}
-						<span class="text-xs leading-4 text-mut">O Spotify não deixa o site mudar o volume: use o volume do sistema. Sem entrar no Spotify neste navegador, ele toca só trechos de 30 segundos.</span>
 					{/if}
 					{#if fila.length > 1}
 						<div class="flex max-h-44 flex-col overflow-y-auto border-2 border-b3 bg-b1" role="list" aria-label="Faixas da lista">
@@ -313,7 +344,7 @@
 					<div class="flex gap-1.5">
 						<input
 							class="h-9 min-w-0 flex-1 border-2 border-b3 bg-b1 px-2 text-sm text-fg"
-							placeholder="Link do YouTube ou do Spotify"
+							placeholder="Link do YouTube (vídeo ou lista)"
 							aria-label="Link da música"
 							aria-invalid={!!erroLink}
 							bind:value={link}
@@ -324,13 +355,13 @@
 					{#if erroLink}<span role="alert" class="text-xs leading-4 font-semibold text-err">{erroLink}</span>{/if}
 					{#if j}
 						<div class="flex flex-wrap gap-1.5">
-							<a class="flex min-h-9 items-center border-2 border-b3 px-2.5 font-pixel text-[11px] font-bold" href={linkDe(j)} target="_blank" rel="noopener">ABRIR ↗</a>
+							{#if j.fonte === 'youtube'}<a class="flex min-h-9 items-center border-2 border-b3 px-2.5 font-pixel text-[11px] font-bold" href={linkDe(j)} target="_blank" rel="noopener">ABRIR ↗</a>{/if}
 							<button type="button" class="ml-auto min-h-9 border-2 border-b3 px-2.5 font-pixel text-[11px] font-bold text-err" onclick={() => mesa.tirarJukebox()}>TIRAR</button>
 						</div>
 					{/if}
 				{:else if j}
 					<span class="text-xs leading-4 text-mut">O Mestre controla a música. O som é só seu.</span>
-					<a class="self-start text-xs font-semibold text-link underline underline-offset-[3px]" href={linkDe(j)} target="_blank" rel="noopener">Abrir {j.fonte === 'spotify' ? 'no Spotify' : 'no YouTube'} ↗</a>
+					{#if j.fonte === 'youtube'}<a class="self-start text-xs font-semibold text-link underline underline-offset-[3px]" href={linkDe(j)} target="_blank" rel="noopener">Abrir no YouTube ↗</a>{/if}
 				{/if}
 			{/if}
 		</div>

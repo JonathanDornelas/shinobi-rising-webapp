@@ -65,6 +65,7 @@
 			<Icone id="acao/ic-acao-novo-npc" />
 			<span class="flex-1 font-mincho text-[22px] leading-7 font-bold">{n.nome.trim() || 'Novo NPC'}</span>
 			<label class="flex items-center gap-2 text-[13px] font-semibold"><input type="checkbox" role="switch" class="interruptor" bind:checked={n.revelado} />{n.revelado ? 'Revelado ao grupo' : 'Privado'}</label>
+			<label class="flex items-center gap-2 text-[13px] font-semibold" title="Os jogadores veem ??? no lugar do nome (no token, nas rolagens e na iniciativa)"><input type="checkbox" role="switch" class="interruptor" bind:checked={n.nome_oculto} />{n.nome_oculto ? 'Nome escondido (???)' : 'Nome visível'}</label>
 		</div>
 		<div class="flex flex-col gap-3.5 px-[18px] py-4">
 			<div class="flex items-center gap-3">

@@ -80,7 +80,7 @@ export const load: PageServerLoad = async ({ locals, params, parent, url }) => {
 			.filter((p) => p.status === 'aprovada' && p.situacao === 'ativo' && !p.pre_gerado)
 			.map((p) => ({ id: p.id, jogadorId: p.jogador_id, nome: p.nome, retrato: p.retrato, sub: [p.resumo.claNome ? `Clã ${p.resumo.claNome}` : null, `nível ${p.nivel}`].filter(Boolean).join(' · ') })),
 		npcFichas: mestre
-			? (linhas ?? []).filter((l) => l.npc).map((l) => ({ id: l.id, nome: l.nome, pastaId: l.pasta_id as string | null, retrato: l.retrato }))
+			? (linhas ?? []).filter((l) => l.npc).map((l) => ({ id: l.id, nome: l.nome, pastaId: l.pasta_id as string | null, retrato: l.retrato, nome_oculto: !!npcFichas.find((p) => p.id === l.id)?.nome_oculto }))
 			: [],
 		grupo: grupo.map((g) => ({ id: g.id, jogadorId: g.jogador_id, nome: g.nome, nivel: g.nivel, cla: g.resumo.claNome ?? null, vila: g.resumo.vila ?? null })),
 		fichas,

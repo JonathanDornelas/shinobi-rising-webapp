@@ -13,6 +13,7 @@ import { limpar as limparRuns } from './nevoa.ts';
 import { coresDosMembros } from './cores.ts';
 import type { Quadrado } from './geometria.ts';
 import { molduraDoToken, molduraPorId } from './molduras.ts';
+import { nomeReal, siglaDoNome } from './nomes.ts';
 
 export type Ferramenta = 'mover' | 'medir' | 'lapis' | 'apontar' | 'borracha' | 'terreno' | 'fundo' | 'alfinete' | 'texto' | 'objeto' | 'nevoa';
 
@@ -73,6 +74,13 @@ export class Mesa {
 	objetos = $state<MesaObjeto[]>([]);
 	/** A música da campanha (null = nenhuma). */
 	jukebox = $state<MesaJukebox | null>(null);
+	/** Só o Mestre: o nome verdadeiro de cada NPC e ficha de NPC (por id) e quais estão com o nome escondido do grupo. */
+	nomesReais = $state.raw<Record<string, string>>({});
+	ocultos = $state<Record<string, boolean>>({});
+	/** Hora do servidor menos a deste navegador, em ms (o jukebox mede a posição pelo relógio do servidor). */
+	desvio = 0;
+	/** A hora (do servidor) da última troca de música que chegou por broadcast: o banco não desfaz uma troca mais nova com uma mais velha. */
+	private musicaT = 0;
 	/** Pastas das cenas e biblioteca de artes: só o Mestre carrega. */
 	pastasCenas = $state<MesaCenaPasta[]>([]);
 	artes = $state<MesaArte[]>([]);
@@ -160,7 +168,7 @@ export class Mesa {
 				else {
 					const novo = p.new as MesaToken;
 					const velho = this.tokens.find((t) => t.id === novo.id);
-					this.tokens = lista(this.tokens, novo);
+					this.tokens = lista(this.tokens, this.comNome(novo));
 					// o PV visível só muda com ferimento, PV, entrada ou saída de token: andar não pede nova leitura
 					if (this.cena?.mostrar_pv && !this.mestre && (!velho || velho.ferimento !== novo.ferimento || velho.pv !== novo.pv || velho.pv_max !== novo.pv_max)) this.lerPvs();
 				}
@@ -183,7 +191,11 @@ export class Mesa {
 				if (p.eventType !== 'DELETE') this.objetos = lista(this.objetos, p.new as MesaObjeto);
 			})
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_jukebox', filter: `campanha_id=eq.${this.campanha}` }, (p) => {
-				this.jukebox = p.eventType === 'DELETE' ? null : (p.new as MesaJukebox);
+				if (p.eventType === 'DELETE') return void (this.jukebox = null);
+				const novo = p.new as MesaJukebox;
+				// a troca chegou antes por broadcast: uma gravação mais velha que ela (a faixa anterior) não volta
+				if (Date.parse(novo.desde) < this.musicaT - 1500) return;
+				this.jukebox = novo;
 			})
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_cenas', filter: `campanha_id=eq.${this.campanha}` }, (p) => {
 				if (p.eventType === 'DELETE') {
@@ -206,6 +218,14 @@ export class Mesa {
 			.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'membros', filter: `campanha_id=eq.${this.campanha}` }, (p) => {
 				const m = p.new as { usuario_id: string; cor: CorMesa | null };
 				this.membros = this.membros.map((x) => (x.id === m.usuario_id ? { ...x, cor: m.cor } : x));
+			})
+			// a troca de música do Mestre chega na hora, sem esperar o banco: todos passam para a faixa juntos
+			.on('broadcast', { event: 'musica' }, ({ payload }) => {
+				const { usuario, jukebox } = payload as { usuario: string; jukebox: MesaJukebox | null };
+				if (this.membro(usuario)?.papel !== 'mestre' || usuario === this.eu) return;
+				if (jukebox && !(jukebox.fonte && jukebox.ref && Number.isFinite(Date.parse(jukebox.desde)))) return;
+				this.musicaT = jukebox ? Date.parse(jukebox.desde) : Date.now() + this.desvio;
+				this.jukebox = jukebox;
 			})
 			.on('broadcast', { event: 'fantasma' }, ({ payload }) => this.receber('fantasmas', payload))
 			.on('broadcast', { event: 'regua' }, ({ payload }) => this.receber('reguas', payload))
@@ -362,6 +382,37 @@ export class Mesa {
 		if (ids.length) await sb().from('mesa_tokens').update({ movido: 0 }).in('id', ids);
 	}
 
+	// ------------------------------------------------------------------ nome escondido
+	/** Para o Mestre, o token de nome escondido mostra o nome verdadeiro (o banco guarda "???" para o grupo). */
+	private comNome(t: MesaToken): MesaToken {
+		if (!this.mestre || !t.nome_oculto) return t;
+		const nome = nomeReal(t, this.nomesReais, this.tokens);
+		return nome ? { ...t, nome, sigla: t.ligado_a && !t.npc_id && !t.personagem_id ? 'CL' : siglaDoNome(nome, t.membro) } : t;
+	}
+	/** O Mestre informa os nomes que conhece e o que está escondido; os tokens da cena passam a mostrar o nome verdadeiro. */
+	definirNomes(reais: Record<string, string>, ocultos: Record<string, boolean>) {
+		this.nomesReais = reais;
+		this.ocultos = ocultos;
+		this.tokens = this.tokens.map((t) => this.comNome(t));
+	}
+	/** O nome de quem rolou: o Mestre lê o verdadeiro no lugar do "???" (vale também para a ordem de iniciativa). */
+	quemDe(r: { quem?: string; nome?: string; npc_id?: string | null; personagem_id?: string | null }): string {
+		return (this.mestre && this.nomesReais[r.npc_id ?? r.personagem_id ?? '']) || (r.quem ?? r.nome ?? '');
+	}
+	/** Liga ou desliga o "???" de um NPC ou ficha de NPC para o grupo (só o Mestre). */
+	async definirNomeOculto(tipo: 'npc' | 'ficha', id: string, oculto: boolean) {
+		if (!this.mestre || this.somenteLeitura) return false;
+		const antes = !!this.ocultos[id];
+		this.ocultos = { ...this.ocultos, [id]: oculto };
+		const { error } = await sb().rpc('definir_nome_oculto', { alvo: tipo, id, oculto });
+		if (error) {
+			this.ocultos = { ...this.ocultos, [id]: antes };
+			toasts.mostrar('Não foi possível mudar o nome do NPC.', 'erro');
+			return false;
+		}
+		return true;
+	}
+
 	// ------------------------------------------------------------------ tokens
 	private trocar(id: string, patch: Partial<MesaToken>) {
 		this.tokens = this.tokens.map((t) => (t.id === id ? { ...t, ...patch } : t));
@@ -399,8 +450,9 @@ export class Mesa {
 			toasts.mostrar(/Fora da cena/.test(error?.message ?? '') ? 'Esse lugar fica fora da cena.' : 'Não foi possível pôr o token na cena.', 'erro');
 			return null;
 		}
-		this.tokens = this.tokens.some((t) => t.id === data.id) ? this.tokens : [...this.tokens, data as MesaToken];
-		return data as MesaToken;
+		const criado = this.comNome(data as MesaToken);
+		this.tokens = this.tokens.some((t) => t.id === criado.id) ? this.tokens : [...this.tokens, criado];
+		return criado;
 	}
 
 	async remover(id: string) {
@@ -529,7 +581,10 @@ export class Mesa {
 		// o banco guarda de 0 a 86 399 s (ao vivo e vídeos de dias inteiros passavam disso e a gravação falhava)
 		novo.posicao = limitarPosicao(novo.posicao ?? 0);
 		if (!novo.fonte || !novo.ref) return false;
-		this.jukebox = { ...(novo as MesaJukebox), desde: new Date().toISOString(), atualizada_em: new Date().toISOString() };
+		const hora = new Date(Date.now() + this.desvio).toISOString();
+		this.jukebox = { ...(novo as MesaJukebox), desde: hora, atualizada_em: hora };
+		this.musicaT = Date.parse(hora);
+		this.canal?.send({ type: 'broadcast', event: 'musica', payload: { usuario: this.eu, jukebox: this.jukebox } });
 		const { error } = await sb().from('mesa_jukebox').upsert(novo as MesaJukebox);
 		if (error) {
 			this.jukebox = antes;
@@ -542,6 +597,7 @@ export class Mesa {
 		if (!this.mestre) return;
 		const antes = this.jukebox;
 		this.jukebox = null;
+		this.canal?.send({ type: 'broadcast', event: 'musica', payload: { usuario: this.eu, jukebox: null } });
 		const { error } = await sb().from('mesa_jukebox').delete().eq('campanha_id', this.campanha);
 		if (error) {
 			this.jukebox = antes;

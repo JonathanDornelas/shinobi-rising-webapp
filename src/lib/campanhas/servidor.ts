@@ -63,7 +63,7 @@ export async function carregarCampanha(locals: App.Locals, id: string, usuarioId
 			.order('entrou_em'),
 		locals.supabase
 			.from('personagens')
-			.select('id, jogador_id, nome, status, situacao, nivel, xp, pt, resumo, estado, enviada_em, decidida_em, comentario_mestre, atualizada_em, epitafio, pre_gerado, excecao, ryo, retrato, capa, npc')
+			.select('id, jogador_id, nome, status, situacao, nivel, xp, pt, resumo, estado, enviada_em, decidida_em, comentario_mestre, atualizada_em, epitafio, pre_gerado, excecao, ryo, retrato, capa, npc, nome_oculto')
 			.eq('campanha_id', id)
 			.neq('status', 'rejeitada')
 			.order('criada_em'),

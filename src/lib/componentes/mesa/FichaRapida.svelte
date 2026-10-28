@@ -94,6 +94,9 @@
 	const FAIXAS = ['Ileso', 'Ferido', 'Muito ferido', 'Caído'];
 	const cor = $derived(corCss(mesa.corDe(mesa.donoDe(token))));
 	const dono = $derived(mesa.membro(mesa.donoDe(token)));
+	// o Mestre esconde o nome de um NPC (ou ficha de NPC) dos jogadores: eles veem ???
+	const nomeAlvo = $derived(mesa.mestre ? (token.npc_id ? { tipo: 'npc' as const, id: token.npc_id } : token.personagem_id && mesa.nomesReais[token.personagem_id] ? { tipo: 'ficha' as const, id: token.personagem_id } : null) : null);
+	const nomeEscondido = $derived(!!nomeAlvo && !!mesa.ocultos[nomeAlvo.id]);
 	/** Deslocamento do NPC: o da ficha do bestiário (8 m + AGI) ou 10 m */
 	const deslNpc = $derived(dados.tipo === 'npc' ? (dados.extras?.deslocamento ?? 10) : 10);
 	const ehNpcTropa = $derived(dados.tipo === 'npc' && dados.npc.membros > 1);
@@ -284,6 +287,7 @@
 				<span class="text-[13px] leading-[18px] text-mut">{sub}</span>
 				<span class="flex flex-wrap items-center gap-1.5">
 					<span class="inline-flex items-center gap-1.5 border-2 px-1.5 py-[3px] text-xs leading-none font-semibold" style="border-color: {cor}"><span class="h-2 w-2" style="background: {cor}"></span>{dono?.nome ?? 'Mestre'}</span>
+					{#if nomeAlvo}<button type="button" aria-pressed={nomeEscondido} class="inline-flex min-h-7 items-center gap-1 border-2 px-1.5 font-pixel text-[11px] leading-none font-bold {nomeEscondido ? 'border-warn text-warn' : 'border-b3 hover:border-mut'}" title={nomeEscondido ? 'Os jogadores veem ??? no lugar do nome. Clique para mostrar o nome.' : 'Esconder o nome dos jogadores (eles passam a ver ???)'} onclick={() => nomeAlvo && mesa.definirNomeOculto(nomeAlvo.tipo, nomeAlvo.id, !nomeEscondido)}>{nomeEscondido ? 'NOME: ???' : 'NOME VISÍVEL'}</button>{/if}
 					{#if dados.tipo === 'pc'}<button type="button" class="inline-flex min-h-7 items-center gap-1 border-2 border-b3 px-1.5 font-pixel text-[11px] leading-none font-bold hover:border-mut" title="A ficha inteira numa janela grande" onclick={() => dados.tipo === 'pc' && acoes.abrirFichaCompleta(dados.ficha.id)}>FICHA COMPLETA ⤢</button>{/if}
 				</span>
 			</div>

@@ -65,6 +65,8 @@ export class UiMesa {
 	hover = $state<{ token: string; x: number; y: number } | null>(null);
 	fichas = $state<FichaAberta[]>([]);
 	pop = $state<Pop>(null);
+	/** O cartão da música escondido pelo ícone da ferramenta: a música continua tocando, só o cartão some. */
+	musicaOculta = $state(false);
 	modal = $state<Modal>(null);
 	aviso = $state<{ texto: string; t: number } | null>(null);
 	anuncio = $state('');

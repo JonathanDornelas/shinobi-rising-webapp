@@ -325,3 +325,55 @@ describe('jukebox', () => {
 		expect(await um(banco.como(kaito, `select agora_servidor() is not null as ok`))).toEqual({ ok: true });
 	});
 });
+
+describe('nome escondido de NPC', () => {
+	let tokenHideo: string, cena: string, zabuza: string;
+
+	it('ligar esconde o nome nos tokens, na rolagem e na iniciativa; só o Mestre liga', async () => {
+		tokenHideo = (await um(banco.como<{ id: string }>(kaito, `select id from mesa_tokens where npc_id = $1`, [hideo]))).id;
+		await banco.como(kaito, `select rolar($1, '1d20', 'Iniciativa', null, 'normal', false, $2)`, [campanha, hideo]);
+		cena = ponte;
+		await banco.como(kaito, `update mesa_cenas set iniciativa = jsonb_build_object('ativa', true, 'rodada', 1, 'vez', 0, 'ordem', jsonb_build_array(
+			jsonb_build_object('nome', 'Hideo', 'valor', 15, 'npc_id', $2::text), jsonb_build_object('nome', 'Ren', 'valor', 12, 'personagem_id', $3::text))) where id = $1`, [cena, hideo, ren]);
+		await expect(banco.como(bruno, `select definir_nome_oculto('npc', $1, true)`, [hideo])).rejects.toThrow(/Só o Mestre/);
+		await banco.como(kaito, `select definir_nome_oculto('npc', $1, true)`, [hideo]);
+		expect(await um(banco.como(bruno, `select nome, sigla, nome_oculto from mesa_tokens where npc_id = $1`, [hideo]))).toEqual({ nome: '???', sigla: '?', nome_oculto: true });
+		expect((await banco.como(bruno, `select quem from rolagens where npc_id = $1`, [hideo])).map((r) => r.quem)).toEqual(['???']);
+		const ordem = (await um(banco.como<{ o: { nome: string }[] }>(bruno, `select iniciativa -> 'ordem' as o from mesa_cenas where id = $1`, [cena]))).o;
+		expect(ordem.map((e) => e.nome)).toEqual(['???', 'Ren']);
+	});
+
+	it('token e rolagem novos já saem escondidos; clone herda; o jogador não desfaz', async () => {
+		await banco.como(kaito, `insert into mesa_tokens (cena_id, campanha_id, npc_id, nome, sigla, x, y) values ($1, $2, $3, 'Hideo', 'HI', 25, 13)`, [cena, campanha, hideo]);
+		await banco.como(kaito, `insert into mesa_tokens (cena_id, campanha_id, ligado_a, nome, sigla, x, y) values ($1, $2, $3, 'Clone de Hideo', 'CL', 26, 13)`, [cena, campanha, tokenHideo]);
+		expect((await banco.como(bruno, `select nome, sigla from mesa_tokens where npc_id = $1 or ligado_a = $2`, [hideo, tokenHideo])).every((t) => t.nome === '???')).toBe(true);
+		await banco.como(kaito, `select rolar($1, '1d20', 'Ataque', null, 'normal', false, $2)`, [campanha, hideo]);
+		expect((await banco.como(bruno, `select quem from rolagens where npc_id = $1`, [hideo])).map((r) => r.quem)).toEqual(['???', '???']);
+		// o Mestre não grava o nome de volta no token escondido e o jogador não mexe no nome
+		await banco.como(kaito, `update mesa_tokens set nome = 'Hideo' where id = $1`, [tokenHideo]);
+		expect(await um(banco.como(bruno, `select nome from mesa_tokens where id = $1`, [tokenHideo]))).toEqual({ nome: '???' });
+	});
+
+	it('os NPCs revelados chegam como ???', async () => {
+		await banco.como(kaito, `update npcs set revelado = true where id = $1`, [hideo]);
+		expect(await um(banco.como(bruno, `select nome from npcs_revelados($1) where id = $2`, [campanha, hideo]))).toEqual({ nome: '???' });
+	});
+
+	it('ficha de NPC também esconde; ficha comum não', async () => {
+		zabuza = (await um(banco.como<{ id: string }>(kaito, `insert into personagens (campanha_id, jogador_id, nome, npc) values ($1, $2, 'Zabuza Momochi', true) returning id`, [campanha, kaito.id]))).id;
+		await expect(banco.como(kaito, `select definir_nome_oculto('ficha', $1, true)`, [ren])).rejects.toThrow(/Só o Mestre/);
+		await banco.como(kaito, `select definir_nome_oculto('ficha', $1, true)`, [zabuza]);
+		await banco.como(kaito, `insert into mesa_tokens (cena_id, campanha_id, personagem_id, nome, sigla, x, y) values ($1, $2, $3, 'Zabuza Momochi', 'ZM', 3, 3)`, [cena, campanha, zabuza]);
+		expect(await um(banco.como(bruno, `select nome, sigla from mesa_tokens where personagem_id = $1`, [zabuza]))).toEqual({ nome: '???', sigla: '?' });
+	});
+
+	it('desligar devolve o nome em tudo', async () => {
+		await banco.como(kaito, `select definir_nome_oculto('npc', $1, false)`, [hideo]);
+		expect((await banco.como(bruno, `select nome, sigla from mesa_tokens where npc_id = $1 order by criado_em`, [hideo])).map((t) => `${t.nome}/${t.sigla}`)).toEqual(['Hideo/H', 'Hideo/H']);
+		expect(await um(banco.como(bruno, `select nome, sigla from mesa_tokens where ligado_a = $1`, [tokenHideo]))).toEqual({ nome: 'Clone de Hideo', sigla: 'CL' });
+		expect((await banco.como(bruno, `select distinct quem from rolagens where npc_id = $1`, [hideo])).map((r) => r.quem)).toEqual(['Hideo']);
+		const ordem = (await um(banco.como<{ o: { nome: string }[] }>(bruno, `select iniciativa -> 'ordem' as o from mesa_cenas where id = $1`, [cena]))).o;
+		expect(ordem[0].nome).toBe('Hideo');
+		expect(await um(banco.como(bruno, `select nome from npcs_revelados($1) where id = $2`, [campanha, hideo]))).toEqual({ nome: 'Hideo' });
+	});
+});
