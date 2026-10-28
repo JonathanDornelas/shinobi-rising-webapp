@@ -1,7 +1,7 @@
 // Rolador e registro de rolagens (L10): manda a expressão para rolar() (o sorteio é no servidor), anima o dado,
 // acompanha ao vivo as rolagens de todas as campanhas de quem está logado (Realtime, filtrado pelo RLS) e guarda o
 // estado da janela flutuante (R2), que abre em qualquer tela pelo botão do canto ou pela tecla R.
-// Cada pessoa escolhe como as rolagens aparecem: o aviso em pixel no canto (padrão) ou os dados 3D na tela inteira,
+// Cada pessoa escolhe como as rolagens aparecem: os dados 3D na tela inteira (padrão) ou o aviso em pixel no canto,
 // com som nas batidas (Dados3D.svelte). A escolha fica neste navegador.
 import type { RealtimeChannel } from '@supabase/supabase-js';
 import { gravar, ler } from '#lib/estado/armazenamento.ts';
@@ -83,7 +83,7 @@ class Rolador {
 	/** Expressão vinda de um dado no texto das regras (n muda a cada pedido): o rolador da janela a recebe. */
 	sugestao = $state<{ expr: string; n: number } | null>(null);
 	/** Aviso em pixel no canto ou dados 3D na tela inteira. */
-	estilo = $state<EstiloDados>('pixel');
+	estilo = $state<EstiloDados>('3d');
 	/** Som das batidas dos dados 3D. */
 	som = $state(true);
 	/** Rolagem que os dados 3D vão jogar agora (n muda a cada lance, mesmo da mesma rolagem). */
@@ -101,7 +101,7 @@ class Rolador {
 		if (m && /^[0-9a-f-]{36}$/i.test(m.id)) this.mesa = m;
 		this.janela = { ...JANELA_PADRAO, ...ler<Partial<Janela>>('janela-rolagens', {}) };
 		const d = ler<{ estilo?: EstiloDados; som?: boolean }>('dados', {});
-		this.estilo = d.estilo === '3d' ? '3d' : 'pixel';
+		this.estilo = d.estilo === 'pixel' ? 'pixel' : '3d';
 		this.som = d.som !== false;
 	}
 
