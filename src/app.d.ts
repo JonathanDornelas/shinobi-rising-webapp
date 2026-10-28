@@ -5,7 +5,10 @@ import type { Database } from '#lib/supabase/banco.ts';
 
 declare global {
 	namespace App {
-		// interface Error {}
+		interface Error {
+			/** O erro técnico ("TypeError: ..."), mostrado pequeno na página de erro para quem joga mandar. */
+			detalhe?: string;
+		}
 		interface Locals {
 			supabase: SupabaseClient<Database>;
 			/** Usuário validado pelo JWT (getClaims), ou null. Memorizado por requisição. */

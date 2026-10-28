@@ -418,7 +418,7 @@
 					{/each}
 				</div>
 				{#if aba === 'acoes' && dados.tipo === 'pc'}
-					{#each dados.ficha.armas as a (a.nome)}
+					{#each dados.ficha.armas as a, i (`${i}:${a.nome}`)}
 						{@render linhaAcao(null, a.nome, a.rotuloAlcance, null, [
 							{ n: 'MEDIR', acao: () => acoes.aneis(token, a.alcance <= 2 ? a.alcance : 0, a.alcance > 2 ? [{ r: a.alcance, rotulo: `${a.nome} · ${a.alcance} m` }] : [], a.nome) },
 							{ n: 'ATAQUE', acao: () => acoes.atacar(token, a, 'ataque') }, ...(a.dano ? [{ n: 'DANO', acao: () => acoes.atacar(token, a, 'dano'), dica: 'Crítico se o último ataque foi 20 natural' }] : [])
@@ -435,7 +435,7 @@
 						{#each dados.ficha.distancias as [n, r] (n)}<button type="button" class={btn} onclick={() => acoes.aneis(token, 0, [{ r, rotulo: `${n} · ${r} m` }], n)}>{n.toUpperCase()}</button>{/each}
 					</div>
 				{:else if aba === 'acoes' && dados.tipo === 'npc' && dados.extras?.ataques.length}
-					{#each dados.extras.ataques as a (a.nome)}
+					{#each dados.extras.ataques as a, i (`${i}:${a.nome}`)}
 						{@render linhaAcao(null, a.nome, a.rotuloAlcance, null, [
 							{ n: 'MEDIR', acao: () => acoes.aneis(token, a.alcance <= 2 ? Math.max(a.alcance, alcanceCorpo(token.tamanho)) : 0, a.alcance > 2 ? [{ r: a.alcance, rotulo: `${a.nome} · ${a.alcance} m` }] : [], a.nome) },
 							{ n: 'ATAQUE', acao: () => acoes.atacar(token, a, 'ataque') }, ...(a.dano ? [{ n: 'DANO', acao: () => acoes.atacar(token, a, 'dano'), dica: 'Crítico se o último ataque foi 20 natural' }] : [])
@@ -471,7 +471,7 @@
 						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, metaJutsu(j), avisoFalta(j), [...medir(j), ...botoesUso(j, falta(j))], () => acoes.verJutsu(j), j)}
 					{/each}
 				{:else if aba === 'pericias' && dados.tipo === 'pc'}
-					{#each dados.ficha.pericias as p (p.nome)}
+					{#each dados.ficha.pericias as p, i (`${i}:${p.nome}`)}
 						{@render linhaAcao(null, p.nome, p.expr, null, [{ n: 'ROLAR', acao: () => acoes.rolar(token, { expr: p.expr, rotulo: p.nome, partes: p.partes }, 'teste', true) }])}
 					{/each}
 				{:else if aba === 'equip' && dados.tipo === 'pc'}

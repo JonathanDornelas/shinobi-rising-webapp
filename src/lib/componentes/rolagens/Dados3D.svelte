@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Dados 3D na tela inteira (escolha "3D" no rolador): os dados caem por cima de tudo sem bloquear cliques, param
-	// no valor sorteado no servidor e a legenda mostra quem rolou e o total. Depois de uns segundos, tudo some.
+	// no valor sorteado no servidor, do mesmo jeito em todas as telas, e a legenda mostra quem rolou e o total.
+	// Depois de uns segundos, tudo some.
 	// Sem WebGL (ou se a biblioteca falhar), a rolagem volta para o aviso em pixel.
 	import { untrack } from 'svelte';
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
@@ -32,7 +33,8 @@
 		try {
 			const { lancar, limpar, temWebgl } = await import('#lib/rolagens/dados3d.ts');
 			if (!temWebgl()) throw new Error('sem WebGL');
-			const rolou = await lancar(camada!, r.detalhe, { cor: corDaRolagem(r), som: rolador.som });
+			// a semente é o id da rolagem: a mesma queda em todas as telas da mesa
+			const rolou = await lancar(camada!, r.detalhe, { cor: corDaRolagem(r), som: rolador.som, semente: r.id });
 			if (minha !== vez) return;
 			legenda = r;
 			// rolagem sem dados que a mesa desenhe (só números, d2, d3): fica só a legenda

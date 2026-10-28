@@ -11,7 +11,7 @@
 
 	async function copiar() {
 		try {
-			await navigator.clipboard.writeText(codigo);
+			await navigator.clipboard.writeText(page.error?.detalhe ? `${codigo} · ${page.error.detalhe}` : codigo);
 			toasts.mostrar('Código copiado.', 'sucesso');
 		} catch {
 			toasts.mostrar('Não foi possível copiar o código.', 'erro');
@@ -44,6 +44,7 @@
 						<span class="t-num flex-1 text-left text-sm">{codigo}</span>
 						<button type="button" class="btn-jogo btn-contorno min-h-9 px-2.5 text-xs" onclick={copiar}>Copiar</button>
 					</div>
+					{#if page.error?.detalhe}<span class="text-left text-xs leading-4 break-all text-mut">{page.error.detalhe}</span>{/if}
 					<button type="button" class="btn-jogo btn-primario mt-2 self-stretch md:self-start" onclick={() => location.reload()}>Tentar de novo</button>
 				{/if}
 			</div>

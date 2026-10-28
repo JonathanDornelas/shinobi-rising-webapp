@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { redirect } from '@sveltejs/kit';
-import { sequence, type Handle } from '@sveltejs/kit/hooks';
+import { sequence, type Handle, type HandleServerError } from '@sveltejs/kit/hooks';
 import { building } from '$app/env';
 import { PUBLIC_SUPABASE_PUBLISHABLE_KEY, PUBLIC_SUPABASE_URL } from '$app/env/public';
 import type { Database } from '#lib/supabase/banco.ts';
@@ -46,3 +46,8 @@ const guarda: Handle = async ({ event, resolve }) => {
 };
 
 export const handle = sequence(supabase, guarda);
+
+/** Erro inesperado no servidor: o detalhe vai só para os logs (Vercel), com a rota; a página não mostra o texto do erro. */
+export const handleError: HandleServerError = ({ kind, error, event }) => {
+	if (kind === 'unknown') console.error('[erro-servidor]', event.route.id, event.url.pathname, error);
+};
