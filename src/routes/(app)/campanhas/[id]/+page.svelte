@@ -1,6 +1,6 @@
 <script lang="ts">
-	// C3 · Painel do Mestre e C4 · Painel do Jogador. Widgets que dependem de fichas, submissões e NPCs
-	// mostram o estado vazio até os próximos lotes.
+	// C3 · Painel do Mestre e C4 · Painel do Jogador: a fila de revisão, o grupo, a Mesa (a cena que o grupo vê agora),
+	// os NPCs recentes, convites e atividade.
 	import { goto, refreshAll } from '$app/navigation';
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
 	import Girando from '#lib/componentes/ui/Girando.svelte';
@@ -68,10 +68,13 @@
 	const passos = $derived([
 		{ nome: 'Convidar jogadores', feito: jogadores.length > 0 || data.convites.length > 0, href: `/campanhas/${c.id}/membros?convidar=1` },
 		{ nome: 'Revisar configurações', feito: new Date(c.atualizada_em).getTime() - new Date(c.criada_em).getTime() > 2000, href: `/campanhas/${c.id}/configuracoes` },
-		{ nome: 'Criar conteúdo da campanha', feito: false },
-		{ nome: 'Criar NPCs', feito: false }
+		{ nome: 'Criar NPCs', feito: data.npcsRecentes.length > 0, href: `/campanhas/${c.id}/npcs` },
+		{ nome: 'Preparar a Mesa', feito: data.feito.cenas, href: `/campanhas/${c.id}/mesa` },
+		{ nome: 'Criar conteúdo da campanha', feito: data.feito.conteudo, href: `/campanhas/${c.id}/jutsus` }
 	]);
-	const mostrarPassos = $derived(mestre && !arquivada && !(passos[0].feito && passos[1].feito));
+	const mostrarPassos = $derived(mestre && !arquivada && passos.some((p) => !p.feito));
+	// clãs, jutsus e equipamentos criados esperando o Mestre (o layout conta tudo; fichas e PT têm linha própria)
+	const criacoesPendentes = $derived(Math.max(0, (data.pendentes ?? 0) - emRevisao.length - data.pedidosPt.length));
 
 	let tentando = $state(false);
 	async function tentarDeNovo() {
@@ -142,23 +145,39 @@
 				</div>
 				<span class="flex-1"></span>
 				<div class="flex flex-wrap gap-2">
-					<button type="button" class="btn-jogo btn-primario com-icone text-[13px]" disabled={arquivada || !ativas.length} title={ativas.length ? undefined : SEM_FICHAS} onclick={() => (recompensando = true)}><Icone id="acao/ic-acao-conceder" />CONCEDER RECOMPENSAS</button>
+					<a href="/campanhas/{c.id}/mesa" class="btn-jogo btn-primario com-icone text-[13px]"><Icone id="dado/ic-dado-d20" />{data.cenaAtiva ? 'ABRIR A MESA' : 'PREPARAR A MESA'}</a>
+					<button type="button" class="btn-jogo btn-contorno com-icone text-[13px]" disabled={arquivada || !ativas.length} title={ativas.length ? undefined : SEM_FICHAS} onclick={() => (recompensando = true)}><Icone id="acao/ic-acao-conceder" />CONCEDER RECOMPENSAS</button>
 					{#if !arquivada}<a href="/campanhas/{c.id}/membros?convidar=1" class="btn-jogo btn-contorno com-icone text-[13px]"><Icone id="acao/ic-acao-convidar" />CONVIDAR</a>{/if}
 					<a href="/campanhas/{c.id}/configuracoes" class="btn-jogo btn-fantasma com-icone text-[13px]"><Icone id="nav/ic-nav-configuracoes" />CONFIGURAÇÕES</a>
 				</div>
 			</div>
 		</div>
-		<button type="button" class="btn-jogo btn-primario com-icone md:hidden" disabled={arquivada || !ativas.length} title={ativas.length ? undefined : SEM_FICHAS} onclick={() => (recompensando = true)}><Icone id="acao/ic-acao-conceder" />CONCEDER RECOMPENSAS</button>
+		<div class="flex flex-col gap-2 md:hidden">
+			<a href="/campanhas/{c.id}/mesa" class="btn-jogo btn-primario com-icone"><Icone id="dado/ic-dado-d20" />{data.cenaAtiva ? 'ABRIR A MESA' : 'PREPARAR A MESA'}</a>
+			<button type="button" class="btn-jogo btn-contorno com-icone" disabled={arquivada || !ativas.length} title={ativas.length ? undefined : SEM_FICHAS} onclick={() => (recompensando = true)}><Icone id="acao/ic-acao-conceder" />CONCEDER RECOMPENSAS</button>
+		</div>
 
 		<div class="grid items-start gap-5 xl:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
 			<div class="flex min-w-0 flex-col gap-5">
 				<section class="border-2 border-[var(--vermelhao-lo)] bg-b2 sombra-painel" aria-label="Aguardando sua revisão">
 					<div class="flex items-center gap-2.5 bg-grena px-3.5 py-2.5 text-papel">
 						<Icone id="nav/ic-nav-aprovacoes" />
-						<h2 class="m-0 flex-1 font-pixel text-sm leading-none font-bold tracking-[0.1em]">AGUARDANDO SUA REVISÃO · {emRevisao.length + data.pedidosPt.length}</h2>
+						<h2 class="m-0 flex-1 font-pixel text-sm leading-none font-bold tracking-[0.1em]">AGUARDANDO SUA REVISÃO · {emRevisao.length + data.pedidosPt.length + criacoesPendentes}</h2>
 					</div>
-					{#if emRevisao.length || data.pedidosPt.length}
+					{#if emRevisao.length || data.pedidosPt.length || criacoesPendentes}
 						<ul class="m-0 flex list-none flex-col p-0">
+							{#if criacoesPendentes}
+								<li>
+									<a href="/campanhas/{c.id}/aprovacoes" class="flex items-center gap-3 border-b-2 border-b3 px-3.5 py-2 text-fg hover:bg-b3">
+										<Icone id="nav/ic-nav-aprovacoes" />
+										<span class="flex min-w-0 flex-1 flex-col gap-0.5">
+											<span class="text-[15px] leading-5 font-semibold">{criacoesPendentes === 1 ? '1 criação' : `${criacoesPendentes} criações`} para revisar</span>
+											<span class="text-[13px] leading-[18px] text-mut">Clãs, jutsus e equipamentos enviados pelo grupo</span>
+										</span>
+										<span class="font-pixel text-sm font-bold text-mut" aria-hidden="true">▸</span>
+									</a>
+								</li>
+							{/if}
 							{#each data.pedidosPt as d (d.id)}
 								<li class="flex flex-wrap items-center gap-x-3 gap-y-2 border-b-2 border-b3 px-3.5 py-2">
 									<Icone id="recurso/ic-recurso-pt" />
@@ -190,7 +209,7 @@
 						<div class="flex flex-col items-center gap-2.5 p-6 text-center">
 							<img src="/illustrations/il-cha-96.png" width="96" height="96" alt="" class="[image-rendering:pixelated]" />
 							<span class="text-base leading-[22px] font-semibold">Nada para revisar. Hora do chá, Mestre.</span>
-							<span class="text-[13px] leading-[18px] text-mut">Fichas e pedidos de PT de treino aparecem aqui. Clãs e jutsus criados chegam nos próximos lotes.</span>
+							<span class="text-[13px] leading-[18px] text-mut">Fichas, pedidos de PT de treino e criações do grupo (clãs, jutsus, equipamentos) aparecem aqui.</span>
 						</div>
 					{/if}
 				</section>
@@ -251,10 +270,9 @@
 											<span class="font-pixel text-sm font-bold text-mut" aria-hidden="true">▸</span>
 										</a>
 									{:else}
-										<div class="flex min-h-12 items-center gap-2.5 border-b-2 border-b3 px-3.5 last:border-b-0" title="Chega em um próximo lote">
-											{@render marca(false)}
-											<span class="flex-1 text-[15px] leading-5 font-medium text-mut">{p.nome}</span>
-											<span class="font-pixel text-[11px] tracking-[0.06em] text-mut">EM BREVE</span>
+										<div class="flex min-h-12 items-center gap-2.5 border-b-2 border-b3 px-3.5 last:border-b-0">
+											{@render marca(p.feito)}
+											<span class="flex-1 text-[15px] leading-5 font-medium">{p.nome}</span>
 										</div>
 									{/if}
 								</li>
@@ -288,8 +306,23 @@
 				{@render atividade()}
 
 				<section class="painel-sombra" aria-label="NPCs recentes">
-					{@render cabeca('NPCs recentes')}
-					<p class="m-0 p-3.5 text-sm leading-5 text-mut">Os NPCs da campanha chegam em um próximo lote.</p>
+					{#snippet todos()}<a href="/campanhas/{c.id}/npcs" class="link text-[13px] font-semibold">Ver todos</a>{/snippet}
+					{@render cabeca('NPCs recentes', todos)}
+					{#if data.npcsRecentes.length}
+						<ul class="m-0 flex list-none flex-col p-0">
+							{#each data.npcsRecentes as n (n.id)}
+								<li class="flex items-center gap-2.5 border-b-2 border-b3 px-3.5 py-2 last:border-b-0">
+									{#if n.arte}<img src={n.arte} alt="" width="32" height="32" class="h-8 w-8 flex-none border-2 border-b3 object-cover [image-rendering:pixelated]" />{:else}<span class="flex h-8 w-8 flex-none items-center justify-center border-2 border-b3 font-pixel text-xs font-bold text-mut">{n.nome.slice(0, 2).toUpperCase()}</span>{/if}
+									<span class="flex min-w-0 flex-1 flex-col">
+										<span class="truncate text-sm leading-5 font-semibold" title={n.nome}>{n.nome}</span>
+										<span class="truncate text-xs leading-4 text-mut">{[n.funcao, n.rank].filter(Boolean).join(' · ')}</span>
+									</span>
+								</li>
+							{/each}
+						</ul>
+					{:else}
+						<p class="m-0 p-3.5 text-sm leading-5 text-mut">Nenhum NPC ainda. Crie na página de NPCs ou importe do bestiário.</p>
+					{/if}
 				</section>
 			</div>
 		</div>
@@ -298,6 +331,16 @@
 	<!-- ================================================================ C4 · Jogador -->
 	<main class="grid min-w-0 items-start gap-5 p-4 md:p-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
 		<div class="flex min-w-0 flex-col gap-5">
+			{#if data.cenaAtiva}
+				<a href="/campanhas/{c.id}/mesa" class="flex items-center gap-3 border-2 border-acc bg-[rgba(217,168,43,.12)] px-3.5 py-3 text-fg hover:bg-[rgba(217,168,43,.2)]">
+					<Icone id="dado/ic-dado-d20" />
+					<span class="flex min-w-0 flex-1 flex-col">
+						<span class="font-pixel text-xs leading-none font-bold tracking-[0.08em] text-title">NA MESA AGORA</span>
+						<span class="truncate font-mincho text-lg leading-6 font-bold">{data.cenaAtiva.nome}{data.cenaAtiva.modo === 'narrativa' ? ' · narrativa' : ''}</span>
+					</span>
+					<span class="btn-jogo btn-primario text-[13px]">ENTRAR NA MESA</span>
+				</a>
+			{/if}
 			<section class="painel-sombra" aria-label="Meu personagem">
 				{@render cabeca('Meu personagem')}
 				{#if !minha}

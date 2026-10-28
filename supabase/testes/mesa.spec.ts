@@ -209,3 +209,14 @@ describe('cena narrativa e fundo do quadro', () => {
 		expect(await banco.como(kaito, `delete from storage.objects where name = $1 returning id`, [`${campanha}/mapa.webp`])).toHaveLength(1);
 	});
 });
+
+describe('fundo ajustável e enquadramento do NPC', () => {
+	it('o Mestre põe escala e posição no fundo, e o enquadramento no NPC', async () => {
+		await banco.como(kaito, `update mesa_cenas set fundo_escala = 24, fundo_x = -2, fundo_y = 3.5 where id = $1`, [ponte]);
+		expect(await um(banco.como(bruno, `select fundo_escala, fundo_x, fundo_y from mesa_cenas where id = $1`, [ponte]))).toEqual({ fundo_escala: 24, fundo_x: -2, fundo_y: 3.5 });
+		await expect(banco.como(kaito, `update mesa_cenas set fundo_escala = 0 where id = $1`, [ponte])).rejects.toThrow(/check/);
+		await banco.como(kaito, `update npcs set enquadramento = '{"zoom": 1.8, "x": 0.1, "y": 0.3}'::jsonb where id = $1`, [hideo]);
+		await expect(banco.como(kaito, `update npcs set enquadramento = '{"zoom": 50, "x": 0, "y": 0}'::jsonb where id = $1`, [hideo])).rejects.toThrow(/check/);
+		await banco.como(kaito, `update mesa_cenas set fundo_escala = null, fundo_x = 0, fundo_y = 0 where id = $1`, [ponte]);
+	});
+});

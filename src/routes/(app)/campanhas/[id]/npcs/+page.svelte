@@ -436,5 +436,5 @@
 {/if}
 
 {#if editando}
-	<EditorNpc npc={editando} {salvando} aoSalvar={salvar} aoExcluir={excluir} aoFechar={() => (editando = null)} />
+	<EditorNpc npc={editando} catalogo={data.catalogoJutsus} {salvando} aoSalvar={salvar} aoExcluir={excluir} aoFechar={() => (editando = null)} />
 {/if}

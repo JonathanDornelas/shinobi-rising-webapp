@@ -222,6 +222,8 @@ export type Npc = {
 	dt: number | null;
 	arte: string | null;
 	bestiario: string | null;
+	/** Ajuste do Mestre no enquadramento da arte no token (ponto em frações da imagem e zoom); null = o padrão da arte. */
+	enquadramento?: { x: number; y: number; zoom: number } | null;
 	criado_em: string;
 	atualizado_em: string;
 };
@@ -424,6 +426,10 @@ export type MesaCena = {
 	imagem: string | null;
 	fundo: string | null;
 	fundo_opacidade: number;
+	/** Quantos metros a largura do fundo cobre (null = estica na cena) e o canto de cima à esquerda, em metros. */
+	fundo_escala: number | null;
+	fundo_x: number;
+	fundo_y: number;
 	grade: boolean;
 	criada_em: string;
 };

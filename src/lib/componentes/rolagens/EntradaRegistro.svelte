@@ -12,7 +12,7 @@
 	import IconeCla, { type ResumoClaFicha } from '../cla/IconeCla.svelte';
 	import { urlRetrato } from '#lib/personagem/retrato.ts';
 	import { serializar, termos } from '#lib/rolagens/expressoes.ts';
-	import { dataLonga, hora, iniciaisQuem, marcas, NOME_TIPO, relativo, ROTULO_MARCA, type Marca } from '#lib/rolagens/registro.ts';
+	import { corDaRolagem, dataHora, dataLonga, iniciaisQuem, marcas, NOME_TIPO, relativo, ROTULO_MARCA, type Marca } from '#lib/rolagens/registro.ts';
 	import type { Rolagem } from '#lib/supabase/banco.ts';
 	import FacesDados, { modificadorDe } from './FacesDados.svelte';
 
@@ -46,6 +46,7 @@
 		const t = termos(r.expressao);
 		return t ? serializar(t) : r.expressao;
 	});
+	const corDados = $derived(corDaRolagem(r));
 	const corTotal = $derived(r.d20 === 20 ? 'var(--title)' : r.d20 === 1 ? 'var(--err)' : undefined);
 	const rosto = $derived(minha ? 'var(--vermelhao)' : doMestre ? 'var(--vermelhao-lo)' : 'var(--b3)');
 	const foto = $derived(urlRetrato(avatar?.retrato));
@@ -82,36 +83,36 @@
 </script>
 
 {#if compacta}
-	<div class="grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-2 border-2 bg-b1 px-2 py-1.5" style:border-color={r.substituida ? 'var(--b3)' : 'var(--frame)'} style:opacity={r.substituida ? '.6' : undefined}>
+	<div class="relative grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-2 border-2 bg-b1 px-2 pt-1.5 pb-4" style:border-color={r.substituida ? 'var(--b3)' : 'var(--frame)'} style:opacity={r.substituida ? '.6' : undefined}>
 		{#if foto}<img src={foto} alt="" class="h-8 w-8 border-2 object-cover" style:border-color={rosto} />{:else}<span class="flex h-8 w-8 items-center justify-center border-2 font-pixel text-xs font-bold text-mut" style:border-color={rosto}>{iniciaisQuem(r.quem)}</span>{/if}
 		<div class="flex min-w-0 flex-col gap-[3px]">
 			<div class="flex min-w-0 items-center gap-1.5">
-				<span class="truncate font-mincho text-sm leading-[18px] font-bold">{r.quem}</span>
+				<span class="min-w-0 truncate font-mincho text-sm leading-[18px] font-bold" title={r.quem}>{r.quem}</span>
 				<span class="font-pixel text-xs leading-none font-semibold whitespace-nowrap text-mut">{campanha}</span>
 			</div>
 			<span class="text-[13px] leading-[17px] font-medium">{r.rotulo}</span>
 			<div class="flex flex-wrap items-center gap-1">
 				<span class="font-pixel text-xs leading-none font-bold text-mut">{formula}</span>
-				<FacesDados detalhe={r.detalhe} tamanho={22} />
+				<FacesDados detalhe={r.detalhe} tamanho={22} cor={corDados} />
 				{#each ms as m (m)}<span class="border-2 px-1 py-0.5 font-pixel text-xs leading-none font-bold" style:background={MARCA[m].bg} style:color={MARCA[m].fg} style:border-color={MARCA[m].bd}>{ROTULO_MARCA[m]}</span>{/each}
 				{#if vis !== 'todos'}<span class="border-2 px-1 py-0.5 font-pixel text-xs leading-none font-bold" style:border-color={VIS[vis].bd} style:color={VIS[vis].c}>{VIS[vis].t}</span>{/if}
 			</div>
 		</div>
 		<div class="flex flex-col items-end gap-1">
 			<span class="t-num text-2xl leading-none" style:color={corTotal} style:text-decoration={r.substituida ? 'line-through' : undefined}>{r.total}</span>
-			<span class="font-pixel text-xs leading-none font-semibold text-mut">{hora(r.criada_em)}</span>
 		</div>
+		<span class="absolute right-2 bottom-1 text-[11px] leading-none text-mut">{dataHora(r.criada_em)}</span>
 	</div>
 {:else}
-	<div class="border-2 bg-b2 shadow-[4px_4px_0_var(--ink)]" style:border-color={aberta ? 'var(--mut)' : 'var(--frame)'} style:opacity={r.substituida ? '.65' : undefined}>
-		<button type="button" class="grid w-full grid-cols-[40px_minmax(0,1fr)_auto] items-center gap-3 px-3 py-2.5 text-left text-fg md:grid-cols-[48px_minmax(0,1fr)_120px] md:gap-3.5 md:px-3.5" aria-expanded={aberta} onclick={aoAlternar}>
+	<div class="relative border-2 bg-b2 shadow-[4px_4px_0_var(--ink)]" style:border-color={aberta ? 'var(--mut)' : 'var(--frame)'} style:opacity={r.substituida ? '.65' : undefined}>
+		<button type="button" class="grid w-full grid-cols-[40px_minmax(0,1fr)_auto] items-center gap-3 px-3 pt-2.5 pb-5 text-left text-fg md:grid-cols-[48px_minmax(0,1fr)_120px] md:gap-3.5 md:px-3.5" aria-expanded={aberta} onclick={aoAlternar}>
 			<span class="relative flex h-10 w-10 items-center justify-center border-2 bg-b1 font-pixel text-sm font-bold text-mut md:h-12 md:w-12 md:text-base" style:border-color={rosto}>
 				{#if foto}<img src={foto} alt="" class="h-full w-full object-cover" />{:else}{iniciaisQuem(r.quem)}{/if}
 				{#if avatar?.resumo}<span class="absolute -right-2.5 -bottom-2.5 h-6 w-6 overflow-hidden"><IconeCla resumo={avatar.resumo} class="h-6! w-6!" /></span>{/if}
 			</span>
 			<span class="flex min-w-0 flex-col gap-1.5">
 				<span class="flex flex-wrap items-center gap-x-2 gap-y-1">
-					<span class="font-mincho text-base leading-[22px] font-bold md:text-[17px]">{r.quem}</span>
+					<span class="max-w-full min-w-0 truncate font-mincho text-base leading-[22px] font-bold md:max-w-[60%] md:text-[17px]" title={r.quem}>{r.quem}</span>
 					{#if r.jogador && r.jogador !== r.quem}<span class="text-[13px] leading-[18px] font-medium text-mut">{r.npc_id ? `NPC · ${r.jogador}` : r.jogador}</span>{/if}
 					<span class="max-w-full truncate border-2 border-b3 bg-b1 px-1.5 py-1 text-xs leading-none font-semibold">{campanha}</span>
 					<!-- no celular, só as rolagens restritas mostram quem vê (o padrão é todos) -->
@@ -120,7 +121,7 @@
 				<span class="text-[15px] leading-5 font-semibold">{r.rotulo}</span>
 				<span class="flex flex-wrap items-center gap-1.5">
 					<span class="mr-1 font-pixel text-[13px] leading-none font-bold text-mut">{formula}</span>
-					<FacesDados detalhe={r.detalhe} />
+					<FacesDados detalhe={r.detalhe} cor={corDados} />
 					{#each ms as m (m)}<span class="inline-flex items-center border-2 px-1.5 py-[3px] font-pixel text-xs leading-none font-bold tracking-[0.05em]" style:background={MARCA[m].bg} style:color={MARCA[m].fg} style:border-color={MARCA[m].bd}>{ROTULO_MARCA[m]}</span>{/each}
 					{#if r.anterior_total !== null}<span title="Resultado antes do Ponto de Destino" class="text-[13px] leading-none font-medium text-mut line-through">{r.anterior_total}</span>{/if}
 					{#if r.substituida}<span class="font-pixel text-xs leading-none font-bold text-mut">RE-ROLADA COM PD</span>{/if}
@@ -128,9 +129,9 @@
 			</span>
 			<span class="flex flex-col items-end gap-1.5">
 				<span class="t-num text-[28px] leading-none md:text-4xl" style:color={corTotal} style:text-decoration={r.substituida ? 'line-through' : undefined}>{r.total}</span>
-				<span class="font-pixel text-sm leading-none font-bold">{hora(r.criada_em)}</span>
 				{#if relativo(r.criada_em, agora)}<span class="text-xs leading-none font-medium text-mut">{relativo(r.criada_em, agora)}</span>{/if}
 			</span>
+			<span class="absolute right-3 bottom-1.5 text-[11px] leading-none text-mut md:right-3.5">{dataHora(r.criada_em)}</span>
 		</button>
 		{#if aberta}
 			<div class="grid gap-5 border-t-2 border-b3 px-3.5 pt-3 pb-3.5 md:grid-cols-2 md:pl-[76px]">

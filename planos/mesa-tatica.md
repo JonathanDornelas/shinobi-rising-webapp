@@ -785,6 +785,13 @@ Para depois do design. Toda migração precisa do seu OK antes de ir para a prod
 
 **Ficha:** o Deslocamento aparece na ficha (P3) e no cartão do bestiário: 10 m, +5 m da Velocidade, ×3 com o 5º Portão aberto.
 
+**Depois da L11 (fundo, ping, enquadramento, cone)**
+- Fundo do quadro: `mesa_cenas.fundo_escala` (largura em metros; null = esticado na cena), `fundo_x` e `fundo_y` (posição em metros). A ferramenta MOVER O FUNDO arrasta a imagem sob a grade e grava ao soltar.
+- Ping: Alt+clique com qualquer ferramenta, ou clique simples com o Apontar. Vai por `broadcast` (evento `ping`) e some em 2,5 s.
+- Enquadramento das artes do bestiário no token: `src/lib/bestiario/foco.json` guarda, por arte, o ponto (x, y em frações), o zoom e as dimensões. `npcs.enquadramento` (`{x, y, zoom}`) é o ajuste do Mestre no editor de NPC. A imagem sempre cobre o círculo do token.
+- Jutsus em duas partes: ATAQUE (ou USAR) paga o custo e rola o ataque; DANO (ou CURA) rola o efeito nos alvos da régua. Um 20 natural no ataque deixa o DANO seguinte em crítico.
+- Cone: começa na borda do espaço de quem lança, e um quadrado entra quando a maior parte dele (3 de 5 pontos) fica dentro do cone.
+
 ---
 
 ## 9. Pedido para o Claude Design

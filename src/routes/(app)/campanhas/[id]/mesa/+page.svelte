@@ -8,7 +8,7 @@
 	import { MOLDURAS, molduraPorId } from '#lib/mesa/molduras.ts';
 	import { Mesa, type Ferramenta } from '#lib/mesa/mesa.svelte.ts';
 	import { temRegua } from '#lib/mesa/regua.ts';
-	import type { FichaMesa, JutsuMesa } from '#lib/mesa/tipos.ts';
+	import type { ArmaMesa, FichaMesa, JutsuMesa, RolagemPronta } from '#lib/mesa/tipos.ts';
 	import { UiMesa, calcularMolde, nomeCurto } from '#lib/mesa/ui.svelte.ts';
 	import { pvDosMembros, recursoDosMembros } from '#lib/npcs/dados.ts';
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
@@ -16,6 +16,7 @@
 	import type { Json, MesaCena, MesaToken, Npc, Rolagem } from '#lib/supabase/banco.ts';
 	import { IMAGENS_DO_LIVRO, enviarImagemMesa, urlImagemMesa } from '#lib/mesa/imagens.ts';
 	import { corElemento, lerDados } from '#lib/mesa/hud.ts';
+	import { focoDaArte, type FocoArte } from '#lib/bestiario/foco.ts';
 	import DadoHud from '#lib/componentes/mesa/DadoHud.svelte';
 	import ElencoMesa, { type ItemNpc } from '#lib/componentes/mesa/ElencoMesa.svelte';
 	import FichaRapida, { type AcoesFicha, type DadosFicha } from '#lib/componentes/mesa/FichaRapida.svelte';
@@ -145,6 +146,11 @@
 		}
 		return null;
 	}
+	/** A arte do bestiário no token: o ponto e o zoom do mapa de foco, ou o ajuste do Mestre no NPC. */
+	function focoDe(t: MesaToken): FocoArte | null {
+		const n = t.npc_id ? npcDe(t) : null;
+		return focoDaArte(fotoDe(t), n?.enquadramento);
+	}
 	function subDe(t: MesaToken) {
 		const f = fichaDe(t);
 		if (f) return f.sub;
@@ -199,8 +205,24 @@
 		}
 	}
 	const pvNpc = (n: Npc, membro: number, pv: number) => recursoNpc(n, membro, 'pv', pv);
-	function rolar(t: MesaToken, r: { expr: string; rotulo: string; partes: [string, string][] }, tipo: 'teste' | 'ataque' | 'dano' | 'cura' | 'iniciativa', d20: boolean, origem = 'Mesa') {
-		return rolador.rolar({ campanha, expressao: r.expr, rotulo: r.rotulo, personagem: t.personagem_id, npc: data.mestre ? t.npc_id : null, d20, tipo, origem, partes: r.partes });
+	function rolar(t: MesaToken, r: { expr: string; rotulo: string; partes: [string, string][] }, tipo: 'teste' | 'ataque' | 'dano' | 'cura' | 'iniciativa', d20: boolean, origem = 'Mesa', critico = false) {
+		return rolador.rolar({ campanha, expressao: r.expr, rotulo: r.rotulo, personagem: t.personagem_id, npc: data.mestre ? t.npc_id : null, d20, tipo, origem, partes: r.partes, critico });
+	}
+	// o último ataque de cada token com cada ação: um 20 natural deixa o DANO seguinte em crítico (dados dobrados)
+	const criticos = new Set<string>();
+	async function rolarAtaque(t: MesaToken, chave: string, r: RolagemPronta, origem = 'Mesa') {
+		const feita = await rolar(t, r, 'ataque', true, origem);
+		if (feita?.d20 === 20) criticos.add(`${t.id}:${chave}`);
+		else criticos.delete(`${t.id}:${chave}`);
+	}
+	function rolarDano(t: MesaToken, chave: string, r: RolagemPronta, tipo: 'dano' | 'cura' = 'dano', origem = 'Mesa') {
+		const critico = tipo === 'dano' && criticos.delete(`${t.id}:${chave}`);
+		return rolar(t, critico ? { ...r, rotulo: `${r.rotulo} (crítico)`.slice(0, 80) } : r, tipo, false, origem, critico);
+	}
+	/** Arma: ATAQUE e DANO separados. */
+	function atacar(t: MesaToken, a: ArmaMesa, parte: 'ataque' | 'dano') {
+		if (parte === 'ataque') return rolarAtaque(t, a.nome, a.ataque);
+		if (a.dano) return rolarDano(t, a.nome, a.dano);
 	}
 	// ficha completa numa janela grande: o jogador abre a dele, o Mestre qualquer uma; minimizada, fica montada
 	let fichaCompleta = $state<{ pid: string; nome: string; min: boolean } | null>(null);
@@ -265,12 +287,30 @@
 		ui.aneis = null;
 		if (celular) ui.fichas = [];
 	}
-	async function usarJutsu(t: MesaToken, j: JutsuMesa) {
+	/**
+	 * Usar um jutsu em partes: 'ataque' paga o custo, rola o ataque (se houver) e aplica o resto (crescer, 1×/cena);
+	 * 'dano' rola o dano ou a cura, com os alvos da régua; 'tudo' faz as duas (a ficha completa usa).
+	 */
+	async function usarJutsu(t: MesaToken, j: JutsuMesa, parte: 'ataque' | 'dano' | 'tudo' = 'tudo') {
+		const m = ui.mira?.jutsu.slug === j.slug && ui.mira.lancador === t.id ? calcularMolde(ui.mira, mesa, mesa.tokens.filter((x) => x.visivel || data.mestre)) : null;
+		const alvos = m?.quem.length ? `Mesa · alvos: ${m.quem.map((x) => nomeCurto(x.nome)).join(', ')}`.slice(0, 60) : 'Mesa';
+		if (parte !== 'dano' && !(await pagarEAtacar(t, j, alvos))) return;
+		if (parte !== 'ataque') {
+			if (j.dano) await rolarDano(t, j.slug, { ...j.dano, rotulo: j.resistencia && !j.ataque ? `${j.dano.rotulo} (${j.resistencia.split('(')[0].trim()})`.slice(0, 80) : j.dano.rotulo }, 'dano', alvos);
+			else if (j.cura) await rolarDano(t, j.slug, { expr: j.cura, rotulo: `Cura · ${j.nome}`, partes: [] }, 'cura', alvos);
+		}
+		// a régua fica até o fim do jutsu: depois do dano, ou já no ataque quando não há dano nem cura
+		if (parte === 'ataque' && (j.dano || j.cura)) return;
+		if (m && (!m.ok || j.turnos === undefined)) ui.mira = null;
+		if (m && m.ok && j.turnos !== undefined) ui.avisar('Use “Deixar na cena” para o efeito ficar no quadro.');
+	}
+	/** Paga o custo (personagem ou NPC), rola o ataque e aplica o que vem junto; false quando falta recurso. */
+	async function pagarEAtacar(t: MesaToken, j: JutsuMesa, alvos: string) {
 		const f = fichaDe(t);
 		if (f) {
 			const k = j.unidade === 'PE' ? 'pe' : 'pc';
 			const atual = f.estado[k] ?? f.max[k];
-			if (atual < j.custo) return void toasts.mostrar(`Faltam ${j.custo - atual} ${j.unidade} para ${j.nome}.`, 'aviso');
+			if (atual < j.custo) return void toasts.mostrar(`Faltam ${j.custo - atual} ${j.unidade} para ${j.nome}.`, 'aviso'), false;
 			const novo = atual - j.custo;
 			await estadoPc(f, { [k]: novo, ...(k === 'pe' && novo === 0 ? { fadiga: Math.min(5, (f.estado.fadiga ?? 0) + 1) } : {}) }, `−${j.custo} ${j.unidade} · ${j.nome} (Mesa)`);
 		}
@@ -280,22 +320,17 @@
 			const k = j.unidade === 'PE' ? 'pe' : 'pc';
 			if (n[k] > 0) {
 				const atual = recursoDosMembros(n, k)[(t.membro ?? 1) - 1];
-				if (atual < j.custo) return void toasts.mostrar(`Faltam ${j.custo - atual} ${j.unidade} para ${j.nome}.`, 'aviso');
+				if (atual < j.custo) return void toasts.mostrar(`Faltam ${j.custo - atual} ${j.unidade} para ${j.nome}.`, 'aviso'), false;
 				await recursoNpc(n, t.membro ?? 1, k, atual - j.custo);
 			}
 		}
-		const m = ui.mira?.jutsu.slug === j.slug && ui.mira.lancador === t.id ? calcularMolde(ui.mira, mesa, mesa.tokens.filter((x) => x.visivel || data.mestre)) : null;
-		const alvos = m?.quem.length ? `Mesa · alvos: ${m.quem.map((x) => nomeCurto(x.nome)).join(', ')}`.slice(0, 60) : 'Mesa';
-		if (j.ataque) await rolar(t, j.ataque, 'ataque', true, alvos);
-		if (j.dano) await rolar(t, { ...j.dano, rotulo: j.resistencia && !j.ataque ? `${j.dano.rotulo} (${j.resistencia.split('(')[0].trim()})`.slice(0, 80) : j.dano.rotulo }, 'dano', false, alvos);
-		else if (j.cura) await rolar(t, { expr: j.cura, rotulo: `Cura · ${j.nome}`, partes: [] }, 'cura', false, alvos);
+		if (j.ataque) await rolarAtaque(t, j.slug, j.ataque, alvos);
 		if (j.porCena) ui.usadas = [...ui.usadas, `${t.id}:${j.slug}`];
 		// técnicas de crescer (Baika no Jutsu, Lobo de Duas Cabeças): o token cresce pela duração e volta sozinho
 		const agora = mesa.tokens.find((x) => x.id === t.id) ?? t;
 		if (j.tamanho && j.tamanho > agora.tamanho && (await mesa.crescer(agora, j.tamanho, j.turnos ?? null)))
 			ui.avisar(`${nomeCurto(t.nome)} ficou ${{ 3: 'Grande', 6: 'Enorme', 10: 'Colossal' }[j.tamanho]} (${j.tamanho}×${j.tamanho})${j.turnos ? ` por ${j.turnos} turnos` : ''}. Volta sozinho ao fim, ou em VOLTAR AO NORMAL na ficha.`);
-		if (m && (!m.ok || j.turnos === undefined)) ui.mira = null;
-		if (m && m.ok && j.turnos !== undefined) ui.avisar('Use “Deixar na cena” para o efeito ficar no quadro.');
+		return true;
 	}
 	/** Canto livre mais perto de (x, y) para um token de n × n quadrados, dentro da cena. */
 	function lugarLivre(x: number, y: number, n = 1) {
@@ -317,6 +352,7 @@
 		token: (t, patch) => mesa.atualizarToken(t.id, patch),
 		medirJutsu,
 		usarJutsu,
+		atacar,
 		verJutsu,
 		voltarAoNormal: (t) => mesa.voltarAoNormal(t),
 		abrirFichaCompleta,
@@ -418,6 +454,8 @@
 		ui.modal = null;
 		ui.avisar(todos ? 'Todo o grupo joga nesta cena.' : `${escolhidos.length} ${escolhidos.length === 1 ? 'personagem joga' : 'personagens jogam'} nesta cena.`);
 	}
+	// o aviso de cena vazia pode ser fechado; o grupo entra depois pelo Elenco ou pelo menu da cena
+	let vazioFechado = $state<string | null>(null);
 	async function colocarOGrupo() {
 		const base = quadro?.centroDaVista() ?? [5, 5];
 		for (const p of participantes) await colocar(JSON.stringify({ tipo: 'pc', id: p.id }), base[0], base[1]);
@@ -486,7 +524,7 @@
 		if (!cena) return;
 		const { data: c, error } = await supabase()
 			.from('mesa_cenas')
-			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [], modo: cena.modo, imagem: cena.imagem, fundo: cena.fundo, fundo_opacidade: cena.fundo_opacidade, grade: cena.grade })
+			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [], modo: cena.modo, imagem: cena.imagem, fundo: cena.fundo, fundo_opacidade: cena.fundo_opacidade, fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, grade: cena.grade })
 			.select('*')
 			.single();
 		if (error || !c) return void toasts.mostrar('Não foi possível duplicar a cena.', 'erro');
@@ -551,6 +589,7 @@
 				mesa.enviar('regua', null, true);
 			}
 			else if (ui.aneis) ui.aneis = null;
+			else if (ui.ferramenta === 'fundo') ui.escolher('mover');
 			else ui.sel = null;
 			return;
 		}
@@ -608,7 +647,7 @@
 		{ id: 'mover', nome: 'Mover', tecla: 'V', d: 'M5 3v16l4-4 3 7 3-1-3-7h6z' },
 		{ id: 'medir', nome: 'Medir', tecla: 'M', d: 'M2 16L16 2l6 6L8 22z M7 11l2 2 M10 8l2 2 M13 5l2 2' },
 		{ id: 'lapis', nome: 'Lápis', tecla: 'L', d: 'M3 21l1-5L16 4l4 4L8 20z M14 6l4 4' },
-		{ id: 'apontar', nome: 'Apontar', tecla: 'P', d: 'M12 3v4 M12 17v4 M3 12h4 M17 12h4 M12 8a4 4 0 1 0 0.01 0' },
+		{ id: 'apontar', nome: 'Apontar (clique: ping; Alt+clique pinga com qualquer ferramenta)', tecla: 'P', d: 'M12 3v4 M12 17v4 M3 12h4 M17 12h4 M12 8a4 4 0 1 0 0.01 0' },
 		{ id: 'borracha', nome: 'Borracha', tecla: 'E', d: 'M9 20h12 M3 15l9-9 6 6-8 8H8z M8 10l6 6' }
 	];
 	// terreno difícil (cap. 4): só o Mestre marca; arrastar sobre o marcado apaga
@@ -694,7 +733,8 @@
 						<button type="button" class="min-h-9 border-2 border-field px-2.5 font-pixel text-xs font-bold" onclick={deixarNaCena}>DEIXAR NA CENA</button>
 					{/if}
 					{#if minhaMira}
-						<button type="button" class="btn-jogo btn-primario min-h-9 {molde.ok ? '' : 'opacity-80'}" title={j.custo ? `Gasta ${j.unidade} e rola. Fora do alcance é aviso, não bloqueio.` : 'Rola o efeito. Fora do alcance é aviso, não bloqueio.'} onclick={() => usarJutsu(molde.lancador, j)}>{j.rank ? 'USAR JUTSU' : 'USAR'}</button>
+						<button type="button" class="btn-jogo btn-primario min-h-9 {molde.ok ? '' : 'opacity-80'}" title={j.custo ? `Gasta ${j.custo} ${j.unidade}${j.ataque ? ' e rola o ataque' : ''}. Fora do alcance é aviso, não bloqueio.` : 'Fora do alcance é aviso, não bloqueio.'} onclick={() => usarJutsu(molde.lancador, j, 'ataque')}>{j.ataque ? 'ATAQUE' : 'USAR'}</button>
+						{#if j.dano || j.cura}<button type="button" class="btn-jogo min-h-9 border-2 border-field" title="Rola o {j.dano ? 'dano (crítico se o ataque foi 20 natural)' : 'a cura'} nos alvos da régua" onclick={() => usarJutsu(molde.lancador, j, 'dano')}>{j.dano ? 'DANO' : 'CURA'}</button>{/if}
 					{/if}
 				</div>
 			</section>
@@ -764,8 +804,9 @@
 			<span class="text-sm leading-5 text-mut">{data.mestre ? 'Crie a primeira cena da campanha: a ponte, o esconderijo, a floresta.' : 'Quando o Mestre abrir uma cena, ela aparece aqui.'}</span>
 			{#if data.mestre && !data.arquivada}<button type="button" class="btn-jogo btn-primario min-h-11" onclick={() => (ui.modal = { tipo: 'nova' })}>CRIAR CENA</button>{/if}
 		</div>
-	{:else if !mesa.tokens.length}
+	{:else if !mesa.tokens.length && vazioFechado !== cena.id}
 		<div class="absolute top-1/2 left-1/2 z-[4] flex w-[380px] max-w-[calc(100%-32px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2.5 border-2 border-b3 bg-b2 p-6 text-center shadow-[4px_4px_0_var(--b0)]">
+			<button type="button" class="absolute top-1 right-1 h-9 w-9 font-pixel text-sm" aria-label="Fechar" title="Fechar (o grupo também entra pelo Elenco ou em Configurações da cena)" onclick={() => (vazioFechado = cena.id)}>✕</button>
 			<img src="/illustrations/il-sem-resultados-96.png" width="96" height="96" alt="" class="[image-rendering:pixelated]" />
 			<span class="font-mincho text-xl leading-[26px] font-bold">{data.mestre ? 'Cena vazia' : 'O Mestre ainda está montando a cena'}</span>
 			<span class="text-sm leading-5 text-mut">{data.mestre ? 'Arraste personagens e NPCs do Elenco para o quadro.' : 'Você pode entrar com o seu personagem quando quiser.'}</span>
@@ -797,7 +838,7 @@
 {#snippet fichasAbertas()}
 	{#each ui.fichas.filter((f) => !f.min) as janela (janela.token)}
 		{@const t = mesa.tokens.find((k) => k.id === janela.token)}
-		{#if t}<FichaRapida {mesa} {ui} token={t} {janela} dados={dadosDe(t)} {acoes} foto={fotoDe(t)} {celular} />{/if}
+		{#if t}<FichaRapida {mesa} {ui} token={t} {janela} dados={dadosDe(t)} {acoes} foto={fotoDe(t)} foco={focoDe(t)} {celular} />{/if}
 	{/each}
 {/snippet}
 
@@ -815,7 +856,7 @@
 			{#if narrativa}
 				{@render telaNarrativa()}
 			{:else}
-				<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} onSoltar={colocar} />
+				<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} {focoDe} onSoltar={colocar} />
 				{@render barras()}
 				{@render sobreQuadro()}
 			{/if}
@@ -825,7 +866,10 @@
 						<span class="font-mincho text-[15px] leading-5 font-bold">{ui.mira.jutsu.nome}</span>
 						<span class="font-pixel text-xs leading-none font-bold text-mut">{ui.mira.jutsu.regua.rotuloAlcance} · {molde.dist} m · {molde.ok ? (molde.quem.length ? `${molde.quem.length} na área` : 'toque no quadro') : 'fora do alcance'}</span>
 						<div class="flex gap-1.5">
-							{#if minhaMira}<button type="button" class="btn-jogo btn-primario min-h-11 flex-1" onclick={() => usarJutsu(molde.lancador, ui.mira!.jutsu)}>USAR</button>{/if}
+								{#if minhaMira}
+									<button type="button" class="btn-jogo btn-primario min-h-11 flex-1" onclick={() => usarJutsu(molde.lancador, ui.mira!.jutsu, 'ataque')}>{ui.mira.jutsu.ataque ? 'ATAQUE' : 'USAR'}</button>
+									{#if ui.mira.jutsu.dano || ui.mira.jutsu.cura}<button type="button" class="btn-jogo min-h-11 flex-1 border-2 border-field" onclick={() => usarJutsu(molde.lancador, ui.mira!.jutsu, 'dano')}>{ui.mira.jutsu.dano ? 'DANO' : 'CURA'}</button>{/if}
+								{/if}
 							<button type="button" class="min-h-11 w-12 border-2 border-field font-pixel text-sm" aria-label="Cancelar régua" onclick={() => (ui.mira = null)}>✕</button>
 						</div>
 					</div>
@@ -935,7 +979,14 @@
 					<button type="button" class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-left text-sm font-semibold" onclick={() => ((ui.modal = { tipo: 'imagem', alvo: 'fundo' }), (ui.pop = null))}><span class="font-pixel text-sm font-bold text-mut">▦</span>Fundo do quadro · {nomeImagem(cena.fundo) ?? 'nenhum'}</button>
 					{#if cena.fundo}
 						<label class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-sm font-semibold">Opacidade do fundo<input type="range" min="10" max="100" step="5" value={Math.round(cena.fundo_opacidade * 100)} onchange={(e) => mesa.patchCena({ fundo_opacidade: +e.currentTarget.value / 100 })} class="min-w-0 flex-1" /></label>
+						<!-- tamanho e posição do fundo: esticado na cena, ou com a largura em metros e arrastado sob a grade -->
+						<label class="flex min-h-10 items-center gap-2.5 border-t-2 border-b2 px-3 text-sm font-semibold"><input type="checkbox" checked={!cena.fundo_escala} onchange={(e) => mesa.patchCena(e.currentTarget.checked ? { fundo_escala: null, fundo_x: 0, fundo_y: 0 } : { fundo_escala: cena.largura, fundo_x: 0, fundo_y: 0 })} />Esticar o fundo na cena</label>
+						{#if cena.fundo_escala}
+							<label class="flex min-h-10 items-center gap-2.5 px-3 text-sm font-semibold">Largura<input type="range" min="5" max={Math.max(200, cena.largura * 3)} step="1" value={cena.fundo_escala} onchange={(e) => mesa.patchCena({ fundo_escala: +e.currentTarget.value })} class="min-w-0 flex-1" /><span class="font-pixel text-xs">{cena.fundo_escala} m</span></label>
+							<button type="button" class="mx-3 mb-2 min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" onclick={() => ((ui.pop = null), ui.escolher('fundo'), ui.avisar('Arraste para mover o fundo; Esc volta a mover os tokens.'))}>MOVER O FUNDO</button>
+						{/if}
 					{/if}
+					<button type="button" class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-left text-sm font-semibold" disabled={!participantes.length} onclick={() => ((ui.pop = null), colocarOGrupo())}><span class="font-pixel text-sm font-bold text-mut">▸</span>Colocar o grupo na cena</button>
 					<button type="button" class="min-h-11 border-t-2 border-b2 px-3 text-left text-sm font-semibold text-link" onclick={() => {
 						if (!limparTodosConfirma) return void (limparTodosConfirma = true);
 						mesa.limparTracos(true);
@@ -1001,7 +1052,7 @@
 			{@render trilho()}
 
 			<div class="relative min-w-0 flex-1 overflow-hidden bg-b0">
-				<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} onSoltar={colocar} />
+				<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} {focoDe} onSoltar={colocar} />
 				{@render barras()}
 				{@render sobreQuadro()}
 				<div class="absolute right-3 bottom-3 z-[6] flex items-center border-2 border-b3 bg-b0 shadow-[4px_4px_0_#000]">
@@ -1120,7 +1171,7 @@
 
 {#if ui.modal}
 	<div class="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(10,8,7,.72)] p-4" role="presentation" onclick={(e) => e.target === e.currentTarget && (ui.modal = null)}>
-		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'imagem' ? 'w-[560px]' : 'w-[440px]'} max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_#000]">
+		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'imagem' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]'} max-h-full max-w-full flex-col overflow-y-auto border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_#000]">
 			{#if ui.modal.tipo === 'imagem' && cena}
 				{@const alvo = ui.modal.alvo}
 				{@const atual = cena[alvo]}

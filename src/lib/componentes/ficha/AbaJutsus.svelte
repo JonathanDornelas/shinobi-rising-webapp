@@ -23,6 +23,9 @@
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 	import type { JutsuMesa } from '#lib/mesa/tipos.ts';
 	import TooltipAcao from '../mesa/TooltipAcao.svelte';
+	import DadoHud from '../mesa/DadoHud.svelte';
+	import { corElemento } from '#lib/mesa/hud.ts';
+	import { reguaDoCard } from '#lib/mesa/regua.ts';
 
 	/**
 	 * Dentro da Mesa: MEDIR liga a régua do jutsu (e a janela da ficha minimiza), e USAR vai pelo caminho da Mesa
@@ -39,8 +42,35 @@
 	// tooltip de ação na Mesa: ao lado da linha, depois de um instante com o mouse parado
 	let dica = $state<{ acao: JutsuMesa; ancora: DOMRect } | null>(null);
 	let dicaTimer: ReturnType<typeof setTimeout> | undefined;
+	/** O jutsu no formato do tooltip, montado da ficha (fora da Mesa). */
+	function hudLocal(j: JutsuFicha): JutsuMesa {
+		const rr = rolagens(j);
+		const c = f.custo(j);
+		const v = (k: string) => j.info.find((i) => i.k === k)?.v ?? '';
+		const res = v('Resistência');
+		return {
+			slug: j.slug,
+			nome: j.nome,
+			rank: j.rank,
+			custo: c.final,
+			unidade: c.unidade === 'PE' ? 'PE' : 'PC',
+			alcance: v('Alcance'),
+			area: v('Área'),
+			regua: reguaDoCard(j.info),
+			resistencia: res && res !== '—' ? res : null,
+			ataque: rr.ataque,
+			dano: rr.dano,
+			cura: rr.cura,
+			tipo: j.tipo,
+			elemento: j.elemento,
+			acao: v('Ação'),
+			duracao: v('Duração'),
+			traducao: j.traducao,
+			efeito: j.efeito
+		};
+	}
 	function mostrarDica(j: JutsuFicha, linha: HTMLElement) {
-		const acao = mesa?.hud(j);
+		const acao = mesa?.hud(j) ?? hudLocal(j);
 		if (!acao || matchMedia('(hover: none)').matches) return;
 		clearTimeout(dicaTimer);
 		dicaTimer = setTimeout(() => (dica = { acao, ancora: linha.getBoundingClientRect() }), 400);
@@ -269,7 +299,8 @@
 		{#each visiveis as j (j.slug)}
 			{@const t = TIPO_JUTSU[j.tipo as TipoJutsu] ?? TIPO_JUTSU.Ninjutsu}
 			{@const ab = aberto === j.slug}
-			<li class="border-2 bg-b2 sombra-painel" style:border-color={ab ? 'var(--mut)' : 'var(--frame)'} onmouseenter={(e) => mesa && mostrarDica(j, e.currentTarget)} onmouseleave={esconderDica}>
+			{@const rr = rolagens(j)}
+			<li class="border-2 bg-b2 sombra-painel" style:border-color={ab ? 'var(--mut)' : 'var(--frame)'} onmouseenter={(e) => mostrarDica(j, e.currentTarget)} onmouseleave={esconderDica}>
 				<div class="grid grid-cols-[4px_32px_minmax(0,1fr)_auto_36px] items-center gap-x-2.5 gap-y-2 py-2 pr-1.5 md:grid-cols-[4px_32px_minmax(0,1fr)_auto_120px_130px_40px] md:gap-x-3">
 					<div class="-my-2 self-stretch max-md:row-span-2" style:background={t.cor}></div>
 					<Icone id="rank/ic-rank-{j.rank.toLowerCase()}" alt="Rank {j.rank}" />
@@ -278,6 +309,13 @@
 							<span class="font-mincho text-[17px] leading-[22px] font-bold">{j.nome} <span class="font-pixel text-xs text-mut max-sm:hidden">{ab ? "▾" : "▸"}</span></span>
 							<Glosa texto={j.traducao} class="text-[13px] leading-[18px]" />
 						</span>
+						{#if rr.ataque || rr.dano || rr.cura}
+							{@const el = corElemento(j.elemento, j.nome)}
+							<span class="flex flex-wrap items-center gap-x-2.5 gap-y-0.5">
+								{#if rr.ataque}<DadoHud expr={rr.ataque.expr} tamanho={18} />{/if}
+								{#if rr.dano}<DadoHud expr={rr.dano.expr} cor={el?.cor} tamanho={18} />{:else if rr.cura}<DadoHud expr={rr.cura} cor="#7FB069" tamanho={18} />{/if}
+							</span>
+						{/if}
 						<span class="truncate text-[13px] leading-[18px] text-mut">{j.origem} · {j.efeito}</span>
 					</button>
 					<span class="inline-flex h-9 items-center gap-1 border-2 border-ink pr-2.5 text-[13px] font-semibold max-md:hidden" style:background={t.cor} style:color={t.texto}><Icone id={t.icone} />{j.tipo}</span>

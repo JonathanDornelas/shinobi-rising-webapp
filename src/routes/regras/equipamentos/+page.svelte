@@ -7,6 +7,8 @@
 	import Rodape from '#lib/componentes/shell/Rodape.svelte';
 	import Dica from '#lib/componentes/ui/Dica.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
+	import DadoHud from '#lib/componentes/mesa/DadoHud.svelte';
+	import { lerDados } from '#lib/mesa/hud.ts';
 	import { normalizar } from '#lib/livro/texto.ts';
 	import type { PageProps } from './$types';
 
@@ -90,7 +92,7 @@
 									{@const fundo = i % 2 ? 'bg-b2' : 'bg-b1'}
 									<tr id={a.slug} class="scroll-mt-24 {fundo}">
 										<td class="sticky left-0 z-[1] px-3 py-1.5 shadow-[2px_0_0_var(--b3)] md:static md:shadow-none {fundo}"><span class="flex items-center gap-2 font-semibold"><Icone id={a.icone} />{a.nome}</span></td>
-										<td class="t-num px-3 py-1.5">{a.dano}</td>
+										<td class="px-3 py-1.5">{@render danoHud(a.dano)}</td>
 										<td class="px-3 py-1.5">{a.alcance}</td>
 										<td class="px-3 py-1.5"><span class="inline-block border-2 border-b3 px-1.5 py-1 text-xs leading-none font-semibold whitespace-nowrap">{peso(a.peso)}</span></td>
 										<td class="px-3 py-1.5">
@@ -138,7 +140,7 @@
 								<tr id={e.slug} class="scroll-mt-24 {i % 2 ? 'bg-b2' : 'bg-b1'}">
 									<td class="px-3 py-1.5"><span class="flex items-center gap-2 font-semibold"><Icone id={e.icone} />{e.nome}</span></td>
 									<td class="px-3 py-1.5 italic">{e.traducao}</td>
-									<td class="t-num px-3 py-1.5">{e.dano}</td>
+									<td class="px-3 py-1.5">{@render danoHud(e.dano)}</td>
 									<td class="px-3 py-1.5"><span class="inline-block border-2 border-b3 px-1.5 py-1 text-xs leading-none font-semibold whitespace-nowrap">{peso(e.peso)}</span></td>
 									<td class="px-3 py-1.5">{e.habilidade}</td>
 								</tr>
@@ -159,3 +161,11 @@
 </main>
 
 <Rodape />
+
+<!-- HUD: o dano da arma com a arte do dado e a faixa (1~6) -->
+{#snippet danoHud(dano: string)}
+	{@const f = lerDados(dano.replace(/\s+/g, ''))}
+	{#if f}
+		<span class="inline-flex items-center gap-2 whitespace-nowrap"><DadoHud expr={dano.replace(/\s+/g, '')} tamanho={20} /><span class="text-xs text-mut">{f.min}~{f.max}</span></span>
+	{:else}<span class="t-num">{dano}</span>{/if}
+{/snippet}

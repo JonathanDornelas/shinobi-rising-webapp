@@ -1,5 +1,6 @@
 // Retrato do ninja: arquivo quadrado (256×256, webp) no Storage, em retratos/<id da ficha>/<nome>.webp.
 import { PUBLIC_SUPABASE_URL } from '$app/env/public';
+import { codificarWebp } from '#lib/imagens/comprimir.ts';
 
 export const LADO_RETRATO = 256;
 /** O bucket aceita até 256 KB; o recorte em webp fica bem abaixo disso. */
@@ -29,7 +30,7 @@ export async function recortar(img: HTMLImageElement, e: Enquadramento): Promise
 	const h = img.naturalHeight * escala;
 	ctx.imageSmoothingQuality = 'high';
 	ctx.drawImage(img, (LADO_RETRATO - w) / 2 + e.x * LADO_RETRATO, (LADO_RETRATO - h) / 2 + e.y * LADO_RETRATO, w, h);
-	return new Promise((ok, falha) => canvas.toBlob((b) => (b ? ok(b) : falha(new Error('Não foi possível gerar a imagem.'))), 'image/webp', 0.86));
+	return codificarWebp(canvas);
 }
 
 /** Limita o deslocamento para a imagem sempre cobrir o quadrado inteiro. */

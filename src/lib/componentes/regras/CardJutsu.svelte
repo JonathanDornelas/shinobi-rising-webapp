@@ -8,6 +8,9 @@
 	import BadgeTipo from './BadgeTipo.svelte';
 	import ChipElemento from './ChipElemento.svelte';
 	import SeloRank from './SeloRank.svelte';
+	import DadoHud from '../mesa/DadoHud.svelte';
+	import { corElemento, lerDados } from '#lib/mesa/hud.ts';
+	import { curaDoEfeito, danoDoEfeito } from '#lib/rolagens/expressoes.ts';
 
 	interface Props {
 		jutsu: Jutsu;
@@ -19,6 +22,12 @@
 	}
 	let { jutsu, rodape = true, semSombra = false, acoes }: Props = $props();
 	const cor = $derived(TIPO_JUTSU[jutsu.tipo].cor);
+	// HUD: o dano (ou a cura) do efeito com o dado na cor do elemento e a faixa "4~14 de dano"
+	const efeitoTxt = $derived((jutsu.efeito ?? []).map((t) => t.t).join(''));
+	const dano = $derived(danoDoEfeito(efeitoTxt));
+	const cura = $derived(dano ? null : curaDoEfeito(efeitoTxt));
+	const faixa = $derived(lerDados(dano?.dados ?? cura ?? ''));
+	const el = $derived(corElemento(jutsu.elemento, jutsu.nome));
 </script>
 
 <article id="jutsu-{jutsu.slug}" class="@container flex scroll-mt-20 border-2 border-[var(--vermelhao-lo)] bg-b2" class:sombra-painel={!semSombra}>
@@ -38,8 +47,16 @@
 			</div>
 		</header>
 		<div class="flex flex-col gap-3 p-3.5 @[520px]:gap-3.5 @[520px]:p-4">
-			{#if jutsu.elemento}
-				<div class="flex flex-wrap items-center gap-2.5"><ChipElemento elemento={jutsu.elemento} /></div>
+			{#if jutsu.elemento || faixa}
+				<div class="flex flex-wrap items-center gap-x-3.5 gap-y-2">
+					{#if jutsu.elemento}<ChipElemento elemento={jutsu.elemento} />{/if}
+					{#if faixa}
+						<span class="flex flex-wrap items-center gap-2">
+							<b class="font-mincho text-[17px] leading-6" style:color={cura ? '#7FB069' : undefined}>{faixa.min}~{faixa.max}{dano?.atributo ? ` + ${dano.atributo}` : ''} de {cura ? 'cura' : 'dano'}</b>
+							<DadoHud expr={dano?.dados ?? cura ?? ''} cor={cura ? '#7FB069' : el?.cor} tipo={cura ? null : (el?.nome ?? null)} />
+						</span>
+					{/if}
+				</div>
 			{/if}
 			{#each jutsu.descricao as p, i (i)}
 				<p class="m-0 text-[15px] leading-[23px] text-pretty"><Texto trechos={p} /></p>

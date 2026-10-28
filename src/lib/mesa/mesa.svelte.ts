@@ -11,7 +11,7 @@ import { coresDosMembros } from './cores.ts';
 import type { Quadrado } from './geometria.ts';
 import { molduraDoToken, molduraPorId } from './molduras.ts';
 
-export type Ferramenta = 'mover' | 'medir' | 'lapis' | 'apontar' | 'borracha' | 'terreno';
+export type Ferramenta = 'mover' | 'medir' | 'lapis' | 'apontar' | 'borracha' | 'terreno' | 'fundo';
 
 export interface MembroMesa {
 	id: string;
@@ -74,6 +74,8 @@ export class Mesa {
 	temporarios = $state<TracoTemporario[]>([]);
 	moldes = $state<Record<string, MoldeVivo>>({});
 	pulso = $state<{ token: string; t: number } | null>(null);
+	/** Pings no mapa (Alt+clique ou clique com Apontar): ondas na cor de quem pingou, por 2,5 s. */
+	pings = $state<{ id: string; usuario: string; x: number; y: number }[]>([]);
 	/** Números de PV que o RLS esconde do grupo: só com "Mostrar PV ao grupo" (pv_da_cena). */
 	pvs = $state<Record<string, { pv: number | null; pv_max: number | null }>>({});
 	conectado = $state(true);
@@ -172,6 +174,7 @@ export class Mesa {
 				this.temporarios = [...this.temporarios.filter((x) => x.id !== t.id), { ...t, t: Date.now() }];
 			})
 			.on('broadcast', { event: 'pulso' }, ({ payload }) => (this.pulso = { token: (payload as { token: string }).token, t: Date.now() }))
+			.on('broadcast', { event: 'ping' }, ({ payload }) => this.receberPing(payload as { id: string; usuario: string; x: number; y: number }))
 			.on('broadcast', { event: 'moldura-mesa' }, ({ payload }) => {
 				const { dados } = payload as { dados: { id: string | null; universal: boolean } };
 				this.molduraMesa = { id: molduraPorId(dados.id)?.id ?? null, universal: !!dados.universal };
@@ -203,14 +206,26 @@ export class Mesa {
 		(this as unknown as Record<string, unknown>)[campo] = atual;
 	}
 
+	/** Ping no mapa: aparece aqui e chega a todos na mesa. */
+	ping(x: number, y: number) {
+		const p = { id: crypto.randomUUID(), usuario: this.eu, x: Math.round(x * 100) / 100, y: Math.round(y * 100) / 100 };
+		this.receberPing(p);
+		this.enviar('ping', p, true);
+	}
+	private receberPing(p: { id: string; usuario: string; x: number; y: number }) {
+		if (!Number.isFinite(p.x) || !Number.isFinite(p.y)) return;
+		this.pings = [...this.pings.slice(-9), p];
+		setTimeout(() => (this.pings = this.pings.filter((k) => k.id !== p.id)), 2500);
+	}
+
 	/** Manda o que é passageiro, no máximo 20 vezes por segundo (o último estado sempre sai: null limpa). */
-	enviar(evento: 'fantasma' | 'regua' | 'molde' | 'apontar' | 'pulso' | 'moldura' | 'moldura-mesa', dados: unknown, forcar = false) {
+	enviar(evento: 'fantasma' | 'regua' | 'molde' | 'apontar' | 'pulso' | 'ping' | 'moldura' | 'moldura-mesa', dados: unknown, forcar = false) {
 		if (!this.canal || !this.conectado) return;
 		const agora = Date.now();
 		// o molde pode ter mais de mil quadrados: vai no máximo 6 vezes por segundo; o resto, 20
 		if (!forcar && dados != null && agora - (this.ultimoEnvio[evento] ?? 0) < (evento === 'molde' ? 160 : 50)) return;
 		this.ultimoEnvio[evento] = agora;
-		const payload = evento === 'apontar' || evento === 'pulso' ? dados : { usuario: this.eu, dados };
+		const payload = evento === 'apontar' || evento === 'pulso' || evento === 'ping' ? dados : { usuario: this.eu, dados };
 		this.canal.send({ type: 'broadcast', event: evento, payload });
 	}
 

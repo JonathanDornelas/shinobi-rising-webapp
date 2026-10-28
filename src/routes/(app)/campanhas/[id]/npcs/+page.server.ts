@@ -1,3 +1,4 @@
+import { jutsus } from '#lib/livro/dados.server.ts';
 import type { Npc, NpcPasta, NpcRevelado } from '#lib/supabase/banco.ts';
 import type { PageServerLoad } from './$types';
 
@@ -9,8 +10,10 @@ export const load: PageServerLoad = async ({ locals, params, parent }) => {
 			locals.supabase.from('npcs').select('*').eq('campanha_id', params.id).order('criado_em'),
 			locals.supabase.from('npc_pastas').select('*').eq('campanha_id', params.id).order('ordem').order('nome')
 		]);
-		return { titulo: `NPCs · ${campanha.nome}`, navTitulo: 'NPCS', npcs: (data ?? []) as Npc[], pastas: (pastas ?? []) as NpcPasta[], revelados: [] as NpcRevelado[] };
+		// o catálogo enxuto, para escolher os jutsus do NPC no editor
+		const catalogoJutsus = jutsus.map((j) => ({ slug: j.slug, nome: j.nome, traducao: j.traducao, rank: j.rank, tipo: j.tipo, elemento: j.elemento, custo: j.custo }));
+		return { titulo: `NPCs · ${campanha.nome}`, navTitulo: 'NPCS', npcs: (data ?? []) as Npc[], pastas: (pastas ?? []) as NpcPasta[], revelados: [] as NpcRevelado[], catalogoJutsus };
 	}
 	const { data } = await locals.supabase.rpc('npcs_revelados', { campanha: params.id });
-	return { titulo: `NPCs conhecidos · ${campanha.nome}`, navTitulo: 'NPCS', npcs: [] as Npc[], pastas: [] as NpcPasta[], revelados: (data ?? []) as NpcRevelado[] };
+	return { titulo: `NPCs conhecidos · ${campanha.nome}`, navTitulo: 'NPCS', npcs: [] as Npc[], pastas: [] as NpcPasta[], revelados: (data ?? []) as NpcRevelado[], catalogoJutsus: [] };
 };

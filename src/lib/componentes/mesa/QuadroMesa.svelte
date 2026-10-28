@@ -9,6 +9,7 @@
 	import { custoCaminho, custoTrechos, infoMovimento, provocaReacao, quadradosEmVolta, trechos, type Quadrado } from '#lib/mesa/geometria.ts';
 	import type { Mesa } from '#lib/mesa/mesa.svelte.ts';
 	import { urlImagemMesa } from '#lib/mesa/imagens.ts';
+	import { retanguloFoco, type FocoArte } from '#lib/bestiario/foco.ts';
 	import { calcularMolde, nomeCurto, type UiMesa } from '#lib/mesa/ui.svelte.ts';
 
 	let {
@@ -17,6 +18,7 @@
 		pvDe,
 		deslocamentoDe,
 		fotoDe,
+		focoDe = () => null,
 		onSoltar
 	}: {
 		mesa: Mesa;
@@ -26,6 +28,8 @@
 		deslocamentoDe: (t: MesaToken) => number;
 		/** URL da foto do token (retrato do personagem, foto ou arte do NPC); null = só a sigla. */
 		fotoDe: (t: MesaToken) => string | null;
+		/** Enquadramento da arte do bestiário (null = a foto centralizada, já quadrada). */
+		focoDe?: (t: MesaToken) => FocoArte | null;
 		/** Algo arrastado do Elenco caiu no quadro. */
 		onSoltar: (dados: string, x: number, y: number) => void;
 	} = $props();
@@ -43,6 +47,21 @@
 	const L = $derived(cena?.largura ?? 40);
 	const A = $derived(cena?.altura ?? 30);
 	const fundo = $derived(urlImagemMesa(cena?.fundo));
+	// o fundo com escala: a proporção vem da própria imagem; MOVER O FUNDO arrasta (só o Mestre) e grava ao soltar
+	let proporcaoFundo = $state(1);
+	$effect(() => {
+		const u = fundo;
+		if (!u) return;
+		const im = new Image();
+		im.onload = () => (proporcaoFundo = im.naturalHeight / im.naturalWidth || 1);
+		im.src = u;
+	});
+	let arrastoFundo = $state<{ mx: number; my: number; dx: number; dy: number } | null>(null);
+	const caixaFundo = $derived.by(() => {
+		if (!cena?.fundo_escala) return { x: 0, y: 0, w: L, h: A };
+		const w = cena.fundo_escala;
+		return { x: (cena.fundo_x ?? 0) + (arrastoFundo?.dx ?? 0), y: (cena.fundo_y ?? 0) + (arrastoFundo?.dy ?? 0), w, h: w * proporcaoFundo };
+	});
 	const s = $derived(BASE * ui.zoom);
 	const F = (px: number) => px / s;
 	const visiveis = $derived(mesa.tokens);
@@ -154,6 +173,12 @@
 
 	function aoBaixar(e: PointerEvent) {
 		if (e.button === 2) return;
+		// Alt+clique: ping no mapa, com qualquer ferramenta
+		if (e.altKey && e.button === 0) {
+			const q = ponto(e);
+			mesa.ping(q.mx, q.my);
+			return;
+		}
 		svg!.setPointerCapture(e.pointerId);
 		toques.set(e.pointerId, { x: e.clientX, y: e.clientY });
 		if (toques.size === 2) {
@@ -214,6 +239,9 @@
 				else if (k) ui.avisar('Esse traço é de outra pessoa.');
 				break;
 			}
+			case 'fundo':
+				if (mesa.mestre && cena?.fundo_escala) arrastoFundo = { mx: p.mx, my: p.my, dx: 0, dy: 0 };
+				break;
 			case 'terreno':
 				if (!mesa.mestre || mesa.somenteLeitura) break;
 				pintura = { por: !mesa.terreno.has(`${g[0]},${g[1]}`), feitos: new Set(mesa.terreno) };
@@ -251,6 +279,7 @@
 			return;
 		}
 		if (pintura) return pintar(g);
+		if (arrastoFundo) return void (arrastoFundo = { ...arrastoFundo, dx: p.mx - arrastoFundo.mx, dy: p.my - arrastoFundo.my });
 		const m = ui.mira;
 		if (m && !m.fixa) {
 			ui.mira = { ...m, tx: g[0], ty: g[1], px: p.mx, py: p.my, travar: e.shiftKey };
@@ -289,6 +318,12 @@
 			return;
 		}
 		pan = null;
+		if (arrastoFundo) {
+			const c = caixaFundo;
+			arrastoFundo = null;
+			mesa.patchCena({ fundo_x: Math.round(c.x * 10) / 10, fundo_y: Math.round(c.y * 10) / 10 });
+			return;
+		}
 		if (pintura) {
 			const feitos = pintura.feitos;
 			pintura = null;
@@ -313,7 +348,8 @@
 		if (desenho) {
 			const pts = desenho;
 			desenho = null;
-			if (pts.length < 2) return;
+			// um clique simples com o Apontar é um ping
+			if (pts.length < 2) return void ((ui.modoLapis === 'apontar' || ui.ferramenta === 'apontar') && mesa.ping(pts[0][0], pts[0][1]));
 			if (ui.modoLapis === 'apontar' || ui.ferramenta === 'apontar') {
 				const temp = { id: crypto.randomUUID(), usuario: mesa.eu, pontos: pts, espessura: ui.espessura, t: Date.now() };
 				mesa.temporarios = [...mesa.temporarios, temp];
@@ -381,7 +417,7 @@
 	});
 	const reguaMinha = $derived(ui.regua ? { pontos: ui.regua.cur ? [...ui.regua.pontos, ui.regua.cur] : ui.regua.pontos, feita: ui.regua.feita, fixa: ui.regua.fixa, t: ui.regua.t } : null);
 	const cursor = $derived(
-		arrasto || pan ? 'grabbing' : ui.mira && !ui.mira.fixa ? 'crosshair' : ui.ferramenta === 'mover' ? 'default' : ui.ferramenta === 'borracha' || ui.ferramenta === 'terreno' ? 'cell' : 'crosshair'
+		arrasto || pan ? 'grabbing' : ui.mira && !ui.mira.fixa ? 'crosshair' : ui.ferramenta === 'mover' ? 'default' : ui.ferramenta === 'borracha' || ui.ferramenta === 'terreno' ? 'cell' : ui.ferramenta === 'fundo' ? 'move' : 'crosshair'
 	);
 	const corMolde = $derived(molde ? (molde.ok ? corCss(mesa.corDe(mesa.donoDe(molde.lancador))) : 'var(--mesa-vermelhao)') : '');
 	const letras = (i: number) => (i < 26 ? String.fromCharCode(65 + i) : String.fromCharCode(65 + Math.floor(i / 26) - 1) + String.fromCharCode(65 + (i % 26)));
@@ -396,9 +432,11 @@
 	});
 </script>
 
-{#snippet rotulo(x: number, y: number, txt: string, cor: string, ancora: 'ini' | 'meio' = 'ini')}
+{#snippet rotulo(x: number, y0: number, txt: string, cor: string, ancora: 'ini' | 'meio' = 'ini')}
 	{@const w = larguraRotulo(txt)}
-	{@const x0 = ancora === 'meio' ? x - w / 2 : x}
+	<!-- preso à área visível: perto da borda do quadro o rótulo não some pela metade -->
+	{@const x0 = Math.max(ui.vx + F(4), Math.min(ui.vx + W / s - w - F(4), ancora === 'meio' ? x - w / 2 : x))}
+	{@const y = Math.max(ui.vy + F(14), Math.min(ui.vy + H / s - F(14), y0))}
 	<g pointer-events="none">
 		<rect x={x0} y={y - F(10)} width={w} height={F(20)} style="fill: var(--b0); stroke: {cor}" stroke-width={F(2)} />
 		<text x={x0 + F(7)} y={y + F(4.5)} style="fill: {cor}" font-size={F(12)} font-family="'Pixelify Sans'" font-weight="700">{txt}</text>
@@ -446,7 +484,11 @@
 		<g transform="translate({-ui.vx * s} {-ui.vy * s}) scale({s})">
 			<rect x="0" y="0" width={L} height={A} style="fill: var(--b1)" />
 			<!-- fundo do quadro: o mapa estica na cena inteira, sob a grade -->
-			{#if fundo}<image href={fundo} x="0" y="0" width={L} height={A} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} />{/if}
+			{#if fundo}
+				<clipPath id="recorte-cena"><rect x="0" y="0" width={L} height={A} /></clipPath>
+				<image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} preserveAspectRatio="none" clip-path="url(#recorte-cena)" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} />
+				{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
+			{/if}
 			{#if cena?.grade !== false}
 				{#each { length: L + 1 } as _, i (i)}
 					<line x1={i} y1="0" x2={i} y2={A} style="stroke: var(--fg)" stroke-opacity={(i % 5 ? 0.09 : 0.18) * (fundo ? 1.6 : 1)} stroke-width={F(1)} />
@@ -568,7 +610,9 @@
 						<circle {cx} {cy} r={rf} style="fill: {caido ? 'var(--b3)' : 'var(--b2)'}" />
 						{#if foto}
 							<clipPath id="foto-{t.id}"><circle {cx} {cy} r={rf - 0.02} /></clipPath>
-							<image href={foto} x={cx - rf} y={cy - rf} width={2 * rf} height={2 * rf} preserveAspectRatio="xMidYMid slice" clip-path="url(#foto-{t.id})" style="filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" />
+							{@const fo = focoDe(t)}
+							{@const q = fo ? retanguloFoco(fo, cx, cy, 2 * rf) : { x: cx - rf, y: cy - rf, w: 2 * rf, h: 2 * rf }}
+							<image href={foto} x={q.x} y={q.y} width={q.w} height={q.h} preserveAspectRatio={fo ? 'none' : 'xMidYMid slice'} clip-path="url(#foto-{t.id})" style="filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" style:image-rendering={fo ? 'pixelated' : null} />
 						{:else}
 							<text x={cx} y={cy + (0.11 * n * rf) / r} text-anchor="middle" font-size={(0.32 * n * rf) / r} font-family="'Pixelify Sans'" font-weight="700" style="fill: {caido ? 'var(--field)' : 'var(--fg)'}">{t.sigla || t.nome.slice(0, 2).toUpperCase()}</text>
 						{/if}
@@ -628,6 +672,13 @@
 				{/if}
 			{/each}
 
+			{#each mesa.pings as p (p.id)}
+				{@const c = corCss(mesa.corDe(p.usuario))}
+				<g pointer-events="none">
+					{#each [0, 0.35, 0.7] as atraso (atraso)}<circle class="ping" cx={p.x} cy={p.y} r="1.6" fill="none" style="stroke: {c}; animation-delay: {atraso}s" stroke-width={F(3)} />{/each}
+					<circle cx={p.x} cy={p.y} r={F(5)} style="fill: {c}" />
+				</g>
+			{/each}
 			{#if mesa.pulso}
 				{@const t = visiveis.find((k) => k.id === mesa.pulso!.token)}
 				{#if t}
@@ -655,6 +706,27 @@
 </div>
 
 <style>
+	.ping {
+		animation: mesa-ping 1.4s ease-out 1 both;
+		transform-box: fill-box;
+		transform-origin: center;
+	}
+	@keyframes mesa-ping {
+		0% {
+			opacity: 1;
+			transform: scale(0.15);
+		}
+		100% {
+			opacity: 0;
+			transform: scale(1);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.ping {
+			animation-duration: 0.01s;
+			opacity: 0.6;
+		}
+	}
 	.pulso {
 		animation: mesa-pulso 1s ease-out 1 forwards;
 		transform-box: fill-box;

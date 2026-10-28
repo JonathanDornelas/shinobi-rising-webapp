@@ -110,8 +110,8 @@ export function moldeDirecional(forma: 'cone' | 'linha', origem: Espaco, n: numb
 	const vx = -uy;
 	const vy = ux;
 	const meio = forma === 'cone' ? n / 2 : 0.5;
-	// a forma começa na borda do espaço do lançador (importa para tokens grandes)
-	const inicio = (origem.tamanho - 1) / 2;
+	// a forma sai da borda do espaço do lançador, na direção da mira (não de dentro dele)
+	const inicio = origem.tamanho / 2 / Math.max(Math.abs(ux), Math.abs(uy));
 	const contorno: Quadrado[] =
 		forma === 'cone'
 			? [
@@ -131,11 +131,16 @@ export function moldeDirecional(forma: 'cone' | 'linha', origem: Espaco, n: numb
 		for (let y = origem.y - r; y <= origem.y + origem.tamanho + r; y++) {
 			if (!dentro(x, y, largura, altura)) continue;
 			if (x >= origem.x && x < origem.x + origem.tamanho && y >= origem.y && y < origem.y + origem.tamanho) continue;
-			const qx = x + 0.5 - cx;
-			const qy = y + 0.5 - cy;
-			const ao = qx * ux + qy * uy - inicio;
-			const pe = Math.abs(qx * vx + qy * vy);
-			if (ao > 0 && ao <= n && pe <= (forma === 'cone' ? ao / 2 : 0.5)) q.push([x, y]);
+			// o ponto (px, py) cai na forma? cone: largura igual à distância da ponta; linha: 1 m de largura
+			const dentroDaForma = (px: number, py: number) => {
+				const ao = (px - cx) * ux + (py - cy) * uy - inicio;
+				const pe = Math.abs((px - cx) * vx + (py - cy) * vy);
+				return ao > 0 && ao <= n && pe <= (forma === 'cone' ? ao / 2 : 0.5);
+			};
+			// a linha pega o quadrado pelo centro; o cone, quando a maior parte dele está dentro (3 de 5 pontos)
+			const pontos = forma === 'cone' ? [[0.5, 0.5], [0.25, 0.25], [0.75, 0.25], [0.25, 0.75], [0.75, 0.75]] : [[0.5, 0.5]];
+			const dentroQ = pontos.filter(([a, b]) => dentroDaForma(x + a, y + b)).length;
+			if (dentroQ * 2 > pontos.length) q.push([x, y]);
 		}
 	return { quadrados: q, contorno };
 }
