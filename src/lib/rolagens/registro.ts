@@ -42,8 +42,8 @@ export function dataLonga(iso: string): string {
 	return `${d.getDate()} ${MES_MIN[d.getMonth()]}. ${d.getFullYear()} · ${hora(iso)}`;
 }
 export const hora = (iso: string) => new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-/** "24/10 · 16:14": o canto de baixo de cada rolagem. */
-export const dataHora = (iso: string) => `${new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })} · ${hora(iso)}`;
+/** "24/10/2026 · 16:14": o canto de baixo de cada rolagem. */
+export const dataHora = (iso: string) => `${new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' })} · ${hora(iso)}`;
 /** A cor dos dados: o elemento no dano ("Dano · Katon: ..."), verde na cura. */
 export const corDaRolagem = (r: { tipo: string; rotulo: string }) => (r.tipo === 'cura' ? '#7FB069' : r.tipo === 'dano' ? (corElemento(null, r.rotulo)?.cor ?? null) : null);
 /** "agora", "há 5 min", "há 2 h"; vazio fora de hoje. */
