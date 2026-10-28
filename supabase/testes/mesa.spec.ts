@@ -220,3 +220,108 @@ describe('fundo ajustável e enquadramento do NPC', () => {
 		await banco.como(kaito, `update mesa_cenas set fundo_escala = null, fundo_x = 0, fundo_y = 0 where id = $1`, [ponte]);
 	});
 });
+
+describe('objetos da cena', () => {
+	it('o grupo põe alfinetes e textos seus; imagem é só do Mestre', async () => {
+		await banco.como(kaito, `select ativar_cena($1)`, [ponte]);
+		const alfinete = await um(banco.como<{ id: string }>(bruno, `insert into mesa_objetos (cena_id, tipo, x, y, texto, cor) values ($1, 'alfinete', 12.5, 8, 'Armadilha?', '#c44536') returning id`, [ponte]));
+		await banco.como(bruno, `insert into mesa_objetos (cena_id, tipo, x, y, texto, tamanho, fonte, cor) values ($1, 'texto', 5, 5, 'Ponte quebrada', 1.2, 'mincho', '#ffffff')`, [ponte]);
+		await expect(banco.como(bruno, `insert into mesa_objetos (cena_id, tipo, x, y, largura, altura, imagem) values ($1, 'imagem', 5, 5, 4, 4, '/capitulos/cap-04.png')`, [ponte])).rejects.toThrow(/row-level security/);
+		await banco.como(kaito, `insert into mesa_objetos (cena_id, tipo, x, y, largura, altura, imagem) values ($1, 'imagem', 20, 10, 6, 4, '/capitulos/cap-04.png')`, [ponte]);
+		expect(await banco.como(aiko, `select tipo from mesa_objetos order by tipo`)).toEqual([{ tipo: 'alfinete' }, { tipo: 'imagem' }, { tipo: 'texto' }]);
+		// cada um mexe nos seus; o Mestre em todos
+		expect(await banco.como(aiko, `update mesa_objetos set x = 1 where id = $1 returning id`, [alfinete.id])).toEqual([]);
+		expect(await banco.como(bruno, `update mesa_objetos set x = 13 where id = $1 returning id`, [alfinete.id])).toHaveLength(1);
+		expect(await banco.como(aiko, `delete from mesa_objetos where id = $1 returning id`, [alfinete.id])).toEqual([]);
+		expect(await banco.como(kaito, `update mesa_objetos set x = 14 where id = $1 returning id`, [alfinete.id])).toHaveLength(1);
+		// a campanha vem da cena, e o autor não muda
+		expect(await um(banco.como(kaito, `select campanha_id from mesa_objetos where id = $1`, [alfinete.id]))).toEqual({ campanha_id: campanha });
+		await banco.como(kaito, `update mesa_objetos set autor_id = $2 where id = $1`, [alfinete.id, aiko.id]);
+		expect(await um(banco.como(kaito, `select autor_id from mesa_objetos where id = $1`, [alfinete.id]))).toEqual({ autor_id: bruno.id });
+	});
+
+	it('o que o Mestre esconde o grupo não vê, e as regras do tipo valem', async () => {
+		await banco.como(kaito, `update mesa_objetos set visivel = false where tipo = 'imagem'`);
+		expect(await banco.como(bruno, `select tipo from mesa_objetos where tipo = 'imagem'`)).toEqual([]);
+		expect(await banco.como(kaito, `select tipo from mesa_objetos where tipo = 'imagem'`)).toHaveLength(1);
+		await expect(banco.como(kaito, `insert into mesa_objetos (cena_id, tipo, x, y) values ($1, 'imagem', 1, 1)`, [ponte])).rejects.toThrow(/por_tipo/);
+		await expect(banco.como(kaito, `insert into mesa_objetos (cena_id, tipo, x, y, texto, tamanho) values ($1, 'texto', 1, 1, '   ', 1)`, [ponte])).rejects.toThrow(/por_tipo/);
+		await expect(banco.como(kaito, `insert into mesa_objetos (cena_id, tipo, x, y, largura, altura, imagem) values ($1, 'imagem', 1, 1, 2, 2, 'https://x.com/a.png')`, [ponte])).rejects.toThrow(/imagem_valida/);
+		await expect(banco.como(kaito, `insert into mesa_objetos (cena_id, tipo, x, y, largura, altura, imagem) values ($1, 'imagem', 1, 1, 2, 2, '00000000-0000-0000-0000-000000000000/a.webp')`, [ponte])).rejects.toThrow(/imagem_valida/);
+		await expect(banco.como(kaito, `insert into mesa_objetos (cena_id, tipo, x, texto) values ($1, 'alfinete', 1, repeat('a', 41))`, [ponte])).rejects.toThrow(/por_tipo/);
+	});
+
+	it('a mesa travada segura quem joga, e a cena sem grupo some do jogador', async () => {
+		await banco.como(kaito, `update mesa_cenas set travada = true where id = $1`, [ponte]);
+		await expect(banco.como(bruno, `insert into mesa_objetos (cena_id, tipo, x, y) values ($1, 'alfinete', 2, 2)`, [ponte])).rejects.toThrow(/row-level security/);
+		await banco.como(kaito, `update mesa_cenas set travada = false where id = $1`, [ponte]);
+		await banco.como(kaito, `select ativar_cena($1)`, [esconderijo]);
+		expect(await banco.como(bruno, `select id from mesa_objetos`)).toEqual([]);
+		await banco.como(kaito, `select ativar_cena($1)`, [ponte]);
+	});
+});
+
+describe('biblioteca de artes', () => {
+	it('é do Mestre, com caminho da pasta da campanha e limite', async () => {
+		const arte = await um(banco.como<{ id: string }>(kaito, `insert into mesa_artes (campanha_id, nome, tipo, caminho, miniatura, largura, altura, bytes) values ($1, 'Ponte', 'mapa', $2, $3, 2048, 1024, 90000) returning id`, [campanha, `${campanha}/arte-a1.webp`, `${campanha}/arte-a1-m.webp`]));
+		expect(await banco.como(bruno, `select id from mesa_artes`)).toEqual([]);
+		await expect(banco.como(bruno, `insert into mesa_artes (campanha_id, nome, caminho, largura, altura) values ($1, 'X', $2, 10, 10)`, [campanha, `${campanha}/arte-b.webp`])).rejects.toThrow(/row-level security/);
+		await expect(banco.como(kaito, `insert into mesa_artes (campanha_id, nome, caminho, largura, altura) values ($1, 'X', $2, 10, 10)`, [campanha, 'outra/arte.webp'])).rejects.toThrow(/caminho_valido/);
+		// apagar a arte tira ela de onde estava em uso
+		await banco.como(kaito, `update mesa_cenas set fundo = $2 where id = $1`, [ponte, `${campanha}/arte-a1.webp`]);
+		await banco.como(kaito, `insert into mesa_objetos (cena_id, tipo, x, y, largura, altura, imagem) values ($1, 'imagem', 3, 3, 2, 2, $2)`, [ponte, `${campanha}/arte-a1.webp`]);
+		await banco.como(kaito, `delete from mesa_artes where id = $1`, [arte.id]);
+		expect(await um(banco.como(kaito, `select fundo from mesa_cenas where id = $1`, [ponte]))).toEqual({ fundo: null });
+		expect(await banco.como(kaito, `select id from mesa_objetos where imagem like '%arte-a1%'`)).toEqual([]);
+	});
+
+	it('guarda até 300 artes por campanha', async () => {
+		await banco.db.query(`insert into mesa_artes (campanha_id, autor_id, nome, caminho, largura, altura) select $1::uuid, $2::uuid, 'a' || g, $1::text || '/a' || g || '.webp', 10, 10 from generate_series(1, 300) g`, [campanha, kaito.id]);
+		await expect(banco.como(kaito, `insert into mesa_artes (campanha_id, nome, caminho, largura, altura) values ($1, 'a mais', $2, 10, 10)`, [campanha, `${campanha}/maisuma.webp`])).rejects.toThrow(/300 artes/);
+		await banco.db.query(`delete from mesa_artes where campanha_id = $1`, [campanha]);
+	});
+});
+
+describe('cenas em pastas, névoa e estilo dos efeitos', () => {
+	it('pastas de cenas: só o Mestre, até 3 níveis, e o conteúdo sobe ao apagar', async () => {
+		const a = await um(banco.como<{ id: string }>(kaito, `insert into mesa_cena_pastas (campanha_id, nome) values ($1, 'Ato 1') returning id`, [campanha]));
+		const b = await um(banco.como<{ id: string }>(kaito, `insert into mesa_cena_pastas (campanha_id, nome, pai_id) values ($1, 'Vila', $2) returning id`, [campanha, a.id]));
+		const c = await um(banco.como<{ id: string }>(kaito, `insert into mesa_cena_pastas (campanha_id, nome, pai_id) values ($1, 'Taverna', $2) returning id`, [campanha, b.id]));
+		await expect(banco.como(kaito, `insert into mesa_cena_pastas (campanha_id, nome, pai_id) values ($1, 'Funda demais', $2)`, [campanha, c.id])).rejects.toThrow(/3 níveis/);
+		await expect(banco.como(bruno, `insert into mesa_cena_pastas (campanha_id, nome) values ($1, 'Minha')`, [campanha])).rejects.toThrow(/row-level security/);
+		await banco.como(kaito, `update mesa_cenas set pasta_id = $2 where id = $1`, [esconderijo, c.id]);
+		await expect(banco.como(kaito, `update mesa_cenas set pasta_id = '00000000-0000-0000-0000-000000000000' where id = $1`, [ponte])).rejects.toThrow(/violates foreign key|Pasta não encontrada/);
+		await banco.como(kaito, `delete from mesa_cena_pastas where id = $1`, [c.id]);
+		expect(await um(banco.como(kaito, `select pasta_id from mesa_cenas where id = $1`, [esconderijo]))).toEqual({ pasta_id: b.id });
+		await banco.como(kaito, `update mesa_cenas set pasta_id = null where id = $1`, [esconderijo]);
+		await banco.como(kaito, `delete from mesa_cena_pastas where id = $1`, [a.id]);
+	});
+
+	it('nome público e névoa são do Mestre; as runs têm limite', async () => {
+		await banco.como(kaito, `update mesa_cenas set nome_publico = 'Uma ponte antiga', nevoa = true, reveladas = '[[3, 2, 9], [4, 2, 9]]'::jsonb where id = $1`, [ponte]);
+		expect(await um(banco.como(bruno, `select nome_publico, nevoa, reveladas from mesa_cenas where id = $1`, [ponte]))).toEqual({ nome_publico: 'Uma ponte antiga', nevoa: true, reveladas: [[3, 2, 9], [4, 2, 9]] });
+		expect(await banco.como(bruno, `update mesa_cenas set nevoa = false where id = $1 returning id`, [ponte])).toEqual([]);
+		await expect(banco.como(kaito, `update mesa_cenas set reveladas = '{"a": 1}'::jsonb where id = $1`, [ponte])).rejects.toThrow(/check/);
+		await expect(banco.como(kaito, `update mesa_cenas set nome_publico = repeat('a', 61) where id = $1`, [ponte])).rejects.toThrow(/check/);
+		await banco.como(kaito, `update mesa_cenas set nome_publico = null, nevoa = false, reveladas = '[]'::jsonb where id = $1`, [ponte]);
+	});
+
+	it('o efeito guarda o estilo (elemento ou tipo de jutsu)', async () => {
+		await banco.como(kaito, `insert into mesa_efeitos (cena_id, nome, quadrados, estilo) values ($1, 'Fogo', '[[1,1]]'::jsonb, 'katon')`, [ponte]);
+		await expect(banco.como(kaito, `insert into mesa_efeitos (cena_id, nome, quadrados, estilo) values ($1, 'Estranho', '[[1,1]]'::jsonb, 'laser')`, [ponte])).rejects.toThrow(/check/);
+		expect(await um(banco.como(bruno, `select estilo from mesa_efeitos where nome = 'Fogo'`))).toEqual({ estilo: 'katon' });
+	});
+});
+
+describe('jukebox', () => {
+	it('o grupo ouve e só o Mestre muda; o servidor carimba a hora', async () => {
+		await banco.como(kaito, `insert into mesa_jukebox (campanha_id, fonte, ref, titulo, tocando, posicao) values ($1, 'youtube', 'dQw4w9WgXcQ', 'Tema da vila', true, 12.5)`, [campanha]);
+		const j = await um(banco.como<{ tocando: boolean; posicao: number; dentro: boolean }>(bruno, `select tocando, posicao, (desde > now() - interval '1 minute') as dentro from mesa_jukebox where campanha_id = $1`, [campanha]));
+		expect(j).toEqual({ tocando: true, posicao: 12.5, dentro: true });
+		expect(await banco.como(bruno, `update mesa_jukebox set tocando = false where campanha_id = $1 returning campanha_id`, [campanha])).toEqual([]);
+		expect(await banco.como(bruno, `delete from mesa_jukebox where campanha_id = $1 returning campanha_id`, [campanha])).toEqual([]);
+		await expect(banco.como(kaito, `update mesa_jukebox set ref = 'https://youtu.be/x' where campanha_id = $1`, [campanha])).rejects.toThrow(/check/);
+		await banco.como(kaito, `update mesa_jukebox set fonte = 'spotify', ref = 'playlist/37i9dQZF1DXcBWIGoYBM5M', lista = true where campanha_id = $1`, [campanha]);
+		expect(await um(banco.como(kaito, `select agora_servidor() is not null as ok`))).toEqual({ ok: true });
+	});
+});

@@ -1,7 +1,8 @@
 import { error } from '@sveltejs/kit';
 import { extrasDoNpc, fichaMesa, jutsusDoNpc, type ExtrasNpc, type FichaMesa } from '#lib/mesa/fichas.server.ts';
 import { molduraPorId } from '#lib/mesa/molduras.ts';
-import type { MesaCena, MesaEfeito, MesaToken, MesaTraco, Npc, NpcPasta, NpcRevelado, Rolagem } from '#lib/supabase/banco.ts';
+import { mascararCena } from '#lib/mesa/cenas.ts';
+import type { MesaArte, MesaCena, MesaCenaPasta, MesaEfeito, MesaJukebox, MesaObjeto, MesaToken, MesaTraco, Npc, NpcPasta, NpcRevelado, Rolagem } from '#lib/supabase/banco.ts';
 import type { PageServerLoad } from './$types';
 
 // L11 · M1 · Mesa. O Mestre vê todas as cenas (?cena= escolhe qual preparar); o grupo vê a ativa. As fichas rápidas
@@ -24,13 +25,20 @@ export const load: PageServerLoad = async ({ locals, params, parent, url }) => {
 	const lista = (cenas ?? []) as MesaCena[];
 	const cena = (mestre && pedida ? lista.find((c) => c.id === pedida) : null) ?? lista.find((c) => c.ativa) ?? (mestre ? lista[0] : null) ?? null;
 
-	const [{ data: tokens }, { data: tracos }, { data: efeitos }] = cena
+	const [{ data: tokens }, { data: tracos }, { data: efeitos }, { data: objetos }] = cena
 		? await Promise.all([
 				sb.from('mesa_tokens').select('*').eq('cena_id', cena.id).order('criado_em'),
 				sb.from('mesa_tracos').select('*').eq('cena_id', cena.id).order('criado_em'),
-				sb.from('mesa_efeitos').select('*').eq('cena_id', cena.id).order('criado_em')
+				sb.from('mesa_efeitos').select('*').eq('cena_id', cena.id).order('criado_em'),
+				sb.from('mesa_objetos').select('*').eq('cena_id', cena.id).order('criado_em')
 			])
-		: [{ data: [] }, { data: [] }, { data: [] }];
+		: [{ data: [] }, { data: [] }, { data: [] }, { data: [] }];
+	// a música da campanha (todos), as pastas das cenas e a biblioteca de artes (só o Mestre)
+	const [{ data: jukebox }, { data: pastasCenas }, { data: artes }] = await Promise.all([
+		sb.from('mesa_jukebox').select('*').eq('campanha_id', params.id).maybeSingle(),
+		mestre ? sb.from('mesa_cena_pastas').select('*').eq('campanha_id', params.id).order('ordem').order('nome') : Promise.resolve({ data: [] as MesaCenaPasta[] }),
+		mestre ? sb.from('mesa_artes').select('*').eq('campanha_id', params.id).order('criada_em', { ascending: false }) : Promise.resolve({ data: [] as MesaArte[] })
+	]);
 
 	// fichas completas que dá para ler: o Mestre, todas as ativas; o jogador, a própria
 	const jogaveis = personagens.filter((p) => p.status === 'aprovada' && p.situacao === 'ativo' && !p.pre_gerado && (mestre || p.jogador_id === usuario.id));
@@ -49,16 +57,20 @@ export const load: PageServerLoad = async ({ locals, params, parent, url }) => {
 		: await Promise.all([Promise.resolve({ data: [] as Npc[] }), Promise.resolve({ data: [] as NpcPasta[] }), sb.rpc('npcs_revelados', { campanha: params.id })]);
 
 	return {
-		titulo: cena ? `Mesa · ${cena.nome}` : 'Mesa',
+		titulo: cena ? `Mesa · ${mascararCena(cena, mestre).nome}` : 'Mesa',
 		navTitulo: 'MESA',
 		eu: usuario.id,
 		mestre,
 		arquivada: !!campanha.arquivada_em,
-		cenas: lista,
-		cena,
+		cenas: lista.map((c) => mascararCena(c, mestre)),
+		cena: cena ? mascararCena(cena, mestre) : null,
 		tokens: (tokens ?? []) as MesaToken[],
 		tracos: (tracos ?? []) as MesaTraco[],
 		efeitos: (efeitos ?? []) as MesaEfeito[],
+		objetos: (objetos ?? []) as MesaObjeto[],
+		jukebox: (jukebox ?? null) as MesaJukebox | null,
+		pastasCenas: (pastasCenas ?? []) as MesaCenaPasta[],
+		artes: (artes ?? []) as MesaArte[],
 		membros: membros.map((m) => ({
 			...m,
 			cor: (cores ?? []).find((c) => c.usuario_id === m.id)?.cor ?? null,

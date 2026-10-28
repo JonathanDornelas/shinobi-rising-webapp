@@ -14,13 +14,23 @@
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
 	import type { Json, MesaCena, MesaToken, Npc, Rolagem } from '#lib/supabase/banco.ts';
-	import { IMAGENS_DO_LIVRO, enviarImagemMesa, urlImagemMesa } from '#lib/mesa/imagens.ts';
+	import { IMAGENS_DO_LIVRO, urlImagemMesa } from '#lib/mesa/imagens.ts';
+	import { estiloDoJutsu } from '#lib/mesa/efeitos.ts';
+	import type { ArteArmada } from '#lib/mesa/ui.svelte.ts';
+	import ArtesMesa from '#lib/componentes/mesa/ArtesMesa.svelte';
+	import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
+	import JukeboxMesa from '#lib/componentes/mesa/JukeboxMesa.svelte';
+	import OpcoesFerramenta from '#lib/componentes/mesa/OpcoesFerramenta.svelte';
+	import PainelObjeto from '#lib/componentes/mesa/PainelObjeto.svelte';
 	import { corElemento, lerDados } from '#lib/mesa/hud.ts';
 	import { focoDaArte, type FocoArte } from '#lib/bestiario/foco.ts';
 	import DadoHud from '#lib/componentes/mesa/DadoHud.svelte';
 	import ElencoMesa, { type ItemNpc } from '#lib/componentes/mesa/ElencoMesa.svelte';
 	import FichaRapida, { type AcoesFicha, type DadosFicha } from '#lib/componentes/mesa/FichaRapida.svelte';
-	import FichaCompleta, { type JutsusNaMesa } from '#lib/componentes/mesa/FichaCompleta.svelte';
+	import type { JutsusNaMesa } from '#lib/componentes/mesa/FichaCompleta.svelte';
+	// a ficha completa (todas as abas da ficha) só é baixada quando alguém a abre
+	let moduloFicha: Promise<typeof import('#lib/componentes/mesa/FichaCompleta.svelte')> | null = null;
+	const carregarFicha = () => (moduloFicha ??= import('#lib/componentes/mesa/FichaCompleta.svelte'));
 	import type { EstadoJogo } from '#lib/personagem/progressao.ts';
 	import PainelMesa from '#lib/componentes/mesa/PainelMesa.svelte';
 	import BuscaBestiario from '#lib/componentes/npc/BuscaBestiario.svelte';
@@ -39,7 +49,7 @@
 
 	// ------------------------------------------------------------------ estado
 	const criar = () =>
-		new Mesa({ campanha: data.campanha.id, eu: data.eu, mestre: data.mestre, arquivada: data.arquivada, cenas: data.cenas, cena: data.cena, tokens: data.tokens, tracos: data.tracos, efeitos: data.efeitos, membros: data.membros, molduraMesa: { id: molduraPorId(data.campanha.moldura)?.id ?? null, universal: !!data.campanha.moldura_universal } });
+		new Mesa({ campanha: data.campanha.id, eu: data.eu, mestre: data.mestre, arquivada: data.arquivada, cenas: data.cenas, cena: data.cena, tokens: data.tokens, tracos: data.tracos, efeitos: data.efeitos, objetos: data.objetos, jukebox: data.jukebox, pastasCenas: data.pastasCenas, artes: data.artes, membros: data.membros, molduraMesa: { id: molduraPorId(data.campanha.moldura)?.id ?? null, universal: !!data.campanha.moldura_universal } });
 	// svelte-ignore state_referenced_locally
 	let mesa = $state(criar());
 	const ui = new UiMesa();
@@ -503,33 +513,72 @@
 	$effect(() => {
 		if (narrativa) untrack(() => (ui.painelAberto = true));
 	});
-	let enviando = $state(false);
 	const escolherImagem = (alvo: 'imagem' | 'fundo', caminho: string | null) => mesa.patchCena({ [alvo]: caminho } as Partial<MesaCena>);
-	async function enviarImagem(alvo: 'imagem' | 'fundo', e: Event) {
-		const entrada = e.currentTarget as HTMLInputElement;
-		const arquivo = entrada.files?.[0];
-		entrada.value = '';
-		if (!arquivo) return;
-		enviando = true;
-		try {
-			await escolherImagem(alvo, await enviarImagemMesa(campanha, arquivo, alvo === 'imagem' ? 'narrativa' : 'fundo'));
-		} catch (erro) {
-			toasts.mostrar(erro instanceof Error && /grande/.test(erro.message) ? erro.message : 'Não foi possível enviar a imagem.', 'erro');
-		}
-		enviando = false;
+	/** Da biblioteca (ou do livro): vira o fundo, a imagem da narrativa, ou nada. */
+	function escolherDaBiblioteca(alvo: 'imagem' | 'fundo', caminho: string | null) {
+		void escolherImagem(alvo, caminho);
+		if (ui.modal?.tipo === 'artes' && caminho) ui.avisar(alvo === 'fundo' ? 'Fundo do quadro trocado.' : 'Imagem da narrativa trocada.');
 	}
-	const nomeImagem = (c: string | null) => (!c ? null : (IMAGENS_DO_LIVRO.find((i) => i.caminho === c)?.nome ?? 'enviada'));
+	/** Uma arte pronta na mão: a ferramenta Objeto põe no quadro no próximo clique. */
+	function armarArte(a: ArteArmada) {
+		ui.modal = null;
+		ui.escolher('objeto');
+		ui.armada = a;
+	}
+	const nomeImagem = (c: string | null) => (!c ? null : (IMAGENS_DO_LIVRO.find((i) => i.caminho === c)?.nome ?? mesa.artes.find((a) => a.caminho === c)?.nome ?? 'enviada'));
+
+	// ---- pastas de cenas (Mestre)
+	/** As pastas em lista, com o nível de cada uma (para escolher onde mover uma cena). */
+	function pastasEmLista(pai: string | null = null, nivel = 0): { id: string; nome: string; nivel: number }[] {
+		return mesa.pastasCenas
+			.filter((p) => p.pai_id === pai)
+			.sort((a, b) => a.ordem - b.ordem || a.nome.localeCompare(b.nome, 'pt-BR'))
+			.flatMap((p) => [{ id: p.id, nome: p.nome, nivel }, ...pastasEmLista(p.id, nivel + 1)]);
+	}
+	async function salvarPasta() {
+		const m = ui.modal;
+		const nome = textoModal.trim().slice(0, 60);
+		if (m?.tipo !== 'pasta' || !nome) return;
+		const sb = supabase();
+		if (m.id) {
+			const { error } = await sb.from('mesa_cena_pastas').update({ nome }).eq('id', m.id);
+			if (error) return void toasts.mostrar('Não foi possível renomear a pasta.', 'erro');
+			mesa.pastasCenas = mesa.pastasCenas.map((p) => (p.id === m.id ? { ...p, nome } : p));
+		} else {
+			const { data: p, error } = await sb.from('mesa_cena_pastas').insert({ campanha_id: campanha, nome, pai_id: m.pai }).select('*').single();
+			if (error || !p) return void toasts.mostrar(/3 níveis/.test(error?.message ?? '') ? 'As pastas vão até 3 níveis.' : 'Não foi possível criar a pasta.', 'erro');
+			mesa.pastasCenas = [...mesa.pastasCenas, p];
+		}
+		ui.modal = null;
+	}
+	async function excluirPasta(id: string) {
+		const p = mesa.pastasCenas.find((x) => x.id === id);
+		if (!p) return;
+		const { error } = await supabase().from('mesa_cena_pastas').delete().eq('id', id);
+		if (error) return void toasts.mostrar('Não foi possível apagar a pasta.', 'erro');
+		// o conteúdo sobe para a pasta de cima (o banco faz o mesmo)
+		mesa.pastasCenas = mesa.pastasCenas.filter((x) => x.id !== id).map((x) => (x.pai_id === id ? { ...x, pai_id: p.pai_id } : x));
+		mesa.cenas = mesa.cenas.map((c) => (c.pasta_id === id ? { ...c, pasta_id: p.pai_id } : c));
+	}
+	async function moverCena(id: string, pasta: string | null) {
+		const { error } = await supabase().from('mesa_cenas').update({ pasta_id: pasta }).eq('id', id);
+		if (error) return void toasts.mostrar('Não foi possível mover a cena.', 'erro');
+		mesa.cenas = mesa.cenas.map((c) => (c.id === id ? { ...c, pasta_id: pasta } : c));
+		ui.modal = null;
+	}
 
 	async function duplicar() {
 		if (!cena) return;
 		const { data: c, error } = await supabase()
 			.from('mesa_cenas')
-			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [], modo: cena.modo, imagem: cena.imagem, fundo: cena.fundo, fundo_opacidade: cena.fundo_opacidade, fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, grade: cena.grade })
+			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [], modo: cena.modo, imagem: cena.imagem, fundo: cena.fundo, fundo_opacidade: cena.fundo_opacidade, fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, grade: cena.grade, pasta_id: cena.pasta_id, nome_publico: cena.nome_publico, nevoa: cena.nevoa, reveladas: cena.reveladas ?? [] })
 			.select('*')
 			.single();
 		if (error || !c) return void toasts.mostrar('Não foi possível duplicar a cena.', 'erro');
 		const copia = mesa.tokens.map(({ id: _i, criado_em: _c, atualizado_em: _a, ligado_a: _l, movido: _m, ...t }) => ({ ...t, cena_id: c.id }));
 		if (copia.length) await supabase().from('mesa_tokens').insert(copia);
+		const objetosCopia = mesa.objetos.map(({ id: _i, criado_em: _c, campanha_id: _k, ...o }) => ({ ...o, cena_id: c.id }));
+		if (objetosCopia.length) await supabase().from('mesa_objetos').insert(objetosCopia);
 		ui.pop = null;
 		await goto(`?cena=${c.id}`, { refreshAll: true });
 	}
@@ -563,7 +612,7 @@
 		const q = molde.quadrados;
 		const cx = q.reduce((a, b) => a + b[0], 0) / (q.length || 1) + 0.5;
 		const cy = Math.min(...q.map((p) => p[1]), molde.lancador.y) - 0.5;
-		mesa.deixarEfeito(ui.mira.jutsu.nome.split(':').pop()!.trim(), q, ui.mira.jutsu.turnos ?? null, [cx, Math.max(0.5, cy)]);
+		mesa.deixarEfeito(ui.mira.jutsu.nome.split(':').pop()!.trim(), q, ui.mira.jutsu.turnos ?? null, [cx, Math.max(0.5, cy)], estiloDoJutsu(ui.mira.jutsu));
 		ui.mira = null;
 	}
 
@@ -577,7 +626,7 @@
 			return;
 		}
 		if (e.ctrlKey || e.metaKey || e.altKey) return;
-		const ferramentas: Record<string, Ferramenta> = { v: 'mover', m: 'medir', l: 'lapis', p: 'apontar', e: 'borracha', ...(data.mestre ? { t: 'terreno' as const } : {}) };
+		const ferramentas: Record<string, Ferramenta> = { v: 'mover', m: 'medir', l: 'lapis', p: 'apontar', e: 'borracha', a: 'alfinete', x: 'texto', ...(data.mestre ? { t: 'terreno' as const, o: 'objeto' as const, f: 'nevoa' as const } : {}) };
 		const k = e.key.toLowerCase();
 		if (ferramentas[k] && !ui.mira) return void ui.escolher(ferramentas[k]);
 		if (e.key === 'Escape') {
@@ -589,6 +638,8 @@
 				mesa.enviar('regua', null, true);
 			}
 			else if (ui.aneis) ui.aneis = null;
+			else if (ui.armada) ui.armada = null;
+			else if (ui.objSel) ui.objSel = null;
 			else if (ui.ferramenta === 'fundo') ui.escolher('mover');
 			else ui.sel = null;
 			return;
@@ -598,6 +649,21 @@
 			return;
 		}
 		if (k === 'n' && data.mestre && mesa.iniciativa.ativa) return void mesa.proximoTurno();
+		// o objeto selecionado (alfinete, imagem ou texto): Delete tira, as setas empurram (Shift: 1 m)
+		const obj = ui.objSel ? mesa.objetos.find((o) => o.id === ui.objSel) : null;
+		if (obj && mesa.podeMexerObjeto(obj)) {
+			if (e.key === 'Delete' || e.key === 'Backspace') {
+				e.preventDefault();
+				ui.objSel = null;
+				return void mesa.removerObjeto(obj.id);
+			}
+			const d = ({ ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] } as Record<string, [number, number]>)[e.key];
+			if (d) {
+				e.preventDefault();
+				const passo = e.shiftKey ? 1 : 0.1;
+				return void mesa.atualizarObjeto(obj.id, { x: Math.round((obj.x + d[0] * passo) * 100) / 100, y: Math.round((obj.y + d[1] * passo) * 100) / 100 });
+			}
+		}
 		const sel = mesa.tokens.find((t) => t.id === ui.sel);
 		if (k === 'h' && data.mestre && sel) return void mesa.atualizarToken(sel.id, { visivel: !sel.visivel });
 		const dir = ({ ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] } as Record<string, [number, number]>)[e.key];
@@ -643,16 +709,29 @@
 	}
 	const selTok = $derived(mesa.tokens.find((t) => t.id === ui.sel) ?? null);
 	const selFicha = $derived(selTok ? fichaDe(selTok) : null);
-	const FERRAMENTAS_TODOS: { id: Ferramenta; nome: string; tecla: string; d: string }[] = [
-		{ id: 'mover', nome: 'Mover', tecla: 'V', d: 'M5 3v16l4-4 3 7 3-1-3-7h6z' },
-		{ id: 'medir', nome: 'Medir', tecla: 'M', d: 'M2 16L16 2l6 6L8 22z M7 11l2 2 M10 8l2 2 M13 5l2 2' },
-		{ id: 'lapis', nome: 'Lápis', tecla: 'L', d: 'M3 21l1-5L16 4l4 4L8 20z M14 6l4 4' },
-		{ id: 'apontar', nome: 'Apontar (clique: ping; Alt+clique pinga com qualquer ferramenta)', tecla: 'P', d: 'M12 3v4 M12 17v4 M3 12h4 M17 12h4 M12 8a4 4 0 1 0 0.01 0' },
-		{ id: 'borracha', nome: 'Borracha', tecla: 'E', d: 'M9 20h12 M3 15l9-9 6 6-8 8H8z M8 10l6 6' }
-	];
-	// terreno difícil (cap. 4): só o Mestre marca; arrastar sobre o marcado apaga
-	const FERRAMENTAS = $derived(data.mestre ? [...FERRAMENTAS_TODOS, { id: 'terreno' as Ferramenta, nome: 'Terreno difícil', tecla: 'T', d: 'M2 20h20 M4 20l5-9 3 4 3-6 5 11 M7 16h2 M14 17h2' }] : FERRAMENTAS_TODOS);
-	let mobil = $state<null | 'elenco' | 'chat'>(null);
+	type Ferr = { id: Ferramenta; nome: string; tecla: string; d: string };
+	const FERR: Record<string, Ferr> = {
+		mover: { id: 'mover', nome: 'Mover', tecla: 'V', d: 'M5 3v16l4-4 3 7 3-1-3-7h6z' },
+		medir: { id: 'medir', nome: 'Medir', tecla: 'M', d: 'M2 16L16 2l6 6L8 22z M7 11l2 2 M10 8l2 2 M13 5l2 2' },
+		lapis: { id: 'lapis', nome: 'Lápis', tecla: 'L', d: 'M3 21l1-5L16 4l4 4L8 20z M14 6l4 4' },
+		apontar: { id: 'apontar', nome: 'Apontar (clique: ping; Alt+clique pinga com qualquer ferramenta)', tecla: 'P', d: 'M12 3v4 M12 17v4 M3 12h4 M17 12h4 M12 8a4 4 0 1 0 0.01 0' },
+		alfinete: { id: 'alfinete', nome: 'Alfinete: fincar um marcador com nome no quadro', tecla: 'A', d: 'M12 3a5 5 0 0 1 5 5c0 4-5 9-5 9s-5-5-5-9a5 5 0 0 1 5-5z M12 7a1.5 1.5 0 1 0 .01 0 M12 17v4' },
+		texto: { id: 'texto', nome: 'Texto: escrever no quadro, com fonte, cor e tamanho', tecla: 'X', d: 'M5 5h14 M12 5v14 M9 19h6' },
+		borracha: { id: 'borracha', nome: 'Borracha', tecla: 'E', d: 'M9 20h12 M3 15l9-9 6 6-8 8H8z M8 10l6 6' },
+		terreno: { id: 'terreno', nome: 'Terreno difícil', tecla: 'T', d: 'M2 20h20 M4 20l5-9 3 4 3-6 5 11 M7 16h2 M14 17h2' },
+		nevoa: { id: 'nevoa', nome: 'Névoa: esconder o mapa e revelar aos poucos', tecla: 'F', d: 'M7 18h10a4 4 0 0 0 .5-8A5.5 5.5 0 0 0 7 9a4.5 4.5 0 0 0 0 9z' },
+		objeto: { id: 'objeto', nome: 'Imagens: pôr PNGs, SVGs e artes da biblioteca no quadro', tecla: 'O', d: 'M4 5h16v14H4z M4 16l5-5 4 4 3-3 4 4 M15 9a1 1 0 1 0 .01 0' }
+	};
+	// o trilho em grupos: ver, marcar (todos) e preparar a cena (Mestre). Os três primeiros também vão para o celular.
+	const GRUPOS = $derived<{ nome: string; itens: Ferr[] }[]>([
+		{ nome: 'VER', itens: [FERR.mover, FERR.medir] },
+		{ nome: 'MARCAR', itens: [FERR.lapis, FERR.apontar, FERR.alfinete, FERR.texto, FERR.borracha] },
+		...(data.mestre ? [{ nome: 'CENA', itens: [FERR.terreno, FERR.nevoa, FERR.objeto] }] : [])
+	]);
+	const FERRAMENTAS = $derived(GRUPOS.flatMap((g) => g.itens));
+	const OPCOES_PROPRIAS = ['alfinete', 'texto', 'nevoa', 'objeto'];
+	const temMusica = $derived(data.mestre || !!mesa.jukebox);
+	let mobil = $state<null | 'elenco' | 'chat' | 'ferr'>(null);
 	const FAIXAS = ['Ileso', 'Ferido', 'Muito ferido', 'Caído'];
 	const pop = 'absolute z-30 flex flex-col border-2 border-b3 bg-b0 shadow-[4px_4px_0_#000]';
 	const itemMenu = 'flex flex-col items-start gap-0.5 border-t-2 border-b2 px-3 py-2 text-left disabled:cursor-not-allowed disabled:opacity-50';
@@ -662,16 +741,32 @@
 <svelte:window onkeydown={atalho} />
 
 {#snippet trilho()}
-	<nav aria-label="Ferramentas" class="flex w-12 flex-none flex-col items-center gap-1 border-r-2 border-b3 bg-b0 py-2">
-		{#each FERRAMENTAS as f (f.id)}
-			{@const on = ui.ferramenta === f.id}
-			<button type="button" aria-pressed={on} aria-label={f.nome} title="{f.nome} · {f.tecla}" class="relative flex h-10 w-10 items-center justify-center border-2 {on ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3 text-fg'}" onclick={() => (ui.ferramenta === f.id && ui.pop ? (ui.pop = null) : ui.escolher(f.id))}>
-				<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" class="fill-none stroke-current stroke-2 [stroke-linecap:square]"><path d={f.d} /></svg>
-				<span aria-hidden="true" class="absolute right-0.5 bottom-px font-pixel text-[10px] leading-none font-bold opacity-85">{f.tecla}</span>
-			</button>
+	<nav aria-label="Ferramentas" class="flex w-12 flex-none flex-col items-center gap-1 overflow-y-auto border-r-2 border-b3 bg-b0 py-1.5">
+		{#each GRUPOS as g, gi (g.nome)}
+			{#if gi}<span class="my-0.5 h-0.5 w-7 flex-none bg-b3"></span>{/if}
+			<span aria-hidden="true" class="font-pixel text-[9px] leading-none font-bold tracking-[0.06em] text-mut">{g.nome}</span>
+			{#each g.itens as f (f.id)}
+				{@const on = ui.ferramenta === f.id}
+				<button type="button" aria-pressed={on} aria-label={f.nome} title="{f.nome} · {f.tecla}" class="relative flex h-10 w-10 flex-none items-center justify-center border-2 {on ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3 text-fg'}" onclick={() => (ui.ferramenta === f.id && ui.pop ? (ui.pop = null) : ui.escolher(f.id))}>
+					<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" class="fill-none stroke-current stroke-2 [stroke-linecap:square]"><path d={f.d} /></svg>
+					<span aria-hidden="true" class="absolute right-0.5 bottom-px font-pixel text-[10px] leading-none font-bold opacity-85">{f.tecla}</span>
+				</button>
+			{/each}
 		{/each}
-		<span class="my-1 h-0.5 w-7 bg-b3"></span>
-		<button type="button" class="h-10 w-10 border-2 border-b3 font-pixel text-base font-bold" aria-label="Desfazer (Ctrl+Z)" title="Desfazer · Ctrl+Z" onclick={() => mesa.desfazerUltimo()}>↶</button>
+		<span class="my-0.5 h-0.5 w-7 flex-none bg-b3"></span>
+		<span aria-hidden="true" class="font-pixel text-[9px] leading-none font-bold tracking-[0.06em] text-mut">MESA</span>
+		{#if temMusica}
+			<button type="button" aria-pressed={ui.pop === 'musica'} aria-label="Música da mesa" title="Música da mesa (YouTube e Spotify)" class="relative flex h-10 w-10 flex-none items-center justify-center border-2 {ui.pop === 'musica' ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3 text-fg'}" onclick={() => (ui.pop = ui.pop === 'musica' ? null : 'musica')}>
+				<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" class="fill-none stroke-current stroke-2 [stroke-linecap:square]"><path d="M9 18V5l11-2v13 M9 18a3 3 0 1 1-3-3 M20 16a3 3 0 1 1-3-3" /></svg>
+				{#if mesa.jukebox?.tocando}<span aria-hidden="true" class="absolute -top-1 -right-1 h-2.5 w-2.5 bg-ok"></span>{/if}
+			</button>
+		{/if}
+		{#if data.mestre}
+			<button type="button" aria-label="Biblioteca de artes" title="Biblioteca de artes: mapas e objetos" class="flex h-10 w-10 flex-none items-center justify-center border-2 border-b3" onclick={() => ((ui.pop = null), (ui.modal = { tipo: 'artes' }))}>
+				<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" class="fill-none stroke-current stroke-2 [stroke-linecap:square]"><path d="M3 6h6l2 2h10v11H3z M3 12h18" /></svg>
+			</button>
+		{/if}
+		<button type="button" class="h-10 w-10 flex-none border-2 border-b3 font-pixel text-base font-bold" aria-label="Desfazer (Ctrl+Z)" title="Desfazer · Ctrl+Z" onclick={() => mesa.desfazerUltimo()}>↶</button>
 	</nav>
 {/snippet}
 
@@ -786,7 +881,7 @@
 			</div>
 			{#if hoverToken.condicoes.length}
 				<div class="flex flex-col gap-0.5">
-					{#each hoverToken.condicoes as c (c)}<span class="flex items-center gap-1.5 text-xs leading-none font-semibold"><Icone id="estado/ic-estado-{c}" />{c.replace('-', ' ')}</span>{/each}
+					{#each [...new Set(hoverToken.condicoes)] as c (c)}<span class="flex items-center gap-1.5 text-xs leading-none font-semibold"><Icone id="estado/ic-estado-{c}" />{c.replace('-', ' ')}</span>{/each}
 				</div>
 			{/if}
 			{#if !hoverToken.visivel}<span class="text-xs leading-4 font-semibold text-warn">Escondido: só o Mestre vê.</span>{/if}
@@ -861,6 +956,8 @@
 				{@render sobreQuadro()}
 			{/if}
 			<div class="pointer-events-none absolute inset-x-2 bottom-2 flex flex-col gap-1.5">
+				<PainelObjeto {mesa} {ui} classe="w-full" />
+				<JukeboxMesa {mesa} {ui} classe="self-start" />
 				{#if ui.mira && molde}
 					<div class="pointer-events-auto flex flex-col gap-1.5 border-2 bg-b2 px-2.5 py-2 shadow-[4px_4px_0_var(--b0)]" style="border-color: {molde.ok ? corCss(mesa.corDe(mesa.donoDe(molde.lancador))) : 'var(--mesa-vermelhao)'}">
 						<span class="font-mincho text-[15px] leading-5 font-bold">{ui.mira.jutsu.nome}</span>
@@ -885,11 +982,14 @@
 			</div>
 		</div>
 		<nav aria-label="Ferramentas" class="grid h-16 flex-none grid-cols-5 border-t-2 border-b3 bg-b0">
-			{#each [FERRAMENTAS[0], FERRAMENTAS[1], FERRAMENTAS[2]] as f (f.id)}
+			{#each [FERRAMENTAS[0], FERRAMENTAS[1]] as f (f.id)}
 				<button type="button" aria-pressed={ui.ferramenta === f.id} class="flex flex-col items-center justify-center gap-1 border-r-2 border-b2 font-pixel text-[10px] leading-none font-bold tracking-[0.04em] {ui.ferramenta === f.id ? 'bg-grena text-papel' : 'text-mut'}" onclick={() => ((ui.ferramenta = f.id), (mobil = null))}>
 					<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" class="fill-none stroke-current stroke-2 [stroke-linecap:square]"><path d={f.d} /></svg>{f.nome.toUpperCase()}
 				</button>
 			{/each}
+			<button type="button" aria-pressed={mobil === 'ferr'} class="flex flex-col items-center justify-center gap-1 border-r-2 border-b2 font-pixel text-[10px] leading-none font-bold {mobil === 'ferr' ? 'bg-grena text-papel' : FERRAMENTAS.slice(2).some((f) => f.id === ui.ferramenta) ? 'bg-grena/60 text-papel' : 'text-mut'}" onclick={() => (mobil = mobil === 'ferr' ? null : 'ferr')}>
+				<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" class="fill-none stroke-current stroke-2 [stroke-linecap:square]"><path d={(FERRAMENTAS.slice(2).find((f) => f.id === ui.ferramenta) ?? FERR.lapis).d} /></svg>FERRAMENTAS
+			</button>
 			<button type="button" aria-pressed={mobil === 'chat'} class="relative flex flex-col items-center justify-center gap-1 border-r-2 border-b2 font-pixel text-[10px] leading-none font-bold {mobil === 'chat' ? 'bg-grena text-papel' : 'text-mut'}" onclick={() => ((mobil = mobil === 'chat' ? null : 'chat'), (ui.naoVistas = 0))}>
 				<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" class="fill-none stroke-current stroke-2"><path d="M4 4h16v12H9l-5 4z" /></svg>ROLAGENS
 				{#if ui.naoVistas}<span class="absolute top-1 right-3 bg-[var(--vermelhao)] px-1 py-0.5 font-pixel text-[11px] text-white">{ui.naoVistas}</span>{/if}
@@ -899,6 +999,30 @@
 			</button>
 		</nav>
 		{@render fichasAbertas()}
+		{#if mobil === 'ferr'}
+			<div role="dialog" aria-label="Ferramentas" class="absolute inset-x-0 bottom-16 z-20 flex max-h-[58%] flex-col gap-2 overflow-y-auto border-t-2 border-[var(--vermelhao-lo)] bg-b0 p-2.5">
+				<button type="button" class="sticky top-0 -mt-1 -mb-1 flex min-h-8 items-center justify-between self-stretch bg-b0 font-pixel text-[11px] leading-none font-bold text-mut" onclick={() => (mobil = null)}><span>FERRAMENTAS</span><span>FECHAR ✕</span></button>
+				{#each GRUPOS as g (g.nome)}
+					<span class="font-pixel text-[11px] leading-none font-bold tracking-[0.1em] text-title">{g.nome}</span>
+					<div class="grid grid-cols-5 gap-1.5">
+						{#each g.itens as f (f.id)}
+							<button type="button" aria-pressed={ui.ferramenta === f.id} aria-label={f.nome} class="flex min-h-14 flex-col items-center justify-center gap-1 border-2 font-pixel text-[10px] leading-none font-bold {ui.ferramenta === f.id ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3 text-fg'}" onclick={() => (ui.escolher(f.id), !OPCOES_PROPRIAS.includes(f.id) && ((ui.pop = null), (mobil = null)))}>
+								<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" class="fill-none stroke-current stroke-2 [stroke-linecap:square]"><path d={f.d} /></svg>{f.nome.split(/[ :(]/)[0].toUpperCase()}
+							</button>
+						{/each}
+					</div>
+				{/each}
+				<span class="font-pixel text-[11px] leading-none font-bold tracking-[0.1em] text-title">MESA</span>
+				<div class="grid grid-cols-5 gap-1.5">
+					{#if temMusica}<button type="button" class="flex min-h-14 flex-col items-center justify-center gap-1 border-2 border-b3 font-pixel text-[10px] leading-none font-bold" onclick={() => ((ui.pop = 'musica'), (mobil = null))}>♪ MÚSICA</button>{/if}
+					{#if data.mestre}<button type="button" class="flex min-h-14 flex-col items-center justify-center gap-1 border-2 border-b3 font-pixel text-[10px] leading-none font-bold" onclick={() => ((mobil = null), (ui.modal = { tipo: 'artes' }))}>▣ ARTES</button>{/if}
+					<button type="button" class="flex min-h-14 flex-col items-center justify-center gap-1 border-2 border-b3 font-pixel text-[10px] leading-none font-bold" onclick={() => mesa.desfazerUltimo()}>↶ DESFAZER</button>
+				</div>
+				{#if OPCOES_PROPRIAS.includes(ui.ferramenta)}
+					<div class="flex flex-col gap-2 border-t-2 border-b3 pt-2"><OpcoesFerramenta {mesa} {ui} abrirBiblioteca={() => ((mobil = null), (ui.modal = { tipo: 'artes' }))} /></div>
+				{/if}
+			</div>
+		{/if}
 		{#if mobil === 'chat'}
 			<div class="absolute inset-x-0 bottom-16 z-20 h-[520px] max-h-[calc(100%-112px)] border-t-2 border-[var(--vermelhao-lo)]">
 				<PainelMesa {mesa} {ui} {rolagens} {comoQuem} celular onRolar={rolarLivre} onFechar={() => (mobil = null)} />
@@ -939,16 +1063,17 @@
 			{/if}
 
 			{#if ui.pop === 'cena' && data.mestre}
-				<div role="menu" aria-label="Cenas" class="{pop} top-14 left-44 w-80">
+				<div role="menu" aria-label="Cenas" class="{pop} top-14 left-44 w-96">
 					<span class="px-3 pt-2.5 pb-1.5 font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">CENAS DA CAMPANHA</span>
-					{#each mesa.cenas as c (c.id)}
-						<a role="menuitem" href="?cena={c.id}" class="flex min-h-11 items-center gap-2 border-t-2 border-b2 px-3 {c.id === cena?.id ? 'bg-b2' : ''}" onclick={() => (ui.pop = null)}>
-							<span class="w-2.5 font-pixel text-xs font-bold text-[var(--vermelhao)]">{c.id === cena?.id ? '●' : ''}</span>
-							<span class="flex-1 font-mincho text-[15px] leading-5 font-bold">{c.nome}</span>
-							<span class="font-pixel text-xs font-semibold text-mut">{c.largura} × {c.altura} m</span>
-							{#if c.ativa}<span class="bg-ok px-1 py-0.5 font-pixel text-[11px] leading-none font-bold text-[var(--okfg)]">GRUPO</span>{/if}
-						</a>
-					{/each}
+					<ArvoreCenas
+						{mesa}
+						atual={cena?.id ?? null}
+						aoNovaPasta={(pai) => ((textoModal = ''), (ui.modal = { tipo: 'pasta', id: null, pai }))}
+						aoRenomearPasta={(id) => ((textoModal = mesa.pastasCenas.find((p) => p.id === id)?.nome ?? ''), (ui.modal = { tipo: 'pasta', id, pai: null }))}
+						aoExcluirPasta={excluirPasta}
+						aoMoverCena={(c) => (ui.modal = { tipo: 'mover-cena', cena: c })}
+						aoEscolher={() => (ui.pop = null)}
+					/>
 					<div class="grid grid-cols-2 gap-1 border-t-2 border-b3 p-2">
 						<button type="button" class="min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" onclick={() => ((novaCena = cenaNova()), (ui.modal = { tipo: 'nova' }), (ui.pop = null))}>NOVA CENA</button>
 						<button type="button" class="min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" disabled={!cena} onclick={duplicar}>DUPLICAR</button>
@@ -966,6 +1091,9 @@
 							<span class="font-pixel text-sm font-bold {cena[k] ? 'text-ok' : 'text-mut'}">{cena[k] ? '☒' : '☐'}</span>{n}
 						</button>
 					{/each}
+					<label class="flex flex-col gap-1 border-t-2 border-b2 px-3 py-2 text-xs font-semibold text-mut">Nome que o grupo vê
+						<input class="h-9 border-2 border-b3 bg-b1 px-2 text-sm font-medium text-fg" maxlength="60" placeholder="Em branco: o grupo vê “Cena”" value={cena.nome_publico ?? ''} onchange={(e) => mesa.patchCena({ nome_publico: e.currentTarget.value.trim() || null })} />
+					</label>
 					<button type="button" class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-left text-sm font-semibold" onclick={abrirParticipantes}>
 						<span class="font-pixel text-sm font-bold text-mut">☰</span>Quem joga nesta cena · {cena.participantes ? `${participantes.length} de ${data.personagens.length}` : 'todos'}
 					</button>
@@ -1055,6 +1183,8 @@
 				<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} {focoDe} onSoltar={colocar} />
 				{@render barras()}
 				{@render sobreQuadro()}
+				<div class="pointer-events-none absolute inset-x-3 bottom-16 z-[7] flex justify-center"><PainelObjeto {mesa} {ui} /></div>
+				<JukeboxMesa {mesa} {ui} classe="absolute bottom-16 left-3 z-[8]" />
 				<div class="absolute right-3 bottom-3 z-[6] flex items-center border-2 border-b3 bg-b0 shadow-[4px_4px_0_#000]">
 					<button type="button" class="h-9 w-9 border-r-2 border-b3 font-pixel text-base font-bold" aria-label="Diminuir zoom" onclick={() => quadro?.zoomEm(1 / 1.25)}>−</button>
 					<span class="min-w-[52px] text-center font-pixel text-[13px] font-bold">{Math.round(ui.zoom * 100)}%</span>
@@ -1115,6 +1245,11 @@
 					{/each}
 				</div>
 			{/if}
+			{#if ui.pop === 'alfinete' || ui.pop === 'texto' || ui.pop === 'nevoa' || ui.pop === 'objeto'}
+				<div role="dialog" aria-label="Opções da ferramenta" class="{pop} top-24 max-h-[calc(100%-120px)] w-[290px] gap-2 overflow-y-auto p-3" style="left: {(ui.elencoAberto ? 280 : 40) + 52}px">
+					<OpcoesFerramenta {mesa} {ui} abrirBiblioteca={() => ((ui.pop = null), (ui.modal = { tipo: 'artes' }))} />
+				</div>
+			{/if}
 			{#if ui.pop === 'lapis'}
 				<div role="dialog" aria-label="Lápis" class="{pop} top-24 w-[270px] gap-2.5 p-3" style="left: {(ui.elencoAberto ? 280 : 40) + 52}px">
 					<span class="font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">LÁPIS</span>
@@ -1154,6 +1289,7 @@
 {#if fichaCompleta}
 	{#key fichaCompleta.pid}
 		{@const pid = fichaCompleta.pid}
+		{#await carregarFicha() then { default: FichaCompleta }}
 		<FichaCompleta
 			{campanha}
 			{pid}
@@ -1166,34 +1302,36 @@
 			aoFechar={() => (fichaCompleta = null)}
 			aoCarregar={(nome) => fichaCompleta && (fichaCompleta = { ...fichaCompleta, nome })}
 		/>
+		{/await}
 	{/key}
 {/if}
 
 {#if ui.modal}
 	<div class="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(10,8,7,.72)] p-4" role="presentation" onclick={(e) => e.target === e.currentTarget && (ui.modal = null)}>
-		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'imagem' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]'} max-h-full max-w-full flex-col overflow-y-auto border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_#000]">
+		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]'} max-h-full max-w-full flex-col overflow-y-auto border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_#000]">
 			{#if ui.modal.tipo === 'imagem' && cena}
 				{@const alvo = ui.modal.alvo}
-				{@const atual = cena[alvo]}
-				<div class="border-b-2 border-[var(--vermelhao-lo)] bg-b0 px-3.5 py-2.5 font-pixel text-[13px] leading-none font-bold tracking-[0.1em] text-title">{alvo === 'imagem' ? 'IMAGEM DA NARRATIVA' : 'FUNDO DO QUADRO'}</div>
-				<div class="flex flex-col gap-3 p-4">
-					<span class="text-sm leading-5 text-mut">{alvo === 'imagem' ? 'Aparece para todos quando a cena está no modo narrativa, com o chat de rolagens ao lado.' : 'Fica sob a grade, esticado na cena inteira. A opacidade e a grade ficam nas configurações da cena.'}</span>
-					<div class="grid max-h-[340px] grid-cols-3 gap-1.5 overflow-y-auto">
-						{#each IMAGENS_DO_LIVRO as im (im.caminho)}
-							<button type="button" aria-pressed={atual === im.caminho} class="flex flex-col gap-1 border-2 p-1 text-left {atual === im.caminho ? 'border-fg bg-b3' : 'border-b3'}" onclick={() => escolherImagem(alvo, im.caminho)}>
-								<img src={im.caminho} alt="" loading="lazy" class="aspect-[5/2] w-full object-cover" style="image-rendering: pixelated" />
-								<span class="text-[11px] leading-none font-semibold">{im.nome}</span>
-							</button>
-						{/each}
-					</div>
-					{#if atual && !atual.startsWith('/')}<span class="text-xs leading-4 font-semibold text-ok">Usando a imagem que você enviou.</span>{/if}
+				<ArtesMesa {mesa} {campanha} {alvo} atual={cena[alvo]} aoEscolher={escolherDaBiblioteca} aoArmar={armarArte} aoFechar={() => (ui.modal = null)} />
+			{:else if ui.modal.tipo === 'artes'}
+				<ArtesMesa {mesa} {campanha} aoEscolher={escolherDaBiblioteca} aoArmar={armarArte} aoFechar={() => (ui.modal = null)} />
+			{:else if ui.modal.tipo === 'pasta'}
+				<div class="border-b-2 border-[var(--vermelhao-lo)] bg-b0 px-3.5 py-2.5 font-pixel text-[13px] leading-none font-bold tracking-[0.1em] text-title">{ui.modal.id ? 'RENOMEAR PASTA' : 'NOVA PASTA DE CENAS'}</div>
+				<div class="p-4"><input bind:value={textoModal} maxlength="60" placeholder="Ato 1, Cidade, Masmorra…" aria-label="Nome da pasta" class="h-11 w-full border-2 border-b3 bg-b1 px-2.5 text-[15px] font-semibold text-fg" onkeydown={(e) => e.key === 'Enter' && salvarPasta()} /></div>
+				<div class="flex justify-end gap-2 border-t-2 border-b3 px-4 py-3">
+					<button type="button" class="btn-jogo min-h-11" onclick={() => (ui.modal = null)}>CANCELAR</button>
+					<button type="button" class="btn-jogo btn-primario min-h-11" disabled={!textoModal.trim()} onclick={salvarPasta}>SALVAR</button>
 				</div>
-				<div class="flex flex-wrap items-center gap-2 border-t-2 border-b3 px-4 py-3">
-					<label class="btn-jogo min-h-11 cursor-pointer" aria-busy={enviando}>{enviando ? 'ENVIANDO…' : 'ENVIAR IMAGEM'}<input type="file" accept="image/png,image/jpeg,image/webp" class="sr-only" disabled={enviando} onchange={(e) => enviarImagem(alvo, e)} /></label>
-					<span class="flex-1"></span>
-					<button type="button" class="btn-jogo min-h-11" disabled={!atual} onclick={() => escolherImagem(alvo, null)}>SEM IMAGEM</button>
-					<button type="button" class="btn-jogo btn-primario min-h-11" onclick={() => (ui.modal = null)}>PRONTO</button>
+			{:else if ui.modal.tipo === 'mover-cena'}
+				{@const movendo = mesa.cenas.find((c) => c.id === (ui.modal as { cena: string }).cena)}
+				<div class="border-b-2 border-[var(--vermelhao-lo)] bg-b0 px-3.5 py-2.5 font-pixel text-[13px] leading-none font-bold tracking-[0.1em] text-title">MOVER “{(movendo?.nome ?? '').toUpperCase()}”</div>
+				<div class="flex max-h-[50vh] flex-col overflow-y-auto">
+					<button type="button" class="flex min-h-11 items-center gap-2 border-b-2 border-b2 px-4 text-left text-sm font-semibold {!movendo?.pasta_id ? 'bg-b2' : ''}" onclick={() => movendo && moverCena(movendo.id, null)}><span class="w-3 font-pixel text-xs font-bold text-[var(--vermelhao)]">{!movendo?.pasta_id ? '●' : ''}</span>Sem pasta</button>
+					{#each pastasEmLista() as p (p.id)}
+						<button type="button" class="flex min-h-11 items-center gap-2 border-b-2 border-b2 pr-4 text-left text-sm font-semibold {movendo?.pasta_id === p.id ? 'bg-b2' : ''}" style="padding-left: {16 + p.nivel * 16}px" onclick={() => movendo && moverCena(movendo.id, p.id)}><span class="w-3 font-pixel text-xs font-bold text-[var(--vermelhao)]">{movendo?.pasta_id === p.id ? '●' : ''}</span><span aria-hidden="true" class="font-pixel text-sm text-[var(--vermelhao)]">▣</span>{p.nome}</button>
+					{/each}
+					{#if !mesa.pastasCenas.length}<span class="px-4 py-3 text-sm leading-5 text-mut">Ainda não há pastas. Crie uma em NOVA PASTA, no menu das cenas.</span>{/if}
 				</div>
+				<div class="flex justify-end gap-2 border-t-2 border-b3 px-4 py-3"><button type="button" class="btn-jogo min-h-11" onclick={() => (ui.modal = null)}>FECHAR</button></div>
 			{:else if ui.modal.tipo === 'jutsu'}
 				{@const j = ui.modal.j}
 				<div class="flex items-center gap-2 border-b-2 border-[var(--vermelhao-lo)] bg-b0 py-1 pr-1 pl-3.5">

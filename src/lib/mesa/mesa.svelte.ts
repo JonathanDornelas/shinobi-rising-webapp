@@ -6,12 +6,14 @@ import { sessao } from '#lib/estado/sessao.svelte.ts';
 import { toasts } from '#lib/estado/toasts.svelte.ts';
 import { ordemIniciativa } from '#lib/rolagens/registro.ts';
 import { supabase } from '#lib/supabase/cliente.ts';
-import type { CorMesa, IniciativaCena, MesaCena, MesaEfeito, MesaToken, MesaTraco, Papel, Rolagem } from '#lib/supabase/banco.ts';
+import type { CorMesa, IniciativaCena, MesaArte, MesaCena, MesaCenaPasta, MesaEfeito, MesaJukebox, MesaObjeto, MesaToken, MesaTraco, Papel, Rolagem } from '#lib/supabase/banco.ts';
+import { mascararCena } from './cenas.ts';
+import { limpar as limparRuns } from './nevoa.ts';
 import { coresDosMembros } from './cores.ts';
 import type { Quadrado } from './geometria.ts';
 import { molduraDoToken, molduraPorId } from './molduras.ts';
 
-export type Ferramenta = 'mover' | 'medir' | 'lapis' | 'apontar' | 'borracha' | 'terreno' | 'fundo';
+export type Ferramenta = 'mover' | 'medir' | 'lapis' | 'apontar' | 'borracha' | 'terreno' | 'fundo' | 'alfinete' | 'texto' | 'objeto' | 'nevoa';
 
 export interface MembroMesa {
 	id: string;
@@ -50,7 +52,8 @@ export interface MoldeVivo {
 	t: number;
 }
 
-type Desfazer = { tipo: 'mover'; id: string; x: number; y: number; movido: number } | { tipo: 'traco'; id: string };
+type Desfazer = { tipo: 'mover'; id: string; x: number; y: number; movido: number } | { tipo: 'traco'; id: string } | { tipo: 'objeto'; id: string };
+
 
 const sb = () => supabase();
 
@@ -65,6 +68,13 @@ export class Mesa {
 	tokens = $state<MesaToken[]>([]);
 	tracos = $state<MesaTraco[]>([]);
 	efeitos = $state<MesaEfeito[]>([]);
+	/** Alfinetes, imagens e textos soltos no quadro. */
+	objetos = $state<MesaObjeto[]>([]);
+	/** A música da campanha (null = nenhuma). */
+	jukebox = $state<MesaJukebox | null>(null);
+	/** Pastas das cenas e biblioteca de artes: só o Mestre carrega. */
+	pastasCenas = $state<MesaCenaPasta[]>([]);
+	artes = $state<MesaArte[]>([]);
 	membros = $state<MembroMesa[]>([]);
 	/** a moldura que o Mestre escolheu para a campanha; universal = vale em todos os tokens */
 	molduraMesa = $state<{ id: string | null; universal: boolean }>({ id: null, universal: false });
@@ -88,9 +98,10 @@ export class Mesa {
 
 	cena = $derived(this.cenas.find((c) => c.id === this.cenaId) ?? null);
 	cores = $derived(coresDosMembros(this.membros));
-	iniciativa = $derived<IniciativaCena>(this.cena?.iniciativa ?? {});
+	// a iniciativa e o terreno vêm do banco e do Realtime: qualquer formato inesperado vira vazio, nunca uma exceção
+	iniciativa = $derived<IniciativaCena>(this.cena?.iniciativa && typeof this.cena.iniciativa === 'object' && !Array.isArray(this.cena.iniciativa) ? this.cena.iniciativa : {});
 	/** Quadrados de terreno difícil da cena, como "x,y" */
-	terreno = $derived(new Set((this.cena?.terreno ?? []).map(([x, y]) => `${x},${y}`)));
+	terreno = $derived(new Set((Array.isArray(this.cena?.terreno) ? this.cena.terreno : []).map(([x, y]) => `${x},${y}`)));
 	get travada() {
 		return !!this.cena?.travada && !this.mestre;
 	}
@@ -105,6 +116,10 @@ export class Mesa {
 		tokens: MesaToken[];
 		tracos: MesaTraco[];
 		efeitos: MesaEfeito[];
+		objetos?: MesaObjeto[];
+		jukebox?: MesaJukebox | null;
+		pastasCenas?: MesaCenaPasta[];
+		artes?: MesaArte[];
 		membros: MembroMesa[];
 		molduraMesa: { id: string | null; universal: boolean };
 	}) {
@@ -112,11 +127,15 @@ export class Mesa {
 		this.eu = d.eu;
 		this.mestre = d.mestre;
 		this.somenteLeitura = d.arquivada;
-		this.cenas = d.cenas;
+		this.cenas = d.cenas.map((c) => mascararCena(c, d.mestre));
 		this.cenaId = d.cena?.id ?? null;
 		this.tokens = d.tokens;
 		this.tracos = d.tracos;
 		this.efeitos = d.efeitos;
+		this.objetos = d.objetos ?? [];
+		this.jukebox = d.jukebox ?? null;
+		this.pastasCenas = d.pastasCenas ?? [];
+		this.artes = d.artes ?? [];
 		this.membros = d.membros;
 		this.molduraMesa = d.molduraMesa;
 	}
@@ -137,8 +156,13 @@ export class Mesa {
 			.channel(`mesa:${this.campanha}`, { config: { broadcast: { self: false }, presence: { key: this.eu } } })
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_tokens', filter: `cena_id=eq.${cena}` }, (p) => {
 				if (p.eventType === 'DELETE') this.tokens = this.tokens.filter((t) => t.id !== (p.old as { id: string }).id);
-				else this.tokens = lista(this.tokens, p.new as MesaToken);
-				if (this.cena?.mostrar_pv && !this.mestre) this.lerPvs();
+				else {
+					const novo = p.new as MesaToken;
+					const velho = this.tokens.find((t) => t.id === novo.id);
+					this.tokens = lista(this.tokens, novo);
+					// o PV visível só muda com ferimento, PV, entrada ou saída de token: andar não pede nova leitura
+					if (this.cena?.mostrar_pv && !this.mestre && (!velho || velho.ferimento !== novo.ferimento || velho.pv !== novo.pv || velho.pv_max !== novo.pv_max)) this.lerPvs();
+				}
 			})
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_tracos', filter: `cena_id=eq.${cena}` }, (p) => {
 				if (p.eventType === 'DELETE') this.tracos = this.tracos.filter((t) => t.id !== (p.old as { id: string }).id);
@@ -153,15 +177,26 @@ export class Mesa {
 			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_tokens' }, (p) => (this.tokens = this.tokens.filter((t) => t.id !== (p.old as { id: string }).id)))
 			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_tracos' }, (p) => (this.tracos = this.tracos.filter((t) => t.id !== (p.old as { id: string }).id)))
 			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_efeitos' }, (p) => (this.efeitos = this.efeitos.filter((t) => t.id !== (p.old as { id: string }).id)))
+			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_objetos' }, (p) => (this.objetos = this.objetos.filter((t) => t.id !== (p.old as { id: string }).id)))
+			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_objetos', filter: `cena_id=eq.${cena}` }, (p) => {
+				if (p.eventType !== 'DELETE') this.objetos = lista(this.objetos, p.new as MesaObjeto);
+			})
+			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_jukebox', filter: `campanha_id=eq.${this.campanha}` }, (p) => {
+				this.jukebox = p.eventType === 'DELETE' ? null : (p.new as MesaJukebox);
+			})
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_cenas', filter: `campanha_id=eq.${this.campanha}` }, (p) => {
 				if (p.eventType === 'DELETE') {
 					this.cenas = this.cenas.filter((c) => c.id !== (p.old as { id: string }).id);
 					if ((p.old as { id: string }).id === cena && !this.mestre) this.trocouCena++;
 					return;
 				}
-				const c = p.new as MesaCena;
-				// o terreno grande pode chegar de fora do aviso quando não mudou: fica o que já estava
-				if (!Array.isArray(c.terreno)) c.terreno = this.cenas.find((x) => x.id === c.id)?.terreno ?? [];
+				const c = mascararCena(p.new as MesaCena, this.mestre);
+				// colunas grandes que não mudaram podem chegar de fora do aviso (TOAST do Postgres): fica o que já estava
+				const antiga = this.cenas.find((x) => x.id === c.id);
+				if (!Array.isArray(c.terreno)) c.terreno = antiga?.terreno ?? [];
+				if (!Array.isArray(c.reveladas)) c.reveladas = antiga?.reveladas ?? [];
+				if (c.participantes != null && !Array.isArray(c.participantes)) c.participantes = antiga?.participantes ?? null;
+				if (!c.iniciativa || typeof c.iniciativa !== 'object' || Array.isArray(c.iniciativa)) c.iniciativa = antiga?.iniciativa ?? {};
 				this.cenas = lista(this.cenas, c);
 				// o Mestre ativou outra cena: quem joga vai junto
 				if (!this.mestre && c.ativa && c.id !== cena) this.trocouCena++;
@@ -234,7 +269,13 @@ export class Mesa {
 		this.canal.send({ type: 'broadcast', event: evento, payload });
 	}
 
-	async lerPvs() {
+	private esperaPvs: ReturnType<typeof setTimeout> | undefined;
+	/** Lê os PVs visíveis da cena; vários avisos seguidos (o turno zera o movimento de todos) viram uma leitura só. */
+	lerPvs() {
+		clearTimeout(this.esperaPvs);
+		this.esperaPvs = setTimeout(() => this.lerPvsAgora(), 250);
+	}
+	private async lerPvsAgora() {
 		if (!this.cenaId) return;
 		const { data } = await sb().rpc('pv_da_cena', { cena: this.cenaId });
 		this.pvs = Object.fromEntries((data ?? []).map((r) => [r.token_id, { pv: r.pv, pv_max: r.pv_max }]));
@@ -245,7 +286,8 @@ export class Mesa {
 	daVez = $derived.by(() => {
 		const i = this.iniciativa;
 		if (!i.ativa || !i.ordem?.length) return new Set<string>();
-		const e = i.ordem[(i.vez ?? 0) % i.ordem.length];
+		const e = i.ordem[Math.abs(Math.trunc(i.vez ?? 0)) % i.ordem.length];
+		if (!e) return new Set<string>();
 		return new Set(this.tokens.filter((t) => (e.personagem_id && t.personagem_id === e.personagem_id) || (e.npc_id && t.npc_id === e.npc_id)).map((t) => t.id));
 	});
 
@@ -276,8 +318,10 @@ export class Mesa {
 			const comTurnos = this.efeitos.filter((x) => x.turnos != null);
 			const acabam = comTurnos.filter((e) => e.turnos! <= 1).map((e) => e.id);
 			this.efeitos = this.efeitos.filter((e) => !acabam.includes(e.id)).map((e) => (e.turnos != null ? { ...e, turnos: e.turnos - 1 } : e));
-			if (acabam.length) await sb().from('mesa_efeitos').delete().in('id', acabam);
-			for (const e of comTurnos.filter((x) => x.turnos! > 1)) await sb().from('mesa_efeitos').update({ turnos: e.turnos! - 1 }).eq('id', e.id);
+			await Promise.all([
+				...(acabam.length ? [sb().from('mesa_efeitos').delete().in('id', acabam)] : []),
+				...comTurnos.filter((x) => x.turnos! > 1).map((e) => sb().from('mesa_efeitos').update({ turnos: e.turnos! - 1 }).eq('id', e.id))
+			]);
 			// e quem cresceu por um jutsu também: no zero, volta ao tamanho normal
 			for (const t of this.tokens.filter((x) => x.tamanho_base != null && x.crescido_turnos != null)) {
 				if (t.crescido_turnos! <= 1) await this.voltarAoNormal(t);
@@ -395,11 +439,11 @@ export class Mesa {
 		else this.tracos = todos ? [] : this.tracos.filter((t) => t.autor_id !== this.eu);
 	}
 
-	async deixarEfeito(nome: string, quadrados: Quadrado[], turnos: number | null, rotulo: [number, number]) {
+	async deixarEfeito(nome: string, quadrados: Quadrado[], turnos: number | null, rotulo: [number, number], estilo: string | null = null) {
 		if (!this.cenaId) return;
 		const { data, error } = await sb()
 			.from('mesa_efeitos')
-			.insert({ cena_id: this.cenaId, nome: nome.slice(0, 60), quadrados, turnos, rotulo_x: rotulo[0], rotulo_y: rotulo[1] })
+			.insert({ cena_id: this.cenaId, nome: nome.slice(0, 60), quadrados, turnos, rotulo_x: rotulo[0], rotulo_y: rotulo[1], estilo })
 			.select('*')
 			.single();
 		if (error || !data) toasts.mostrar('Não foi possível deixar o efeito na cena.', 'erro');
@@ -418,11 +462,96 @@ export class Mesa {
 		}
 	}
 
-	/** Ctrl+Z: desfaz o último movimento ou traço meu. */
+	// ------------------------------------------------------------------ objetos da cena
+	/** Pode mexer neste objeto? O Mestre em todos; cada um nos seus (e nunca nos travados). */
+	podeMexerObjeto = (o: MesaObjeto) => !this.somenteLeitura && (this.mestre || (o.autor_id === this.eu && !o.travado && !this.travada && o.tipo !== 'imagem'));
+
+	async colocarObjeto(novo: Partial<MesaObjeto> & { tipo: MesaObjeto['tipo'] }) {
+		if (!this.cenaId) return null;
+		const { data, error } = await sb()
+			.from('mesa_objetos')
+			.insert({ ...novo, cena_id: this.cenaId, autor_id: this.eu })
+			.select('*')
+			.single();
+		if (error || !data) {
+			toasts.mostrar(/300 objetos/.test(error?.message ?? '') ? 'A cena guarda até 300 objetos.' : /row-level/.test(error?.message ?? '') ? 'Mesa travada pelo Mestre.' : 'Não foi possível pôr o objeto na cena.', 'erro');
+			return null;
+		}
+		const o = data as MesaObjeto;
+		this.objetos = this.objetos.some((x) => x.id === o.id) ? this.objetos : [...this.objetos, o];
+		this.desfazer.push({ tipo: 'objeto', id: o.id });
+		return o;
+	}
+
+	async atualizarObjeto(id: string, patch: Partial<MesaObjeto>) {
+		const antes = this.objetos.find((o) => o.id === id);
+		if (!antes) return false;
+		this.objetos = this.objetos.map((o) => (o.id === id ? { ...o, ...patch } : o));
+		const { error } = await sb().from('mesa_objetos').update(patch).eq('id', id);
+		if (error) {
+			this.objetos = this.objetos.map((o) => (o.id === id ? antes : o));
+			toasts.mostrar('Não foi possível salvar o objeto.', 'erro');
+			return false;
+		}
+		return true;
+	}
+
+	async removerObjeto(id: string) {
+		const antes = this.objetos;
+		this.objetos = this.objetos.filter((o) => o.id !== id);
+		const { error } = await sb().from('mesa_objetos').delete().eq('id', id);
+		if (error) {
+			this.objetos = antes;
+			toasts.mostrar('Não foi possível tirar o objeto.', 'erro');
+		}
+	}
+
+	// ------------------------------------------------------------------ névoa (Mestre)
+	/** Liga ou desliga a névoa da cena; ao ligar a primeira vez o mapa começa todo coberto. */
+	alternarNevoa(ligada = !this.cena?.nevoa) {
+		return this.patchCena({ nevoa: ligada });
+	}
+	definirReveladas(runs: [number, number, number][]) {
+		const c = this.cena;
+		return this.patchCena({ reveladas: limparRuns(runs, c?.largura ?? 40, c?.altura ?? 30) });
+	}
+
+	// ------------------------------------------------------------------ jukebox (Mestre muda, todos ouvem)
+	/** Grava o estado da música (o servidor carimba a hora). Sem música ainda, cria a linha da campanha. */
+	async mudarJukebox(patch: Partial<MesaJukebox> & Pick<MesaJukebox, 'fonte' | 'ref'>): Promise<boolean>;
+	async mudarJukebox(patch: Partial<MesaJukebox>): Promise<boolean>;
+	async mudarJukebox(patch: Partial<MesaJukebox>): Promise<boolean> {
+		if (!this.mestre || this.somenteLeitura) return false;
+		const antes = this.jukebox;
+		const base = antes ?? ({ campanha_id: this.campanha, lista: false, titulo: null, tocando: false, posicao: 0, indice: 0 } as Partial<MesaJukebox>);
+		const novo = { ...base, ...patch, campanha_id: this.campanha };
+		if (!novo.fonte || !novo.ref) return false;
+		this.jukebox = { ...(novo as MesaJukebox), desde: new Date().toISOString(), atualizada_em: new Date().toISOString() };
+		const { error } = await sb().from('mesa_jukebox').upsert(novo as MesaJukebox);
+		if (error) {
+			this.jukebox = antes;
+			toasts.mostrar('Não foi possível mudar a música.', 'erro');
+			return false;
+		}
+		return true;
+	}
+	async tirarJukebox() {
+		if (!this.mestre) return;
+		const antes = this.jukebox;
+		this.jukebox = null;
+		const { error } = await sb().from('mesa_jukebox').delete().eq('campanha_id', this.campanha);
+		if (error) {
+			this.jukebox = antes;
+			toasts.mostrar('Não foi possível tirar a música.', 'erro');
+		}
+	}
+
+	/** Ctrl+Z: desfaz o último movimento, traço ou objeto meu. */
 	async desfazerUltimo() {
 		const d = this.desfazer.pop();
 		if (!d) return false;
 		if (d.tipo === 'mover') await this.atualizarToken(d.id, { x: d.x, y: d.y, movido: d.movido });
+		else if (d.tipo === 'objeto') await this.removerObjeto(d.id);
 		else await this.apagarTraco(d.id);
 		return true;
 	}

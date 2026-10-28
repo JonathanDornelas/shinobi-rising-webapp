@@ -792,6 +792,14 @@ Para depois do design. Toda migração precisa do seu OK antes de ir para a prod
 - Jutsus em duas partes: ATAQUE (ou USAR) paga o custo e rola o ataque; DANO (ou CURA) rola o efeito nos alvos da régua. Um 20 natural no ataque deixa o DANO seguinte em crítico.
 - Cone: começa na borda do espaço de quem lança, e um quadrado entra quando a maior parte dele (3 de 5 pontos) fica dentro do cone.
 
+**Ferramentas novas (migração 20261106120000)**
+- **Objetos da cena** (`mesa_objetos`): alfinete, imagem e texto, com centro em metros, rotação, cor, fonte (Normal, Pixel, Mincho, Máquina), tamanho, ordem, visível e travado. O Mestre põe qualquer um; o grupo põe alfinetes e textos seus e mexe só neles. No quadro: arrastar move, o canto redimensiona, a bolinha gira (Shift: 15° ou 1 m), Delete tira, as setas empurram (Shift: 1 m), Ctrl+Z desfaz o último objeto colocado. Atalhos: A (alfinete), X (texto), O (imagens), F (névoa).
+- **Biblioteca de artes** (`mesa_artes`, bucket mesa): PNG, JPG, WebP, GIF e SVG viram webp no navegador (mapa até 2048 px, objeto até 1024 px, no máximo 5 MB) com miniatura de 256 px; até 300 por campanha. O SVG nunca fica no bucket público: é rasterizado no envio. Apagar uma arte tira ela do fundo, da narrativa e dos objetos.
+- **Névoa**: `mesa_cenas.nevoa` e `reveladas` (runs [y, x0, x1] de quadrados revelados). O Mestre pinta com pincel de 1 a 15 quadrados; o grupo não vê tokens, objetos nem mapa cobertos. É visual: o arquivo do fundo continua público; segredo de verdade fica em "visível".
+- **Efeitos de área por estilo** (`mesa_efeitos.estilo`): os 14 elementos, mais taijutsu, genjutsu, bukijutsu e ninjutsu genérico, cada um com ladrilho próprio e animação (parada com movimento reduzido).
+- **Cenas em pastas** (`mesa_cena_pastas`, até 3 níveis) e **nome público** (`nome_publico`): o grupo vê só a cena ativa, com o nome público (ou "Cena").
+- **Jukebox** (`mesa_jukebox`): o Mestre cola um link do YouTube (vídeo ou lista) ou do Spotify; cada navegador toca o player oficial e segue o estado gravado (tocar, pausar, posição, item da lista), com a hora do servidor (`agora_servidor()`). Cada pessoa liga e desliga o próprio som.
+
 ---
 
 ## 9. Pedido para o Claude Design

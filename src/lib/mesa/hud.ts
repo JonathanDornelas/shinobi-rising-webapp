@@ -33,11 +33,13 @@ export function lerDados(expr: string): DadosExpr | null {
 /** Os dados com arte em /dados/d<lados>.png. */
 export const temArte = (lados: number) => [4, 6, 8, 10, 12, 20, 100].includes(lados);
 
+/** A chave do elemento (katon, suiton…): o do jutsu, ou um elemento citado no nome ("Katon: Goukakyu"). */
+export function chaveElemento(elemento?: string | null, nome = ''): string | null {
+	return elemento && ELEMENTO[elemento] ? elemento : (Object.keys(ELEMENTO).find((e) => new RegExp(`(^|[^\\p{L}])(${e}|${ELEMENTO[e].nome})(?![\\p{L}])`, 'iu').test(nome)) ?? null);
+}
+
 /** A cor e o nome do dano: o elemento do jutsu, ou um elemento citado no nome ("Katon: Goukakyu"). */
 export function corElemento(elemento?: string | null, nome = ''): { cor: string; nome: string } | null {
-	const k =
-		elemento && ELEMENTO[elemento]
-			? elemento
-			: Object.keys(ELEMENTO).find((e) => new RegExp(`(^|[^\\p{L}])(${e}|${ELEMENTO[e].nome})(?![\\p{L}])`, 'iu').test(nome));
+	const k = chaveElemento(elemento, nome);
 	return k ? { cor: ELEMENTO[k].cor, nome: ELEMENTO[k].traducao } : null;
 }

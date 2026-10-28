@@ -11,6 +11,11 @@
 	import { urlImagemMesa } from '#lib/mesa/imagens.ts';
 	import { retanguloFoco, type FocoArte } from '#lib/bestiario/foco.ts';
 	import { calcularMolde, nomeCurto, type UiMesa } from '#lib/mesa/ui.svelte.ts';
+	import type { MesaObjeto } from '#lib/supabase/banco.ts';
+	import { caminhoNevoa, celulasEntre, emRuns, grade as gradeNevoa, indice as indiceNevoa, pintar as pintarNevoa, type Run } from '#lib/mesa/nevoa.ts';
+	import { FONTES, alcas, caixa as caixaObjeto, contraste, limitar as limitarObj, objetoEm, tamanhoInicial } from '#lib/mesa/objetos.ts';
+	import { ESTILOS, estiloDoJutsu, estiloValido } from '#lib/mesa/efeitos.ts';
+	import EfeitosFx from './EfeitosFx.svelte';
 
 	let {
 		mesa,
@@ -63,8 +68,38 @@
 		return { x: (cena.fundo_x ?? 0) + (arrastoFundo?.dx ?? 0), y: (cena.fundo_y ?? 0) + (arrastoFundo?.dy ?? 0), w, h: w * proporcaoFundo };
 	});
 	const s = $derived(BASE * ui.zoom);
+	/** A grade em dois traçados: as linhas de cada metro e, mais fortes, as de 5 em 5 m. */
+	const grade1 = $derived.by(() => {
+		let d = '';
+		for (let i = 0; i <= L; i++) if (i % 5) d += `M${i} 0V${A}`;
+		for (let j = 0; j <= A; j++) if (j % 5) d += `M0 ${j}H${L}`;
+		return d;
+	});
+	const grade5 = $derived.by(() => {
+		let d = '';
+		for (let i = 0; i <= L; i += 5) d += `M${i} 0V${A}`;
+		for (let j = 0; j <= A; j += 5) d += `M0 ${j}H${L}`;
+		return d;
+	});
 	const F = (px: number) => px / s;
-	const visiveis = $derived(mesa.tokens);
+	// névoa: o grupo só vê o que está revelado (o Mestre vê tudo, com a névoa esmaecida por cima)
+	const nevoaLigada = $derived(!!cena?.nevoa);
+	const escondeDeMim = $derived(nevoaLigada && !mesa.mestre);
+	let nevoaTemp = $state<Run[] | null>(null);
+	const runsNevoa = $derived(nevoaTemp ?? cena?.reveladas ?? []);
+	const revelado = $derived(indiceNevoa(runsNevoa));
+	const caminhoDaNevoa = $derived(nevoaLigada ? caminhoNevoa(runsNevoa, L, A) : '');
+	const visiveis = $derived(escondeDeMim ? mesa.tokens.filter((t) => revelado(t.x + t.tamanho / 2, t.y + t.tamanho / 2)) : mesa.tokens);
+	const objetosVisiveis = $derived(escondeDeMim ? mesa.objetos.filter((o) => o.tipo === 'imagem' || revelado(o.x, o.y)) : mesa.objetos);
+	/** As imagens ficam sob os tokens; os alfinetes e os textos, por cima. Cada grupo na ordem de empilhamento. */
+	const porOrdem = (a: MesaObjeto, b: MesaObjeto) => a.ordem - b.ordem || a.criado_em.localeCompare(b.criado_em);
+	const imagens = $derived(objetosVisiveis.filter((o) => o.tipo === 'imagem').sort(porOrdem));
+	const marcadores = $derived(objetosVisiveis.filter((o) => o.tipo !== 'imagem').sort(porOrdem));
+	let objArrasto = $state<{ id: string; modo: 'mover' | 'redim' | 'girar'; dx: number; dy: number; ini: MesaObjeto; patch: Partial<MesaObjeto> } | null>(null);
+	const mostrado = (o: MesaObjeto): MesaObjeto => (objArrasto?.id === o.id ? { ...o, ...objArrasto.patch } : o);
+	const objetoSel = $derived(ui.objSel ? (mesa.objetos.find((o) => o.id === ui.objSel) ?? null) : null);
+	/** Rascunho do texto novo (a caixa de digitação sobre o quadro). */
+	let rascunho = $state<{ x: number; y: number; texto: string } | null>(null);
 	const molde = $derived(ui.mira ? calcularMolde(ui.mira, mesa, visiveis.filter((t) => t.visivel || mesa.mestre)) : null);
 
 	// relógio para o que some aos poucos (Apontar, régua solta, traços temporários)
@@ -214,7 +249,17 @@
 			clearTimeout(segurar);
 			segurar = setTimeout(() => (ui.hover = { token: t.id, x: p.sx, y: p.sy }), 550);
 		}
+		if (objetosNoClique(e, p)) return;
 		switch (ui.ferramenta) {
+			case 'nevoa': {
+				if (!mesa.mestre || mesa.somenteLeitura) break;
+				const grade = gradeNevoa(cena?.reveladas ?? [], L, A);
+				const revelar = (ui.nevoaModo === 'revelar') !== e.shiftKey;
+				nevoaPintura = { grade, revelar, ultimo: g };
+				pintarNevoa(grade, L, A, g[0], g[1], ui.nevoaPincel, revelar);
+				nevoaTemp = emRuns(grade, L, A);
+				break;
+			}
 			case 'mover':
 				if (t) {
 					ui.sel = t.id;
@@ -250,6 +295,93 @@
 		}
 	}
 
+	// ------------------------------------------------------------------ objetos e névoa: clique, arrasto e soltura
+	let nevoaPintura: { grade: Uint8Array; revelar: boolean; ultimo: Quadrado } | null = null;
+	const arred = (v: number, casas = 2) => Math.round(v * 10 ** casas) / 10 ** casas;
+	/** Um clique que pertence a um objeto (alça, alfinete, texto ou imagem) ou que põe um novo; true se tratou. */
+	function objetosNoClique(e: PointerEvent, p: { mx: number; my: number; sx: number; sy: number }): boolean {
+		const f = ui.ferramenta;
+		if (f !== 'mover' && f !== 'alfinete' && f !== 'texto' && f !== 'objeto') return false;
+		// alças do objeto selecionado: girar e redimensionar
+		if (objetoSel && mesa.podeMexerObjeto(objetoSel) && objetoSel.tipo !== 'alfinete') {
+			const al = alcas(objetoSel);
+			const perto = (q: { x: number; y: number }) => Math.hypot(p.mx - q.x, p.my - q.y) < Math.max(0.5, F(14));
+			if (perto(al.girar)) return void (objArrasto = { id: objetoSel.id, modo: 'girar', dx: 0, dy: 0, ini: objetoSel, patch: {} }), true;
+			if (perto(al.canto)) return void (objArrasto = { id: objetoSel.id, modo: 'redim', dx: 0, dy: 0, ini: objetoSel, patch: {} }), true;
+		}
+		// com a ferramenta Objeto, as imagens também se pegam (nas outras, o mapa continua arrastável por baixo)
+		const alvo = objetoEm(f === 'objeto' && !ui.armada ? objetosVisiveis : marcadores, p.mx, p.my);
+		if (alvo) {
+			ui.objSel = alvo.id;
+			if (mesa.podeMexerObjeto(alvo)) objArrasto = { id: alvo.id, modo: 'mover', dx: p.mx - alvo.x, dy: p.my - alvo.y, ini: alvo, patch: {} };
+			else if (e.pointerType !== 'touch') ui.avisar(alvo.tipo === 'imagem' ? 'Só o Mestre mexe nas imagens.' : 'Esse objeto é de outra pessoa.');
+			return true;
+		}
+		if (f === 'mover') {
+			ui.objSel = null;
+			return false;
+		}
+		if (mesa.somenteLeitura || (mesa.travada && !mesa.mestre)) return void ui.avisar('Mesa travada pelo Mestre.'), true;
+		const x = arred(p.mx, 1);
+		const y = arred(p.my, 1);
+		if (f === 'alfinete') {
+			void mesa.colocarObjeto({ tipo: 'alfinete', x, y, cor: ui.alfineteCor }).then((o) => o && (ui.objSel = o.id));
+			return true;
+		}
+		if (f === 'texto') {
+			ui.objSel = null;
+			rascunho = { x, y, texto: '' };
+			return true;
+		}
+		// objeto: põe a arte armada (maior lado = um terço da cena) e solta a ferramenta para mexer nela
+		if (ui.armada) {
+			const a = ui.armada;
+			const { largura, altura } = tamanhoInicial(a.w, a.h, Math.max(2, Math.min(L, A) / 3));
+			void mesa.colocarObjeto({ tipo: 'imagem', x, y, largura, altura, imagem: a.caminho }).then((o) => o && (ui.objSel = o.id));
+			ui.armada = null;
+			return true;
+		}
+		ui.objSel = null;
+		return false;
+	}
+	async function confirmarTexto() {
+		const r = rascunho;
+		rascunho = null;
+		if (!r || !r.texto.trim()) return;
+		const n = ui.textoNovo;
+		const o = await mesa.colocarObjeto({ tipo: 'texto', x: r.x, y: r.y, texto: r.texto.trim().slice(0, 300), fonte: n.fonte, cor: n.cor, tamanho: n.tamanho });
+		if (o) ui.objSel = o.id;
+	}
+	/** O arrasto de um objeto: mover, girar ou redimensionar (arredonda para o banco). */
+	function arrastarObjeto(p: { mx: number; my: number }, shift: boolean) {
+		const a = objArrasto!;
+		const o = a.ini;
+		if (a.modo === 'mover') {
+			a.patch = { x: arred(limitarObj(p.mx - a.dx, L), shift ? 0 : 2), y: arred(limitarObj(p.my - a.dy, A), shift ? 0 : 2) };
+			if (shift) a.patch = { x: Math.round(p.mx - a.dx), y: Math.round(p.my - a.dy) };
+			return;
+		}
+		const c = caixaObjeto(o);
+		if (a.modo === 'girar') {
+			let graus = (Math.atan2(p.my - c.cy, p.mx - c.cx) * 180) / Math.PI + 90;
+			if (shift) graus = Math.round(graus / 15) * 15;
+			a.patch = { rotacao: arred(((((graus + 180) % 360) + 360) % 360) - 180, 1) };
+			return;
+		}
+		// redimensionar: a distância ao centro, no sentido da imagem (sem a rotação), decide o novo tamanho
+		const r = (-(o.rotacao ?? 0) * Math.PI) / 180;
+		const dx = p.mx - c.cx;
+		const dy = p.my - c.cy;
+		const lx = Math.abs(dx * Math.cos(r) - dy * Math.sin(r));
+		if (o.tipo === 'imagem') {
+			const k = Math.min(400, Math.max(0.25, 2 * Math.max(lx, 0.125))) / (o.largura ?? 1);
+			a.patch = { largura: arred((o.largura ?? 1) * k, 2), altura: arred(Math.min(400, Math.max(0.25, (o.altura ?? 1) * k)), 2) };
+		} else {
+			const k = Math.hypot(dx, dy) / Math.max(0.2, Math.hypot(c.hw, c.hh));
+			a.patch = { tamanho: arred(Math.min(20, Math.max(0.2, (o.tamanho ?? 1) * k)), 2) };
+		}
+	}
+
 	function aoMover(e: PointerEvent) {
 		if (toques.has(e.pointerId)) toques.set(e.pointerId, { x: e.clientX, y: e.clientY });
 		if (pinca && toques.size === 2) {
@@ -279,6 +411,15 @@
 			return;
 		}
 		if (pintura) return pintar(g);
+		if (objArrasto) return arrastarObjeto(p, e.shiftKey);
+		if (nevoaPintura) {
+			const n = nevoaPintura;
+			let mudou = false;
+			for (const [x, y] of celulasEntre(n.ultimo[0], n.ultimo[1], g[0], g[1])) mudou = pintarNevoa(n.grade, L, A, x, y, ui.nevoaPincel, n.revelar) || mudou;
+			n.ultimo = g;
+			if (mudou) nevoaTemp = emRuns(n.grade, L, A);
+			return;
+		}
 		if (arrastoFundo) return void (arrastoFundo = { ...arrastoFundo, dx: p.mx - arrastoFundo.mx, dy: p.my - arrastoFundo.my });
 		const m = ui.mira;
 		if (m && !m.fixa) {
@@ -318,6 +459,21 @@
 			return;
 		}
 		pan = null;
+		if (objArrasto) {
+			const a = objArrasto;
+			objArrasto = null;
+			if (Object.keys(a.patch).length) void mesa.atualizarObjeto(a.id, a.patch);
+			return;
+		}
+		if (nevoaPintura) {
+			const grade = nevoaPintura.grade;
+			nevoaPintura = null;
+			// pintar com a névoa desligada liga ela: o resto do mapa fica coberto
+			const runs = emRuns(grade, L, A);
+			nevoaTemp = null;
+			void mesa.patchCena({ nevoa: true, reveladas: runs });
+			return;
+		}
 		if (arrastoFundo) {
 			const c = caixaFundo;
 			arrastoFundo = null;
@@ -417,10 +573,13 @@
 	});
 	const reguaMinha = $derived(ui.regua ? { pontos: ui.regua.cur ? [...ui.regua.pontos, ui.regua.cur] : ui.regua.pontos, feita: ui.regua.feita, fixa: ui.regua.fixa, t: ui.regua.t } : null);
 	const cursor = $derived(
-		arrasto || pan ? 'grabbing' : ui.mira && !ui.mira.fixa ? 'crosshair' : ui.ferramenta === 'mover' ? 'default' : ui.ferramenta === 'borracha' || ui.ferramenta === 'terreno' ? 'cell' : ui.ferramenta === 'fundo' ? 'move' : 'crosshair'
+		arrasto || pan ? 'grabbing' : ui.mira && !ui.mira.fixa ? 'crosshair' : ui.ferramenta === 'mover' ? 'default' : ui.ferramenta === 'borracha' || ui.ferramenta === 'terreno' ? 'cell' : ui.ferramenta === 'fundo' ? 'move' : ui.ferramenta === 'objeto' && ui.armada ? 'copy' : ui.ferramenta === 'nevoa' ? 'cell' : 'crosshair'
 	);
 	const corMolde = $derived(molde ? (molde.ok ? corCss(mesa.corDe(mesa.donoDe(molde.lancador))) : 'var(--mesa-vermelhao)') : '');
 	const letras = (i: number) => (i < 26 ? String.fromCharCode(65 + i) : String.fromCharCode(65 + Math.floor(i / 26) - 1) + String.fromCharCode(65 + (i % 26)));
+
+	/** Foca a caixa de texto logo depois do clique que a abriu (o foco do próprio clique viria depois e a fecharia). */
+	const foco = (no: HTMLElement) => void setTimeout(() => no.focus(), 80);
 
 	// o molde que eu miro também aparece para o grupo
 	$effect(() => {
@@ -459,6 +618,17 @@
 	{/if}
 {/snippet}
 
+<!-- o efeito de um jutsu: base translúcida na cor do estilo e o desenho animado do elemento ou do tipo -->
+{#snippet efeitoFx(lista: Quadrado[], estilo: string, opacidade = 1)}
+	{#if lista?.length}
+		{@const d = lista.map(([x, y]) => `M${x} ${y}h1v1h-1z`).join('')}
+		<g class="fx fx-{estilo}" pointer-events="none" opacity={opacidade}>
+			<path {d} style="fill: {ESTILOS[estilo].cor}" fill-opacity="0.22" />
+			<path {d} fill="url(#fx-{estilo})" class="fx-camada" />
+		</g>
+	{/if}
+{/snippet}
+
 <!-- quadrados atingidos: um traçado só (uma esfera de 20 m tem mais de mil quadrados) -->
 {#snippet quadrados(lista: Quadrado[], cor: CorMesa | null)}
 	{#if lista?.length}
@@ -486,7 +656,12 @@
 		ondblclick={aoClicarDuplo}
 		oncontextmenu={(e) => e.preventDefault()}
 	>
+		<EfeitosFx />
 		<defs>
+			<!-- névoa vista pelo Mestre: hachura fina por cima do esmaecido -->
+			<pattern id="nevoa-hachura" width="0.5" height="0.5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+				<line x1="0" y1="0" x2="0" y2="0.5" style="stroke: var(--fg)" stroke-width="0.05" stroke-opacity="0.18" />
+			</pattern>
 			{#each CORES as c (c.id)}
 				<pattern id="hachura-{c.id}" width="0.35" height="0.35" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
 					<line x1="0" y1="0" x2="0" y2="0.35" style="stroke: var(--mesa-{c.id})" stroke-width="0.06" stroke-opacity="0.7" />
@@ -506,12 +681,9 @@
 				{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
 			{/if}
 			{#if cena?.grade !== false}
-				{#each { length: L + 1 } as _, i (i)}
-					<line x1={i} y1="0" x2={i} y2={A} style="stroke: var(--fg)" stroke-opacity={(i % 5 ? 0.09 : 0.18) * (fundo ? 1.6 : 1)} stroke-width={F(1)} />
-				{/each}
-				{#each { length: A + 1 } as _, j (j)}
-					<line x1="0" y1={j} x2={L} y2={j} style="stroke: var(--fg)" stroke-opacity={(j % 5 ? 0.09 : 0.18) * (fundo ? 1.6 : 1)} stroke-width={F(1)} />
-				{/each}
+				<!-- dois traçados (linhas de 1 m e de 5 m) com 1 px fixo: o zoom e a câmera não mexem na grade -->
+				<path d={grade1} fill="none" style="stroke: var(--fg)" stroke-opacity={0.09 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" />
+				<path d={grade5} fill="none" style="stroke: var(--fg)" stroke-opacity={0.18 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" />
 			{/if}
 
 			{#if terrenoVisivel.size}
@@ -520,9 +692,29 @@
 				<path {d} fill="url(#terreno)" pointer-events="none" />
 			{/if}
 
+			{#each imagens as o0 (o0.id)}
+				{@const o = mostrado(o0)}
+				<image
+					href={urlImagemMesa(o.imagem)}
+					x={o.x - (o.largura ?? 1) / 2}
+					y={o.y - (o.altura ?? 1) / 2}
+					width={o.largura ?? 1}
+					height={o.altura ?? 1}
+					preserveAspectRatio="none"
+					transform="rotate({o.rotacao} {o.x} {o.y})"
+					opacity={o.visivel ? 1 : 0.45}
+					pointer-events="none"
+					style:image-rendering={o.imagem?.startsWith('/') ? 'pixelated' : 'auto'}
+				/>
+			{/each}
+
 			{#each mesa.efeitos as ef (ef.id)}
 				{@const c = corCss(mesa.corDe(ef.autor_id))}
-				{@render quadrados(ef.quadrados, mesa.corDe(ef.autor_id))}
+				{#if estiloValido(ef.estilo)}
+					{@render efeitoFx(ef.quadrados, ef.estilo!)}
+				{:else}
+					{@render quadrados(ef.quadrados, mesa.corDe(ef.autor_id))}
+				{/if}
 				{@render rotulo(ef.rotulo_x, ef.rotulo_y, `${ef.nome} · ${ef.turnos == null ? '1 cena' : `${ef.turnos} ${ef.turnos === 1 ? 'turno' : 'turnos'}`}`, c, 'meio', mesa.podeTirarEfeito(ef) ? { nome: ef.nome, acao: () => mesa.removerEfeito(ef.id) } : undefined)}
 			{/each}
 
@@ -563,6 +755,7 @@
 				{/if}
 				<!-- fora do alcance: quadrados em cinza (o vermelhão é a cor do Mestre); o anel e o rótulo avisam em vermelho -->
 				{@render quadrados(molde.quadrados, molde.ok ? mesa.corDe(mesa.donoDe(molde.lancador)) : 'ardosia')}
+				{#if molde.ok && estiloDoJutsu(ui.mira.jutsu)}{@render efeitoFx(molde.quadrados, estiloDoJutsu(ui.mira.jutsu)!, 0.8)}{/if}
 				{#if molde.forma === 'cena'}
 					<!-- área maior que a cena: a cena inteira acende -->
 					<rect x="0" y="0" width={L} height={A} style="fill: {corMolde}" fill-opacity="0.12" pointer-events="none" />
@@ -643,7 +836,7 @@
 							<!-- estados: ícones em volta do token, do alto para a direita -->
 							{@const lado = Math.min(0.6, 0.44 + 0.03 * n)}
 							{@const raio = r + 0.2}
-							{#each t.condicoes.slice(0, 8) as cond, i (cond)}
+							{#each [...new Set(t.condicoes)].slice(0, 8) as cond, i (cond)}
 								{@const a = -Math.PI / 2 + i * ((50 * Math.PI) / 180)}
 								<g>
 									<title>{ESTADO_NOME[cond] ?? cond}</title>
@@ -662,12 +855,58 @@
 				{/if}
 			{/each}
 
+			{#each marcadores as o0 (o0.id)}
+				{@const o = mostrado(o0)}
+				{#if o.tipo === 'texto'}
+					{@const f = FONTES[o.fonte ?? 'pixel']}
+					{@const tam = o.tamanho ?? 1}
+					{@const linhas = (o.texto ?? '').split('\n')}
+					<g transform="rotate({o.rotacao} {o.x} {o.y})" opacity={o.visivel ? 1 : 0.5} pointer-events="none">
+						<text x={o.x} y={o.y - ((linhas.length - 1) * tam * 1.25) / 2} text-anchor="middle" dominant-baseline="central" font-size={tam} font-family={f.familia} font-weight={f.peso} style="fill: {o.cor ?? '#f4e4d6'}; stroke: {contraste(o.cor)}" stroke-width={tam * 0.16} paint-order="stroke" stroke-linejoin="round">
+							{#each linhas as l, i (i)}<tspan x={o.x} dy={i === 0 ? 0 : tam * 1.25}>{l || ' '}</tspan>{/each}
+						</text>
+					</g>
+				{:else}
+					{@const r = Math.max(0.3, F(7))}
+					{@const cor = o.cor ?? corCss(mesa.corDe(o.autor_id))}
+					<g opacity={o.visivel ? 1 : 0.5} pointer-events="none">
+						<ellipse cx={o.x} cy={o.y} rx={r * 0.7} ry={r * 0.26} fill="#000" fill-opacity="0.3" />
+						<path d="M{o.x} {o.y}L{o.x - r * 0.26} {o.y - r * 2.1}L{o.x + r * 0.26} {o.y - r * 2.1}Z" fill="#cfd3d6" style="stroke: #1b1210" stroke-width={F(1)} />
+						<circle cx={o.x} cy={o.y - r * 2.4} r={r} style="fill: {cor}; stroke: #1b1210" stroke-width={F(2)} />
+						<circle cx={o.x - r * 0.3} cy={o.y - r * 2.7} r={r * 0.25} fill="#fff" fill-opacity="0.55" />
+					</g>
+					{#if o.texto}{@render rotulo(o.x, o.y - r * 3.5 - F(8), o.texto, cor, 'meio')}{/if}
+				{/if}
+			{/each}
+
 			{#if arrasto && infoArrasto}
 				<!-- com terreno difícil, o custo maior fica logo abaixo da metragem -->
 				{@const sobe = infoArrasto.terreno ? F(26) : 0}
 				{@render rotulo(arrasto.x + (arrastado?.tamanho ?? 1) / 2, arrasto.y - 0.3 - sobe, infoArrasto.texto, infoArrasto.cor, 'meio')}
 				{#if infoArrasto.terreno}{@render rotulo(arrasto.x + (arrastado?.tamanho ?? 1) / 2, arrasto.y - 0.3, infoArrasto.terreno, 'var(--mesa-siena)', 'meio')}{/if}
 				{#if infoArrasto.reacao}{@render rotulo(arrasto.x + (arrastado?.tamanho ?? 1) / 2, arrasto.y - 0.3 - sobe - F(26), infoArrasto.reacao, 'var(--mesa-vermelhao)', 'meio')}{/if}
+			{/if}
+
+			{#if nevoaLigada}
+				<!-- a névoa: o grupo não vê o que está coberto; o Mestre vê esmaecido, com hachura -->
+				<path d={caminhoDaNevoa} fill-rule="evenodd" style="fill: var(--b0)" fill-opacity={mesa.mestre ? 0.55 : 1} pointer-events="none" />
+				{#if mesa.mestre}<path d={caminhoDaNevoa} fill-rule="evenodd" fill="url(#nevoa-hachura)" pointer-events="none" />{/if}
+			{/if}
+
+			{#if objetoSel && mesa.podeMexerObjeto(objetoSel) && (!escondeDeMim || objetoSel.tipo === 'imagem')}
+				<!-- seleção: caixa tracejada (girada com o objeto), alça de girar e canto de redimensionar -->
+				{@const m = mostrado(objetoSel)}
+				{@const al = alcas(m)}
+				<g pointer-events="none" style="stroke: var(--acc)" fill="none" stroke-width={F(2)}>
+					<g transform="rotate({m.tipo === 'alfinete' ? 0 : m.rotacao} {al.centro.x} {al.centro.y})">
+						<rect x={al.centro.x - al.hw} y={al.centro.y - al.hh} width={2 * al.hw} height={2 * al.hh} stroke-dasharray="{F(6)} {F(4)}" />
+					</g>
+					{#if m.tipo !== 'alfinete'}
+						<line x1={al.centro.x} y1={al.centro.y} x2={al.girar.x} y2={al.girar.y} stroke-dasharray="{F(3)} {F(3)}" stroke-opacity="0.6" />
+						<circle cx={al.girar.x} cy={al.girar.y} r={Math.max(0.2, F(8))} style="fill: var(--b0)" />
+						<rect x={al.canto.x - Math.max(0.2, F(7))} y={al.canto.y - Math.max(0.2, F(7))} width={2 * Math.max(0.2, F(7))} height={2 * Math.max(0.2, F(7))} style="fill: var(--b0)" />
+					{/if}
+				</g>
 			{/if}
 
 			{#each [...(reguaMinha ? [[mesa.eu, reguaMinha] as const] : []), ...Object.entries(mesa.reguas)] as [u, r] (u)}
@@ -707,21 +946,95 @@
 		</g>
 
 		{#if cena?.coordenadas}
-			<rect x="0" y="0" width={W} height="20" style="fill: var(--b0)" opacity="0.85" />
-			<rect x="0" y="0" width="24" height={H} style="fill: var(--b0)" opacity="0.85" />
-			{#each { length: L } as _, i (i)}
-				{@const x = (i + 0.5 - ui.vx) * s}
-				{#if x > 24 && x < W}<text {x} y="14" text-anchor="middle" font-size="11" font-family="'Pixelify Sans'" style="fill: var(--mut)">{letras(i)}</text>{/if}
-			{/each}
-			{#each { length: A } as _, j (j)}
-				{@const y = (j + 0.5 - ui.vy) * s}
-				{#if y > 20 && y < H}<text x="12" y={y + 4} text-anchor="middle" font-size="11" font-family="'Pixelify Sans'" style="fill: var(--mut)">{j + 1}</text>{/if}
-			{/each}
+			<!-- as letras e os números ficam fixos numa fileira que só desliza com a câmera (criar e apagar rótulos a cada
+				 quadro custava mais que o quadro inteiro); o canto escuro cobre o que passa por baixo -->
+			<g pointer-events="none" font-size="11" font-family="'Pixelify Sans'" text-anchor="middle" style="fill: var(--mut)">
+				<rect x="0" y="0" width={W} height="20" style="fill: var(--b0)" opacity="0.85" />
+				<g transform="translate({-ui.vx * s} 0)">
+					{#each { length: L } as _, i (i)}<text x={(i + 0.5) * s} y="14">{letras(i)}</text>{/each}
+				</g>
+				<rect x="0" y="0" width="24" height={H} style="fill: var(--b0)" opacity="0.85" />
+				<g transform="translate(0 {-ui.vy * s})">
+					{#each { length: A } as _, j (j)}<text x="12" y={(j + 0.5) * s + 4}>{j + 1}</text>{/each}
+				</g>
+				<rect x="0" y="0" width="24" height="20" style="fill: var(--b0)" />
+			</g>
 		{/if}
 	</svg>
+	{#if rascunho}
+		<!-- texto novo: digite e Enter põe no quadro (Shift+Enter quebra a linha; Esc cancela) -->
+		<textarea
+			class="absolute z-20 min-h-10 w-[240px] -translate-x-1/2 -translate-y-1/2 resize-none border-2 border-[var(--vermelhao)] bg-b0 px-2 py-1.5 text-sm text-fg shadow-[4px_4px_0_#000]"
+			style="left: {(rascunho.x - ui.vx) * s}px; top: {(rascunho.y - ui.vy) * s}px; font-family: {FONTES[ui.textoNovo.fonte].familia}"
+			rows="2"
+			maxlength="300"
+			placeholder="Digite o texto e aperte Enter"
+			aria-label="Texto novo"
+			bind:value={rascunho.texto}
+			use:foco
+			onkeydown={(e) => {
+				e.stopPropagation();
+				if (e.key === 'Enter' && !e.shiftKey) (e.preventDefault(), void confirmarTexto());
+				if (e.key === 'Escape') rascunho = null;
+			}}
+			onblur={() => void confirmarTexto()}
+		></textarea>
+	{/if}
 </div>
 
 <style>
+	/* efeitos de área: cada estilo anima à sua maneira (raio pisca, impacto pulsa, cristal brilha); parados com movimento reduzido */
+	.fx-raiton .fx-camada,
+	.fx-ranton .fx-camada {
+		animation: fx-relampago 2.6s steps(1) infinite;
+	}
+	.fx-hyoton .fx-camada,
+	.fx-bukijutsu .fx-camada {
+		animation: fx-brilho 2.4s ease-in-out infinite alternate;
+	}
+	.fx-bakuton .fx-camada,
+	.fx-taijutsu .fx-camada,
+	.fx-ninjutsu .fx-camada,
+	.fx-yoton .fx-camada {
+		animation: fx-batida 1.5s ease-in-out infinite;
+	}
+	@keyframes fx-relampago {
+		0%,
+		60%,
+		100% {
+			opacity: 0.35;
+		}
+		62%,
+		68% {
+			opacity: 1;
+		}
+		64% {
+			opacity: 0.4;
+		}
+	}
+	@keyframes fx-brilho {
+		from {
+			opacity: 0.55;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+	@keyframes fx-batida {
+		0%,
+		100% {
+			opacity: 0.6;
+		}
+		50% {
+			opacity: 1;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.fx .fx-camada {
+			animation: none;
+			opacity: 0.85;
+		}
+	}
 	.ping {
 		animation: mesa-ping 1.4s ease-out 1 both;
 		transform-box: fill-box;

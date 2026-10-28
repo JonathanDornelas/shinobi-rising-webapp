@@ -431,7 +431,67 @@ export type MesaCena = {
 	fundo_x: number;
 	fundo_y: number;
 	grade: boolean;
+	/** Pasta das cenas (só o Mestre organiza) e o nome que o grupo vê (null = "Cena"). */
+	pasta_id: string | null;
+	nome_publico: string | null;
+	/** Névoa: o mapa fica coberto para o grupo, menos os quadrados revelados em runs [[y, x0, x1], ...]. */
+	nevoa: boolean;
+	reveladas: [number, number, number][];
 	criada_em: string;
+};
+
+export type MesaCenaPasta = { id: string; campanha_id: string; pai_id: string | null; nome: string; ordem: number; criada_em: string };
+
+/** Objeto solto no quadro: alfinete, imagem (arte da biblioteca ou do livro) ou texto. x e y são o centro, em metros. */
+export type MesaObjeto = {
+	id: string;
+	cena_id: string;
+	campanha_id: string;
+	autor_id: string;
+	tipo: 'alfinete' | 'imagem' | 'texto';
+	x: number;
+	y: number;
+	largura: number | null;
+	altura: number | null;
+	rotacao: number;
+	cor: string | null;
+	texto: string | null;
+	fonte: 'sans' | 'pixel' | 'mincho' | 'mono' | null;
+	tamanho: number | null;
+	imagem: string | null;
+	ordem: number;
+	visivel: boolean;
+	travado: boolean;
+	criado_em: string;
+};
+
+/** Arte da biblioteca da campanha: mapa (fundo e narrativa) ou objeto (imagem solta, com transparência). */
+export type MesaArte = {
+	id: string;
+	campanha_id: string;
+	autor_id: string;
+	nome: string;
+	tipo: 'mapa' | 'objeto';
+	caminho: string;
+	miniatura: string | null;
+	largura: number;
+	altura: number;
+	bytes: number;
+	criada_em: string;
+};
+
+/** A música da campanha: o Mestre cola o link e todos ouvem igual (youtube: id do vídeo ou da lista; spotify: "tipo/id"). */
+export type MesaJukebox = {
+	campanha_id: string;
+	fonte: 'youtube' | 'spotify';
+	ref: string;
+	lista: boolean;
+	titulo: string | null;
+	tocando: boolean;
+	posicao: number;
+	indice: number;
+	desde: string;
+	atualizada_em: string;
 };
 
 export type MesaToken = {
@@ -475,6 +535,8 @@ export type MesaEfeito = {
 	rotulo_x: number;
 	rotulo_y: number;
 	turnos: number | null;
+	/** Elemento do jutsu (katon, suiton…) ou o tipo (taijutsu, genjutsu, bukijutsu, ninjutsu): muda o visual do efeito. */
+	estilo: string | null;
 	criado_em: string;
 };
 
@@ -527,9 +589,14 @@ export type Database = {
 			mesa_tokens: Tabela<MesaToken, 'cena_id' | 'campanha_id' | 'nome'>;
 			mesa_tracos: Tabela<MesaTraco, 'cena_id' | 'pontos'>;
 			mesa_efeitos: Tabela<MesaEfeito, 'cena_id' | 'nome' | 'quadrados'>;
+			mesa_cena_pastas: Tabela<MesaCenaPasta, 'campanha_id' | 'nome'>;
+			mesa_objetos: Tabela<MesaObjeto, 'cena_id' | 'tipo'>;
+			mesa_artes: Tabela<MesaArte, 'campanha_id' | 'nome' | 'caminho' | 'largura' | 'altura'>;
+			mesa_jukebox: Tabela<MesaJukebox, 'campanha_id' | 'fonte' | 'ref'>;
 		};
 		Views: { [_ in never]: never };
 		Functions: {
+			agora_servidor: { Args: Record<string, never>; Returns: string };
 			ver_convite: { Args: { chave: string }; Returns: Json };
 			aceitar_convite: { Args: { chave: string }; Returns: string };
 			recusar_convite: { Args: { chave: string }; Returns: undefined };

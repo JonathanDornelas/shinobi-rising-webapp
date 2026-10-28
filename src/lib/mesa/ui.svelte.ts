@@ -30,8 +30,16 @@ export interface FichaAberta {
 	dano: string;
 }
 
-export type Pop = null | 'medir' | 'jutsu' | 'lapis' | 'cor' | 'cena' | 'gear';
-export type Modal = null | { tipo: 'nova' } | { tipo: 'excluir'; cena: string } | { tipo: 'renomear'; cena: string } | { tipo: 'participantes' } | { tipo: 'bestiario' } | { tipo: 'jutsu'; j: JutsuMesa } | { tipo: 'imagem'; alvo: 'imagem' | 'fundo' };
+export type Pop = null | 'medir' | 'jutsu' | 'lapis' | 'cor' | 'cena' | 'gear' | 'alfinete' | 'texto' | 'objeto' | 'nevoa' | 'musica';
+export type Modal = null | { tipo: 'nova' } | { tipo: 'excluir'; cena: string } | { tipo: 'renomear'; cena: string } | { tipo: 'participantes' } | { tipo: 'bestiario' } | { tipo: 'jutsu'; j: JutsuMesa } | { tipo: 'imagem'; alvo: 'imagem' | 'fundo' } | { tipo: 'artes' } | { tipo: 'pasta'; id: string | null; pai: string | null } | { tipo: 'mover-cena'; cena: string };
+
+/** Uma arte pronta para pôr no quadro: da biblioteca ou do livro. */
+export interface ArteArmada {
+	caminho: string;
+	nome: string;
+	w: number;
+	h: number;
+}
 
 export class UiMesa {
 	ferramenta = $state<Ferramenta>('mover');
@@ -43,6 +51,15 @@ export class UiMesa {
 	regua = $state<{ pontos: Quadrado[]; cur: Quadrado | null; feita: boolean; fixa: boolean; t: number } | null>(null);
 	modoLapis = $state<'lapis' | 'apontar'>('lapis');
 	espessura = $state(0.2);
+	/** Objeto selecionado no quadro (alfinete, imagem ou texto) e a arte pronta para pôr (ferramenta Objeto). */
+	objSel = $state<string | null>(null);
+	armada = $state<ArteArmada | null>(null);
+	/** Padrões do texto novo e a cor do alfinete novo. */
+	textoNovo = $state<{ fonte: 'sans' | 'pixel' | 'mincho' | 'mono'; cor: string; tamanho: number }>({ fonte: 'pixel', cor: '#f4e4d6', tamanho: 1 });
+	alfineteCor = $state('#c44536');
+	/** Névoa: revelar ou cobrir, e o lado do pincel em quadrados. */
+	nevoaModo = $state<'revelar' | 'cobrir'>('revelar');
+	nevoaPincel = $state(3);
 	mira = $state<Mira | null>(null);
 	aneis = $state<{ token: string; corpo: number; lista: { r: number; rotulo: string }[]; titulo: string } | null>(null);
 	hover = $state<{ token: string; x: number; y: number } | null>(null);
@@ -69,10 +86,13 @@ export class UiMesa {
 
 	escolher(f: Ferramenta) {
 		this.ferramenta = f;
-		this.pop = f === 'medir' ? 'medir' : f === 'lapis' || f === 'apontar' ? 'lapis' : null;
+		this.pop = f === 'medir' ? 'medir' : f === 'lapis' || f === 'apontar' ? 'lapis' : f === 'alfinete' || f === 'texto' || f === 'nevoa' || f === 'objeto' ? f : null;
+		if (f !== 'mover' && f !== 'alfinete' && f !== 'texto' && f !== 'objeto') this.objSel = null;
+		if (f !== 'objeto') this.armada = null;
 		if (f === 'apontar') this.modoLapis = 'apontar';
 		if (f === 'lapis') this.modoLapis = 'lapis';
 		if (f === 'terreno') this.avisar('Arraste para marcar terreno difícil; comece num quadrado marcado para apagar.');
+		if (f === 'nevoa') this.avisar('Arraste para revelar o mapa; Shift inverte (cobre). Só o Mestre vê tudo; o grupo vê só o revelado.');
 	}
 
 	abrirFicha(token: string, aba: string | null = null) {

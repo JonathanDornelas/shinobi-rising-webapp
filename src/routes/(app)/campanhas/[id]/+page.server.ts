@@ -1,4 +1,5 @@
 import type { PageServerLoad } from './$types';
+import { mascararCena } from '#lib/mesa/cenas.ts';
 
 export const load: PageServerLoad = async ({ locals, params, parent }) => {
 	const { campanha, papel } = await parent();
@@ -16,7 +17,7 @@ export const load: PageServerLoad = async ({ locals, params, parent }) => {
 					.order('criado_em', { ascending: false })
 			: Promise.resolve({ data: [], error: null }),
 		// a cena que o grupo vê agora (o atalho da Mesa no painel)
-		sb.from('mesa_cenas').select('id, nome, modo').eq('campanha_id', params.id).eq('ativa', true).maybeSingle(),
+		sb.from('mesa_cenas').select('id, nome, nome_publico, modo').eq('campanha_id', params.id).eq('ativa', true).maybeSingle(),
 		mestre ? sb.from('npcs').select('id, nome, funcao, rank, arte').eq('campanha_id', params.id).order('criado_em', { ascending: false }).limit(5) : Promise.resolve({ data: [] }),
 		// primeiros passos: o que já existe na campanha
 		mestre ? conta('mesa_cenas') : Promise.resolve({ count: 0 }),
@@ -31,7 +32,8 @@ export const load: PageServerLoad = async ({ locals, params, parent }) => {
 		atividades: atividades.error ? null : atividades.data,
 		// só os que ainda valem (não expirados, com usos sobrando)
 		convites: (convites.data ?? []).filter((c) => (!c.expira_em || new Date(c.expira_em).getTime() > agora) && (c.max_usos === null || c.usos < c.max_usos)),
-		cenaAtiva: cenaAtiva.data ?? null,
+		// o grupo vê o nome público da cena, não o do Mestre
+		cenaAtiva: cenaAtiva.data ? mascararCena(cenaAtiva.data, mestre) : null,
 		npcsRecentes: npcs.data ?? [],
 		feito: { cenas: (cenas.count ?? 0) > 0, conteudo: (clas.count ?? 0) + (jutsus.count ?? 0) + (equipamentos.count ?? 0) > 0 }
 	};
