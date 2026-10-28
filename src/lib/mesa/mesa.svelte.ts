@@ -148,6 +148,11 @@ export class Mesa {
 				if (p.eventType === 'DELETE') this.efeitos = this.efeitos.filter((t) => t.id !== (p.old as { id: string }).id);
 				else this.efeitos = lista(this.efeitos, p.new as MesaEfeito);
 			})
+			// o Realtime não filtra DELETE (o registro antigo só traz o id): sem estes, um token, traço ou efeito apagado
+			// por outra pessoa (ou pela contagem de turnos) continuava na tela até recarregar
+			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_tokens' }, (p) => (this.tokens = this.tokens.filter((t) => t.id !== (p.old as { id: string }).id)))
+			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_tracos' }, (p) => (this.tracos = this.tracos.filter((t) => t.id !== (p.old as { id: string }).id)))
+			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_efeitos' }, (p) => (this.efeitos = this.efeitos.filter((t) => t.id !== (p.old as { id: string }).id)))
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_cenas', filter: `campanha_id=eq.${this.campanha}` }, (p) => {
 				if (p.eventType === 'DELETE') {
 					this.cenas = this.cenas.filter((c) => c.id !== (p.old as { id: string }).id);
@@ -266,11 +271,13 @@ export class Mesa {
 		if (vez >= i.ordem.length) {
 			vez = 0;
 			rodada++;
-			// rodada nova: os efeitos em cena perdem um turno (e somem no zero)
-			for (const e of this.efeitos.filter((x) => x.turnos != null)) {
-				if (e.turnos! <= 1) await sb().from('mesa_efeitos').delete().eq('id', e.id);
-				else await sb().from('mesa_efeitos').update({ turnos: e.turnos! - 1 }).eq('id', e.id);
-			}
+			// rodada nova: os efeitos em cena perdem um turno e somem no zero (um efeito de 3 turnos lançado na
+			// rodada 1 vale nas rodadas 1, 2 e 3). A tela muda na hora; o banco vai em seguida.
+			const comTurnos = this.efeitos.filter((x) => x.turnos != null);
+			const acabam = comTurnos.filter((e) => e.turnos! <= 1).map((e) => e.id);
+			this.efeitos = this.efeitos.filter((e) => !acabam.includes(e.id)).map((e) => (e.turnos != null ? { ...e, turnos: e.turnos - 1 } : e));
+			if (acabam.length) await sb().from('mesa_efeitos').delete().in('id', acabam);
+			for (const e of comTurnos.filter((x) => x.turnos! > 1)) await sb().from('mesa_efeitos').update({ turnos: e.turnos! - 1 }).eq('id', e.id);
 			// e quem cresceu por um jutsu também: no zero, volta ao tamanho normal
 			for (const t of this.tokens.filter((x) => x.tamanho_base != null && x.crescido_turnos != null)) {
 				if (t.crescido_turnos! <= 1) await this.voltarAoNormal(t);
@@ -399,9 +406,16 @@ export class Mesa {
 		else this.efeitos = this.efeitos.some((e) => e.id === data.id) ? this.efeitos : [...this.efeitos, data as MesaEfeito];
 	}
 
+	/** Quem pode tirar o efeito do quadro: o Mestre ou quem o deixou. */
+	podeTirarEfeito = (e: MesaEfeito) => !this.somenteLeitura && (this.mestre || e.autor_id === this.eu);
 	async removerEfeito(id: string) {
+		const antes = this.efeitos;
 		this.efeitos = this.efeitos.filter((e) => e.id !== id);
-		await sb().from('mesa_efeitos').delete().eq('id', id);
+		const { error } = await sb().from('mesa_efeitos').delete().eq('id', id);
+		if (error) {
+			this.efeitos = antes;
+			toasts.mostrar('Não foi possível tirar o efeito do quadro.', 'erro');
+		}
 	}
 
 	/** Ctrl+Z: desfaz o último movimento ou traço meu. */

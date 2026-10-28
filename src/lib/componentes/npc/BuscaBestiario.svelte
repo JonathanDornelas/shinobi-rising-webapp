@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Importar NPC do bestiário (página de NPCs e Mesa): cada estágio de cada verbete é uma opção, com a arte, a ameaça,
-	// o rank, o papel e o tamanho. Busca por texto e filtros por tipo, rank, papel e tamanho; ordena por nome ou ameaça.
+	// o rank, o papel e o tamanho. Busca por texto; os filtros (tipo, rank, papel, tamanho) ficam recolhidos atrás de
+	// FILTROS e os que estão ligados aparecem como chips que se tiram com um clique. Ordena por nome ou ameaça.
 	// O bestiário só carrega quando a busca abre.
 	import { onMount } from 'svelte';
 	import { normalizar } from '#lib/livro/texto.ts';
@@ -55,6 +56,16 @@
 	});
 	const achados = $derived(filtrados.slice(0, 60));
 	const limpar = () => ((tipo = ''), (rank = ''), (papel = ''), (tamanho = ''));
+	let abertos = $state(false);
+	const nomeDe = (lista: [string, string][], v: string) => lista.find((x) => x[0] === v)?.[1] ?? v;
+	const ativos = $derived(
+		[
+			tipo && { rotulo: tipo[0].toUpperCase() + tipo.slice(1), tirar: () => (tipo = '') },
+			rank && { rotulo: nomeDe(RANKS, rank), tirar: () => (rank = '') },
+			papel && { rotulo: (PAPEIS as Record<string, string>)[papel] ?? papel, tirar: () => (papel = '') },
+			tamanho && { rotulo: nomeDe(TAMANHOS, tamanho), tirar: () => (tamanho = '') }
+		].filter((x): x is { rotulo: string; tirar: () => string } => !!x)
+	);
 	const chip = (on: boolean) => `min-h-8 border-2 px-2 text-xs font-semibold whitespace-nowrap ${on ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3 text-mut hover:text-fg'}`;
 </script>
 
@@ -80,25 +91,41 @@
 				if (e.key === 'Escape') onFechar?.();
 			}}
 		/>
+		<button
+			type="button"
+			class="inline-flex h-10 flex-none items-center gap-1.5 border-2 px-2.5 font-pixel text-xs font-bold {abertos || filtros ? 'border-[var(--vermelhao)] text-fg' : 'border-b3 text-mut hover:text-fg'}"
+			aria-expanded={abertos}
+			aria-controls="filtros-bestiario"
+			onclick={() => (abertos = !abertos)}
+		>
+			<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" class="flex-none"><path d="M1 2h12L8.5 7.5V12l-3-1.5v-3z" fill="currentColor" /></svg>
+			FILTROS{#if filtros}<span class="bg-[var(--vermelhao)] px-1 text-[11px] leading-4 text-white">{filtros}</span>{/if}
+		</button>
 		{#if onFechar}<button type="button" class="h-10 w-10 border-2 border-b3 font-pixel text-sm" aria-label="Fechar busca" onclick={onFechar}>✕</button>{/if}
 	</div>
-	<div class="flex flex-col gap-1.5 border-2 border-b3 bg-b1 p-2">
-		{@render grupo('Tipo', tipos.map((t) => [t, t[0].toUpperCase() + t.slice(1)]), tipo, (v) => (tipo = v))}
-		{@render grupo('Rank', RANKS, rank, (v) => (rank = v))}
-		{@render grupo('Papel', Object.entries(PAPEIS), papel, (v) => (papel = v))}
-		{@render grupo('Tamanho', TAMANHOS, tamanho, (v) => (tamanho = v))}
-		<div class="flex flex-wrap items-center gap-2 pt-0.5">
-			<span class="text-xs font-semibold text-mut">{filtrados.length} {filtrados.length === 1 ? 'opção' : 'opções'}{filtrados.length > achados.length ? ` · mostrando ${achados.length}` : ''}</span>
-			<span class="flex-1"></span>
-			{#if filtros}<button type="button" class="link text-xs font-semibold" onclick={limpar}>Limpar filtros</button>{/if}
-			<div role="radiogroup" aria-label="Ordem" class="flex border-2 border-b3">
-				{#each [['nome', 'NOME'], ['ameaca', 'AMEAÇA']] as const as [v, n] (v)}
-					<button type="button" role="radio" aria-checked={ordem === v} class="min-h-7 px-2 font-pixel text-[11px] font-bold {ordem === v ? 'bg-grena text-papel' : 'text-mut'}" onclick={() => (ordem = v)}>{n}</button>
-				{/each}
-			</div>
+	{#if abertos}
+		<div id="filtros-bestiario" class="flex flex-col gap-1.5 border-2 border-b3 bg-b1 p-2">
+			{@render grupo('Tipo', tipos.map((t) => [t, t[0].toUpperCase() + t.slice(1)]), tipo, (v) => (tipo = v))}
+			{@render grupo('Rank', RANKS, rank, (v) => (rank = v))}
+			{@render grupo('Papel', Object.entries(PAPEIS), papel, (v) => (papel = v))}
+			{@render grupo('Tamanho', TAMANHOS, tamanho, (v) => (tamanho = v))}
+		</div>
+	{/if}
+	<!-- linha de estado: os filtros ligados (um clique tira), a contagem e a ordem -->
+	<div class="flex flex-wrap items-center gap-1.5">
+		{#each ativos as a (a.rotulo)}
+			<button type="button" class="inline-flex min-h-8 items-center gap-1.5 border-2 border-[var(--vermelhao)] bg-grena pr-1.5 pl-2 text-xs font-semibold text-papel" aria-label="Tirar o filtro {a.rotulo}" onclick={a.tirar}>{a.rotulo}<span aria-hidden="true" class="font-pixel text-[11px]">✕</span></button>
+		{/each}
+		{#if ativos.length > 1}<button type="button" class="link text-xs font-semibold" onclick={limpar}>Limpar</button>{/if}
+		<span class="text-xs font-semibold text-mut">{filtrados.length} {filtrados.length === 1 ? 'opção' : 'opções'}{filtrados.length > achados.length ? ` · mostrando ${achados.length}` : ''}</span>
+		<span class="flex-1"></span>
+		<div role="radiogroup" aria-label="Ordem" class="flex border-2 border-b3">
+			{#each [['nome', 'NOME'], ['ameaca', 'AMEAÇA']] as const as [v, n] (v)}
+				<button type="button" role="radio" aria-checked={ordem === v} class="min-h-7 px-2 font-pixel text-[11px] font-bold {ordem === v ? 'bg-grena text-papel' : 'text-mut'}" onclick={() => (ordem = v)}>{n}</button>
+			{/each}
 		</div>
 	</div>
-	<div class="flex max-h-[380px] min-h-0 flex-col overflow-auto border-2 border-b3 bg-b1" role="listbox" aria-label="Resultados do bestiário">
+	<div class="flex max-h-[420px] min-h-0 flex-col overflow-auto border-2 border-b3 bg-b1" role="listbox" aria-label="Resultados do bestiário">
 		{#if !criaturas.length}
 			<span class="px-3 py-3 text-[13px] text-mut">Abrindo o bestiário…</span>
 		{:else if !achados.length}

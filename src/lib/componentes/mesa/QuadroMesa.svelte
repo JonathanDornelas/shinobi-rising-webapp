@@ -432,8 +432,8 @@
 	});
 </script>
 
-{#snippet rotulo(x: number, y0: number, txt: string, cor: string, ancora: 'ini' | 'meio' = 'ini')}
-	{@const w = larguraRotulo(txt)}
+{#snippet rotulo(x: number, y0: number, txt: string, cor: string, ancora: 'ini' | 'meio' = 'ini', fechar?: { nome: string; acao: () => void })}
+	{@const w = larguraRotulo(txt) + (fechar ? F(22) : 0)}
 	<!-- preso à área visível: perto da borda do quadro o rótulo não some pela metade -->
 	{@const x0 = Math.max(ui.vx + F(4), Math.min(ui.vx + W / s - w - F(4), ancora === 'meio' ? x - w / 2 : x))}
 	{@const y = Math.max(ui.vy + F(14), Math.min(ui.vy + H / s - F(14), y0))}
@@ -441,6 +441,22 @@
 		<rect x={x0} y={y - F(10)} width={w} height={F(20)} style="fill: var(--b0); stroke: {cor}" stroke-width={F(2)} />
 		<text x={x0 + F(7)} y={y + F(4.5)} style="fill: {cor}" font-size={F(12)} font-family="'Pixelify Sans'" font-weight="700">{txt}</text>
 	</g>
+	{#if fechar}
+		<!-- ✕ do efeito: o clique não chega ao quadro (não move, não desenha) -->
+		<g
+			class="cursor-pointer"
+			role="button"
+			tabindex="0"
+			aria-label="Tirar {fechar.nome} do quadro"
+			onpointerdown={(e) => e.stopPropagation()}
+			onclick={(e) => (e.stopPropagation(), fechar.acao())}
+			onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), fechar.acao())}
+		>
+			<title>Tirar do quadro</title>
+			<rect x={x0 + w - F(20)} y={y - F(10)} width={F(20)} height={F(20)} style="fill: var(--b0); stroke: {cor}" stroke-width={F(2)} />
+			<path d="M{x0 + w - F(14)} {y - F(4)}l{F(8)} {F(8)}m0 {-F(8)}l{-F(8)} {F(8)}" style="stroke: {cor}" stroke-width={F(2)} />
+		</g>
+	{/if}
 {/snippet}
 
 <!-- quadrados atingidos: um traçado só (uma esfera de 20 m tem mais de mil quadrados) -->
@@ -507,7 +523,7 @@
 			{#each mesa.efeitos as ef (ef.id)}
 				{@const c = corCss(mesa.corDe(ef.autor_id))}
 				{@render quadrados(ef.quadrados, mesa.corDe(ef.autor_id))}
-				{@render rotulo(ef.rotulo_x, ef.rotulo_y, `${ef.nome} · ${ef.turnos == null ? '1 cena' : `${ef.turnos} ${ef.turnos === 1 ? 'turno' : 'turnos'}`}`, c, 'meio')}
+				{@render rotulo(ef.rotulo_x, ef.rotulo_y, `${ef.nome} · ${ef.turnos == null ? '1 cena' : `${ef.turnos} ${ef.turnos === 1 ? 'turno' : 'turnos'}`}`, c, 'meio', mesa.podeTirarEfeito(ef) ? { nome: ef.nome, acao: () => mesa.removerEfeito(ef.id) } : undefined)}
 			{/each}
 
 			{#each mesa.tracos as k (k.id)}

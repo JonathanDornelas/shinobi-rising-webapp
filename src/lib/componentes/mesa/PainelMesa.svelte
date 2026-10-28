@@ -202,7 +202,18 @@
 			{:else}
 				<span class="px-3 py-3 text-[13px] leading-[18px] text-mut">Ninguém rolou iniciativa ainda. Cada um rola pela ficha rápida (Iniciativa).</span>
 			{/each}
-			<span class="px-3 py-2.5 text-xs leading-[17px] text-mut">A ordem sai das rolagens de iniciativa e é a mesma para todos na cena. O token da vez ganha o halo ouro e o contador de movimento dele zera.{mesa.mestre ? ' Durante o combate, ▲ e ▼ mudam a ordem; LIMPAR começa do zero.' : ''}</span>
+			{#if mesa.efeitos.length}
+				<div class="flex items-center gap-2 border-y-2 border-b3 px-3 py-2 font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">EFEITOS EM CENA</div>
+				{#each mesa.efeitos as ef (ef.id)}
+					<div class="flex min-h-11 items-center gap-2.5 border-b-2 border-b1 px-3 py-1.5">
+						<span class="h-3 w-3 flex-none" style="background: {corCss(mesa.corDe(ef.autor_id))}"></span>
+						<span class="min-w-0 flex-1 truncate text-sm leading-5 font-semibold" title={ef.nome}>{ef.nome}</span>
+						<span class="text-xs font-semibold whitespace-nowrap text-mut">{ef.turnos == null ? 'até o fim da cena' : `${ef.turnos} ${ef.turnos === 1 ? 'turno' : 'turnos'}`}</span>
+						{#if mesa.podeTirarEfeito(ef)}<button type="button" class="h-8 w-8 flex-none border-2 border-b3 font-pixel text-xs" aria-label="Tirar {ef.nome} do quadro" title="Tirar do quadro" onclick={() => mesa.removerEfeito(ef.id)}>✕</button>{/if}
+					</div>
+				{/each}
+			{/if}
+			<span class="px-3 py-2.5 text-xs leading-[17px] text-mut">A ordem sai das rolagens de iniciativa e é a mesma para todos na cena. O token da vez ganha o halo ouro e o contador de movimento dele zera. A cada rodada nova, os efeitos em cena perdem um turno e saem do quadro no zero.{mesa.mestre ? ' Durante o combate, ▲ e ▼ mudam a ordem; LIMPAR começa do zero.' : ''}</span>
 			{#if mesa.mestre && !mesa.somenteLeitura}
 				<div class="flex flex-wrap gap-1.5 px-3 pb-3">
 					{#if mesa.iniciativa.ativa}

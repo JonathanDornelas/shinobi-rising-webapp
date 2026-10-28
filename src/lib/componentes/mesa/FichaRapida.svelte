@@ -206,10 +206,17 @@
 		if (!arrasto) return;
 		ui.mudarFicha(token.id, { x: Math.max(0, arrasto.jx + e.clientX - arrasto.x), y: Math.max(0, arrasto.jy + e.clientY - arrasto.y) });
 	}
+	/** "9 PC · Médio (30m) · Cone médio (10m)": a área só entra quando diz algo além do alcance. */
+	const metaJutsu = (j: JutsuMesa, resistencia = false) =>
+		[`${j.custo} ${j.unidade}`, j.alcance, j.area && j.area !== j.alcance ? j.area : null, resistencia ? j.resistencia : null].filter(Boolean).join(' · ');
+	/** MEDIR só aparece quando há régua (alcance especial não tem o que medir). */
+	const medir = (j: JutsuMesa) => (temRegua(j.regua) ? [{ n: 'MEDIR', acao: () => acoes.medirJutsu(token, j), dica: 'Liga a régua de jutsu' }] : []);
+	const falta = (j: JutsuMesa) => j.custo > (j.unidade === 'PE' ? atual.pe : atual.pc);
+	const avisoFalta = (j: JutsuMesa) => (falta(j) ? `Faltam ${j.custo - (j.unidade === 'PE' ? atual.pe : atual.pc)} ${j.unidade}` : null);
 	const btn = 'min-h-8 border-2 border-field bg-transparent px-2 font-pixel text-[11px] leading-none font-bold text-fg disabled:cursor-not-allowed disabled:opacity-50';
 </script>
 
-{#snippet linhaAcao(icone: string | null, nome: string, meta: string, aviso: string | null, botoes: { n: string; acao: () => void; dica?: string; desab?: boolean }[], ver?: () => void, hud?: JutsuMesa | ArmaMesa)}
+{#snippet linhaAcao(icone: string | null, nome: string, meta: string, aviso: string | null, botoes: { n: string; acao: () => void; dica?: string; desab?: boolean }[], ver?: () => void, hud?: JutsuMesa | ArmaMesa, exprs?: { ataque: string | null; dano: string | null })}
 	<div class="flex items-center gap-2 border-b-2 border-b1 px-3 py-1.5" role="group" onmouseenter={(e) => hud && mostrarDica(hud, e.currentTarget)} onmouseleave={esconderDica}>
 		{#if icone}<Icone id={icone} />{/if}
 		<div class="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -223,6 +230,12 @@
 				<span class="flex flex-wrap items-center gap-x-2.5 gap-y-0.5">
 					{#if hud.ataque}<DadoHud expr={hud.ataque.expr} tamanho={18} />{/if}
 					{#if hud.dano}<DadoHud expr={hud.dano.expr} cor={el?.cor} tamanho={18} />{:else if 'cura' in hud && hud.cura}<DadoHud expr={hud.cura} cor="#7FB069" tamanho={18} />{/if}
+				</span>
+			{/if}
+			{#if exprs && (exprs.ataque || exprs.dano)}
+				<span class="flex flex-wrap items-center gap-x-2.5 gap-y-0.5">
+					{#if exprs.ataque}<DadoHud expr={exprs.ataque} tamanho={18} />{/if}
+					{#if exprs.dano}<DadoHud expr={exprs.dano} tamanho={18} />{/if}
 				</span>
 			{/if}
 			{#if meta}<span class="text-xs leading-4 text-mut">{meta}</span>{/if}
@@ -345,7 +358,7 @@
 					: [['Defesa', String(dados.npc.defesa), 'recurso/ic-recurso-defesa'], ['Iniciativa', `${dados.npc.iniciativa >= 0 ? '+' : ''}${dados.npc.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', `${dados.extras?.deslocamento ?? 10} m`, 'esp/ic-esp-velocidade']]}
 				<div class="mx-3 mb-2.5 grid grid-cols-2 gap-1">
 					{#each est as [k, v, ic] (k)}
-						<div class="flex items-center gap-1.5 border-2 border-b3 bg-b1 py-0.5 pr-1.5 pl-0.5">
+						<div class="flex items-center gap-1.5 border-2 border-b3 bg-b1 py-0.5 pr-1.5 pl-0.5 odd:last:col-span-2">
 							<Icone id={ic} />
 							<span class="flex-1 text-xs leading-none font-medium text-mut">{k}</span>
 							<b class="font-pixel text-base leading-none whitespace-nowrap">{v}</b>
@@ -399,7 +412,7 @@
 			{/if}
 
 			{#if abas.length && aba}
-				<div role="tablist" class="flex border-y-2 border-b3 bg-b0">
+				<div role="tablist" class="sticky top-0 z-10 flex border-y-2 border-b3 bg-b0">
 					{#each abas as [id, n] (id)}
 						<button type="button" role="tab" aria-selected={aba === id} class="flex-1 font-pixel text-[11px] leading-none font-bold tracking-[0.05em] {celular ? 'min-h-11' : 'min-h-9'} {aba === id ? 'bg-b2 text-title' : 'text-mut'}" onclick={() => ui.mudarFicha(token.id, { aba: id })}>{n}</button>
 					{/each}
@@ -412,10 +425,7 @@
 						], undefined, a)}
 					{/each}
 					{#each dados.ficha.jutsus.filter((j) => j.ataque || j.dano || j.resistencia).slice(0, 4) as j (j.slug)}
-						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, `${j.custo} ${j.unidade} · ${j.alcance} · ${j.area}`, null, [
-							{ n: 'MEDIR', acao: () => acoes.medirJutsu(token, j), desab: !temRegua(j.regua), dica: temRegua(j.regua) ? 'Liga a régua de jutsu' : 'Alcance especial: sem régua' },
-							...botoesUso(j)
-						], () => acoes.verJutsu(j), j)}
+						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, metaJutsu(j), avisoFalta(j), [...medir(j), ...botoesUso(j, falta(j))], () => acoes.verJutsu(j), j)}
 					{/each}
 					{@render linhaAcao('recurso/ic-recurso-pe', 'Esquiva Ativa', 'Reação · 10 PE · Acrobacia vira a Defesa', null, [{ n: 'USAR', acao: () => acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 10) }, 'Esquiva Ativa: −10 PE'), desab: atual.pe < 10 }])}
 					{@render linhaAcao('recurso/ic-recurso-defesa', 'Defesa Total', 'Ação primária · +5 na Defesa e na Defesa Mental até o seu próximo turno', null, [])}
@@ -447,25 +457,18 @@
 					{@render linhaAcao(null, 'Ataque', ataqueNpc.texto || 'Sem ataque anotado', null, [
 						...(ataqueNpc.ataque ? [{ n: 'ATAQUE', acao: () => acoes.rolar(token, { expr: ataqueNpc!.ataque!, rotulo: `Ataque · ${token.nome}`, partes: [] }, 'ataque', true) }] : []),
 						...(ataqueNpc.dano ? [{ n: 'DANO', acao: () => acoes.rolar(token, { expr: ataqueNpc!.dano!, rotulo: `Dano · ${token.nome}`, partes: [] }, 'dano', false) }] : [])
-					])}
+					], undefined, undefined, ataqueNpc.ataque || ataqueNpc.dano ? { ataque: ataqueNpc.ataque, dano: ataqueNpc.dano } : undefined)}
 					{#if dados.npc.especial}{@render linhaAcao(null, 'Especial', dados.npc.especial, null, [])}{/if}
 					<div class="flex flex-wrap gap-1 px-3 py-2">
 						<button type="button" class={btn} onclick={() => acoes.aneis(token, alcanceCorpo(token.tamanho), [{ r: deslNpc, rotulo: `Mover · ${deslNpc} m` }, { r: 2 * deslNpc, rotulo: `Com sprint · ${2 * deslNpc} m` }], 'Deslocamento')}>DESLOCAMENTO</button>
 					</div>
 				{:else if aba === 'jutsus' && dados.tipo === 'npc'}
 					{#each dados.jutsus as j (j.slug)}
-						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, `${j.custo} ${j.unidade} · ${j.alcance} · ${j.area}${j.resistencia ? ` · ${j.resistencia}` : ''}`, temRegua(j.regua) ? null : 'Alcance especial: sem régua', [
-							{ n: 'MEDIR', acao: () => acoes.medirJutsu(token, j), desab: !temRegua(j.regua), dica: temRegua(j.regua) ? 'Liga a régua de jutsu' : 'Alcance especial: sem régua' },
-							...botoesUso(j)
-						], () => acoes.verJutsu(j), j)}
+						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, metaJutsu(j, true), avisoFalta(j), [...medir(j), ...botoesUso(j, falta(j))], () => acoes.verJutsu(j), j)}
 					{/each}
 				{:else if aba === 'jutsus' && dados.tipo === 'pc'}
 					{#each dados.ficha.jutsus as j (j.slug)}
-						{@const falta = j.custo > (j.unidade === 'PE' ? atual.pe : atual.pc)}
-						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, `${j.custo} ${j.unidade} · ${j.alcance} · ${j.area}`, temRegua(j.regua) ? (falta ? `Faltam ${j.custo - (j.unidade === 'PE' ? atual.pe : atual.pc)} ${j.unidade}` : null) : 'Alcance especial: sem régua', [
-							{ n: 'MEDIR', acao: () => acoes.medirJutsu(token, j), desab: !temRegua(j.regua), dica: temRegua(j.regua) ? 'Liga a régua de jutsu' : 'Alcance especial: sem régua' },
-							...botoesUso(j, falta)
-						], () => acoes.verJutsu(j), j)}
+						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, metaJutsu(j), avisoFalta(j), [...medir(j), ...botoesUso(j, falta(j))], () => acoes.verJutsu(j), j)}
 					{/each}
 				{:else if aba === 'pericias' && dados.tipo === 'pc'}
 					{#each dados.ficha.pericias as p (p.nome)}
@@ -513,15 +516,15 @@
 		{/if}
 	</div>
 
-	<div class="flex flex-none flex-wrap gap-1 border-t-2 border-b3 bg-b1 px-3 py-2">
-		{#if dados.tipo === 'pc'}<a class="min-h-8 px-2 text-xs leading-8 font-semibold text-link underline underline-offset-[3px]" href="/campanhas/{mesa.campanha}/personagens/{dados.ficha.id}" target="_blank" rel="noopener">Abrir ficha completa ↗</a>{/if}
-		{#if dados.tipo === 'npc'}<a class="min-h-8 px-2 text-xs leading-8 font-semibold text-link underline underline-offset-[3px]" href="/campanhas/{mesa.campanha}/npcs" target="_blank" rel="noopener">Abrir NPCs ↗</a>{/if}
-		<button type="button" class="min-h-8 px-2 text-xs font-semibold text-link underline underline-offset-[3px]" onclick={() => acoes.centralizar(token)}>Centralizar no mapa</button>
+	<div class="flex flex-none flex-wrap gap-x-3 gap-y-1 border-t-2 border-b3 bg-b1 px-3 py-1.5">
+		{#if dados.tipo === 'pc'}<a class="min-h-8 text-xs leading-8 font-semibold text-link underline underline-offset-[3px]" href="/campanhas/{mesa.campanha}/personagens/{dados.ficha.id}" target="_blank" rel="noopener" title="A página da ficha, numa aba nova">Ficha em nova aba ↗</a>{/if}
+		{#if dados.tipo === 'npc'}<a class="min-h-8 text-xs leading-8 font-semibold text-link underline underline-offset-[3px]" href="/campanhas/{mesa.campanha}/npcs" target="_blank" rel="noopener" title="A lista de NPCs, numa aba nova">NPCs ↗</a>{/if}
+		<button type="button" class="min-h-8 text-xs font-semibold text-link underline underline-offset-[3px]" title="Centralizar o quadro neste token" onclick={() => acoes.centralizar(token)}>Centralizar</button>
 		{#if (dados.tipo === 'pc' && dados.editavel && token.dono_id === mesa.eu) || (mesa.mestre && dados.tipo === 'pc')}
-			<button type="button" class="min-h-8 px-2 text-xs font-semibold text-link underline underline-offset-[3px]" onclick={() => acoes.clone(token)}>Criar clone</button>
+			<button type="button" class="min-h-8 text-xs font-semibold text-link underline underline-offset-[3px]" title="Criar um clone ligado a este token" onclick={() => acoes.clone(token)}>Clonar</button>
 		{/if}
 		{#if mesa.mestre || (token.ligado_a && token.dono_id === mesa.eu)}
-			<button type="button" class="min-h-8 px-2 text-xs font-semibold text-link underline underline-offset-[3px]" onclick={() => acoes.remover(token)}>Remover da cena</button>
+			<button type="button" class="ml-auto min-h-8 text-xs font-semibold text-link underline underline-offset-[3px]" title="Tirar este token da cena" onclick={() => acoes.remover(token)}>Remover</button>
 		{/if}
 	</div>
 </div>
