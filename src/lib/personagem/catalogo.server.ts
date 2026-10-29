@@ -125,7 +125,7 @@ export function catalogoCriacao(clasPermitidos: string[]) {
 }
 export type CatalogoCriacao = ReturnType<typeof catalogoCriacao>;
 
-function jutsuFicha(j: Pick<(typeof jutsus)[number], 'slug' | 'nome' | 'traducao' | 'rank' | 'tipo' | 'custo' | 'custoNum' | 'elemento' | 'cla' | 'origem' | 'efeito' | 'info'>): JutsuFicha {
+export function jutsuFicha(j: Pick<(typeof jutsus)[number], 'slug' | 'nome' | 'traducao' | 'rank' | 'tipo' | 'custo' | 'custoNum' | 'elemento' | 'cla' | 'origem' | 'efeito' | 'info'>): JutsuFicha {
 	return {
 		slug: j.slug,
 		nome: j.nome,

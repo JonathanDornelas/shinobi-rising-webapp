@@ -53,3 +53,19 @@ export function itensDaCampanha(criados: { id: string; nome: string; resumo: unk
 		};
 	});
 }
+
+/** Armas e marionetes criadas e aprovadas na campanha, para o Mestre pôr no inventário de um NPC (ADICIONAR). */
+export function armasDaCampanha(criados: { id: string; tipo: string; nome: string; resumo: unknown }[]): ItemLoja[] {
+	return criados.map((c) => {
+		const r = c.resumo as Partial<ResumoEquipamento>;
+		return {
+			id: `eq-${c.id}`,
+			nome: c.nome,
+			preco: r.custo ?? 0,
+			peso: c.tipo === 'marionete' ? 0 : (r.carga ?? 0.5),
+			grupo: c.tipo === 'marionete' ? 'Marionetes da campanha' : 'Armas da campanha',
+			icone: r.icone ?? 'equip/ic-equip-ferramenta',
+			dano: r.dano || undefined
+		};
+	});
+}

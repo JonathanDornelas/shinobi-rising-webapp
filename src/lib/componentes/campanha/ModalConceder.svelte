@@ -13,7 +13,8 @@
 	export type Concessao = { tipo: 'jutsu'; slug: string; nome: string; custo: number } | { tipo: 'item'; item: ItemInventario; custo: number };
 	interface Props {
 		alvo: Concessao;
-		fichas: { id: string; nome: string; pt: number; ryo?: number }[];
+		/** Fichas dos jogadores e, marcadas npc, as de NPC de ficha completa. */
+		fichas: { id: string; nome: string; pt: number; ryo?: number; npc?: boolean }[];
 		aoFechar: () => void;
 	}
 	let { alvo, fichas, aoFechar }: Props = $props();
@@ -54,7 +55,13 @@
 		{#if fichas.length}
 			<Campo id="conc-ficha" rotulo="Para qual ficha">
 				<select id="conc-ficha" class="campo pr-8" bind:value={ficha}>
-					{#each fichas as f (f.id)}<option value={f.id}>{f.nome} · {alvo.tipo === 'jutsu' ? `${f.pt} PT` : `${(f.ryo ?? 0).toLocaleString('pt-BR')} ryo`}</option>{/each}
+					{#snippet opcao(f: (typeof fichas)[number])}<option value={f.id}>{f.nome || 'Sem nome'} · {alvo.tipo === 'jutsu' ? `${f.pt} PT` : `${(f.ryo ?? 0).toLocaleString('pt-BR')} ryo`}</option>{/snippet}
+					{#if fichas.some((f) => f.npc)}
+						{#if fichas.some((f) => !f.npc)}<optgroup label="Jogadores">{#each fichas.filter((f) => !f.npc) as f (f.id)}{@render opcao(f)}{/each}</optgroup>{/if}
+						<optgroup label="NPCs">{#each fichas.filter((f) => f.npc) as f (f.id)}{@render opcao(f)}{/each}</optgroup>
+					{:else}
+						{#each fichas as f (f.id)}{@render opcao(f)}{/each}
+					{/if}
 				</select>
 			</Campo>
 			<div class="flex flex-col gap-2" role="radiogroup" aria-label="Custo">

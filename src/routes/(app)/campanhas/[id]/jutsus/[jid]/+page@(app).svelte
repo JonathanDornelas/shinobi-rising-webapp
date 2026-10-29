@@ -12,6 +12,8 @@
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import IndicadorSalvo, { type EstadoSalvo } from '#lib/componentes/ui/IndicadorSalvo.svelte';
 	import Modal from '#lib/componentes/ui/Modal.svelte';
+	import Traco from '#lib/componentes/ui/Traco.svelte';
+	import ModalExcluirCriacao from '#lib/componentes/campanha/ModalExcluirCriacao.svelte';
 	import { CriadorJutsu } from '#lib/jutsus/criador.svelte.ts';
 	import { ACOES, ALCANCES, ALVO_EXTRA, APOIO, AREAS, ATRIBUTO_DO_TIPO, DADOS, EFEITOS, MODIFICADORES, SECOES_JUTSU, SELOS, TIPOS, pjDoDano } from '#lib/jutsus/dados.ts';
 	import { analisarHabilidade, CAMPOS_INFO, dtDoJutsu, habilidadeVazia, jutsuVazio, type HabilidadeDados, type JutsuDados } from '#lib/jutsus/regras.ts';
@@ -134,13 +136,11 @@
 		if (error || !id) return toasts.mostrar('Não foi possível criar a nova versão.', 'erro');
 		await goto(hrefJutsu(k.id, id), { refreshAll: true });
 	}
-	async function excluir() {
+	const podeExcluir = $derived(data.dono || souMestre);
+	async function excluido() {
 		clearTimeout(temporizador);
 		temporizador = undefined;
-		const { error } = await supabase().from('jutsus_criados').delete().eq('id', j0.id);
 		modal = null;
-		if (error) return toasts.mostrar('Não foi possível excluir.', 'erro');
-		toasts.mostrar('Rascunho excluído.', 'info');
 		await goto(destinoSaida, { refreshAll: true });
 	}
 	let decisao = $state<'aprovado' | 'ajustes' | 'rejeitado'>('aprovado');
@@ -226,6 +226,7 @@
 			<span class="inline-flex h-9 items-center gap-0.5 border-2 border-ink pr-2 text-xs leading-none font-semibold {STATUS_CRIACAO[status].classe}"><Icone id={STATUS_CRIACAO[status].icone} />{STATUS_CRIACAO[status].rotulo}{j0.versao > 1 ? ` · v${j0.versao}` : ''}</span>
 		{/if}
 		<span class="flex-1"></span>
+		{#if podeExcluir}<button type="button" class="flex h-10 w-10 flex-none items-center justify-center border-2 border-transparent text-mut hover:border-err hover:text-err" title="Excluir" aria-label="Excluir {j0.nome || (habilidade ? 'a habilidade' : 'o jutsu')}" onclick={() => (modal = 'excluir')}><Traco nome="lixeira" /></button>{/if}
 		{#if data.editavel}
 			<span class="max-md:hidden"><IndicadorSalvo estado={salvo} /></span>
 			<button type="button" class="btn-jogo btn-fantasma text-[13px]" onclick={() => sair(destinoSaida)}>SALVAR E SAIR</button>
@@ -432,8 +433,8 @@
 						<button type="button" class="btn-jogo btn-primario" onclick={() => abrirDecisao('aprovado')}>APROVAR</button>
 					</section>
 				{/if}
-				{#if data.editavel && status === 'rascunho'}
-					<button type="button" class="link mt-2 self-start text-[13px] font-semibold text-err" onclick={() => (modal = 'excluir')}>Excluir este rascunho</button>
+				{#if podeExcluir}
+					<button type="button" class="link mt-2 self-start text-[13px] font-semibold text-err" onclick={() => (modal = 'excluir')}>{status === 'rascunho' ? 'Excluir este rascunho' : habilidade ? 'Excluir esta habilidade' : 'Excluir este jutsu'}</button>
 				{/if}
 			</main>
 
@@ -499,16 +500,11 @@
 		</div>
 	</Modal>
 {:else if modal === 'excluir'}
-	<Modal rotulo="Excluir rascunho" largura={480} topo={160} aoFechar={() => (modal = null)}>
-		<div class="flex flex-col gap-4 p-6">
-			<h2 class="t-h3 m-0">Excluir este rascunho?</h2>
-			<p class="m-0 text-[15px] leading-[23px] text-mut">Não dá para desfazer.</p>
-			<div class="flex justify-end gap-2.5">
-				<button type="button" class="btn-jogo btn-fantasma" onclick={() => (modal = null)}>CANCELAR</button>
-				<button type="button" class="btn-jogo bg-err text-errfg" onclick={excluir}>EXCLUIR</button>
-			</div>
-		</div>
-	</Modal>
+	<ModalExcluirCriacao
+		alvo={{ tipo: 'jutsu', id: j0.id, nome: (habilidade ? h.nome : c.dados.nome) || j0.nome, rotulo: habilidade ? 'habilidade' : 'jutsu', aprovada: status === 'aprovado', versaoNova: !!j0.anterior_id && status !== 'aprovado' }}
+		aoFechar={() => (modal = null)}
+		aoExcluir={excluido}
+	/>
 {:else if modal === 'decidir'}
 	<Modal rotulo="Decisão" largura={520} topo={140} aoFechar={() => !decidindo && (modal = null)}>
 		<form

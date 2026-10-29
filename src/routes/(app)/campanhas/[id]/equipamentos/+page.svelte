@@ -135,7 +135,7 @@
 	let concedendo = $state<Concessao | null>(null);
 	const CONJUNTOS = ['arma-kunai', 'arma-shuriken', 'arma-senbon'];
 	const slug = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-	const fichasAtivas = $derived(data.personagens.filter((p) => p.status === 'aprovada' && p.situacao === 'ativo' && !p.pre_gerado).map((p) => ({ id: p.id, nome: p.nome, pt: p.pt, ryo: p.ryo })));
+	const fichasAtivas = $derived([...data.personagens, ...(data.npcFichas ?? [])].filter((p) => p.status === 'aprovada' && p.situacao === 'ativo' && !p.pre_gerado).map((p) => ({ id: p.id, nome: p.nome, pt: p.pt, ryo: p.ryo, npc: p.npc })));
 </script>
 
 <main class="flex min-w-0 flex-col gap-3.5 p-4 md:p-6">

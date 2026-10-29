@@ -8,6 +8,10 @@
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
+	import { invalidateAll } from '$app/navigation';
+	import { toasts } from '#lib/estado/toasts.svelte.ts';
+	import { supabase } from '#lib/supabase/cliente.ts';
+	import ModalAdicionarJutsu from './ModalAdicionarJutsu.svelte';
 	import { gravar, ler } from '#lib/estado/armazenamento.ts';
 	import { favoritos } from '#lib/estado/favoritos.svelte.ts';
 	import { NIVEIS_PROFICIENCIA } from '#lib/personagem/dados.ts';
@@ -82,6 +86,19 @@
 	const RANKS = ['E', 'D', 'C', 'B', 'A', 'S'];
 	const lista = $derived(f.calc.jutsus.map((s) => f.catalogo.jutsus.find((j) => j.slug === s)).filter((j): j is JutsuFicha => !!j));
 	const tipos = $derived([...new Set(lista.map((j) => j.tipo))]);
+	// NPC de ficha completa aberto pelo Mestre: dar qualquer jutsu de graça e tirar os que foram aprendidos ou escolhidos
+	const npcDoMestre = $derived(f.editavel && !!page.data.completa?.npc && !!page.data.completa?.mestre);
+	const paraDar = $derived(npcDoMestre ? f.catalogo.jutsus.filter((j) => !f.calc.jutsus.includes(j.slug)) : []);
+	const removiveis = $derived(new Set([...f.dados.jutsus.E, ...f.dados.jutsus.D, ...f.dados.progresso.treinos.flatMap((t) => (t.tipo === 'jutsu' ? [t.slug] : []))]));
+	let dandoJutsu = $state(false);
+	let tirando = $state<string | null>(null);
+	async function tirar(j: JutsuFicha) {
+		tirando = j.slug;
+		const { error } = await supabase().rpc('esquecer_jutsu', { ficha: f.id, slug: j.slug, nome: j.nome });
+		if (!error) await invalidateAll();
+		tirando = null;
+		toasts.mostrar(error ? 'Não foi possível tirar o jutsu.' : `${j.nome} saiu da ficha.`, error ? 'erro' : 'info');
+	}
 	const ranks = $derived(RANKS.filter((r) => lista.some((j) => j.rank === r)));
 	const efeitosDaFicha = $derived(new Map(lista.map((j) => [j.slug, efeitosDe(j.efeito)])));
 	const efeitosPresentes = $derived([...EFEITOS.map((e) => e.id), 'outros'].filter((e) => lista.some((j) => efeitosDaFicha.get(j.slug)!.includes(e))));
@@ -260,6 +277,9 @@
 				<button type="submit" class="btn-jogo btn-contorno com-icone min-h-10 text-xs" title="Criar um jutsu original para esta ficha (cap. 20); depois de aprovado, aprende no treino"><Icone id="acao/ic-acao-criar-jutsu" />CRIAR JUTSU</button>
 			</form>
 		{/if}
+		{#if npcDoMestre}
+			<button type="button" class="btn-jogo btn-primario com-icone min-h-10 text-xs" title="Dar um jutsu a este NPC, sem gastar PT" onclick={() => (dandoJutsu = true)}><Icone id="acao/ic-acao-conceder" />DAR JUTSU</button>
+		{/if}
 	</div>
 
 	<div class="-mx-1 flex gap-2 overflow-x-auto px-1 pb-0.5 [scrollbar-width:thin] sm:flex-wrap sm:overflow-visible" role="group" aria-label="Tipo">
@@ -336,6 +356,9 @@
 						<p class="m-0 text-sm leading-[21px]"><b>Efeito.</b> {j.efeito}</p>
 						{@render botoesRolar(j)}
 						{#if f.custo(j).notas.length}<p class="m-0 text-[13px] text-mut">Custo: {f.custo(j).base} {f.custo(j).unidade} base · {f.custo(j).notas.join(' · ')}</p>{/if}
+						{#if npcDoMestre && removiveis.has(j.slug)}
+							<button type="button" class="inline-flex min-h-9 items-center gap-1.5 self-start text-[13px] font-semibold text-err hover:underline disabled:opacity-60" disabled={!!tirando} aria-busy={tirando === j.slug} onclick={() => tirar(j)}>{#if tirando === j.slug}<span class="font-pixel">…</span>{:else}<Traco nome="lixeira" tamanho={16} />{/if}Tirar da ficha do NPC</button>
+						{/if}
 					</div>
 				{/if}
 			</li>
@@ -389,3 +412,7 @@
 </p>
 
 {#if dica}<TooltipAcao acao={dica.acao} ancora={dica.ancora} />{/if}
+
+{#if dandoJutsu}
+	<ModalAdicionarJutsu ficha={f.id} nome={page.data.completa?.nome || 'NPC'} opcoes={paraDar} aoFechar={() => (dandoJutsu = false)} />
+{/if}

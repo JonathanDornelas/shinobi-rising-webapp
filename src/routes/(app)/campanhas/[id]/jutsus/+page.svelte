@@ -1,94 +1,124 @@
 <script lang="ts">
-	// J1 · Biblioteca de jutsus da campanha: oficiais do livro, criados aprovados, em revisão (Mestre) e minhas criações.
-	// Daqui saem o criador de jutsu (J2) e o de habilidade (J3, modal).
+	// J1 · Biblioteca de jutsus da campanha: oficiais do livro, criados aprovados, em revisão (Mestre) e minhas criações,
+	// no mesmo explorador do catálogo (filtros, busca, quatro visualizações). Os filtros valem para todas as abas.
+	// Os criados abrem no criador (J2), com status, conceder e excluir; daqui também sai o criador de habilidade (J3).
+	import { invalidateAll } from '$app/navigation';
 	import ModalConceder, { type Concessao } from '#lib/componentes/campanha/ModalConceder.svelte';
+	import ModalExcluirCriacao, { type CriacaoExcluir } from '#lib/componentes/campanha/ModalExcluirCriacao.svelte';
 	import ModalHabilidade from '#lib/componentes/jutsu/ModalHabilidade.svelte';
-	import { CUSTO_JUTSU } from '#lib/personagem/dados.ts';
+	import ExploradorJutsus, { type GrupoFiltro } from '#lib/componentes/regras/ExploradorJutsus.svelte';
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import Modal from '#lib/componentes/ui/Modal.svelte';
-	import { TIPO_JUTSU } from '#lib/livro/dominio.ts';
-	import type { ResumoJutsu } from '#lib/jutsus/regras.ts';
-	import { hrefJutsu, STATUS_CRIACAO } from '#lib/jutsus/status.ts';
-	import { TIPOS } from '#lib/jutsus/dados.ts';
+	import Traco from '#lib/componentes/ui/Traco.svelte';
 	import { tempoRelativo } from '#lib/formatar.ts';
+	import { normalizarJutsu, paraJutsuLivro, type JutsuDados } from '#lib/jutsus/regras.ts';
+	import { hrefJutsu, STATUS_CRIACAO } from '#lib/jutsus/status.ts';
+	import { acaoDe } from '#lib/livro/filtros-jutsu.ts';
+	import type { Jutsu } from '#lib/livro/tipos.ts';
+	import { CUSTO_JUTSU } from '#lib/personagem/dados.ts';
 	import type { StatusCriacao } from '#lib/supabase/banco.ts';
-	import type { TipoJutsu } from '#lib/livro/tipos.ts';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();
 	const k = $derived(data.campanha);
 	const eu = $derived(data.usuario?.id ?? '');
 	const mestre = $derived(data.papel === 'mestre');
+	const ativa = $derived(!k.arquivada_em);
 	const nomeMembro = (id: string) => data.membros.find((m) => m.id === id)?.nome ?? 'Ex-membro';
 	const nomeFicha = (id: string | null) => (id ? (data.personagens.find((p) => p.id === id)?.nome ?? data.grupo.find((g) => g.id === id)?.nome ?? null) : null);
 	const minhasFichas = $derived(data.personagens.filter((p) => p.jogador_id === eu && p.situacao === 'ativo').map((p) => ({ id: p.id, nome: p.nome })));
 
-	type Aba = 'oficiais' | 'campanha' | 'revisao' | 'minhas';
-	interface Card {
-		chave: string;
-		nome: string;
-		linha: string;
-		rank: string;
-		tipo: TipoJutsu | null;
-		custo: string;
-		habilidade: boolean;
-		status: StatusCriacao | null;
-		href: string;
-		externo: boolean;
-		conceder?: Concessao;
-	}
-	const criados = $derived(data.criados.map((c) => ({ ...c, resumo: c.resumo as Partial<ResumoJutsu> & { origem?: string } })));
-	const substituidos = $derived(new Set(criados.filter((c) => c.status === 'aprovado' && c.anterior_id).map((c) => c.anterior_id)));
-	const cardCriado = (c: (typeof criados)[number]): Card => ({
-		chave: c.id,
-		nome: c.nome || 'Sem nome',
-		linha: [nomeMembro(c.autor_id), nomeFicha(c.personagem_id) ?? (c.cla_id && data.nomesClas[c.cla_id] ? `Clã ${data.nomesClas[c.cla_id]}` : c.resumo.origem), `v${c.versao}`, c.status === 'rascunho' ? `rascunho ${tempoRelativo(c.atualizado_em)}` : c.status === 'em_revisao' && c.enviado_em ? `enviado ${tempoRelativo(c.enviado_em)}` : '']
-			.filter(Boolean)
-			.join(' · '),
-		rank: c.tipo === 'habilidade' ? '' : (c.rank ?? c.resumo.rank ?? 'E'),
-		tipo: (c.resumo.tipo as TipoJutsu | null) ?? null,
-		custo: c.tipo === 'habilidade' ? '' : (c.resumo.custo ?? ''),
-		habilidade: c.tipo === 'habilidade',
-		status: c.status,
-		href: hrefJutsu(k.id, c.id),
-		externo: false,
-		conceder: c.tipo === 'jutsu' && c.status === 'aprovado' ? { tipo: 'jutsu', slug: `jc-${c.id}`, nome: c.nome, custo: CUSTO_JUTSU[c.rank ?? 'C'] ?? 0 } : undefined
-	});
+	type Criado = (typeof data.criados)[number];
+	const origemDe = (c: Criado) => nomeFicha(c.personagem_id) ?? (c.cla_id && data.nomesClas[c.cla_id] ? `Clã ${data.nomesClas[c.cla_id]}` : 'Criação da campanha');
+	/** Os criados no formato do livro (slug jc-<id>), para os filtros e as visualizações do catálogo. */
+	const comoLivro = (c: Criado): Jutsu => paraJutsuLivro(`jc-${c.id}`, normalizarJutsu(c.dados as Partial<JutsuDados>), origemDe(c));
+	const porSlug = $derived(new Map(data.criados.map((c) => [`jc-${c.id}`, c])));
 
-	let busca = $state('');
-	let filtroTipo = $state<TipoJutsu | ''>('');
-	const oficiais = $derived(
-		data.oficiais
-			.filter((j) => (!filtroTipo || j.tipo === filtroTipo) && (!busca.trim() || `${j.nome} ${j.origem}`.toLowerCase().includes(busca.trim().toLowerCase())))
-			.map<Card>((j) => ({ chave: j.slug, nome: j.nome, linha: j.origem || j.tipo, rank: j.rank, tipo: j.tipo, custo: j.custo, habilidade: false, status: null, href: `/regras/jutsus/${j.slug}`, externo: true, conceder: j.cla ? undefined : ({ tipo: 'jutsu', slug: j.slug, nome: j.nome, custo: CUSTO_JUTSU[j.rank] ?? 0 } as Concessao) }))
-	);
-	const listas = $derived<Record<Aba, Card[]>>({
-		oficiais,
-		campanha: criados.filter((c) => c.status === 'aprovado' && !substituidos.has(c.id)).map(cardCriado),
-		revisao: criados.filter((c) => c.status === 'em_revisao' && c.autor_id !== eu).map(cardCriado),
-		minhas: criados.filter((c) => c.autor_id === eu).map(cardCriado)
+	type Aba = 'oficiais' | 'campanha' | 'revisao' | 'minhas';
+	// numa cadeia de versões aprovadas, a biblioteca mostra só a mais nova
+	const substituidos = $derived(new Set(data.criados.filter((c) => c.status === 'aprovado' && c.anterior_id).map((c) => c.anterior_id)));
+	const criadosDa = $derived<Record<Exclude<Aba, 'oficiais'>, Criado[]>>({
+		campanha: data.criados.filter((c) => c.status === 'aprovado' && !substituidos.has(c.id)),
+		revisao: data.criados.filter((c) => c.status === 'em_revisao' && c.autor_id !== eu),
+		minhas: data.criados.filter((c) => c.autor_id === eu)
 	});
+	const jutsusDa = $derived<Record<Aba, Jutsu[]>>({
+		oficiais: data.oficiais as Jutsu[],
+		campanha: criadosDa.campanha.filter((c) => c.tipo === 'jutsu').map(comoLivro),
+		revisao: criadosDa.revisao.filter((c) => c.tipo === 'jutsu').map(comoLivro),
+		minhas: criadosDa.minhas.filter((c) => c.tipo === 'jutsu').map(comoLivro)
+	});
+	const habilidadesDa = (a: Aba) => (a === 'oficiais' ? [] : criadosDa[a].filter((c) => c.tipo === 'habilidade'));
 	const ABAS = $derived<{ id: Aba; nome: string; n: number }[]>([
-		{ id: 'oficiais', nome: 'OFICIAIS', n: data.oficiais.length },
-		{ id: 'campanha', nome: 'DA CAMPANHA', n: listas.campanha.length },
-		...(mestre ? [{ id: 'revisao' as const, nome: 'EM REVISÃO', n: listas.revisao.length }] : []),
-		{ id: 'minhas', nome: 'MINHAS CRIAÇÕES', n: listas.minhas.length }
+		{ id: 'oficiais', nome: 'OFICIAIS', n: jutsusDa.oficiais.length },
+		{ id: 'campanha', nome: 'DA CAMPANHA', n: criadosDa.campanha.length },
+		...(mestre ? [{ id: 'revisao' as const, nome: 'EM REVISÃO', n: criadosDa.revisao.length }] : []),
+		{ id: 'minhas', nome: 'MINHAS CRIAÇÕES', n: criadosDa.minhas.length }
 	]);
 	// svelte-ignore state_referenced_locally
-	let aba = $state<Aba>(mestre && listas.revisao.length ? 'revisao' : listas.campanha.length ? 'campanha' : 'oficiais');
+	let aba = $state<Aba>(mestre && criadosDa.revisao.length ? 'revisao' : criadosDa.campanha.length ? 'campanha' : 'oficiais');
 	const VAZIO: Record<Aba, string> = {
-		oficiais: 'Nenhum jutsu do livro com esse filtro.',
+		oficiais: 'Nenhum jutsu do livro.',
 		campanha: 'Nenhum jutsu criado e aprovado nesta campanha ainda.',
 		revisao: 'Nada esperando sua revisão.',
-		minhas: 'Você ainda não criou jutsus nem habilidades.'
+		minhas: 'Você ainda não criou jutsus. Comece pelo botão Criar jutsu.'
 	};
-	const ativa = $derived(!k.arquivada_em);
+
+	// filtros só dos criados (os oficiais não têm valor neles, e o grupo some na aba Oficiais)
+	const EXTRAS: GrupoFiltro[] = [
+		{ id: 'status', rotulo: 'Status', obter: (j) => porSlug.get(j.slug)?.status ?? null, ordem: ['rascunho', 'em_revisao', 'ajustes', 'aprovado', 'rejeitado'], nome: (v) => STATUS_CRIACAO[v as StatusCriacao]?.rotulo ?? v, aberto: true },
+		{ id: 'autor', rotulo: 'Autor', obter: (j) => { const c = porSlug.get(j.slug); return c ? nomeMembro(c.autor_id) : null; } }
+	];
+	const linhaCriado = (c: Criado) =>
+		[nomeMembro(c.autor_id), origemDe(c), `v${c.versao}`, c.status === 'rascunho' ? `rascunho ${tempoRelativo(c.atualizado_em)}` : c.status === 'em_revisao' && c.enviado_em ? `enviado ${tempoRelativo(c.enviado_em)}` : ''].filter(Boolean).join(' · ');
+
+	// ---------------------------------------------------------------- conceder e excluir
+	const concessao = (j: Jutsu): Concessao | null => {
+		const c = porSlug.get(j.slug);
+		if (c) return c.status === 'aprovado' ? { tipo: 'jutsu', slug: j.slug, nome: c.nome, custo: CUSTO_JUTSU[c.rank ?? 'C'] ?? 0 } : null;
+		return j.cla ? null : { tipo: 'jutsu', slug: j.slug, nome: j.nome, custo: CUSTO_JUTSU[j.rank] ?? 0 };
+	};
+	const podeExcluir = (c: Criado) => c.autor_id === eu || mestre;
+	const paraExcluir = (c: Criado): CriacaoExcluir => ({
+		tipo: 'jutsu',
+		id: c.id,
+		nome: c.nome,
+		rotulo: c.tipo === 'habilidade' ? 'habilidade' : 'jutsu',
+		aprovada: c.status === 'aprovado',
+		versaoNova: !!c.anterior_id && c.status !== 'aprovado'
+	});
 	let modal = $state<'jutsu' | 'habilidade' | null>(null);
 	let concedendo = $state<Concessao | null>(null);
-	const fichasAtivas = $derived(data.personagens.filter((p) => p.status === 'aprovada' && p.situacao === 'ativo' && !p.pre_gerado).map((p) => ({ id: p.id, nome: p.nome, pt: p.pt })));
+	let excluindo = $state<CriacaoExcluir | null>(null);
+	const fichasAtivas = $derived([...data.personagens, ...(data.npcFichas ?? [])].filter((p) => p.status === 'aprovada' && p.situacao === 'ativo' && !p.pre_gerado).map((p) => ({ id: p.id, nome: p.nome, pt: p.pt, ryo: p.ryo, npc: p.npc })));
 	let paraFicha = $state('');
 </script>
+
+{#snippet seloStatus(status: StatusCriacao)}
+	{@const st = STATUS_CRIACAO[status]}
+	<span class="inline-flex h-8 items-center gap-0.5 border-2 border-ink pr-1.5 text-xs leading-none font-semibold whitespace-nowrap max-sm:pr-0 {st.classe}" title={st.rotulo}><Icone id={st.icone} class="h-7 w-7" /><span class="max-sm:sr-only">{st.rotulo}</span></span>
+{/snippet}
+
+{#snippet botaoConceder(alvo: Concessao, nome: string, sobreFaixa: boolean)}
+	<button type="button" class="relative z-10 flex h-10 w-10 flex-none items-center justify-center {sobreFaixa ? 'hover:bg-[var(--vermelhao-lo)]' : 'hover:bg-b3'}" title="Conceder a uma ficha" aria-label="Conceder {nome} a uma ficha" onclick={() => (concedendo = alvo)}><Icone id="acao/ic-acao-conceder" /></button>
+{/snippet}
+
+{#snippet botaoExcluir(c: Criado, sobreFaixa: boolean)}
+	<button type="button" class="relative z-10 flex h-10 w-10 flex-none items-center justify-center {sobreFaixa ? 'text-papel-2 hover:text-papel' : 'text-mut hover:text-err'}" title="Excluir" aria-label="Excluir {c.nome || 'sem nome'}" onclick={() => (excluindo = paraExcluir(c))}><Traco nome="lixeira" /></button>
+{/snippet}
+
+{#snippet selo(j: Jutsu)}
+	{@const c = porSlug.get(j.slug)}
+	{#if c}{@render seloStatus(c.status)}{/if}
+{/snippet}
+
+{#snippet acoes(j: Jutsu, sobreFaixa: boolean)}
+	{@const c = porSlug.get(j.slug)}
+	{@const alvo = mestre && ativa ? concessao(j) : null}
+	{#if alvo}{@render botaoConceder(alvo, j.nome, sobreFaixa)}{/if}
+	{#if c && podeExcluir(c)}{@render botaoExcluir(c, sobreFaixa)}{/if}
+{/snippet}
 
 <main class="flex min-w-0 flex-col gap-3.5 p-4 md:p-6">
 	<div class="flex flex-wrap items-center gap-2">
@@ -109,50 +139,39 @@
 		{/each}
 	</div>
 
-	{#if aba === 'oficiais'}
-		<div class="flex flex-wrap gap-2">
-			<input class="campo h-10 w-64 text-sm max-sm:w-full" type="search" placeholder="Buscar por nome ou origem…" aria-label="Buscar jutsu" bind:value={busca} />
-			<select class="campo h-10 pr-8 text-sm" aria-label="Tipo" bind:value={filtroTipo}>
-				<option value="">Todos os tipos</option>
-				{#each TIPOS as t (t)}<option value={t}>{t}</option>{/each}
-			</select>
-		</div>
-	{/if}
+	<div role="tabpanel" class="flex flex-col gap-6">
+		<ExploradorJutsus
+			jutsus={jutsusDa[aba]}
+			nomesCla={data.nomesClaLivro}
+			extras={EXTRAS}
+			href={(j) => { const c = porSlug.get(j.slug); return c ? hrefJutsu(k.id, c.id) : `/regras/jutsus/${j.slug}`; }}
+			emModal={(j) => !porSlug.has(j.slug)}
+			favoritavel={(j) => !porSlug.has(j.slug)}
+			linha={(j) => { const c = porSlug.get(j.slug); return c ? linhaCriado(c) : `${j.origem} · ${acaoDe(j)}`; }}
+			selo={aba === 'oficiais' ? undefined : selo}
+			{acoes}
+			vazio={habilidadesDa(aba).length ? 'Nenhum jutsu aqui; as habilidades estão logo abaixo.' : VAZIO[aba]}
+			chaveVisao="jutsus-campanha-visao"
+		/>
 
-	<div role="tabpanel">
-		{#if listas[aba].length}
-			<ul class="m-0 grid list-none gap-3 p-0 lg:grid-cols-2">
-				{#each listas[aba] as j (j.chave)}
-					{@const st = j.status ? STATUS_CRIACAO[j.status] : null}
-					<li class="relative">
-						<a
-							href={j.href}
-							target={j.externo ? '_blank' : undefined}
-							rel={j.externo ? 'noopener' : undefined}
-							class="cartao-link grid grid-cols-[4px_32px_minmax(0,1fr)_auto] items-center gap-3 border-2 bg-b2 py-2.5 pr-3.5 text-fg shadow-[4px_4px_0_var(--ink)] {j.status === 'rascunho' ? 'border-dashed border-frame' : j.status === 'em_revisao' ? 'border-warn' : 'border-frame'}"
-						>
-							<span class="-my-2.5 self-stretch" style:background={j.tipo ? TIPO_JUTSU[j.tipo].cor : 'var(--b3)'}></span>
-							{#if j.habilidade}<Icone id="acao/ic-acao-criar-jutsu" alt="Habilidade" />{:else}<Icone id="rank/ic-rank-{j.rank.toLowerCase()}" alt="Rank {j.rank}" />{/if}
+		{#if habilidadesDa(aba).length}
+			<section class="flex flex-col gap-2.5" aria-labelledby="titulo-habilidades">
+				<h2 id="titulo-habilidades" class="m-0 font-mincho text-xl leading-[26px] font-bold">Habilidades <span class="t-num text-base text-mut">{habilidadesDa(aba).length}</span></h2>
+				<ul class="m-0 grid list-none gap-2 p-0 md:gap-3 xl:grid-cols-2">
+					{#each habilidadesDa(aba) as c (c.id)}
+						<li class="painel cartao-link relative grid grid-cols-[4px_32px_minmax(0,1fr)_auto_auto] items-center gap-2.5 py-1 pr-1 md:sombra-painel md:gap-3 md:py-1.5">
+							<span class="-my-1 self-stretch bg-b3 md:-my-1.5"></span>
+							<Icone id="acao/ic-acao-criar-jutsu" alt="Habilidade" />
 							<span class="flex min-w-0 flex-col gap-0.5">
-								<span class="truncate font-mincho text-[17px] leading-[22px] font-bold">{j.nome}</span>
-								<span class="truncate text-[13px] leading-[18px] text-mut">{j.habilidade ? 'Habilidade' : (j.tipo ?? 'Sem tipo')}{j.linha ? ` · ${j.linha}` : ''}</span>
+								<a href={hrefJutsu(k.id, c.id)} class="truncate font-mincho text-[15px] leading-5 font-bold after:absolute after:inset-0 md:text-[17px] md:leading-[22px]">{c.nome || 'Sem nome'}</a>
+								<span class="truncate text-xs leading-4 text-mut md:text-[13px] md:leading-[18px]">{linhaCriado(c)}</span>
 							</span>
-							<span class="flex flex-col items-end gap-1.5">
-								{#if j.custo}<span class="t-num text-lg leading-none">{j.custo}</span>{/if}
-								{#if st}<span class="inline-flex h-8 items-center gap-0.5 border-2 border-ink pr-1.5 text-xs leading-none font-semibold {st.classe}"><Icone id={st.icone} class="h-7 w-7" />{st.rotulo}</span>{/if}
-							</span>
-						</a>
-						{#if mestre && ativa && j.conceder}
-							<button type="button" class="absolute -top-2 -right-2 flex h-9 w-9 items-center justify-center border-2 border-ink bg-b2 hover:bg-b3" title="Conceder a uma ficha" aria-label="Conceder {j.nome} a uma ficha" onclick={() => (concedendo = j.conceder!)}><Icone id="acao/ic-acao-conceder" /></button>
-						{/if}
-					</li>
-				{/each}
-			</ul>
-		{:else}
-			<div class="flex flex-col items-center gap-2.5 border-2 border-dashed border-b3 p-10 text-center">
-				<Icone id="nav/ic-nav-jutsus" tamanho={64} />
-				<span class="text-base leading-[22px] font-semibold">{VAZIO[aba]}</span>
-			</div>
+							<span>{#if aba !== 'campanha'}{@render seloStatus(c.status)}{/if}</span>
+							<span class="flex min-w-10 items-center justify-end">{#if podeExcluir(c)}{@render botaoExcluir(c, false)}{/if}</span>
+						</li>
+					{/each}
+				</ul>
+			</section>
 		{/if}
 	</div>
 </main>
@@ -178,6 +197,15 @@
 	</Modal>
 {:else if concedendo}
 	<ModalConceder alvo={concedendo} fichas={fichasAtivas} aoFechar={() => (concedendo = null)} />
+{:else if excluindo}
+	<ModalExcluirCriacao
+		alvo={excluindo}
+		aoFechar={() => (excluindo = null)}
+		aoExcluir={async () => {
+			excluindo = null;
+			await invalidateAll();
+		}}
+	/>
 {:else if modal === 'habilidade'}
 	<ModalHabilidade campanha={k.id} {eu} fichas={minhasFichas} clas={data.meusClas} {mestre} aoFechar={() => (modal = null)} />
 {/if}

@@ -12,6 +12,8 @@
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import IndicadorSalvo, { type EstadoSalvo } from '#lib/componentes/ui/IndicadorSalvo.svelte';
 	import Modal from '#lib/componentes/ui/Modal.svelte';
+	import Traco from '#lib/componentes/ui/Traco.svelte';
+	import ModalExcluirCriacao from '#lib/componentes/campanha/ModalExcluirCriacao.svelte';
 	import { APROVACAO_PADRAO } from '#lib/campanhas/dominio.ts';
 	import { APROVACAO_DO_TIPO, corQualidade, PASSOS_FORJA } from '#lib/equipamentos/dados.ts';
 	import {
@@ -44,6 +46,7 @@
 	// svelte-ignore state_referenced_locally
 	const k = data.campanha;
 	const tipo = e0.tipo as TipoEquipamento;
+	const ROTULO_TIPO = { arma: 'esta arma', item: 'este item', marionete: 'esta marionete' } as const;
 	const status = $derived(data.equipamento.status as StatusCriacao);
 	const revisando = $derived(data.papel === 'mestre' && !data.dono && status === 'em_revisao');
 	const souMestre = $derived(data.papel === 'mestre');
@@ -145,13 +148,11 @@
 		if (error || !id) return toasts.mostrar('Não foi possível criar a nova versão.', 'erro');
 		await goto(`${voltar}/${id}`, { refreshAll: true });
 	}
-	async function excluir() {
+	const podeExcluir = $derived(data.dono || souMestre);
+	async function excluido() {
 		clearTimeout(temporizador);
 		temporizador = undefined;
-		const { error } = await supabase().from('equipamentos_criados').delete().eq('id', e0.id);
 		modal = null;
-		if (error) return toasts.mostrar('Não foi possível excluir.', 'erro');
-		toasts.mostrar('Rascunho excluído.', 'info');
 		await goto(voltar, { refreshAll: true });
 	}
 	let decisao = $state<'aprovado' | 'ajustes' | 'rejeitado'>('aprovado');
@@ -215,6 +216,7 @@
 				<span class="t-num text-[15px]" aria-live="polite" style:color={medidor.usados > medidor.limite ? 'var(--err)' : medidor.usados === medidor.limite ? 'var(--ok)' : undefined}>{medidor.usados} / {medidor.limite}</span>
 			</div>
 		{/if}
+		{#if podeExcluir}<button type="button" class="flex h-10 w-10 flex-none items-center justify-center border-2 border-transparent text-mut hover:border-err hover:text-err" title="Excluir" aria-label="Excluir {e0.nome || ROTULO_TIPO[tipo]}" onclick={() => (modal = 'excluir')}><Traco nome="lixeira" /></button>{/if}
 		{#if data.editavel}
 			<span class="max-md:hidden"><IndicadorSalvo estado={salvo} /></span>
 			<button type="button" class="btn-jogo btn-fantasma text-[13px]" onclick={() => sair(voltar)}>SALVAR E SAIR</button>
@@ -295,7 +297,7 @@
 					<button type="button" class="btn-jogo btn-primario" onclick={() => abrirDecisao('aprovado')}>APROVAR</button>
 				</section>
 			{/if}
-			{#if data.editavel && status === 'rascunho'}<button type="button" class="link self-start text-[13px] font-semibold text-err" onclick={() => (modal = 'excluir')}>Excluir este rascunho</button>{/if}
+			{#if podeExcluir}<button type="button" class="link self-start text-[13px] font-semibold text-err" onclick={() => (modal = 'excluir')}>{status === 'rascunho' ? 'Excluir este rascunho' : `Excluir ${ROTULO_TIPO[tipo]}`}</button>{/if}
 		</main>
 
 		<aside class="flex flex-col gap-3 border-l-2 border-b3 bg-b2 p-4 max-lg:border-t-2 max-lg:border-l-0" aria-label="Prévia">
@@ -364,15 +366,11 @@
 		</div>
 	</Modal>
 {:else if modal === 'excluir'}
-	<Modal rotulo="Excluir rascunho" largura={480} topo={160} aoFechar={() => (modal = null)}>
-		<div class="flex flex-col gap-4 p-6">
-			<h2 class="t-h3 m-0">Excluir este rascunho?</h2>
-			<div class="flex justify-end gap-2.5">
-				<button type="button" class="btn-jogo btn-fantasma" onclick={() => (modal = null)}>CANCELAR</button>
-				<button type="button" class="btn-jogo bg-err text-errfg" onclick={excluir}>EXCLUIR</button>
-			</div>
-		</div>
-	</Modal>
+	<ModalExcluirCriacao
+		alvo={{ tipo: 'equipamento', id: e0.id, nome: e0.nome, rotulo: tipo, aprovada: status === 'aprovado', versaoNova: !!e0.anterior_id && status !== 'aprovado' }}
+		aoFechar={() => (modal = null)}
+		aoExcluir={excluido}
+	/>
 {:else if modal === 'decidir'}
 	<Modal rotulo="Decisão" largura={520} topo={140} aoFechar={() => !decidindo && (modal = null)}>
 		<form

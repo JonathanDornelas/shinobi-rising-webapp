@@ -647,6 +647,9 @@ export type Database = {
 			retirar_equipamento: { Args: { equipamento: string }; Returns: undefined };
 			decidir_equipamento: { Args: { equipamento: string; decisao: StatusCriacao; comentario?: string | null }; Returns: undefined };
 			nova_versao_equipamento: { Args: { equipamento: string }; Returns: string };
+			excluir_criacao: { Args: { tipo: 'cla' | 'jutsu' | 'equipamento'; alvo: string }; Returns: undefined };
+			fichas_que_usam: { Args: { tipo: 'cla' | 'jutsu' | 'equipamento'; alvo: string }; Returns: string[] };
+			esquecer_jutsu: { Args: { ficha: string; slug: string; nome: string }; Returns: undefined };
 			receber_equipamentos: { Args: { ficha: string; inventario: Json; equipamentos: string[] }; Returns: undefined };
 			registrar_excecao: { Args: { tipo: string; alvo: string; justificativa: string }; Returns: undefined };
 			definir_nome_oculto: { Args: { alvo: 'npc' | 'ficha'; id: string; oculto: boolean }; Returns: undefined };

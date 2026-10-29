@@ -22,6 +22,8 @@
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import IndicadorSalvo, { type EstadoSalvo } from '#lib/componentes/ui/IndicadorSalvo.svelte';
 	import Modal from '#lib/componentes/ui/Modal.svelte';
+	import Traco from '#lib/componentes/ui/Traco.svelte';
+	import ModalExcluirCriacao from '#lib/componentes/campanha/ModalExcluirCriacao.svelte';
 	import { CriadorCla } from '#lib/clas/criador.svelte.ts';
 	import { PASSOS_CLA, REGRA_PASSO_CLA } from '#lib/clas/dados.ts';
 	import type { ClaDados } from '#lib/clas/regras.ts';
@@ -139,13 +141,11 @@
 		await goto(hrefCla(k.id, id), { refreshAll: true });
 	}
 
-	async function excluir() {
-		const { error } = await supabase().from('clas').delete().eq('id', cla0.id);
-		modal = null;
-		if (error) return toasts.mostrar('Não foi possível excluir. Fichas que usam o clã impedem a exclusão.', 'erro');
+	const podeExcluir = $derived(data.dono || souMestre);
+	async function excluido() {
 		clearTimeout(temporizador);
 		temporizador = undefined;
-		toasts.mostrar('Rascunho excluído.', 'info');
+		modal = null;
 		await goto(hrefClas(k.id), { refreshAll: true });
 	}
 
@@ -229,6 +229,7 @@
 				<span class="inline-flex h-8 items-center gap-1 border-2 border-ink pr-2 font-pixel text-xs font-bold {pkgChip.classe}" aria-live="polite"><Icone id={pkgChip.icone} class="h-7 w-7" />{pkgChip.texto}</span>
 			</span>
 		{/if}
+		{#if podeExcluir}<button type="button" class="flex h-10 w-10 flex-none items-center justify-center border-2 border-transparent text-mut hover:border-err hover:text-err" title="Excluir" aria-label="Excluir o clã {nomeCla}" onclick={() => (modal = 'excluir')}><Traco nome="lixeira" /></button>{/if}
 		{#if data.editavel}
 			<span class="max-md:hidden"><IndicadorSalvo estado={salvo} /></span>
 			<button type="button" class="btn-jogo btn-fantasma text-[13px]" onclick={() => sair(voltarFicha ?? hrefClas(k.id))}>SALVAR E SAIR</button>
@@ -326,8 +327,8 @@
 						<button type="button" class="btn-jogo btn-primario" onclick={() => abrirDecisao('aprovado')}>APROVAR</button>
 					</section>
 				{/if}
-				{#if data.editavel && status === 'rascunho' && c.passo === 10}
-					<button type="button" class="link self-start text-[13px] font-semibold text-err" onclick={() => (modal = 'excluir')}>Excluir este rascunho</button>
+				{#if podeExcluir && (c.passo === 10 || !data.editavel)}
+					<button type="button" class="link self-start text-[13px] font-semibold text-err" onclick={() => (modal = 'excluir')}>{status === 'rascunho' ? 'Excluir este rascunho' : 'Excluir este clã'}</button>
 				{/if}
 			</main>
 
@@ -370,16 +371,11 @@
 		</div>
 	</Modal>
 {:else if modal === 'excluir'}
-	<Modal rotulo="Excluir rascunho" largura={480} topo={160} aoFechar={() => (modal = null)}>
-		<div class="flex flex-col gap-4 p-6">
-			<h2 class="t-h3 m-0">Excluir o rascunho do clã {nomeCla}?</h2>
-			<p class="m-0 text-[15px] leading-[23px] text-mut">Não dá para desfazer.</p>
-			<div class="flex justify-end gap-2.5">
-				<button type="button" class="btn-jogo btn-fantasma" onclick={() => (modal = null)}>CANCELAR</button>
-				<button type="button" class="btn-jogo bg-err text-errfg" onclick={excluir}>EXCLUIR</button>
-			</div>
-		</div>
-	</Modal>
+	<ModalExcluirCriacao
+		alvo={{ tipo: 'cla', id: cla0.id, nome: `Clã ${nomeCla}`, rotulo: 'clã', aprovada: status === 'aprovado', versaoNova: !!cla0.anterior_id && status !== 'aprovado' }}
+		aoFechar={() => (modal = null)}
+		aoExcluir={excluido}
+	/>
 {:else if modal === 'decidir'}
 	<Modal rotulo="Decisão sobre o clã" largura={520} topo={140} aoFechar={() => !decidindo && (modal = null)}>
 		<form

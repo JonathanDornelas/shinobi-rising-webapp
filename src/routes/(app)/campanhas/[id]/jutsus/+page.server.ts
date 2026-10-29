@@ -1,5 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { jutsus as jutsusDoLivro } from '#lib/livro/dados.server.ts';
+import { clas as clasDoLivro, jutsus as jutsusDoLivro } from '#lib/livro/dados.server.ts';
 import { jutsuVazio, resumoJutsu } from '#lib/jutsus/regras.ts';
 import { hrefJutsu } from '#lib/jutsus/status.ts';
 import type { Json } from '#lib/supabase/banco.ts';
@@ -12,14 +12,14 @@ export const load: PageServerLoad = async ({ locals, params, parent }) => {
 	const [{ data: criados }, { data: clas }, { data: nomesClas }] = await Promise.all([
 		locals.supabase
 			.from('jutsus_criados')
-			.select('id, tipo, nome, rank, status, versao, anterior_id, resumo, autor_id, personagem_id, cla_id, enviado_em, atualizado_em')
+			.select('id, tipo, nome, rank, status, versao, anterior_id, resumo, dados, autor_id, personagem_id, cla_id, enviado_em, atualizado_em')
 			.eq('campanha_id', params.id)
 			.order('atualizado_em', { ascending: false }),
 		locals.supabase.from('clas').select('id, nome, status').eq('campanha_id', params.id).eq('autor_id', usuario.id).neq('status', 'rejeitado'),
 		locals.supabase.from('clas').select('id, nome').eq('campanha_id', params.id)
 	]);
-	const oficiais = jutsusDoLivro.map((j) => ({ slug: j.slug, nome: j.nome, rank: j.rank, tipo: j.tipo, custo: j.custo, origem: j.origem, elemento: j.elemento, cla: j.cla }));
-	return { titulo: `Jutsus · ${campanha.nome}`, navTitulo: 'JUTSUS', oficiais, criados: criados ?? [], meusClas: clas ?? [], nomesClas: Object.fromEntries((nomesClas ?? []).map((c) => [c.id, c.nome])) as Record<string, string> };
+	const oficiais = jutsusDoLivro;
+	return { titulo: `Jutsus · ${campanha.nome}`, navTitulo: 'JUTSUS', oficiais, nomesClaLivro: Object.fromEntries(clasDoLivro.map((c) => [c.slug, c.nome])) as Record<string, string>, criados: criados ?? [], meusClas: clas ?? [], nomesClas: Object.fromEntries((nomesClas ?? []).map((c) => [c.id, c.nome])) as Record<string, string> };
 };
 
 export const actions: Actions = {
