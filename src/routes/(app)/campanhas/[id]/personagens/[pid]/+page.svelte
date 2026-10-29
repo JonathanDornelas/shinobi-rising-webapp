@@ -16,8 +16,7 @@
 	import BarraRecursos from '#lib/componentes/ficha/BarraRecursos.svelte';
 	import GavetaTreino from '#lib/componentes/ficha/GavetaTreino.svelte';
 	import BarraRolagem from '#lib/componentes/rolagens/BarraRolagem.svelte';
-	import BotaoRolar from '#lib/componentes/rolagens/BotaoRolar.svelte';
-	import { teste } from '#lib/rolagens/expressoes.ts';
+	import SavesMorte from '#lib/componentes/ficha/SavesMorte.svelte';
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 	import SeloStatus from '#lib/componentes/personagem/SeloStatus.svelte';
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
@@ -274,15 +273,7 @@
 					{#if f.atual.situacao === 'morte'}PV na metade negativa do máximo: morte imediata (cap. 4). O Mestre decide o desfecho.{:else}Inconsciente · Save de Morte por turno: 1d20{f.calc.atributos.ESP > 0 ? ` + ${f.calc.atributos.ESP} (ESP)` : ''} ≥ 10.{/if}
 				</span>
 				{#if f.atual.situacao === 'caido'}
-					<BotaoRolar texto="SAVE" expressao={teste(Math.max(0, f.calc.atributos.ESP))} rotulo="Save de Morte (DT 10)" personagem={f.id} d20 tipo="save" origem="Ficha · PV 0" partes={f.calc.atributos.ESP > 0 ? [['ESP (só positivo)', `+${f.calc.atributos.ESP}`]] : []} />
-					{#each [['sucessos', 'SUCESSOS', 'var(--ok)'], ['falhas', 'FALHAS', 'var(--err)']] as const as [t, rotulo, cor] (t)}
-						<div class="flex items-center gap-1 font-pixel text-xs font-bold" role="group" aria-label="{rotulo}: {f.atual.saves[t]} de 3">
-							<span class="mr-1">{rotulo}</span>
-							{#each [1, 2, 3] as n (n)}
-								<button type="button" class="h-5 w-5 border-2" style:background={n <= f.atual.saves[t] ? cor : 'transparent'} style:border-color={n <= f.atual.saves[t] ? 'var(--ink)' : 'var(--b3)'} aria-label="{rotulo} {n}" onclick={() => f.save(t, n <= f.atual.saves[t] ? -1 : 1)}></button>
-							{/each}
-						</div>
-					{/each}
+					<SavesMorte saves={f.atual.saves} esp={f.calc.atributos.ESP} campanha={k.id} personagem={f.id} editavel={f.editavel} aoRolado={(d20, total) => f.registrarSave(d20, total)} aoMarcar={(t, d) => f.save(t, d)} />
 				{/if}
 			</div>
 		{/if}

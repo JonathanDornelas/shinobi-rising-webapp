@@ -230,13 +230,13 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		}
 	}
 	const pvNpc = (n: Npc, membro: number, pv: number) => recursoNpc(n, membro, 'pv', pv);
-	function rolar(t: MesaToken, r: { expr: string; rotulo: string; partes: [string, string][] }, tipo: 'teste' | 'ataque' | 'dano' | 'cura' | 'iniciativa', d20: boolean, origem = 'Mesa', critico = false) {
-		return rolador.rolar({ campanha, expressao: r.expr, rotulo: r.rotulo, personagem: t.personagem_id, npc: data.mestre ? t.npc_id : null, d20, tipo, origem, partes: r.partes, critico });
+	function rolar(t: MesaToken, r: { expr: string; rotulo: string; partes: [string, string][] }, tipo: 'teste' | 'ataque' | 'dano' | 'cura' | 'iniciativa', d20: boolean, origem = 'Mesa', critico = false, modo?: 'normal' | 'vantagem' | 'desvantagem') {
+		return rolador.rolar({ campanha, expressao: r.expr, rotulo: r.rotulo, personagem: t.personagem_id, npc: data.mestre ? t.npc_id : null, d20, tipo, origem, partes: r.partes, critico, modo });
 	}
 	// o último ataque de cada token com cada ação: um 20 natural deixa o DANO seguinte em crítico (dados dobrados)
 	const criticos = new Set<string>();
-	async function rolarAtaque(t: MesaToken, chave: string, r: RolagemPronta, origem = 'Mesa') {
-		const feita = await rolar(t, r, 'ataque', true, origem);
+	async function rolarAtaque(t: MesaToken, chave: string, r: RolagemPronta, origem = 'Mesa', modo?: 'normal' | 'vantagem' | 'desvantagem') {
+		const feita = await rolar(t, r, 'ataque', true, origem, false, modo);
 		if (feita?.d20 === 20) criticos.add(`${t.id}:${chave}`);
 		else criticos.delete(`${t.id}:${chave}`);
 	}
@@ -331,8 +331,11 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	async function usarJutsu(t: MesaToken, j: JutsuMesa, parte: 'ataque' | 'dano' | 'tudo' = 'tudo') {
 		const m = ui.mira?.jutsu.slug === j.slug && ui.mira.lancador === t.id ? calcularMolde(ui.mira, mesa, mesa.tokens.filter((x) => x.visivel || data.mestre)) : null;
 		const alvos = m?.quem.length ? `Mesa · alvos: ${m.quem.map((x) => nomeCurto(x.nome)).join(', ')}`.slice(0, 60) : 'Mesa';
-		if (parte !== 'dano' && !(await pagarEAtacar(t, j, alvos))) return;
-		if (parte !== 'ataque') {
+		// jutsu de alvos adicionais ("Alvo único +2") com vários alvos marcados: um ataque por alvo, custo e dano uma vez (cap. 20)
+		const varios = j.regua.forma === 'alvos' && (j.regua.alvos ?? 1) > 1 && (m?.quem.length ?? 0) > 1 ? m!.quem.slice(0, j.regua.alvos) : [];
+		if (parte !== 'dano' && !(await pagarEAtacar(t, j, alvos, varios))) return;
+		if (parte !== 'ataque' && varios.length && j.dano) await danoEmVarios(t, j, varios, alvos);
+		else if (parte !== 'ataque') {
 			if (j.dano) await rolarDano(t, j.slug, { ...j.dano, rotulo: j.resistencia && !j.ataque ? `${j.dano.rotulo} (${j.resistencia.split('(')[0].trim()})`.slice(0, 80) : j.dano.rotulo }, 'dano', alvos);
 			else if (j.cura) await rolarDano(t, j.slug, { expr: j.cura, rotulo: `Cura · ${j.nome}`, partes: [] }, 'cura', alvos);
 		}
@@ -342,7 +345,18 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		if (m && m.ok && j.turnos !== undefined) ui.avisar('Use “Deixar na cena” para o efeito ficar no quadro.');
 	}
 	/** Paga o custo (personagem ou NPC), rola o ataque e aplica o que vem junto; false quando falta recurso. */
-	async function pagarEAtacar(t: MesaToken, j: JutsuMesa, alvos: string) {
+	/**
+	 * Dano de um jutsu de alvos adicionais: uma rolagem só, que vale para cada alvo acertado. Quem tirou 20 natural no
+	 * ataque recebe também os dados extras do crítico (dados dobrados = os mesmos dados mais uma vez), numa rolagem à parte.
+	 */
+	async function danoEmVarios(t: MesaToken, j: JutsuMesa, quem: MesaToken[], origem: string) {
+		const nomes = quem.map((q) => nomeCurto(q.nome)).join(', ');
+		await rolar(t, { ...j.dano!, rotulo: `${j.dano!.rotulo} → ${nomes}`.slice(0, 80) }, 'dano', false, origem);
+		const comCritico = quem.filter((q) => criticos.delete(`${t.id}:${j.slug}>${q.id}`));
+		const dados = j.dano!.expr.match(/\d+d\d+/gi)?.join('+');
+		if (comCritico.length && dados) await rolar(t, { expr: dados, rotulo: `Crítico · ${j.nome} → ${comCritico.map((q) => nomeCurto(q.nome)).join(', ')}`.slice(0, 80), partes: [['Dados extras do crítico', dados]] }, 'dano', false, origem);
+	}
+	async function pagarEAtacar(t: MesaToken, j: JutsuMesa, alvos: string, varios: MesaToken[] = []) {
 		const f = fichaDe(t);
 		if (f) {
 			const k = j.unidade === 'PE' ? 'pe' : 'pc';
@@ -361,7 +375,12 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 				await recursoNpc(n, t.membro ?? 1, k, atual - j.custo);
 			}
 		}
-		if (j.ataque) await rolarAtaque(t, j.slug, j.ataque, alvos);
+		if (j.ataque && varios.length) {
+			// um ataque por alvo, todos com o mesmo modo (a vantagem escolhida vale para todos)
+			const modo = rolador.modo;
+			for (const q of varios) await rolarAtaque(t, `${j.slug}>${q.id}`, { ...j.ataque, rotulo: `${j.ataque.rotulo} → ${nomeCurto(q.nome)}`.slice(0, 80) }, alvos, modo);
+			rolador.modo = 'normal';
+		} else if (j.ataque) await rolarAtaque(t, j.slug, j.ataque, alvos);
 		if (j.porCena) ui.usadas = [...ui.usadas, `${t.id}:${j.slug}`];
 		// técnicas de crescer (Baika no Jutsu, Lobo de Duas Cabeças): o token cresce pela duração e volta sozinho
 		const agora = mesa.tokens.find((x) => x.id === t.id) ?? t;

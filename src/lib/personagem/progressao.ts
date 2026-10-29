@@ -365,6 +365,18 @@ export function estadoAtual(e: EstadoJogo | null | undefined, max: { pv: number;
 }
 
 /** Descanso curto: ¼ dos máximos (cap. 9). Descanso longo: tudo e −1 Fadiga. */
+/**
+ * O resultado de um Save de Morte (cap. 4): 20 natural recupera 1 PV e zera os contadores; 1 natural marca 2 falhas;
+ * 10 ou mais, 1 sucesso; 9 ou menos, 1 falha. Três sucessos estabilizam; três falhas, morte (o Mestre decide o desfecho).
+ */
+export function aplicarSave(s: { sucessos: number; falhas: number }, d20: number, total: number): { saves: { sucessos: number; falhas: number }; pv?: number; texto: string } {
+	if (d20 === 20) return { saves: { sucessos: 0, falhas: 0 }, pv: 1, texto: 'Save de Morte: 20 natural, recupera 1 PV e volta consciente' };
+	const saves = d20 === 1 ? { ...s, falhas: Math.min(3, s.falhas + 2) } : total >= 10 ? { ...s, sucessos: Math.min(3, s.sucessos + 1) } : { ...s, falhas: Math.min(3, s.falhas + 1) };
+	const fim = saves.falhas >= 3 ? ': três falhas, morte' : saves.sucessos >= 3 ? ': três sucessos, estabilizado' : '';
+	const marca = d20 === 1 ? '1 natural, 2 falhas' : total >= 10 ? `${total}, sucesso` : `${total}, falha`;
+	return { saves, texto: `Save de Morte: ${marca} (${saves.sucessos}/3 sucessos, ${saves.falhas}/3 falhas)${fim}` };
+}
+
 export function descansar(e: EstadoAtual, max: { pv: number; pc: number; pe: number }, tipo: 'curto' | 'longo'): EstadoJogo {
 	if (tipo === 'longo') return { ...e, pv: max.pv, pc: max.pc, pe: max.pe, fadiga: Math.max(0, e.fadiga - 1), saves: { sucessos: 0, falhas: 0 } };
 	const q = (m: number) => Math.floor(m / 4);

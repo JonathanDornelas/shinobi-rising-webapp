@@ -39,6 +39,8 @@
 	import { lembrarTamanho } from '#lib/mesa/tamanho.ts';
 	import { efeitoKkg, kkgLigada } from '#lib/personagem/kkg.ts';
 	import MenuVantagem from '../rolagens/MenuVantagem.svelte';
+	import SavesMorte from '../ficha/SavesMorte.svelte';
+	import { aplicarSave } from '#lib/personagem/progressao.ts';
 	import SeloDt from '../regras/SeloDt.svelte';
 	import { CONDICOES } from '#lib/personagem/dados.ts';
 	import { curar } from '#lib/personagem/progressao.ts';
@@ -158,6 +160,20 @@
 		ui.mudarFicha(token.id, { dano: '' });
 	}
 
+	/** Saves de Morte do personagem caído (PV 0 ou menos, acima da morte imediata). */
+	const caido = $derived(dados.tipo === 'pc' && atual.pv <= 0 && atual.pv > -Math.floor(atual.max.pv / 2));
+	function saveRolado(d20: number, total: number) {
+		if (dados.tipo !== 'pc') return;
+		const r = aplicarSave(dados.ficha.estado.saves ?? { sucessos: 0, falhas: 0 }, d20, total);
+		acoes.estadoPc(dados.ficha, { saves: r.saves, ...(r.pv ? { pv: r.pv } : {}) }, `${r.texto} (Mesa)`);
+	}
+	function marcarSave(tipo: 'sucessos' | 'falhas', delta: 1 | -1) {
+		if (dados.tipo !== 'pc') return;
+		const s = dados.ficha.estado.saves ?? { sucessos: 0, falhas: 0 };
+		const novo = { ...s, [tipo]: Math.max(0, Math.min(3, s[tipo] + delta)) };
+		acoes.estadoPc(dados.ficha, { saves: novo }, `Save de Morte: ${novo.sucessos} sucesso(s), ${novo.falhas} falha(s)`);
+	}
+
 	/** Juuken: o número do campo sai do PC e fica selado até a ficha descansar (no NPC, só sai do PC). */
 	function selar() {
 		const n = Math.abs(Number(janela.dano.trim().replace('−', '-').replace(',', '.')));
@@ -246,6 +262,11 @@
 
 	// todos os estados do livro, como na ficha completa
 	const estadosVisiveis = CONDICOES;
+	/** Defesa Mental do NPC que veio do bestiário: 10 + Percepção da ficha da criatura (o alvo dos ataques de Genjutsu). */
+	const defMentalNpc = $derived.by(() => {
+		const p = dados.tipo === 'npc' ? dados.extras?.pericias.find((x) => x.id === 'percepcao') : undefined;
+		return p ? 10 + p.total : null;
+	});
 	const sub = $derived(
 		dados.tipo === 'pc' ? dados.ficha.sub : dados.tipo === 'publico' ? dados.sub : dados.tipo === 'npc' ? [dados.npc.funcao, `NPC · ${dados.npc.rank}`].filter(Boolean).join(' · ') : dados.tipo === 'revelado' ? (dados.npc?.funcao ?? 'NPC') : 'Ligado ao personagem'
 	);
@@ -428,8 +449,8 @@
 
 			{#if dados.tipo === 'pc' || dados.tipo === 'npc'}
 				{@const est = dados.tipo === 'pc'
-					? [['Defesa', String(dados.ficha.defesa + (kkg?.ligada ? kkg.efeito.defesa : 0)), 'recurso/ic-recurso-defesa'], ['Def. mental', String(dados.ficha.defesaMental), 'recurso/ic-recurso-defesa-mental'], ['Iniciativa', `+${dados.ficha.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', `${dados.ficha.deslocamento} m`, 'esp/ic-esp-velocidade']]
-					: [['Defesa', String(dados.npc.defesa), 'recurso/ic-recurso-defesa'], ['Iniciativa', `${dados.npc.iniciativa >= 0 ? '+' : ''}${dados.npc.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', `${dados.extras?.deslocamento ?? 10} m`, 'esp/ic-esp-velocidade']]}
+					? [['Defesa', String(dados.ficha.defesa + (kkg?.ligada ? kkg.efeito.defesa : 0)), 'recurso/ic-recurso-defesa'], ['Def. mental', String(dados.ficha.defesaMental + (kkg?.ligada ? (kkg.efeito.pericias.percepcao ?? 0) : 0)), 'recurso/ic-recurso-defesa-mental'], ['Iniciativa', `+${dados.ficha.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', `${dados.ficha.deslocamento} m`, 'esp/ic-esp-velocidade']]
+					: [['Defesa', String(dados.npc.defesa), 'recurso/ic-recurso-defesa'], ...(defMentalNpc != null ? [['Def. mental', String(defMentalNpc), 'recurso/ic-recurso-defesa-mental']] : []), ['Iniciativa', `${dados.npc.iniciativa >= 0 ? '+' : ''}${dados.npc.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', `${dados.extras?.deslocamento ?? 10} m`, 'esp/ic-esp-velocidade']]}
 				<div class="mx-3 mb-2.5 grid grid-cols-2 gap-1">
 					{#each est as [k, v, ic] (k)}
 						<div class="flex items-center gap-1.5 border-2 border-b3 bg-b1 py-0.5 pr-1.5 pl-0.5 odd:last:col-span-2">
@@ -504,6 +525,12 @@
 					{/if}
 				</div>
 			{/if}
+			{#if caido && dados.tipo === 'pc'}
+				<div class="mx-3 mb-2.5 flex flex-col gap-1.5 border-2 border-err bg-[rgba(229,83,75,.12)] px-2 py-1.5" role="group" aria-label="Saves de Morte">
+					<span class="flex items-center gap-1.5 text-xs leading-4 font-semibold"><Icone id="estado/ic-estado-caido" class="h-6 w-6" />Inconsciente · Save de Morte no começo do turno (10 ou mais)</span>
+					<SavesMorte compacto saves={dados.ficha.estado.saves ?? { sucessos: 0, falhas: 0 }} esp={dados.ficha.atributos.find((a) => a.sigla === 'ESP')?.valor ?? 0} campanha={mesa.campanha} personagem={dados.ficha.id} {editavel} origem="Mesa · PV 0" aoRolado={saveRolado} aoMarcar={marcarSave} />
+				</div>
+			{/if}
 			{#if dados.tipo === 'pc' && editavel}
 				<div class="mx-3 mb-2.5 flex items-center gap-1.5">
 					<Icone id="recurso/ic-recurso-fadiga" />
@@ -528,7 +555,7 @@
 					{#each dados.ficha.jutsus.filter((j) => j.ataque || j.dano || j.resistencia).slice(0, 4) as j (j.slug)}
 						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, metaJutsu(j), avisoFalta(j), [...medir(j), ...botoesUso(j, falta(j))], () => acoes.verJutsu(j), j)}
 					{/each}
-					{@render linhaAcao('recurso/ic-recurso-pe', 'Esquiva Ativa', 'Reação · 10 PE · Acrobacia vira a Defesa', null, [{ n: 'USAR', acao: () => acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 10) }, 'Esquiva Ativa: −10 PE'), desab: atual.pe < 10 }])}
+					{@render linhaAcao('recurso/ic-recurso-pe', 'Esquiva Ativa', 'Reação · 10 PE · Acrobacia vira a Defesa; contra área, vantagem na Resistência', null, [{ n: 'USAR', acao: () => acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 10) }, 'Esquiva Ativa: −10 PE'), desab: atual.pe < 10 }])}
 					{@render linhaAcao('recurso/ic-recurso-defesa', 'Defesa Total', 'Ação primária · +5 na Defesa e na Defesa Mental até o seu próximo turno', null, [])}
 					{@render linhaAcao('pericia/ic-pericia-taijutsu', 'Combo Taijutsu', 'Ação secundária · 5 PE · segundo ataque com −5, só Taijutsu ou desarmado', null, [{ n: 'USAR', acao: () => acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 5) }, 'Combo Taijutsu: −5 PE'), desab: atual.pe < 5 }])}
 					<div class="flex flex-wrap gap-1 px-3 py-2">

@@ -50,6 +50,8 @@
 				['Defesa', k.defesa, r.defesa],
 				['Iniciativa', k.iniciativa, r.iniciativa],
 				['DT', k.dt, r.dt],
+				// Defesa Mental: 10 + Percepção da ficha (o alvo dos ataques de Genjutsu, cap. 4)
+				...(fc ? [['Def. Mental', 10 + (fc.pericias.find((p) => p.id === 'percepcao')?.total ?? fc.atributos.esp), null]] : []),
 				...(k.rd ? [['RD', k.rd, null]] : [])
 			] as [string, number | null, number | null][]
 		).map(([rotulo, valor, ref]) => {

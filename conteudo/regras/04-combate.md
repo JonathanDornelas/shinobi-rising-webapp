@@ -137,6 +137,8 @@ Atacar é fazer um teste da perícia do golpe contra a Defesa do alvo, somando a
 
 Jutsus de área não rolam ataque. Cada alvo faz uma Resistência, normalmente de Acrobacia, contra a DT do Jutsu; quem passa sofre só metade do dano e escapa das condições.
 
+Um jutsu com alvos adicionais, como uma rajada de projéteis em até três inimigos, é lançado uma vez: o custo sai uma vez só. Rola-se um ataque para cada alvo, e o dano, rolado uma vez, vale para cada um que foi atingido. Quem tirou 20 natural recebe os dados do crítico só para si.
+
 Ataques com armas e desarmados somam FOR ao dano quando são corpo a corpo, e AGI quando são à distância. De mãos vazias, o dano base é 1d6.
 
 Algumas técnicas e especializações dão Redução de Dano (RD), que é subtraída de cada dano sofrido. Fontes diferentes de RD não se somam: vale a maior. E efeitos que “ignoram RD” passam direto por ela.
@@ -145,6 +147,7 @@ Algumas técnicas e especializações dão Redução de Dano (RD), que é subtra
 - **Ataque:** 1d20 + perícia do golpe + proficiência, se houver
 - **Acerta:** total igual ou maior que a Defesa do alvo
 - **Jutsu de área:** sem ataque; cada alvo resiste contra a DT do Jutsu (normalmente Acrobacia); quem passa sofre metade do dano e ignora as condições
+- **Alvos adicionais:** custo uma vez; um ataque por alvo; um dano só, para cada alvo atingido
 - **Dano com armas e desarmado:** + FOR corpo a corpo, + AGI à distância
 - **Dano desarmado:** 1d6
 - **RD:** subtrai de cada dano; fontes diferentes não se somam, vale a maior
@@ -157,6 +160,8 @@ Além de atacar, todo ninja conhece algumas manobras que mudam o rumo de uma lut
 ### Esquiva Ativa (Reação) {#esquiva-ativa-reacao}
 
 Quando um ataque vem na sua direção, você pode gastar a sua Reação e 10 PE para tentar sair do caminho. Faça um teste de Acrobacia: o total passa a ser a sua Defesa contra aquele ataque, mesmo que fique menor que a de costume. É uma aposta, e uma aposta que cansa: nenhum ninja aguenta se jogar para o lado a cada golpe, e quem esquiva de tudo no começo da luta chega ao fim dela sem fôlego. Na mesma rodada, a Esquiva Ativa não se combina com o Kawarimi.
+
+Contra um jutsu de área, que não rola ataque, a esquiva também vale: gastando a Reação e os 10 PE, você faz a Resistência de Acrobacia com vantagem. Passando, sofre metade do dano, como qualquer um que passa.
 
 ### Defesa Total {#defesa-total}
 
@@ -174,6 +179,7 @@ Quem sabe sair de perto não provoca nada. O Shunshin, o Kawarimi e o teletransp
 
 :::na-mesa{titulo="Manobras de combate"}
 - **Esquiva Ativa:** Reação e 10 PE; teste de Acrobacia substitui a Defesa contra um ataque
+- **Esquiva contra área:** Reação e 10 PE; vantagem na Resistência de Acrobacia (passou, metade do dano)
 - **Defesa Total:** ação primária; +5 na Defesa e na Defesa Mental até o seu próximo turno
 - **Combo Taijutsu:** ação secundária e 5 PE, depois de acertar um Taijutsu; segundo ataque com -5, só jutsu de Taijutsu ou golpe desarmado
 - **Golpe de Oportunidade:** Reação, quando um inimigo sai do seu alcance corpo a corpo andando; golpe básico, sem jutsu e sem PE (Shunshin, Kawarimi, teletransporte e empurrões não provocam)
@@ -227,10 +233,11 @@ Pense num ninja com 40 PV máximos. Em 0 PV, ele fica Inconsciente. Se continuar
 
 Caído e sangrando, o ninja ainda luta, e quem decide essa luta é o espírito. No começo de cada turno em que estiver Inconsciente, com 0 PV ou menos, você faz um Save de Morte. Resultados bons marcam sucessos, ruins marcam falhas: três sucessos e você se estabiliza, três falhas e é o fim.
 
-Quem se estabiliza continua inconsciente, mas estável, e para de rolar. O Espírito positivo soma ao Save, porque representa a força de espírito e a vontade de viver; zero ou negativo não soma nem subtrai.
+Quem se estabiliza continua inconsciente, mas estável, e para de rolar. O Espírito positivo soma ao Save, porque representa a força de espírito e a vontade de viver; zero ou negativo não soma nem subtrai. A Fadiga não pesa no Save de Morte: o corpo já cedeu, e o que resta é a vontade.
 
 :::na-mesa{titulo="Saves de Morte" ref="saves"}
 - **Rolagem:** 1d20 + ESP (só se ESP for positivo)
+- **Fadiga:** não conta no Save de Morte
 - **20 natural:** recupera 1 PV na hora e volta consciente, caído no chão
 - **10 ou mais:** 1 sucesso
 - **9 ou menos:** 1 falha

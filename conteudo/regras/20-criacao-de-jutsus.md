@@ -131,7 +131,7 @@ Para jutsus que causam dano direto ou curam aliados, calcule o dano médio e pro
 | Categoria | Escopo | PJ |
 | - | - | - |
 | Alvo único | 1 criatura ou objeto | 0 |
-| Alvo adicional | Cada alvo extra (no máximo +3), cada um com a sua própria rolagem ou Resistência | 2 |
+| Alvo adicional | Cada alvo extra (no máximo +3), cada um com a sua própria rolagem ou Resistência; o custo e o dano saem uma vez só | 2 |
 | Linha 10m | Linha reta de 10 m | 1 |
 | Cone pequeno | Triângulo de 3 m à sua frente | 1 |
 | Esfera 3m | Tudo num círculo de 3 m de raio | 2 |

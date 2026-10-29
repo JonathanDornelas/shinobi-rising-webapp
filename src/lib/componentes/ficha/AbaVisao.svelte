@@ -12,7 +12,7 @@
 	let { f, aoAbrirJutsus }: { f: FichaJogo; aoAbrirJutsus: () => void } = $props();
 	const r0 = $derived(f.calc.recursos);
 	// a KKG ligada soma na Defesa (Sharingan) e na Percepção (Byakugan, Sharingan)
-	const r = $derived(f.kkg?.ligada && f.kkg.efeito.defesa ? { ...r0, defesa: r0.defesa + f.kkg.efeito.defesa } : r0);
+	const r = $derived(f.kkg?.ligada ? { ...r0, defesa: r0.defesa + f.kkg.efeito.defesa, defesaMental: r0.defesaMental + (f.kkg.efeito.pericias.percepcao ?? 0) } : r0);
 	const nomeEsp = (id: string) => f.catalogo.especializacoes.find((e) => e.id === id)?.nome ?? id;
 	const destaque = $derived(f.calc.jutsus.map((s) => f.catalogo.jutsus.find((j) => j.slug === s)).filter((j) => !!j && j.rank !== 'E').slice(0, 3));
 	// a arma em mãos é a que tem proficiência; senão, a primeira do inventário

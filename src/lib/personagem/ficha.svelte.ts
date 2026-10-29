@@ -16,6 +16,7 @@ import {
 	quantoCabe,
 	curar,
 	descansar,
+	aplicarSave,
 	estadoAtual,
 	ficha,
 	inventarioInicial,
@@ -133,6 +134,12 @@ export class FichaJogo {
 		const s = this.atual.saves;
 		const novo = { ...s, [tipo]: Math.max(0, Math.min(3, s[tipo] + delta)) };
 		this.mudar({ ...this.estado, saves: novo }, `Save de Morte: ${novo.sucessos} sucesso(s), ${novo.falhas} falha(s)`, 'estado/ic-estado-caido');
+	}
+
+	/** O resultado do SAVE rolado (d20 natural e total) marca sucesso ou falha sozinho; 20 natural volta com 1 PV. */
+	registrarSave(d20: number, total: number) {
+		const r = aplicarSave(this.atual.saves, d20, total);
+		this.mudar({ ...this.estado, saves: r.saves, ...(r.pv ? { pv: r.pv } : {}) }, r.texto, 'estado/ic-estado-caido');
 	}
 
 	usarPd() {

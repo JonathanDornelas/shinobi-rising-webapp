@@ -271,7 +271,7 @@
   rotulo: Esquiva Ativa
   nome: Esquiva Ativa
   padroes: [Esquiva Ativa]
-  resumo: 'Reação e 10 PE: role 1d20 + Acrobacia; o resultado substitui a Defesa contra aquele ataque (mesmo que seja menor).'
+  resumo: 'Reação e 10 PE: role 1d20 + Acrobacia; o resultado substitui a Defesa contra aquele ataque (mesmo que seja menor). Contra jutsu de área, dá vantagem na Resistência de Acrobacia.'
   href: /regras/combate#esquiva-ativa-reacao
 - id: regra:cena
   rotulo: Cena

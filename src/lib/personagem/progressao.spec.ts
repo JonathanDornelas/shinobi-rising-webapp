@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
 	aplicarNivel,
+	aplicarSave,
 	aplicarTreinos,
 	atributosLivres,
 	cargaInventario,
@@ -187,5 +188,21 @@ describe('selar parte de uma pilha (cap. 11)', () => {
 		const p = perg('p');
 		const pedra: ItemInventario = { id: 'pedra', nome: 'Pedra', qtd: 1, peso: 5, grupo: 'Outros', icone: 'x', selado: 'p' };
 		expect(quantoCabe([kunai, p, pedra], kunai, p)).toBe(0);
+	});
+});
+
+describe('Save de Morte (cap. 4)', () => {
+	const zero = { sucessos: 0, falhas: 0 };
+	it('10 ou mais é sucesso; 9 ou menos, falha; 1 natural, duas falhas', () => {
+		expect(aplicarSave(zero, 8, 10).saves).toEqual({ sucessos: 1, falhas: 0 });
+		expect(aplicarSave(zero, 9, 9).saves).toEqual({ sucessos: 0, falhas: 1 });
+		expect(aplicarSave({ sucessos: 0, falhas: 2 }, 1, 3)).toMatchObject({ saves: { sucessos: 0, falhas: 3 } });
+	});
+	it('20 natural volta com 1 PV e zera os contadores', () => {
+		expect(aplicarSave({ sucessos: 1, falhas: 2 }, 20, 22)).toMatchObject({ saves: zero, pv: 1 });
+	});
+	it('o terceiro sucesso estabiliza; a terceira falha é a morte', () => {
+		expect(aplicarSave({ sucessos: 2, falhas: 0 }, 12, 12).texto).toMatch(/estabilizado/);
+		expect(aplicarSave({ sucessos: 0, falhas: 2 }, 5, 5).texto).toMatch(/morte/);
 	});
 });
