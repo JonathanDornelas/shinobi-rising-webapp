@@ -1,7 +1,7 @@
 <script lang="ts">
 	// L11 · CMP-37 · Quadro da Mesa: grade de 1 m (linha mais forte a cada 5 m), efeitos em cena, traços, moldes de
 	// jutsu, tokens, réguas e ponteiros, em SVG. A vista (zoom e canto) fica no UiMesa; tudo no quadro é em metros.
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 	import type { MesaToken } from '#lib/supabase/banco.ts';
 	import { CORES, corCss } from '#lib/mesa/cores.ts';
 	import { CONDICOES } from '#lib/personagem/dados.ts';
@@ -13,8 +13,9 @@
 	import { calcularMolde, nomeCurto, type UiMesa } from '#lib/mesa/ui.svelte.ts';
 	import type { MesaObjeto } from '#lib/supabase/banco.ts';
 	import { caminhoNevoa, celulasEntre, emRuns, grade as gradeNevoa, indice as indiceNevoa, pintar as pintarNevoa, type Run } from '#lib/mesa/nevoa.ts';
-	import { FONTES, alcas, caixa as caixaObjeto, contraste, limitar as limitarObj, objetoEm, tamanhoInicial } from '#lib/mesa/objetos.ts';
+import { FONTES, alcas, camadaRank, caixa as caixaObjeto, caixaDePe, contraste, limitar as limitarObj, objetoEm, objetoEmTela, tamanhoInicial } from '#lib/mesa/objetos.ts';
 	import { ESTILOS, estiloDoJutsu, estiloValido } from '#lib/mesa/efeitos.ts';
+	import { caixaDaCena, cfgIso, desfazerProjecao, emPe as emPeIso, inverter, matrizIso, ordemDePintura, projetar } from '#lib/mesa/projecao.ts';
 	import EfeitosFx from './EfeitosFx.svelte';
 
 	let {
@@ -52,7 +53,20 @@
 	const L = $derived(cena?.largura ?? 40);
 	const A = $derived(cena?.altura ?? 30);
 	const fundo = $derived(urlImagemMesa(cena?.fundo));
-	// o fundo com escala: a proporção vem da própria imagem; MOVER O FUNDO arrasta (só o Mestre) e grava ao soltar
+	// Vista isométrica (planos/mapas-isometricos.md): os dados seguem na grade em metros e só o desenho muda. O chão entra
+	// num grupo com a matriz da projeção; token, rótulo e imagem de objeto ficam "de pé" (emPe). A unidade da tela é o
+	// "metro de tela" (1 de largura de losango); `ui.vx` e `ui.vy` são medidos nela (na vista de cima, é a própria grade).
+	const iso = $derived(cena?.visao === 'isometrica');
+	const cfgI = $derived(cfgIso(L, A, { tw: 1, eh: 0.25, razao: cena?.iso_razao ?? 2,rotacao: cena?.fundo ? (cena.iso_rotacao ?? 0) : (ui.isoRotacao ?? cena?.iso_rotacao ?? 0) }));
+	const paraTela = (x: number, y: number, z = 0): [number, number] => (iso ? projetar(x, y, z, cfgI) : [x, y]);
+	const daTela = (tx: number, ty: number): [number, number] => (iso ? inverter(tx, ty, 0, cfgI) : [tx, ty]);
+	const matrizTxt = $derived(iso ? `matrix(${matrizIso(cfgI).join(' ')})` : '');
+	const desfazer = $derived(iso ? desfazerProjecao(cfgI) : undefined);
+	/** Põe de pé o que foi desenhado em (ax, ay), erguido `sobe` metros de tela; na vista de cima não faz nada. */
+	const emPe = (ax: number, ay: number, sobe = 0) => (iso ? emPeIso(ax, ay, sobe, cfgI) : undefined);
+	/** O quanto o sprite do token sobe: a base redonda toca o ponto de apoio, e a elevação soma. */
+	const sobeToken = (t: MesaToken) => 0.4 * t.tamanho + (t.elevacao ?? 0) * 0.25;
+// o fundo com escala: a proporção vem da própria imagem; MOVER O FUNDO arrasta (só o Mestre) e grava ao soltar
 	let proporcaoFundo = $state(1);
 	$effect(() => {
 		const u = fundo;
@@ -63,6 +77,13 @@
 	});
 	let arrastoFundo = $state<{ mx: number; my: number; dx: number; dy: number } | null>(null);
 	const caixaFundo = $derived.by(() => {
+		// isométrica: a arte (já isométrica, subida pelo Mestre) fica na tela, a partir do canto de cima à esquerda do mapa
+		if (iso) {
+			const b = caixaDaCena(cfgI, 0, 0);
+			if (!cena?.fundo_escala) return b;
+			const w = cena.fundo_escala;
+			return { x: b.x + (cena.fundo_x ?? 0) + (arrastoFundo?.dx ?? 0), y: b.y + (cena.fundo_y ?? 0) + (arrastoFundo?.dy ?? 0), w, h: w * proporcaoFundo };
+		}
 		if (!cena?.fundo_escala) return { x: 0, y: 0, w: L, h: A };
 		const w = cena.fundo_escala;
 		return { x: (cena.fundo_x ?? 0) + (arrastoFundo?.dx ?? 0), y: (cena.fundo_y ?? 0) + (arrastoFundo?.dy ?? 0), w, h: w * proporcaoFundo };
@@ -93,7 +114,14 @@
 	const objetosVisiveis = $derived(escondeDeMim ? mesa.objetos.filter((o) => o.tipo === 'imagem' || revelado(o.x, o.y)) : mesa.objetos);
 	/** As imagens ficam sob os tokens; os alfinetes e os textos, por cima. Cada grupo na ordem de empilhamento. */
 	const porOrdem = (a: MesaObjeto, b: MesaObjeto) => a.ordem - b.ordem || a.criado_em.localeCompare(b.criado_em);
-	const imagens = $derived(objetosVisiveis.filter((o) => o.tipo === 'imagem').sort(porOrdem));
+	// as imagens, da camada de baixo para a de cima (chão, meio, acima), cada uma na ordem do Mestre
+	const imagens = $derived(objetosVisiveis.filter((o) => o.tipo === 'imagem').sort((a, b) => camadaRank(a) - camadaRank(b) || porOrdem(a, b)));
+	const camadaDe = (o: MesaObjeto) => o.camada ?? 'meio';
+	/** Sob os tokens: na vista de cima, o chão e o meio; na isométrica, só o chão (o meio entra na ordem de pintura). */
+	const imagensBaixo = $derived(imagens.filter((o) => (iso ? camadaDe(o) === 'chao' : camadaDe(o) !== 'acima')));
+	const imagensMeio = $derived(iso ? imagens.filter((o) => camadaDe(o) === 'meio') : []);
+	/** Sobre os tokens, em qualquer vista (a copa da árvore, o telhado). */
+	const imagensAcima = $derived(imagens.filter((o) => camadaDe(o) === 'acima'));
 	const marcadores = $derived(objetosVisiveis.filter((o) => o.tipo !== 'imagem').sort(porOrdem));
 	let objArrasto = $state<{ id: string; modo: 'mover' | 'redim' | 'girar'; dx: number; dy: number; ini: MesaObjeto; patch: Partial<MesaObjeto> } | null>(null);
 	const mostrado = (o: MesaObjeto): MesaObjeto => (objArrasto?.id === o.id ? { ...o, ...objArrasto.patch } : o);
@@ -120,11 +148,36 @@
 		const r = svg!.getBoundingClientRect();
 		const sx = e.clientX - r.left;
 		const sy = e.clientY - r.top;
-		return { sx, sy, mx: sx / s + ui.vx, my: sy / s + ui.vy };
-	}
+		const tx = sx / s + ui.vx;
+		const ty = sy / s + ui.vy;
+		const [mx, my] = daTela(tx, ty);
+		return { sx, sy, tx, ty, mx, my };
+}
 	const grade = (mx: number, my: number): Quadrado => [Math.min(L - 1, Math.max(0, Math.floor(mx))), Math.min(A - 1, Math.max(0, Math.floor(my)))];
-	const tokenEm = (mx: number, my: number) =>
-		[...visiveis].reverse().find((t) => (t.visivel || mesa.mestre) && mx >= t.x && mx < t.x + t.tamanho && my >= t.y && my < t.y + t.tamanho) ?? null;
+	/** Na vista isométrica, tokens e imagens de pé juntos, de trás para a frente (um token atrás de uma árvore fica atrás dela). */
+	type ItemPe = { id: string; x: number; y: number; tamanho: number; z: number } & ({ k: 'token'; t: MesaToken } | { k: 'imagem'; o: MesaObjeto });
+	const tokensPe = $derived(iso ? ordemDePintura(visiveis, cfgI) : visiveis);
+	const pePintura = $derived.by((): ItemPe[] => {
+		if (!iso) return [];
+		const itens: ItemPe[] = [
+			...visiveis.map((t): ItemPe => ({ id: 'T' + t.id, k: 'token', t, x: t.x, y: t.y, tamanho: t.tamanho, z: t.elevacao ?? 0 })),
+...imagensMeio.map((o): ItemPe => ({ id: 'I' + o.id, k: 'imagem', o, x: o.x - 0.5, y: o.y - 0.5, tamanho: 1, z: 0 }))
+		];
+		return ordemDePintura(itens, cfgI);
+	});
+	function tokenEm(mx: number, my: number): MesaToken | null {
+		if (!iso) return [...visiveis].reverse().find((t) => (t.visivel || mesa.mestre) && mx >= t.x && mx < t.x + t.tamanho && my >= t.y && my < t.y + t.tamanho) ?? null;
+		// isométrica: acerta a base (o losango do token) ou o sprite de pé; o da frente ganha
+		const [tx, ty] = paraTela(mx, my);
+		for (const t of [...tokensPe].reverse()) {
+			if (!(t.visivel || mesa.mestre)) continue;
+			const n = t.tamanho;
+			if (mx >= t.x && mx < t.x + n && my >= t.y && my < t.y + n) return t;
+			const [cx, cy] = paraTela(t.x + n / 2, t.y + n / 2);
+			if (Math.hypot(tx - cx, ty - (cy - sobeToken(t))) <= 0.5 * n) return t;
+		}
+		return null;
+	}
 
 	function distSegmento(px: number, py: number, a: number[], b: number[]) {
 		const dx = b[0] - a[0];
@@ -139,20 +192,24 @@
 	/** Ajustar à tela; na abertura, sem deixar os tokens minúsculos (zoom mínimo de 67%, centrado no grupo). */
 	export function ajustar(inicial = false) {
 		if (!W || !H) return;
-		const caber = Math.min(W / (L * BASE), H / (A * BASE)) * 0.96;
+		const area = iso ? caixaDaCena(cfgI, 0.5, 1) : { x: 0, y: 0, w: L, h: A };
+		const caber = Math.min(W / (area.w * BASE), H / (area.h * BASE)) * 0.96;
 		ui.zoom = Math.max(0.25, Math.min(4, inicial ? Math.max(caber, 0.9) : caber));
 		const ts = mesa.tokens.filter((t) => t.visivel || mesa.mestre);
-		const [cx, cy] = inicial && ts.length && caber < 0.9 ? [ts.reduce((a, t) => a + t.x + t.tamanho / 2, 0) / ts.length, ts.reduce((a, t) => a + t.y + t.tamanho / 2, 0) / ts.length] : [L / 2, A / 2];
+		const cs = ts.map((t) => paraTela(t.x + t.tamanho / 2, t.y + t.tamanho / 2));
+		const [cx, cy] = inicial && ts.length && caber < 0.9 ? [cs.reduce((a, c) => a + c[0], 0) / cs.length, cs.reduce((a, c) => a + c[1], 0) / cs.length] : [area.x + area.w / 2, area.y + area.h / 2];
 		ui.vx = cx - W / (BASE * ui.zoom) / 2;
 		ui.vy = cy - H / (BASE * ui.zoom) / 2;
 	}
 	export function centralizar(t: MesaToken) {
-		ui.vx = t.x + t.tamanho / 2 - W / s / 2;
-		ui.vy = t.y + t.tamanho / 2 - H / s / 2;
-	}
+		const [px, py] = paraTela(t.x + t.tamanho / 2, t.y + t.tamanho / 2);
+		ui.vx = px - W / s / 2;
+		ui.vy = py - H / s / 2;
+}
 	/** Quadrado no centro da vista (onde entra quem é posto sem posição). */
 	export function centroDaVista(): [number, number] {
-		return [Math.min(L - 1, Math.max(0, Math.floor(ui.vx + W / s / 2))), Math.min(A - 1, Math.max(0, Math.floor(ui.vy + H / s / 2)))];
+		const [gx, gy] = daTela(ui.vx + W / s / 2, ui.vy + H / s / 2);
+		return [Math.min(L - 1, Math.max(0, Math.floor(gx))), Math.min(A - 1, Math.max(0, Math.floor(gy)))];
 	}
 	export function zoomEm(fator: number, sx = W / 2, sy = H / 2) {
 		const z = Math.max(0.25, Math.min(4, ui.zoom * fator));
@@ -162,6 +219,13 @@
 		ui.vx = mx - sx / (BASE * z);
 		ui.vy = my - sy / (BASE * z);
 	}
+	let vistaAnterior = '';
+	$effect(() => {
+		const k = `${cena?.id}:${iso}:${cfgI.rotacao}:${cfgI.razao}`;
+		const mudou = !!vistaAnterior && k !== vistaAnterior;
+		vistaAnterior = k;
+		if (mudou) untrack(() => ajustar());
+	});
 	onMount(() => {
 		const roda = (e: WheelEvent) => {
 			e.preventDefault();
@@ -285,7 +349,7 @@
 				break;
 			}
 			case 'fundo':
-				if (mesa.mestre && cena?.fundo_escala) arrastoFundo = { mx: p.mx, my: p.my, dx: 0, dy: 0 };
+				if (mesa.mestre && cena?.fundo_escala) arrastoFundo = iso ? { mx: p.tx, my: p.ty, dx: 0, dy: 0 } : { mx: p.mx, my: p.my, dx: 0, dy: 0 };
 				break;
 			case 'terreno':
 				if (!mesa.mestre || mesa.somenteLeitura) break;
@@ -299,18 +363,24 @@
 	let nevoaPintura: { grade: Uint8Array; revelar: boolean; ultimo: Quadrado } | null = null;
 	const arred = (v: number, casas = 2) => Math.round(v * 10 ** casas) / 10 ** casas;
 	/** Um clique que pertence a um objeto (alça, alfinete, texto ou imagem) ou que põe um novo; true se tratou. */
-	function objetosNoClique(e: PointerEvent, p: { mx: number; my: number; sx: number; sy: number }): boolean {
+function objetosNoClique(e: PointerEvent, p: { mx: number; my: number; sx: number; sy: number; tx: number; ty: number }): boolean {
 		const f = ui.ferramenta;
 		if (f !== 'mover' && f !== 'alfinete' && f !== 'texto' && f !== 'objeto') return false;
 		// alças do objeto selecionado: girar e redimensionar
-		if (objetoSel && mesa.podeMexerObjeto(objetoSel) && objetoSel.tipo !== 'alfinete') {
+		// isométrica: só o canto de baixo da imagem (de pé, a imagem não gira)
+		if (iso && objetoSel && mesa.podeMexerObjeto(objetoSel) && objetoSel.tipo === 'imagem') {
+			const [bx, by] = paraTela(objetoSel.x, objetoSel.y);
+			if (Math.hypot(p.tx - (bx + (objetoSel.largura ?? 1) / 2), p.ty - by) < Math.max(0.5, F(14))) return void (objArrasto = { id: objetoSel.id, modo: 'redim', dx: 0, dy: 0, ini: objetoSel, patch: {} }), true;
+		}
+		if (!iso && objetoSel && mesa.podeMexerObjeto(objetoSel) && objetoSel.tipo !== 'alfinete') {
 			const al = alcas(objetoSel);
 			const perto = (q: { x: number; y: number }) => Math.hypot(p.mx - q.x, p.my - q.y) < Math.max(0.5, F(14));
 			if (perto(al.girar)) return void (objArrasto = { id: objetoSel.id, modo: 'girar', dx: 0, dy: 0, ini: objetoSel, patch: {} }), true;
 			if (perto(al.canto)) return void (objArrasto = { id: objetoSel.id, modo: 'redim', dx: 0, dy: 0, ini: objetoSel, patch: {} }), true;
 		}
 		// com a ferramenta Objeto, as imagens também se pegam (nas outras, o mapa continua arrastável por baixo)
-		const alvo = objetoEm(f === 'objeto' && !ui.armada ? objetosVisiveis : marcadores, p.mx, p.my);
+const lista = f === 'objeto' && !ui.armada ? objetosVisiveis : marcadores;
+		const alvo = iso ? objetoEmTela(lista, p.tx, p.ty, paraTela) : objetoEm(lista, p.mx, p.my);
 		if (alvo) {
 			ui.objSel = alvo.id;
 			if (mesa.podeMexerObjeto(alvo)) objArrasto = { id: alvo.id, modo: 'mover', dx: p.mx - alvo.x, dy: p.my - alvo.y, ini: alvo, patch: {} };
@@ -353,12 +423,19 @@
 		if (o) ui.objSel = o.id;
 	}
 	/** O arrasto de um objeto: mover, girar ou redimensionar (arredonda para o banco). */
-	function arrastarObjeto(p: { mx: number; my: number }, shift: boolean) {
+function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, shift: boolean) {
 		const a = objArrasto!;
 		const o = a.ini;
 		if (a.modo === 'mover') {
 			a.patch = { x: arred(limitarObj(p.mx - a.dx, L), shift ? 0 : 2), y: arred(limitarObj(p.my - a.dy, A), shift ? 0 : 2) };
 			if (shift) a.patch = { x: Math.round(p.mx - a.dx), y: Math.round(p.my - a.dy) };
+			return;
+		}
+		// isométrica: a largura é a distância, na tela, do apoio ao canto de baixo; a proporção se mantém
+		if (iso && a.modo === 'redim' && o.tipo === 'imagem') {
+			const lx = Math.abs(p.tx - paraTela(o.x, o.y)[0]);
+			const k = Math.min(400, Math.max(0.25, 2 * Math.max(lx, 0.125))) / (o.largura ?? 1);
+			a.patch = { largura: arred((o.largura ?? 1) * k, 2), altura: arred(Math.min(400, Math.max(0.25, (o.altura ?? 1) * k)), 2) };
 			return;
 		}
 		const c = caixaObjeto(o);
@@ -420,7 +497,7 @@
 			if (mudou) nevoaTemp = emRuns(n.grade, L, A);
 			return;
 		}
-		if (arrastoFundo) return void (arrastoFundo = { ...arrastoFundo, dx: p.mx - arrastoFundo.mx, dy: p.my - arrastoFundo.my });
+		if (arrastoFundo)return void (arrastoFundo = { ...arrastoFundo, dx: (iso ? p.tx : p.mx) - arrastoFundo.mx, dy: (iso ? p.ty : p.my) - arrastoFundo.my });
 		const m = ui.mira;
 		if (m && !m.fixa) {
 			ui.mira = { ...m, tx: g[0], ty: g[1], px: p.mx, py: p.my, travar: e.shiftKey };
@@ -594,9 +671,10 @@
 {#snippet rotulo(x: number, y0: number, txt: string, cor: string, ancora: 'ini' | 'meio' = 'ini', fechar?: { nome: string; acao: () => void })}
 	{@const w = larguraRotulo(txt) + (fechar ? F(22) : 0)}
 	<!-- preso à área visível: perto da borda do quadro o rótulo não some pela metade -->
-	{@const x0 = Math.max(ui.vx + F(4), Math.min(ui.vx + W / s - w - F(4), ancora === 'meio' ? x - w / 2 : x))}
-	{@const y = Math.max(ui.vy + F(14), Math.min(ui.vy + H / s - F(14), y0))}
-	<g pointer-events="none">
+	{@const P = paraTela(x, y0)}
+	{@const x0 = Math.max(ui.vx + F(4), Math.min(ui.vx + W / s - w - F(4), ancora === 'meio' ? P[0] - w / 2 : P[0]))}
+	{@const y = Math.max(ui.vy + F(14), Math.min(ui.vy + H / s - F(14), P[1]))}
+	<g pointer-events="none" transform={desfazer}>
 		<rect x={x0} y={y - F(10)} width={w} height={F(20)} style="fill: var(--b0); stroke: {cor}" stroke-width={F(2)} />
 		<text x={x0 + F(7)} y={y + F(4.5)} style="fill: {cor}" font-size={F(12)} font-family="'Pixelify Sans'" font-weight="700">{txt}</text>
 	</g>
@@ -606,6 +684,7 @@
 			class="cursor-pointer"
 			role="button"
 			tabindex="0"
+			transform={desfazer}
 			aria-label="Tirar {fechar.nome} do quadro"
 			onpointerdown={(e) => e.stopPropagation()}
 			onclick={(e) => (e.stopPropagation(), fechar.acao())}
@@ -616,6 +695,84 @@
 			<path d="M{x0 + w - F(14)} {y - F(4)}l{F(8)} {F(8)}m0 {-F(8)}l{-F(8)} {F(8)}" style="stroke: {cor}" stroke-width={F(2)} />
 		</g>
 	{/if}
+{/snippet}
+
+<!-- um token e uma imagem de objeto: desenhados no laço de cima, na ordem de pintura da vista isométrica -->
+{#snippet tokenSvg(t: MesaToken)}
+					{#if t.visivel || mesa.mestre}
+					{@const ar = arrasto?.id === t.id ? arrasto : null}
+					{@const x = ar ? ar.x : t.x}
+					{@const y = ar ? ar.y : t.y}
+					{@const n = t.tamanho}
+					{@const cx = x + n / 2}
+					{@const cy = y + n / 2}
+					{@const c = corCss(mesa.corDe(mesa.donoDe(t)))}
+					{@const caido = t.ferimento === 3 || t.condicoes.includes('caido')}
+					{@const pv = pvDe(t)}
+					{@const fr = pv ? Math.max(0, Math.min(1, pv.pv / pv.max)) : FAIXA[t.ferimento]}
+					{@const foto = fotoDe(t)}
+					{@const r = 0.45 * n}
+					<!-- com moldura, o anel vai a 0,56 do lado e o retrato encolhe para caber no furo -->
+					{@const mol = mesa.molduraDe(t)}
+					{@const rm = 0.56 * n}
+					{@const rf = mol ? rm * mol.interno : r}
+						{#if iso}<circle {cx} {cy} r={0.42 * n} fill="#000" fill-opacity="0.3" pointer-events="none" />{/if}
+						<g opacity={t.visivel ? 1 : 0.5} transform={emPe(cx, cy, sobeToken(t))}>
+							{#if mesa.daVez.has(t.id)}<circle {cx} {cy} r={(mol ? rm : r) + 0.12} fill="none" style="stroke: var(--acc)" stroke-width={0.1} />{/if}
+						{#if ui.sel === t.id}<circle {cx} {cy} r={(mol ? rm : r) + 0.22} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
+						<circle {cx} {cy} r={rf} style="fill: {caido ? 'var(--b3)' : 'var(--b2)'}" />
+						{#if foto}
+							<clipPath id="foto-{t.id}"><circle {cx} {cy} r={rf - 0.02} /></clipPath>
+							{@const fo = focoDe(t)}
+							{@const q = fo ? retanguloFoco(fo, cx, cy, 2 * rf) : { x: cx - rf, y: cy - rf, w: 2 * rf, h: 2 * rf }}
+							<image href={foto} x={q.x} y={q.y} width={q.w} height={q.h} preserveAspectRatio={fo ? 'none' : 'xMidYMid slice'} clip-path="url(#foto-{t.id})" style="filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" style:image-rendering={fo ? 'pixelated' : null} />
+						{:else}
+							<text x={cx} y={cy + (0.11 * n * rf) / r} text-anchor="middle" font-size={(0.32 * n * rf) / r} font-family="'Pixelify Sans'" font-weight="700" style="fill: {caido ? 'var(--field)' : 'var(--fg)'}">{t.sigla || t.nome.slice(0, 2).toUpperCase()}</text>
+						{/if}
+						<circle {cx} {cy} r={rf} fill="none" style="stroke: {caido ? 'var(--field)' : c}" stroke-width={(mol ? 0.05 : 0.08) * Math.min(n, 3)} />
+						{#if mol}
+							<image href="/molduras/{mol.id}.png" x={cx - rm} y={cy - rm} width={2 * rm} height={2 * rm} pointer-events="none" style="image-rendering: pixelated; filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" />
+						{/if}
+						<rect x={cx - 0.38 * n} y={y + n - 0.12} width={0.76 * n} height={F(5)} style="fill: var(--b0)" />
+						<rect x={cx - 0.38 * n} y={y + n - 0.12} width={0.76 * n * fr} height={F(5)} style="fill: {fr > 0.5 ? 'var(--ok)' : fr > 0.25 ? 'var(--warn)' : 'var(--err)'}" />
+						<text x={cx} y={y + n + F(12)} text-anchor="middle" font-size={F(11)} font-family="'Noto Sans'" font-weight="600" style="fill: var(--fg); stroke: var(--b0)" stroke-width={F(3)} paint-order="stroke">{nomeCurto(t.nome).split(' ')[0]}{t.membro ? ` ${t.membro}` : ''}</text>
+						{#if t.condicoes.length}
+							<!-- estados: ícones em volta do token, do alto para a direita -->
+							{@const lado = Math.min(0.6, 0.44 + 0.03 * n)}
+							{@const raio = r + 0.2}
+							{#each [...new Set(t.condicoes)].slice(0, 8) as cond, i (cond)}
+								{@const a = -Math.PI / 2 + i * ((50 * Math.PI) / 180)}
+								<g>
+									<title>{ESTADO_NOME[cond] ?? cond}</title>
+									<circle cx={cx + raio * Math.cos(a)} cy={cy + raio * Math.sin(a)} r={lado / 2} style="fill: var(--b0); stroke: var(--warn)" stroke-width={F(1.5)} />
+									<image href="/icons/estado/ic-estado-{cond}-32.png" x={cx + raio * Math.cos(a) - lado / 2} y={cy + raio * Math.sin(a) - lado / 2} width={lado} height={lado} style="image-rendering: pixelated" />
+								</g>
+							{/each}
+							{#if t.condicoes.length > 8}
+								<text x={cx + raio} y={cy + raio} font-size={F(10)} font-family="'Pixelify Sans'" font-weight="700" style="fill: var(--warn); stroke: var(--b0)" stroke-width={F(3)} paint-order="stroke">+{t.condicoes.length - 8}</text>
+							{/if}
+						{/if}
+						{#if !t.visivel}
+							<g style="stroke: var(--fg)" stroke-width={F(2)} fill="none"><path d="M{x + 0.04} {y + 0.2}q.18 -.16 .36 0q-.18 .16 -.36 0" /><line x1={x + 0.06} y1={y + 0.38} x2={x + 0.38} y2={y + 0.02} /></g>
+						{/if}
+					</g>
+				{/if}
+{/snippet}
+
+{#snippet imagemSvg(o0: MesaObjeto)}
+				{@const o = mostrado(o0)}
+				<image
+					href={urlImagemMesa(o.imagem)}
+					x={o.x - (o.largura ?? 1) / 2}
+					y={o.y - (o.altura ?? 1) / 2}
+					width={o.largura ?? 1}
+					height={o.altura ?? 1}
+					preserveAspectRatio="none"
+						transform={emPe(o.x, o.y, (o.altura ?? 1) / 2) ?? `rotate(${o.rotacao} ${o.x} ${o.y})`}
+						opacity={o.visivel ? 1 : 0.45}
+					pointer-events="none"
+					style:image-rendering={o.imagem?.startsWith('/') ? 'pixelated' : 'auto'}
+				/>
 {/snippet}
 
 <!-- o efeito de um jutsu: base translúcida na cor do estilo e o desenho animado do elemento ou do tipo -->
@@ -672,11 +829,16 @@
 				<path d="M0.12 0.12l0.14 0.14M0.26 0.12l-0.14 0.14" style="stroke: var(--mesa-siena)" stroke-width="0.045" stroke-opacity="0.9" />
 			</pattern>
 		</defs>
-		<g transform="translate({-ui.vx * s} {-ui.vy * s}) scale({s})">
+		<g transform="translate({-ui.vx * s} {-ui.vy * s}) scale({s}) {matrizTxt}">
 			<rect x="0" y="0" width={L} height={A} style="fill: var(--b1)" />
 			<!-- fundo do quadro: o mapa estica na cena inteira, sob a grade -->
-			{#if fundo}
-				<clipPath id="recorte-cena"><rect x="0" y="0" width={L} height={A} /></clipPath>
+				{#if fundo && iso}
+					<g transform={desfazer}>
+						<image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} />
+						{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
+					</g>
+				{:else if fundo}
+					<clipPath id="recorte-cena"><rect x="0" y="0" width={L} height={A} /></clipPath>
 				<image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} preserveAspectRatio="none" clip-path="url(#recorte-cena)" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} />
 				{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
 			{/if}
@@ -692,7 +854,7 @@
 				<path {d} fill="url(#terreno)" pointer-events="none" />
 			{/if}
 
-			{#each imagens as o0 (o0.id)}
+{#each imagensBaixo as o0 (o0.id)}
 				{@const o = mostrado(o0)}
 				<image
 					href={urlImagemMesa(o.imagem)}
@@ -701,8 +863,8 @@
 					width={o.largura ?? 1}
 					height={o.altura ?? 1}
 					preserveAspectRatio="none"
-					transform="rotate({o.rotacao} {o.x} {o.y})"
-					opacity={o.visivel ? 1 : 0.45}
+						transform={emPe(o.x, o.y, (o.altura ?? 1) / 2) ?? `rotate(${o.rotacao} ${o.x} ${o.y})`}
+						opacity={o.visivel ? 1 : 0.45}
 					pointer-events="none"
 					style:image-rendering={o.imagem?.startsWith('/') ? 'pixelated' : 'auto'}
 				/>
@@ -795,65 +957,16 @@
 				{/if}
 			{/each}
 
-			{#each visiveis as t (t.id)}
-				{#if t.visivel || mesa.mestre}
-					{@const ar = arrasto?.id === t.id ? arrasto : null}
-					{@const x = ar ? ar.x : t.x}
-					{@const y = ar ? ar.y : t.y}
-					{@const n = t.tamanho}
-					{@const cx = x + n / 2}
-					{@const cy = y + n / 2}
-					{@const c = corCss(mesa.corDe(mesa.donoDe(t)))}
-					{@const caido = t.ferimento === 3 || t.condicoes.includes('caido')}
-					{@const pv = pvDe(t)}
-					{@const fr = pv ? Math.max(0, Math.min(1, pv.pv / pv.max)) : FAIXA[t.ferimento]}
-					{@const foto = fotoDe(t)}
-					{@const r = 0.45 * n}
-					<!-- com moldura, o anel vai a 0,56 do lado e o retrato encolhe para caber no furo -->
-					{@const mol = mesa.molduraDe(t)}
-					{@const rm = 0.56 * n}
-					{@const rf = mol ? rm * mol.interno : r}
-					<g opacity={t.visivel ? 1 : 0.5}>
-						{#if mesa.daVez.has(t.id)}<circle {cx} {cy} r={(mol ? rm : r) + 0.12} fill="none" style="stroke: var(--acc)" stroke-width={0.1} />{/if}
-						{#if ui.sel === t.id}<circle {cx} {cy} r={(mol ? rm : r) + 0.22} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
-						<circle {cx} {cy} r={rf} style="fill: {caido ? 'var(--b3)' : 'var(--b2)'}" />
-						{#if foto}
-							<clipPath id="foto-{t.id}"><circle {cx} {cy} r={rf - 0.02} /></clipPath>
-							{@const fo = focoDe(t)}
-							{@const q = fo ? retanguloFoco(fo, cx, cy, 2 * rf) : { x: cx - rf, y: cy - rf, w: 2 * rf, h: 2 * rf }}
-							<image href={foto} x={q.x} y={q.y} width={q.w} height={q.h} preserveAspectRatio={fo ? 'none' : 'xMidYMid slice'} clip-path="url(#foto-{t.id})" style="filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" style:image-rendering={fo ? 'pixelated' : null} />
-						{:else}
-							<text x={cx} y={cy + (0.11 * n * rf) / r} text-anchor="middle" font-size={(0.32 * n * rf) / r} font-family="'Pixelify Sans'" font-weight="700" style="fill: {caido ? 'var(--field)' : 'var(--fg)'}">{t.sigla || t.nome.slice(0, 2).toUpperCase()}</text>
-						{/if}
-						<circle {cx} {cy} r={rf} fill="none" style="stroke: {caido ? 'var(--field)' : c}" stroke-width={(mol ? 0.05 : 0.08) * Math.min(n, 3)} />
-						{#if mol}
-							<image href="/molduras/{mol.id}.png" x={cx - rm} y={cy - rm} width={2 * rm} height={2 * rm} pointer-events="none" style="image-rendering: pixelated; filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" />
-						{/if}
-						<rect x={cx - 0.38 * n} y={y + n - 0.12} width={0.76 * n} height={F(5)} style="fill: var(--b0)" />
-						<rect x={cx - 0.38 * n} y={y + n - 0.12} width={0.76 * n * fr} height={F(5)} style="fill: {fr > 0.5 ? 'var(--ok)' : fr > 0.25 ? 'var(--warn)' : 'var(--err)'}" />
-						<text x={cx} y={y + n + F(12)} text-anchor="middle" font-size={F(11)} font-family="'Noto Sans'" font-weight="600" style="fill: var(--fg); stroke: var(--b0)" stroke-width={F(3)} paint-order="stroke">{nomeCurto(t.nome).split(' ')[0]}{t.membro ? ` ${t.membro}` : ''}</text>
-						{#if t.condicoes.length}
-							<!-- estados: ícones em volta do token, do alto para a direita -->
-							{@const lado = Math.min(0.6, 0.44 + 0.03 * n)}
-							{@const raio = r + 0.2}
-							{#each [...new Set(t.condicoes)].slice(0, 8) as cond, i (cond)}
-								{@const a = -Math.PI / 2 + i * ((50 * Math.PI) / 180)}
-								<g>
-									<title>{ESTADO_NOME[cond] ?? cond}</title>
-									<circle cx={cx + raio * Math.cos(a)} cy={cy + raio * Math.sin(a)} r={lado / 2} style="fill: var(--b0); stroke: var(--warn)" stroke-width={F(1.5)} />
-									<image href="/icons/estado/ic-estado-{cond}-32.png" x={cx + raio * Math.cos(a) - lado / 2} y={cy + raio * Math.sin(a) - lado / 2} width={lado} height={lado} style="image-rendering: pixelated" />
-								</g>
-							{/each}
-							{#if t.condicoes.length > 8}
-								<text x={cx + raio} y={cy + raio} font-size={F(10)} font-family="'Pixelify Sans'" font-weight="700" style="fill: var(--warn); stroke: var(--b0)" stroke-width={F(3)} paint-order="stroke">+{t.condicoes.length - 8}</text>
-							{/if}
-						{/if}
-						{#if !t.visivel}
-							<g style="stroke: var(--fg)" stroke-width={F(2)} fill="none"><path d="M{x + 0.04} {y + 0.2}q.18 -.16 .36 0q-.18 .16 -.36 0" /><line x1={x + 0.06} y1={y + 0.38} x2={x + 0.38} y2={y + 0.02} /></g>
-						{/if}
-					</g>
-				{/if}
-			{/each}
+				{#if iso}
+				{#each pePintura as it (it.id)}
+					{#if it.k === 'token'}{@render tokenSvg(it.t)}{:else}{@render imagemSvg(it.o)}{/if}
+				{/each}
+			{:else}
+{#each visiveis as t (t.id)}{@render tokenSvg(t)}{/each}
+{/if}
+
+			<!-- as imagens da camada "acima" ficam sobre os tokens -->
+			{#each imagensAcima as o0 (o0.id)}{@render imagemSvg(o0)}{/each}
 
 			{#each marcadores as o0 (o0.id)}
 				{@const o = mostrado(o0)}
@@ -861,16 +974,18 @@
 					{@const f = FONTES[o.fonte ?? 'pixel']}
 					{@const tam = o.tamanho ?? 1}
 					{@const linhas = (o.texto ?? '').split('\n')}
-					<g transform="rotate({o.rotacao} {o.x} {o.y})" opacity={o.visivel ? 1 : 0.5} pointer-events="none">
+						<g transform={emPe(o.x, o.y)}>
+						<g transform="rotate({o.rotacao} {o.x} {o.y})" opacity={o.visivel ? 1 : 0.5} pointer-events="none">
 						<text x={o.x} y={o.y - ((linhas.length - 1) * tam * 1.25) / 2} text-anchor="middle" dominant-baseline="central" font-size={tam} font-family={f.familia} font-weight={f.peso} style="fill: {o.cor ?? '#f4e4d6'}; stroke: {contraste(o.cor)}" stroke-width={tam * 0.16} paint-order="stroke" stroke-linejoin="round">
 							{#each linhas as l, i (i)}<tspan x={o.x} dy={i === 0 ? 0 : tam * 1.25}>{l || ' '}</tspan>{/each}
-						</text>
-					</g>
-				{:else}
-					{@const r = Math.max(0.3, F(7))}
+							</text>
+						</g>
+						</g>
+					{:else}
+						{@const r = Math.max(0.3, F(7))}
 					{@const cor = o.cor ?? corCss(mesa.corDe(o.autor_id))}
-					<g opacity={o.visivel ? 1 : 0.5} pointer-events="none">
-						<ellipse cx={o.x} cy={o.y} rx={r * 0.7} ry={r * 0.26} fill="#000" fill-opacity="0.3" />
+						<g opacity={o.visivel ? 1 : 0.5} pointer-events="none" transform={emPe(o.x, o.y)}>
+							<ellipse cx={o.x} cy={o.y} rx={r * 0.7} ry={r * 0.26} fill="#000" fill-opacity="0.3" />
 						<path d="M{o.x} {o.y}L{o.x - r * 0.26} {o.y - r * 2.1}L{o.x + r * 0.26} {o.y - r * 2.1}Z" fill="#cfd3d6" style="stroke: #1b1210" stroke-width={F(1)} />
 						<circle cx={o.x} cy={o.y - r * 2.4} r={r} style="fill: {cor}; stroke: #1b1210" stroke-width={F(2)} />
 						<circle cx={o.x - r * 0.3} cy={o.y - r * 2.7} r={r * 0.25} fill="#fff" fill-opacity="0.55" />
@@ -893,7 +1008,19 @@
 				{#if mesa.mestre}<path d={caminhoDaNevoa} fill-rule="evenodd" fill="url(#nevoa-hachura)" pointer-events="none" />{/if}
 			{/if}
 
-			{#if objetoSel && mesa.podeMexerObjeto(objetoSel) && (!escondeDeMim || objetoSel.tipo === 'imagem')}
+			{#if iso}
+					{#if objetoSel && mesa.podeMexerObjeto(objetoSel) && (!escondeDeMim || objetoSel.tipo === 'imagem')}
+						<!-- seleção na vista isométrica: a caixa em volta do sprite de pé e o canto de baixo para redimensionar a imagem -->
+						{@const m = mostrado(objetoSel)}
+						{@const ci = caixaDePe(m)}
+						{@const rr = Math.max(0.2, F(7))}
+						<g transform={emPe(m.x, m.y)} pointer-events="none" style="stroke: var(--acc)" fill="none" stroke-width={F(2)}>
+							<rect x={m.x - ci.hw} y={m.y + ci.dy - ci.hh} width={2 * ci.hw} height={2 * ci.hh} stroke-dasharray="{F(6)} {F(4)}" />
+							{#if m.tipo === 'imagem'}<rect x={m.x + ci.hw - rr} y={m.y - rr} width={2 * rr} height={2 * rr} style="fill: var(--b0)" />{/if}
+						</g>
+					{/if}
+				{:else}
+				{#if objetoSel && mesa.podeMexerObjeto(objetoSel) && (!escondeDeMim || objetoSel.tipo === 'imagem')}
 				<!-- seleção: caixa tracejada (girada com o objeto), alça de girar e canto de redimensionar -->
 				{@const m = mostrado(objetoSel)}
 				{@const al = alcas(m)}
@@ -908,8 +1035,9 @@
 					{/if}
 				</g>
 			{/if}
+				{/if}
 
-			{#each [...(reguaMinha ? [[mesa.eu, reguaMinha] as const] : []), ...Object.entries(mesa.reguas)] as [u, r] (u)}
+				{#each [...(reguaMinha ? [[mesa.eu, reguaMinha] as const] : []), ...Object.entries(mesa.reguas)] as [u, r] (u)}
 				{@const c = corCss(mesa.corDe(u))}
 				{@const pts = r.pontos}
 				{@const seg = trechos(pts)}
@@ -945,7 +1073,7 @@
 			{/if}
 		</g>
 
-		{#if cena?.coordenadas}
+		{#if cena?.coordenadas && !iso}
 			<!-- as letras e os números ficam fixos numa fileira que só desliza com a câmera (criar e apagar rótulos a cada
 				 quadro custava mais que o quadro inteiro); o canto escuro cobre o que passa por baixo -->
 			<g pointer-events="none" font-size="11" font-family="'Pixelify Sans'" text-anchor="middle" style="fill: var(--mut)">
@@ -965,7 +1093,7 @@
 		<!-- texto novo: digite e Enter põe no quadro (Shift+Enter quebra a linha; Esc cancela) -->
 		<textarea
 			class="absolute z-20 min-h-10 w-[240px] -translate-x-1/2 -translate-y-1/2 resize-none border-2 border-[var(--vermelhao)] bg-b0 px-2 py-1.5 text-sm text-fg shadow-[4px_4px_0_#000]"
-			style="left: {(rascunho.x - ui.vx) * s}px; top: {(rascunho.y - ui.vy) * s}px; font-family: {FONTES[ui.textoNovo.fonte].familia}"
+style="left: {(paraTela(rascunho.x, rascunho.y)[0] - ui.vx) * s}px; top: {(paraTela(rascunho.x, rascunho.y)[1] - ui.vy) * s}px; font-family: {FONTES[ui.textoNovo.fonte].familia}"
 			rows="2"
 			maxlength="300"
 			placeholder="Digite o texto e aperte Enter"

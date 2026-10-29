@@ -50,9 +50,39 @@ export function dentro(o: Parameters<typeof caixa>[0] & { rotacao?: number }, px
 	return Math.abs(dx) <= c.hw && Math.abs(dy) <= c.hh;
 }
 
-/** O objeto mais acima (maior ordem, depois o mais novo) sob o ponto. */
-export function objetoEm<T extends Parameters<typeof dentro>[0] & { ordem: number; criado_em: string }>(lista: T[], px: number, py: number): T | null {
-	return [...lista].sort((a, b) => b.ordem - a.ordem || b.criado_em.localeCompare(a.criado_em)).find((o) => dentro(o, px, py)) ?? null;
+/** O quanto o objeto fica por cima: alfinete e texto sobre tudo, depois as imagens "acima", "meio" e "chão". */
+export const camadaRank = (o: { tipo: string; camada?: 'chao' | 'meio' | 'acima' | null }) => (o.tipo !== 'imagem' ? 3 : { acima: 2, meio: 1, chao: 0 }[o.camada ?? 'meio']);
+
+/** O objeto mais acima (a camada, depois a maior ordem, depois o mais novo) sob o ponto. */
+export function objetoEm<T extends Parameters<typeof dentro>[0] & { ordem: number; criado_em: string; camada?: 'chao' | 'meio' | 'acima' | null }>(lista: T[], px: number, py: number): T | null {
+	return [...lista].sort((a, b) => camadaRank(b) - camadaRank(a) || b.ordem - a.ordem || b.criado_em.localeCompare(a.criado_em)).find((o) => dentro(o, px, py)) ?? null;
+}
+
+/**
+ * A caixa do objeto de pé na vista isométrica, em metros de tela e relativa ao ponto de apoio (x, y do objeto): a
+ * imagem fica de pé sobre o apoio, o alfinete e o texto como na vista de cima. Sem rotação.
+ */
+export function caixaDePe(o: Parameters<typeof caixa>[0]) {
+	const c = caixa(o);
+	return { dx: 0, dy: o.tipo === 'imagem' ? -c.hh : c.cy - o.y, hw: c.hw, hh: c.hh };
+}
+
+/** O objeto mais acima (a ordem do banco, depois o mais novo) sob um ponto da tela, na vista isométrica. */
+export function objetoEmTela<T extends Parameters<typeof caixa>[0] & { ordem: number; criado_em: string; camada?: 'chao' | 'meio' | 'acima' | null }>(
+	lista: T[],
+	tx: number,
+	ty: number,
+	ancora: (x: number, y: number) => [number, number]
+): T | null {
+	return (
+		[...lista]
+			.sort((a, b) => camadaRank(b) - camadaRank(a) || b.ordem - a.ordem || b.criado_em.localeCompare(a.criado_em))
+			.find((o) => {
+				const [bx, by] = ancora(o.x, o.y);
+				const c = caixaDePe(o);
+				return Math.abs(tx - (bx + c.dx)) <= c.hw && Math.abs(ty - (by + c.dy)) <= c.hh;
+			}) ?? null
+	);
 }
 
 /** Mantém o centro dentro da cena (com uma folga: dá para puxar um objeto para a borda e deixar metade de fora). */

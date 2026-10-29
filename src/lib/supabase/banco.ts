@@ -435,6 +435,11 @@ export type MesaCena = {
 	fundo_x: number;
 	fundo_y: number;
 	grade: boolean;
+	/** Vista de cima (o quadro de sempre) ou isométrica: só muda o desenho, os dados seguem na grade. */
+	visao: 'topo' | 'isometrica';
+	/** Largura dividida pela altura do losango de um quadrado (2 é o 2:1 da pixel art) e o canto de onde se olha ao abrir. */
+	iso_razao: number;
+	iso_rotacao: 0 | 90 | 180 | 270;
 	/** Pasta das cenas (só o Mestre organiza) e o nome que o grupo vê (null = "Cena"). */
 	pasta_id: string | null;
 	nome_publico: string | null;
@@ -464,6 +469,8 @@ export type MesaObjeto = {
 	tamanho: number | null;
 	imagem: string | null;
 	ordem: number;
+	/** Só imagens: "chão" sob tudo, "meio" (padrão) com os tokens e "acima" sobre os tokens. */
+	camada: 'chao' | 'meio' | 'acima';
 	visivel: boolean;
 	travado: boolean;
 	criado_em: string;
@@ -511,6 +518,8 @@ export type MesaToken = {
 	sigla: string;
 	/** O nome está escondido do grupo: o token guarda "???" e o Mestre lê o nome verdadeiro do NPC. */
 	nome_oculto: boolean;
+	/** Elevação em metros (visual: o token sobe na tela da vista isométrica); só o Mestre muda. */
+	elevacao: number;
 	retrato: string | null;
 	tamanho: 1 | 3 | 6 | 10;
 	/** Crescido por um jutsu (Baika no Jutsu): o tamanho normal e os turnos que faltam para voltar. */

@@ -18,7 +18,8 @@
 	import { estiloDoJutsu } from '#lib/mesa/efeitos.ts';
 	import type { ArteArmada } from '#lib/mesa/ui.svelte.ts';
 	import ArtesMesa from '#lib/componentes/mesa/ArtesMesa.svelte';
-	import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
+import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
+	import ConfigCena from '#lib/componentes/mesa/ConfigCena.svelte';
 	import JukeboxMesa from '#lib/componentes/mesa/JukeboxMesa.svelte';
 	import OpcoesFerramenta from '#lib/componentes/mesa/OpcoesFerramenta.svelte';
 	import PainelObjeto from '#lib/componentes/mesa/PainelObjeto.svelte';
@@ -72,6 +73,7 @@
 				chave = d.cena?.id ?? null;
 				mesa = criar();
 				ui.mira = null;
+				ui.isoRotacao = null;
 				ui.regua = null;
 				ui.fichas = [];
 				ui.aneis = null;
@@ -462,6 +464,7 @@
 	/** Quem joga nesta cena (o Mestre escolhe; sem escolha, todo o grupo). */
 	const participa = (ficha: string) => !cena?.participantes || cena.participantes.includes(ficha);
 	const participantes = $derived(data.personagens.filter((p) => participa(p.id)));
+	let limparTodosConfirma = $state(false);
 	let escolhidos = $state<string[]>([]);
 	function abrirParticipantes() {
 		escolhidos = cena?.participantes ?? data.personagens.map((p) => p.id);
@@ -505,7 +508,6 @@
 	const cenaNova = () => ({ nome: 'Nova cena', largura: 40, altura: 30, comeco: 'vazia' as Comeco, escolhidos: data.personagens.map((p) => p.id) });
 	let novaCena = $state(cenaNova());
 	let textoModal = $state('');
-	let limparTodosConfirma = $state(false);
 	async function criarCena() {
 		const { data: c, error } = await supabase()
 			.from('mesa_cenas')
@@ -675,6 +677,7 @@
 			}
 		}
 		const sel = mesa.tokens.find((t) => t.id === ui.sel);
+if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) return void ui.girarIso(cena.iso_rotacao, k === ']' ? 1 : -1);
 		if (k === 'h' && data.mestre && sel) return void mesa.atualizarToken(sel.id, { visivel: !sel.visivel });
 		const dir = ({ ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] } as Record<string, [number, number]>)[e.key];
 		if (dir && sel && mesa.podeMover(sel) && cena) {
@@ -1080,7 +1083,7 @@
 			</div>
 			{#if mesa.iniciativa.ativa}<span class="border-2 border-grena px-2 py-1.5 font-pixel text-sm leading-none font-bold tracking-[0.08em] text-acc">RODADA {mesa.iniciativa.rodada ?? 1}</span>{/if}
 			{#if data.mestre && cena}
-				<button type="button" class="flex h-10 w-10 items-center justify-center border-2 border-b3 p-0" aria-label="Configurações da cena" title="Configurações da cena" onclick={() => (ui.pop = ui.pop === 'gear' ? null : 'gear')}><Icone id="nav/ic-nav-configuracoes" /></button>
+				<button type="button" class="flex h-10 w-10 items-center justify-center border-2 border-b3 p-0" aria-label="Configurações da cena" title="Configurações da cena"onclick={() => ((ui.pop = null), (ui.modal = { tipo: 'config' }))}><Icone id="nav/ic-nav-configuracoes" /></button>
 			{/if}
 
 			{#if ui.pop === 'cena' && data.mestre}
@@ -1102,45 +1105,6 @@
 						<button type="button" class="min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" disabled={!cena} onclick={() => cena && ((textoModal = ''), (ui.modal = { tipo: 'excluir', cena: cena.id }), (ui.pop = null))}>EXCLUIR</button>
 						<button type="button" class="col-span-2 min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" disabled={!cena || !mesa.terreno.size} onclick={() => ((ui.pop = null), mesa.definirTerreno([]))}>LIMPAR TERRENO DIFÍCIL</button>
 					</div>
-				</div>
-			{/if}
-			{#if ui.pop === 'gear' && cena}
-				<div role="menu" aria-label="Configurações da cena" class="{pop} top-14 right-2 w-[280px]">
-					<span class="px-3 pt-2.5 pb-1.5 font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">CENA</span>
-					{#each [['travada', 'Travar a mesa (só o Mestre move)'], ['coordenadas', 'Coordenadas nas bordas'], ['mostrar_pv', 'Mostrar PV ao grupo'], ['grade', 'Mostrar a grade']] as const as [k, n] (k)}
-						<button type="button" role="menuitemcheckbox" aria-checked={cena[k]} class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-left text-sm font-semibold" onclick={() => mesa.patchCena({ [k]: !cena[k] })}>
-							<span class="font-pixel text-sm font-bold {cena[k] ? 'text-ok' : 'text-mut'}">{cena[k] ? '☒' : '☐'}</span>{n}
-						</button>
-					{/each}
-					<label class="flex flex-col gap-1 border-t-2 border-b2 px-3 py-2 text-xs font-semibold text-mut">Nome que o grupo vê
-						<input class="h-9 border-2 border-b3 bg-b1 px-2 text-sm font-medium text-fg" maxlength="60" placeholder="Em branco: o grupo vê “Cena”" value={cena.nome_publico ?? ''} onchange={(e) => mesa.patchCena({ nome_publico: e.currentTarget.value.trim() || null })} />
-					</label>
-					<button type="button" class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-left text-sm font-semibold" onclick={abrirParticipantes}>
-						<span class="font-pixel text-sm font-bold text-mut">☰</span>Quem joga nesta cena · {cena.participantes ? `${participantes.length} de ${data.personagens.length}` : 'todos'}
-					</button>
-					<span class="border-t-2 border-b2 px-3 pt-2.5 pb-1.5 font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">MODO DA CENA</span>
-					<div role="radiogroup" aria-label="Modo da cena" class="mx-3 mb-2.5 flex border-2 border-b3">
-						{#each [['tatica', 'TÁTICA'], ['narrativa', 'NARRATIVA']] as const as [m, n] (m)}
-							<button type="button" role="radio" aria-checked={cena.modo === m} class="min-h-9 flex-1 font-pixel text-[11px] font-bold {cena.modo === m ? 'bg-grena text-papel' : 'text-mut'}" onclick={() => mesa.patchCena({ modo: m })}>{n}</button>
-						{/each}
-					</div>
-					<button type="button" class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-left text-sm font-semibold" onclick={() => ((ui.modal = { tipo: 'imagem', alvo: 'imagem' }), (ui.pop = null))}><span class="font-pixel text-sm font-bold text-mut">▣</span>Imagem da narrativa · {nomeImagem(cena.imagem) ?? 'nenhuma'}</button>
-					<button type="button" class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-left text-sm font-semibold" onclick={() => ((ui.modal = { tipo: 'imagem', alvo: 'fundo' }), (ui.pop = null))}><span class="font-pixel text-sm font-bold text-mut">▦</span>Fundo do quadro · {nomeImagem(cena.fundo) ?? 'nenhum'}</button>
-					{#if cena.fundo}
-						<label class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-sm font-semibold">Opacidade do fundo<input type="range" min="10" max="100" step="5" value={Math.round(cena.fundo_opacidade * 100)} onchange={(e) => mesa.patchCena({ fundo_opacidade: +e.currentTarget.value / 100 })} class="min-w-0 flex-1" /></label>
-						<!-- tamanho e posição do fundo: esticado na cena, ou com a largura em metros e arrastado sob a grade -->
-						<label class="flex min-h-10 items-center gap-2.5 border-t-2 border-b2 px-3 text-sm font-semibold"><input type="checkbox" checked={!cena.fundo_escala} onchange={(e) => mesa.patchCena(e.currentTarget.checked ? { fundo_escala: null, fundo_x: 0, fundo_y: 0 } : { fundo_escala: cena.largura, fundo_x: 0, fundo_y: 0 })} />Esticar o fundo na cena</label>
-						{#if cena.fundo_escala}
-							<label class="flex min-h-10 items-center gap-2.5 px-3 text-sm font-semibold">Largura<input type="range" min="5" max={Math.max(200, cena.largura * 3)} step="1" value={cena.fundo_escala} onchange={(e) => mesa.patchCena({ fundo_escala: +e.currentTarget.value })} class="min-w-0 flex-1" /><span class="font-pixel text-xs">{cena.fundo_escala} m</span></label>
-							<button type="button" class="mx-3 mb-2 min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" onclick={() => ((ui.pop = null), ui.escolher('fundo'), ui.avisar('Arraste para mover o fundo; Esc volta a mover os tokens.'))}>MOVER O FUNDO</button>
-						{/if}
-					{/if}
-					<button type="button" class="flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-left text-sm font-semibold" disabled={!participantes.length} onclick={() => ((ui.pop = null), colocarOGrupo())}><span class="font-pixel text-sm font-bold text-mut">▸</span>Colocar o grupo na cena</button>
-					<button type="button" class="min-h-11 border-t-2 border-b2 px-3 text-left text-sm font-semibold text-link" onclick={() => {
-						if (!limparTodosConfirma) return void (limparTodosConfirma = true);
-						mesa.limparTracos(true);
-						limparTodosConfirma = false;
-					}}>{limparTodosConfirma ? 'Confirmar: limpar todos os traços' : 'Limpar todos os traços'}</button>
 				</div>
 			{/if}
 			{#if ui.pop === 'cor'}
@@ -1207,6 +1171,10 @@
 				<div class="pointer-events-none absolute inset-x-3 bottom-16 z-[7] flex justify-center"><PainelObjeto {mesa} {ui} /></div>
 				<JukeboxMesa {mesa} {ui} classe="absolute bottom-16 left-3 z-[8]" />
 				<div class="absolute right-3 bottom-3 z-[6] flex items-center border-2 border-b3 bg-b0 shadow-[4px_4px_0_#000]">
+{#if cena?.visao === 'isometrica' && !cena.fundo}
+<button type="button" class="h-9 w-9 border-r-2 border-b3 font-pixel text-base font-bold" aria-label="Girar a vista para a esquerda" title="Girar a vista (teclas [ e ])" onclick={() => ui.girarIso(cena.iso_rotacao, -1)}>⟲</button>
+						<button type="button" class="h-9 w-9 border-r-2 border-b3 font-pixel text-base font-bold" aria-label="Girar a vista para a direita" title="Girar a vista (teclas [ e ])" onclick={() => ui.girarIso(cena.iso_rotacao, 1)}>⟳</button>
+					{/if}
 					<button type="button" class="h-9 w-9 border-r-2 border-b3 font-pixel text-base font-bold" aria-label="Diminuir zoom" onclick={() => quadro?.zoomEm(1 / 1.25)}>−</button>
 					<span class="min-w-[52px] text-center font-pixel text-[13px] font-bold">{Math.round(ui.zoom * 100)}%</span>
 					<button type="button" class="h-9 w-9 border-l-2 border-b3 font-pixel text-base font-bold" aria-label="Aumentar zoom" onclick={() => quadro?.zoomEm(1.25)}>+</button>
@@ -1329,7 +1297,7 @@
 
 {#if ui.modal}
 	<div class="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(10,8,7,.72)] p-4" role="presentation" onclick={(e) => e.target === e.currentTarget && (ui.modal = null)}>
-		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]'} max-h-full max-w-full flex-col overflow-y-auto border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_#000]">
+		<div role="dialog" aria-modal="true" class="flex{ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' || ui.modal.tipo === 'config' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]'} max-h-full max-w-full flex-col overflow-y-auto border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_#000]">
 			{#if ui.modal.tipo === 'imagem' && cena}
 				{@const alvo = ui.modal.alvo}
 				<ArtesMesa {mesa} {campanha} {alvo} atual={cena[alvo]} aoEscolher={escolherDaBiblioteca} aoArmar={armarArte} aoFechar={() => (ui.modal = null)} />
@@ -1421,6 +1389,8 @@
 					<button type="button" class="btn-jogo min-h-11" onclick={() => (ui.modal = null)}>CANCELAR</button>
 					<button type="button" class="btn-jogo btn-erro min-h-11" disabled={!!mesa.tokens.length && textoModal.trim() !== cena.nome} onclick={excluirCena}>EXCLUIR CENA</button>
 				</div>
+{:else if ui.modal.tipo === 'config' && cena}
+				<ConfigCena {mesa} {ui} {cena} quemJoga={cena.participantes ? `${participantes.length} de ${data.personagens.length}` : 'todos'} podeColocarGrupo={participantes.length > 0} aoParticipantes={abrirParticipantes} aoColocarGrupo={() => ((ui.modal = null), colocarOGrupo())} />
 			{:else if ui.modal.tipo === 'participantes'}
 				<div class="border-b-2 border-[var(--vermelhao-lo)] bg-b0 px-3.5 py-2.5 font-pixel text-[13px] leading-none font-bold tracking-[0.1em] text-title">QUEM JOGA NESTA CENA</div>
 				<div class="flex flex-col gap-2 p-4">

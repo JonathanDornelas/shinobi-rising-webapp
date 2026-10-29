@@ -377,3 +377,38 @@ describe('nome escondido de NPC', () => {
 		expect(await um(banco.como(bruno, `select nome from npcs_revelados($1) where id = $2`, [campanha, hideo]))).toEqual({ nome: 'Hideo' });
 	});
 });
+
+describe('vista isométrica', () => {
+	it('a cena nasce de cima; só o Mestre muda a vista; os valores têm limite', async () => {
+		expect(await um(banco.como(kaito, `select visao, iso_razao, iso_rotacao from mesa_cenas where id = $1`, [ponte]))).toEqual({ visao: 'topo', iso_razao: 2, iso_rotacao: 0 });
+		await banco.como(kaito, `update mesa_cenas set visao = 'isometrica', iso_razao = 1.5, iso_rotacao = 90 where id = $1`, [ponte]);
+		expect(await um(banco.como(bruno, `select visao, iso_razao, iso_rotacao from mesa_cenas where id = $1`, [ponte]))).toEqual({ visao: 'isometrica', iso_razao: 1.5, iso_rotacao: 90 });
+		expect(await banco.como(bruno, `update mesa_cenas set visao = 'topo' where id = $1 returning id`, [ponte])).toEqual([]);
+		await expect(banco.como(kaito, `update mesa_cenas set visao = 'obliqua' where id = $1`, [ponte])).rejects.toThrow(/check/);
+		await expect(banco.como(kaito, `update mesa_cenas set iso_razao = 3 where id = $1`, [ponte])).rejects.toThrow(/check/);
+		await expect(banco.como(kaito, `update mesa_cenas set iso_rotacao = 45 where id = $1`, [ponte])).rejects.toThrow(/check/);
+		await banco.como(kaito, `update mesa_cenas set visao = 'topo', iso_razao = 2, iso_rotacao = 0 where id = $1`, [ponte]);
+	});
+
+	it('a elevação do token é do Mestre: o jogador não a muda nem a cria', async () => {
+		const ren = (await um(banco.como<{ id: string }>(kaito, `select id from mesa_tokens where personagem_id = (select id from personagens where nome = 'Ren' limit 1) limit 1`))).id;
+		await banco.como(kaito, `update mesa_tokens set elevacao = 3 where id = $1`, [ren]);
+		expect(await um(banco.como(bruno, `select elevacao from mesa_tokens where id = $1`, [ren]))).toEqual({ elevacao: 3 });
+		await banco.como(bruno, `update mesa_tokens set elevacao = 9, x = 8 where id = $1`, [ren]);
+		expect(await um(banco.como(bruno, `select elevacao, x from mesa_tokens where id = $1`, [ren]))).toEqual({ elevacao: 3, x: 8 });
+		await expect(banco.como(kaito, `update mesa_tokens set elevacao = 61 where id = $1`, [ren])).rejects.toThrow(/check/);
+		await banco.como(kaito, `update mesa_tokens set elevacao = 0 where id = $1`, [ren]);
+	});
+});
+
+describe('camadas das imagens', () => {
+	it('a imagem nasce no meio; só o Mestre muda a camada; o valor tem limite', async () => {
+		const id = (await um(banco.como<{ id: string }>(kaito, `insert into mesa_objetos (cena_id, campanha_id, tipo, x, y, largura, altura, imagem) values ($1, $2, 'imagem', 5, 5, 3, 3, '/capitulos/cap-01.png') returning id`, [ponte, campanha]))).id;
+		expect(await um(banco.como(bruno, `select camada from mesa_objetos where id = $1`, [id]))).toEqual({ camada: 'meio' });
+		await banco.como(kaito, `update mesa_objetos set camada = 'acima' where id = $1`, [id]);
+		expect(await um(banco.como(bruno, `select camada from mesa_objetos where id = $1`, [id]))).toEqual({ camada: 'acima' });
+		expect(await banco.como(bruno, `update mesa_objetos set camada = 'chao' where id = $1 returning id`, [id])).toEqual([]);
+		await expect(banco.como(kaito, `update mesa_objetos set camada = 'topo' where id = $1`, [id])).rejects.toThrow(/check/);
+		await banco.como(kaito, `delete from mesa_objetos where id = $1`, [id]);
+	});
+});

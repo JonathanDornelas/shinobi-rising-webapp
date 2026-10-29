@@ -294,3 +294,23 @@ describe('HUD de ação (dados e elemento)', () => {
 		expect(corElemento(null, 'Dano · Kunai')).toBeNull();
 	});
 });
+
+describe('vista isométrica: giro da vista de cada pessoa', () => {
+	it('gira de 90 em 90°, a partir do canto da cena, nos dois sentidos', async () => {
+		const { UiMesa } = await import('./ui.svelte.ts');
+		const ui = new UiMesa();
+		expect(ui.isoRotacao).toBeNull();
+		ui.girarIso(0, 1);
+		expect(ui.isoRotacao).toBe(90);
+		ui.girarIso(0, 1);
+		ui.girarIso(0, 1);
+		ui.girarIso(0, 1);
+		expect(ui.isoRotacao).toBe(0);
+		ui.girarIso(0, -1);
+		expect(ui.isoRotacao).toBe(270);
+		// quem ainda não girou parte do canto da cena
+		const outro = new UiMesa();
+		outro.girarIso(180, 1);
+		expect(outro.isoRotacao).toBe(270);
+	});
+});

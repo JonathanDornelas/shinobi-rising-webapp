@@ -31,7 +31,7 @@ export interface FichaAberta {
 }
 
 export type Pop = null | 'medir' | 'jutsu' | 'lapis' | 'cor' | 'cena' | 'gear' | 'alfinete' | 'texto' | 'objeto' | 'nevoa' | 'musica';
-export type Modal = null | { tipo: 'nova' } | { tipo: 'excluir'; cena: string } | { tipo: 'renomear'; cena: string } | { tipo: 'participantes' } | { tipo: 'bestiario' } | { tipo: 'jutsu'; j: JutsuMesa } | { tipo: 'imagem'; alvo: 'imagem' | 'fundo' } | { tipo: 'artes' } | { tipo: 'pasta'; id: string | null; pai: string | null } | { tipo: 'mover-cena'; cena: string };
+export type Modal = null | { tipo: 'nova' } | { tipo: 'excluir'; cena: string } | { tipo: 'renomear'; cena: string } | { tipo: 'participantes' } | { tipo: 'bestiario' } | { tipo: 'jutsu'; j: JutsuMesa } | { tipo: 'imagem'; alvo: 'imagem' | 'fundo' } | { tipo: 'artes' } | { tipo: 'pasta'; id: string | null; pai: string | null }| { tipo: 'mover-cena'; cena: string } | { tipo: 'config' };
 
 /** Uma arte pronta para pôr no quadro: da biblioteca ou do livro. */
 export interface ArteArmada {
@@ -48,6 +48,12 @@ export class UiMesa {
 	/** canto de cima à esquerda da vista, em metros */
 	vx = $state(0);
 	vy = $state(0);
+	/** Vista isométrica: o canto de onde esta pessoa olha (null = o da cena). Só vale para quem girou. */
+	isoRotacao = $state<0 | 90 | 180 | 270 | null>(null);
+	/** Gira a vista isométrica de 90 em 90°, a partir da atual (a da cena, se esta pessoa ainda não girou). */
+	girarIso(daCena: 0 | 90 | 180 | 270, passo: 1 | -1) {
+		this.isoRotacao = ((((((this.isoRotacao ?? daCena) / 90 + passo) % 4) + 4) % 4) * 90) as 0 | 90 | 180 | 270;
+	}
 	regua = $state<{ pontos: Quadrado[]; cur: Quadrado | null; feita: boolean; fixa: boolean; t: number } | null>(null);
 	modoLapis = $state<'lapis' | 'apontar'>('lapis');
 	espessura = $state(0.2);

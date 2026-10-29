@@ -287,6 +287,13 @@
 				<span class="text-[13px] leading-[18px] text-mut">{sub}</span>
 				<span class="flex flex-wrap items-center gap-1.5">
 					<span class="inline-flex items-center gap-1.5 border-2 px-1.5 py-[3px] text-xs leading-none font-semibold" style="border-color: {cor}"><span class="h-2 w-2" style="background: {cor}"></span>{dono?.nome ?? 'Mestre'}</span>
+{#if mesa.mestre && mesa.cena?.visao === 'isometrica'}
+						<span class="inline-flex items-center border-2 border-b3 font-pixel text-[11px] leading-none font-bold" title="Elevação do token na vista isométrica (visual: o token sobe na tela)">
+							<button type="button" class="h-7 w-7" aria-label="Descer o token" disabled={(token.elevacao ?? 0) <= -20} onclick={() => mesa.atualizarToken(token.id, { elevacao: Math.max(-20, (token.elevacao ?? 0) - 1) })}>−</button>
+							<span class="min-w-[44px] px-1 text-center">ELEV {token.elevacao ?? 0} m</span>
+							<button type="button" class="h-7 w-7" aria-label="Subir o token" disabled={(token.elevacao ?? 0) >= 60} onclick={() => mesa.atualizarToken(token.id, { elevacao: Math.min(60, (token.elevacao ?? 0) + 1) })}>+</button>
+						</span>
+					{/if}
 					{#if nomeAlvo}<button type="button" aria-pressed={nomeEscondido} class="inline-flex min-h-7 items-center gap-1 border-2 px-1.5 font-pixel text-[11px] leading-none font-bold {nomeEscondido ? 'border-warn text-warn' : 'border-b3 hover:border-mut'}" title={nomeEscondido ? 'Os jogadores veem ??? no lugar do nome. Clique para mostrar o nome.' : 'Esconder o nome dos jogadores (eles passam a ver ???)'} onclick={() => nomeAlvo && mesa.definirNomeOculto(nomeAlvo.tipo, nomeAlvo.id, !nomeEscondido)}>{nomeEscondido ? 'NOME: ???' : 'NOME VISÍVEL'}</button>{/if}
 					{#if dados.tipo === 'pc'}<button type="button" class="inline-flex min-h-7 items-center gap-1 border-2 border-b3 px-1.5 font-pixel text-[11px] leading-none font-bold hover:border-mut" title="A ficha inteira numa janela grande" onclick={() => dados.tipo === 'pc' && acoes.abrirFichaCompleta(dados.ficha.id)}>FICHA COMPLETA ⤢</button>{/if}
 				</span>

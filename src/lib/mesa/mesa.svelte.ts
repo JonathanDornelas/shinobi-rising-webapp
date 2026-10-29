@@ -1,7 +1,7 @@
 // L11 · Mesa: o estado de uma cena no navegador. O que fica salvo (tokens, traços, efeitos, a cena) chega ao vivo pelo
 // postgres_changes, já filtrado pelo RLS; o que é passageiro (o arrasto dos outros, a régua sendo medida, o Apontar, o
 // molde de jutsu) vai por broadcast no canal da campanha, e a presença diz quem está na mesa.
-import type { RealtimeChannel } from '@supabase/supabase-js';
+import type { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 import { sessao } from '#lib/estado/sessao.svelte.ts';
 import { toasts } from '#lib/estado/toasts.svelte.ts';
 import { ordemIniciativa } from '#lib/rolagens/registro.ts';
@@ -161,64 +161,87 @@ export class Mesa {
 		if (this.canal || !this.cenaId) return;
 		const cena = this.cenaId;
 		const lista = <T extends { id: string }>(arr: T[], novo: T) => (arr.some((x) => x.id === novo.id) ? arr.map((x) => (x.id === novo.id ? novo : x)) : [...arr, novo]);
-		this.canal = sb()
-			.channel(`mesa:${this.campanha}`, { config: { broadcast: { self: false }, presence: { key: this.eu } } })
-			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_tokens', filter: `cena_id=eq.${cena}` }, (p) => {
-				if (p.eventType === 'DELETE') this.tokens = this.tokens.filter((t) => t.id !== (p.old as { id: string }).id);
-				else {
-					const novo = p.new as MesaToken;
+		// Um só roteador para todos os avisos do banco, pela tabela do próprio aviso (`p.table`). O Realtime entrega cada aviso
+		// ao ouvinte pela ordem dos ids; quando muita coisa muda de uma vez (redimensionar a cena, por exemplo) já chegou a
+		// entregar a linha de uma tabela ao ouvinte de outra (um token aparecia como "efeito" e a atualização se perdia).
+		// Assim, onde quer que o aviso caia, ele é tratado como o que é.
+		const idAntigo = (p: RealtimePostgresChangesPayload<Record<string, unknown>>) => (p.old as { id?: string }).id;
+		const rotear = (p: RealtimePostgresChangesPayload<Record<string, unknown>>) => {
+			const apagou = p.eventType === 'DELETE';
+			switch (p.table) {
+				case 'mesa_tokens': {
+					if (apagou) return void (this.tokens = this.tokens.filter((t) => t.id !== idAntigo(p)));
+					const novo = p.new as unknown as MesaToken;
+					if (novo.cena_id !== cena) return;
 					const velho = this.tokens.find((t) => t.id === novo.id);
 					this.tokens = lista(this.tokens, this.comNome(novo));
 					// o PV visível só muda com ferimento, PV, entrada ou saída de token: andar não pede nova leitura
 					if (this.cena?.mostrar_pv && !this.mestre && (!velho || velho.ferimento !== novo.ferimento || velho.pv !== novo.pv || velho.pv_max !== novo.pv_max)) this.lerPvs();
-				}
-			})
-			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_tracos', filter: `cena_id=eq.${cena}` }, (p) => {
-				if (p.eventType === 'DELETE') this.tracos = this.tracos.filter((t) => t.id !== (p.old as { id: string }).id);
-				else this.tracos = lista(this.tracos, p.new as MesaTraco);
-			})
-			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_efeitos', filter: `cena_id=eq.${cena}` }, (p) => {
-				if (p.eventType === 'DELETE') this.efeitos = this.efeitos.filter((t) => t.id !== (p.old as { id: string }).id);
-				else this.efeitos = lista(this.efeitos, p.new as MesaEfeito);
-			})
-			// o Realtime não filtra DELETE (o registro antigo só traz o id): sem estes, um token, traço ou efeito apagado
-			// por outra pessoa (ou pela contagem de turnos) continuava na tela até recarregar
-			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_tokens' }, (p) => (this.tokens = this.tokens.filter((t) => t.id !== (p.old as { id: string }).id)))
-			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_tracos' }, (p) => (this.tracos = this.tracos.filter((t) => t.id !== (p.old as { id: string }).id)))
-			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_efeitos' }, (p) => (this.efeitos = this.efeitos.filter((t) => t.id !== (p.old as { id: string }).id)))
-			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_objetos' }, (p) => (this.objetos = this.objetos.filter((t) => t.id !== (p.old as { id: string }).id)))
-			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_objetos', filter: `cena_id=eq.${cena}` }, (p) => {
-				if (p.eventType !== 'DELETE') this.objetos = lista(this.objetos, p.new as MesaObjeto);
-			})
-			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_jukebox', filter: `campanha_id=eq.${this.campanha}` }, (p) => {
-				if (p.eventType === 'DELETE') return void (this.jukebox = null);
-				const novo = p.new as MesaJukebox;
-				// a troca chegou antes por broadcast: uma gravação mais velha que ela (a faixa anterior) não volta
-				if (Date.parse(novo.desde) < this.musicaT - 1500) return;
-				this.jukebox = novo;
-			})
-			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_cenas', filter: `campanha_id=eq.${this.campanha}` }, (p) => {
-				if (p.eventType === 'DELETE') {
-					this.cenas = this.cenas.filter((c) => c.id !== (p.old as { id: string }).id);
-					if ((p.old as { id: string }).id === cena && !this.mestre) this.trocouCena++;
 					return;
 				}
-				const c = mascararCena(p.new as MesaCena, this.mestre);
-				// colunas grandes que não mudaram podem chegar de fora do aviso (TOAST do Postgres): fica o que já estava
-				const antiga = this.cenas.find((x) => x.id === c.id);
-				if (!Array.isArray(c.terreno)) c.terreno = antiga?.terreno ?? [];
-				if (!Array.isArray(c.reveladas)) c.reveladas = antiga?.reveladas ?? [];
-				if (c.participantes != null && !Array.isArray(c.participantes)) c.participantes = antiga?.participantes ?? null;
-				if (!c.iniciativa || typeof c.iniciativa !== 'object' || Array.isArray(c.iniciativa)) c.iniciativa = antiga?.iniciativa ?? {};
-				this.cenas = lista(this.cenas, c);
-				// o Mestre ativou outra cena: quem joga vai junto
-				if (!this.mestre && c.ativa && c.id !== cena) this.trocouCena++;
-				if (c.id === cena && c.mostrar_pv && !this.mestre) this.lerPvs();
-			})
-			.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'membros', filter: `campanha_id=eq.${this.campanha}` }, (p) => {
-				const m = p.new as { usuario_id: string; cor: CorMesa | null };
-				this.membros = this.membros.map((x) => (x.id === m.usuario_id ? { ...x, cor: m.cor } : x));
-			})
+				case 'mesa_tracos':
+					// o Realtime não filtra DELETE (o registro antigo só traz o id): por isso o apagar vale para qualquer aviso
+					if (apagou) return void (this.tracos = this.tracos.filter((t) => t.id !== idAntigo(p)));
+					if ((p.new as { cena_id?: string }).cena_id === cena) this.tracos = lista(this.tracos, p.new as unknown as MesaTraco);
+					return;
+				case 'mesa_efeitos':
+					if (apagou) return void (this.efeitos = this.efeitos.filter((t) => t.id !== idAntigo(p)));
+					if ((p.new as { cena_id?: string }).cena_id === cena) this.efeitos = lista(this.efeitos, p.new as unknown as MesaEfeito);
+					return;
+				case 'mesa_objetos':
+					if (apagou) return void (this.objetos = this.objetos.filter((t) => t.id !== idAntigo(p)));
+					if ((p.new as { cena_id?: string }).cena_id === cena) this.objetos = lista(this.objetos, p.new as unknown as MesaObjeto);
+					return;
+				case 'mesa_jukebox': {
+					if (apagou) return void (this.jukebox = null);
+					const novo = p.new as unknown as MesaJukebox;
+					// a troca chegou antes por broadcast: uma gravação mais velha que ela (a faixa anterior) não volta
+					if (Date.parse(novo.desde) < this.musicaT - 1500) return;
+					this.jukebox = novo;
+					return;
+				}
+				case 'mesa_cenas': {
+					if (apagou) {
+						this.cenas = this.cenas.filter((c) => c.id !== idAntigo(p));
+						if (idAntigo(p) === cena && !this.mestre) this.trocouCena++;
+						return;
+					}
+					const c = mascararCena(p.new as unknown as MesaCena, this.mestre);
+					// colunas grandes que não mudaram podem chegar de fora do aviso (TOAST do Postgres): fica o que já estava
+					const antiga = this.cenas.find((x) => x.id === c.id);
+					if (!Array.isArray(c.terreno)) c.terreno = antiga?.terreno ?? [];
+					if (!Array.isArray(c.reveladas)) c.reveladas = antiga?.reveladas ?? [];
+					if (c.participantes != null && !Array.isArray(c.participantes)) c.participantes = antiga?.participantes ?? null;
+					if (!c.iniciativa || typeof c.iniciativa !== 'object' || Array.isArray(c.iniciativa)) c.iniciativa = antiga?.iniciativa ?? {};
+					this.cenas = lista(this.cenas, c);
+					// o Mestre ativou outra cena: quem joga vai junto
+					if (!this.mestre && c.ativa && c.id !== cena) this.trocouCena++;
+					if (c.id === cena && c.mostrar_pv && !this.mestre) this.lerPvs();
+					return;
+				}
+				case 'membros': {
+					if (apagou) return;
+					const m = p.new as unknown as { usuario_id: string; cor: CorMesa | null };
+					this.membros = this.membros.map((x) => (x.id === m.usuario_id ? { ...x, cor: m.cor } : x));
+					return;
+				}
+			}
+		};
+		this.canal = sb()
+			.channel(`mesa:${this.campanha}`, { config: { broadcast: { self: false }, presence: { key: this.eu } } })
+			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_tokens', filter: `cena_id=eq.${cena}` }, rotear)
+			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_tracos', filter: `cena_id=eq.${cena}` }, rotear)
+			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_efeitos', filter: `cena_id=eq.${cena}` }, rotear)
+			// o Realtime não filtra DELETE (o registro antigo só traz o id): sem estes, um token, traço ou efeito apagado
+			// por outra pessoa (ou pela contagem de turnos) continuava na tela até recarregar
+			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_tokens' }, rotear)
+			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_tracos' }, rotear)
+			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_efeitos' }, rotear)
+			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_objetos' }, rotear)
+			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_objetos', filter: `cena_id=eq.${cena}` }, rotear)
+			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_jukebox', filter: `campanha_id=eq.${this.campanha}` }, rotear)
+			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_cenas', filter: `campanha_id=eq.${this.campanha}` }, rotear)
+			.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'membros', filter: `campanha_id=eq.${this.campanha}` }, rotear)
 			// a troca de música do Mestre chega na hora, sem esperar o banco: todos passam para a faixa juntos
 			.on('broadcast', { event: 'musica' }, ({ payload }) => {
 				const { usuario, jukebox } = payload as { usuario: string; jukebox: MesaJukebox | null };
@@ -226,6 +249,15 @@ export class Mesa {
 				if (jukebox && !(jukebox.fonte && jukebox.ref && Number.isFinite(Date.parse(jukebox.desde)))) return;
 				this.musicaT = jukebox ? Date.parse(jukebox.desde) : Date.now() + this.desvio;
 				this.jukebox = jukebox;
+			})
+			// o Mestre escondeu um token ou objeto: o banco deixa de mostrá-lo ao grupo, mas o tempo real não avisa quando a linha
+			// some da vista (a atualização já não passa pela permissão), então o aviso vai por aqui. Quem é dono do token ou autor
+			// do objeto continua vendo o que é seu.
+			.on('broadcast', { event: 'esconder' }, ({ payload }) => {
+				const { usuario, tokens, objetos } = payload as { usuario: string; tokens?: string[]; objetos?: string[] };
+				if (this.mestre || this.membro(usuario)?.papel !== 'mestre') return;
+				if (Array.isArray(tokens)) this.tokens = this.tokens.filter((t) => !tokens.includes(t.id) || t.dono_id === this.eu);
+				if (Array.isArray(objetos)) this.objetos = this.objetos.filter((o) => !objetos.includes(o.id) || o.autor_id === this.eu);
 			})
 			.on('broadcast', { event: 'fantasma' }, ({ payload }) => this.receber('fantasmas', payload))
 			.on('broadcast', { event: 'regua' }, ({ payload }) => this.receber('reguas', payload))
@@ -428,6 +460,7 @@ export class Mesa {
 			toasts.mostrar(/travada/i.test(error.message) ? 'Mesa travada pelo Mestre.' : erro, 'erro');
 			return false;
 		}
+		if (this.mestre && patch.visivel === false && antes.visivel) this.canal?.send({ type: 'broadcast', event: 'esconder', payload: { usuario: this.eu, tokens: [id] } });
 		return true;
 	}
 
@@ -546,6 +579,7 @@ export class Mesa {
 			toasts.mostrar('Não foi possível salvar o objeto.', 'erro');
 			return false;
 		}
+		if (this.mestre && patch.visivel === false && antes.visivel) this.canal?.send({ type: 'broadcast', event: 'esconder', payload: { usuario: this.eu, objetos: [id] } });
 		return true;
 	}
 
@@ -616,15 +650,31 @@ export class Mesa {
 	}
 
 	// ------------------------------------------------------------------ cena (Mestre) e cor
-	async patchCena(patch: Partial<MesaCena>) {
-		if (!this.cenaId) return;
+	async patchCena(patch: Partial<MesaCena>): Promise<boolean> {
+		if (!this.cenaId) return false;
 		const antes = this.cenas;
 		this.cenas = this.cenas.map((c) => (c.id === this.cenaId ? { ...c, ...patch } : c));
 		const { error } = await sb().from('mesa_cenas').update(patch).eq('id', this.cenaId);
 		if (error) {
 			this.cenas = antes;
 			toasts.mostrar('Não foi possível salvar a cena.', 'erro');
+			return false;
 		}
+		return true;
+	}
+
+	/**
+	 * O Mestre muda o tamanho da cena (5 a 200 metros de lado). Quem ficaria fora da cena é puxado para dentro, com o
+	 * token inteiro à vista; o resto (terreno, névoa, objetos) fica como está.
+	 */
+	async redimensionarCena(largura: number, altura: number) {
+		if (!this.mestre || this.somenteLeitura || !this.cena) return false;
+		const L = Math.min(200, Math.max(5, Math.round(largura)));
+		const A = Math.min(200, Math.max(5, Math.round(altura)));
+		const fora = this.tokens.filter((t) => t.x + t.tamanho > L || t.y + t.tamanho > A);
+		if (!(await this.patchCena({ largura: L, altura: A }))) return false;
+		for (const t of fora) await this.atualizarToken(t.id, { x: Math.max(0, Math.min(t.x, L - t.tamanho)), y: Math.max(0, Math.min(t.y, A - t.tamanho)) });
+		return true;
 	}
 
 	/** Terreno difícil (só o Mestre): a lista inteira de quadrados da cena. */

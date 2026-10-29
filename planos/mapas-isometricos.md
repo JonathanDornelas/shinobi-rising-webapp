@@ -4,6 +4,26 @@ Plano para a Mesa mostrar cenas em vista isométrica, com tudo o que já existe 
 
 **Escopo, em uma frase: a Mesa ganha a grade e as ferramentas em formato isométrico. A arte dos mapas e dos objetos já vem isométrica, subida à parte pelo Mestre; o app não converte, não gera e não distorce arte.** Por isso este plano não tem conversão de mapa de cima nem geração de tiles; a arte entra como entra hoje (biblioteca de artes) e o Mestre a encaixa na grade com uma ferramenta de calibração.
 
+**Andamento (todas as fases escritas; falta só aplicar a migração no banco de produção):**
+
+| fase | estado |
+| --- | --- |
+| 0 · módulo de projeção | pronto: `src/lib/mesa/projecao.ts` (19 testes): projetar e inverter nas 4 vistas, losango, runs, elipse, ângulos, caixa da cena, ordem de pintura, matriz do chão e itens de pé |
+| 1 · desenho | pronto: grade, fundo, tokens de pé com sombra no chão, rótulos, opção "Vista isométrica" nas configurações da cena |
+| 2 · clique e arrasto | pronto: o ponteiro passa pela projeção inversa; selecionar (base ou sprite), arrastar token, régua; verificado: 3 quadrados em x movem exatamente 3 em x e a régua mede certo |
+| 3 · jutsus e áreas | pronto: moldes, anéis (elipses), efeitos com o desenho do elemento, terreno e névoa entram pela matriz do chão; alcance da ficha rápida conferido na tela; o jogador não vê o token sob a névoa |
+| 4 · objetos | pronto: imagem de pé sobre o ponto de apoio, mesma ordem de pintura dos tokens (um token atrás da imagem fica atrás dela), clique no sprite, arrastar e redimensionar pelo quadrado de baixo; alfinete e texto de pé |
+| 5 · elevação, giro e fundo | pronto: elevação do token com controle do Mestre na ficha rápida (sobe na tela); cada pessoa gira a vista (⟲ ⟳ ou as teclas [ e ]); o Mestre escolhe o canto e a proporção do losango; o fundo isométrico se encaixa pela mesma ferramenta de mover e pela largura em quadrados; **com fundo na cena a vista não gira** (a arte existe de um canto só) |
+| 6 · polimento | feito o que cabe em código: ordem de pintura calculada uma vez por mudança, vista que volta a caber ao trocar de vista ou girar, sem as letras e números das bordas na isométrica, controles pelo celular iguais aos da vista de cima. Fica de fora: zoom em passos inteiros para pixel art e o aviso de arte que não parece isométrica |
+
+**A migração `20261108120000_mesa_isometrica.sql`** (colunas `visao`, `iso_razao`, `iso_rotacao` e `elevacao`, com a trava da elevação) passa nos testes do banco e **ainda não foi aplicada em produção**. Sem ela, a coluna `visao` não existe e as cenas seguem de cima. O desenho foi conferido no navegador com um interruptor local temporário (já removido).
+
+**Como ficou, e por que difere do texto da seção 4:** o chão (grade, terreno, névoa, efeitos, moldes, traços, régua, círculos que viram elipses) entra num único `<g>` com a matriz da projeção, então nada disso precisou de código novo. O que fica de pé (token, imagem de objeto, alfinete, texto) usa `emPe`; o rótulo e o fundo usam a matriz inversa para voltar às coordenadas da tela. O ponteiro passa por `inverter`, então mover, medir, mirar e desenhar continuam em grade.
+
+**Camadas (feitas depois do plano):** as imagens ganharam as camadas chão, meio e acima (ver `mesa-tatica.md`). Na isométrica, o "meio" é o que entra na ordem de pintura com os tokens; o "chão" fica sob tudo e o "acima" sobre tudo. Isso resolve a oclusão de um token atrás de uma árvore sem altura de terreno.
+
+**Decisões tomadas das perguntas abertas** (a seção 13 mantém o texto original): a elevação é só visual; o ponto de apoio de uma imagem é o centro da base e o Mestre ajusta arrastando e redimensionando; a rotação fica desligada em cenas com fundo; cada pessoa pode girar a própria vista, e a de cima continua disponível desligando a opção da cena.
+
 ## 1. A decisão central
 
 **Os dados continuam sendo a grade quadrada. Só a apresentação e o clique mudam.**

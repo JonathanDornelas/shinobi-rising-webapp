@@ -65,8 +65,8 @@
 
 		{#if o.tipo === 'imagem'}
 			<div class="flex flex-wrap items-center gap-1.5 text-xs text-mut">
-				<span class="font-semibold">Tamanho</span><span class="font-pixel font-bold text-fg">{o.largura} × {o.altura} m</span>
-				<span class="ml-auto">Arraste o canto para redimensionar e a bolinha para girar (Shift trava de 15 em 15°).</span>
+				<span class="font-semibold">Tamanho</span><span class="font-pixel font-bold text-fg">{o.largura} × {o.altura} {mesa.cena?.visao === 'isometrica' ? 'quadr.' : 'm'}</span>
+<span class="ml-auto">{mesa.cena?.visao === 'isometrica' ? 'Na vista isométrica a imagem fica de pé sobre o ponto de apoio: arraste para mover e o quadrado de baixo para redimensionar.' : 'Arraste o canto para redimensionar e a bolinha para girar (Shift trava de 15 em 15°).'}</span>
 			</div>
 		{/if}
 
@@ -75,8 +75,18 @@
 				<button type="button" role="switch" aria-checked={o.visivel} class="{btn} {o.visivel ? '' : 'border-warn text-warn'}" title={o.visivel ? 'O grupo vê este objeto' : 'Só o Mestre vê este objeto'} onclick={() => mesa.atualizarObjeto(o.id, { visivel: !o.visivel })}>{o.visivel ? 'VISÍVEL' : 'ESCONDIDO'}</button>
 				<button type="button" role="switch" aria-checked={o.travado} class="{btn} {o.travado ? 'border-[var(--vermelhao)]' : ''}" title="Travado: só o Mestre mexe, e o dono não" onclick={() => mesa.atualizarObjeto(o.id, { travado: !o.travado })}>{o.travado ? 'TRAVADO' : 'TRAVAR'}</button>
 			{/if}
-			{#if mesa.mestre && o.tipo === 'imagem'}
-				<button type="button" class={btn} disabled={o.ordem >= topo && mesa.objetos.filter((x) => x.ordem === topo).length === 1} title="Põe por cima das outras imagens" onclick={() => mesa.atualizarObjeto(o.id, { ordem: Math.min(1000, topo + 1) })}>PARA FRENTE</button>
+		{#if mesa.mestre && o.tipo === 'imagem'}
+			<div class="flex flex-col gap-1">
+				<span class="text-xs font-semibold text-mut">Camada · o token fica entre elas</span>
+				<div role="radiogroup" aria-label="Camada da imagem" class="flex border-2 border-b3">
+					{#each [['acima', 'ACIMA', 'Sobre os tokens (copa da árvore, telhado)'], ['meio', 'MEIO', 'Com os tokens: na vista isométrica passa à frente ou atrás de cada um'], ['chao', 'CHÃO', 'Sob tudo (piso, tapete)']] as const as [c, n, dica] (c)}
+						<button type="button" role="radio" aria-checked={(o.camada ?? 'meio') === c} title={dica} class="min-h-9 flex-1 font-pixel text-[11px] font-bold {(o.camada ?? 'meio') === c ? 'bg-grena text-papel' : 'text-mut'}" onclick={() => mesa.atualizarObjeto(o.id, { camada: c })}>{n}</button>
+					{/each}
+				</div>
+			</div>
+		{/if}
+		{#if mesa.mestre && o.tipo === 'imagem'}
+<button type="button" class={btn} disabled={o.ordem >= topo && mesa.objetos.filter((x) => x.ordem === topo).length === 1} title="Põe por cima das outras imagens" onclick={() => mesa.atualizarObjeto(o.id, { ordem: Math.min(1000, topo + 1) })}>PARA FRENTE</button>
 				<button type="button" class={btn} disabled={o.ordem <= fundo && mesa.objetos.filter((x) => x.ordem === fundo).length === 1} title="Põe por baixo das outras imagens" onclick={() => mesa.atualizarObjeto(o.id, { ordem: Math.max(-1000, fundo - 1) })}>PARA TRÁS</button>
 			{/if}
 			<button type="button" class={btn} onclick={duplicar}>DUPLICAR</button>
