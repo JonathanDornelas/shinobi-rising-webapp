@@ -12,6 +12,8 @@ import {
 	ehPergaminhoMestre,
 	livrePergaminho,
 	pesoItem,
+	pilhaSelada,
+	quantoCabe,
 	curar,
 	descansar,
 	estadoAtual,
@@ -257,8 +259,11 @@ export class FichaJogo {
 		}
 	}
 
-	/** Selar: 1 ação e 1 PC (no Pergaminho Mestre, uma ação completa). O item some da mochila e não pesa mais. */
-	async selar(itemId: string, pergaminhoId: string) {
+	/**
+	 * Selar: 1 ação e 1 PC (no Pergaminho Mestre, uma ação completa). O item some da mochila e não pesa mais. `qtd` sela só
+	 * parte da pilha (o resto fica na mochila); sem ela, a pilha inteira.
+	 */
+	async selar(itemId: string, pergaminhoId: string, qtd?: number) {
 		if (!this.editavel) return;
 		const item = this.inventario.find((x) => x.id === itemId);
 		let perg = this.inventario.find((x) => x.id === pergaminhoId);
@@ -272,16 +277,31 @@ export class FichaJogo {
 			this.inventario.push({ ...$state.snapshot(perg), id: `${perg.id.split('~')[0]}~${Math.random().toString(36).slice(2, 8)}`, qtd: 1 });
 			perg = this.inventario[this.inventario.length - 1];
 		}
-		const livre = livrePergaminho(this.inventario, perg);
-		if (pesoItem(item) > livre) {
-			return void toasts.mostrar(`Não cabe: ${String(pesoItem(item)).replace('.', ',')} de carga, e o pergaminho tem ${String(livre).replace('.', ',')} livre.`, 'aviso');
+		const n = Math.max(1, Math.min(item.qtd, Math.floor(qtd ?? item.qtd)));
+		const cabe = quantoCabe(this.inventario, item, perg);
+		if (n > cabe) {
+			const livre = String(livrePergaminho(this.inventario, perg)).replace('.', ',');
+			return void toasts.mostrar(cabe ? `Cabem só ${cabe}× ${item.nome} nesse pergaminho (${livre} livre).` : `Não cabe: o pergaminho tem ${livre} de carga livre.`, 'aviso');
 		}
-		// o item selado ganha um id próprio, para uma compra nova da mesma coisa não cair dentro do pergaminho
-		item.id = `${item.id.split('~')[0]}~s${Math.random().toString(36).slice(2, 8)}`;
-		item.selado = perg.id;
+		const nome = item.nome;
+		// o mesmo item já selado ali: junta na pilha; senão o selado ganha um id próprio, para uma compra nova da mesma
+		// coisa não cair dentro do pergaminho
+		const junto = pilhaSelada(this.inventario, item, perg.id);
+		const idSelado = `${item.id.split('~')[0]}~s${Math.random().toString(36).slice(2, 8)}`;
+		if (junto) {
+			junto.qtd += n;
+			item.qtd -= n;
+			if (item.qtd === 0) this.inventario = this.inventario.filter((x) => x !== item);
+		} else if (n < item.qtd) {
+			item.qtd -= n;
+			this.inventario.push({ ...$state.snapshot(item), id: idSelado, qtd: n, selado: perg.id });
+		} else {
+			item.id = idSelado;
+			item.selado = perg.id;
+		}
 		const acao = ehPergaminhoMestre(perg) ? 'ação completa' : '1 ação';
-		this.mudar({ ...this.estado, pc: this.atual.pc - 1 }, `Selou ${item.qtd}× ${item.nome} no ${perg.nome} (${acao}, −1 PC)`, 'item/ic-item-pergaminho-basico');
-		await this.salvarInventario(`Selou ${item.qtd}× ${item.nome} no ${perg.nome}`);
+		this.mudar({ ...this.estado, pc: this.atual.pc - 1 }, `Selou ${n}× ${nome} no ${perg.nome} (${acao}, −1 PC)`, 'item/ic-item-pergaminho-basico');
+		await this.salvarInventario(`Selou ${n}× ${nome} no ${perg.nome}`);
 	}
 
 	/** Invocar: ação secundária e 1 PC (no Pergaminho Mestre, a ação primária). O item volta para a mão. */

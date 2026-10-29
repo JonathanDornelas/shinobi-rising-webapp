@@ -3,7 +3,7 @@
 	// Pergaminhos de armazenamento: selar (1 PC) tira o item da mochila e ele deixa de pesar; invocar (1 PC) devolve.
 	import { numero } from '#lib/formatar.ts';
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
-	import { capacidadePergaminho, conteudoPergaminho, ehPergaminhoMestre, livrePergaminho, type ItemInventario } from '#lib/personagem/progressao.ts';
+	import { capacidadePergaminho, conteudoPergaminho, ehPergaminhoMestre, livrePergaminho, quantoCabe, type ItemInventario } from '#lib/personagem/progressao.ts';
 	import type { ItemLoja } from '#lib/personagem/regras.ts';
 	import { corQualidade } from '#lib/equipamentos/dados.ts';
 	import { somar } from '#lib/rolagens/expressoes.ts';
@@ -26,6 +26,12 @@
 	const pergaminhos = $derived(f.inventario.filter((i) => !i.selado && capacidadePergaminho(i) != null));
 	/** Item com o menu "Selar em…" aberto (o ícone de pergaminho só aparece ao passar o mouse no item). */
 	let selando = $state<string | null>(null);
+	/** Quantas unidades selar (começa no máximo que cabe em algum pergaminho). */
+	let qtdSelar = $state(1);
+	function abrirSelar(i: ItemInventario, maximo: number) {
+		selando = selando === i.id ? null : i.id;
+		qtdSelar = Math.max(1, maximo);
+	}
 
 	let loja = $state<'comprar' | 'adicionar' | null>(null);
 	let filtro = $state('');
@@ -63,7 +69,7 @@
 					<ul class="m-0 list-none p-0">
 						{#each lista as i (i.id)}
 							{@const cap = capacidadePergaminho(i)}
-							{@const destinos = pergaminhos.filter((p) => p.id !== i.id && livrePergaminho(f.inventario, p) >= peso(i))}
+							{@const destinos = pergaminhos.filter((p) => p.id !== i.id).map((p) => ({ p, cabe: quantoCabe(f.inventario, i, p) })).filter((d) => d.cabe > 0)}
 							<li class="group grid grid-cols-[32px_minmax(0,1fr)_auto_56px] items-center gap-3 border-b-2 border-b3 px-3.5 py-1 last:border-b-0" style:box-shadow={corQualidade(i.qualidade) ? `inset 4px 0 0 ${corQualidade(i.qualidade)}` : undefined} title={i.qualidade && i.qualidade !== 'Comum' ? `Qualidade ${i.qualidade}` : undefined}>
 								<Icone id={i.icone} />
 								<span class="flex min-w-0 flex-col gap-0.5">
@@ -80,7 +86,7 @@
 												aria-haspopup="menu"
 												aria-expanded={selando === i.id}
 												title="Selar num pergaminho (1 PC)"
-												onclick={() => (selando = selando === i.id ? null : i.id)}
+												onclick={() => abrirSelar(i, Math.max(0, ...destinos.map((d) => d.cabe)))}
 											>
 												<Icone id="equip/ic-equip-pergaminho" class="h-6 w-6" />
 											</button>
@@ -90,8 +96,17 @@
 													{#if f.atual.pc < 1}
 														<span class="px-2.5 py-2 text-xs text-mut">Sem PC para selar.</span>
 													{:else}
-														{#each destinos as p (p.id)}
-															<button type="button" role="menuitem" class="min-h-9 border-b-2 border-b3 px-2.5 text-left text-[13px] font-medium last:border-b-0 hover:bg-b3" onclick={() => ((selando = null), f.selar(i.id, p.id))}>{p.nome} <span class="text-mut">· {fmt(livrePergaminho(f.inventario, p))} livre</span></button>
+														{#if i.qtd > 1 && destinos.length}
+															<div class="flex items-center gap-1.5 border-b-2 border-b3 px-2.5 py-1.5">
+																<span class="flex-1 text-xs font-semibold text-mut">Quantos</span>
+																<button type="button" class="btn-icone h-7 w-7 font-pixel" aria-label="Selar 1 a menos" disabled={qtdSelar <= 1} onclick={() => (qtdSelar = Math.max(1, qtdSelar - 1))}>−</button>
+																<input type="number" min="1" max={i.qtd} aria-label="Quantidade a selar" class="campo h-7 w-12 px-1 text-center text-[13px] [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none" bind:value={qtdSelar} onchange={() => (qtdSelar = Math.max(1, Math.min(i.qtd, Math.floor(qtdSelar || 1))))} />
+																<button type="button" class="btn-icone h-7 w-7 font-pixel" aria-label="Selar 1 a mais" disabled={qtdSelar >= i.qtd} onclick={() => (qtdSelar = Math.min(i.qtd, qtdSelar + 1))}>+</button>
+																<button type="button" class="link ml-1 text-xs font-semibold" onclick={() => (qtdSelar = i.qtd)}>de {i.qtd}</button>
+															</div>
+														{/if}
+														{#each destinos as { p, cabe } (p.id)}
+															<button type="button" role="menuitem" class="min-h-9 border-b-2 border-b3 px-2.5 text-left text-[13px] font-medium last:border-b-0 enabled:hover:bg-b3 disabled:opacity-50" disabled={qtdSelar > cabe} onclick={() => ((selando = null), f.selar(i.id, p.id, qtdSelar))}>{p.nome} <span class="text-mut">· {fmt(livrePergaminho(f.inventario, p))} livre{cabe < i.qtd ? ` · cabem ${cabe}` : ''}</span></button>
 														{:else}
 															<span class="px-2.5 py-2 text-xs text-mut">Não cabe em nenhum pergaminho.</span>
 														{/each}

@@ -13,6 +13,8 @@ import {
 	picMaximo,
 	planoNivel,
 	progressoXp,
+	quantoCabe,
+	type ItemInventario,
 	type JutsuFicha
 } from './progressao.ts';
 import { atributosTotais, fichaVazia, linhasPericia, nivelDe, recursos, type FichaDados, type ItemLoja } from './regras.ts';
@@ -159,5 +161,31 @@ describe('em jogo', () => {
 		const inv = inventarioInicial(hana(), loja);
 		expect(inv.map((i) => `${i.nome} ×${i.qtd}`)).toEqual(['Hitaiate ×1', 'Shuriken ×10', 'Kunai ×10', 'Papel Explosivo ×3', 'Kit médico (5 usos) ×1']);
 		expect(cargaInventario(inv)).toBe(2);
+	});
+});
+
+describe('selar parte de uma pilha (cap. 11)', () => {
+	const perg = (id: string, nome = 'Pergaminho básico (5 de carga)'): ItemInventario => ({ id, nome, qtd: 1, peso: 0.5, grupo: 'Pergaminhos', icone: 'x' });
+	const kunai: ItemInventario = { id: 'kunai', nome: 'Kunai', qtd: 10, peso: 1, grupo: 'Armas', icone: 'x' };
+
+	it('cabem tantas unidades quanto o espaço livre comporta', () => {
+		expect(quantoCabe([kunai, perg('p')], kunai, perg('p'))).toBe(5);
+		expect(quantoCabe([{ ...kunai, qtd: 3 }, perg('p')], { ...kunai, qtd: 3 }, perg('p'))).toBe(3);
+	});
+
+	it('o que já está selado ocupa espaço, e o mesmo item junta com a pilha selada', () => {
+		const p = perg('p');
+		const selado: ItemInventario = { ...kunai, id: 'kunai~sabc', qtd: 2, selado: 'p' };
+		expect(quantoCabe([kunai, p, selado], kunai, p)).toBe(3);
+		// itens em conjunto (shuriken, 10 por 0,5 de carga) juntam sem pagar meio conjunto à toa
+		const shuriken: ItemInventario = { id: 'shuriken', nome: 'Shuriken', qtd: 20, peso: 0, conjunto: 10, grupo: 'Armas', icone: 'x' };
+		const cheio: ItemInventario = { ...shuriken, id: 'shuriken~s1', qtd: 85, selado: 'p' };
+		expect(quantoCabe([shuriken, p, cheio], shuriken, p)).toBe(15);
+	});
+
+	it('nada cabe num pergaminho cheio', () => {
+		const p = perg('p');
+		const pedra: ItemInventario = { id: 'pedra', nome: 'Pedra', qtd: 1, peso: 5, grupo: 'Outros', icone: 'x', selado: 'p' };
+		expect(quantoCabe([kunai, p, pedra], kunai, p)).toBe(0);
 	});
 });

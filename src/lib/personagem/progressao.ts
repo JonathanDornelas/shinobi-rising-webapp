@@ -435,6 +435,19 @@ export function capacidadePergaminho(i: Pick<ItemInventario, 'nome' | 'grupo'>):
 export const conteudoPergaminho = (itens: ItemInventario[], pergaminho: string) => itens.filter((i) => i.selado === pergaminho);
 export const livrePergaminho = (itens: ItemInventario[], p: ItemInventario) =>
 	(capacidadePergaminho(p) ?? 0) - conteudoPergaminho(itens, p.id).reduce((t, i) => t + pesoItem(i), 0);
+/** A pilha do mesmo item que já está selada neste pergaminho (selar mais junta com ela). */
+export const pilhaSelada = (itens: ItemInventario[], item: ItemInventario, pergaminho: string) =>
+	itens.find((x) => x !== item && x.selado === pergaminho && x.id.split('~')[0] === item.id.split('~')[0] && x.nome === item.nome);
+/** Quantas unidades do item cabem no espaço livre do pergaminho (0 se nem uma), contando a pilha com que ele junta. */
+export function quantoCabe(itens: ItemInventario[], item: ItemInventario, p: ItemInventario): number {
+	const livre = livrePergaminho(itens, p);
+	const junto = pilhaSelada(itens, item, p.id);
+	for (let n = item.qtd; n >= 1; n--) {
+		const extra = junto ? pesoItem({ ...junto, qtd: junto.qtd + n }) - pesoItem(junto) : pesoItem({ ...item, qtd: n });
+		if (extra <= livre + 1e-9) return n;
+	}
+	return 0;
+}
 /** O Pergaminho Mestre é mais lento: selar é uma ação completa e invocar, a ação primária. */
 export const ehPergaminhoMestre = (p: Pick<ItemInventario, 'nome'>) => /mestre/i.test(p.nome);
 
