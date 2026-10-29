@@ -52,3 +52,15 @@ export function estiloFoco(f: FocoArte) {
 	const pc = (v: number) => `${Math.round(v * 10000) / 100}%`;
 	return `position:absolute;max-width:none;left:${pc(r.x)};top:${pc(r.y)};width:${pc(r.w)};height:${pc(r.h)}`;
 }
+
+/**
+ * O enquadramento do retrato (zoom e deslocamento em frações do lado do quadrado, como em retrato.ts) que põe o foco
+ * da arte no meio. Quem chama passa por limitar(), que empurra a imagem para cobrir o quadrado inteiro.
+ */
+export function enquadramentoDoFoco(f: Foco, natural: { naturalWidth: number; naturalHeight: number }) {
+	const zoom = Math.max(1, f.zoom);
+	const menor = Math.min(natural.naturalWidth, natural.naturalHeight);
+	const w = (natural.naturalWidth / menor) * zoom;
+	const h = (natural.naturalHeight / menor) * zoom;
+	return { zoom, x: w * (0.5 - f.x), y: h * (0.5 - f.y) };
+}

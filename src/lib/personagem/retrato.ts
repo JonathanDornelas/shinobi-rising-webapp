@@ -20,14 +20,15 @@ export interface Enquadramento {
 	y: number;
 }
 
-/** Recorta a imagem no quadrado do enquadramento e devolve um webp de LADO_RETRATO px. */
-export async function recortar(img: HTMLImageElement, e: Enquadramento): Promise<Blob> {
+/** Recorta a imagem no quadrado do enquadramento e devolve um webp de LADO_RETRATO px (pixel art sem suavizar). */
+export async function recortar(img: HTMLImageElement, e: Enquadramento, pixelado = false): Promise<Blob> {
 	const canvas = document.createElement('canvas');
 	canvas.width = canvas.height = LADO_RETRATO;
 	const ctx = canvas.getContext('2d')!;
 	const escala = (LADO_RETRATO / Math.min(img.naturalWidth, img.naturalHeight)) * e.zoom;
 	const w = img.naturalWidth * escala;
 	const h = img.naturalHeight * escala;
+	ctx.imageSmoothingEnabled = !pixelado;
 	ctx.imageSmoothingQuality = 'high';
 	ctx.drawImage(img, (LADO_RETRATO - w) / 2 + e.x * LADO_RETRATO, (LADO_RETRATO - h) / 2 + e.y * LADO_RETRATO, w, h);
 	return codificarWebp(canvas);

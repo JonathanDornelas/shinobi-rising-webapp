@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import bestiario from '#lib/livro/gerado/bestiario.json';
 import type { Criatura } from '#lib/livro/tipos.ts';
-import { estiloFoco, focoDaArte, focoPadrao, retanguloFoco } from './foco.ts';
+import { estiloFoco, focoDaArte, focoPadrao, retanguloFoco, enquadramentoDoFoco } from './foco.ts';
 
 describe('foco das artes do bestiário', () => {
 	it('toda arte do bestiário tem foco no mapa', () => {
@@ -48,5 +48,19 @@ describe('foco das artes do bestiário', () => {
 		expect(r.x + f.x * r.w).toBeCloseTo(0);
 		expect(r.y + f.y * r.h).toBeCloseTo(0);
 		expect(estiloFoco(f)).toContain('width:200%');
+	});
+});
+
+describe('retrato a partir de uma arte do bestiário', () => {
+	it('o foco vai para o meio do quadrado, no zoom da arte', () => {
+		// arte 128×192 (retrato), foco no rosto (meio, a 25% do alto), zoom 1,5
+		const e = enquadramentoDoFoco({ x: 0.5, y: 0.25, zoom: 1.5 }, { naturalWidth: 128, naturalHeight: 192 });
+		expect(e.zoom).toBe(1.5);
+		expect(e.x).toBeCloseTo(0);
+		// a imagem tem 2,25 lados de altura; subir o foco de 25% para o meio desloca 0,5625 lado para baixo
+		expect(e.y).toBeCloseTo(2.25 * 0.25);
+	});
+	it('zoom abaixo de 1 vira 1 (a imagem sempre cobre o quadrado)', () => {
+		expect(enquadramentoDoFoco({ x: 0.5, y: 0.5, zoom: 0.6 }, { naturalWidth: 100, naturalHeight: 100 })).toEqual({ zoom: 1, x: 0, y: 0 });
 	});
 });
