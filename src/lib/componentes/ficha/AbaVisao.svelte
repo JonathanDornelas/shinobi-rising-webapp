@@ -37,14 +37,19 @@
 			{/each}
 		</div>
 		<div class="grid grid-cols-2 gap-2.5">
-			{#each [['recurso/ic-recurso-defesa', 'DEFESA', f.kkg?.ligada && f.kkg.efeito.defesa ? `10 + Acrobacia + ${f.kkg.efeito.defesa} ${f.kkg.def.nome}` : '10 + Acrobacia', String(r.defesa)], ['recurso/ic-recurso-defesa-mental', 'DEF. MENTAL', '10 + Percepção', String(r.defesaMental)], ['recurso/ic-recurso-iniciativa', 'INICIATIVA', r.formulas.iniciativa, sinal(r.iniciativa)], ['recurso/ic-recurso-carga', 'CARGA', `máx. ${r.cargaMax}`, String(f.carga).replace('.', ',')]] as [icone, rotulo, conta, valor] (rotulo)}
+			<!-- para que serve cada número, em vez da fórmula (a conta fica no hover) -->
+			{#each [['recurso/ic-recurso-defesa', 'DEFESA', 'contra ataques', f.kkg?.ligada && f.kkg.efeito.defesa ? `10 + Acrobacia + ${f.kkg.efeito.defesa} (${f.kkg.def.nome})` : '10 + Acrobacia', String(r.defesa)], ['recurso/ic-recurso-defesa-mental', 'DEF. MENTAL', 'contra Genjutsu', '10 + Percepção', String(r.defesaMental)], ['recurso/ic-recurso-iniciativa', 'INICIATIVA', 'ordem no combate', r.formulas.iniciativa, sinal(r.iniciativa)], ['recurso/ic-recurso-carga', 'CARGA', '', `${String(f.carga).replace('.', ',')} de ${r.cargaMax}`, String(f.carga).replace('.', ',')]] as [icone, rotulo, uso, conta, valor] (rotulo)}
 				<div class="flex items-center gap-2 border-2 border-frame bg-b2 px-3 py-2.5 {rotulo === 'INICIATIVA' || rotulo === 'CARGA' ? 'max-sm:col-span-2' : ''}" title={conta}>
 					<Icone id={icone} />
 					<div class="flex min-w-0 flex-1 flex-col gap-1">
 						<span class="font-pixel text-xs leading-none font-bold tracking-[0.06em] text-mut max-sm:leading-[14px]">{rotulo}</span>
-						<span class="truncate text-xs leading-4 text-mut">{conta}</span>
+						{#if rotulo === 'CARGA'}
+							<span class="relative h-2.5 border-2 border-ink bg-b3" aria-hidden="true"><span class="absolute inset-y-0 left-0" style:width="{Math.min(100, (f.carga / r.cargaMax) * 100)}%" style:background={f.carga > r.cargaMax ? 'var(--warn)' : 'var(--acc)'}></span></span>
+						{:else}
+							<span class="truncate text-xs leading-4 text-mut">{uso}</span>
+						{/if}
 					</div>
-					<span class="t-num text-[26px] leading-none">{valor}</span>
+					<span class="t-num text-[26px] leading-none">{valor}{#if rotulo === 'CARGA'}<span class="text-sm text-mut">/{r.cargaMax}</span>{/if}</span>
 					{#if rotulo === 'INICIATIVA' && f.editavel}<BotaoRolar class="w-9" expressao={teste(r.iniciativa)} rotulo="Iniciativa" personagem={f.id} d20 tipo="iniciativa" origem="Ficha · Visão geral" partes={partesIniciativa(f.calc.atributos.AGI, r.iniciativa)} />{/if}
 				</div>
 			{/each}

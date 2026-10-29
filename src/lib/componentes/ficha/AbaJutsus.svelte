@@ -23,6 +23,8 @@
 	import BotaoFavorito from '../regras/BotaoFavorito.svelte';
 	import SeloDt from '../regras/SeloDt.svelte';
 	import MenuVantagem from '../rolagens/MenuVantagem.svelte';
+	import MetaJutsu from '../jutsu/MetaJutsu.svelte';
+	import { alcanceCurto, areaCurta, resistenciaCurta } from '#lib/jutsus/meta.ts';
 	import { comDt, dtDoLancador } from '#lib/jutsus/dt.ts';
 	import Glosa from '../regras/Glosa.svelte';
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
@@ -32,7 +34,7 @@
 	import TooltipAcao from '../mesa/TooltipAcao.svelte';
 	import DadoHud from '../mesa/DadoHud.svelte';
 	import { corElemento } from '#lib/mesa/hud.ts';
-	import { reguaDoCard } from '#lib/mesa/regua.ts';
+	import { clonesDoJutsu, reguaDoCard } from '#lib/mesa/regua.ts';
 
 	/**
 	 * Dentro da Mesa: MEDIR liga a régua do jutsu (e a janela da ficha minimiza), e USAR vai pelo caminho da Mesa
@@ -337,6 +339,7 @@
 			{@const t = TIPO_JUTSU[j.tipo as TipoJutsu] ?? TIPO_JUTSU.Ninjutsu}
 			{@const ab = aberto === j.slug}
 			{@const rr = rolagens(j)}
+			{@const rg = reguaDoCard(j.info)}
 			<li class="border-2 bg-b2 sombra-painel" style:border-color={ab ? 'var(--mut)' : 'var(--frame)'} onmouseenter={(e) => mostrarDica(j, e.currentTarget)} onmouseleave={esconderDica}>
 				<div class="grid grid-cols-[4px_32px_minmax(0,1fr)_auto_36px] items-center gap-x-2.5 gap-y-2 py-2 pr-1.5 md:grid-cols-[4px_32px_minmax(0,1fr)_auto_120px_130px_40px] md:gap-x-3">
 					<div class="-my-2 self-stretch max-md:row-span-2" style:background={t.cor}></div>
@@ -353,7 +356,8 @@
 								{#if rr.dano}<DadoHud expr={rr.dano.expr} cor={el?.cor} tamanho={18} />{:else if rr.cura}<DadoHud expr={rr.cura} cor="#7FB069" tamanho={18} />{/if}
 							</span>
 						{/if}
-						<span class="truncate text-[13px] leading-[18px] text-mut">{j.origem} · {j.efeito}</span>
+						<MetaJutsu meta={{ alcance: alcanceCurto(rg, info(j, 'Alcance')), area: areaCurta(rg, clonesDoJutsu(info(j, 'Área'), j.efeito)), resist: resistenciaCurta(info(j, 'Resistência')) }} />
+						<span class="truncate text-[13px] leading-[18px] text-mut" title="{j.origem} · {j.efeito}">{j.efeito}</span>
 					</button>
 					<span class="inline-flex h-9 items-center gap-1 border-2 border-ink pr-2.5 text-[13px] font-semibold max-md:hidden" style:background={t.cor} style:color={t.texto}><Icone id={t.icone} />{j.tipo}</span>
 					{@render custo(j, true)}

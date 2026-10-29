@@ -43,6 +43,8 @@
 	import { lembrarTamanho } from '#lib/mesa/tamanho.ts';
 	import { efeitoKkg, kkgLigada } from '#lib/personagem/kkg.ts';
 	import MenuVantagem from '../rolagens/MenuVantagem.svelte';
+	import MetaJutsu, { type Meta as MetaCurta } from '../jutsu/MetaJutsu.svelte';
+	import { alcanceCurto, areaCurta, resistenciaCurta } from '#lib/jutsus/meta.ts';
 	import SavesMorte from '../ficha/SavesMorte.svelte';
 	import { aplicarSave } from '#lib/personagem/progressao.ts';
 	import SeloDt from '../regras/SeloDt.svelte';
@@ -206,13 +208,13 @@
 	type Aba = 'acoes' | 'jutsus' | 'habilidades' | 'pericias' | 'equip' | 'notas';
 	const abas = $derived<[Aba, string][]>(
 		dados.tipo === 'pc' && dados.editavel
-			? [['acoes', 'AÇÕES'], ['jutsus', 'JUTSUS'], ['pericias', 'PERÍCIAS'], ['equip', 'EQUIP.'], ['notas', 'NOTAS']]
+			? [['acoes', 'AÇÕES'], ['jutsus', 'JUTSUS'], ['pericias', 'TESTES'], ['equip', 'EQUIP.'], ['notas', 'NOTAS']]
 			: dados.tipo === 'npc'
 				? ([
 						['acoes', 'AÇÕES'],
 						...(dados.jutsus.length ? [['jutsus', 'JUTSUS']] : []),
 						...(dados.extras?.habilidades.length ? [['habilidades', 'HABILIDADES']] : []),
-						...(dados.extras?.pericias.length ? [['pericias', 'PERÍCIAS']] : []),
+						...(dados.extras?.pericias.length || dados.extras?.atributos?.length ? [['pericias', 'TESTES']] : []),
 						['notas', 'NOTAS']
 					] as [Aba, string][])
 				: []
@@ -286,9 +288,9 @@
 		if (!arrasto) return;
 		ui.mudarFicha(token.id, { x: Math.max(0, arrasto.jx + e.clientX - arrasto.x), y: Math.max(0, arrasto.jy + e.clientY - arrasto.y) });
 	}
-	/** "9 PC · Médio (30m) · Cone médio (10m)": a área só entra quando diz algo além do alcance. */
-	const metaJutsu = (j: JutsuMesa, resistencia = false) =>
-		[`${j.custo} ${j.unidade}`, j.alcance, j.area && j.area !== j.alcance ? j.area : null, resistencia ? j.resistencia : null].filter(Boolean).join(' · ');
+	/** Os dados de uma linha de ação em pedaços curtos, cada um com o seu ícone (no lugar de "9 PC · Médio (30m) · …"). */
+	type Meta = MetaCurta & { texto?: string };
+	const metaJutsu = (j: JutsuMesa): Meta => ({ custo: j.custo ? [j.custo, j.unidade] : undefined, alcance: alcanceCurto(j.regua, j.alcance), area: areaCurta(j.regua, j.clones), resist: resistenciaCurta(j.resistencia) });
 	/** MEDIR só aparece quando há régua (alcance especial não tem o que medir). */
 	const medir = (j: JutsuMesa) => (temRegua(j.regua) ? [{ n: 'MEDIR', acao: () => acoes.medirJutsu(token, j), dica: 'Liga a régua de jutsu' }] : []);
 	const falta = (j: JutsuMesa) => j.custo > (j.unidade === 'PE' ? atual.pe : atual.pc);
@@ -296,10 +298,22 @@
 	const btn = 'min-h-8 border-2 border-field bg-transparent px-2 font-pixel text-[11px] leading-none font-bold text-fg disabled:cursor-not-allowed disabled:opacity-50';
 </script>
 
-{#snippet linhaAcao(icone: string | null, nome: string, meta: string, aviso: string | null, botoes: { n: string; acao: () => void; dica?: string; desab?: boolean; vantagem?: boolean }[], ver?: () => void, hud?: JutsuMesa | ArmaMesa, exprs?: { ataque: string | null; dano: string | null })}
-	<div class="flex items-center gap-2 border-b-2 border-b1 px-3 py-1.5" role="group" onmouseenter={(e) => hud && mostrarDica(hud, e.currentTarget)} onmouseleave={esconderDica}>
-		{#if icone}<Icone id={icone} />{/if}
-		<div class="flex min-w-0 flex-1 flex-col gap-0.5">
+{#snippet iconeMeta(tipo: 'alcance' | 'area' | 'resist')}
+	<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" class="flex-none fill-none stroke-current stroke-[1.6]">
+		{#if tipo === 'alcance'}<path d="M2 14L14 2 M10 2h4v4" stroke-dasharray="2 2" />{:else if tipo === 'area'}<circle cx="8" cy="8" r="6" /><circle cx="8" cy="8" r="1.5" />{:else}<path d="M8 1l6 2v5c0 4-3 6-6 7-3-1-6-3-6-7V3z" />{/if}
+	</svg>
+{/snippet}
+
+{#snippet chipsMeta(m: Meta)}
+	<MetaJutsu meta={m} />
+	{#if m.texto}<span class="text-xs leading-4 text-mut">{m.texto}</span>{/if}
+{/snippet}
+
+{#snippet linhaAcao(icone: string | null, nome: string, meta: Meta, aviso: string | null, botoes: { n: string; acao: () => void; dica?: string; desab?: boolean; vantagem?: boolean }[], ver?: () => void, hud?: JutsuMesa | ArmaMesa, exprs?: { ataque: string | null; dano: string | null })}
+	<!-- o nome e os dados ocupam a largura; os botões ficam à direita e descem para a linha de baixo quando não cabem -->
+	<div class="flex flex-wrap items-center gap-x-2 gap-y-1.5 border-b-2 border-b1 px-3 py-2" role="group" onmouseenter={(e) => hud && mostrarDica(hud, e.currentTarget)} onmouseleave={esconderDica}>
+		{#if icone}<Icone id={icone} class="self-start" />{/if}
+		<div class="flex min-w-0 flex-[1_1_170px] flex-col gap-1">
 			{#if ver}
 				<button type="button" class="self-start text-left text-sm leading-[18px] font-semibold underline decoration-field decoration-dotted underline-offset-[3px] hover:text-title hover:decoration-current" title="Ver o jutsu inteiro" onclick={ver}>{nome}</button>
 			{:else}
@@ -319,19 +333,23 @@
 					{#if exprs.dano}<DadoHud expr={exprs.dano} tamanho={18} />{/if}
 				</span>
 			{/if}
-			{#if meta}<span class="text-xs leading-4 text-mut">{meta}</span>{/if}
+			{@render chipsMeta(meta)}
 			{#if aviso}<span class="text-xs leading-4 font-semibold text-warn">{aviso}</span>{/if}
 		</div>
-		{#each botoes as b (b.n)}
-			{#if b.vantagem}
-				<span class="flex">
-					<button type="button" class="{btn} border-r-0 {celular ? 'min-h-11 px-2.5' : ''}" title={b.dica} disabled={b.desab} onclick={b.acao}>{b.n}</button>
-					<MenuVantagem aoAtacar={b.acao} rotulo={b.n} desab={b.desab} class="{btn} border-l-2 border-l-b3 px-1.5 {celular ? 'min-h-11 px-2' : ''}" />
-				</span>
-			{:else}
-				<button type="button" class="{btn} {celular ? 'min-h-11 px-2.5' : ''}" title={b.dica} disabled={b.desab} onclick={b.acao}>{b.n}</button>
-			{/if}
-		{/each}
+		{#if botoes.length}
+			<div class="ml-auto flex flex-wrap justify-end gap-1">
+				{#each botoes as b (b.n)}
+					{#if b.vantagem}
+						<span class="flex">
+							<button type="button" class="{btn} border-r-0 {celular ? 'min-h-11 px-2.5' : ''}" title={b.dica} disabled={b.desab} onclick={b.acao}>{b.n}</button>
+							<MenuVantagem aoAtacar={b.acao} rotulo={b.n} desab={b.desab} class="{btn} border-l-2 border-l-b3 px-1.5 {celular ? 'min-h-11 px-2' : ''}" />
+						</span>
+					{:else}
+						<button type="button" class="{btn} {celular ? 'min-h-11 px-2.5' : ''}" title={b.dica} disabled={b.desab} onclick={b.acao}>{b.n}</button>
+					{/if}
+				{/each}
+			</div>
+		{/if}
 	</div>
 {/snippet}
 
@@ -341,7 +359,7 @@
 	aria-label="Ficha rápida de {token.nome}"
 	class={celular
 		? 'absolute inset-x-0 bottom-16 z-20 flex flex-col border-t-2 bg-b2 shadow-[0_-4px_0_var(--b0)]'
-		: 'absolute flex h-[560px] max-h-[calc(100%-16px)] min-h-[240px] w-[380px] max-w-[calc(100%-16px)] min-w-[300px] resize flex-col overflow-hidden border-2 bg-b2 shadow-[8px_8px_0_var(--sombra)]'}
+		: 'absolute flex h-[640px] max-h-[calc(100%-16px)] min-h-[240px] w-[380px] max-w-[calc(100%-16px)] min-w-[300px] resize flex-col overflow-hidden border-2 bg-b2 shadow-[8px_8px_0_var(--sombra)]'}
 	style:border-color={cor}
 	style:height={celular ? (alta ? 'calc(100% - 64px)' : '50%') : undefined}
 	style:left={celular ? undefined : `${janela.x}px`}
@@ -455,43 +473,33 @@
 				{@const est = dados.tipo === 'pc'
 					? [['Defesa', String(dados.ficha.defesa + (kkg?.ligada ? kkg.efeito.defesa : 0)), 'recurso/ic-recurso-defesa'], ['Def. mental', String(dados.ficha.defesaMental + (kkg?.ligada ? (kkg.efeito.pericias.percepcao ?? 0) : 0)), 'recurso/ic-recurso-defesa-mental'], ['Iniciativa', `+${dados.ficha.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', `${dados.ficha.deslocamento} m`, 'esp/ic-esp-velocidade']]
 					: [['Defesa', String(dados.npc.defesa), 'recurso/ic-recurso-defesa'], ...(defMentalNpc != null ? [['Def. mental', String(defMentalNpc), 'recurso/ic-recurso-defesa-mental']] : []), ['Iniciativa', `${dados.npc.iniciativa >= 0 ? '+' : ''}${dados.npc.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', `${dados.extras?.deslocamento ?? 10} m`, 'esp/ic-esp-velocidade']]}
-				<div class="mx-3 mb-2.5 grid grid-cols-2 gap-1">
+				<div class="mx-3 mb-2.5 grid grid-cols-4 gap-1" role="group" aria-label="Defesas, iniciativa e deslocamento">
+					{#snippet numero(k: string, v: string, ic: string, rolar: boolean)}
+						<span class="flex items-center gap-1"><Icone id={ic} class="h-5 w-5" /><b class="font-pixel text-base leading-none whitespace-nowrap">{v}</b>{#if rolar}<Icone id="dado/ic-dado-d20" class="h-4 w-4" />{/if}</span>
+						<span class="max-w-full truncate text-[10px] leading-3 text-mut">{k}</span>
+					{/snippet}
 					{#each est as [k, v, ic] (k)}
-						<div class="flex items-center gap-1.5 border-2 border-b3 bg-b1 py-0.5 pr-1.5 pl-0.5 odd:last:col-span-2">
-							<Icone id={ic} />
-							<span class="flex-1 text-xs leading-none font-medium text-mut">{k}</span>
-							<b class="font-pixel text-base leading-none whitespace-nowrap">{v}</b>
-							{#if k === 'Iniciativa' && editavel}
-								<button type="button" class="h-8 w-8 border-2 border-b3 p-0" aria-label="Rolar iniciativa" title="Rolar iniciativa" onclick={() => acoes.rolar(token, { expr: teste(dados.tipo === 'pc' ? dados.ficha.iniciativa : dados.npc.iniciativa), rotulo: 'Iniciativa', partes: [] }, 'iniciativa', true)}><Icone id="dado/ic-dado-d20" class="-m-0.5" /></button>
-							{/if}
-						</div>
+						{#if k === 'Iniciativa' && editavel}
+							<button type="button" class="flex flex-col items-center gap-0.5 border-2 border-b3 bg-b1 px-0.5 py-0.5 hover:border-mut" title="Rolar iniciativa" aria-label="Iniciativa {v}, rolar" onclick={() => acoes.rolar(token, { expr: teste(dados.tipo === 'pc' ? dados.ficha.iniciativa : dados.tipo === 'npc' ? dados.npc.iniciativa : 0), rotulo: 'Iniciativa', partes: [] }, 'iniciativa', true)}>{@render numero(k, v, ic, true)}</button>
+						{:else}
+							<div class="flex flex-col items-center gap-0.5 border-2 border-b3 bg-b1 px-0.5 py-0.5" title={k}>{@render numero(k, v, ic, false)}</div>
+						{/if}
 					{/each}
 				</div>
 			{/if}
 
-			{#if atributos.length}
-				<div role="group" aria-label="Atributos" class="mx-3 mb-2.5 grid grid-cols-6 gap-1">
-					{#each atributos as a (a.sigla)}
-						<button type="button" class="flex flex-col items-center gap-0.5 border-2 border-b3 bg-b1 py-1 enabled:hover:border-mut disabled:cursor-default {celular ? 'min-h-11' : ''}" title="{a.nome} {a.valor}: rolar um teste ({teste(a.valor)})" aria-label="{a.nome} {a.valor}, rolar um teste" disabled={!editavel} onclick={() => acoes.rolar(token, { expr: teste(a.valor), rotulo: `Teste de ${a.nome}`, partes: partesAtributo(a.sigla, a.valor) }, 'teste', true)}>
-							<span class="font-pixel text-[10px] leading-none font-bold text-mut">{a.sigla}</span>
-							<b class="font-pixel text-base leading-none">{a.valor}</b>
-						</button>
-					{/each}
-				</div>
-			{/if}
 
-			{#if mesa.mestre && !mesa.somenteLeitura && (dados.tipo === 'npc' || (dados.tipo === 'pc' && dados.ficha.jogadorId === mesa.eu))}
-				<!-- o Mestre devolve o NPC inteiro de uma vez (a ficha completa do Mestre é um NPC) -->
-				<div class="mx-3 mb-2.5 flex items-center gap-2">
-					<button type="button" class="{btn} flex items-center gap-1.5 {celular ? 'min-h-11 px-2.5' : ''}" title="PV, PC e PE cheios e sem estados{dados.tipo === 'npc' && dados.npc.membros > 1 ? ' (todos os membros)' : dados.tipo === 'pc' ? ', Fadiga e saves zerados' : ''}" onclick={() => (dados.tipo === 'npc' ? acoes.restaurarNpc(dados.npc) : dados.tipo === 'pc' && acoes.restaurarFicha(dados.ficha))}><Icone id="item/ic-item-kit-medico" class="h-5 w-5" />RESTAURAR TUDO</button>
-					<span class="text-xs leading-4 text-mut">Recursos cheios, sem estados</span>
-				</div>
-			{/if}
 			{#if mesa.mestre && !mesa.somenteLeitura}
-				<!-- tamanho no quadro (cap. 4): o do bestiário entra sozinho; o Mestre ajusta ou encolhe para caber -->
-				<div class="mx-3 mb-2.5 flex items-center gap-1.5">
-					<span class="font-pixel text-[11px] leading-none font-bold tracking-[0.06em] text-mut">TAMANHO</span>
-					<div role="radiogroup" aria-label="Tamanho no quadro" class="flex border-2 border-b3">
+				<!-- ferramentas do Mestre, recolhidas: devolver o NPC inteiro e o tamanho no quadro (cap. 4) -->
+				<details class="group mx-3 mb-2.5 border-2 border-b3">
+					<summary class="flex min-h-7 cursor-pointer list-none items-center gap-2 px-2 text-xs font-semibold text-mut hover:text-fg [&::-webkit-details-marker]:hidden">
+						<span class="font-pixel text-[11px] tracking-[0.06em]">MESTRE</span><span class="flex-1 truncate">Restaurar e tamanho no quadro</span><span class="font-pixel transition-transform group-open:rotate-90">▸</span>
+					</summary>
+					<div class="flex flex-wrap items-center gap-2 border-t-2 border-b3 p-2">
+						{#if dados.tipo === 'npc' || (dados.tipo === 'pc' && dados.ficha.jogadorId === mesa.eu)}
+							<button type="button" class="{btn} flex items-center gap-1.5 {celular ? 'min-h-11 px-2.5' : ''}" title="PV, PC e PE cheios e sem estados{dados.tipo === 'npc' && dados.npc.membros > 1 ? ' (todos os membros)' : dados.tipo === 'pc' ? ', Fadiga e saves zerados' : ''}" onclick={() => (dados.tipo === 'npc' ? acoes.restaurarNpc(dados.npc) : dados.tipo === 'pc' && acoes.restaurarFicha(dados.ficha))}><Icone id="item/ic-item-kit-medico" class="h-5 w-5" />RESTAURAR TUDO</button>
+						{/if}
+						<div role="radiogroup" aria-label="Tamanho no quadro" class="flex border-2 border-b3">
 						{#each [[1, '1×1'], [3, '3×3'], [6, '6×6'], [10, '10×10']] as const as [n, rot] (n)}
 							<button type="button" role="radio" aria-checked={token.tamanho === n} class="h-8 px-2 font-pixel text-[11px] font-bold {token.tamanho === n ? 'bg-grena text-papel' : 'text-mut'}" onclick={() => {
 								const L = mesa.cena?.largura ?? 40;
@@ -501,7 +509,8 @@
 							}}>{rot}</button>
 						{/each}
 					</div>
-				</div>
+					</div>
+				</details>
 			{/if}
 			{#if token.tamanho_base != null}
 				<!-- crescido por um jutsu (Baika no Jutsu): volta sozinho quando os turnos acabam -->
@@ -511,13 +520,24 @@
 				</div>
 			{/if}
 			{#if editavel}
-				<div class="mx-3 mb-2.5 flex flex-wrap gap-1">
-					{#each estadosVisiveis as s (s.id)}
-						{@const on = atual.condicoes.includes(s.id)}
-						<button type="button" aria-pressed={on} title={s.efeito} class="flex min-h-9 items-center gap-0.5 border-2 pr-2 text-xs leading-none font-semibold {on ? 'border-[var(--vermelhao)] bg-grena' : 'border-b3'}" onclick={() => alternarEstado(s.id)}>
-							<Icone id="estado/ic-estado-{s.id}" />{on ? '✓ ' : ''}{s.nome}
-						</button>
-					{/each}
+				<div class="mx-3 mb-2.5 flex flex-col gap-1">
+					<div class="grid gap-0.5 {celular ? 'grid-cols-6' : 'grid-cols-12'}" role="group" aria-label="Estados">
+						{#each estadosVisiveis as s (s.id)}
+							{@const on = atual.condicoes.includes(s.id)}
+							<button type="button" aria-pressed={on} aria-label={s.nome} title="{s.nome}: {s.efeito}" class="flex items-center justify-center border-2 {celular ? 'min-h-11' : 'h-7'} {on ? 'border-[var(--vermelhao)] bg-grena' : 'border-transparent opacity-50 hover:border-b3 hover:opacity-100'}" onclick={() => alternarEstado(s.id)}>
+								<Icone id="estado/ic-estado-{s.id}" class="h-6 w-6" />
+							</button>
+						{/each}
+					</div>
+					<div class="flex min-h-6 items-center gap-2">
+						<span class="min-w-0 flex-1 truncate text-xs leading-4 {atual.condicoes.length ? 'font-semibold' : 'text-mut'}">{atual.condicoes.length ? atual.condicoes.map((c) => estadosVisiveis.find((x) => x.id === c)?.nome ?? c).join(', ') : 'Sem estados'}</span>
+						{#if dados.tipo === 'pc'}
+							<span class="flex items-center gap-1" role="group" aria-label="Fadiga {atual.fadiga} de 5" title="Fadiga (cap. 4): cada nível pesa mais">
+								<Icone id="recurso/ic-recurso-fadiga" class="h-5 w-5" />
+								{#each { length: 5 } as _, i (i)}<button type="button" aria-label="Fadiga {i + 1}" class="h-4 w-4 border-2 border-field p-0 {i < atual.fadiga ? 'bg-warn' : 'bg-b0'}" onclick={() => fadiga(i + 1)}></button>{/each}
+							</span>
+						{/if}
+					</div>
 				</div>
 			{/if}
 			{#if kkg}
@@ -542,13 +562,6 @@
 					<SavesMorte compacto saves={dados.ficha.estado.saves ?? { sucessos: 0, falhas: 0 }} esp={dados.ficha.atributos.find((a) => a.sigla === 'ESP')?.valor ?? 0} campanha={mesa.campanha} personagem={dados.ficha.id} {editavel} origem="Mesa · PV 0" aoRolado={saveRolado} aoMarcar={marcarSave} />
 				</div>
 			{/if}
-			{#if dados.tipo === 'pc' && editavel}
-				<div class="mx-3 mb-2.5 flex items-center gap-1.5">
-					<Icone id="recurso/ic-recurso-fadiga" />
-					<span class="font-pixel text-xs leading-none font-bold text-mut">FADIGA</span>
-					{#each { length: 5 } as _, i (i)}<button type="button" aria-label="Fadiga {i + 1}" class="h-5 w-5 border-2 border-field p-0 {i < atual.fadiga ? 'bg-warn' : 'bg-b0'}" onclick={() => fadiga(i + 1)}></button>{/each}
-				</div>
-			{/if}
 
 			{#if abas.length && aba}
 				<div role="tablist" class="sticky top-0 z-10 flex border-y-2 border-b3 bg-b0">
@@ -558,24 +571,23 @@
 				</div>
 				{#if aba === 'acoes' && dados.tipo === 'pc'}
 					{#each dados.ficha.armas as a, i (`${i}:${a.nome}`)}
-						{@render linhaAcao(null, a.nome, a.rotuloAlcance, null, [
+						{@render linhaAcao(null, a.nome, { alcance: a.rotuloAlcance }, null, [
 							{ n: 'MEDIR', acao: () => acoes.aneis(token, a.alcance <= 2 ? a.alcance : 0, a.alcance > 2 ? [{ r: a.alcance, rotulo: `${a.nome} · ${a.alcance} m` }] : [], a.nome) },
 							{ n: 'ATAQUE', acao: () => acoes.atacar(token, a, 'ataque'), vantagem: true }, ...(a.dano ? [{ n: 'DANO', acao: () => acoes.atacar(token, a, 'dano'), dica: 'Crítico se o último ataque foi 20 natural' }] : [])
 						], undefined, a)}
 					{/each}
-					{#each dados.ficha.jutsus.filter((j) => j.ataque || j.dano || j.resistencia).slice(0, 4) as j (j.slug)}
-						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, metaJutsu(j), avisoFalta(j), [...medir(j), ...botoesUso(j, falta(j))], () => acoes.verJutsu(j), j)}
-					{/each}
-					{@render linhaAcao('recurso/ic-recurso-pe', 'Esquiva Ativa', 'Reação · 10 PE · Acrobacia vira a Defesa; contra área, vantagem na Resistência', null, [{ n: 'USAR', acao: () => acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 10) }, 'Esquiva Ativa: −10 PE'), desab: atual.pe < 10 }])}
-					{@render linhaAcao('recurso/ic-recurso-defesa', 'Defesa Total', 'Ação primária · +5 na Defesa e na Defesa Mental até o seu próximo turno', null, [])}
-					{@render linhaAcao('pericia/ic-pericia-taijutsu', 'Combo Taijutsu', 'Ação secundária · 5 PE · segundo ataque com −5, só Taijutsu ou desarmado', null, [{ n: 'USAR', acao: () => acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 5) }, 'Combo Taijutsu: −5 PE'), desab: atual.pe < 5 }])}
+					<!-- os jutsus ficam só na aba JUTSUS; aqui, as armas, as manobras de todo ninja e as medidas -->
+					{@render linhaAcao('recurso/ic-recurso-pe', 'Esquiva Ativa', { acao: 'Reação', custo: [10, 'PE'], texto: 'Acrobacia vira a Defesa; contra área, vantagem na Resistência' }, null, [{ n: 'USAR', acao: () => acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 10) }, 'Esquiva Ativa: −10 PE'), desab: atual.pe < 10 }])}
+					{@render linhaAcao('recurso/ic-recurso-defesa', 'Defesa Total', { acao: 'Primária', texto: '+5 na Defesa e na Defesa Mental até o seu próximo turno' }, null, [])}
+					{@render linhaAcao('pericia/ic-pericia-taijutsu', 'Combo Taijutsu', { acao: 'Secundária', custo: [5, 'PE'], texto: 'Segundo ataque com −5, só Taijutsu ou desarmado' }, null, [{ n: 'USAR', acao: () => acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 5) }, 'Combo Taijutsu: −5 PE'), desab: atual.pe < 5 }])}
 					<div class="flex flex-wrap gap-1 px-3 py-2">
-						<button type="button" class={btn} onclick={() => acoes.aneis(token, 0, [{ r: dados.ficha.deslocamento, rotulo: `Mover · ${dados.ficha.deslocamento} m` }, { r: dados.ficha.deslocamento * 2, rotulo: `Com sprint · ${dados.ficha.deslocamento * 2} m` }], 'Deslocamento')}>DESLOCAMENTO</button>
-						{#each dados.ficha.distancias as [n, r] (n)}<button type="button" class={btn} onclick={() => acoes.aneis(token, 0, [{ r, rotulo: `${n} · ${r} m` }], n)}>{n.toUpperCase()}</button>{/each}
+						<span class="flex w-full items-center gap-1 text-xs leading-4 text-mut">{@render iconeMeta('alcance')}Medir no quadro</span>
+						<button type="button" class={btn} onclick={() => acoes.aneis(token, 0, [{ r: dados.ficha.deslocamento, rotulo: `Mover · ${dados.ficha.deslocamento} m` }, { r: dados.ficha.deslocamento * 2, rotulo: `Com sprint · ${dados.ficha.deslocamento * 2} m` }], 'Deslocamento')}>DESLOCAMENTO · {dados.ficha.deslocamento} m</button>
+						{#each dados.ficha.distancias as [n, r] (n)}<button type="button" class={btn} onclick={() => acoes.aneis(token, 0, [{ r, rotulo: `${n} · ${r} m` }], n)}>{n.toUpperCase()} · {r} m</button>{/each}
 					</div>
 				{:else if aba === 'acoes' && dados.tipo === 'npc' && dados.extras?.ataques.length}
 					{#each dados.extras.ataques as a, i (`${i}:${a.nome}`)}
-						{@render linhaAcao(null, a.nome, a.rotuloAlcance, null, [
+						{@render linhaAcao(null, a.nome, { alcance: a.rotuloAlcance }, null, [
 							{ n: 'MEDIR', acao: () => acoes.aneis(token, a.alcance <= 2 ? Math.max(a.alcance, alcanceCorpo(token.tamanho)) : 0, a.alcance > 2 ? [{ r: a.alcance, rotulo: `${a.nome} · ${a.alcance} m` }] : [], a.nome) },
 							{ n: 'ATAQUE', acao: () => acoes.atacar(token, a, 'ataque'), vantagem: true }, ...(a.dano ? [{ n: 'DANO', acao: () => acoes.atacar(token, a, 'dano'), dica: 'Crítico se o último ataque foi 20 natural' }] : [])
 						], undefined, a)}
@@ -587,29 +599,39 @@
 					{#each dados.extras.habilidades as h (h.slug)}
 						{@const usada = ui.usadas.includes(`${token.id}:${h.slug}`)}
 						{@const usavel = !!(h.dano || h.cura || h.resistencia)}
-						{@render linhaAcao('callout/ic-callout-destaque', h.nome, h.texto ?? '', h.porCena ? (usada ? 'Já usada nesta cena' : 'Uma vez por cena') : null, [
+						{@render linhaAcao('callout/ic-callout-destaque', h.nome, { texto: h.texto ?? undefined }, h.porCena ? (usada ? 'Já usada nesta cena' : 'Uma vez por cena') : null, [
 							...(temRegua(h.regua) ? [{ n: 'MEDIR', acao: () => acoes.medirJutsu(token, h), dica: `${h.area} · ${h.alcance}` }] : []),
 							...(usavel ? botoesUso(h) : [])
 						], () => acoes.verJutsu(h), h)}
 					{/each}
 				{:else if aba === 'acoes' && dados.tipo === 'npc' && ataqueNpc}
-					{@render linhaAcao(null, 'Ataque', ataqueNpc.texto || 'Sem ataque anotado', null, [
+					{@render linhaAcao(null, 'Ataque', { texto: ataqueNpc.texto || 'Sem ataque anotado' }, null, [
 						...(ataqueNpc.ataque ? [{ n: 'ATAQUE', acao: () => acoes.rolar(token, { expr: ataqueNpc!.ataque!, rotulo: `Ataque · ${token.nome}`, partes: [] }, 'ataque', true), vantagem: true }] : []),
 						...(ataqueNpc.dano ? [{ n: 'DANO', acao: () => acoes.rolar(token, { expr: ataqueNpc!.dano!, rotulo: `Dano · ${token.nome}`, partes: [] }, 'dano', false) }] : [])
 					], undefined, undefined, ataqueNpc.ataque || ataqueNpc.dano ? { ataque: ataqueNpc.ataque, dano: ataqueNpc.dano } : undefined)}
-					{#if dados.npc.especial}{@render linhaAcao(null, 'Especial', dados.npc.especial, null, [])}{/if}
+					{#if dados.npc.especial}{@render linhaAcao(null, 'Especial', { texto: dados.npc.especial }, null, [])}{/if}
 					<div class="flex flex-wrap gap-1 px-3 py-2">
 						<button type="button" class={btn} onclick={() => acoes.aneis(token, alcanceCorpo(token.tamanho), [{ r: deslNpc, rotulo: `Mover · ${deslNpc} m` }, { r: 2 * deslNpc, rotulo: `Com sprint · ${2 * deslNpc} m` }], 'Deslocamento')}>DESLOCAMENTO</button>
 					</div>
 				{:else if aba === 'jutsus' && dados.tipo === 'npc'}
 					{#each dados.jutsus as j (j.slug)}
-						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, metaJutsu(j, true), avisoFalta(j), [...medir(j), ...botoesUso(j, falta(j))], () => acoes.verJutsu(j), j)}
+						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, metaJutsu(j), avisoFalta(j), [...medir(j), ...botoesUso(j, falta(j))], () => acoes.verJutsu(j), j)}
 					{/each}
 				{:else if aba === 'jutsus' && dados.tipo === 'pc'}
 					{#each dados.ficha.jutsus as j (j.slug)}
 						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, metaJutsu(j), avisoFalta(j), [...medir(j), ...botoesUso(j, falta(j))], () => acoes.verJutsu(j), j)}
 					{/each}
 				{:else if aba === 'pericias'}
+					{#if atributos.length}
+						<div role="group" aria-label="Atributos" class="mx-3 my-2.5 grid grid-cols-6 gap-1">
+							{#each atributos as a (a.sigla)}
+								<button type="button" class="flex flex-col items-center gap-0.5 border-2 border-b3 bg-b1 py-1 enabled:hover:border-mut disabled:cursor-default {celular ? 'min-h-11' : ''}" title="{a.nome} {a.valor}: rolar um teste ({teste(a.valor)})" aria-label="{a.nome} {a.valor}, rolar um teste" disabled={!editavel} onclick={() => acoes.rolar(token, { expr: teste(a.valor), rotulo: `Teste de ${a.nome}`, partes: partesAtributo(a.sigla, a.valor) }, 'teste', true)}>
+									<span class="font-pixel text-[10px] leading-none font-bold text-mut">{a.sigla}</span>
+									<b class="font-pixel text-base leading-none">{a.valor}</b>
+								</button>
+							{/each}
+						</div>
+					{/if}
 					<!-- como a aba Perícias da ficha completa: atributo, treino, bônus e total, na ordem do livro -->
 					<div role="table" aria-label="Perícias">
 						<div role="row" class="grid grid-cols-[minmax(0,1fr)_64px_44px_76px] gap-2 bg-vermelhao px-3 py-2 font-pixel text-[11px] leading-4 font-bold tracking-[0.08em] text-white">
@@ -624,7 +646,7 @@
 									{#if p.bonus.length}<span class="flex flex-wrap gap-1">{#each p.bonus as b, j (j)}<span class="border-2 border-[rgba(217,168,43,.5)] bg-[rgba(217,168,43,.14)] px-1 py-0.5 text-[11px] leading-none font-semibold">{b.fonte} +{b.valor}</span>{/each}</span>{/if}
 								</span>
 								<span role="cell" class="justify-self-start border-2 border-b3 px-1 py-0.5 font-pixel text-[11px] leading-none font-semibold">{p.atributo} {p.valorAtributo >= 0 ? '+' : ''}{p.valorAtributo}{#if p.distancia}<br /><span class="text-mut">{p.distancia.atributo}</span>{/if}</span>
-								<span role="cell" class="t-num text-sm text-mut">+{p.treino}</span>
+								<span role="cell" class="t-num text-sm text-mut">{p.treino >= 0 ? `+${p.treino}` : `−${-p.treino}`}</span>
 								<span role="cell" class="flex flex-col items-end gap-0.5">
 									<span class="flex items-center gap-1.5">
 										<span class="t-num text-xl leading-none">{p.total >= 0 ? '+' : ''}{p.total}</span>
