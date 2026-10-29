@@ -40,6 +40,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	import CardJutsu from '#lib/componentes/regras/CardJutsu.svelte';
 	import SeloDt from '#lib/componentes/regras/SeloDt.svelte';
 	import BarraMinimizadas, { type Minimizada } from '#lib/componentes/mesa/BarraMinimizadas.svelte';
+	import MenuVantagem from '#lib/componentes/rolagens/MenuVantagem.svelte';
 	import { urlRetrato } from '#lib/personagem/retrato.ts';
 	import { TAMANHOS } from '#lib/bestiario/npc.ts';
 	import { alcanceCorpo } from '#lib/mesa/geometria.ts';
@@ -875,7 +876,10 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 						<button type="button" class="min-h-9 border-2 border-field px-2.5 font-pixel text-xs font-bold" onclick={deixarNaCena}>DEIXAR NA CENA</button>
 					{/if}
 					{#if minhaMira}
-						<button type="button" class="btn-jogo btn-primario min-h-9 {molde.ok ? '' : 'opacity-80'}" title={j.custo ? `Gasta ${j.custo} ${j.unidade}${j.ataque ? ' e rola o ataque' : ''}. Fora do alcance é aviso, não bloqueio.` : 'Fora do alcance é aviso, não bloqueio.'} onclick={() => usarJutsu(molde.lancador, j, 'ataque')}>{j.ataque ? 'ATAQUE' : 'USAR'}</button>
+						<span class="flex">
+							<button type="button" class="btn-jogo btn-primario min-h-9 {molde.ok ? '' : 'opacity-80'}" title={j.custo ? `Gasta ${j.custo} ${j.unidade}${j.ataque ? ' e rola o ataque' : ''}. Fora do alcance é aviso, não bloqueio.` : 'Fora do alcance é aviso, não bloqueio.'} onclick={() => usarJutsu(molde.lancador, j, 'ataque')}>{j.ataque ? 'ATAQUE' : 'USAR'}</button>
+							{#if j.ataque}<MenuVantagem aoAtacar={() => usarJutsu(molde.lancador, j, 'ataque')} rotulo="Ataque" class="btn-jogo btn-primario min-h-9 border-l-2 border-l-[var(--vermelhao-lo)] px-2 {molde.ok ? '' : 'opacity-80'}" />{/if}
+						</span>
 						{#if j.dano || j.cura}<button type="button" class="btn-jogo min-h-9 border-2 border-field" title="Rola o {j.dano ? 'dano (crítico se o ataque foi 20 natural)' : 'a cura'} nos alvos da régua" onclick={() => usarJutsu(molde.lancador, j, 'dano')}>{j.dano ? 'DANO' : 'CURA'}</button>{/if}
 					{/if}
 				</div>
@@ -1011,7 +1015,10 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 						<span class="font-pixel text-xs leading-none font-bold text-mut">{ui.mira.jutsu.regua.rotuloAlcance} · {molde.dist} m · {molde.ok ? (molde.quem.length ? `${molde.quem.length} na área` : 'toque no quadro') : 'fora do alcance'}</span>
 						<div class="flex gap-1.5">
 								{#if minhaMira}
-									<button type="button" class="btn-jogo btn-primario min-h-11 flex-1" onclick={() => usarJutsu(molde.lancador, ui.mira!.jutsu, 'ataque')}>{ui.mira.jutsu.ataque ? 'ATAQUE' : 'USAR'}</button>
+									<span class="flex flex-1">
+										<button type="button" class="btn-jogo btn-primario min-h-11 flex-1" onclick={() => usarJutsu(molde.lancador, ui.mira!.jutsu, 'ataque')}>{ui.mira.jutsu.ataque ? 'ATAQUE' : 'USAR'}</button>
+										{#if ui.mira.jutsu.ataque}<MenuVantagem aoAtacar={() => usarJutsu(molde.lancador, ui.mira!.jutsu, 'ataque')} rotulo="Ataque" class="btn-jogo btn-primario min-h-11 border-l-2 border-l-[var(--vermelhao-lo)] px-3" />{/if}
+									</span>
 									{#if ui.mira.jutsu.dano || ui.mira.jutsu.cura}<button type="button" class="btn-jogo min-h-11 flex-1 border-2 border-field" onclick={() => usarJutsu(molde.lancador, ui.mira!.jutsu, 'dano')}>{ui.mira.jutsu.dano ? 'DANO' : 'CURA'}</button>{/if}
 								{/if}
 							<button type="button" class="min-h-11 w-12 border-2 border-field font-pixel text-sm" aria-label="Cancelar régua" onclick={() => (ui.mira = null)}>✕</button>
