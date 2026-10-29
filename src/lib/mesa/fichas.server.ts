@@ -5,11 +5,12 @@ import { claDaFicha } from '#lib/clas/servidor.ts';
 import { jutsusDaFicha } from '#lib/jutsus/servidor.ts';
 import { equipamentos, jutsus as catalogoJutsus } from '#lib/livro/dados.server.ts';
 import { catalogoFicha } from '#lib/personagem/catalogo.server.ts';
-import { NIVEIS_PROFICIENCIA } from '#lib/personagem/dados.ts';
+import { ATRIBUTOS, NIVEIS_PROFICIENCIA } from '#lib/personagem/dados.ts';
 import { cargaInventario, custoJutsu, estadoAtual, ficha, inventarioInicial, type EstadoJogo, type ItemInventario } from '#lib/personagem/progressao.ts';
 import { linhasPericia, type FichaDados, type ItemLoja } from '#lib/personagem/regras.ts';
 import { curaDoEfeito, danoDoEfeito, periciaDoAtaque, somar, teste, totalPericia } from '#lib/rolagens/expressoes.ts';
 import { partesAtaqueJutsu, partesDanoAtributo, partesPericia, type Parte } from '#lib/rolagens/partes.ts';
+import { atributosDaCriatura, periciasDaCriatura } from './atributos.ts';
 import { ehVersatil, modosDaArma, nomeDoModo, type ModoArma } from './armas.ts';
 import { deslocamentoPorAgi } from './geometria.ts';
 import { duracaoEmTurnos, reguaDoCard, tamanhoDoEfeito } from './regua.ts';
@@ -91,7 +92,9 @@ export function extrasDoNpc(n: { bestiario: string | null }): ExtrasNpc | null {
 				};
 			});
 		}),
-		habilidades: k.tracos.map((t) => habilidadeDoTraco(t.nome, textoTrechos(t.efeito), k.dt, k.ataques[0]?.dano ?? null))
+		habilidades: k.tracos.map((t) => habilidadeDoTraco(t.nome, textoTrechos(t.efeito), k.dt, k.ataques[0]?.dano ?? null)),
+		atributos: k.ficha ? atributosDaCriatura(k.ficha) : null,
+		pericias: k.ficha ? periciasDaCriatura(k.ficha) : []
 	};
 }
 
@@ -231,7 +234,8 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 		deslocamento: deslocamentoPorAgi(calc.atributos.AGI, velocidade > 0),
 		jutsus,
 		armas,
-		pericias: linhas.map((l) => ({ nome: l.nome, expr: teste(l.total), partes: partesPericia(l) })),
+		atributos: ATRIBUTOS.map((a) => ({ sigla: a.id, nome: a.nome, valor: calc.atributos[a.id] })),
+		pericias: linhas.map((l) => ({ nome: l.nome, atributo: l.atributo, expr: teste(l.total), partes: partesPericia(l), treinada: l.total - l.valorAtributo > 0 })),
 		distancias,
 		notas: p.anotacoes ?? '',
 		inventario: mochila.map((i) => ({ nome: i.qualidade ? `${i.nome} (${i.qualidade})` : i.nome, qtd: i.qtd, grupo: i.grupo, icone: i.icone, nota: i.nota ?? null, selado: !!i.selado })),

@@ -50,12 +50,12 @@ export function dentro(o: Parameters<typeof caixa>[0] & { rotacao?: number }, px
 	return Math.abs(dx) <= c.hw && Math.abs(dy) <= c.hh;
 }
 
-/** O quanto o objeto fica por cima: alfinete e texto sobre tudo, depois as imagens "acima", "meio" e "chão". */
-export const camadaRank = (o: { tipo: string; camada?: 'chao' | 'meio' | 'acima' | null }) => (o.tipo !== 'imagem' ? 3 : { acima: 2, meio: 1, chao: 0 }[o.camada ?? 'meio']);
-
-/** O objeto mais acima (a camada, depois a maior ordem, depois o mais novo) sob o ponto. */
-export function objetoEm<T extends Parameters<typeof dentro>[0] & { ordem: number; criado_em: string; camada?: 'chao' | 'meio' | 'acima' | null }>(lista: T[], px: number, py: number): T | null {
-	return [...lista].sort((a, b) => camadaRank(b) - camadaRank(a) || b.ordem - a.ordem || b.criado_em.localeCompare(a.criado_em)).find((o) => dentro(o, px, py)) ?? null;
+/**
+ * O objeto mais acima sob o ponto: pelo `rank` (a posição da camada na pilha; alfinete e texto ficam sobre as imagens),
+ * depois pela maior ordem e pelo mais novo.
+ */
+export function objetoEm<T extends Parameters<typeof dentro>[0] & { ordem: number; criado_em: string }>(lista: T[], px: number, py: number, rank: (o: T) => number = (o) => (o.tipo === 'imagem' ? 0 : 1)): T | null {
+	return [...lista].sort((a, b) => rank(b) - rank(a) || b.ordem - a.ordem || b.criado_em.localeCompare(a.criado_em)).find((o) => dentro(o, px, py)) ?? null;
 }
 
 /**
@@ -68,15 +68,16 @@ export function caixaDePe(o: Parameters<typeof caixa>[0]) {
 }
 
 /** O objeto mais acima (a ordem do banco, depois o mais novo) sob um ponto da tela, na vista isométrica. */
-export function objetoEmTela<T extends Parameters<typeof caixa>[0] & { ordem: number; criado_em: string; camada?: 'chao' | 'meio' | 'acima' | null }>(
+export function objetoEmTela<T extends Parameters<typeof caixa>[0] & { ordem: number; criado_em: string }>(
 	lista: T[],
 	tx: number,
 	ty: number,
-	ancora: (x: number, y: number) => [number, number]
+	ancora: (x: number, y: number) => [number, number],
+	rank: (o: T) => number = (o) => (o.tipo === 'imagem' ? 0 : 1)
 ): T | null {
 	return (
 		[...lista]
-			.sort((a, b) => camadaRank(b) - camadaRank(a) || b.ordem - a.ordem || b.criado_em.localeCompare(a.criado_em))
+			.sort((a, b) => rank(b) - rank(a) || b.ordem - a.ordem || b.criado_em.localeCompare(a.criado_em))
 			.find((o) => {
 				const [bx, by] = ancora(o.x, o.y);
 				const c = caixaDePe(o);

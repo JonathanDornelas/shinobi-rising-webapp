@@ -13,9 +13,10 @@
 	import { calcularMolde, nomeCurto, type UiMesa } from '#lib/mesa/ui.svelte.ts';
 	import type { MesaObjeto } from '#lib/supabase/banco.ts';
 	import { caminhoNevoa, celulasEntre, emRuns, grade as gradeNevoa, indice as indiceNevoa, pintar as pintarNevoa, type Run } from '#lib/mesa/nevoa.ts';
-import { FONTES, alcas, camadaRank, caixa as caixaObjeto, caixaDePe, contraste, limitar as limitarObj, objetoEm, objetoEmTela, tamanhoInicial } from '#lib/mesa/objetos.ts';
+import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as limitarObj, objetoEm, objetoEmTela, tamanhoInicial } from '#lib/mesa/objetos.ts';
 	import { ESTILOS, estiloDoJutsu, estiloValido } from '#lib/mesa/efeitos.ts';
 	import { caixaDaCena, cfgIso, desfazerProjecao, emPe as emPeIso, inverter, matrizIso, ordemDePintura, projetar } from '#lib/mesa/projecao.ts';
+	import { camadaEmPe, camadaPadrao, camadasDaCena, indiceDaCamada, indiceDosTokens } from '#lib/mesa/camadas.ts';
 	import EfeitosFx from './EfeitosFx.svelte';
 
 	let {
@@ -114,14 +115,19 @@ import { FONTES, alcas, camadaRank, caixa as caixaObjeto, caixaDePe, contraste, 
 	const objetosVisiveis = $derived(escondeDeMim ? mesa.objetos.filter((o) => o.tipo === 'imagem' || revelado(o.x, o.y)) : mesa.objetos);
 	/** As imagens ficam sob os tokens; os alfinetes e os textos, por cima. Cada grupo na ordem de empilhamento. */
 	const porOrdem = (a: MesaObjeto, b: MesaObjeto) => a.ordem - b.ordem || a.criado_em.localeCompare(b.criado_em);
-	// as imagens, da camada de baixo para a de cima (chão, meio, acima), cada uma na ordem do Mestre
-	const imagens = $derived(objetosVisiveis.filter((o) => o.tipo === 'imagem').sort((a, b) => camadaRank(a) - camadaRank(b) || porOrdem(a, b)));
-	const camadaDe = (o: MesaObjeto) => o.camada ?? 'meio';
-	/** Sob os tokens: na vista de cima, o chão e o meio; na isométrica, só o chão (o meio entra na ordem de pintura). */
-	const imagensBaixo = $derived(imagens.filter((o) => (iso ? camadaDe(o) === 'chao' : camadaDe(o) !== 'acima')));
-	const imagensMeio = $derived(iso ? imagens.filter((o) => camadaDe(o) === 'meio') : []);
-	/** Sobre os tokens, em qualquer vista (a copa da árvore, o telhado). */
-	const imagensAcima = $derived(imagens.filter((o) => camadaDe(o) === 'acima'));
+	// as imagens pela pilha de camadas da cena (de baixo para cima), cada uma na ordem do Mestre. Os tokens têm um lugar
+	// na pilha: o que está abaixo fica sob eles, o que está acima fica sobre eles.
+	const camadas = $derived(camadasDaCena(cena?.camadas));
+	const iTokens = $derived(indiceDosTokens(camadas));
+	const indiceDe = (o: MesaObjeto) => indiceDaCamada(o.camada, camadas);
+	const imagens = $derived(objetosVisiveis.filter((o) => o.tipo === 'imagem').sort((a, b) => indiceDe(a) - indiceDe(b) || porOrdem(a, b)));
+	/** Na vista isométrica, as camadas "em pé" entram na ordem de pintura com os tokens (passam à frente ou atrás de cada um). */
+	const doMeio = (o: MesaObjeto) => iso && camadaEmPe(o.camada, camadas);
+	const imagensBaixo = $derived(imagens.filter((o) => indiceDe(o) < iTokens && !doMeio(o)));
+	const imagensMeio = $derived(imagens.filter(doMeio));
+	const imagensAcima = $derived(imagens.filter((o) => indiceDe(o) > iTokens && !doMeio(o)));
+	/** Quem fica por cima no clique: alfinete e texto, depois as imagens da camada mais alta. */
+	const rankDe = (o: MesaObjeto) => (o.tipo === 'imagem' ? indiceDe(o) : 1000);
 	const marcadores = $derived(objetosVisiveis.filter((o) => o.tipo !== 'imagem').sort(porOrdem));
 	let objArrasto = $state<{ id: string; modo: 'mover' | 'redim' | 'girar'; dx: number; dy: number; ini: MesaObjeto; patch: Partial<MesaObjeto> } | null>(null);
 	const mostrado = (o: MesaObjeto): MesaObjeto => (objArrasto?.id === o.id ? { ...o, ...objArrasto.patch } : o);
@@ -380,7 +386,7 @@ function objetosNoClique(e: PointerEvent, p: { mx: number; my: number; sx: numbe
 		}
 		// com a ferramenta Objeto, as imagens também se pegam (nas outras, o mapa continua arrastável por baixo)
 const lista = f === 'objeto' && !ui.armada ? objetosVisiveis : marcadores;
-		const alvo = iso ? objetoEmTela(lista, p.tx, p.ty, paraTela) : objetoEm(lista, p.mx, p.my);
+		const alvo = iso ? objetoEmTela(lista, p.tx, p.ty, paraTela, rankDe) : objetoEm(lista, p.mx, p.my, rankDe);
 		if (alvo) {
 			ui.objSel = alvo.id;
 			if (mesa.podeMexerObjeto(alvo)) objArrasto = { id: alvo.id, modo: 'mover', dx: p.mx - alvo.x, dy: p.my - alvo.y, ini: alvo, patch: {} };
@@ -407,7 +413,7 @@ const lista = f === 'objeto' && !ui.armada ? objetosVisiveis : marcadores;
 		if (ui.armada) {
 			const a = ui.armada;
 			const { largura, altura } = tamanhoInicial(a.w, a.h, Math.max(2, Math.min(L, A) / 3));
-			void mesa.colocarObjeto({ tipo: 'imagem', x, y, largura, altura, imagem: a.caminho }).then((o) => o && (ui.objSel = o.id));
+			void mesa.colocarObjeto({ tipo: 'imagem', x, y, largura, altura, imagem: a.caminho, camada: camadaPadrao(camadas) }).then((o) => o && (ui.objSel = o.id));
 			ui.armada = null;
 			return true;
 		}
@@ -965,7 +971,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 {#each visiveis as t (t.id)}{@render tokenSvg(t)}{/each}
 {/if}
 
-			<!-- as imagens da camada "acima" ficam sobre os tokens -->
+			<!-- as imagens das camadas acima da dos tokens ficam sobre eles -->
 			{#each imagensAcima as o0 (o0.id)}{@render imagemSvg(o0)}{/each}
 
 			{#each marcadores as o0 (o0.id)}

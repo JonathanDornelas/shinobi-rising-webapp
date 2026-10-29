@@ -3,11 +3,14 @@
 	// grupo, travar, duplicar e excluir. O Mestre mexe em tudo; cada pessoa, nos próprios alfinetes e textos.
 	import type { Mesa } from '#lib/mesa/mesa.svelte.ts';
 	import type { UiMesa } from '#lib/mesa/ui.svelte.ts';
+	import { camadasDaCena } from '#lib/mesa/camadas.ts';
 	import { CORES_OBJETO, FONTES, TAMANHOS_TEXTO } from '#lib/mesa/objetos.ts';
 
 	let { mesa, ui, classe = '' }: { mesa: Mesa; ui: UiMesa; classe?: string } = $props();
 	const o = $derived(ui.objSel ? (mesa.objetos.find((x) => x.id === ui.objSel) ?? null) : null);
 	const pode = $derived(!!o && mesa.podeMexerObjeto(o));
+	/** As camadas de imagens da cena, de cima para baixo (a dos tokens não recebe imagem). */
+	const camadasDeImagens = $derived(camadasDaCena(mesa.cena?.camadas).filter((c) => c.tipo !== 'tokens').reverse());
 	const nomeTipo = { alfinete: 'Alfinete', imagem: 'Imagem', texto: 'Texto' } as const;
 	const topo = $derived(mesa.objetos.reduce((m, x) => Math.max(m, x.ordem), 0));
 	const fundo = $derived(mesa.objetos.reduce((m, x) => Math.min(m, x.ordem), 0));
@@ -76,14 +79,12 @@
 				<button type="button" role="switch" aria-checked={o.travado} class="{btn} {o.travado ? 'border-[var(--vermelhao)]' : ''}" title="Travado: só o Mestre mexe, e o dono não" onclick={() => mesa.atualizarObjeto(o.id, { travado: !o.travado })}>{o.travado ? 'TRAVADO' : 'TRAVAR'}</button>
 			{/if}
 		{#if mesa.mestre && o.tipo === 'imagem'}
-			<div class="flex flex-col gap-1">
-				<span class="text-xs font-semibold text-mut">Camada · o token fica entre elas</span>
-				<div role="radiogroup" aria-label="Camada da imagem" class="flex border-2 border-b3">
-					{#each [['acima', 'ACIMA', 'Sobre os tokens (copa da árvore, telhado)'], ['meio', 'MEIO', 'Com os tokens: na vista isométrica passa à frente ou atrás de cada um'], ['chao', 'CHÃO', 'Sob tudo (piso, tapete)']] as const as [c, n, dica] (c)}
-						<button type="button" role="radio" aria-checked={(o.camada ?? 'meio') === c} title={dica} class="min-h-9 flex-1 font-pixel text-[11px] font-bold {(o.camada ?? 'meio') === c ? 'bg-grena text-papel' : 'text-mut'}" onclick={() => mesa.atualizarObjeto(o.id, { camada: c })}>{n}</button>
-					{/each}
-				</div>
-			</div>
+			<label class="flex items-center gap-3 text-xs font-semibold text-mut">Camada
+				<select class="h-9 min-w-0 flex-1 border-2 border-b3 bg-b1 px-2 text-sm font-medium text-fg" aria-label="Camada da imagem" onchange={(e) => mesa.atualizarObjeto(o.id, { camada: e.currentTarget.value })}>
+					{#if !camadasDeImagens.some((c) => c.id === o.camada)}<option value={o.camada} selected>Sem camada (logo abaixo dos tokens)</option>{/if}
+					{#each camadasDeImagens as c (c.id)}<option value={c.id} selected={c.id === o.camada}>{c.nome}</option>{/each}
+				</select>
+			</label>
 		{/if}
 		{#if mesa.mestre && o.tipo === 'imagem'}
 <button type="button" class={btn} disabled={o.ordem >= topo && mesa.objetos.filter((x) => x.ordem === topo).length === 1} title="Põe por cima das outras imagens" onclick={() => mesa.atualizarObjeto(o.id, { ordem: Math.min(1000, topo + 1) })}>PARA FRENTE</button>

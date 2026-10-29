@@ -401,14 +401,40 @@ describe('vista isométrica', () => {
 	});
 });
 
-describe('camadas das imagens', () => {
-	it('a imagem nasce no meio; só o Mestre muda a camada; o valor tem limite', async () => {
+describe('camadas livres', () => {
+	it('a cena nasce com a pilha padrão e só o Mestre a muda', async () => {
+		const c = await um(banco.como<{ camadas: { id: string }[] }>(bruno, `select camadas from mesa_cenas where id = $1`, [ponte]));
+		expect(c.camadas.map((x) => x.id)).toEqual(['chao', 'meio', 'tokens', 'acima']);
+		expect(await banco.como(bruno, `update mesa_cenas set camadas = '[{"id": "x", "nome": "X", "tipo": "tokens"}]'::jsonb where id = $1 returning id`, [ponte])).toEqual([]);
+	});
+
+	it('o Mestre monta quantas camadas quiser, e a pilha precisa ser válida', async () => {
+		const pilha = (l: unknown[]) => [JSON.stringify(l), ponte];
+		const boa = [{ id: 'piso', nome: 'Piso' }, { id: 'tokens', nome: 'Tokens', tipo: 'tokens' }, { id: 'copas', nome: 'Copas', em_pe: true }, { id: 'neblina', nome: 'Neblina' }];
+		await banco.como(kaito, `update mesa_cenas set camadas = $1::jsonb where id = $2`, pilha(boa));
+		expect((await um(banco.como<{ camadas: unknown[] }>(bruno, `select camadas from mesa_cenas where id = $1`, [ponte]))).camadas).toHaveLength(4);
+		// sem camada de tokens, com duas, com id repetido, com id ou nome inválido, vazia e demais de 24
+		const ruins = [
+			[{ id: 'a', nome: 'A' }],
+			[{ id: 'a', nome: 'A', tipo: 'tokens' }, { id: 'b', nome: 'B', tipo: 'tokens' }],
+			[{ id: 'a', nome: 'A', tipo: 'tokens' }, { id: 'a', nome: 'B' }],
+			[{ id: 'Maiúscula', nome: 'A', tipo: 'tokens' }],
+			[{ id: 'a', nome: '   ', tipo: 'tokens' }],
+			[],
+			[{ id: 'a', nome: 'A', tipo: 'tokens' }, ...Array.from({ length: 24 }, (_, n) => ({ id: `c${n}`, nome: `C${n}` }))]
+		];
+		for (const r of ruins) await expect(banco.como(kaito, `update mesa_cenas set camadas = $1::jsonb where id = $2`, pilha(r))).rejects.toThrow(/check/);
+		await banco.como(kaito, `update mesa_cenas set camadas = default where id = $1`, [ponte]);
+	});
+
+	it('a imagem aponta para a camada pelo id (qualquer id válido); só o Mestre muda', async () => {
 		const id = (await um(banco.como<{ id: string }>(kaito, `insert into mesa_objetos (cena_id, campanha_id, tipo, x, y, largura, altura, imagem) values ($1, $2, 'imagem', 5, 5, 3, 3, '/capitulos/cap-01.png') returning id`, [ponte, campanha]))).id;
 		expect(await um(banco.como(bruno, `select camada from mesa_objetos where id = $1`, [id]))).toEqual({ camada: 'meio' });
-		await banco.como(kaito, `update mesa_objetos set camada = 'acima' where id = $1`, [id]);
-		expect(await um(banco.como(bruno, `select camada from mesa_objetos where id = $1`, [id]))).toEqual({ camada: 'acima' });
+		await banco.como(kaito, `update mesa_objetos set camada = 'copas-das-arvores' where id = $1`, [id]);
+		expect(await um(banco.como(bruno, `select camada from mesa_objetos where id = $1`, [id]))).toEqual({ camada: 'copas-das-arvores' });
 		expect(await banco.como(bruno, `update mesa_objetos set camada = 'chao' where id = $1 returning id`, [id])).toEqual([]);
-		await expect(banco.como(kaito, `update mesa_objetos set camada = 'topo' where id = $1`, [id])).rejects.toThrow(/check/);
+		await expect(banco.como(kaito, `update mesa_objetos set camada = 'Topo!' where id = $1`, [id])).rejects.toThrow(/check/);
+		await expect(banco.como(kaito, `update mesa_objetos set camada = '' where id = $1`, [id])).rejects.toThrow(/check/);
 		await banco.como(kaito, `delete from mesa_objetos where id = $1`, [id]);
 	});
 });

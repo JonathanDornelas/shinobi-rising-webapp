@@ -39,6 +39,7 @@
 	import { CONDICOES } from '#lib/personagem/dados.ts';
 	import { curar } from '#lib/personagem/progressao.ts';
 	import { teste } from '#lib/rolagens/expressoes.ts';
+	import { partesAtributo } from '#lib/rolagens/partes.ts';
 	import { corCss } from '#lib/mesa/cores.ts';
 	import type { Mesa } from '#lib/mesa/mesa.svelte.ts';
 	import { temRegua } from '#lib/mesa/regua.ts';
@@ -177,11 +178,18 @@
 						['acoes', 'AÇÕES'],
 						...(dados.jutsus.length ? [['jutsus', 'JUTSUS']] : []),
 						...(dados.extras?.habilidades.length ? [['habilidades', 'HABILIDADES']] : []),
+						...(dados.extras?.pericias.length ? [['pericias', 'PERÍCIAS']] : []),
 						['notas', 'NOTAS']
 					] as [Aba, string][])
 				: []
 	);
 	const aba = $derived<Aba | null>((abas.find((a) => a[0] === janela.aba)?.[0] ?? abas[0]?.[0]) || null);
+
+	/** Atributos e perícias de quem tem ficha: o jogador, o NPC de ficha completa e o NPC do bestiário (com as 15 perícias). */
+	const atributos = $derived(dados.tipo === 'pc' ? dados.ficha.atributos : dados.tipo === 'npc' ? (dados.extras?.atributos ?? []) : []);
+	const pericias = $derived(dados.tipo === 'pc' ? dados.ficha.pericias : dados.tipo === 'npc' ? (dados.extras?.pericias ?? []) : []);
+	/** As treinadas primeiro; as outras valem só o atributo. */
+	const periciasEmOrdem = $derived([...pericias.filter((p) => p.treinada), ...pericias.filter((p) => !p.treinada)]);
 
 	/** Ataque do NPC rápido: "1d20 + 7 → 1d8 + 4" vira dois botões. */
 	const ataqueNpc = $derived.by(() => {
@@ -381,6 +389,17 @@
 				</div>
 			{/if}
 
+			{#if atributos.length}
+				<div role="group" aria-label="Atributos" class="mx-3 mb-2.5 grid grid-cols-6 gap-1">
+					{#each atributos as a (a.sigla)}
+						<button type="button" class="flex flex-col items-center gap-0.5 border-2 border-b3 bg-b1 py-1 enabled:hover:border-mut disabled:cursor-default {celular ? 'min-h-11' : ''}" title="{a.nome} {a.valor}: rolar um teste ({teste(a.valor)})" aria-label="{a.nome} {a.valor}, rolar um teste" disabled={!editavel} onclick={() => acoes.rolar(token, { expr: teste(a.valor), rotulo: `Teste de ${a.nome}`, partes: partesAtributo(a.sigla, a.valor) }, 'teste', true)}>
+							<span class="font-pixel text-[10px] leading-none font-bold text-mut">{a.sigla}</span>
+							<b class="font-pixel text-base leading-none">{a.valor}</b>
+						</button>
+					{/each}
+				</div>
+			{/if}
+
 			{#if mesa.mestre && !mesa.somenteLeitura}
 				<!-- tamanho no quadro (cap. 4): o do bestiário entra sozinho; o Mestre ajusta ou encolhe para caber -->
 				<div class="mx-3 mb-2.5 flex items-center gap-1.5">
@@ -481,9 +500,16 @@
 					{#each dados.ficha.jutsus as j (j.slug)}
 						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, metaJutsu(j), avisoFalta(j), [...medir(j), ...botoesUso(j, falta(j))], () => acoes.verJutsu(j), j)}
 					{/each}
-				{:else if aba === 'pericias' && dados.tipo === 'pc'}
-					{#each dados.ficha.pericias as p, i (`${i}:${p.nome}`)}
-						{@render linhaAcao(null, p.nome, p.expr, null, [{ n: 'ROLAR', acao: () => acoes.rolar(token, { expr: p.expr, rotulo: p.nome, partes: p.partes }, 'teste', true) }])}
+				{:else if aba === 'pericias'}
+					<p class="m-0 border-b-2 border-b1 px-3 py-1.5 text-xs leading-4 text-mut">As treinadas vêm primeiro. As outras valem só o atributo.</p>
+					{#each periciasEmOrdem as p (p.nome)}
+						<div class="flex items-center gap-2 border-b-2 border-b1 px-3 py-1.5 {p.treinada ? '' : 'opacity-75'}">
+							<div class="flex min-w-0 flex-1 flex-col gap-0.5">
+								<span class="flex items-center gap-1.5 text-sm leading-[18px] font-semibold">{p.nome}{#if p.treinada}<span class="border border-ok px-1 py-px font-pixel text-[9px] leading-none font-bold text-ok">TREINADA</span>{/if}</span>
+								<span class="text-xs leading-4 text-mut">{p.atributo} · {p.expr}</span>
+							</div>
+							<button type="button" class="{btn} {celular ? 'min-h-11 px-2.5' : ''}" disabled={!editavel} onclick={() => acoes.rolar(token, { expr: p.expr, rotulo: p.nome, partes: p.partes }, 'teste', true)}>ROLAR</button>
+						</div>
 					{/each}
 				{:else if aba === 'equip' && dados.tipo === 'pc'}
 					{@const f = dados.ficha}

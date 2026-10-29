@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { alcas, camadaRank, caixa, caixaDePe, contraste, dentro, limitar, medidaTexto, objetoEm, objetoEmTela, tamanhoInicial } from './objetos.ts';
+import { alcas, caixa, caixaDePe, contraste, dentro, limitar, medidaTexto, objetoEm, objetoEmTela, tamanhoInicial } from './objetos.ts';
 import { cfgIso, projetar } from './projecao.ts';
 
 const img = { tipo: 'imagem' as const, x: 10, y: 10, largura: 6, altura: 2, texto: null, tamanho: null, rotacao: 0 };
@@ -94,26 +94,33 @@ describe('objetos de pé na vista isométrica', () => {
 
 describe('camadas das imagens', () => {
 	const base = { ...img, ordem: 0, criado_em: '2026-01-01' };
-	const chao = { ...base, camada: 'chao' as const, criado_em: '2026-03-01' };
-	const meio = { ...base, camada: 'meio' as const };
-	const acima = { ...base, camada: 'acima' as const, criado_em: '2026-01-01' };
-	const pin = { tipo: 'alfinete' as const, x: 10, y: 10.5, largura: null, altura: null, texto: null, tamanho: null, rotacao: 0, ordem: -5, criado_em: '2025-01-01' };
+	const chao = { ...base, camada: 'chao', criado_em: '2026-03-01' };
+	const meio = { ...base, camada: 'meio' };
+	const acima = { ...base, camada: 'acima', criado_em: '2026-01-01' };
+	const pin = { tipo: 'alfinete' as const, x: 10, y: 10.5, largura: null, altura: null, texto: null, tamanho: null, rotacao: 0, ordem: -5, criado_em: '2025-01-01', camada: 'meio' };
+	/** a posição da camada na pilha, de baixo para cima; alfinete e texto ficam sobre todas */
+	const rankDe = (pilha: string[]) => (o: { tipo: string; camada?: string }) => (o.tipo === 'imagem' ? pilha.indexOf(o.camada ?? '') : 1000);
+	const padrao = rankDe(['chao', 'meio', 'tokens', 'acima']);
 
-	it('a ordem de cima para baixo é alfinete e texto, acima, meio e chão (sem camada vale meio)', () => {
-		expect(camadaRank(pin)).toBe(3);
-		expect([acima, meio, chao].map(camadaRank)).toEqual([2, 1, 0]);
-		expect(camadaRank({ ...base })).toBe(1);
-	});
-
-	it('o clique pega a camada de cima primeiro, mesmo com ordem menor ou mais velha', () => {
-		expect(objetoEm([chao, meio, acima], 10, 10)).toBe(acima);
-		expect(objetoEm([chao, meio], 10, 10)).toBe(meio);
-		expect(objetoEm([chao], 10, 10)).toBe(chao);
+	it('o clique pega a camada mais alta da pilha primeiro, mesmo com ordem menor ou mais velha', () => {
+		expect(objetoEm([chao, meio, acima], 10, 10, padrao)).toBe(acima);
+		expect(objetoEm([chao, meio], 10, 10, padrao)).toBe(meio);
+		expect(objetoEm([chao], 10, 10, padrao)).toBe(chao);
 		// dentro da mesma camada vale a ordem do Mestre
-		expect(objetoEm([{ ...meio, ordem: 2 }, { ...meio, ordem: 7, criado_em: '2025-01-01' }], 10, 10)?.ordem).toBe(7);
+		expect(objetoEm([{ ...meio, ordem: 2 }, { ...meio, ordem: 7, criado_em: '2025-01-01' }], 10, 10, padrao)?.ordem).toBe(7);
 	});
 
-	it('o alfinete fica por cima das imagens de qualquer camada', () => {
-		expect(objetoEm([acima, pin], 10, 10)).toBe(pin);
+	it('com a pilha reordenada pelo Mestre, quem subiu passa a ser pego primeiro', () => {
+		expect(objetoEm([chao, meio, acima], 10, 10, rankDe(['acima', 'chao', 'tokens', 'meio']))).toBe(meio);
+		expect(objetoEm([chao, meio, acima], 10, 10, rankDe(['meio', 'acima', 'chao', 'tokens']))).toBe(chao);
+	});
+
+	it('o alfinete e o texto ficam por cima das imagens de qualquer camada', () => {
+		expect(objetoEm([acima, pin], 10, 10, padrao)).toBe(pin);
+	});
+
+	it('sem rank, as imagens vão pela ordem e o alfinete fica por cima', () => {
+		expect(objetoEm([{ ...meio, ordem: 1 }, { ...meio, ordem: 3 }], 10, 10)?.ordem).toBe(3);
+		expect(objetoEm([meio, pin], 10, 10)).toBe(pin);
 	});
 });

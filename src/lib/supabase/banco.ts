@@ -446,6 +446,8 @@ export type MesaCena = {
 	/** Névoa: o mapa fica coberto para o grupo, menos os quadrados revelados em runs [[y, x0, x1], ...]. */
 	nevoa: boolean;
 	reveladas: [number, number, number][];
+	/** As camadas da cena, de baixo para cima; a de tipo "tokens" é o lugar dos tokens na pilha (ver lib/mesa/camadas.ts). */
+	camadas: { id: string; nome: string; tipo?: 'tokens'; em_pe?: boolean }[];
 	criada_em: string;
 };
 
@@ -469,8 +471,8 @@ export type MesaObjeto = {
 	tamanho: number | null;
 	imagem: string | null;
 	ordem: number;
-	/** Só imagens: "chão" sob tudo, "meio" (padrão) com os tokens e "acima" sobre os tokens. */
-	camada: 'chao' | 'meio' | 'acima';
+	/** Só imagens: o id da camada da cena (ver MesaCena.camadas) em que a imagem está. */
+	camada: string;
 	visivel: boolean;
 	travado: boolean;
 	criado_em: string;

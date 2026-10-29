@@ -38,6 +38,23 @@ export interface JutsuMesa {
 	porCena?: boolean;
 }
 
+/** Um atributo (FOR, AGI, VIG, INT, CTR, ESP) com o valor da ficha. */
+export interface AtributoMesa {
+	sigla: string;
+	nome: string;
+	valor: number;
+}
+
+/** Uma perícia com o teste pronto. `treinada`: tem treino (o resto vale só o atributo). */
+export interface PericiaMesa {
+	nome: string;
+	/** sigla do atributo da perícia */
+	atributo: string;
+	expr: string;
+	partes: Parte[];
+	treinada: boolean;
+}
+
 /** O que a ficha do bestiário dá a um NPC importado: tamanho, todos os ataques e os traços usáveis. */
 export interface ExtrasNpc {
 	tamanho: 1 | 3 | 6 | 10;
@@ -45,6 +62,10 @@ export interface ExtrasNpc {
 	deslocamento: number;
 	ataques: ArmaMesa[];
 	habilidades: JutsuMesa[];
+	/** Os seis atributos da ficha da criatura (null nas invocações, que não têm ficha). */
+	atributos: AtributoMesa[] | null;
+	/** As 15 perícias: as treinadas da ficha e as outras só com o atributo (vazio sem ficha). */
+	pericias: PericiaMesa[];
 }
 
 export interface ArmaMesa {
@@ -74,7 +95,9 @@ export interface FichaMesa {
 	deslocamento: number;
 	jutsus: JutsuMesa[];
 	armas: ArmaMesa[];
-	pericias: { nome: string; expr: string; partes: Parte[] }[];
+	atributos: AtributoMesa[];
+	/** Todas as perícias, com as treinadas marcadas. */
+	pericias: PericiaMesa[];
 	/** Kawarimi (5 m), fios da marionete (30 m), sensor (50 m): atalhos de medida */
 	distancias: [string, number][];
 	notas: string;

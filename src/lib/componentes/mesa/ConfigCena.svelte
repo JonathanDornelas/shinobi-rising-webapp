@@ -5,7 +5,7 @@
 	import { fatorDosQuadrados, fundoPorFator, larguraPadraoDoFundo, type CenaParaFundo } from '#lib/mesa/fundo.ts';
 	import { urlImagemMesa } from '#lib/mesa/imagens.ts';
 	import type { Mesa } from '#lib/mesa/mesa.svelte.ts';
-	import { camadaRank } from '#lib/mesa/objetos.ts';
+	import { MAX_CAMADAS, adicionar, alternarEmPe, camadasDaCena, indiceDaCamada, mover, remover, renomear, type Camada } from '#lib/mesa/camadas.ts';
 	import type { UiMesa } from '#lib/mesa/ui.svelte.ts';
 	import type { MesaCena, MesaObjeto } from '#lib/supabase/banco.ts';
 
@@ -41,7 +41,7 @@
 		tamanho: ['Tamanho da cena', 'Cada quadrado vale 1 m.'],
 		vista: ['Vista', 'Como o quadro é desenhado. Os dados seguem na grade, então régua, jutsus, névoa e terreno funcionam igual nas duas vistas.'],
 		imagens: ['Imagens', 'O modo da cena, a imagem da narrativa e o fundo do quadro.'],
-		camadas: ['Camadas', 'O token vive entre as camadas das imagens: dá para ele ficar à frente do chão e atrás da árvore.']
+		camadas: ['Camadas', 'Monte a pilha: o que está mais acima cobre o que está abaixo. Os tokens ficam numa camada da pilha, então podem passar à frente do chão e atrás da árvore.']
 	};
 	let aba = $state<AbaId>('geral');
 	const iso = $derived(cena.visao === 'isometrica');
@@ -154,12 +154,43 @@
 	const quadradosPadrao = () => mesa.patchCena({ fundo_escala: null, fundo_x: 0, fundo_y: 0 });
 
 	// ------------------------------------------------------------------ camadas
-	const imagens = $derived(mesa.objetos.filter((o) => o.tipo === 'imagem').sort((a, b) => camadaRank(b) - camadaRank(a) || b.ordem - a.ordem));
-	const CAMADAS = [
-		['acima', 'Acima'],
-		['meio', 'Meio'],
-		['chao', 'Chão']
-	] as const;
+	/** A pilha, de baixo para cima (o índice 0 é o fundo). Na tela vai de cima para baixo. */
+	const camadas = $derived(camadasDaCena(cena.camadas));
+	const pilhaDeCima = $derived([...camadas].reverse());
+	const camadasDeImagens = $derived(pilhaDeCima.filter((c) => c.tipo !== 'tokens'));
+	const imagens = $derived(mesa.objetos.filter((o) => o.tipo === 'imagem').sort((a, b) => indiceDaCamada(b.camada, camadas) - indiceDaCamada(a.camada, camadas) || b.ordem - a.ordem));
+	const imagensDa = (id: string) => imagens.filter((o) => o.camada === id);
+	const gravarCamadas = (l: Camada[]) => mesa.patchCena({ camadas: l });
+	let nomeNova = $state('');
+	let arrastando = $state<string | null>(null);
+	let sobre = $state<string | null>(null);
+	let apagando = $state<string | null>(null);
+
+	function criarCamada() {
+		const l = adicionar(camadas, nomeNova);
+		if (!l) return;
+		nomeNova = '';
+		void gravarCamadas(l);
+	}
+	/** Soltar uma camada sobre outra: ela ocupa o lugar da outra e as demais se ajeitam. */
+	function soltarEm(alvo: string) {
+		const id = arrastando;
+		arrastando = null;
+		sobre = null;
+		if (!id || id === alvo) return;
+		void gravarCamadas(mover(camadas, id, camadas.findIndex((c) => c.id === alvo)));
+	}
+	/** Sobe (+1) ou desce (−1) uma camada na pilha. */
+	const andar = (id: string, passo: 1 | -1) => gravarCamadas(mover(camadas, id, camadas.findIndex((c) => c.id === id) + passo));
+	/** Apaga a camada; as imagens dela vão para a vizinha de imagens. */
+	async function apagarCamada(id: string) {
+		const r = remover(camadas, id);
+		apagando = null;
+		if (!r) return;
+		for (const o of imagensDa(id)) await mesa.atualizarObjeto(o.id, { camada: r.destino });
+		await gravarCamadas(r.lista);
+	}
+	const nomeDaCamada = (id: string) => camadas.find((c) => c.id === id)?.nome ?? id;
 	const nomeDaImagem = (o: MesaObjeto) => (o.imagem ?? '').split('/').pop()?.replace(/\.(webp|png)$/, '') ?? 'imagem';
 	function escolher(o: MesaObjeto) {
 		ui.objSel = o.id;
@@ -421,21 +452,91 @@
 					</div>
 				{/if}
 			{:else}
-				<!-- a pilha de camadas, de cima para baixo; o token fica entre elas -->
-				<ol class="m-0 flex list-none flex-col gap-1.5 p-0" aria-label="Ordem das camadas, de cima para baixo">
-					<li class="flex items-baseline gap-3 border-2 border-b3 px-3 py-2"><b class="w-16 flex-none text-sm">Acima</b><span class="text-xs leading-4 text-mut">Sobre os tokens, em qualquer vista: a copa da árvore, o telhado.</span></li>
-					<li class="flex items-baseline gap-3 border-2 border-[var(--vermelhao)] bg-grena px-3 py-2 text-papel"><b class="w-16 flex-none text-sm">Tokens</b><span class="text-xs leading-4">E o que fica em pé com eles.</span></li>
-					<li class="flex items-baseline gap-3 border-2 border-b3 px-3 py-2"><b class="w-16 flex-none text-sm">Meio</b><span class="text-xs leading-4 text-mut">{iso ? 'Passa à frente ou atrás de cada token, conforme a posição.' : 'Sob os tokens (na vista isométrica passa à frente ou atrás deles).'}</span></li>
-					<li class="flex items-baseline gap-3 border-2 border-b3 px-3 py-2"><b class="w-16 flex-none text-sm">Chão</b><span class="text-xs leading-4 text-mut">Sob tudo: o piso, o tapete.</span></li>
-					<li class="flex items-baseline gap-3 border-2 border-b3 bg-b1 px-3 py-2"><b class="w-16 flex-none text-sm">Fundo</b><span class="text-xs leading-4 text-mut">O mapa da cena, sob todas as camadas.</span></li>
+				<!-- a pilha de camadas, de cima para baixo: o que está mais acima cobre o que está abaixo -->
+				<form
+					class="flex gap-2"
+					onsubmit={(e) => {
+						e.preventDefault();
+						criarCamada();
+					}}
+				>
+					<input class="{input} min-w-0 flex-1" bind:value={nomeNova} maxlength="40" placeholder="Nome da nova camada, por exemplo: Árvores" aria-label="Nome da nova camada" />
+					<button type="submit" class="btn-jogo btn-primario min-h-10" disabled={!nomeNova.trim() || camadas.length >= MAX_CAMADAS}>Nova camada</button>
+				</form>
+				<p class="m-0 mt-2 text-xs leading-4 text-mut">A camada nova entra no topo. Arraste pelo <b class="font-pixel">⋮⋮</b> ou use as setas para mudar a ordem. Vale até {MAX_CAMADAS} camadas; o fundo do mapa fica sempre sob todas.</p>
+
+				<ol class="m-0 mt-4 flex list-none flex-col gap-1.5 p-0" aria-label="Camadas, de cima para baixo">
+					{#each pilhaDeCima as c, i (c.id)}
+						{@const indice = camadas.length - 1 - i}
+						{@const tokens = c.tipo === 'tokens'}
+						{@const doGrupo = imagensDa(c.id)}
+						<li
+							class="flex flex-col border-2 {tokens ? 'border-[var(--vermelhao)] bg-grena text-papel' : sobre === c.id && arrastando !== c.id ? 'border-fg bg-b1' : 'border-b3 bg-b1'} {arrastando === c.id ? 'opacity-50' : ''}"
+							ondragover={(e) => {
+								if (!arrastando) return;
+								e.preventDefault();
+								sobre = c.id;
+							}}
+							ondragleave={() => sobre === c.id && (sobre = null)}
+							ondrop={(e) => {
+								e.preventDefault();
+								soltarEm(c.id);
+							}}
+						>
+							<div class="flex min-h-12 flex-wrap items-center gap-x-2.5 gap-y-1.5 px-2 py-1.5">
+								<span
+									role="img"
+									aria-label="Arrastar a camada {c.nome}"
+									title="Arraste para mudar a ordem"
+									draggable="true"
+									class="flex h-9 w-7 flex-none cursor-grab items-center justify-center font-pixel text-sm font-bold select-none {tokens ? 'text-papel' : 'text-mut'}"
+									ondragstart={(e) => {
+										arrastando = c.id;
+										e.dataTransfer?.setData('text/plain', c.id);
+										if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
+										const linha = (e.currentTarget as HTMLElement).closest('li');
+										if (linha && e.dataTransfer) e.dataTransfer.setDragImage(linha, 12, 12);
+									}}
+									ondragend={() => ((arrastando = null), (sobre = null))}>⋮⋮</span
+								>
+								{#if tokens}
+									<span class="flex min-w-0 flex-1 flex-col"><b class="text-sm leading-5">{c.nome}</b><span class="text-xs leading-4">Os personagens e NPCs ficam aqui. Esta camada não se apaga.</span></span>
+								{:else}
+									<input class="{input} h-9 min-w-[120px] flex-1" maxlength="40" value={c.nome} aria-label="Nome da camada {c.nome}" onchange={(e) => gravarCamadas(renomear(camadas, c.id, e.currentTarget.value))} />
+									<span class="w-16 flex-none text-right text-xs text-mut">{doGrupo.length} {doGrupo.length === 1 ? 'imagem' : 'imagens'}</span>
+									<label class="flex flex-none cursor-pointer items-center gap-2 text-xs font-semibold" title="Na vista isométrica, as imagens desta camada passam à frente ou atrás de cada token, conforme a posição. Desligado, a camada fica no lugar dela na pilha.">
+										<input type="checkbox" role="switch" class="interruptor" checked={!!c.em_pe} onchange={() => gravarCamadas(alternarEmPe(camadas, c.id))} aria-label="Em pé na vista isométrica: {c.nome}" />Em pé
+									</label>
+								{/if}
+								<span class="flex flex-none gap-1">
+									<button type="button" class="h-9 w-9 border-2 {tokens ? 'border-papel/40' : 'border-b3'} font-pixel text-xs font-bold disabled:opacity-30" aria-label="Subir {c.nome}" title="Subir na pilha" disabled={indice >= camadas.length - 1} onclick={() => andar(c.id, 1)}>▲</button>
+									<button type="button" class="h-9 w-9 border-2 {tokens ? 'border-papel/40' : 'border-b3'} font-pixel text-xs font-bold disabled:opacity-30" aria-label="Descer {c.nome}" title="Descer na pilha" disabled={indice <= 0} onclick={() => andar(c.id, -1)}>▼</button>
+									{#if !tokens}<button type="button" class="h-9 w-9 border-2 border-b3 font-pixel text-xs font-bold text-err disabled:opacity-30" aria-label="Apagar {c.nome}" title="Apagar a camada" disabled={camadasDeImagens.length < 2} onclick={() => (apagando = apagando === c.id ? null : c.id)}>✕</button>{/if}
+								</span>
+							</div>
+							{#if apagando === c.id && !tokens}
+								{@const r = remover(camadas, c.id)}
+								<div class="flex flex-wrap items-center gap-2 border-t-2 border-b3 bg-b2 px-3 py-2" role="alert">
+									<span class="min-w-0 flex-1 text-xs leading-4">{doGrupo.length ? `Apagar “${c.nome}”? ${doGrupo.length === 1 ? 'A imagem dela vai' : `As ${doGrupo.length} imagens dela vão`} para “${r ? nomeDaCamada(r.destino) : ''}”.` : `Apagar a camada “${c.nome}”?`}</span>
+									<button type="button" class="{botao} border-err text-err" onclick={() => apagarCamada(c.id)}>Apagar</button>
+									<button type="button" class={botao} onclick={() => (apagando = null)}>Cancelar</button>
+								</div>
+							{/if}
+						</li>
+					{/each}
+					<li class="flex items-center gap-2.5 border-2 border-dashed border-b3 px-3 py-2 text-xs text-mut"><span class="w-7 flex-none text-center font-pixel text-sm font-bold" aria-hidden="true">▭</span>Fundo do mapa · sob todas as camadas</li>
 				</ol>
+
 				<div class="mt-6 flex flex-col border-t-2 border-b2">
 					<h4 class="m-0 mt-5 mb-2 font-mincho text-base leading-6 font-bold">Imagens desta cena</h4>
 					{#each imagens as o (o.id)}
 						<div class="flex flex-wrap items-center gap-3 border-t-2 border-b2 py-2.5 first:border-t-0">
 							<img src={urlImagemMesa(o.imagem)} alt="" class="h-11 w-11 flex-none border-2 border-b3 bg-b1 object-contain [image-rendering:pixelated]" />
 							<span class="min-w-[120px] flex-1 truncate text-sm font-semibold" title={o.imagem ?? ''}>{nomeDaImagem(o)}{o.visivel ? '' : ' · escondida'}</span>
-							<div class="w-[240px] max-w-full">{@render segmentos(`Camada de ${nomeDaImagem(o)}`, CAMADAS, o.camada ?? 'meio', (c: 'acima' | 'meio' | 'chao') => mesa.atualizarObjeto(o.id, { camada: c }))}</div>
+							<select class="{input} h-10 w-[200px] max-w-full" aria-label="Camada de {nomeDaImagem(o)}" onchange={(e) => mesa.atualizarObjeto(o.id, { camada: e.currentTarget.value })}>
+								{#if !camadasDeImagens.some((c) => c.id === o.camada)}<option value={o.camada} selected>Sem camada (abaixo dos tokens)</option>{/if}
+								{#each camadasDeImagens as c (c.id)}<option value={c.id} selected={c.id === o.camada}>{c.nome}</option>{/each}
+							</select>
 							<button type="button" class="{botao} px-3" title="Fecha e seleciona a imagem no quadro" onclick={() => escolher(o)}>Ver</button>
 						</div>
 					{:else}
