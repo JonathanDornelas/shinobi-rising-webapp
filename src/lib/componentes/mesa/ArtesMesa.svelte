@@ -164,7 +164,7 @@
 		</div>
 
 		{#if sel}
-			<div class="flex flex-col gap-2 border-2 border-b3 bg-b0 p-2.5">
+			<div class="flex flex-col gap-2 border-2 border-b3 bg-sup p-2.5">
 				<div class="flex items-center gap-2">
 					<input class="h-9 min-w-0 flex-1 border-2 border-b3 bg-b1 px-2 text-sm font-semibold text-fg" maxlength="60" aria-label="Nome da arte" value={sel.nome} onchange={(e) => renomear(sel, e.currentTarget.value)} />
 					<div role="radiogroup" aria-label="Tipo da arte" class="flex border-2 border-b3">

@@ -757,7 +757,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 	}
 	let mobil = $state<null | 'elenco' | 'chat' | 'ferr'>(null);
 	const FAIXAS = ['Ileso', 'Ferido', 'Muito ferido', 'Caído'];
-	const pop = 'absolute z-30 flex flex-col border-2 border-b3 bg-b0 shadow-[4px_4px_0_#000]';
+	const pop = 'absolute z-30 flex flex-col border-2 border-b3 bg-sup shadow-[4px_4px_0_var(--sombra)]';
 	const itemMenu = 'flex flex-col items-start gap-0.5 border-t-2 border-b2 px-3 py-2 text-left disabled:cursor-not-allowed disabled:opacity-50';
 	const chip = 'min-h-9 flex-1 font-pixel text-xs leading-none font-bold';
 </script>
@@ -796,11 +796,11 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 
 {#snippet barras()}
 	<div class="pointer-events-none absolute inset-x-3 top-3 z-[45] flex flex-col items-center gap-2">
-		{#if !mesa.conectado}<div role="status" class="pointer-events-auto border-2 border-warn bg-b0 px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_#000]">Sem conexão. Seus movimentos aparecem para o grupo quando a conexão voltar.</div>{/if}
-		{#if mesa.travada}<div role="status" class="pointer-events-auto border-2 border-warn bg-b0 px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_#000]">Mesa travada pelo Mestre.</div>{/if}
-		{#if !data.mestre && minhaFicha && !participa(minhaFicha.id)}<div role="status" class="pointer-events-auto border-2 border-info bg-b0 px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_#000]">Você assiste a esta cena: o Mestre escolheu quem joga nela.</div>{/if}
+		{#if !mesa.conectado}<div role="status" class="pointer-events-auto border-2 border-warn bg-sup px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_var(--sombra)]">Sem conexão. Seus movimentos aparecem para o grupo quando a conexão voltar.</div>{/if}
+		{#if mesa.travada}<div role="status" class="pointer-events-auto border-2 border-warn bg-sup px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_var(--sombra)]">Mesa travada pelo Mestre.</div>{/if}
+		{#if !data.mestre && minhaFicha && !participa(minhaFicha.id)}<div role="status" class="pointer-events-auto border-2 border-info bg-sup px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_var(--sombra)]">Você assiste a esta cena: o Mestre escolheu quem joga nela.</div>{/if}
 		{#if data.mestre && cena && !cena.ativa}
-			<div role="status" class="pointer-events-auto flex items-center gap-3 border-2 border-info bg-b0 px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_#000]">
+			<div role="status" class="pointer-events-auto flex items-center gap-3 border-2 border-info bg-sup px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_var(--sombra)]">
 				<span>Você está vendo “{cena.nome}”.{ativa ? ` O grupo vê “${ativa.nome}”.` : ' O grupo ainda não tem cena aberta.'}</span>
 				<button type="button" class="min-h-8 border-2 border-info px-2.5 font-pixel text-xs font-bold" onclick={ativarCena}>ATIVAR ESTA CENA</button>
 			</div>
@@ -861,7 +861,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 		{#if ui.regua}
 			{@const pts = ui.regua.cur ? [...ui.regua.pontos, ui.regua.cur] : ui.regua.pontos}
 			{@const seg = pts.slice(1).map((q, i) => Math.max(Math.abs(q[0] - pts[i][0]), Math.abs(q[1] - pts[i][1])) + Math.floor(Math.min(Math.abs(q[0] - pts[i][0]), Math.abs(q[1] - pts[i][1])) / 2))}
-			<div class="pointer-events-auto flex items-center gap-2.5 border-2 border-b3 bg-b0 py-1.5 pr-1.5 pl-3 shadow-[4px_4px_0_#000]">
+			<div class="pointer-events-auto flex items-center gap-2.5 border-2 border-b3 bg-sup py-1.5 pr-1.5 pl-3 shadow-[4px_4px_0_var(--sombra)]">
 				<span class="font-pixel text-xs leading-none font-bold tracking-[0.08em] text-title">RÉGUA</span>
 				<span class="font-pixel text-base leading-none font-bold">{seg.length > 1 ? `${seg.join(' + ')} = ${seg.reduce((a, b) => a + b, 0)} m` : `${seg[0] ?? 0} m`}</span>
 				<span class="text-xs leading-4 text-mut max-md:hidden">{ui.regua.feita ? 'Some em 3 segundos.' : 'Clique cria pontos · clique duplo termina'}</span>
@@ -877,7 +877,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			</div>
 		{/if}
 		{#if ui.aneis}
-			<div class="pointer-events-auto flex items-center gap-2.5 border-2 border-b3 bg-b0 py-1.5 pr-1.5 pl-3 shadow-[4px_4px_0_#000]">
+			<div class="pointer-events-auto flex items-center gap-2.5 border-2 border-b3 bg-sup py-1.5 pr-1.5 pl-3 shadow-[4px_4px_0_var(--sombra)]">
 				<span class="font-pixel text-xs leading-none font-bold tracking-[0.08em] text-title">MEDIR</span>
 				<span class="text-[13px] leading-[18px] font-semibold">{ui.aneis.titulo}: {ui.aneis.lista.map((l) => l.rotulo).join(' · ') || (ui.aneis.corpo > 1 ? `haste ${ui.aneis.corpo} m` : 'corpo a corpo')}</span>
 				<button type="button" class="h-8 w-8 font-pixel text-[13px]" aria-label="Fechar medida" onclick={() => (ui.aneis = null)}>✕</button>
@@ -892,7 +892,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 		{@const cor = corCss(mesa.corDe(mesa.donoDe(hoverToken)))}
 		<div
 			role="tooltip"
-			class="absolute z-[8] flex w-[220px] flex-col gap-1.5 border-2 bg-b0 p-2.5 shadow-[4px_4px_0_#000]"
+			class="absolute z-[8] flex w-[220px] flex-col gap-1.5 border-2 bg-sup p-2.5 shadow-[4px_4px_0_var(--sombra)]"
 			style="border-color: {cor}; left: {Math.max(8, ui.hover.x + 16)}px; top: {Math.max(8, ui.hover.y - 10)}px"
 			onpointerenter={() => ui.hover && (ui.hover = { ...ui.hover })}
 			onpointerleave={() => (ui.hover = null)}
@@ -933,15 +933,15 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			{#if !data.mestre && minhaFicha && !mesa.travada && participa(minhaFicha.id)}<button type="button" class="btn-jogo btn-primario min-h-11" onclick={() => colocar(JSON.stringify({ tipo: 'pc', id: minhaFicha.id }))}>ENTRAR NA CENA</button>{/if}
 		</div>
 	{/if}
-	{#if suaVez}<div role="alert" class="absolute top-[40%] left-1/2 z-[9] -translate-x-1/2 border-2 border-acc bg-b0 px-5 py-3.5 font-mincho text-[22px] leading-none font-bold text-acc shadow-[4px_4px_0_#000]">{suaVez}</div>{/if}
-	{#if ui.aviso}<div role="status" class="absolute bottom-16 left-1/2 z-[9] max-w-[calc(100%-24px)] -translate-x-1/2 border-2 border-warn bg-b0 px-3 py-2 text-[13px] leading-[18px] font-semibold">{ui.aviso.texto}</div>{/if}
+	{#if suaVez}<div role="alert" class="absolute top-[40%] left-1/2 z-[9] -translate-x-1/2 border-2 border-acc bg-sup px-5 py-3.5 font-mincho text-[22px] leading-none font-bold text-acc shadow-[4px_4px_0_var(--sombra)]">{suaVez}</div>{/if}
+	{#if ui.aviso}<div role="status" class="absolute bottom-16 left-1/2 z-[9] max-w-[calc(100%-24px)] -translate-x-1/2 border-2 border-warn bg-sup px-3 py-2 text-[13px] leading-[18px] font-semibold">{ui.aviso.texto}</div>{/if}
 	<div aria-live="polite" class="sr-only">{ui.anuncio}</div>
 {/snippet}
 
 <!-- cena narrativa: a imagem para todos (o fundo desfocado preenche as sobras), o nome da cena embaixo -->
 {#snippet telaNarrativa()}
 	{@const src = urlImagemMesa(cena?.imagem)}
-	<div class="relative min-w-0 flex-1 overflow-hidden bg-b0" aria-label="Narrativa: {cena?.nome ?? ''}" role="img">
+	<div class="relative min-w-0 flex-1 overflow-hidden bg-[var(--fundo)]" aria-label="Narrativa: {cena?.nome ?? ''}" role="img">
 		{#if src}
 			<img {src} alt="" aria-hidden="true" class="absolute inset-0 h-full w-full scale-110 object-cover opacity-35 blur-2xl" />
 			<img {src} alt="" class="relative h-full w-full object-contain" style:image-rendering={cena?.imagem?.startsWith('/') ? 'pixelated' : 'auto'} />
@@ -1066,9 +1066,9 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			<nav aria-label="Caminho" class="flex min-w-0 items-center gap-2 text-sm leading-none font-medium text-mut">
 				<a href="/campanhas/{campanha}" class="truncate hover:text-fg">{data.campanha.nome}</a><span aria-hidden="true">›</span><span>Mesa</span><span aria-hidden="true">›</span>
 				{#if data.mestre}
-					<button type="button" aria-haspopup="menu" class="flex min-h-10 items-center gap-1.5 border-2 border-b3 bg-b2 px-2.5 font-mincho text-[17px] leading-none font-bold text-papel" onclick={() => (ui.pop = ui.pop === 'cena' ? null : 'cena')}>{cena?.nome ?? 'Sem cena'}<span class="font-pixel text-xs text-mut">▾</span></button>
+					<button type="button" aria-haspopup="menu" class="flex min-h-10 items-center gap-1.5 border-2 border-b3 bg-b2 px-2.5 font-mincho text-[17px] leading-none font-bold text-fg" onclick={() => (ui.pop = ui.pop === 'cena' ? null : 'cena')}>{cena?.nome ?? 'Sem cena'}<span class="font-pixel text-xs text-mut">▾</span></button>
 				{:else}
-					<span class="font-mincho text-[17px] leading-none font-bold text-papel">{cena?.nome ?? 'Sem cena'}</span>
+					<span class="font-mincho text-[17px] leading-none font-bold text-fg">{cena?.nome ?? 'Sem cena'}</span>
 				{/if}
 			</nav>
 			<span class="flex-1"></span>
@@ -1165,13 +1165,13 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			{/if}
 			{@render trilho()}
 
-			<div class="relative min-w-0 flex-1 overflow-hidden bg-b0">
+			<div class="relative min-w-0 flex-1 overflow-hidden bg-[var(--fundo)]">
 				<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} {focoDe} onSoltar={colocar} />
 				{@render barras()}
 				{@render sobreQuadro()}
 				<div class="pointer-events-none absolute inset-x-3 bottom-16 z-[7] flex justify-center"><PainelObjeto {mesa} {ui} /></div>
 				<JukeboxMesa {mesa} {ui} classe="absolute bottom-16 left-3 z-[8]" />
-				<div class="absolute right-3 bottom-3 z-[6] flex items-center border-2 border-b3 bg-b0 shadow-[4px_4px_0_#000]">
+				<div class="absolute right-3 bottom-3 z-[6] flex items-center border-2 border-b3 bg-sup shadow-[4px_4px_0_var(--sombra)]">
 {#if cena?.visao === 'isometrica' && !cena.fundo}
 <button type="button" class="h-9 w-9 border-r-2 border-b3 font-pixel text-base font-bold" aria-label="Girar a vista para a esquerda" title="Girar a vista (teclas [ e ])" onclick={() => ui.girarIso(cena.iso_rotacao, -1)}>⟲</button>
 						<button type="button" class="h-9 w-9 border-r-2 border-b3 font-pixel text-base font-bold" aria-label="Girar a vista para a direita" title="Girar a vista (teclas [ e ])" onclick={() => ui.girarIso(cena.iso_rotacao, 1)}>⟳</button>
@@ -1298,7 +1298,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 
 {#if ui.modal}
 	<div class="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(10,8,7,.72)] p-4" role="presentation" onclick={(e) => e.target === e.currentTarget && (ui.modal = null)}>
-		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'config' ? 'h-[min(660px,calc(100dvh-2rem))] w-[min(880px,100%)] overflow-hidden' : (ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]') + ' overflow-y-auto'} max-h-full max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_#000]">
+		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'config' ? 'h-[min(660px,calc(100dvh-2rem))] w-[min(880px,100%)] overflow-hidden' : (ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]') + ' overflow-y-auto'} max-h-full max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_var(--sombra)]">
 			{#if ui.modal.tipo === 'imagem' && cena}
 				{@const alvo = ui.modal.alvo}
 				<ArtesMesa {mesa} {campanha} {alvo} atual={cena[alvo]} aoEscolher={escolherDaBiblioteca} aoArmar={armarArte} aoFechar={() => (ui.modal = null)} />

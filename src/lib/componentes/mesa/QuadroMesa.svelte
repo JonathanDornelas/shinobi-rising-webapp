@@ -741,7 +741,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 						{/if}
 						<rect x={cx - 0.38 * n} y={y + n - 0.12} width={0.76 * n} height={F(5)} style="fill: var(--b0)" />
 						<rect x={cx - 0.38 * n} y={y + n - 0.12} width={0.76 * n * fr} height={F(5)} style="fill: {fr > 0.5 ? 'var(--ok)' : fr > 0.25 ? 'var(--warn)' : 'var(--err)'}" />
-						<text x={cx} y={y + n + F(12)} text-anchor="middle" font-size={F(11)} font-family="'Noto Sans'" font-weight="600" style="fill: var(--fg); stroke: var(--b0)" stroke-width={F(3)} paint-order="stroke">{nomeCurto(t.nome).split(' ')[0]}{t.membro ? ` ${t.membro}` : ''}</text>
+						<text x={cx} y={y + n + F(12)} text-anchor="middle" font-size={F(11)} font-family="'Noto Sans'" font-weight="600" style="fill: var(--fg); stroke: var(--b1)" stroke-width={F(3)} paint-order="stroke">{nomeCurto(t.nome).split(' ')[0]}{t.membro ? ` ${t.membro}` : ''}</text>
 						{#if t.condicoes.length}
 							<!-- estados: ícones em volta do token, do alto para a direita -->
 							{@const lado = Math.min(0.6, 0.44 + 0.03 * n)}
@@ -755,7 +755,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 								</g>
 							{/each}
 							{#if t.condicoes.length > 8}
-								<text x={cx + raio} y={cy + raio} font-size={F(10)} font-family="'Pixelify Sans'" font-weight="700" style="fill: var(--warn); stroke: var(--b0)" stroke-width={F(3)} paint-order="stroke">+{t.condicoes.length - 8}</text>
+								<text x={cx + raio} y={cy + raio} font-size={F(10)} font-family="'Pixelify Sans'" font-weight="700" style="fill: var(--warn); stroke: var(--b1)" stroke-width={F(3)} paint-order="stroke">+{t.condicoes.length - 8}</text>
 							{/if}
 						{/if}
 						{#if !t.visivel}
@@ -801,7 +801,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 	{/if}
 {/snippet}
 
-<div bind:this={caixa} bind:clientWidth={W} bind:clientHeight={H} class="absolute inset-0 overflow-hidden bg-b0" role="presentation" ondragover={aoArrastarSobre} ondrop={aoLargar}>
+<div bind:this={caixa} bind:clientWidth={W} bind:clientHeight={H} class="absolute inset-0 overflow-hidden bg-[var(--fundo)]" role="presentation" ondragover={aoArrastarSobre} ondrop={aoLargar}>
 	<svg
 		bind:this={svg}
 		width={W}
@@ -1082,7 +1082,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		{#if cena?.coordenadas && !iso}
 			<!-- as letras e os números ficam fixos numa fileira que só desliza com a câmera (criar e apagar rótulos a cada
 				 quadro custava mais que o quadro inteiro); o canto escuro cobre o que passa por baixo -->
-			<g pointer-events="none" font-size="11" font-family="'Pixelify Sans'" text-anchor="middle" style="fill: var(--mut)">
+			<g pointer-events="none" font-size="11" font-family="'Pixelify Sans'" text-anchor="middle" style="fill: var(--b0mut)">
 				<rect x="0" y="0" width={W} height="20" style="fill: var(--b0)" opacity="0.85" />
 				<g transform="translate({-ui.vx * s} 0)">
 					{#each { length: L } as _, i (i)}<text x={(i + 0.5) * s} y="14">{letras(i)}</text>{/each}
@@ -1098,7 +1098,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 	{#if rascunho}
 		<!-- texto novo: digite e Enter põe no quadro (Shift+Enter quebra a linha; Esc cancela) -->
 		<textarea
-			class="absolute z-20 min-h-10 w-[240px] -translate-x-1/2 -translate-y-1/2 resize-none border-2 border-[var(--vermelhao)] bg-b0 px-2 py-1.5 text-sm text-fg shadow-[4px_4px_0_#000]"
+			class="absolute z-20 min-h-10 w-[240px] -translate-x-1/2 -translate-y-1/2 resize-none border-2 border-[var(--vermelhao)] bg-sup px-2 py-1.5 text-sm text-fg shadow-[4px_4px_0_var(--sombra)]"
 style="left: {(paraTela(rascunho.x, rascunho.y)[0] - ui.vx) * s}px; top: {(paraTela(rascunho.x, rascunho.y)[1] - ui.vy) * s}px; font-family: {FONTES[ui.textoNovo.fonte].familia}"
 			rows="2"
 			maxlength="300"

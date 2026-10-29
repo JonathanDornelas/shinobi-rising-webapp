@@ -272,7 +272,7 @@
 								<button type="button" class="h-8 w-8 font-pixel text-sm" aria-label="Menu da pasta {l.p.nome}" onclick={() => (menu = menu === l.p.id ? null : l.p.id)}>⋯</button>
 							</div>
 							{#if menu === l.p.id}
-								<div role="menu" class="mr-2 mb-1 flex flex-col border-2 border-b3 bg-b0 shadow-[4px_4px_0_#000]" style="margin-left: {pad}">
+								<div role="menu" class="mr-2 mb-1 flex flex-col border-2 border-b3 bg-sup shadow-[4px_4px_0_var(--sombra)]" style="margin-left: {pad}">
 									{#each [['Renomear', () => ((renomeando = { id: l.p.id, nome: l.p.nome }), (menu = null))], ['Nova subpasta', () => ((menu = null), novaPasta(l.p.id))], ['Colocar todos na cena', () => ((menu = null), onColocar(JSON.stringify({ tipo: 'pasta', id: l.p.id })))], ['Excluir', () => excluir(l.p)]] as const as [n, f] (n)}
 										<button type="button" role="menuitem" class="min-h-9 border-b-2 border-b2 px-2.5 text-left text-[13px] font-medium" onclick={f}>{n}</button>
 									{/each}

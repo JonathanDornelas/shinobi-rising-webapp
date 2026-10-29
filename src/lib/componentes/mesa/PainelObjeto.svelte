@@ -32,7 +32,7 @@
 </script>
 
 {#if o && pode}
-	<div role="group" aria-label="{nomeTipo[o.tipo]} selecionado" class="pointer-events-auto flex w-[420px] max-w-full flex-col gap-2 border-2 border-b3 bg-b0 p-2.5 shadow-[4px_4px_0_#000] {classe}">
+	<div role="group" aria-label="{nomeTipo[o.tipo]} selecionado" class="pointer-events-auto flex w-[420px] max-w-full flex-col gap-2 border-2 border-b3 bg-sup p-2.5 shadow-[4px_4px_0_var(--sombra)] {classe}">
 		<div class="flex items-center gap-2">
 			<span class="flex-1 font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">{nomeTipo[o.tipo].toUpperCase()}{mesa.mestre && o.autor_id !== mesa.eu ? ` DE ${dono.toUpperCase()}` : ''}</span>
 			<button type="button" class="h-8 w-8 border-2 border-b3 font-pixel text-xs" aria-label="Fechar o painel" onclick={() => (ui.objSel = null)}>✕</button>

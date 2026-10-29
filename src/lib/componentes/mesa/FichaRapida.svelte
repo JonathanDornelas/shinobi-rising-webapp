@@ -264,7 +264,7 @@
 	aria-label="Ficha rápida de {token.nome}"
 	class={celular
 		? 'absolute inset-x-0 bottom-16 z-20 flex flex-col border-t-2 bg-b2 shadow-[0_-4px_0_var(--b0)]'
-		: 'absolute flex h-[560px] max-h-[calc(100%-16px)] min-h-[240px] w-[380px] max-w-[calc(100%-16px)] min-w-[300px] resize flex-col overflow-hidden border-2 bg-b2 shadow-[8px_8px_0_#000]'}
+		: 'absolute flex h-[560px] max-h-[calc(100%-16px)] min-h-[240px] w-[380px] max-w-[calc(100%-16px)] min-w-[300px] resize flex-col overflow-hidden border-2 bg-b2 shadow-[8px_8px_0_var(--sombra)]'}
 	style:border-color={cor}
 	style:height={celular ? (alta ? 'calc(100% - 64px)' : '50%') : undefined}
 	style:left={celular ? undefined : `${janela.x}px`}

@@ -81,6 +81,9 @@
 	--b0: #0e0b0a;
 	--b0fg: #f4e4d6;
 	--b0mut: #b5a797;
+	/* superfície de painel flutuante (popups, réguas, avisos da Mesa) e a sombra pixel dela */
+	--sup: #0e0b0a;
+	--sombra: #000;
 	--b1: #16110f;
 	--b2: #1f1815;
 	--b3: #2e2420;
@@ -134,6 +137,8 @@
 	--b0: #2b2320;
 	--b0fg: #f4e4d6;
 	--b0mut: #d9c2a7;
+	--sup: #fbf7f0;
+	--sombra: #2b2320;
 	--b1: #f4e4d6;
 	--b2: #fbf7f0;
 	--b3: #e6d2bf;
@@ -240,6 +245,7 @@
 	--color-b0: var(--b0);
 	--color-b0fg: var(--b0fg);
 	--color-b0mut: var(--b0mut);
+	--color-sup: var(--sup);
 	--color-b1: var(--b1);
 	--color-b2: var(--b2);
 	--color-b3: var(--b3);
@@ -743,5 +749,32 @@
 	/* esqueleto de carregamento */
 	.esqueleto {
 		background: var(--b3);
+	}
+}
+
+/* Tema claro: no washi o b0 é uma faixa escura (cabeçalhos, trilho de ferramentas, abas). Tudo o que está dentro dela
+   usa as cores de texto da faixa (claras); as superfícies claras que ficam dentro de uma faixa voltam às cores do tema. */
+@layer components {
+	[data-theme='washi'] .bg-b0 {
+		color: var(--b0fg);
+		--fg: #f4e4d6;
+		--mut: #d9c2a7;
+		--title: #d9a82b;
+		--acc: #d9a82b;
+		--accfg: #16110f;
+		--link: #e8806f;
+		--field: #8a7a6c;
+		--b3: #4a3b34;
+	}
+	[data-theme='washi'] :is(.bg-b1, .bg-b2, .bg-b3, .bg-sup) {
+		color: #1a1a1a;
+		--fg: #1a1a1a;
+		--mut: #5c524a;
+		--title: #7f6000;
+		--acc: #bf9000;
+		--accfg: #1a1a1a;
+		--link: #8b2e20;
+		--field: #a88b6a;
+		--b3: #e6d2bf;
 	}
 }

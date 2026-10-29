@@ -273,7 +273,7 @@
 <div bind:this={alvoEl} aria-hidden="true" style="position: fixed; top: 0; left: -2000px; width: 320px; height: 180px; overflow: hidden; pointer-events: none"></div>
 
 {#if visivel}
-	<section aria-label="Música da mesa" class="pointer-events-auto flex flex-col border-2 border-b3 bg-b0 shadow-[4px_4px_0_#000] {classe}" style="width: {aberto ? 320 : 260}px; max-width: calc(100vw - 16px)">
+	<section aria-label="Música da mesa" class="pointer-events-auto flex flex-col border-2 border-b3 bg-sup shadow-[4px_4px_0_var(--sombra)] {classe}" style="width: {aberto ? 320 : 260}px; max-width: calc(100vw - 16px)">
 		<div class="flex items-center gap-1.5 border-b-2 border-b3 bg-b2 py-1 pr-1 pl-2.5">
 			<span aria-hidden="true" class="font-pixel text-sm font-bold {quemToca ? 'text-ok' : 'text-mut'}">♪</span>
 			<span class="min-w-0 flex-1 truncate text-xs leading-4 font-semibold" title={titulo}>{titulo}{j && !j.tocando ? ' · pausada' : ''}</span>

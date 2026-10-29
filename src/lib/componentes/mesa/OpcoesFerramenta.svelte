@@ -70,8 +70,8 @@
 	{#if ui.armada}
 		<div class="flex items-center gap-2 border-2 border-[var(--vermelhao)] bg-grena p-1.5">
 			<img src={urlImagemMesa(ui.armada.caminho)} alt="" class="h-10 w-10 border-2 border-b3 bg-b1 object-contain" />
-			<span class="min-w-0 flex-1 text-sm leading-5 font-semibold text-papel"><span class="block truncate">{ui.armada.nome}</span><span class="block text-xs font-normal">Clique no quadro para pôr</span></span>
-			<button type="button" class="h-8 w-8 border-2 border-b3 font-pixel text-xs text-papel" aria-label="Soltar a arte" onclick={() => (ui.armada = null)}>✕</button>
+			<span class="min-w-0 flex-1 text-sm leading-5 font-semibold text-fg"><span class="block truncate">{ui.armada.nome}</span><span class="block text-xs font-normal">Clique no quadro para pôr</span></span>
+			<button type="button" class="h-8 w-8 border-2 border-b3 font-pixel text-xs text-fg" aria-label="Soltar a arte" onclick={() => (ui.armada = null)}>✕</button>
 		</div>
 	{:else}
 		<span class="text-xs leading-4 text-mut">Escolha uma arte da biblioteca e clique no quadro para pôr. Clique numa imagem para mover, girar ou redimensionar.</span>

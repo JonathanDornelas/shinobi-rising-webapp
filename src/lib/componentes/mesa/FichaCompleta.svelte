@@ -148,7 +148,7 @@
 	aria-label="Ficha completa{p ? ` de ${p.nome}` : ''}"
 	class={celular
 		? 'fixed inset-0 z-[56] flex flex-col bg-b1'
-		: 'fixed z-50 flex h-[calc(100dvh-80px)] min-h-[320px] w-[940px] max-w-[calc(100vw-32px)] min-w-[420px] resize flex-col overflow-hidden border-2 border-[var(--vermelhao-lo)] bg-b1 shadow-[8px_8px_0_#000]'}
+		: 'fixed z-50 flex h-[calc(100dvh-80px)] min-h-[320px] w-[940px] max-w-[calc(100vw-32px)] min-w-[420px] resize flex-col overflow-hidden border-2 border-[var(--vermelhao-lo)] bg-b1 shadow-[8px_8px_0_var(--sombra)]'}
 	style:left={celular ? undefined : `${x}px`}
 	style:top={celular ? undefined : `${y}px`}
 	style:width={celular ? undefined : `${largura}px`}
