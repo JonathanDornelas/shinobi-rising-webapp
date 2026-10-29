@@ -627,6 +627,14 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		if (error) return void toasts.mostrar('Não foi possível ativar a cena.', 'erro');
 		mesa.cenas = mesa.cenas.map((c) => ({ ...c, ativa: c.id === cena.id }));
 		data.cenas = data.cenas.map((c) => ({ ...c, ativa: c.id === cena.id }));
+		// cena nova: quem manteve a Kekkei Genkai ativa paga o custo de novo; sem PC, ela apaga
+		for (const f of fichas) {
+			const e = f.estado.kkg;
+			if (!f.kkg || f.kkg.def.sempre || !e?.ativa || e.cena === cena.id) continue;
+			const pc = f.estado.pc ?? f.max.pc;
+			if (pc >= f.kkg.custo) void estadoPc(f, { pc: pc - f.kkg.custo, kkg: { ...e, cena: cena.id } }, `Cena nova (${cena.nome}) com o ${f.kkg.def.nome}: −${f.kkg.custo} PC`);
+			else void estadoPc(f, { kkg: { ...e, ativa: false, cena: null } }, `${f.kkg.def.nome} apagou: sem PC para a cena ${cena.nome}`);
+		}
 		ui.avisar(`“${cena.nome}” agora é a cena do grupo.`);
 	}
 

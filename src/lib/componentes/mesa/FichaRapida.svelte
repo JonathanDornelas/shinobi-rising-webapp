@@ -37,6 +37,8 @@
 	// L11 · M3 · CMP-42 · Ficha rápida: janela arrastável sobre o quadro (quantas quiser), minimizável em chip; no celular, painel
 	// inferior em duas alturas. Recursos com o campo "−7 / +5", estados, fadiga, abas de ações, jutsus, perícias e notas.
 	import { lembrarTamanho } from '#lib/mesa/tamanho.ts';
+	import { efeitoKkg, kkgLigada } from '#lib/personagem/kkg.ts';
+	import MenuVantagem from '../rolagens/MenuVantagem.svelte';
 	import SeloDt from '../regras/SeloDt.svelte';
 	import { CONDICOES } from '#lib/personagem/dados.ts';
 	import { curar } from '#lib/personagem/progressao.ts';
@@ -70,8 +72,8 @@
 	/** O uso de um jutsu em botões: ATAQUE (ou USAR, sem rolagem de ataque) paga o custo; DANO ou CURA rola o efeito. */
 	function botoesUso(j: JutsuMesa, falta = false) {
 		const custo = j.custo ? `Gasta ${j.custo} ${j.unidade}` : '';
-		const b: { n: string; acao: () => void; dica?: string; desab?: boolean }[] = [
-			{ n: j.ataque ? 'ATAQUE' : 'USAR', acao: () => acoes.usarJutsu(token, j, 'ataque'), desab: falta, dica: [custo, j.ataque ? 'rola o ataque' : ''].filter(Boolean).join(' e ') || undefined }
+		const b: { n: string; acao: () => void; dica?: string; desab?: boolean; vantagem?: boolean }[] = [
+			{ n: j.ataque ? 'ATAQUE' : 'USAR', acao: () => acoes.usarJutsu(token, j, 'ataque'), desab: falta, dica: [custo, j.ataque ? 'rola o ataque' : ''].filter(Boolean).join(' e ') || undefined, vantagem: !!j.ataque }
 		];
 		if (j.dano) b.push({ n: 'DANO', acao: () => acoes.usarJutsu(token, j, 'dano'), dica: `Rola o dano${j.resistencia ? ` (${j.resistencia})` : ''}; crítico se o último ataque foi 20 natural` });
 		else if (j.cura) b.push({ n: 'CURA', acao: () => acoes.usarJutsu(token, j, 'dano') });
@@ -109,15 +111,16 @@
 	const atual = $derived.by(() => {
 		if (dados.tipo === 'pc') {
 			const e = dados.ficha.estado;
-			const m = dados.ficha.max;
-			return { pv: e.pv ?? m.pv, pc: e.pc ?? m.pc, pe: e.pe ?? m.pe, max: m, fadiga: e.fadiga ?? 0, condicoes: e.condicoes ?? [] };
+			// o PC selado (Juuken) sai do máximo até a ficha descansar
+			const m = { ...dados.ficha.max, pc: Math.max(0, dados.ficha.max.pc - (e.pcSelado ?? 0)) };
+			return { pv: e.pv ?? m.pv, pc: e.pc ?? m.pc, pe: e.pe ?? m.pe, max: m, fadiga: e.fadiga ?? 0, condicoes: e.condicoes ?? [], selado: e.pcSelado ?? 0 };
 		}
 		if (dados.tipo === 'npc') {
 			const n = dados.npc;
 			const i = (token.membro ?? 1) - 1;
-			return { pv: n.pv_atual[i] ?? n.pv, pc: n.pc_atual?.[i] ?? n.pc, pe: n.pe_atual?.[i] ?? n.pe ?? 0, max: { pv: n.pv, pc: n.pc, pe: n.pe ?? 0 }, fadiga: 0, condicoes: token.condicoes };
+			return { pv: n.pv_atual[i] ?? n.pv, pc: n.pc_atual?.[i] ?? n.pc, pe: n.pe_atual?.[i] ?? n.pe ?? 0, max: { pv: n.pv, pc: n.pc, pe: n.pe ?? 0 }, fadiga: 0, condicoes: token.condicoes, selado: 0 };
 		}
-		return { pv: token.pv ?? 1, pc: 0, pe: 0, max: { pv: token.pv_max ?? 1, pc: 0, pe: 0 }, fadiga: 0, condicoes: token.condicoes };
+		return { pv: token.pv ?? 1, pc: 0, pe: 0, max: { pv: token.pv_max ?? 1, pc: 0, pe: 0 }, fadiga: 0, condicoes: token.condicoes, selado: 0 };
 	});
 	const barras = $derived(
 		(
@@ -155,6 +158,16 @@
 		ui.mudarFicha(token.id, { dano: '' });
 	}
 
+	/** Juuken: o número do campo sai do PC e fica selado até a ficha descansar (no NPC, só sai do PC). */
+	function selar() {
+		const n = Math.abs(Number(janela.dano.trim().replace('−', '-').replace(',', '.')));
+		if (!n) return void ui.avisar('Escreva quanto PC o Juuken selou.');
+		const q = Math.min(n, atual.pc);
+		if (dados.tipo === 'pc') acoes.estadoPc(dados.ficha, { pc: atual.pc - q, pcSelado: atual.selado + q }, `${q} PC selado (Juuken) na Mesa. PC ${atual.pc - q}/${atual.max.pc - q}`);
+		else if (dados.tipo === 'npc') acoes.recursoNpc(dados.npc, token.membro ?? 1, 'pc', atual.pc - q);
+		ui.mudarFicha(token.id, { dano: '' });
+	}
+
 	function alternarEstado(id: string) {
 		const tem = atual.condicoes.includes(id);
 		const lista = tem ? atual.condicoes.filter((c) => c !== id) : [...atual.condicoes, id];
@@ -188,7 +201,37 @@
 
 	/** Atributos e perícias de quem tem ficha: o jogador, o NPC de ficha completa e o NPC do bestiário (com as 15 perícias). */
 	const atributos = $derived(dados.tipo === 'pc' ? dados.ficha.atributos : dados.tipo === 'npc' ? (dados.extras?.atributos ?? []) : []);
-	const pericias = $derived(dados.tipo === 'pc' ? dados.ficha.pericias : dados.tipo === 'npc' ? (dados.extras?.pericias ?? []) : []);
+	// ------------------------------------------------------------------ Kekkei Genkai (só ficha de personagem)
+	const kkg = $derived.by(() => {
+		if (dados.tipo !== 'pc' || !dados.ficha.kkg) return null;
+		const k = dados.ficha.kkg;
+		const e = dados.ficha.estado.kkg ?? {};
+		const estagio = e.estagio ?? 1;
+		return { ...k, estagio, ativa: !!e.ativa, ligada: kkgLigada(k.def, e), efeito: efeitoKkg(k.def, dados.ficha.nivel, estagio) };
+	});
+	const cenaDoGrupo = $derived(mesa.cenas.find((c) => c.ativa)?.id ?? null);
+	function ativarKkg() {
+		if (dados.tipo !== 'pc' || !kkg || kkg.ativa) return;
+		if (atual.pc < kkg.custo) return void ui.avisar(`Faltam ${kkg.custo - atual.pc} PC para ativar o ${kkg.def.nome}.`);
+		const pc = atual.pc - kkg.custo;
+		acoes.estadoPc(dados.ficha, { pc, kkg: { ...dados.ficha.estado.kkg, ativa: true, cena: cenaDoGrupo } }, `Ativou o ${kkg.def.nome} na Mesa${kkg.custo ? `: −${kkg.custo} PC. PC ${pc}/${atual.max.pc}` : ''}`);
+	}
+	function desativarKkg() {
+		if (dados.tipo !== 'pc' || !kkg?.ativa) return;
+		acoes.estadoPc(dados.ficha, { kkg: { ...dados.ficha.estado.kkg, ativa: false, cena: null } }, `Desativou o ${kkg.def.nome}`);
+	}
+	const periciasBase = $derived(dados.tipo === 'pc' ? dados.ficha.pericias : dados.tipo === 'npc' ? (dados.extras?.pericias ?? []) : []);
+	// com a KKG ligada, a Percepção ganha o bônus dela (a rolagem também)
+	const pericias = $derived(
+		kkg?.ligada
+			? periciasBase.map((p) => {
+					const b = kkg.efeito.pericias[p.id];
+					if (!b) return p;
+					const total = p.total + b;
+					return { ...p, total, expr: teste(total), partes: [...p.partes, [kkg.def.nome, `+${b}`] as [string, string]], bonus: [...p.bonus, { fonte: kkg.def.nome, valor: b }] };
+				})
+			: periciasBase
+	);
 	/** As treinadas primeiro; as outras valem só o atributo. */
 
 	/** Ataque do NPC rápido: "1d20 + 7 → 1d8 + 4" vira dois botões. */
@@ -228,7 +271,7 @@
 	const btn = 'min-h-8 border-2 border-field bg-transparent px-2 font-pixel text-[11px] leading-none font-bold text-fg disabled:cursor-not-allowed disabled:opacity-50';
 </script>
 
-{#snippet linhaAcao(icone: string | null, nome: string, meta: string, aviso: string | null, botoes: { n: string; acao: () => void; dica?: string; desab?: boolean }[], ver?: () => void, hud?: JutsuMesa | ArmaMesa, exprs?: { ataque: string | null; dano: string | null })}
+{#snippet linhaAcao(icone: string | null, nome: string, meta: string, aviso: string | null, botoes: { n: string; acao: () => void; dica?: string; desab?: boolean; vantagem?: boolean }[], ver?: () => void, hud?: JutsuMesa | ArmaMesa, exprs?: { ataque: string | null; dano: string | null })}
 	<div class="flex items-center gap-2 border-b-2 border-b1 px-3 py-1.5" role="group" onmouseenter={(e) => hud && mostrarDica(hud, e.currentTarget)} onmouseleave={esconderDica}>
 		{#if icone}<Icone id={icone} />{/if}
 		<div class="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -255,7 +298,14 @@
 			{#if aviso}<span class="text-xs leading-4 font-semibold text-warn">{aviso}</span>{/if}
 		</div>
 		{#each botoes as b (b.n)}
-			<button type="button" class="{btn} {celular ? 'min-h-11 px-2.5' : ''}" title={b.dica} disabled={b.desab} onclick={b.acao}>{b.n}</button>
+			{#if b.vantagem}
+				<span class="flex">
+					<button type="button" class="{btn} border-r-0 {celular ? 'min-h-11 px-2.5' : ''}" title={b.dica} disabled={b.desab} onclick={b.acao}>{b.n}</button>
+					<MenuVantagem aoAtacar={b.acao} rotulo={b.n} desab={b.desab} class="{btn} border-l-2 border-l-b3 px-1.5 {celular ? 'min-h-11 px-2' : ''}" />
+				</span>
+			{:else}
+				<button type="button" class="{btn} {celular ? 'min-h-11 px-2.5' : ''}" title={b.dica} disabled={b.desab} onclick={b.acao}>{b.n}</button>
+			{/if}
 		{/each}
 	</div>
 {/snippet}
@@ -349,6 +399,7 @@
 						<span class="t-num text-right font-pixel text-sm leading-none font-bold">{b.v}/{b.max}</span>
 					</div>
 				{/each}
+				{#if atual.selado}<span class="text-xs leading-4 text-mut" title="Juuken dos Hyuuga">{atual.selado} PC selado: fica fora do máximo até a ficha descansar.</span>{/if}
 				{#if editavel}
 					<div class="mt-0.5 flex items-center gap-1.5">
 						{#if recursos.length > 1}
@@ -367,6 +418,7 @@
 							class="h-9 min-w-0 flex-1 border-2 border-b3 bg-b1 px-2 font-pixel text-[15px] leading-none font-bold text-fg"
 						/>
 						<button type="button" class={btn} onclick={aplicar}>APLICAR</button>
+						{#if recurso === 'pc' && atual.max.pc > 0}<button type="button" class={btn} title="Juuken: o PC sai do atual e do máximo até a ficha descansar" onclick={selar}>SELAR</button>{/if}
 						{#if dados.tipo === 'pc' && dados.ficha.pd > 0}
 							<span class="flex gap-px font-pixel text-[15px] font-bold text-acc" title="{dados.ficha.pd} PD" aria-label="{dados.ficha.pd} Pontos de Destino">{'★'.repeat(dados.ficha.pd)}</span>
 						{/if}
@@ -376,7 +428,7 @@
 
 			{#if dados.tipo === 'pc' || dados.tipo === 'npc'}
 				{@const est = dados.tipo === 'pc'
-					? [['Defesa', String(dados.ficha.defesa), 'recurso/ic-recurso-defesa'], ['Def. mental', String(dados.ficha.defesaMental), 'recurso/ic-recurso-defesa-mental'], ['Iniciativa', `+${dados.ficha.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', `${dados.ficha.deslocamento} m`, 'esp/ic-esp-velocidade']]
+					? [['Defesa', String(dados.ficha.defesa + (kkg?.ligada ? kkg.efeito.defesa : 0)), 'recurso/ic-recurso-defesa'], ['Def. mental', String(dados.ficha.defesaMental), 'recurso/ic-recurso-defesa-mental'], ['Iniciativa', `+${dados.ficha.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', `${dados.ficha.deslocamento} m`, 'esp/ic-esp-velocidade']]
 					: [['Defesa', String(dados.npc.defesa), 'recurso/ic-recurso-defesa'], ['Iniciativa', `${dados.npc.iniciativa >= 0 ? '+' : ''}${dados.npc.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', `${dados.extras?.deslocamento ?? 10} m`, 'esp/ic-esp-velocidade']]}
 				<div class="mx-3 mb-2.5 grid grid-cols-2 gap-1">
 					{#each est as [k, v, ic] (k)}
@@ -436,6 +488,22 @@
 					{/each}
 				</div>
 			{/if}
+			{#if kkg}
+				<div class="mx-3 mb-2.5 flex items-center gap-2 border-2 py-1 pr-1 pl-1.5" style:border-color={kkg.ligada ? kkg.def.cor : 'var(--b3)'} style:background={kkg.ligada ? `color-mix(in srgb, ${kkg.def.cor} 14%, transparent)` : undefined} title={kkg.efeito.textos.join(' · ')}>
+					<Icone id={kkg.def.icone} />
+					<span class="flex min-w-0 flex-1 flex-col">
+						<span class="truncate text-sm leading-[18px] font-semibold">{kkg.def.nome}{kkg.def.estagios && kkg.estagio ? ` · ${kkg.def.estagios[kkg.estagio - 1].rotulo}` : ''}</span>
+						<span class="truncate text-xs leading-4 text-mut">{kkg.def.sempre ? 'Sempre ativa' : kkg.ligada ? kkg.efeito.textos.slice(0, 2).join(' · ') : `${kkg.custo} PC por cena`}</span>
+					</span>
+					{#if editavel && !kkg.def.sempre}
+						{#if kkg.ativa}
+							<button type="button" class="{btn} {celular ? 'min-h-11 px-2.5' : ''}" onclick={desativarKkg}>DESATIVAR</button>
+						{:else}
+							<button type="button" class="{btn} {celular ? 'min-h-11 px-2.5' : ''}" disabled={(!!kkg.def.estagios && kkg.estagio < 1) || atual.pc < kkg.custo} title={kkg.def.estagios && kkg.estagio < 1 ? 'O Sharingan ainda não despertou (escolha o estágio na ficha completa)' : undefined} onclick={ativarKkg}>ATIVAR{kkg.custo ? ` · −${kkg.custo} PC` : ''}</button>
+						{/if}
+					{/if}
+				</div>
+			{/if}
 			{#if dados.tipo === 'pc' && editavel}
 				<div class="mx-3 mb-2.5 flex items-center gap-1.5">
 					<Icone id="recurso/ic-recurso-fadiga" />
@@ -454,7 +522,7 @@
 					{#each dados.ficha.armas as a, i (`${i}:${a.nome}`)}
 						{@render linhaAcao(null, a.nome, a.rotuloAlcance, null, [
 							{ n: 'MEDIR', acao: () => acoes.aneis(token, a.alcance <= 2 ? a.alcance : 0, a.alcance > 2 ? [{ r: a.alcance, rotulo: `${a.nome} · ${a.alcance} m` }] : [], a.nome) },
-							{ n: 'ATAQUE', acao: () => acoes.atacar(token, a, 'ataque') }, ...(a.dano ? [{ n: 'DANO', acao: () => acoes.atacar(token, a, 'dano'), dica: 'Crítico se o último ataque foi 20 natural' }] : [])
+							{ n: 'ATAQUE', acao: () => acoes.atacar(token, a, 'ataque'), vantagem: true }, ...(a.dano ? [{ n: 'DANO', acao: () => acoes.atacar(token, a, 'dano'), dica: 'Crítico se o último ataque foi 20 natural' }] : [])
 						], undefined, a)}
 					{/each}
 					{#each dados.ficha.jutsus.filter((j) => j.ataque || j.dano || j.resistencia).slice(0, 4) as j (j.slug)}
@@ -471,7 +539,7 @@
 					{#each dados.extras.ataques as a, i (`${i}:${a.nome}`)}
 						{@render linhaAcao(null, a.nome, a.rotuloAlcance, null, [
 							{ n: 'MEDIR', acao: () => acoes.aneis(token, a.alcance <= 2 ? Math.max(a.alcance, alcanceCorpo(token.tamanho)) : 0, a.alcance > 2 ? [{ r: a.alcance, rotulo: `${a.nome} · ${a.alcance} m` }] : [], a.nome) },
-							{ n: 'ATAQUE', acao: () => acoes.atacar(token, a, 'ataque') }, ...(a.dano ? [{ n: 'DANO', acao: () => acoes.atacar(token, a, 'dano'), dica: 'Crítico se o último ataque foi 20 natural' }] : [])
+							{ n: 'ATAQUE', acao: () => acoes.atacar(token, a, 'ataque'), vantagem: true }, ...(a.dano ? [{ n: 'DANO', acao: () => acoes.atacar(token, a, 'dano'), dica: 'Crítico se o último ataque foi 20 natural' }] : [])
 						], undefined, a)}
 					{/each}
 					<div class="flex flex-wrap gap-1 px-3 py-2">
@@ -488,7 +556,7 @@
 					{/each}
 				{:else if aba === 'acoes' && dados.tipo === 'npc' && ataqueNpc}
 					{@render linhaAcao(null, 'Ataque', ataqueNpc.texto || 'Sem ataque anotado', null, [
-						...(ataqueNpc.ataque ? [{ n: 'ATAQUE', acao: () => acoes.rolar(token, { expr: ataqueNpc!.ataque!, rotulo: `Ataque · ${token.nome}`, partes: [] }, 'ataque', true) }] : []),
+						...(ataqueNpc.ataque ? [{ n: 'ATAQUE', acao: () => acoes.rolar(token, { expr: ataqueNpc!.ataque!, rotulo: `Ataque · ${token.nome}`, partes: [] }, 'ataque', true), vantagem: true }] : []),
 						...(ataqueNpc.dano ? [{ n: 'DANO', acao: () => acoes.rolar(token, { expr: ataqueNpc!.dano!, rotulo: `Dano · ${token.nome}`, partes: [] }, 'dano', false) }] : [])
 					], undefined, undefined, ataqueNpc.ataque || ataqueNpc.dano ? { ataque: ataqueNpc.ataque, dano: ataqueNpc.dano } : undefined)}
 					{#if dados.npc.especial}{@render linhaAcao(null, 'Especial', dados.npc.especial, null, [])}{/if}

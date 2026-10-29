@@ -17,11 +17,12 @@
 	import { NIVEIS_PROFICIENCIA } from '#lib/personagem/dados.ts';
 	import type { JutsuFicha } from '#lib/personagem/progressao.ts';
 	import { linhasPericia } from '#lib/personagem/regras.ts';
-	import { curaDoEfeito, danoDoEfeito, periciaDoAtaque, somar, teste, totalPericia } from '#lib/rolagens/expressoes.ts';
+	import { ataqueDoJutsu, curaDoEfeito, danoDoEfeito, danoNormal, somar, teste } from '#lib/rolagens/expressoes.ts';
 	import Icone from '../ui/Icone.svelte';
 	import Traco from '../ui/Traco.svelte';
 	import BotaoFavorito from '../regras/BotaoFavorito.svelte';
 	import SeloDt from '../regras/SeloDt.svelte';
+	import MenuVantagem from '../rolagens/MenuVantagem.svelte';
 	import { comDt, dtDoLancador } from '#lib/jutsus/dt.ts';
 	import Glosa from '../regras/Glosa.svelte';
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
@@ -179,15 +180,15 @@
 		return dtDoLancador(j.rank, j.tipo, f.calc.atributos, prof ? NIVEIS_PROFICIENCIA[prof.nivel - 1].bonus : 0);
 	}
 	function rolagens(j: JutsuFicha) {
-		const pericia = periciaDoAtaque(j.info);
-		const base = pericia ? totalPericia(linhas, pericia) : null;
+		// a perícia do card, com o atributo trocado quando ele pede ("Taijutsu (com CTR)" no Juuken)
+		const atq = ataqueDoJutsu(j.info, linhas, f.calc.atributos);
 		const prof = f.calc.proficiencias.find((p) => p.tipo === 'jutsu' && p.alvo === j.slug);
 		const bonusProf = prof ? NIVEIS_PROFICIENCIA[prof.nivel - 1].bonus : 0;
-		// jutsu criado: os dados vêm do criador; do livro: lidos do texto do efeito
-		const dano = j.rolagem ? (j.rolagem.modo === 'dano' ? j.rolagem : null) : danoDoEfeito(j.efeito);
+		// jutsu criado: os dados vêm do criador; do livro: lidos do texto do efeito ("dano normal": o golpe desarmado)
+		const dano = j.rolagem ? (j.rolagem.modo === 'dano' ? j.rolagem : null) : (danoDoEfeito(j.efeito) ?? danoNormal(j.efeito, j.tipo, j.info));
 		const atributo = dano?.atributo as keyof typeof f.calc.atributos | null | undefined;
 		return {
-			ataque: base === null ? null : { expr: teste(base + bonusProf), rotulo: `Ataque · ${j.nome}`, partes: partesAtaqueJutsu(pericia!, base, bonusProf) as Parte[] },
+			ataque: atq === null ? null : { expr: teste(atq.base + bonusProf), rotulo: `Ataque · ${j.nome}`, partes: partesAtaqueJutsu(atq.rotulo, atq.base, bonusProf) as Parte[] },
 			dano: dano ? { expr: somar(dano.dados, atributo ? f.calc.atributos[atributo] : 0), rotulo: `Dano · ${j.nome}`, partes: partesDanoAtributo(atributo, atributo ? f.calc.atributos[atributo] : 0) } : null,
 			cura: j.rolagem ? (j.rolagem.modo === 'cura' ? j.rolagem.dados : null) : curaDoEfeito(j.efeito)
 		};
@@ -227,12 +228,17 @@
 
 {#snippet usarBotao(j: JutsuFicha, classe: string)}
 	{@const s = situacao(j)}
+	{@const comAtaque = !!rolagens(j).ataque}
+	<span class="flex {classe}">
 	<button
 		type="button"
-		class="btn-jogo min-h-9 px-3 text-xs {classe} {s.usavel ? 'btn-primario' : 'bg-b3 text-mut'}"
+		class="btn-jogo min-h-9 min-w-0 flex-1 px-3 text-xs {s.usavel ? 'btn-primario' : 'bg-b3 text-mut'}"
 		disabled={!s.usavel}
 		title={s.bloqueadoRank ? 'Esgotado: sem jutsus de Rank B ou superior' : s.falta > 0 ? `Faltam ${s.falta} ${s.c.unidade}` : !f.editavel ? 'Ficha somente leitura' : 'Gasta o custo e já rola o ataque e o dano'}
 		onclick={async () => (mesa && (await mesa.usar(j))) || usar(j)}>USAR · {s.c.final} {s.c.unidade}</button
+	>
+	{#if comAtaque}<MenuVantagem aoAtacar={async () => (mesa && (await mesa.usar(j))) || usar(j)} rotulo="Usar {j.nome}" desab={!s.usavel} class="btn-jogo min-h-9 border-l-2 border-l-[var(--vermelhao-lo)] px-2 text-xs {s.usavel ? 'btn-primario' : 'bg-b3 text-mut'}" />{/if}
+	</span
 	>
 {/snippet}
 

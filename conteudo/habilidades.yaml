@@ -121,7 +121,7 @@
   origem: Clã Hyuuga
   descricao:
     - "O estilo do clã: palmas que injetam chakra direto na rede de chakra do oponente, ferindo os órgãos por dentro e fechando tenketsu."
-  efeito: "Seus ataques desarmados podem ser de Juuken: usam CTR no lugar de FOR (na rolagem de Taijutsu e no dano) e drenam 1d4 PC do alvo em cada acerto."
+  efeito: "Seus ataques desarmados podem ser de Juuken: usam CTR no lugar de FOR (na rolagem de Taijutsu e no dano) e selam 1d4 PC do alvo em cada acerto. Os tenketsu fechados bloqueiam esse chakra até o alvo descansar."
   notas:
     - Com o Byakugan ativo, os golpes de Juuken ignoram RD.
   capitulo: 8
@@ -133,7 +133,7 @@
   origem: Clã Hyuuga
   descricao:
     - O Hyuuga enxerga os tenketsu e os acerta com precisão absoluta.
-  efeito: Seus golpes de Juuken drenam 2d4 PC (em vez de 1d4); num acerto crítico, o alvo também não pode lançar jutsus no próximo turno.
+  efeito: Seus golpes de Juuken selam 2d4 PC (em vez de 1d4); num acerto crítico, o alvo também não pode lançar jutsus no próximo turno.
   notas:
     - O Byakugan passa a custar 2 PC por cena.
   capitulo: 8

@@ -6,10 +6,11 @@ import { comDt, dtDoLancador, dtFixa, dtNaFichaDaCriatura } from '#lib/jutsus/dt
 import { jutsusDaFicha } from '#lib/jutsus/servidor.ts';
 import { equipamentos, jutsus as catalogoJutsus } from '#lib/livro/dados.server.ts';
 import { catalogoFicha } from '#lib/personagem/catalogo.server.ts';
+import { custoKkg } from '#lib/personagem/kkg.ts';
 import { ATRIBUTOS, NIVEIS_PROFICIENCIA } from '#lib/personagem/dados.ts';
 import { cargaInventario, custoJutsu, estadoAtual, ficha, inventarioInicial, type EstadoJogo, type ItemInventario } from '#lib/personagem/progressao.ts';
 import { linhasPericia, type FichaDados, type ItemLoja } from '#lib/personagem/regras.ts';
-import { curaDoEfeito, danoDoEfeito, periciaDoAtaque, somar, teste, totalPericia } from '#lib/rolagens/expressoes.ts';
+import { ataqueDoJutsu, curaDoEfeito, danoDoEfeito, danoNormal, somar, teste } from '#lib/rolagens/expressoes.ts';
 import { partesAtaqueJutsu, partesDanoAtributo, partesPericia, type Parte } from '#lib/rolagens/partes.ts';
 import { atributosDaCriatura, periciasDaCriatura } from './atributos.ts';
 import { ehVersatil, modosDaArma, nomeDoModo, type ModoArma } from './armas.ts';
@@ -160,10 +161,10 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 		.filter((j) => !!j)
 		.map((j) => {
 			const c = custoJutsu(dados, j, atual.fadiga);
-			const pericia = periciaDoAtaque(j.info);
-			const base = pericia ? totalPericia(linhas, pericia) : null;
+			// a perícia do card, com o atributo trocado quando ele pede ("Taijutsu (com CTR)" no Juuken)
+			const atq = ataqueDoJutsu(j.info, linhas, calc.atributos);
 			const bonus = prof('jutsu', j.slug);
-			const dano = j.rolagem ? (j.rolagem.modo === 'dano' ? j.rolagem : null) : danoDoEfeito(j.efeito);
+			const dano = j.rolagem ? (j.rolagem.modo === 'dano' ? j.rolagem : null) : (danoDoEfeito(j.efeito) ?? danoNormal(j.efeito, j.tipo, j.info));
 			const atributo = dano?.atributo as keyof typeof calc.atributos | null | undefined;
 			const valorAtr = atributo ? calc.atributos[atributo] : 0;
 			const v = (k: string) => j.info.find((i) => i.k === k)?.v ?? '';
@@ -187,7 +188,7 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 				efeito: j.efeito,
 				resistencia: v('Resistência') && v('Resistência') !== '—' ? comDt(v('Resistência'), dt) : null,
 				dt,
-				ataque: base === null ? null : { expr: teste(base + bonus), rotulo: `Ataque · ${j.nome}`, partes: partesAtaqueJutsu(pericia!, base, bonus) },
+				ataque: atq === null ? null : { expr: teste(atq.base + bonus), rotulo: `Ataque · ${j.nome}`, partes: partesAtaqueJutsu(atq.rotulo, atq.base, bonus) },
 				dano: dano ? { expr: somar(dano.dados, valorAtr), rotulo: `Dano · ${j.nome}`, partes: partesDanoAtributo(atributo, valorAtr) } : null,
 				cura: j.rolagem ? (j.rolagem.modo === 'cura' ? j.rolagem.dados : null) : curaDoEfeito(j.efeito)
 			};
@@ -267,6 +268,8 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 		notas: p.anotacoes ?? '',
 		inventario: mochila.map((i) => ({ nome: i.qualidade ? `${i.nome} (${i.qualidade})` : i.nome, qtd: i.qtd, grupo: i.grupo, icone: i.icone, nota: i.nota ?? null, selado: !!i.selado })),
 		carga: { atual: Math.round(cargaInventario(mochila) * 10) / 10, max: r.cargaMax },
-		ryo: p.ryo
+		ryo: p.ryo,
+		kkg: catalogo.kkg ? { def: catalogo.kkg, ...custoKkg(catalogo.kkg, calc.nivel) } : null,
+		nivel: calc.nivel
 	};
 }

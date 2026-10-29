@@ -1,4 +1,5 @@
 import type { DtJutsu } from '#lib/jutsus/dt.ts';
+import type { DefKkg } from '#lib/personagem/kkg.ts';
 // L11 · Mesa: a ficha rápida já calculada (fichas.server.ts monta; a tela só lê).
 import type { EstadoJogo } from '#lib/personagem/progressao.ts';
 import type { Parte } from '#lib/rolagens/partes.ts';
@@ -117,4 +118,7 @@ export interface FichaMesa {
 	inventario: { nome: string; qtd: number; grupo: string; icone: string; nota: string | null; selado: boolean }[];
 	carga: { atual: number; max: number };
 	ryo: number;
+	/** Kekkei Genkai do clã, com o custo por cena no nível da ficha (o estado dela fica em estado.kkg). */
+	kkg: { def: DefKkg; custo: number; reducao: string | null } | null;
+	nivel: number;
 }

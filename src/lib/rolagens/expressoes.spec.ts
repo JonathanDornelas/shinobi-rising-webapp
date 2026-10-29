@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ajustarDado, contarDados, conta, curaDoEfeito, danoDoEfeito, destaque, erroExpressao, expressaoValida, paraServidor, periciaDoAtaque, somar, somarModificador, teste, totalPericia } from './expressoes.ts';
+import { ajustarDado, ataqueDoJutsu, danoNormal, contarDados, conta, curaDoEfeito, danoDoEfeito, destaque, erroExpressao, expressaoValida, paraServidor, periciaDoAtaque, somar, somarModificador, teste, totalPericia } from './expressoes.ts';
 
 describe('expressões', () => {
 	it('monta testes e somas', () => {
@@ -79,5 +79,22 @@ describe('expressões', () => {
 		expect(expressaoValida('4d6kh3 − 1')).toBe(true);
 		expect(expressaoValida('3d6kh4')).toBe(false);
 		expect(expressaoValida('1d100')).toBe(true);
+	});
+});
+
+describe('ataque com o atributo trocado (Juuken, cap. 8)', () => {
+	const linhas = [{ nome: 'Taijutsu', total: 6, atributo: 'FOR', valorAtributo: 2 }];
+	const juuken = [{ k: 'Ataque', v: '1d20 + Taijutsu (com CTR)' }];
+	it('tira a FOR da perícia e põe a CTR', () => {
+		expect(ataqueDoJutsu(juuken, linhas, { FOR: 2, CTR: 5 })).toEqual({ pericia: 'Taijutsu', base: 9, troca: 'CTR', rotulo: 'Taijutsu com CTR (no lugar de FOR)' });
+	});
+	it('sem troca, vale o total da perícia', () => {
+		expect(ataqueDoJutsu([{ k: 'Ataque', v: '1d20 + Taijutsu' }], linhas, { FOR: 2, CTR: 5 })?.base).toBe(6);
+		expect(ataqueDoJutsu([{ k: 'Ataque', v: '— (área)' }], linhas, {})).toBeNull();
+	});
+	it('"dano normal" é o golpe desarmado, com o atributo do ataque', () => {
+		expect(danoNormal('Ataque de Juuken com dano normal.', 'Taijutsu', juuken)).toEqual({ dados: '1d6', atributo: 'CTR' });
+		expect(danoNormal('Golpe com dano normal.', 'Taijutsu', [{ k: 'Ataque', v: '1d20 + Taijutsu' }])).toEqual({ dados: '1d6', atributo: 'FOR' });
+		expect(danoNormal('Causa 2d6 de dano.', 'Ninjutsu', juuken)).toBeNull();
 	});
 });

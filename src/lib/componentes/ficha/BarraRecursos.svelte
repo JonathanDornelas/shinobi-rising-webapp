@@ -54,6 +54,7 @@
 					<span class="font-pixel text-sm font-bold">{b.rotulo}</span>
 					<span class="flex-1"></span>
 					<span class="t-num text-[22px] leading-none max-md:text-base" style:color={v <= 0 ? 'var(--err)' : undefined} aria-live="polite">{v}<span class="text-sm text-mut">/{m}</span></span>
+					{#if b.k === 'pc' && f.pcSelado}<span class="border-2 border-[#2D7FB8] px-1 py-0.5 font-pixel text-[10px] leading-none font-bold text-mut" title="Chakra selado (Juuken): volta ao descansar">{f.pcSelado} SELADO</span>{/if}
 				</span>
 				<span class="relative h-3.5 border-2 border-ink bg-b3" aria-hidden="true">
 					<span class="absolute inset-y-0 left-0 transition-[width] duration-150 ease-out" style:width={largura(v, m)} style:background={b.cor} style:box-shadow="inset 0 3px 0 {b.brilho}"></span>
@@ -75,7 +76,14 @@
 					<form class="flex gap-1.5 px-3 pb-3" onsubmit={aplicar}>
 						<input class="campo t-num h-11 min-w-0 flex-1" inputmode="numeric" placeholder="−7, +3 ou 18" aria-label="Valor de {b.rotulo}" bind:value={valor} />
 						<button type="submit" class="btn-jogo btn-contorno min-h-11 px-3 text-xs">APLICAR</button>
+						{#if b.k === 'pc'}<button type="button" class="btn-jogo btn-contorno min-h-11 px-3 text-xs" title="Juuken: o PC sai do atual e do máximo até descansar" onclick={() => { const n = Math.abs(Number(valor.trim().replace(',', '.'))); if (n) f.selarPc(n); valor = ''; }}>SELAR</button>{/if}
 					</form>
+					{#if b.k === 'pc' && f.pcSelado}
+						<div class="flex items-center gap-2 px-3 pb-3 text-xs text-mut">
+							<span class="flex-1">{f.pcSelado} PC selado pelo Juuken: volta ao descansar.</span>
+							<button type="button" class="link font-semibold" onclick={() => f.liberarPc()}>Liberar agora</button>
+						</div>
+					{/if}
 					<div class="flex gap-1.5 px-3 pb-3">
 						<button type="button" class="btn-jogo btn-contorno min-h-10 flex-1 px-2 text-xs" onclick={() => f.descanso('curto')}>DESCANSO CURTO</button>
 						<button type="button" class="btn-jogo btn-contorno min-h-10 flex-1 px-2 text-xs" onclick={() => f.descanso('longo')}>DESCANSO LONGO</button>

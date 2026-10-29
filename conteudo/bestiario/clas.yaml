@@ -538,7 +538,7 @@
       ataques: &a16
         - nome: Punho Gentil
           alcance: Corpo a corpo
-          efeito: "O alvo também perde 1d6 PC: o golpe fecha os pontos de chakra."
+          efeito: "O golpe fecha os pontos de chakra: 1d6 PC do alvo ficam selados até ele descansar."
       jutsus:
         - { slug: juuken-tenketsushin }
         - { slug: shotei }

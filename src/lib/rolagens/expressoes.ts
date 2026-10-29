@@ -16,6 +16,36 @@ export function periciaDoAtaque(info: { k: string; v: string }[]): string | null
 	return /^1d20\s*\+\s*([A-Za-zÀ-ú]+)/.exec(v)?.[1] ?? null;
 }
 
+/**
+ * O ataque de um jutsu na ficha: a perícia do card com o atributo trocado quando o card pede ("1d20 + Taijutsu (com
+ * CTR)": o Juuken usa CTR no lugar de FOR, cap. 8). A perícia já soma o atributo dela; a troca tira esse e põe o outro.
+ * `troca` é o atributo que entrou (null sem troca); `rotulo` vai nas partes da rolagem.
+ */
+export function ataqueDoJutsu(
+	info: { k: string; v: string }[],
+	linhas: { nome: string; total: number; atributo: string; valorAtributo: number }[],
+	atributos: Record<string, number>
+): { pericia: string; base: number; troca: string | null; rotulo: string } | null {
+	const pericia = periciaDoAtaque(info);
+	if (!pericia) return null;
+	const linha = linhas.find((l) => sem(l.nome) === sem(pericia));
+	if (!linha) return null;
+	const troca = atributoTrocado(info);
+	if (!troca || troca === linha.atributo) return { pericia, base: linha.total, troca: null, rotulo: pericia };
+	return { pericia, base: linha.total - linha.valorAtributo + (atributos[troca] ?? 0), troca, rotulo: `${pericia} com ${troca} (no lugar de ${linha.atributo})` };
+}
+/** "1d20 + Taijutsu (com CTR)" → "CTR". */
+export const atributoTrocado = (info: { k: string; v: string }[]) => /\(com\s+(FOR|AGI|VIG|INT|CTR|ESP)\)/i.exec(info.find((i) => i.k === 'Ataque')?.v ?? '')?.[1]?.toUpperCase() ?? null;
+
+/**
+ * Dano do jutsu de Taijutsu que diz "dano normal" (o golpe desarmado, cap. 4: 1d6 + FOR), com o atributo trocado do
+ * ataque quando houver (Juuken: CTR). null nos outros.
+ */
+export function danoNormal(efeito: string, tipo: string, info: { k: string; v: string }[]): { dados: string; atributo: string } | null {
+	if (tipo !== 'Taijutsu' || !/dano normal/i.test(efeito)) return null;
+	return { dados: '1d6', atributo: atributoTrocado(info) ?? 'FOR' };
+}
+
 const DANO = String.raw`(\d{1,2}d\d{1,3})(?:\s*\+\s*(FOR|AGI|VIG|INT|CTR|ESP)\b)?(?:\s*([+-])\s*(\d{1,3})(?![\dd]))?`;
 const DANO_DEPOIS = new RegExp(`${DANO}\\s+(?:de\\s+)?dano`, 'i');
 const DANO_ANTES = new RegExp(`causam?\\s+${DANO}`, 'i');

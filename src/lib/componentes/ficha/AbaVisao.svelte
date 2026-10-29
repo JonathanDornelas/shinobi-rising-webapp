@@ -7,9 +7,12 @@
 	import { partesAtributo, partesIniciativa } from '#lib/rolagens/partes.ts';
 	import Icone from '../ui/Icone.svelte';
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
+	import CartaoKkg from './CartaoKkg.svelte';
 
 	let { f, aoAbrirJutsus }: { f: FichaJogo; aoAbrirJutsus: () => void } = $props();
-	const r = $derived(f.calc.recursos);
+	const r0 = $derived(f.calc.recursos);
+	// a KKG ligada soma na Defesa (Sharingan) e na Percepção (Byakugan, Sharingan)
+	const r = $derived(f.kkg?.ligada && f.kkg.efeito.defesa ? { ...r0, defesa: r0.defesa + f.kkg.efeito.defesa } : r0);
 	const nomeEsp = (id: string) => f.catalogo.especializacoes.find((e) => e.id === id)?.nome ?? id;
 	const destaque = $derived(f.calc.jutsus.map((s) => f.catalogo.jutsus.find((j) => j.slug === s)).filter((j) => !!j && j.rank !== 'E').slice(0, 3));
 	// a arma em mãos é a que tem proficiência; senão, a primeira do inventário
@@ -34,7 +37,7 @@
 			{/each}
 		</div>
 		<div class="grid grid-cols-2 gap-2.5">
-			{#each [['recurso/ic-recurso-defesa', 'DEFESA', '10 + Acrobacia', String(r.defesa)], ['recurso/ic-recurso-defesa-mental', 'DEF. MENTAL', '10 + Percepção', String(r.defesaMental)], ['recurso/ic-recurso-iniciativa', 'INICIATIVA', r.formulas.iniciativa, sinal(r.iniciativa)], ['recurso/ic-recurso-carga', 'CARGA', `máx. ${r.cargaMax}`, String(f.carga).replace('.', ',')]] as [icone, rotulo, conta, valor] (rotulo)}
+			{#each [['recurso/ic-recurso-defesa', 'DEFESA', f.kkg?.ligada && f.kkg.efeito.defesa ? `10 + Acrobacia + ${f.kkg.efeito.defesa} ${f.kkg.def.nome}` : '10 + Acrobacia', String(r.defesa)], ['recurso/ic-recurso-defesa-mental', 'DEF. MENTAL', '10 + Percepção', String(r.defesaMental)], ['recurso/ic-recurso-iniciativa', 'INICIATIVA', r.formulas.iniciativa, sinal(r.iniciativa)], ['recurso/ic-recurso-carga', 'CARGA', `máx. ${r.cargaMax}`, String(f.carga).replace('.', ',')]] as [icone, rotulo, conta, valor] (rotulo)}
 				<div class="flex items-center gap-2 border-2 border-frame bg-b2 px-3 py-2.5 {rotulo === 'INICIATIVA' || rotulo === 'CARGA' ? 'max-sm:col-span-2' : ''}" title={conta}>
 					<Icone id={icone} />
 					<div class="flex min-w-0 flex-1 flex-col gap-1">
@@ -46,6 +49,7 @@
 				</div>
 			{/each}
 		</div>
+		{#if f.kkg}<CartaoKkg {f} />{/if}
 		<section class="painel-sombra" aria-labelledby="cond-titulo">
 			<div class="flex items-center border-b-2 border-b3 px-3.5 py-3">
 				<h3 id="cond-titulo" class="t-rotulo m-0 flex-1">Condições ativas · {f.atual.condicoes.length}</h3>

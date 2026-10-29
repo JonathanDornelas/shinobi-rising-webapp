@@ -3,6 +3,7 @@
 	import { NIVEIS_PROFICIENCIA, TIPOS_PROFICIENCIA, custoProficiencia } from '#lib/personagem/dados.ts';
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
 	import { rotuloAlvo } from '#lib/personagem/progressao.ts';
+	import { periciasComKkg } from '#lib/personagem/kkg.ts';
 	import { linhasPericia, sinal } from '#lib/personagem/regras.ts';
 	import { teste } from '#lib/rolagens/expressoes.ts';
 	import { partesPericia } from '#lib/rolagens/partes.ts';
@@ -10,7 +11,8 @@
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
 
 	let { f }: { f: FichaJogo } = $props();
-	const linhas = $derived(linhasPericia(f.dados));
+	// com a KKG ligada, o bônus dela entra como mais um bônus da linha (Percepção do Byakugan e do Sharingan)
+	const linhas = $derived(periciasComKkg(linhasPericia(f.dados), f.kkg?.def ?? null, f.estado.kkg, f.calc.nivel));
 	const profs = $derived(f.calc.proficiencias);
 </script>
 

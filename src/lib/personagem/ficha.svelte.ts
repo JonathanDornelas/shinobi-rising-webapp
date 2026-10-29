@@ -24,6 +24,7 @@ import {
 	type JutsuFicha
 } from './progressao.ts';
 import type { FichaDados, ItemLoja } from './regras.ts';
+import { custoKkg, efeitoKkg, kkgLigada, type DefKkg } from './kkg.ts';
 
 type Recurso = 'pv' | 'pc' | 'pe';
 const NOME: Record<Recurso, string> = { pv: 'PV', pc: 'PC', pe: 'PE' };
@@ -56,7 +57,9 @@ export class FichaJogo {
 	}
 
 	calc = $derived.by(() => ficha(this.dados, this.catalogo.loja as ItemLoja[]));
-	max = $derived.by(() => ({ pv: this.calc.recursos.pv, pc: this.calc.recursos.pc, pe: this.calc.recursos.pe, pic: this.calc.pic }));
+	/** PC selado (Juuken): fora do máximo até descansar. */
+	pcSelado = $derived(this.estado.pcSelado ?? 0);
+	max = $derived.by(() => ({ pv: this.calc.recursos.pv, pc: Math.max(0, this.calc.recursos.pc - this.pcSelado), pe: this.calc.recursos.pe, pic: this.calc.pic }));
 	atual = $derived.by(() => estadoAtual(this.estado, this.max));
 	carga = $derived.by(() => cargaInventario(this.inventario));
 
@@ -97,8 +100,21 @@ export class FichaJogo {
 	}
 
 	descanso(tipo: 'curto' | 'longo') {
-		const novo = descansar(this.atual, this.max, tipo);
-		this.mudar({ ...this.estado, ...novo }, tipo === 'curto' ? 'Descanso curto: ¼ dos máximos recuperado' : 'Descanso longo: recursos restaurados', 'item/ic-item-kit-medico');
+		// descansar reabre os tenketsu: o PC selado volta ao máximo antes da recuperação
+		const selado = this.pcSelado;
+		const novo = descansar(this.atual, { ...this.max, pc: this.calc.recursos.pc }, tipo);
+		const texto = tipo === 'curto' ? 'Descanso curto: ¼ dos máximos recuperado' : 'Descanso longo: recursos restaurados';
+		this.mudar({ ...this.estado, ...novo, pcSelado: 0 }, selado ? `${texto}; ${selado} PC selado liberado` : texto, 'item/ic-item-kit-medico');
+	}
+	/** Juuken: N PC do atual ficam selados (fora do máximo) até a ficha descansar. */
+	selarPc(n: number) {
+		const q = Math.min(Math.round(n), this.atual.pc);
+		if (q <= 0) return;
+		this.mudar({ ...this.estado, pc: this.atual.pc - q, pcSelado: this.pcSelado + q }, `${q} PC selado (Juuken). PC ${this.atual.pc - q}/${this.max.pc - q}`, 'recurso/ic-recurso-pc');
+	}
+	liberarPc() {
+		if (!this.pcSelado) return;
+		this.mudar({ ...this.estado, pcSelado: 0 }, `${this.pcSelado} PC selado liberado`, 'recurso/ic-recurso-pc');
 	}
 
 	alternarCondicao(id: string) {
@@ -140,6 +156,46 @@ export class FichaJogo {
 		const novo = this.atual[k] - c.final;
 		const extra: EstadoJogo = k === 'pe' && novo === 0 ? { fadiga: Math.min(5, this.atual.fadiga + 1) } : {};
 		this.mudar({ ...this.estado, [k]: novo, ...extra }, `−${c.final} ${c.unidade} · ${j.nome}. ${c.unidade} ${novo}/${this.max[k]}`, `recurso/ic-recurso-${k}`);
+	}
+
+	// ------------------------------------------------------------------ Kekkei Genkai
+	/** A KKG do clã agora: custo por cena (com a redução do marco), estágio, se está ligada e o que dá. */
+	kkg = $derived.by(() => {
+		const def = (this.catalogo as { kkg?: DefKkg | null }).kkg ?? null;
+		if (!def) return null;
+		const e = this.estado.kkg ?? {};
+		const estagio = e.estagio ?? 1;
+		return { def, ...custoKkg(def, this.calc.nivel), estagio, ativa: !!e.ativa, ligada: kkgLigada(def, e), efeito: efeitoKkg(def, this.calc.nivel, estagio) };
+	});
+	/** Ativar: paga o custo da cena (PC) e liga os bônus até desativar. */
+	ativarKkg(cena: string | null = null) {
+		const k = this.kkg;
+		if (!k || k.ativa || k.def.sempre) return;
+		if (this.atual.pc < k.custo) return toasts.mostrar(`Faltam ${k.custo - this.atual.pc} PC para ativar o ${k.def.nome}.`, 'erro');
+		const pc = this.atual.pc - k.custo;
+		this.mudar({ ...this.estado, pc, kkg: { ...this.estado.kkg, ativa: true, cena } }, `Ativou o ${k.def.nome}${k.custo ? `: −${k.custo} PC. PC ${pc}/${this.max.pc}` : ''}`, k.def.icone);
+	}
+	desativarKkg() {
+		const k = this.kkg;
+		if (!k?.ativa) return;
+		this.mudar({ ...this.estado, kkg: { ...this.estado.kkg, ativa: false, cena: null } }, `Desativou o ${k.def.nome}`, k.def.icone);
+	}
+	/** Cena nova com a KKG ainda ativa: paga de novo (ou ela apaga, sem PC). */
+	novaCenaKkg(cena: string | null = null) {
+		const k = this.kkg;
+		if (!k?.ativa) return;
+		if (this.atual.pc < k.custo) {
+			this.mudar({ ...this.estado, kkg: { ...this.estado.kkg, ativa: false, cena: null } }, `${k.def.nome} apagou: sem PC para a cena nova`, k.def.icone);
+			return;
+		}
+		const pc = this.atual.pc - k.custo;
+		this.mudar({ ...this.estado, pc, kkg: { ...this.estado.kkg, cena } }, `Cena nova com o ${k.def.nome}: −${k.custo} PC. PC ${pc}/${this.max.pc}`, k.def.icone);
+	}
+	estagioKkg(estagio: number) {
+		const k = this.kkg;
+		if (!k?.def.estagios) return;
+		const ativa = estagio >= 1 && !!this.estado.kkg?.ativa;
+		this.mudar({ ...this.estado, kkg: { ...this.estado.kkg, estagio, ativa } }, estagio ? `${k.def.nome}: ${k.def.estagios[estagio - 1].rotulo}` : `${k.def.nome} ainda não despertou`, k.def.icone);
 	}
 
 	desfazer() {

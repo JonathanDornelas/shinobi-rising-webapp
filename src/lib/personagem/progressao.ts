@@ -1,5 +1,6 @@
 // Progressão e ficha em jogo: XP e nível (cap. 17), marcos de clã (cap. 8.3), treino com PT (cap. 18),
 // custo real dos jutsus (cap. 9), PIC, estado em jogo (cap. 4) e inventário (cap. 11). Puro, como regras.ts.
+import type { EstadoKkg } from './kkg.ts';
 import {
 	ATRIBUTOS,
 	CUSTO_ELEMENTO,
@@ -326,6 +327,10 @@ export interface EstadoJogo {
 	saves?: { sucessos: number; falhas: number };
 	pd?: number;
 	pic?: number | null;
+	/** Kekkei Genkai ativa (e o estágio do Sharingan); ver kkg.ts. */
+	kkg?: EstadoKkg;
+	/** PC selado (Juuken dos Hyuuga): sai do atual e do máximo até a ficha descansar. */
+	pcSelado?: number;
 }
 
 export interface EstadoAtual {

@@ -1222,9 +1222,9 @@
       v: Completa
   descricao:
     - Uma sequência ritual de golpes que dobram a cada passo (2, 4, 8, até 64) e fecham os tenketsu do alvo, um a um.
-  efeito: "Exige o Byakugan ativo. Uma única rolagem de ataque: no acerto, 6d6 de dano, e o alvo perde 2d6 PC; se ficar sem PC, fica Paralisado por 1 turno."
+  efeito: "Exige o Byakugan ativo. Uma única rolagem de ataque: no acerto, 6d6 de dano, e 2d6 PC do alvo ficam selados até ele descansar; se ficar sem PC, fica Paralisado por 1 turno."
   notas: []
-  pj: "dano 6d6 (12) + dreno 2d6 (4) − ação completa (−1): 15 PJ, rank B."
+  pj: "dano 6d6 (12) + selamento 2d6 (4) − ação completa (−1): 15 PJ, rank B."
   capitulo: 8
   ancora: jutsus-e-habilidades-do-cla-6
   cla: hyuuga
@@ -1280,9 +1280,9 @@
       v: Completa
   descricao:
     - "A evolução das 64 Palmas: as mãos se movem tão rápido que os toques chegam a 128 antes de o alvo cair."
-  efeito: "Exige o Byakugan ativo. Uma única rolagem de ataque: no acerto, 10d6 de dano, e o alvo perde 3d6 PC; se ficar sem PC, fica Paralisado por 2 turnos. Depois, o usuário recebe 1 nível de Fadiga."
+  efeito: "Exige o Byakugan ativo. Uma única rolagem de ataque: no acerto, 10d6 de dano, e 3d6 PC do alvo ficam selados até ele descansar; se ficar sem PC, fica Paralisado por 2 turnos. Depois, o usuário recebe 1 nível de Fadiga."
   notas: []
-  pj: "dano 10d6 (20) + dreno 3d6 (6) − ação completa (−1) − Fadiga (−1): 24 PJ, rank A."
+  pj: "dano 10d6 (20) + selamento 3d6 (6) − ação completa (−1) − Fadiga (−1): 24 PJ, rank A."
   capitulo: 8
   ancora: jutsus-e-habilidades-do-cla-6
   cla: hyuuga
@@ -1309,9 +1309,9 @@
       v: Secundária
   descricao:
     - O chakra envolve as duas mãos na forma de cabeças de leão, que esticam o alcance e a força de cada golpe de Juuken.
-  efeito: Enquanto ativo, os seus golpes de Juuken causam +3d8 de dano, drenam +2d6 PC e ignoram RD, e você recebe +2 na Defesa.
+  efeito: Enquanto ativo, os seus golpes de Juuken causam +3d8 de dano, selam +2d6 PC e ignoram RD, e você recebe +2 na Defesa.
   notas: []
-  pj: "dano extra 3d8 (7) + dreno (4) + ignora RD (2) + +2 na Defesa (4) + sustentado (2) + ação secundária (2): 21 PJ, rank A."
+  pj: "dano extra 3d8 (7) + selamento (4) + ignora RD (2) + +2 na Defesa (4) + sustentado (2) + ação secundária (2): 21 PJ, rank A."
   capitulo: 8
   ancora: jutsus-e-habilidades-do-cla-6
   cla: hyuuga
