@@ -49,13 +49,16 @@ export function danoNormal(efeito: string, tipo: string, info: { k: string; v: s
 const DANO = String.raw`(\d{1,2}d\d{1,3})(?:\s*\+\s*(FOR|AGI|VIG|INT|CTR|ESP)\b)?(?:\s*([+-])\s*(\d{1,3})(?![\dd]))?`;
 const DANO_DEPOIS = new RegExp(`${DANO}\\s+(?:de\\s+)?dano`, 'i');
 const DANO_ANTES = new RegExp(`causam?\\s+${DANO}`, 'i');
+const DANO_CADA_UM = new RegExp(`cada um com\\s+${DANO}`, 'i');
+const DANO_CADA = new RegExp(`\\(${DANO}\\s+cada\\)`, 'i');
 
 /**
- * Dados de dano no efeito ("4d8 de dano perfurante", "3d6 + FOR de dano", "cada acerto causa 2d8 + FOR").
+ * Dados de dano no efeito ("4d8 de dano perfurante", "3d6 + FOR de dano", "cada acerto causa 2d8 + FOR", "cada um com
+ * 2d6 + FOR", "ataques de agulhas (1d6+2 cada)").
  * `atributo` é o atributo somado ao dano, quando houver; null se o jutsu não causa dano em dados.
  */
 export function danoDoEfeito(efeito: string): { dados: string; atributo: string | null } | null {
-	const m = DANO_DEPOIS.exec(efeito) ?? DANO_ANTES.exec(efeito);
+	const m = DANO_DEPOIS.exec(efeito) ?? DANO_ANTES.exec(efeito) ?? DANO_CADA_UM.exec(efeito) ?? DANO_CADA.exec(efeito);
 	if (!m) return null;
 	return { dados: m[3] ? `${m[1]}${m[3]}${m[4]}` : m[1], atributo: m[2]?.toUpperCase() ?? null };
 }

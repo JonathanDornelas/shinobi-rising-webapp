@@ -24,6 +24,8 @@ export interface JutsuMesa {
 	turnos?: number | null;
 	/** o usuário cresce até este lado no quadro enquanto o jutsu dura ("você fica Grande", cap. 4) */
 	tamanho?: 3 | 6 | 10;
+	/** clones que o jutsu cria ao lado de quem lança (Kage Bunshin: 3; Bunshin: 1d4) e os PV de cada um */
+	clones?: { n: number | string; pv: 'um' | 'metade' };
 	resistencia: string | null;
 	/** DT do jutsu com a conta (a do lançador, ou a fixa do NPC e da criatura). */
 	dt?: DtJutsu | null;

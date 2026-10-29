@@ -11,7 +11,8 @@ import type { Mesa } from './mesa.svelte.ts';
 import type { JutsuMesa } from './tipos.ts';
 import { calcularMolde, type Mira } from './ui.svelte.ts';
 import type { MesaToken } from '#lib/supabase/banco.ts';
-import { duracaoEmTurnos, lerAlcance, lerArea, reguaDoCard, tamanhoDoEfeito, temRegua } from './regua.ts';
+import { clonesDoJutsu, duracaoEmTurnos, lerAlcance, lerArea, reguaDoCard, tamanhoDoEfeito, temRegua } from './regua.ts';
+import { danoDoEfeito } from '#lib/rolagens/expressoes.ts';
 
 describe('distância no quadro (cap. 4)', () => {
 	it('diagonais alternam 1 m e 2 m', () => {
@@ -312,5 +313,28 @@ describe('vista isométrica: giro da vista de cada pessoa', () => {
 		const outro = new UiMesa();
 		outro.girarIso(180, 1);
 		expect(outro.isoRotacao).toBe(270);
+	});
+});
+
+describe('auditoria dos jutsus na Mesa', () => {
+	const card = (slug: string) => (jutsus as { slug: string; info: { k: string; v: string }[]; efeito: { t: string }[] | null }[]).find((j) => j.slug === slug)!;
+	const efeito = (slug: string) => (card(slug).efeito ?? []).map((t) => t.t).join('');
+	const area = (slug: string) => card(slug).info.find((i) => i.k === 'Área')?.v ?? '';
+	it('jutsus de clone dizem quantos clones e com quantos PV', () => {
+		expect(clonesDoJutsu(area('kage-bunshin-no-jutsu'), efeito('kage-bunshin-no-jutsu'))).toEqual({ n: 3, pv: 'um' });
+		expect(clonesDoJutsu(area('bunshin-no-jutsu'), efeito('bunshin-no-jutsu'))).toEqual({ n: '1d4', pv: 'um' });
+		expect(clonesDoJutsu(area('suiton-mizu-bunshin'), efeito('suiton-mizu-bunshin'))).toEqual({ n: 1, pv: 'metade' });
+		expect(clonesDoJutsu(area('katon-goukakyu-no-jutsu'), efeito('katon-goukakyu-no-jutsu'))).toBeUndefined();
+	});
+	it('durações em horas, até o próximo turno e permanentes ficam no quadro', () => {
+		expect(duracaoEmTurnos('Até o início do seu próximo turno')).toBe(1);
+		expect(duracaoEmTurnos('2 horas')).toBeNull();
+		expect(duracaoEmTurnos('Permanente (selo)')).toBeNull();
+		expect(duracaoEmTurnos('Instantâneo')).toBeUndefined();
+	});
+	it('dano "cada um com 2d6 + FOR" e "(1d6+2 cada)" e a cúpula como esfera', () => {
+		expect(danoDoEfeito(efeito('gatsuuga'))).toEqual({ dados: '2d6', atributo: 'FOR' });
+		expect(danoDoEfeito(efeito('hyoton-makyo-hyosho'))).toEqual({ dados: '1d6+2', atributo: null });
+		expect(lerArea('Cúpula de 15 m (ou maior, com mais preparo)')).toMatchObject({ forma: 'esfera', n: 15 });
 	});
 });

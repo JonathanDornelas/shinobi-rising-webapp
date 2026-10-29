@@ -53,7 +53,7 @@ export function lerArea(texto: string): Pick<Regua, 'forma' | 'n' | 'cone' | 'li
 	if (/cone m[ée]dio/i.test(t) || cone) return { forma: 'cone', n: cone ? +cone[1] : 10 };
 	const quadrado = /quadrado(?: de)?\s*(\d+)\s?m/i.exec(t);
 	if (quadrado) return { forma: 'quadrado', n: +quadrado[1] };
-	const esfera = /esfera(?: de)?\s*(\d+)\s?m/i.exec(t);
+	const esfera = /(?:esfera|c[úu]pula)(?: de)?\s*(\d+)\s?m/i.exec(t);
 	if (esfera) return { forma: 'esfera', n: +esfera[1], emSi: /em torno de si|em volta d[oe] usu[áa]rio|em torno do usu[áa]rio/i.test(t) };
 	const linha = /linha(?: reta)?\s*\(?(?:de\s*)?(\d+)\s?m/i.exec(t);
 	if (linha) return { forma: 'linha', n: +linha[1] };
@@ -93,6 +93,18 @@ export function duracaoEmTurnos(duracao: string | undefined): number | null | un
 	if (!duracao || /instant/i.test(duracao)) return undefined;
 	const turnos = /(\d+)\s*turnos?/i.exec(duracao);
 	if (turnos) return +turnos[1];
-	if (/cena|sustentad/i.test(duracao)) return null;
+	if (/pr[óo]ximo turno/i.test(duracao)) return 1;
+	// cena, sustentado, horas, dias e selos permanentes ficam no quadro a cena toda
+	if (/cena|sustentad|hora|dia|permanente|at[ée] serem|at[ée] ser/i.test(duracao)) return null;
 	return undefined;
+}
+
+/**
+ * Os clones de um jutsu (Kage Bunshin, Bunshin, Mizu Bunshin…), pela Área do card: "Até 3 clones", "1d4 clones",
+ * "1 clone". `pv`: metade dos PV de quem lança (Mizu Bunshin) ou 1 PV (o resto).
+ */
+export function clonesDoJutsu(area: string, efeito: string): { n: number | string; pv: 'um' | 'metade' } | undefined {
+	const m = /(\d+d\d+|\d+)\s*clones?\b/i.exec(area);
+	if (!m) return undefined;
+	return { n: /d/i.test(m[1]) ? m[1].toLowerCase() : +m[1], pv: /metade dos (?:seus )?PV/i.test(efeito) ? 'metade' : 'um' };
 }

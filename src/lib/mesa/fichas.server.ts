@@ -15,7 +15,7 @@ import { partesAtaqueJutsu, partesDanoAtributo, partesPericia, type Parte } from
 import { atributosDaCriatura, periciasDaCriatura } from './atributos.ts';
 import { ehVersatil, modosDaArma, nomeDoModo, type ModoArma } from './armas.ts';
 import { deslocamentoPorAgi } from './geometria.ts';
-import { duracaoEmTurnos, reguaDoCard, tamanhoDoEfeito } from './regua.ts';
+import { clonesDoJutsu, duracaoEmTurnos, reguaDoCard, tamanhoDoEfeito } from './regua.ts';
 import type { ArmaMesa, ExtrasNpc, FichaMesa, JutsuMesa } from './tipos.ts';
 import bestiario from '#lib/livro/gerado/bestiario.json';
 import { TAMANHOS } from '#lib/bestiario/npc.ts';
@@ -51,6 +51,7 @@ export function jutsusDoNpc(n: { jutsus: string[] | null; acerto: number | null;
 				regua: reguaDoCard(j.info),
 				turnos: duracaoEmTurnos(v('Duração')),
 				tamanho: tamanhoDoEfeito(efeito),
+				clones: clonesDoJutsu(v('Área'), efeito),
 				tipo: j.tipo,
 				elemento: j.elemento ?? null,
 				acao: v('Ação'),
@@ -180,6 +181,7 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 				regua: reguaDoCard(j.info),
 				turnos: duracaoEmTurnos(v('Duração')),
 				tamanho: tamanhoDoEfeito(j.efeito),
+				clones: clonesDoJutsu(v('Área'), j.efeito),
 				tipo: j.tipo,
 				elemento: j.elemento ?? null,
 				acao: v('Ação'),

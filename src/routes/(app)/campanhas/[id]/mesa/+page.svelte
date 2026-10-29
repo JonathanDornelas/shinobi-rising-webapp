@@ -401,11 +401,31 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 			rolador.modo = 'normal';
 		} else if (j.ataque) await rolarAtaque(t, j.slug, j.ataque, alvos);
 		if (j.porCena) ui.usadas = [...ui.usadas, `${t.id}:${j.slug}`];
+		if (j.clones) await criarClones(t, j);
 		// técnicas de crescer (Baika no Jutsu, Lobo de Duas Cabeças): o token cresce pela duração e volta sozinho
 		const agora = mesa.tokens.find((x) => x.id === t.id) ?? t;
 		if (j.tamanho && j.tamanho > agora.tamanho && (await mesa.crescer(agora, j.tamanho, j.turnos ?? null)))
 			ui.avisar(`${nomeCurto(t.nome)} ficou ${{ 3: 'Grande', 6: 'Enorme', 10: 'Colossal' }[j.tamanho]} (${j.tamanho}×${j.tamanho})${j.turnos ? ` por ${j.turnos} turnos` : ''}. Volta sozinho ao fim, ou em VOLTAR AO NORMAL na ficha.`);
 		return true;
+	}
+	/**
+	 * Jutsu de clones (Kage Bunshin, Bunshin, Mizu Bunshin, Mushi Bunshin): os clones entram ao lado de quem lançou,
+	 * ligados a ele (somem junto). "1d4 clones" rola o número; a Mizu Bunshin dá ao clone metade dos PV atuais.
+	 */
+	async function criarClones(t: MesaToken, j: JutsuMesa) {
+		const c = j.clones!;
+		const n = typeof c.n === 'number' ? c.n : ((await rolar(t, { expr: c.n, rotulo: `Clones · ${j.nome}`, partes: [] }, 'teste', false))?.total ?? 1);
+		const f = fichaDe(t);
+		const npc = npcDe(t);
+		const pvAtual = f ? (f.estado.pv ?? f.max.pv) : npc ? recursoDosMembros(npc, 'pv')[(t.membro ?? 1) - 1] : (t.pv ?? 1);
+		const pv = c.pv === 'metade' ? Math.max(1, Math.floor(pvAtual / 2)) : 1;
+		const primeiro = nomeCurto(t.nome).split(' ')[0];
+		let feitos = 0;
+		for (let i = 0; i < Math.min(n, 10); i++) {
+			const [x, y] = lugarLivre(t.x + 1, t.y);
+			if (await mesa.colocar({ nome: `Clone de ${primeiro}`.slice(0, 60), sigla: 'CL', ligado_a: t.id, dono_id: t.dono_id, x, y, pv, pv_max: pv, visivel: true })) feitos++;
+		}
+		if (feitos) ui.avisar(`${feitos} clone${feitos > 1 ? 's' : ''} de ${primeiro} na cena, com ${pv} PV${pv === 1 ? ' (some ao sofrer qualquer dano)' : ''}. Apague os que não quiser.`);
 	}
 	/** Canto livre mais perto de (x, y) para um token de n × n quadrados, dentro da cena. */
 	function lugarLivre(x: number, y: number, n = 1) {
