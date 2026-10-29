@@ -93,7 +93,6 @@
 		clearTimeout(dicaTimer);
 		dica = null;
 	}
-	const ESTADOS_DA_MESA = ['caido', 'sangrando', 'atordoado', 'imobilizado', 'envenenado', 'em-chamas'];
 	const FAIXAS = ['Ileso', 'Ferido', 'Muito ferido', 'Caído'];
 	const cor = $derived(corCss(mesa.corDe(mesa.donoDe(token))));
 	const dono = $derived(mesa.membro(mesa.donoDe(token)));
@@ -202,7 +201,8 @@
 		return { ataque: a ? a[0].replace(/\s+/g, '') : null, dano: d ? d[1].replace(/\s+/g, '') : null, texto: dados.npc.ataque };
 	});
 
-	const estadosVisiveis = $derived(CONDICOES.filter((c) => ESTADOS_DA_MESA.includes(c.id) || atual.condicoes.includes(c.id)));
+	// todos os estados do livro, como na ficha completa
+	const estadosVisiveis = CONDICOES;
 	const sub = $derived(
 		dados.tipo === 'pc' ? dados.ficha.sub : dados.tipo === 'publico' ? dados.sub : dados.tipo === 'npc' ? [dados.npc.funcao, `NPC · ${dados.npc.rank}`].filter(Boolean).join(' · ') : dados.tipo === 'revelado' ? (dados.npc?.funcao ?? 'NPC') : 'Ligado ao personagem'
 	);
