@@ -327,6 +327,14 @@ Um ninja atordoado, preso numa sombra ou envolto em chamas não luta como antes.
 | Em Genjutsu | Percebe o que o lançador determina. Repete a Resistência de ESP ao fim de cada turno; um aliado adjacente pode gastar a ação primária e 2 PC (Kai) para dar vantagem nesse teste |
 | Desprevenido | Na primeira rodada, antes de agir, não pode usar Reações e tem -2 na Defesa |
 
+**Sair de um estado.** A Resistência que livra de um estado, como a de quem está Em Genjutsu ou Controlado ao fim de cada turno, não custa ação nem chakra. Quem passa se liberta na hora e volta a agir normalmente, com todas as ações e Reações, sem esperar um turno a mais. O Imobilizado é a exceção: tentar escapar custa a ação primária, como diz a tabela.
+
+:::na-mesa{titulo="Sair de um estado"}
+- **Resistência ao fim do turno:** sem custo (Em Genjutsu, Controlado); passou, está livre na hora
+- **Depois de sair:** age normalmente, com as Reações, sem perder turno
+- **Imobilizado:** a tentativa de escapar custa a ação primária
+:::
+
 ## Fadiga {#fadiga}
 
 Batalhas longas e esforços extremos cobram o seu preço. A Fadiga mede esse desgaste do corpo e da mente em cinco níveis: cada um pesa mais que o anterior, e o último pode matar.
