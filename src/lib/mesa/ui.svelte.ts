@@ -111,9 +111,8 @@ export class UiMesa {
 			return;
 		}
 		const n = this.fichas.length;
-		// até 3 abertas: a mais antiga fecha
-		const resto = n >= 3 ? this.fichas.slice(1) : this.fichas;
-		this.fichas = [...resto, { token, x: 24 + (n % 3) * 28, y: 72 + (n % 3) * 28, z: this.z, min: false, aba, dano: '' }];
+		// sem limite: as minimizadas que não cabem na faixa de baixo vão para o "…"
+		this.fichas = [...this.fichas, { token, x: 24 + (n % 3) * 28, y: 72 + (n % 3) * 28, z: this.z, min: false, aba, dano: '' }];
 	}
 	focarFicha(token: string) {
 		this.z++;

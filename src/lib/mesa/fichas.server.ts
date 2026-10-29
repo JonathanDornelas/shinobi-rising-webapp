@@ -2,6 +2,7 @@
 // cada ficha). Usa as mesmas contas da ficha (P3): custo real do jutsu, ataque com a perícia do tipo e a proficiência,
 // dano lido do efeito, armas do inventário e perícias.
 import { claDaFicha } from '#lib/clas/servidor.ts';
+import { comDt, dtDoLancador, dtFixa, dtNaFichaDaCriatura } from '#lib/jutsus/dt.ts';
 import { jutsusDaFicha } from '#lib/jutsus/servidor.ts';
 import { equipamentos, jutsus as catalogoJutsus } from '#lib/livro/dados.server.ts';
 import { catalogoFicha } from '#lib/personagem/catalogo.server.ts';
@@ -22,8 +23,12 @@ import { habilidadeDoTraco } from './habilidades.ts';
 
 export type { ArmaMesa, ExtrasNpc, FichaMesa, JutsuMesa, RolagemPronta } from './tipos.ts';
 
-/** Jutsus do NPC que veio do bestiário: ataque com o acerto da ficha, a DT dela na Resistência, dano e cura do card. */
-export function jutsusDoNpc(n: { jutsus: string[] | null; acerto: number | null; dt: number | null }): JutsuMesa[] {
+/**
+ * Jutsus do NPC: ataque com o acerto da ficha, dano e cura do card e a DT na Resistência. O NPC que veio do bestiário
+ * tem a DT de cada jutsu pela ficha da criatura (10 + rank + atributo-chave + proficiência); o outro, a DT anotada.
+ */
+export function jutsusDoNpc(n: { jutsus: string[] | null; acerto: number | null; dt: number | null; bestiario?: string | null }): JutsuMesa[] {
+	const daCriatura = n.bestiario ? estagioDoBestiario(n.bestiario)?.combate.ficha : null;
 	return (n.jutsus ?? [])
 		.map((slug) => catalogoJutsus.find((j) => j.slug === slug))
 		.filter((j) => !!j)
@@ -33,6 +38,7 @@ export function jutsusDoNpc(n: { jutsus: string[] | null; acerto: number | null;
 			const efeito = (j.efeito ?? []).map((x) => x.t).join('');
 			const dano = danoDoEfeito(efeito);
 			const res = v('Resistência');
+			const dt = daCriatura ? dtNaFichaDaCriatura(daCriatura, j) : n.dt != null ? dtFixa(n.dt, 'DT da ficha do NPC: a mesma em todos os jutsus dele.') : null;
 			return {
 				slug: j.slug,
 				nome: j.nome,
@@ -50,7 +56,8 @@ export function jutsusDoNpc(n: { jutsus: string[] | null; acerto: number | null;
 				duracao: v('Duração'),
 				traducao: j.traducao,
 				efeito,
-				resistencia: res && res !== '—' ? (n.dt != null ? res.replace(/DT do Jutsu/i, `DT ${n.dt}`) : res) : null,
+				resistencia: res && res !== '—' ? comDt(res, dt) : null,
+				dt,
 				ataque: /^1d20/.test(v('Ataque')) && n.acerto != null ? { expr: teste(n.acerto), rotulo: `Ataque · ${j.nome}`, partes: [] } : null,
 				dano: dano ? { expr: dano.dados, rotulo: `Dano · ${j.nome}`, partes: [] } : null,
 				cura: curaDoEfeito(efeito)
@@ -62,12 +69,17 @@ const CRIATURAS = (bestiario as unknown as { criaturas: Criatura[] }).criaturas;
 const textoTrechos = (c: { t: string }[] | null | undefined) => (c ?? []).map((x) => x.t).join('');
 const metrosDoAlcance = (a: string) => (/longo/i.test(a) ? 60 : /m[ée]dio/i.test(a) ? 30 : /curto/i.test(a) ? 10 : /(\d+)\s?m/.exec(a) ? +/(\d+)\s?m/.exec(a)![1] : 1);
 
+/** O estágio do bestiário de um NPC ("slug#estágio"; sem estágio, o primeiro). */
+function estagioDoBestiario(ref: string) {
+	const [slug, est] = ref.split('#');
+	const c = CRIATURAS.find((x) => x.slug === slug);
+	return c?.estagios.find((s) => s.slug === est) ?? c?.estagios[0] ?? null;
+}
+
 /** NPC que veio do bestiário ("slug#estágio"): o tamanho no quadro, os ataques da ficha e os traços usáveis. */
 export function extrasDoNpc(n: { bestiario: string | null }): ExtrasNpc | null {
 	if (!n.bestiario) return null;
-	const [slug, est] = n.bestiario.split('#');
-	const c = CRIATURAS.find((x) => x.slug === slug);
-	const e = c?.estagios.find((s) => s.slug === est) ?? c?.estagios[0];
+	const e = estagioDoBestiario(n.bestiario);
 	if (!e) return null;
 	const k = e.combate;
 	return {
@@ -155,6 +167,7 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 			const atributo = dano?.atributo as keyof typeof calc.atributos | null | undefined;
 			const valorAtr = atributo ? calc.atributos[atributo] : 0;
 			const v = (k: string) => j.info.find((i) => i.k === k)?.v ?? '';
+			const dt = dtDoLancador(j.rank, j.tipo, calc.atributos, bonus);
 			return {
 				slug: j.slug,
 				nome: j.nome,
@@ -172,7 +185,8 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 				duracao: v('Duração'),
 				traducao: j.traducao,
 				efeito: j.efeito,
-				resistencia: v('Resistência') && v('Resistência') !== '—' ? v('Resistência') : null,
+				resistencia: v('Resistência') && v('Resistência') !== '—' ? comDt(v('Resistência'), dt) : null,
+				dt,
 				ataque: base === null ? null : { expr: teste(base + bonus), rotulo: `Ataque · ${j.nome}`, partes: partesAtaqueJutsu(pericia!, base, bonus) },
 				dano: dano ? { expr: somar(dano.dados, valorAtr), rotulo: `Dano · ${j.nome}`, partes: partesDanoAtributo(atributo, valorAtr) } : null,
 				cura: j.rolagem ? (j.rolagem.modo === 'cura' ? j.rolagem.dados : null) : curaDoEfeito(j.efeito)
@@ -235,7 +249,20 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 		jutsus,
 		armas,
 		atributos: ATRIBUTOS.map((a) => ({ sigla: a.id, nome: a.nome, valor: calc.atributos[a.id] })),
-		pericias: linhas.map((l) => ({ nome: l.nome, atributo: l.atributo, expr: teste(l.total), partes: partesPericia(l), treinada: l.total - l.valorAtributo > 0 })),
+		pericias: linhas.map((l) => ({
+			nome: l.nome,
+			atributo: l.atributo,
+			expr: teste(l.total),
+			partes: partesPericia(l),
+			treinada: l.total - l.valorAtributo > 0,
+			id: l.id,
+			valorAtributo: l.valorAtributo,
+			treino: l.treino,
+			bonus: l.bonus.map((b) => ({ fonte: b.fonte, valor: b.valor })),
+			total: l.total,
+			combate: l.combate,
+			distancia: l.distancia ? { atributo: l.distancia.atributo, total: l.distancia.total, expr: teste(l.distancia.total), partes: partesPericia(l, true) } : null
+		})),
 		distancias,
 		notas: p.anotacoes ?? '',
 		inventario: mochila.map((i) => ({ nome: i.qualidade ? `${i.nome} (${i.qualidade})` : i.nome, qtd: i.qtd, grupo: i.grupo, icone: i.icone, nota: i.nota ?? null, selado: !!i.selado })),

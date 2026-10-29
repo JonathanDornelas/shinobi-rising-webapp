@@ -9,7 +9,9 @@
 	import Termo from '../leitura/Termo.svelte';
 	import Texto from '../leitura/Texto.svelte';
 	import Glosa from '../regras/Glosa.svelte';
+	import SeloDt from '../regras/SeloDt.svelte';
 	import SeloRank from '../regras/SeloRank.svelte';
+	import { dtNaFichaDaCriatura } from '#lib/jutsus/dt.ts';
 	import Icone from '../ui/Icone.svelte';
 
 	let { criatura, estagio }: { criatura: Pick<Criatura, 'nome' | 'tags'>; estagio: EstagioCriatura } = $props();
@@ -157,6 +159,7 @@
 									<Glosa texto={j.traducao} class="text-xs leading-4" />
 								</span>
 								{#if j.custo}<span class="text-xs whitespace-nowrap text-mut">{j.custo}</span>{/if}
+								{#if fc && j.rank}{@const dt = dtNaFichaDaCriatura(fc, j)}{#if dt}<SeloDt {dt} />{/if}{/if}
 							</li>
 						{/each}
 					</ul>

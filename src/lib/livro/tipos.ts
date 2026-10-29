@@ -286,6 +286,8 @@ export interface JutsuCriatura {
 	/** Tradução do nome, do card do catálogo. */
 	traducao: string | null;
 	rank: Rank | null;
+	/** Tipo do card (a DT do jutsu usa o atributo-chave dele). */
+	tipo: TipoJutsu | null;
 	custo: string | null;
 	nota: string | null;
 }

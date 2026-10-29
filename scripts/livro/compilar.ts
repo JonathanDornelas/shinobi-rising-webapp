@@ -480,9 +480,9 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 			const js = (e.jutsus ?? []).map((j) => {
 				const card = j.slug ? jutsus.find((x) => x.slug === j.slug) : undefined;
 				if (j.slug && !card) avisar(`Bestiário: jutsu desconhecido em ${y.slug}: ${j.slug}`);
-				return { slug: card?.slug ?? null, nome: card?.nome ?? j.nome ?? j.slug ?? '', traducao: card?.traducao || null, rank: card?.rank ?? null, custo: card?.custo ?? null, nota: j.nota ?? null };
+				return { slug: card?.slug ?? null, nome: card?.nome ?? j.nome ?? j.slug ?? '', traducao: card?.traducao || null, rank: card?.rank ?? null, tipo: card?.tipo ?? null, custo: card?.custo ?? null, nota: j.nota ?? null };
 			});
-			if (f?.jutsus) js.push({ slug: null, nome: 'Usos de jutsu', traducao: null, rank: null, custo: null, nota: f.jutsus });
+			if (f?.jutsus) js.push({ slug: null, nome: 'Usos de jutsu', traducao: null, rank: null, tipo: null, custo: null, nota: f.jutsus });
 			const ameaca = valor(rotulo);
 			const ataques = e.ataques.map((a) => ({ nome: a.nome, alcance: a.alcance, acerto: a.acerto ?? base.acerto, dano: (a.dano ?? base.dano).replace(/\s+/g, ''), efeito: a.efeito ? trechosDeMd(a.efeito) : null }));
 			const defesa = e.defesa ?? base.defesa;

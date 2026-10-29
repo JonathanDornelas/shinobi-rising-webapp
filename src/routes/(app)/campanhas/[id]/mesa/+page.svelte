@@ -38,6 +38,8 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	import { npcDoVerbete } from '#lib/bestiario/npc.ts';
 	import type { Criatura, Jutsu } from '#lib/livro/tipos.ts';
 	import CardJutsu from '#lib/componentes/regras/CardJutsu.svelte';
+	import SeloDt from '#lib/componentes/regras/SeloDt.svelte';
+	import BarraMinimizadas, { type Minimizada } from '#lib/componentes/mesa/BarraMinimizadas.svelte';
 	import { urlRetrato } from '#lib/personagem/retrato.ts';
 	import { TAMANHOS } from '#lib/bestiario/npc.ts';
 	import { alcanceCorpo } from '#lib/mesa/geometria.ts';
@@ -253,6 +255,16 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		if (fichaCompleta?.pid === pid) return void (fichaCompleta = { ...fichaCompleta, min: false });
 		fichaCompleta = { pid, nome: fichas.find((f) => f.id === pid)?.nome ?? 'Ficha', min: false };
 	}
+	/** A faixa de minimizadas: a ficha completa e as fichas rápidas, na ordem em que abriram. */
+	const minimizadas = $derived<Minimizada[]>([
+		...(fichaCompleta?.min ? [{ chave: 'completa', nome: `Ficha completa · ${fichaCompleta.nome}`, cor: 'var(--vermelhao-lo)', abrir: () => fichaCompleta && (fichaCompleta = { ...fichaCompleta, min: false }), fechar: () => (fichaCompleta = null) }] : []),
+		...ui.fichas
+			.filter((f) => f.min)
+			.flatMap((f) => {
+				const t = mesa.tokens.find((k) => k.id === f.token);
+				return t ? [{ chave: t.id, nome: t.nome, cor: corCss(mesa.corDe(mesa.donoDe(t))), abrir: () => ui.abrirFicha(t.id), fechar: () => ui.fecharFicha(t.id) }] : [];
+			})
+	]);
 	const tokenDaFicha = (pid: string) => mesa.tokens.find((t) => t.personagem_id === pid && !t.ligado_a) ?? null;
 	const jutsuDaFicha = (pid: string, slug: string) => fichas.find((f) => f.id === pid)?.jutsus.find((j) => j.slug === slug) ?? null;
 	// os jutsus da ficha completa usam a régua e o USAR da Mesa; MEDIR minimiza a janela para o quadro aparecer
@@ -269,7 +281,6 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 			if (!t) return void ui.avisar('Coloque o personagem na cena para medir o jutsu.');
 			if (!j) return;
 			medirJutsu(t, j);
-			fichaCompleta = { ...fichaCompleta, min: true };
 		},
 		usar: async (slug) => {
 			const t = fichaCompleta && tokenDaFicha(fichaCompleta.pid);
@@ -307,7 +318,10 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		ui.mira = { jutsu: j, lancador: t.id, tx: t.x, ty: t.y, px: t.x + 0.5, py: t.y + 0.5, fixa: false, alvos: [], forma: 'cone', giro: 0, travar: false };
 		ui.pop = null;
 		ui.aneis = null;
+		// o quadro livre para medir: as fichas abertas (rápidas e a completa) minimizam
 		if (celular) ui.fichas = [];
+		else ui.fichas = ui.fichas.map((f) => (f.min ? f : { ...f, min: true }));
+		if (fichaCompleta && !fichaCompleta.min) fichaCompleta = { ...fichaCompleta, min: true };
 	}
 	/**
 	 * Usar um jutsu em partes: 'ataque' paga o custo, rola o ataque (se houver) e aplica o resto (crescer, 1×/cena);
@@ -818,13 +832,14 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 					<button type="button" class="h-8 w-8 font-pixel text-sm" aria-label="Cancelar régua (Esc)" title="Cancelar · Esc" onclick={() => (ui.mira = null)}>✕</button>
 				</div>
 				<!-- HUD: a faixa de dano com o dado na cor do elemento, o ataque, a resistência e a ação -->
-				{#if j.ataque || j.dano || j.cura || j.resistencia}
+				{#if j.ataque || j.dano || j.cura || j.resistencia || j.dt}
 					{@const fx = j.dano ? lerDados(j.dano.expr) : null}
 					<div class="flex flex-wrap items-center gap-x-3.5 gap-y-1 border-b-2 border-b3 px-2.5 py-1.5">
 						{#if fx}<span class="font-mincho text-[15px] leading-5 font-bold">{fx.min}~{fx.max} de dano</span>{/if}
 						{#if j.dano}<DadoHud expr={j.dano.expr} cor={el?.cor} tipo={el?.nome} />{:else if j.cura}<DadoHud expr={j.cura} cor="#7FB069" tipo="cura" />{/if}
 						{#if j.ataque}<span class="flex items-center gap-1 text-xs font-semibold text-mut">Ataque <DadoHud expr={j.ataque.expr} tamanho={18} /></span>{/if}
 						{#if j.resistencia}<span class="text-xs leading-4 font-semibold text-mut">Resistência: {j.resistencia}</span>{/if}
+						{#if j.dt}<SeloDt dt={j.dt} />{/if}
 						<span class="ml-auto flex items-center gap-1.5 text-xs font-semibold"><span class="h-2.5 w-2.5 rounded-full {/reação/i.test(j.acao ?? '') ? 'bg-[#e8692e]' : /secund/i.test(j.acao ?? '') ? 'bg-[#f2c14e]' : 'bg-[#7fb069]'}"></span>{j.acao || 'Primária'}</span>
 					</div>
 				{/if}
@@ -1181,22 +1196,16 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 					<button type="button" class="h-9 w-9 border-l-2 border-b3 font-pixel text-base font-bold" aria-label="Aumentar zoom" onclick={() => quadro?.zoomEm(1.25)}>+</button>
 					<button type="button" class="h-9 w-9 border-l-2 border-b3 font-pixel text-sm font-bold" aria-label="Ajustar à tela" title="Ajustar à tela" onclick={() => quadro?.ajustar()}>⤢</button>
 				</div>
-				<div class="absolute right-[220px] bottom-3 left-3 z-[6] flex flex-wrap items-end gap-1.5">
-					{#if fichaCompleta?.min}{@render chipFicha('min-h-9')}{/if}
-					{#each ui.fichas.filter((f) => f.min) as f (f.token)}
-						{@const t = mesa.tokens.find((k) => k.id === f.token)}
-						{#if t}
-							<div class="flex items-center border-2 bg-b2 shadow-[4px_4px_0_var(--b0)]" style="border-color: {corCss(mesa.corDe(mesa.donoDe(t)))}">
-								<button type="button" class="min-h-9 px-2.5 text-[13px] font-semibold" onclick={() => ui.abrirFicha(t.id)}>▴ {t.nome}</button>
-								<button type="button" class="h-9 w-8 border-l-2 border-b3 font-pixel text-xs" aria-label="Fechar ficha" onclick={() => ui.fecharFicha(t.id)}>✕</button>
-							</div>
-						{/if}
-					{/each}
-					{#if !ui.painelAberto && ultima}
-						<button type="button" class="flex min-h-9 items-center gap-2.5 border-2 border-[var(--vermelhao-lo)] bg-b0 pr-2.5 pl-1" onclick={() => ((ui.painelAberto = true), (ui.naoVistas = 0))}>
-							<Icone id="dado/ic-dado-d20" /><span class="text-[13px] leading-none font-medium">{mesa.quemDe(ultima)} · {ultima.rotulo}</span><b class="font-pixel text-lg leading-none">{ultima.total}</b>
-						</button>
-					{/if}
+				<div class="absolute right-[220px] bottom-3 left-3 z-[6]">
+					<BarraMinimizadas itens={minimizadas}>
+						{#snippet depois()}
+							{#if !ui.painelAberto && ultima}
+								<button type="button" class="flex min-h-9 max-w-[320px] items-center gap-2.5 border-2 border-[var(--vermelhao-lo)] bg-b0 pr-2.5 pl-1" onclick={() => ((ui.painelAberto = true), (ui.naoVistas = 0))}>
+									<Icone id="dado/ic-dado-d20" /><span class="truncate text-[13px] leading-none font-medium">{mesa.quemDe(ultima)} · {ultima.rotulo}</span><b class="font-pixel text-lg leading-none">{ultima.total}</b>
+								</button>
+							{/if}
+						{/snippet}
+					</BarraMinimizadas>
 				</div>
 				{@render fichasAbertas()}
 			</div>

@@ -1,3 +1,4 @@
+import type { DtJutsu } from '#lib/jutsus/dt.ts';
 // L11 · Mesa: a ficha rápida já calculada (fichas.server.ts monta; a tela só lê).
 import type { EstadoJogo } from '#lib/personagem/progressao.ts';
 import type { Parte } from '#lib/rolagens/partes.ts';
@@ -23,6 +24,8 @@ export interface JutsuMesa {
 	/** o usuário cresce até este lado no quadro enquanto o jutsu dura ("você fica Grande", cap. 4) */
 	tamanho?: 3 | 6 | 10;
 	resistencia: string | null;
+	/** DT do jutsu com a conta (a do lançador, ou a fixa do NPC e da criatura). */
+	dt?: DtJutsu | null;
 	ataque: RolagemPronta | null;
 	dano: RolagemPronta | null;
 	cura: string | null;
@@ -53,6 +56,15 @@ export interface PericiaMesa {
 	expr: string;
 	partes: Parte[];
 	treinada: boolean;
+	/** Para mostrar como a aba Perícias da ficha completa: ícone, atributo, treino, bônus e total. */
+	id: string;
+	valorAtributo: number;
+	treino: number;
+	bonus: { fonte: string; valor: number }[];
+	total: number;
+	combate: boolean;
+	/** Bukijutsu à distância (AGI). */
+	distancia: { atributo: string; total: number; expr: string; partes: Parte[] } | null;
 }
 
 /** O que a ficha do bestiário dá a um NPC importado: tamanho, todos os ataques e os traços usáveis. */

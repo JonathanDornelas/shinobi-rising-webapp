@@ -1,3 +1,4 @@
+import { dtFixa } from '#lib/jutsus/dt.ts';
 // L11 · Mesa: os traços das fichas do bestiário (Bijūdama, Rugido, Agulhas…) viram habilidades usáveis na ficha rápida.
 // O texto do traço diz a área ("área de 20 m de raio", "linha de 30 m", "a até 3 m dele"), a DT, os dados e se é uma
 // vez por cena; daí saem a régua (o mesmo molde dos jutsus) e a rolagem.
@@ -63,6 +64,7 @@ export function habilidadeDoTraco(nome: string, texto: string, dtFicha: number |
 		// "até o fim da cena" deixa o efeito no quadro; os outros são instantâneos
 		turnos: /até o fim da cena|pela cena/i.test(t) ? null : /(\d+) turnos?/i.test(t) ? +/(\d+) turnos?/i.exec(t)![1] : undefined,
 		resistencia: atributo && dt ? `Resistência de ${atributo}, DT ${dt}` : null,
+		dt: atributo && dt ? dtFixa(+dt, 'DT da criatura no bestiário.') : null,
 		ataque: null,
 		dano: dados && !cura ? { expr: dados, rotulo: `Dano · ${nome}`, partes: [] } : null,
 		cura,

@@ -21,6 +21,8 @@
 	import Icone from '../ui/Icone.svelte';
 	import Traco from '../ui/Traco.svelte';
 	import BotaoFavorito from '../regras/BotaoFavorito.svelte';
+	import SeloDt from '../regras/SeloDt.svelte';
+	import { comDt, dtDoLancador } from '#lib/jutsus/dt.ts';
 	import Glosa from '../regras/Glosa.svelte';
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
 	import { partesAtaqueJutsu, partesDanoAtributo, type Parte } from '#lib/rolagens/partes.ts';
@@ -61,7 +63,8 @@
 			alcance: v('Alcance'),
 			area: v('Área'),
 			regua: reguaDoCard(j.info),
-			resistencia: res && res !== '—' ? res : null,
+			resistencia: res && res !== '—' ? comDt(res, dtDe(j)) : null,
+			dt: dtDe(j),
 			ataque: rr.ataque,
 			dano: rr.dano,
 			cura: rr.cura,
@@ -170,6 +173,11 @@
 	}
 
 	// rolagens do jutsu: ataque (1d20 + perícia do tipo + proficiência, cap. 4 e 9) e dano/cura lidos do efeito
+	/** DT do jutsu para esta ficha: 10 + rank + atributo-chave + proficiência no jutsu (cap. 2). */
+	function dtDe(j: JutsuFicha) {
+		const prof = f.calc.proficiencias.find((p) => p.tipo === 'jutsu' && p.alvo === j.slug);
+		return dtDoLancador(j.rank, j.tipo, f.calc.atributos, prof ? NIVEIS_PROFICIENCIA[prof.nivel - 1].bonus : 0);
+	}
 	function rolagens(j: JutsuFicha) {
 		const pericia = periciaDoAtaque(j.info);
 		const base = pericia ? totalPericia(linhas, pericia) : null;
@@ -199,9 +207,12 @@
 
 {#snippet custo(j: JutsuFicha, grande: boolean)}
 	{@const c = f.custo(j)}
-	<span class="flex items-baseline justify-end gap-1.5 whitespace-nowrap" title={c.notas.join(' · ') || undefined}>
-		{#if c.final !== c.base}<span class="t-num text-sm text-mut line-through">{c.base}</span>{/if}
-		<span class="t-num leading-none {grande ? 'text-[22px]' : 'text-lg'}" style:color={c.final < c.base ? '#7FD3E6' : c.final > c.base ? 'var(--warn)' : undefined}>{c.final} {c.unidade}</span>
+	<span class="flex flex-col items-end gap-1.5">
+		<span class="flex items-baseline justify-end gap-1.5 whitespace-nowrap" title={c.notas.join(' · ') || undefined}>
+			{#if c.final !== c.base}<span class="t-num text-sm text-mut line-through">{c.base}</span>{/if}
+			<span class="t-num leading-none {grande ? 'text-[22px]' : 'text-lg'}" style:color={c.final < c.base ? '#7FD3E6' : c.final > c.base ? 'var(--warn)' : undefined}>{c.final} {c.unidade}</span>
+		</span>
+		<SeloDt dt={dtDe(j)} />
 	</span>
 {/snippet}
 

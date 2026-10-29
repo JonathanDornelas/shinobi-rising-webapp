@@ -14,6 +14,7 @@
 	// L11 · Ficha completa dentro da Mesa: janela grande, arrastável pelo topo, redimensionável e minimizável (fica montada
 	// enquanto minimizada). O jogador abre só a dele; o Mestre, qualquer uma. As abas são as da página da ficha.
 	// O estado (PV, PC, PE, estados) é o mesmo da ficha rápida: o que muda numa aparece na outra.
+	import { lembrarTamanho } from '#lib/mesa/tamanho.ts';
 	import { untrack } from 'svelte';
 	import AbaAnotacoes from '../ficha/AbaAnotacoes.svelte';
 	import AbaCla from '../ficha/AbaCla.svelte';
@@ -153,6 +154,7 @@
 	style:top={celular ? undefined : `${y}px`}
 	style:width={celular ? undefined : `${largura}px`}
 	style:display={min ? 'none' : undefined}
+	use:lembrarTamanho={celular ? null : { propria: `completa:${pid}`, geral: 'completa' }}
 >
 	<div class="flex flex-none cursor-move touch-none items-center gap-2.5 border-b-2 border-b3 bg-b0 py-1.5 pr-1.5 pl-2 select-none" role="presentation" onpointerdown={pegar} onpointermove={arrastar} onpointerup={() => (arrasto = null)}>
 		{#if p}<button type="button" class="flex-none cursor-zoom-in p-0 disabled:cursor-default" disabled={!p.retrato} title={p.retrato ? 'Ver o retrato inteiro' : undefined} aria-label="Ver o retrato de {p.nome} inteiro" onclick={() => (ampliada = true)}><Retrato nome={p.nome || '?'} foto={p.retrato} tamanho={40} /></button>{/if}

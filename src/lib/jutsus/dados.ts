@@ -11,7 +11,7 @@ export const ATRIBUTO_DO_TIPO: Record<TipoJutsu, 'CTR' | 'FOR' | 'INT' | 'AGI'> 
 	Genjutsu: 'CTR',
 	Taijutsu: 'FOR',
 	Bukijutsu: 'FOR',
-	Fuuinjutsu: 'INT',
+	Fuuinjutsu: 'CTR',
 	Kugutsu: 'AGI'
 };
 

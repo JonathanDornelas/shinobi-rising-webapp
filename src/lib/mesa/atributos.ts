@@ -24,6 +24,6 @@ export function periciasDaCriatura(fc: Pick<FichaCompleta, 'atributos' | 'perici
 		const total = t ? t.total : atributo;
 		const partes: Parte[] = [[`${p.atributo} (atributo)`, sinal(atributo)]];
 		if (t && total !== atributo) partes.push(['Treino e bônus', sinal(total - atributo)]);
-		return { nome: p.nome, atributo: p.atributo, expr: teste(total), partes, treinada: !!t };
+		return { nome: p.nome, atributo: p.atributo, expr: teste(total), partes, treinada: !!t, id: p.id, valorAtributo: atributo, treino: total - atributo, bonus: [], total, combate: 'combate' in p && !!p.combate, distancia: null };
 	});
 }

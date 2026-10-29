@@ -34,8 +34,10 @@
 </script>
 
 <script lang="ts">
-	// L11 · M3 · CMP-42 · Ficha rápida: janela arrastável sobre o quadro (até 3), minimizável em chip; no celular, painel
+	// L11 · M3 · CMP-42 · Ficha rápida: janela arrastável sobre o quadro (quantas quiser), minimizável em chip; no celular, painel
 	// inferior em duas alturas. Recursos com o campo "−7 / +5", estados, fadiga, abas de ações, jutsus, perícias e notas.
+	import { lembrarTamanho } from '#lib/mesa/tamanho.ts';
+	import SeloDt from '../regras/SeloDt.svelte';
 	import { CONDICOES } from '#lib/personagem/dados.ts';
 	import { curar } from '#lib/personagem/progressao.ts';
 	import { teste } from '#lib/rolagens/expressoes.ts';
@@ -189,7 +191,6 @@
 	const atributos = $derived(dados.tipo === 'pc' ? dados.ficha.atributos : dados.tipo === 'npc' ? (dados.extras?.atributos ?? []) : []);
 	const pericias = $derived(dados.tipo === 'pc' ? dados.ficha.pericias : dados.tipo === 'npc' ? (dados.extras?.pericias ?? []) : []);
 	/** As treinadas primeiro; as outras valem só o atributo. */
-	const periciasEmOrdem = $derived([...pericias.filter((p) => p.treinada), ...pericias.filter((p) => !p.treinada)]);
 
 	/** Ataque do NPC rápido: "1d20 + 7 → 1d8 + 4" vira dois botões. */
 	const ataqueNpc = $derived.by(() => {
@@ -236,11 +237,12 @@
 			{:else}
 				<span class="text-sm leading-[18px] font-semibold">{nome}</span>
 			{/if}
-			{#if hud && (hud.ataque || hud.dano || ('cura' in hud && hud.cura))}
+			{#if hud && (hud.ataque || hud.dano || ('cura' in hud && hud.cura) || ('dt' in hud && hud.dt))}
 				{@const el = 'regua' in hud ? corElemento(hud.elemento, hud.nome) : null}
 				<span class="flex flex-wrap items-center gap-x-2.5 gap-y-0.5">
 					{#if hud.ataque}<DadoHud expr={hud.ataque.expr} tamanho={18} />{/if}
 					{#if hud.dano}<DadoHud expr={hud.dano.expr} cor={el?.cor} tamanho={18} />{:else if 'cura' in hud && hud.cura}<DadoHud expr={hud.cura} cor="#7FB069" tamanho={18} />{/if}
+					{#if 'dt' in hud && hud.dt}<SeloDt dt={hud.dt} />{/if}
 				</span>
 			{/if}
 			{#if exprs && (exprs.ataque || exprs.dano)}
@@ -271,6 +273,7 @@
 	style:top={celular ? undefined : `${janela.y}px`}
 	style:z-index={celular ? undefined : janela.z}
 	title={celular ? undefined : 'Arraste o canto de baixo à direita para redimensionar'}
+	use:lembrarTamanho={celular ? null : { propria: `rapida:${token.id}`, geral: 'rapida' }}
 	onpointerdown={() => ui.focarFicha(token.id)}
 >
 	{#if celular}
@@ -501,16 +504,37 @@
 						{@render linhaAcao(`rank/ic-rank-${j.rank.toLowerCase()}`, j.nome, metaJutsu(j), avisoFalta(j), [...medir(j), ...botoesUso(j, falta(j))], () => acoes.verJutsu(j), j)}
 					{/each}
 				{:else if aba === 'pericias'}
-					<p class="m-0 border-b-2 border-b1 px-3 py-1.5 text-xs leading-4 text-mut">As treinadas vêm primeiro. As outras valem só o atributo.</p>
-					{#each periciasEmOrdem as p (p.nome)}
-						<div class="flex items-center gap-2 border-b-2 border-b1 px-3 py-1.5 {p.treinada ? '' : 'opacity-75'}">
-							<div class="flex min-w-0 flex-1 flex-col gap-0.5">
-								<span class="flex items-center gap-1.5 text-sm leading-[18px] font-semibold">{p.nome}{#if p.treinada}<span class="border border-ok px-1 py-px font-pixel text-[9px] leading-none font-bold text-ok">TREINADA</span>{/if}</span>
-								<span class="text-xs leading-4 text-mut">{p.atributo} · {p.expr}</span>
-							</div>
-							<button type="button" class="{btn} {celular ? 'min-h-11 px-2.5' : ''}" disabled={!editavel} onclick={() => acoes.rolar(token, { expr: p.expr, rotulo: p.nome, partes: p.partes }, 'teste', true)}>ROLAR</button>
+					<!-- como a aba Perícias da ficha completa: atributo, treino, bônus e total, na ordem do livro -->
+					<div role="table" aria-label="Perícias">
+						<div role="row" class="grid grid-cols-[minmax(0,1fr)_64px_44px_76px] gap-2 bg-vermelhao px-3 py-2 font-pixel text-[11px] leading-4 font-bold tracking-[0.08em] text-white">
+							<span role="columnheader">PERÍCIA</span><span role="columnheader">ATRIB.</span><span role="columnheader">TREINO</span><span role="columnheader" class="text-right">TOTAL</span>
 						</div>
-					{/each}
+						{#each pericias as p, i (p.nome)}
+							<div role="row" class="grid grid-cols-[minmax(0,1fr)_64px_44px_76px] items-center gap-2 px-3 py-1" style:background={i % 2 ? 'var(--b1)' : 'var(--b2)'}>
+								<span role="cell" class="flex min-w-0 flex-col gap-1">
+									<span class="flex min-w-0 items-center gap-1.5 text-sm leading-[18px] font-medium">
+										<Icone id="pericia/ic-pericia-{p.id}" class="h-6 w-6 flex-none" /><span class="truncate">{p.nome}</span>{#if p.combate}<span title="Perícia de combate" class="border-2 border-b3 px-1 py-0.5 font-pixel text-[10px] leading-none text-mut">⚔</span>{/if}
+									</span>
+									{#if p.bonus.length}<span class="flex flex-wrap gap-1">{#each p.bonus as b, j (j)}<span class="border-2 border-[rgba(217,168,43,.5)] bg-[rgba(217,168,43,.14)] px-1 py-0.5 text-[11px] leading-none font-semibold">{b.fonte} +{b.valor}</span>{/each}</span>{/if}
+								</span>
+								<span role="cell" class="justify-self-start border-2 border-b3 px-1 py-0.5 font-pixel text-[11px] leading-none font-semibold">{p.atributo} {p.valorAtributo >= 0 ? '+' : ''}{p.valorAtributo}{#if p.distancia}<br /><span class="text-mut">{p.distancia.atributo}</span>{/if}</span>
+								<span role="cell" class="t-num text-sm text-mut">+{p.treino}</span>
+								<span role="cell" class="flex flex-col items-end gap-0.5">
+									<span class="flex items-center gap-1.5">
+										<span class="t-num text-xl leading-none">{p.total >= 0 ? '+' : ''}{p.total}</span>
+										<button type="button" class="flex h-8 w-8 flex-none items-center justify-center border-2 border-field disabled:opacity-50 {celular ? 'h-11 w-11' : ''}" title="Rolar {p.nome}" aria-label="Rolar {p.nome}" disabled={!editavel} onclick={() => acoes.rolar(token, { expr: p.expr, rotulo: p.nome, partes: p.partes }, 'teste', true)}><Icone id="dado/ic-dado-d20" class="h-6 w-6" /></button>
+									</span>
+									{#if p.distancia}
+										{@const d = p.distancia}
+										<span class="flex items-center gap-1.5" title="À distância ({d.atributo})">
+											<span class="t-num text-sm text-mut">{d.total >= 0 ? '+' : ''}{d.total}</span>
+											<button type="button" class="flex h-8 w-8 flex-none items-center justify-center border-2 border-field disabled:opacity-50 {celular ? 'h-11 w-11' : ''}" title="Rolar {p.nome} à distância" aria-label="Rolar {p.nome} à distância" disabled={!editavel} onclick={() => acoes.rolar(token, { expr: d.expr, rotulo: `${p.nome} à distância`, partes: d.partes }, 'teste', true)}><Icone id="dado/ic-dado-d20" class="h-6 w-6" /></button>
+										</span>
+									{/if}
+								</span>
+							</div>
+						{/each}
+					</div>
 				{:else if aba === 'equip' && dados.tipo === 'pc'}
 					{@const f = dados.ficha}
 					<div class="flex items-center gap-3 border-b-2 border-b1 px-3 py-2 text-xs font-semibold">

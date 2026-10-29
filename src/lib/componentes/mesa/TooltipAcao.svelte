@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Tooltip de ação da Mesa (inspirado no Baldur's Gate 3): nome e tipo, a faixa de dano com o dado na cor do
 	// elemento, o efeito, alcance/área/duração/resistência com ícones e, embaixo, a ação e o custo.
+	import SeloDt from '../regras/SeloDt.svelte';
 	import { ELEMENTO } from '#lib/livro/dominio.ts';
 	import { corElemento, lerDados } from '#lib/mesa/hud.ts';
 	import type { ArmaMesa, JutsuMesa } from '#lib/mesa/tipos.ts';
@@ -55,5 +56,6 @@
 	<div class="flex items-center gap-3 border-t-2 border-b3 bg-b1 px-3.5 py-2 text-[13px] font-semibold">
 		<span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full {/reação/i.test(acaoTxt) ? 'bg-[#e8692e]' : /secund/i.test(acaoTxt) ? 'bg-[#f2c14e]' : 'bg-[#7fb069]'}"></span>{acaoTxt}</span>
 		{#if jutsu?.custo}<span class="flex items-center gap-1"><Icone id="recurso/ic-recurso-{jutsu.unidade === 'PE' ? 'pe' : 'pc'}" class="h-5 w-5" />{jutsu.custo} {jutsu.unidade}</span>{/if}
+		{#if jutsu?.dt}<span class="ml-auto flex items-center gap-1.5 text-xs font-normal text-mut"><SeloDt dt={jutsu.dt} />{jutsu.dt.partes.length ? jutsu.dt.partes.map((p, i) => (i ? `+ ${p.valor} ${p.rotulo.split(' (')[0]}` : `${p.valor}`)).join(' ') : ''}</span>{/if}
 	</div>
 </div>
