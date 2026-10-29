@@ -24,6 +24,8 @@
 	const fmt = (n: number) => String(n).replace('.', ',');
 	/** Pergaminhos que guardam itens (as pilhas aparecem uma vez; um sai da pilha ao selar). */
 	const pergaminhos = $derived(f.inventario.filter((i) => !i.selado && capacidadePergaminho(i) != null));
+	/** Item com o menu "Selar em…" aberto (o ícone de pergaminho só aparece ao passar o mouse no item). */
+	let selando = $state<string | null>(null);
 
 	let loja = $state<'comprar' | 'adicionar' | null>(null);
 	let filtro = $state('');
@@ -45,6 +47,8 @@
 	};
 </script>
 
+<svelte:window onkeydown={(e) => e.key === 'Escape' && (selando = null)} onclick={(e) => selando && !(e.target as HTMLElement).closest('[data-selar]') && (selando = null)} />
+
 <div class="grid items-start gap-5 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
 	<div class="flex flex-col gap-3.5">
 		{#each GRUPOS as g (g.id)}
@@ -60,13 +64,42 @@
 						{#each lista as i (i.id)}
 							{@const cap = capacidadePergaminho(i)}
 							{@const destinos = pergaminhos.filter((p) => p.id !== i.id && livrePergaminho(f.inventario, p) >= peso(i))}
-							<li class="grid grid-cols-[32px_minmax(0,1fr)_auto_56px] items-center gap-3 border-b-2 border-b3 px-3.5 py-1 last:border-b-0" style:box-shadow={corQualidade(i.qualidade) ? `inset 4px 0 0 ${corQualidade(i.qualidade)}` : undefined} title={i.qualidade && i.qualidade !== 'Comum' ? `Qualidade ${i.qualidade}` : undefined}>
+							<li class="group grid grid-cols-[32px_minmax(0,1fr)_auto_56px] items-center gap-3 border-b-2 border-b3 px-3.5 py-1 last:border-b-0" style:box-shadow={corQualidade(i.qualidade) ? `inset 4px 0 0 ${corQualidade(i.qualidade)}` : undefined} title={i.qualidade && i.qualidade !== 'Comum' ? `Qualidade ${i.qualidade}` : undefined}>
 								<Icone id={i.icone} />
 								<span class="flex min-w-0 flex-col gap-0.5">
 									<span class="text-sm leading-5 font-semibold">{i.nome}</span>
 									{#if i.nota}<span class="text-xs leading-4 text-mut">{i.nota}</span>{/if}
 								</span>
 								<span class="flex items-center gap-1">
+									{#if f.editavel && pergaminhos.some((p) => p.id !== i.id) && !(cap != null && conteudoPergaminho(f.inventario, i.id).length)}
+										<span class="relative" data-selar>
+											<button
+												type="button"
+												class="btn-icone h-8 w-8 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within:opacity-100 [@media(hover:hover)]:group-hover:opacity-100 {selando === i.id ? '[@media(hover:hover)]:opacity-100' : ''}"
+												aria-label="Selar {i.nome} num pergaminho"
+												aria-haspopup="menu"
+												aria-expanded={selando === i.id}
+												title="Selar num pergaminho (1 PC)"
+												onclick={() => (selando = selando === i.id ? null : i.id)}
+											>
+												<Icone id="equip/ic-equip-pergaminho" class="h-6 w-6" />
+											</button>
+											{#if selando === i.id}
+												<div role="menu" aria-label="Selar {i.nome} em" class="absolute top-full right-0 z-20 mt-1 flex w-max max-w-[260px] flex-col border-2 border-frame bg-b2 shadow-[4px_4px_0_var(--ink)]">
+													<span class="border-b-2 border-b3 px-2.5 py-1.5 font-pixel text-[11px] font-bold tracking-[0.06em] text-mut">SELAR EM… · 1 PC</span>
+													{#if f.atual.pc < 1}
+														<span class="px-2.5 py-2 text-xs text-mut">Sem PC para selar.</span>
+													{:else}
+														{#each destinos as p (p.id)}
+															<button type="button" role="menuitem" class="min-h-9 border-b-2 border-b3 px-2.5 text-left text-[13px] font-medium last:border-b-0 hover:bg-b3" onclick={() => ((selando = null), f.selar(i.id, p.id))}>{p.nome} <span class="text-mut">· {fmt(livrePergaminho(f.inventario, p))} livre</span></button>
+														{:else}
+															<span class="px-2.5 py-2 text-xs text-mut">Não cabe em nenhum pergaminho.</span>
+														{/each}
+													{/if}
+												</div>
+											{/if}
+										</span>
+									{/if}
 									{#if f.editavel && g.id === 'Armas'}
 										{@const dano = danoArma(i)}
 										{#if dano}<BotaoRolar class="mr-1 w-9" expressao={dano} rotulo="Dano · {i.nome}" personagem={f.id} tipo="dano" origem="Ficha · Equipamento" partes={f.calc.proficiencias.some((p) => p.tipo === 'arma' && p.alvo === i.nome) ? [['Proficiência', '+1']] : []} />{/if}
@@ -93,24 +126,6 @@
 											{:else}
 												<span class="text-xs text-mut">Vazio. Selar custa {ehPergaminhoMestre(i) ? 'uma ação completa' : '1 ação'} e 1 PC; invocar, {ehPergaminhoMestre(i) ? 'a ação primária' : 'a ação secundária'} e 1 PC.</span>
 											{/each}
-										</div>
-									{/if}
-									{#if f.editavel && pergaminhos.some((p) => p.id !== i.id) && !(cap != null && conteudoPergaminho(f.inventario, i.id).length)}
-										<div class="col-span-4 mb-1.5 ml-11 flex items-center gap-2">
-											<select
-												class="campo h-8 w-auto max-w-full pr-7 text-xs"
-												aria-label="Selar {i.nome} num pergaminho"
-												disabled={!destinos.length || f.atual.pc < 1}
-												value=""
-												onchange={(e) => {
-													const p = e.currentTarget.value;
-													e.currentTarget.value = '';
-													if (p) f.selar(i.id, p);
-												}}
-											>
-												<option value="">{destinos.length ? (f.atual.pc < 1 ? 'Sem PC para selar' : 'Selar em… (1 PC)') : 'Não cabe em nenhum pergaminho'}</option>
-												{#each destinos as p (p.id)}<option value={p.id}>{p.nome} · {fmt(livrePergaminho(f.inventario, p))} livre</option>{/each}
-											</select>
 										</div>
 									{/if}
 								</li>

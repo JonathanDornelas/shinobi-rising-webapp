@@ -36,20 +36,40 @@
 	$effect(() => {
 		npcs = structuredClone(data.npcs);
 	});
+	// NPCs com ficha completa: entram nas mesmas pastas que os de ficha rápida
+	// svelte-ignore state_referenced_locally
+	let fichasNpc = $state(structuredClone(data.npcFichas ?? []));
+	$effect(() => {
+		fichasNpc = structuredClone(data.npcFichas ?? []);
+	});
 
-	// pastas (as mesmas da Mesa): clicar filtra; arrastar um card para a pasta move o NPC
+	// pastas (as mesmas da Mesa): clicar filtra; arrastar um card para a pasta move o NPC (ficha rápida ou completa)
 	// svelte-ignore state_referenced_locally
 	let pastas = $state(data.pastas);
 	let pastaSel = $state('todas');
 	const descendentes = (id: string): string[] => pastas.filter((p) => p.pai_id === id).flatMap((p) => [p.id, ...descendentes(p.id)]);
-	const naPasta = (n: Npc, sel: string) =>
+	const naPasta = (n: { pasta_id: string | null }, sel: string) =>
 		sel === 'todas' || (sel === 'sem' ? !n.pasta_id || !pastas.some((p) => p.id === n.pasta_id) : !!n.pasta_id && [sel, ...descendentes(sel)].includes(n.pasta_id));
-	const contar = (sel: string) => npcs.filter((n) => naPasta(n, sel)).length;
+	const contar = (sel: string) => npcs.filter((n) => naPasta(n, sel)).length + fichasNpc.filter((f) => naPasta(f, sel)).length;
 	async function moverNpc(id: string, pasta: string | null) {
 		// pasta excluída: o banco já subiu o conteúdo; aqui só acompanha
 		if (id.startsWith('pasta:')) {
 			const velha = id.slice(6);
 			for (const n of npcs) if (n.pasta_id === velha) n.pasta_id = pasta;
+			for (const f of fichasNpc) if (f.pasta_id === velha) f.pasta_id = pasta;
+			return;
+		}
+		// ficha completa: o Mestre não edita a ficha direto, a pasta passa pela função do banco
+		if (id.startsWith('ficha:')) {
+			const f = fichasNpc.find((x) => x.id === id.slice(6));
+			if (!f || f.pasta_id === pasta) return;
+			const antes = f.pasta_id;
+			f.pasta_id = pasta;
+			const { error } = await supabase().rpc('pasta_da_ficha', { ficha: f.id, pasta });
+			if (error) {
+				f.pasta_id = antes;
+				toasts.mostrar('Não foi possível mover o NPC.', 'erro');
+			}
 			return;
 		}
 		const n = npcs.find((x) => x.id === id);
@@ -86,6 +106,8 @@
 	const visiveis = $derived(
 		npcs.filter((n) => naPasta(n, pastaSel) && (!filtroRank || n.rank === filtroRank) && (!filtroTag || n.tags.includes(filtroTag)) && (!filtroVisivel || (filtroVisivel === 'revelado') === n.revelado))
 	);
+
+	const fichasVisiveis = $derived(fichasNpc.filter((f) => naPasta(f, pastaSel) && !filtroRank && !filtroTag && !filtroVisivel));
 
 	// ---------------------------------------------------------------- editar, criar, excluir
 	let editando = $state<Npc | null>(null);
@@ -154,9 +176,9 @@
 			.single();
 		criandoFicha = false;
 		if (error || !nova) return toasts.mostrar('Não foi possível criar a ficha do NPC.', 'erro');
+		if (pastaSel !== 'todas' && pastaSel !== 'sem') await supabase().rpc('pasta_da_ficha', { ficha: nova.id, pasta: pastaSel });
 		await goto(hrefEditar(k.id, nova.id));
 	}
-	const fichasNpc = $derived(data.npcFichas ?? []);
 	async function salvar(n: Npc) {
 		salvando = true;
 		const { id, campanha_id, criado_em, atualizado_em, ...campos } = n;
@@ -249,33 +271,41 @@
 	</div>
 	{#if mestre && ativa && (npcs.length || fichasNpc.length)}<BarraRolagem registro="/campanhas/{k.id}/rolagens" />{/if}
 
-	{#if mestre && fichasNpc.length}
-		<section class="flex flex-col gap-2" aria-labelledby="npc-fichas">
-			<h2 id="npc-fichas" class="t-rotulo m-0">Com ficha completa · {fichasNpc.length}</h2>
-			<ul class="m-0 grid list-none gap-3 p-0 md:grid-cols-2 xl:grid-cols-3">
-				{#each fichasNpc as p (p.id)}
-					<li>
-						<a href={p.status === 'aprovada' ? hrefFicha(k.id, p.id) : hrefEditar(k.id, p.id)} class="painel-sombra cartao-link flex items-center gap-3 p-3 text-fg">
-							<Retrato nome={p.nome || '?'} foto={p.retrato} tamanho={64} />
-							<span class="flex min-w-0 flex-1 flex-col gap-1">
-								<span class="truncate font-mincho text-lg leading-6 font-bold">{p.nome || 'NPC sem nome'}</span>
-								<span class="text-[13px] text-mut">Nível {p.nivel}{p.resumo.claNome ? ` · Clã ${p.resumo.claNome}` : ''}{p.situacao !== 'ativo' ? ` · ${p.situacao}` : ''}</span>
-							</span>
-							<SeloStatus status={p.status} />
-						</a>
-						<button type="button" class="link mt-1 text-xs font-semibold" aria-pressed={fichaOculta(p)} disabled={!ativa} onclick={() => alternarNomeFicha(p)}>{fichaOculta(p) ? 'Nome escondido (???) · mostrar' : 'Esconder o nome dos jogadores'}</button>
-					</li>
-				{/each}
-			</ul>
-		</section>
-	{/if}
-
 	{#if mestre}
 		<div class="flex flex-col gap-3.5 md:grid md:grid-cols-[240px_minmax(0,1fr)] md:items-start">
 		<PastasNpcs campanha={k.id} bind:pastas bind:sel={pastaSel} {contar} {ativa} onMoverNpc={moverNpc} />
 		<div class="flex min-w-0 flex-col gap-3.5">
 		{#if pastaSel !== 'todas'}
 			<span class="text-[13px] font-semibold text-mut">NPCs › {pastaSel === 'sem' ? 'Sem pasta' : (pastas.find((p) => p.id === pastaSel)?.nome ?? '')} <button type="button" class="link ml-2 text-xs" onclick={() => (pastaSel = 'todas')}>ver todos</button></span>
+		{/if}
+		{#if fichasVisiveis.length}
+			<section class="flex flex-col gap-2" aria-labelledby="npc-fichas">
+				<h2 id="npc-fichas" class="t-rotulo m-0">Com ficha completa · {fichasVisiveis.length}</h2>
+				<ul class="m-0 grid list-none gap-3 p-0 md:grid-cols-2 xl:grid-cols-3">
+					{#each fichasVisiveis as p (p.id)}
+						<li class="flex flex-col gap-1" draggable={ativa} ondragstart={(e) => e.dataTransfer?.setData('text/x-npc', `ficha:${p.id}`)} title="Arraste para uma pasta">
+							<a href={p.status === 'aprovada' ? hrefFicha(k.id, p.id) : hrefEditar(k.id, p.id)} class="painel-sombra cartao-link flex items-center gap-3 p-3 text-fg" draggable="false">
+								<Retrato nome={p.nome || '?'} foto={p.retrato} tamanho={64} />
+								<span class="flex min-w-0 flex-1 flex-col gap-1">
+									<span class="truncate font-mincho text-lg leading-6 font-bold">{p.nome || 'NPC sem nome'}</span>
+									<span class="text-[13px] text-mut">Nível {p.nivel}{p.resumo.claNome ? ` · Clã ${p.resumo.claNome}` : ''}{p.situacao !== 'ativo' ? ` · ${p.situacao}` : ''}</span>
+								</span>
+								<SeloStatus status={p.status} />
+							</a>
+							<div class="flex flex-wrap items-center gap-2">
+								<button type="button" class="link text-xs font-semibold" aria-pressed={fichaOculta(p)} disabled={!ativa} onclick={() => alternarNomeFicha(p)}>{fichaOculta(p) ? 'Nome escondido (???) · mostrar' : 'Esconder o nome dos jogadores'}</button>
+								{#if pastas.length && ativa}
+									<select class="campo h-8 w-auto max-w-[150px] pr-7 text-xs" aria-label="Mover para pasta" value={p.pasta_id ?? ''} onchange={(e) => moverNpc(`ficha:${p.id}`, e.currentTarget.value || null)}>
+										<option value="">Sem pasta</option>
+										{#each pastas as x (x.id)}<option value={x.id}>{x.nome}</option>{/each}
+									</select>
+								{/if}
+							</div>
+						</li>
+					{/each}
+				</ul>
+			</section>
+			{#if visiveis.length}<h2 class="t-rotulo m-0">Com ficha rápida · {visiveis.length}</h2>{/if}
 		{/if}
 		{#if npcs.length}
 			<div class="flex flex-wrap gap-2">
@@ -364,10 +394,10 @@
 					</li>
 				{/each}
 			</ul>
-		{:else}
+		{:else if !fichasVisiveis.length}
 			<div class="painel flex flex-col items-center gap-3 px-6 py-8 text-center">
 				<Icone id="nav/ic-nav-npcs" tamanho={64} />
-				<span class="text-[15px] font-semibold">{npcs.length ? 'Nenhum NPC com esses filtros.' : 'Nenhum NPC ainda.'}</span>
+				<span class="text-[15px] font-semibold">{npcs.length || fichasNpc.length ? 'Nenhum NPC com esses filtros.' : 'Nenhum NPC ainda.'}</span>
 				<span class="text-sm text-mut">A ficha resumida (cap. 23.2) se preenche em 2 minutos: identidade, combate, tags e ganchos.</span>
 			</div>
 		{/if}
