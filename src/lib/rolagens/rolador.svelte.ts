@@ -56,6 +56,8 @@ export interface Janela {
 /** Duração mínima da animação do dado, para o resultado não "piscar". */
 const GIRO = 900;
 const AVISO = 7000;
+/** Teto da espera pelos dados 3D: se eles não avisarem que pararam (biblioteca lenta, aba em segundo plano), a rolagem entra no registro assim mesmo. */
+const ESPERA_DADOS = 10000;
 const JANELA_PADRAO: Janela = { aberta: false, minimizada: false, x: null, y: null, w: 420, h: 640, alturaMovel: 420 };
 
 /** Como as rolagens aparecem na tela. */
@@ -90,6 +92,11 @@ class Rolador {
 	lance = $state<{ r: Rolagem; n: number } | null>(null);
 	/** Ficha aberta agora (para o PD gasto no registro aparecer nela sem recarregar). */
 	fichaAberta: { id: string; aoGastarPd: (pd: number) => void } | null = null;
+
+	/** Rolagens que os dados 3D ainda estão jogando: o resultado só entra no registro quando eles param (suspense). */
+	private retidas = new Map<string, { r: Rolagem; limite: ReturnType<typeof setTimeout> }>();
+	/** Quem espera os dados pararem (o rolar() de quem rolou: a ficha, o dano e o PD só mudam depois). */
+	private esperas = new Map<string, () => void>();
 
 	private eu: string | null = null;
 	private canal: RealtimeChannel | null = null;
@@ -189,9 +196,29 @@ class Rolador {
 			return null;
 		}
 		if (p.d20 && !p.modo) this.modo = 'normal';
-		this.ultima = data;
 		this.receber(data, true);
+		// com os dados 3D o resultado já está sorteado, mas só aparece (e só vale para quem chamou) quando eles param
+		await this.aguardar(data.id);
+		this.ultima = data;
 		return data;
+	}
+
+	/** Resolve quando a rolagem sai da retenção (os dados pararam); na hora, se ela não está retida. */
+	aguardar(id: string): Promise<void> {
+		if (!this.retidas.has(id)) return Promise.resolve();
+		return new Promise((ok) => this.esperas.set(id, ok));
+	}
+
+	/** Os dados 3D pararam: o resultado entra no registro e quem esperava segue. */
+	liberar(id: string) {
+		const h = this.retidas.get(id);
+		if (h) {
+			clearTimeout(h.limite);
+			this.retidas.delete(id);
+			this.guardar(h.r, true);
+		}
+		this.esperas.get(id)?.();
+		this.esperas.delete(id);
 	}
 
 	/** Ponto de Destino (cap. 2): re-rolar ou +5, gastando 1 PD da ficha. */
@@ -204,6 +231,7 @@ class Rolador {
 		if (acao === 'rerrolar') {
 			this.atualizar({ ...r, substituida: true });
 			this.receber(data, true);
+			await this.aguardar(data.id);
 		} else this.atualizar(data);
 		this.ultima = data;
 		if (this.fichaAberta?.id === r.personagem_id) {
@@ -217,9 +245,13 @@ class Rolador {
 
 	/** Uma rolagem nova (minha, ou de outra pessoa pelo Realtime). */
 	receber(r: Rolagem, mostrar: boolean) {
-		if (!this.recentes.some((x) => x.id === r.id)) {
-			this.recentes = [r, ...this.recentes].slice(0, 200);
-			if (mostrar && r.autor_id !== this.eu && (!this.janela.aberta || this.janela.minimizada)) this.naoVistas++;
+		if (!this.recentes.some((x) => x.id === r.id) && !this.retidas.has(r.id)) {
+			// os dados 3D vão jogar esta rolagem (a minha, mesmo chegando pelo Realtime antes da resposta, ou a de outra pessoa): o
+			// resultado só vai para o registro quando eles pararem, para não estragar o suspense
+			const vaiJogar = this.usar3d && ((mostrar && !this.rolando) || (r.autor_id === this.eu && !!this.rolando));
+			if (vaiJogar) {
+				this.retidas.set(r.id, { r, limite: setTimeout(() => this.liberar(r.id), ESPERA_DADOS) });
+			} else this.guardar(r, mostrar);
 		}
 		if (!mostrar || this.rolando) return;
 		// dados 3D: todas as rolagens visíveis rolam na tela, como numa mesa de verdade
@@ -234,8 +266,17 @@ class Rolador {
 		this.temporizador = setTimeout(() => (this.aviso = null), AVISO);
 	}
 
+	/** Põe a rolagem no registro (mais novas primeiro) e conta como não vista se chegou com a janela fechada. */
+	private guardar(r: Rolagem, mostrar: boolean) {
+		if (this.recentes.some((x) => x.id === r.id)) return;
+		this.recentes = [r, ...this.recentes].slice(0, 200);
+		if (mostrar && r.autor_id !== this.eu && (!this.janela.aberta || this.janela.minimizada)) this.naoVistas++;
+	}
+
 	/** Uma rolagem mudou (PD +5, re-rolada). */
 	atualizar(r: Rolagem) {
+		const h = this.retidas.get(r.id);
+		if (h) h.r = { ...h.r, ...r };
 		this.recentes = this.recentes.some((x) => x.id === r.id) ? this.recentes.map((x) => (x.id === r.id ? { ...x, ...r } : x)) : this.recentes;
 		if (this.aviso?.id === r.id) this.aviso = { ...this.aviso, ...r };
 		if (this.ultima?.id === r.id) this.ultima = { ...this.ultima, ...r };
@@ -255,6 +296,7 @@ class Rolador {
 	voltarAoPixel(r: Rolagem | null) {
 		this.estilo = 'pixel';
 		this.lance = null;
+		for (const id of [...this.retidas.keys()]) this.liberar(id);
 		if (r) this.receber(r, true);
 	}
 

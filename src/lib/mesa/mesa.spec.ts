@@ -125,7 +125,7 @@ describe('tamanho e habilidades do bestiário', () => {
 		expect(TAMANHOS[e.tamanho].espaco).toBe(10);
 		const texto = (n: string) => e.combate.tracos.find((t) => t.nome === n)!.efeito.map((t) => t.t).join('');
 		const bijuudama = habilidadeDoTraco('Bijūdama', texto('Bijūdama'), e.combate.dt, e.combate.ataques[0].dano);
-		expect(bijuudama).toMatchObject({ porCena: true, resistencia: 'Resistência de Acrobacia, DT 23', dano: { expr: '10d10' } });
+		expect(bijuudama).toMatchObject({ custo: 60, unidade: 'PC', porCena: false, resistencia: 'Resistência de Acrobacia, DT 23', dano: { expr: '10d10' } });
 		expect(bijuudama.regua).toMatchObject({ forma: 'esfera', n: 20, alcance: 30 });
 		expect(temRegua(bijuudama.regua)).toBe(true);
 		const rugido = habilidadeDoTraco('Rugido', texto('Rugido'), e.combate.dt, null);

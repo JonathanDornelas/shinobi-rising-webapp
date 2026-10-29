@@ -48,13 +48,15 @@ export function habilidadeDoTraco(nome: string, texto: string, dtFicha: number |
 	const dt = /DT (\d+)/i.exec(t)?.[1] ?? (dtFicha != null ? String(dtFicha) : null);
 	const atributo = /Resistência de ([A-Za-zÀ-ú]+)/i.exec(t)?.[1] ?? /resiste com ([A-Za-zÀ-ú]+)/i.exec(t)?.[1] ?? null;
 	const dados = /(\d+d\d+(?:\s*[+-]\s*\d+)?)/i.exec(t)?.[1]?.replace(/\s+/g, '') ?? (/dano da ficha/i.test(t) ? danoFicha : null);
+	// "gasta 30 PC": o traço que é um jutsu exclusivo (Bijūdama) cobra o recurso como qualquer jutsu
+	const gasto = /(?:gasta|custa)\s+(\d+)\s*(PC|PE)\b/i.exec(t);
 	const cura = /(?:recupera|cura)\s+(\d+d\d+(?:\s*[+-]\s*\d+)?)/i.exec(t)?.[1]?.replace(/\s+/g, '') ?? null;
 	return {
 		slug: `traco-${slugDe(nome)}`,
 		nome,
 		rank: '',
-		custo: 0,
-		unidade: 'PC',
+		custo: gasto ? +gasto[1] : 0,
+		unidade: gasto?.[2].toUpperCase() === 'PE' ? 'PE' : 'PC',
 		alcance: regua.rotuloAlcance,
 		area,
 		regua,

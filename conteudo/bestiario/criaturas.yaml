@@ -48,7 +48,7 @@
       tracos:
         - { nome: Areia, efeito: "Controla a areia em volta: como reação, ergue um escudo de areia que reduz um ataque à metade." }
         - { nome: Bala de ar, efeito: "Uma vez por rodada, dispara uma rajada de Fuuton: Resistência de Acrobacia contra a DT 18 ou fica **Caído**." }
-        - { nome: Bijūdama, efeito: "Uma vez por cena, a esfera de chakra das bestas: cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 18 e sofre 6d10 de dano, ou metade se passar." }
+        - { nome: Bijūdama, efeito: "Jutsu exclusivo das bestas, gasta 30 PC: a esfera de chakra condensado. Cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 18 e sofre 6d10 de dano, ou metade se passar." }
     - nome: Matatabi, o Duas Caudas
       ameaca: 13
       papel: chefe
@@ -58,7 +58,7 @@
         - { nome: Garras de fogo azul, alcance: Corpo a corpo, efeito: "O alvo fica **Em chamas**." }
       tracos:
         - { nome: Corpo de chamas, efeito: "Quem o toca ou o acerta corpo a corpo fica **Em chamas**." }
-        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 19 e sofre 6d10 de dano, ou metade se passar." }
+        - { nome: Bijūdama, efeito: "Jutsu exclusivo das bestas, gasta 30 PC: a esfera de chakra condensado. Cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 19 e sofre 6d10 de dano, ou metade se passar." }
     - nome: Isobu, o Três Caudas
       ameaca: 14
       papel: chefe
@@ -70,7 +70,7 @@
       tracos:
         - { nome: Casco espinhoso, efeito: "RD 4." }
         - { nome: Névoa de ilusão, efeito: "Uma vez por cena, cobre o lago de névoa: quem está nela resiste com ESP contra a DT 19 ou fica **Em Genjutsu**." }
-        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 19 e sofre 6d10 de dano, ou metade se passar." }
+        - { nome: Bijūdama, efeito: "Jutsu exclusivo das bestas, gasta 30 PC: a esfera de chakra condensado. Cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 19 e sofre 6d10 de dano, ou metade se passar." }
     - nome: Son Gokū, o Quatro Caudas
       ameaca: 15
       papel: chefe
@@ -80,7 +80,7 @@
         - { nome: Punho de lava, alcance: Corpo a corpo, efeito: "O alvo fica **Em chamas**." }
       tracos:
         - { nome: Yōton, efeito: "Uma vez por rodada, cospe lava numa linha: Resistência de Acrobacia contra a DT 20 ou 3d10 de dano e **Em chamas**." }
-        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 20 e sofre 8d10 de dano, ou metade se passar." }
+        - { nome: Bijūdama, efeito: "Jutsu exclusivo das bestas, gasta 40 PC: a esfera de chakra condensado. Cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 20 e sofre 8d10 de dano, ou metade se passar." }
     - nome: Kokuō, o Cinco Caudas
       ameaca: 16
       papel: chefe
@@ -90,7 +90,7 @@
         - { nome: Chifrada, alcance: Corpo a corpo, efeito: "Se correu até o alvo, ele resiste com FOR contra a DT 20 ou é jogado longe e fica **Caído**." }
       tracos:
         - { nome: Futton, efeito: "O vapor fervente em volta do corpo causa 2d6 de dano em quem termina o turno ao lado dele." }
-        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 20 e sofre 8d10 de dano, ou metade se passar." }
+        - { nome: Bijūdama, efeito: "Jutsu exclusivo das bestas, gasta 40 PC: a esfera de chakra condensado. Cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 20 e sofre 8d10 de dano, ou metade se passar." }
     - nome: Saiken, o Seis Caudas
       ameaca: 17
       papel: chefe
@@ -101,7 +101,7 @@
       tracos:
         - { nome: Bolhas de ácido, efeito: "Uma vez por rodada, solta bolhas que estouram numa área de 6 m de raio: Resistência de Acrobacia contra a DT 21 ou 3d10 de dano." }
         - { nome: Corpo macio, efeito: "Não fica **Caído** nem **Atordoado**." }
-        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 21 e sofre 8d10 de dano, ou metade se passar." }
+        - { nome: Bijūdama, efeito: "Jutsu exclusivo das bestas, gasta 40 PC: a esfera de chakra condensado. Cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 21 e sofre 8d10 de dano, ou metade se passar." }
     - nome: Chōmei, o Sete Caudas
       ameaca: 18
       papel: chefe
@@ -112,7 +112,7 @@
       tracos:
         - { nome: Voo, efeito: "Voa. Quem está no chão sem alcance não consegue atacá-lo." }
         - { nome: Pó de escamas, efeito: "Uma vez por cena, espalha um pó brilhante: cada um numa área de 10 m de raio resiste com VIG contra a DT 21 ou fica **Cego** até o fim do próximo turno." }
-        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 21 e sofre 10d10 de dano, ou metade se passar." }
+        - { nome: Bijūdama, efeito: "Jutsu exclusivo das bestas, gasta 50 PC: a esfera de chakra condensado. Cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 21 e sofre 10d10 de dano, ou metade se passar." }
     - nome: Gyūki, o Oito Caudas
       ameaca: 19
       papel: chefe
@@ -122,7 +122,7 @@
         - { nome: Tentáculos, alcance: Médio, efeito: "O alvo resiste com FOR contra a DT 22 ou fica **Imobilizado**." }
       tracos:
         - { nome: Tinta, efeito: "Uma vez por cena, cospe tinta numa área de 10 m de raio: quem estiver nela resiste com Acrobacia contra a DT 22 ou fica **Cego** e **Imobilizado** até se limpar (ação primária)." }
-        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 22 e sofre 10d10 de dano, ou metade se passar." }
+        - { nome: Bijūdama, efeito: "Jutsu exclusivo das bestas, gasta 50 PC: a esfera de chakra condensado. Cada um numa área de 10 m de raio faz uma Resistência de Acrobacia contra a DT 22 e sofre 10d10 de dano, ou metade se passar." }
     - nome: Kurama, o Nove Caudas
       ameaca: 20
       papel: chefe
@@ -133,7 +133,7 @@
       tracos:
         - { nome: Sentir o ódio, efeito: "Percebe a presença e as emoções negativas de qualquer um num raio enorme. Ninguém com raiva ou medo se esconde dele." }
         - { nome: Rugido, efeito: "Uma vez por cena: cada um numa área de 20 m de raio resiste com ESP contra a DT 23 ou fica **Amedrontado**." }
-        - { nome: Bijūdama, efeito: "Uma vez por cena: cada um numa área de 20 m de raio faz uma Resistência de Acrobacia contra a DT 23 e sofre 10d10 de dano, ou metade se passar." }
+        - { nome: Bijūdama, efeito: "Jutsu exclusivo das bestas, gasta 60 PC: a esfera de chakra condensado. Cada um numa área de 20 m de raio faz uma Resistência de Acrobacia contra a DT 23 e sofre 10d10 de dano, ou metade se passar." }
   taticas:
     - "Uma besta solta não tem tática: destrói o que a irrita e tudo o que estiver perto. As que conversam querem quase sempre a mesma coisa, que é não voltar a ser selada."
     - "O caminho para vencer é o selamento: imobilizar a besta tempo o bastante para um mestre do selo trabalhar."

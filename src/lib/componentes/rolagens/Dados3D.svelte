@@ -35,6 +35,8 @@
 			if (!temWebgl()) throw new Error('sem WebGL');
 			// a semente é o id da rolagem: a mesma queda em todas as telas da mesa
 			const rolou = await lancar(camada!, r.detalhe, { cor: corDaRolagem(r), som: rolador.som, semente: r.id });
+			// os dados pararam: agora o resultado vale (registro, ficha rápida, dano), não quando a legenda some
+			rolador.liberar(r.id);
 			if (minha !== vez) return;
 			legenda = r;
 			// rolagem sem dados que a mesa desenhe (só números, d2, d3): fica só a legenda
@@ -44,6 +46,7 @@
 				tempo = setTimeout(() => minha === vez && (limpar(), (legenda = null)), SUMIR);
 			}, rolou ? FICA : FICA - 800);
 		} catch {
+			rolador.liberar(r.id);
 			if (minha !== vez) return;
 			visivel = false;
 			toasts.mostrar('Os dados 3D não funcionam neste navegador. As rolagens voltaram para o aviso em pixel.', 'aviso');
