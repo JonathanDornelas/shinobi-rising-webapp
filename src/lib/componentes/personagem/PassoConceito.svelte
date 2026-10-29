@@ -45,7 +45,7 @@
 		<Retrato nome={f.nome || '?'} foto={retrato} tamanho={128} />
 		{#if podeFoto && ficha}
 			<EnviarRetrato {ficha} atual={retrato} />
-			<span class="text-xs leading-4 text-mut">PNG, JPG ou WEBP. Você enquadra num quadrado antes de enviar.</span>
+			<span class="text-xs leading-4 text-mut">Envie uma imagem ou escolha uma arte do bestiário. Você enquadra num quadrado antes de salvar.</span>
 		{:else if !retrato}<span class="text-xs leading-4 text-mut">Sem foto: aparecem as iniciais.</span>{/if}
 		<div class="mt-2 border-2 border-dashed border-b3 bg-b2 p-2 text-[13px] leading-[18px] font-semibold">
 			Nível 1 · {rankSugerido(1)}<br /><span class="font-normal text-mut">
