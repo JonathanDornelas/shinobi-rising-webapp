@@ -1,7 +1,8 @@
 <script lang="ts">
-	// Configurações da cena (só o Mestre), em abas: o geral (travar, coordenadas, grade, PV, nome público, quem joga), o
-	// tamanho (e ajustar a cena à imagem), a vista (de cima ou isométrica), as imagens (modo, narrativa e fundo) e as
-	// camadas das imagens (chão, meio e acima dos tokens).
+	// Configurações da cena (só o Mestre). O modal tem tamanho fixo e o conteúdo de cada aba rola por dentro, então ele não
+	// muda de tamanho de uma aba para outra. Abas: geral, tamanho (e ajustar à imagem), vista, imagens e camadas.
+	import { tick } from 'svelte';
+	import { fatorDosQuadrados, fundoPorFator, larguraPadraoDoFundo, type CenaParaFundo } from '#lib/mesa/fundo.ts';
 	import { urlImagemMesa } from '#lib/mesa/imagens.ts';
 	import type { Mesa } from '#lib/mesa/mesa.svelte.ts';
 	import { camadaRank } from '#lib/mesa/objetos.ts';
@@ -20,7 +21,7 @@
 		mesa: Mesa;
 		ui: UiMesa;
 		cena: MesaCena;
-		/** "todos" ou "2 de 4": o que o botão de quem joga mostra */
+		/** "todos" ou "2 de 4": o que a linha de quem joga mostra */
 		quemJoga: string;
 		podeColocarGrupo: boolean;
 		aoParticipantes: () => void;
@@ -28,18 +29,41 @@
 	} = $props();
 
 	const ABAS = [
-		['geral', 'GERAL'],
-		['tamanho', 'TAMANHO'],
-		['vista', 'VISTA'],
-		['imagens', 'IMAGENS'],
-		['camadas', 'CAMADAS']
+		{ id: 'geral', nome: 'Geral', icone: 'M4 7h10M18 7h2M4 17h2M10 17h10M14 5v4M6 15v4' },
+		{ id: 'tamanho', nome: 'Tamanho', icone: 'M4 9V4h5M20 15v5h-5M4 4l6 6M20 20l-6-6' },
+		{ id: 'vista', nome: 'Vista', icone: 'M12 3l9 5-9 5-9-5zM3 13l9 5 9-5' },
+		{ id: 'imagens', nome: 'Imagens', icone: 'M3 5h18v14H3zM3 16l5-5 4 4 3-3 6 6M15 9h.01' },
+		{ id: 'camadas', nome: 'Camadas', icone: 'M12 3l9 5-9 5-9-5zM3 12l9 5 9-5M3 16l9 5 9-5' }
 	] as const;
-	let aba = $state<(typeof ABAS)[number][0]>('geral');
+	type AbaId = (typeof ABAS)[number]['id'];
+	const TITULOS: Record<AbaId, [string, string]> = {
+		geral: ['Geral', 'Como a mesa se comporta e o que o grupo vê.'],
+		tamanho: ['Tamanho da cena', 'Cada quadrado vale 1 m.'],
+		vista: ['Vista', 'Como o quadro é desenhado. Os dados seguem na grade, então régua, jutsus, névoa e terreno funcionam igual nas duas vistas.'],
+		imagens: ['Imagens', 'O modo da cena, a imagem da narrativa e o fundo do quadro.'],
+		camadas: ['Camadas', 'O token vive entre as camadas das imagens: dá para ele ficar à frente do chão e atrás da árvore.']
+	};
+	let aba = $state<AbaId>('geral');
 	const iso = $derived(cena.visao === 'isometrica');
+	const paraFundo = $derived<CenaParaFundo>({ largura: cena.largura, altura: cena.altura, iso, razao: cena.iso_razao ?? 2 });
+	/** A largura do fundo que cobre a cena inteira (100% de tamanho dos quadrados). */
+	const larguraPadrao = $derived(larguraPadraoDoFundo(paraFundo));
+	let painel = $state<HTMLDivElement>();
+	$effect(() => {
+		void aba;
+		if (painel) painel.scrollTop = 0;
+	});
 
-	const linha = 'flex min-h-11 items-center gap-2.5 border-t-2 border-b2 px-3 text-left text-sm font-semibold';
-	const rotulo = 'font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title';
-	const chip = 'min-h-9 border-2 px-2.5 font-pixel text-[11px] font-bold';
+	/** Setas movem entre as abas (o foco acompanha). */
+	async function teclado(e: KeyboardEvent) {
+		const passo = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 0;
+		if (!passo) return;
+		e.preventDefault();
+		const i = ABAS.findIndex((a) => a.id === aba);
+		aba = ABAS[(i + passo + ABAS.length) % ABAS.length].id;
+		await tick();
+		document.getElementById(`aba-${aba}`)?.focus();
+	}
 
 	// ------------------------------------------------------------------ geral
 	let limparConfirma = $state(false);
@@ -84,7 +108,7 @@
 		medindo = true;
 		try {
 			if (iso) {
-				await mesa.patchCena({ fundo_escala: cena.largura + cena.altura, fundo_x: 0, fundo_y: 0 });
+				await mesa.patchCena({ fundo_escala: larguraPadrao, fundo_x: 0, fundo_y: 0 });
 				ui.avisar('Imagem encaixada na grade isométrica.');
 				return;
 			}
@@ -112,12 +136,29 @@
 		}
 	}
 
+	// ------------------------------------------------------------------ tamanho dos quadrados (em relação ao mapa)
+	/** altura ÷ largura da imagem do fundo (para manter a proporção ao mudar o tamanho) */
+	let proporcaoImagem = $state<number | null>(null);
+	$effect(() => {
+		const url = urlImagemMesa(cena.fundo);
+		proporcaoImagem = null;
+		if (!url) return;
+		let vivo = true;
+		tamanhoDaImagem(url).then(({ w, h }) => vivo && (proporcaoImagem = h / w), () => {});
+		return () => (vivo = false);
+	});
+	const fator = $derived(fatorDosQuadrados(cena.fundo_escala, paraFundo));
+	const fundoNoPadrao = $derived(!cena.fundo_escala && !cena.fundo_x && !cena.fundo_y);
+	const paraFator = (f: number) => fundoPorFator(f, proporcaoImagem ?? 1, paraFundo);
+	/** Voltar ao padrão: o fundo cobre a cena inteira, como antes de mexer. */
+	const quadradosPadrao = () => mesa.patchCena({ fundo_escala: null, fundo_x: 0, fundo_y: 0 });
+
 	// ------------------------------------------------------------------ camadas
 	const imagens = $derived(mesa.objetos.filter((o) => o.tipo === 'imagem').sort((a, b) => camadaRank(b) - camadaRank(a) || b.ordem - a.ordem));
 	const CAMADAS = [
-		['acima', 'ACIMA'],
-		['meio', 'MEIO'],
-		['chao', 'CHÃO']
+		['acima', 'Acima'],
+		['meio', 'Meio'],
+		['chao', 'Chão']
 	] as const;
 	const nomeDaImagem = (o: MesaObjeto) => (o.imagem ?? '').split('/').pop()?.replace(/\.(webp|png)$/, '') ?? 'imagem';
 	function escolher(o: MesaObjeto) {
@@ -125,146 +166,289 @@
 		ui.escolher('objeto');
 		ui.modal = null;
 	}
+
+	const input = 'h-10 border-2 border-b3 bg-b1 px-2.5 text-sm font-medium text-fg';
+	const botao = 'min-h-10 border-2 border-b3 bg-b1 px-3.5 font-pixel text-xs font-bold tracking-[0.06em] uppercase disabled:opacity-50';
 </script>
 
-<div class="flex items-center gap-2 border-b-2 border-[var(--vermelhao-lo)] bg-b0 px-3.5 py-2.5">
-	<span class="flex-1 font-pixel text-[13px] leading-none font-bold tracking-[0.1em] text-title">CONFIGURAÇÕES DA CENA</span>
-	<span class="max-w-[220px] truncate text-xs font-semibold text-mut">{cena.nome}</span>
-	<button type="button" class="h-8 w-8 border-2 border-b3 font-pixel text-xs" aria-label="Fechar" onclick={() => (ui.modal = null)}>✕</button>
-</div>
+<!-- um interruptor com o nome e a dica -->
+{#snippet opcao(titulo: string, dica: string, ativo: boolean, mudar: () => void)}
+	<label class="flex min-h-[60px] cursor-pointer items-center gap-4 border-t-2 border-b2 py-2.5 first:border-t-0">
+		<span class="flex min-w-0 flex-1 flex-col gap-0.5">
+			<span class="text-sm leading-5 font-semibold">{titulo}</span>
+			<span class="text-xs leading-4 text-mut">{dica}</span>
+		</span>
+		<input type="checkbox" role="switch" class="interruptor" checked={ativo} onchange={mudar} aria-label={titulo} />
+	</label>
+{/snippet}
 
-<div role="tablist" aria-label="Tipos de configuração" class="flex border-b-2 border-b3 bg-b0">
-	{#each ABAS as [id, nome] (id)}
-		<button type="button" role="tab" id="aba-{id}" aria-selected={aba === id} aria-controls="painel-{id}" class="min-h-11 flex-1 border-b-[3px] font-pixel text-[11px] font-bold {aba === id ? 'border-[var(--vermelhao)] bg-b1 text-fg' : 'border-transparent text-mut'}" onclick={() => (aba = id)}>{nome}</button>
-	{/each}
-</div>
-
-<div role="tabpanel" id="painel-{aba}" aria-labelledby="aba-{aba}" class="flex min-h-[340px] flex-col overflow-y-auto">
-	{#if aba === 'geral'}
-		{#each [['travada', 'Travar a mesa (só o Mestre move)'], ['coordenadas', 'Coordenadas nas bordas'], ['mostrar_pv', 'Mostrar PV ao grupo'], ['grade', 'Mostrar a grade']] as const as [k, n] (k)}
-			<button type="button" role="checkbox" aria-checked={cena[k]} class={linha} onclick={() => mesa.patchCena({ [k]: !cena[k] })}>
-				<span class="font-pixel text-sm font-bold {cena[k] ? 'text-ok' : 'text-mut'}">{cena[k] ? '☒' : '☐'}</span>{n}
-			</button>
+<!-- uma escolha entre poucas, em segmentos -->
+{#snippet segmentos(nome: string, itens: readonly (readonly [string | number, string])[], atual: string | number, escolha: (v: never) => void)}
+	<div role="radiogroup" aria-label={nome} class="flex border-2 border-b3">
+		{#each itens as [v, rotulo] (v)}
+			<button type="button" role="radio" aria-checked={atual === v} class="min-h-10 flex-1 px-3 font-pixel text-xs font-bold tracking-[0.06em] uppercase {atual === v ? 'bg-grena text-papel' : 'text-mut hover:text-fg'}" onclick={() => (escolha as (v: string | number) => void)(v)}>{rotulo}</button>
 		{/each}
-		<label class="flex flex-col gap-1 border-t-2 border-b2 px-3 py-2.5 text-xs font-semibold text-mut">Nome que o grupo vê
-			<input class="h-10 border-2 border-b3 bg-b1 px-2 text-sm font-medium text-fg" maxlength="60" placeholder="Em branco: o grupo vê “Cena”" value={cena.nome_publico ?? ''} onchange={(e) => mesa.patchCena({ nome_publico: e.currentTarget.value.trim() || null })} />
-		</label>
-		<button type="button" class={linha} onclick={aoParticipantes}><span class="font-pixel text-sm font-bold text-mut">☰</span>Quem joga nesta cena · {quemJoga}</button>
-		<button type="button" class={linha} disabled={!podeColocarGrupo} onclick={aoColocarGrupo}><span class="font-pixel text-sm font-bold text-mut">▸</span>Colocar o grupo na cena</button>
-		<button
-			type="button"
-			class="min-h-11 border-t-2 border-b2 px-3 text-left text-sm font-semibold text-link"
-			onclick={() => {
-				if (!limparConfirma) return void (limparConfirma = true);
-				mesa.limparTracos(true);
-				limparConfirma = false;
-			}}>{limparConfirma ? 'Confirmar: limpar todos os traços' : 'Limpar todos os traços'}</button>
-	{:else if aba === 'tamanho'}
-		<div class="flex flex-col gap-3 p-4">
-			<span class="text-sm leading-5 text-mut">Cada quadrado vale 1 m. A cena vai de 5 a 200 m de lado. Quem ficaria fora do novo tamanho é puxado para dentro.</span>
-			<div class="flex flex-wrap items-end gap-3">
-				<label class="flex flex-col gap-1 text-xs font-semibold text-mut">Largura (m)
-					<input type="number" min="5" max="200" step="1" bind:value={largura} class="h-10 w-28 border-2 border-b3 bg-b1 px-2 text-sm font-medium text-fg" aria-label="Largura da cena em metros" />
-				</label>
-				<label class="flex flex-col gap-1 text-xs font-semibold text-mut">Altura (m)
-					<input type="number" min="5" max="200" step="1" bind:value={altura} class="h-10 w-28 border-2 border-b3 bg-b1 px-2 text-sm font-medium text-fg" aria-label="Altura da cena em metros" />
-				</label>
-				<button type="button" class="btn-jogo btn-primario min-h-10" disabled={!mudou} onclick={aplicarTamanho}>APLICAR {L} × {A}</button>
-			</div>
-			{#if fora && mudou}<span role="status" class="text-xs leading-4 font-semibold text-warn">{fora} {fora === 1 ? 'token fica' : 'tokens ficam'} fora e {fora === 1 ? 'será puxado' : 'serão puxados'} para dentro.</span>{/if}
-		</div>
-		<div class="flex flex-col gap-2.5 border-t-2 border-b2 p-4">
-			<span class={rotulo}>AJUSTAR À IMAGEM DO FUNDO</span>
-			{#if !cena.fundo}
-				<span class="text-sm leading-5 text-mut">A cena ainda não tem fundo. Escolha um na aba Imagens.</span>
-			{:else if iso}
-				<span class="text-sm leading-5 text-mut">Na vista isométrica a imagem se encaixa na grade pela largura (os dois lados do mapa somados), sem mudar o tamanho da cena.</span>
-				<button type="button" class="btn-jogo min-h-10 self-start" disabled={medindo} onclick={ajustarAImagem}>ENCAIXAR A IMAGEM NA GRADE</button>
-			{:else}
-				<span class="text-sm leading-5 text-mut">A cena ganha a proporção da imagem e o fundo estica nela. Com “pixels por quadrado”, o tamanho sai exato (imagem ÷ pixels); em branco, a largura de hoje fica e a altura acompanha.</span>
-				<div class="flex flex-wrap items-end gap-3">
-					<label class="flex flex-col gap-1 text-xs font-semibold text-mut">Pixels por quadrado (opcional)
-						<input type="number" min="1" max="1000" step="1" bind:value={pxPorQuadrado} placeholder="ex.: 70" class="h-10 w-44 border-2 border-b3 bg-b1 px-2 text-sm font-medium text-fg" aria-label="Pixels por quadrado da imagem" />
-					</label>
-					<button type="button" class="btn-jogo min-h-10" disabled={medindo} onclick={ajustarAImagem}>{medindo ? 'LENDO A IMAGEM…' : 'AJUSTAR À IMAGEM'}</button>
-				</div>
-			{/if}
-		</div>
-	{:else if aba === 'vista'}
-		<div class="flex flex-col gap-2 p-4">
-			<span class="text-sm leading-5 text-mut">Os dados seguem na grade quadrada de 1 m: régua, jutsus, névoa e terreno funcionam igual nas duas vistas. A isométrica só muda o desenho, e a arte do mapa e dos objetos é a que você subir.</span>
-		</div>
-		<!-- só com a migração da vista isométrica aplicada (sem a coluna, salvar a cena falharia) -->
-		{#if cena.visao !== undefined}
-			<button type="button" role="checkbox" aria-checked={iso} class={linha} onclick={() => mesa.patchCena({ visao: iso ? 'topo' : 'isometrica' })}>
-				<span class="font-pixel text-sm font-bold {iso ? 'text-ok' : 'text-mut'}">{iso ? '☒' : '☐'}</span>Vista isométrica
-			</button>
-			{#if iso}
-				<div role="radiogroup" aria-label="Proporção do losango" class="flex items-center gap-1.5 border-t-2 border-b2 px-3 py-2">
-					<span class="mr-auto text-xs font-semibold text-mut">Proporção do quadrado</span>
-					{#each [[2, '2:1'], [1.75, '1,75:1'], [1.5, '1,5:1']] as const as [v, n] (v)}
-						<button type="button" role="radio" aria-checked={cena.iso_razao === v} class="{chip} {cena.iso_razao === v ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={() => mesa.patchCena({ iso_razao: v })}>{n}</button>
-					{/each}
-				</div>
-				<div class="flex items-center gap-1.5 border-t-2 border-b2 px-3 py-2">
-					<span class="mr-auto text-xs font-semibold text-mut">Canto da vista ao abrir · {cena.iso_rotacao}°{cena.fundo ? ' (com fundo a vista não gira)' : ''}</span>
-					<button type="button" class="h-9 w-9 border-2 border-b3 font-pixel text-base font-bold" aria-label="Girar o canto inicial para a esquerda" onclick={() => mesa.patchCena({ iso_rotacao: ((cena.iso_rotacao + 270) % 360) as 0 | 90 | 180 | 270 })}>⟲</button>
-					<button type="button" class="h-9 w-9 border-2 border-b3 font-pixel text-base font-bold" aria-label="Girar o canto inicial para a direita" onclick={() => mesa.patchCena({ iso_rotacao: ((cena.iso_rotacao + 90) % 360) as 0 | 90 | 180 | 270 })}>⟳</button>
-				</div>
-			{/if}
-		{:else}
-			<span class="border-t-2 border-b2 p-4 text-sm leading-5 text-mut">A vista isométrica ainda não está disponível neste banco.</span>
-		{/if}
-	{:else if aba === 'imagens'}
-		<div class="flex flex-col gap-2 p-4 pb-2">
-			<span class={rotulo}>MODO DA CENA</span>
-			<div role="radiogroup" aria-label="Modo da cena" class="flex border-2 border-b3">
-				{#each [['tatica', 'TÁTICA'], ['narrativa', 'NARRATIVA']] as const as [m, n] (m)}
-					<button type="button" role="radio" aria-checked={cena.modo === m} class="min-h-9 flex-1 font-pixel text-[11px] font-bold {cena.modo === m ? 'bg-grena text-papel' : 'text-mut'}" onclick={() => mesa.patchCena({ modo: m })}>{n}</button>
-				{/each}
-			</div>
-		</div>
-		<button type="button" class={linha} onclick={() => (ui.modal = { tipo: 'imagem', alvo: 'imagem' })}><span class="font-pixel text-sm font-bold text-mut">▣</span>Imagem da narrativa · {cena.imagem ? 'trocar' : 'nenhuma'}</button>
-		<button type="button" class={linha} onclick={() => (ui.modal = { tipo: 'imagem', alvo: 'fundo' })}><span class="font-pixel text-sm font-bold text-mut">▦</span>Fundo do quadro · {cena.fundo ? 'trocar' : 'nenhum'}</button>
-		{#if cena.fundo}
-			<label class="{linha} cursor-default">Opacidade do fundo<input type="range" min="10" max="100" step="5" value={Math.round(cena.fundo_opacidade * 100)} onchange={(e) => mesa.patchCena({ fundo_opacidade: +e.currentTarget.value / 100 })} class="min-w-0 flex-1" /></label>
-			<!-- tamanho e posição do fundo: esticado na cena, ou com a largura em metros (em quadrados, na isométrica) e arrastado sob a grade -->
-			<label class="{linha} cursor-pointer"><input type="checkbox" checked={!cena.fundo_escala} onchange={(e) => mesa.patchCena(e.currentTarget.checked ? { fundo_escala: null, fundo_x: 0, fundo_y: 0 } : { fundo_escala: iso ? cena.largura + cena.altura : cena.largura, fundo_x: 0, fundo_y: 0 })} />Esticar o fundo na cena</label>
-			{#if cena.fundo_escala}
-				<label class="flex min-h-10 items-center gap-2.5 px-3 text-sm font-semibold">Largura<input type="range" min="5" max={Math.max(200, (iso ? cena.largura + cena.altura : cena.largura) * 3)} step={iso ? 0.25 : 1} value={cena.fundo_escala} onchange={(e) => mesa.patchCena({ fundo_escala: +e.currentTarget.value })} class="min-w-0 flex-1" /><span class="font-pixel text-xs">{cena.fundo_escala} {iso ? 'quadr.' : 'm'}</span></label>
-				<button type="button" class="mx-3 mb-3 min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" onclick={() => ((ui.modal = null), ui.escolher('fundo'), ui.avisar('Arraste para mover o fundo; Esc volta a mover os tokens.'))}>MOVER O FUNDO</button>
-			{/if}
-		{/if}
-	{:else}
-		<div class="flex flex-col gap-3 p-4">
-			<span class="text-sm leading-5 text-mut">Cada imagem fica numa camada. O token vive entre elas: dá para ele ficar à frente do chão e atrás da árvore ao mesmo tempo.</span>
-			<ol class="m-0 flex list-none flex-col gap-1 p-0 text-xs leading-4" aria-label="Ordem das camadas, de cima para baixo">
-				<li class="border-2 border-b3 px-2.5 py-1.5"><b class="font-pixel">ACIMA</b> · sobre os tokens (a copa da árvore, o telhado)</li>
-				<li class="border-2 border-[var(--vermelhao)] bg-grena px-2.5 py-1.5 text-papel"><b class="font-pixel">TOKENS</b> e o que fica em pé com eles</li>
-				<li class="border-2 border-b3 px-2.5 py-1.5"><b class="font-pixel">MEIO</b> · {iso ? 'na vista isométrica passa à frente ou atrás de cada token, conforme a posição' : 'sob os tokens (na isométrica entra na ordem com eles)'}</li>
-				<li class="border-2 border-b3 px-2.5 py-1.5"><b class="font-pixel">CHÃO</b> · sob tudo (o piso, o tapete)</li>
-				<li class="border-2 border-b3 px-2.5 py-1.5"><b class="font-pixel">FUNDO</b> · o mapa da cena, sob todas as camadas</li>
-			</ol>
-		</div>
-		<div class="flex flex-col border-t-2 border-b2">
-			{#each imagens as o (o.id)}
-				<div class="flex flex-wrap items-center gap-2 border-b-2 border-b2 px-3 py-2">
-					<img src={urlImagemMesa(o.imagem)} alt="" class="h-10 w-10 flex-none border-2 border-b3 bg-b1 object-contain [image-rendering:pixelated]" />
-					<span class="min-w-0 flex-1 truncate text-sm font-semibold" title={o.imagem ?? ''}>{nomeDaImagem(o)}{o.visivel ? '' : ' · escondida'}</span>
-					<div role="radiogroup" aria-label="Camada de {nomeDaImagem(o)}" class="flex border-2 border-b3">
-						{#each CAMADAS as [c, n] (c)}
-							<button type="button" role="radio" aria-checked={(o.camada ?? 'meio') === c} class="min-h-9 px-2.5 font-pixel text-[11px] font-bold {(o.camada ?? 'meio') === c ? 'bg-grena text-papel' : 'text-mut'}" onclick={() => mesa.atualizarObjeto(o.id, { camada: c })}>{n}</button>
-						{/each}
-					</div>
-					<button type="button" class="min-h-9 border-2 border-b3 px-2.5 font-pixel text-[11px] font-bold" title="Fecha e seleciona a imagem no quadro" onclick={() => escolher(o)}>VER</button>
-				</div>
-			{:else}
-				<span class="p-4 text-sm leading-5 text-mut">Nenhuma imagem nesta cena. Ponha uma pela Biblioteca de artes (ferramenta Objeto) e volte aqui para escolher a camada.</span>
+	</div>
+{/snippet}
+
+<!-- uma imagem da cena: miniatura, o que é e o botão -->
+{#snippet imagemDaCena(titulo: string, dica: string, caminho: string | null, acao: string, abrir: () => void)}
+	{@const url = urlImagemMesa(caminho)}
+	<div class="flex min-h-[72px] items-center gap-4 border-t-2 border-b2 py-3 first:border-t-0">
+		<span class="flex h-12 w-16 flex-none items-center justify-center overflow-hidden border-2 border-b3 bg-b1">
+			{#if url}<img src={url} alt="" class="h-full w-full object-cover [image-rendering:pixelated]" />{:else}<span class="font-pixel text-[10px] tracking-[0.06em] text-mut uppercase" aria-hidden="true">vazio</span>{/if}
+		</span>
+		<span class="flex min-w-0 flex-1 flex-col gap-0.5">
+			<span class="text-sm leading-5 font-semibold">{titulo}</span>
+			<span class="text-xs leading-4 text-mut">{dica}</span>
+		</span>
+		<button type="button" class={botao} onclick={abrir}>{acao}</button>
+	</div>
+{/snippet}
+
+<div class="flex min-h-0 flex-1 flex-col">
+	<!-- cabeçalho -->
+	<div class="flex h-14 flex-none items-center gap-3 border-b-2 border-[var(--vermelhao-lo)] bg-b0 pr-2 pl-5">
+		<h2 class="m-0 font-mincho text-lg leading-6 font-bold">Configurações da cena</h2>
+		<span class="min-w-0 flex-1 truncate text-sm text-mut" title={cena.nome}>{cena.nome}</span>
+		<button type="button" class="flex h-10 w-10 flex-none items-center justify-center border-2 border-transparent font-pixel text-sm hover:border-b3" aria-label="Fechar" onclick={() => (ui.modal = null)}>✕</button>
+	</div>
+
+	<div class="flex min-h-0 flex-1 flex-col sm:flex-row">
+		<!-- abas: coluna à esquerda, faixa no topo no celular -->
+		<div role="tablist" aria-label="Tipos de configuração" aria-orientation="vertical" tabindex="-1" class="flex flex-none gap-0 overflow-x-auto border-b-2 border-b3 bg-b0 sm:w-[184px] sm:flex-col sm:overflow-x-visible sm:overflow-y-auto sm:border-r-2 sm:border-b-0 sm:py-2" onkeydown={teclado}>
+			{#each ABAS as a (a.id)}
+				<button
+					type="button"
+					role="tab"
+					id="aba-{a.id}"
+					aria-selected={aba === a.id}
+					aria-controls="painel-config"
+					tabindex={aba === a.id ? 0 : -1}
+					class="flex min-h-12 flex-none items-center gap-2.5 border-b-[3px] px-4 text-sm font-semibold sm:border-b-0 sm:border-l-[3px] {aba === a.id ? 'border-[var(--vermelhao)] bg-b1 text-fg' : 'border-transparent text-mut hover:text-fg'}"
+					onclick={() => (aba = a.id)}
+				>
+					<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" class="flex-none fill-none stroke-current stroke-2 [stroke-linecap:square]"><path d={a.icone} /></svg>
+					{a.nome}
+				</button>
 			{/each}
 		</div>
-	{/if}
-</div>
 
-<div class="flex justify-end gap-2 border-t-2 border-b3 px-4 py-3">
-	<button type="button" class="btn-jogo btn-primario min-h-11" onclick={() => (ui.modal = null)}>PRONTO</button>
+		<!-- o painel: altura fixa, rola por dentro -->
+		<div bind:this={painel} role="tabpanel" id="painel-config" aria-labelledby="aba-{aba}" tabindex="-1" class="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto px-5 py-5 sm:px-7">
+			<div class="mb-5 flex flex-col gap-1">
+				<h3 class="m-0 font-mincho text-[22px] leading-7 font-bold">{TITULOS[aba][0]}</h3>
+				<p class="m-0 max-w-[60ch] text-[13px] leading-[18px] text-mut">{TITULOS[aba][1]}</p>
+			</div>
+
+			{#if aba === 'geral'}
+				<div class="flex flex-col">
+					{@render opcao('Travar a mesa', 'Só o Mestre move os tokens.', cena.travada, () => mesa.patchCena({ travada: !cena.travada }))}
+					{@render opcao('Mostrar PV ao grupo', 'Os jogadores veem os números de PV dos tokens.', cena.mostrar_pv, () => mesa.patchCena({ mostrar_pv: !cena.mostrar_pv }))}
+					{@render opcao('Mostrar a grade', 'As linhas de 1 m e de 5 m sobre o mapa.', cena.grade, () => mesa.patchCena({ grade: !cena.grade }))}
+					{@render opcao('Coordenadas nas bordas', 'Letras e números ao longo das bordas (só na vista de cima).', cena.coordenadas, () => mesa.patchCena({ coordenadas: !cena.coordenadas }))}
+				</div>
+				<div class="mt-6 flex flex-col gap-4 border-t-2 border-b2 pt-5">
+					<label class="flex flex-col gap-1.5 text-sm font-semibold">Nome que o grupo vê
+						<input class="{input} w-full max-w-[420px] font-medium" maxlength="60" placeholder="Em branco: o grupo vê “Cena”" value={cena.nome_publico ?? ''} onchange={(e) => mesa.patchCena({ nome_publico: e.currentTarget.value.trim() || null })} />
+						<span class="text-xs font-normal text-mut">Útil para não entregar o nome de um lugar antes da hora.</span>
+					</label>
+					<div class="flex min-h-[52px] items-center gap-4">
+						<span class="flex min-w-0 flex-1 flex-col gap-0.5">
+							<span class="text-sm leading-5 font-semibold">Quem joga nesta cena</span>
+							<span class="text-xs leading-4 text-mut">Hoje: {quemJoga}. Quem fica de fora assiste, mas não entra com o personagem.</span>
+						</span>
+						<button type="button" class={botao} onclick={aoParticipantes}>Escolher</button>
+					</div>
+					<div class="flex min-h-[52px] items-center gap-4">
+						<span class="flex min-w-0 flex-1 flex-col gap-0.5">
+							<span class="text-sm leading-5 font-semibold">Colocar o grupo na cena</span>
+							<span class="text-xs leading-4 text-mut">Põe os personagens de quem joga no quadro.</span>
+						</span>
+						<button type="button" class={botao} disabled={!podeColocarGrupo} onclick={aoColocarGrupo}>Colocar</button>
+					</div>
+					<div class="flex min-h-[52px] items-center gap-4">
+						<span class="flex min-w-0 flex-1 flex-col gap-0.5">
+							<span class="text-sm leading-5 font-semibold">Limpar os traços</span>
+							<span class="text-xs leading-4 text-mut">Apaga todos os traços do lápis desta cena, de todo mundo.</span>
+						</span>
+						<button
+							type="button"
+							class="{botao} {limparConfirma ? 'border-err text-err' : ''}"
+							onclick={() => {
+								if (!limparConfirma) return void (limparConfirma = true);
+								mesa.limparTracos(true);
+								limparConfirma = false;
+							}}>{limparConfirma ? 'Confirmar' : 'Limpar'}</button>
+					</div>
+				</div>
+			{:else if aba === 'tamanho'}
+				<div class="grid gap-6 md:grid-cols-[1fr_190px]">
+					<div class="flex flex-col gap-4">
+						<div class="flex flex-wrap items-end gap-3">
+							<label class="flex flex-col gap-1.5 text-sm font-semibold">Largura
+								<span class="flex items-center gap-2"><input type="number" min="5" max="200" step="1" bind:value={largura} class="{input} w-24" aria-label="Largura da cena em metros" /><span class="text-sm font-normal text-mut">m</span></span>
+							</label>
+							<label class="flex flex-col gap-1.5 text-sm font-semibold">Altura
+								<span class="flex items-center gap-2"><input type="number" min="5" max="200" step="1" bind:value={altura} class="{input} w-24" aria-label="Altura da cena em metros" /><span class="text-sm font-normal text-mut">m</span></span>
+							</label>
+						</div>
+						<p class="m-0 text-xs leading-4 text-mut">De 5 a 200 m de lado. Quem ficaria fora do novo tamanho é puxado para dentro.</p>
+						{#if fora && mudou}<p role="status" class="m-0 border-l-[3px] border-warn bg-b1 py-1.5 pr-2 pl-3 text-xs leading-4 font-semibold text-warn">{fora} {fora === 1 ? 'token fica' : 'tokens ficam'} fora e {fora === 1 ? 'será puxado' : 'serão puxados'} para dentro.</p>{/if}
+						<button type="button" class="btn-jogo btn-primario min-h-10 self-start" disabled={!mudou} onclick={aplicarTamanho}>Aplicar {L} × {A}</button>
+					</div>
+					<!-- a proporção da cena, para enxergar o formato antes de aplicar -->
+					<div class="flex h-[150px] items-center justify-center border-2 border-b3 bg-b1 p-3" aria-hidden="true">
+						<div class="relative flex max-h-full max-w-full items-center justify-center border-2 border-[var(--vermelhao)] bg-b2 font-pixel text-xs font-bold" style="aspect-ratio: {L} / {A}; {L >= A ? 'width: 100%' : 'height: 100%'}">{L} × {A}</div>
+					</div>
+				</div>
+
+				<div class="mt-6 flex flex-col gap-3 border-t-2 border-b2 pt-5">
+					<h4 class="m-0 font-mincho text-base leading-6 font-bold">Tamanho dos quadrados</h4>
+					{#if !cena.fundo}
+						<p class="m-0 text-sm leading-5 text-mut">O tamanho dos quadrados é em relação ao mapa: escolha um fundo na aba Imagens para ajustar.</p>
+					{:else}
+						<p class="m-0 max-w-[60ch] text-sm leading-5 text-mut">Aumente ou diminua os quadrados da grade até casarem com os quadrados desenhados no mapa, {iso ? 'na vista isométrica' : 'na vista de cima'}. 100% é o padrão: o mapa cobre a cena inteira.</p>
+						<div class="flex items-center gap-3">
+							<button type="button" class="h-10 w-10 flex-none border-2 border-b3 bg-b1 font-pixel text-base font-bold disabled:opacity-50" aria-label="Quadrados menores" disabled={fator <= 0.25} onclick={() => mesa.patchCena(paraFator(Math.round(fator * 20 - 1) / 20))}>−</button>
+							<input
+								type="range"
+								min="25"
+								max="400"
+								step="5"
+								value={Math.round(fator * 100)}
+								oninput={(e) => mesa.previa(paraFator(+e.currentTarget.value / 100))}
+								onchange={(e) => mesa.patchCena(paraFator(+e.currentTarget.value / 100))}
+								class="min-w-0 flex-1"
+								aria-label="Tamanho dos quadrados em relação ao mapa"
+							/>
+							<button type="button" class="h-10 w-10 flex-none border-2 border-b3 bg-b1 font-pixel text-base font-bold disabled:opacity-50" aria-label="Quadrados maiores" disabled={fator >= 4} onclick={() => mesa.patchCena(paraFator(Math.round(fator * 20 + 1) / 20))}>+</button>
+							<span class="w-14 flex-none text-right font-pixel text-sm font-bold" aria-live="polite">{Math.round(fator * 100)}%</span>
+							<button type="button" class={botao} disabled={fundoNoPadrao} title="Volta o mapa a cobrir a cena inteira" onclick={quadradosPadrao}>Padrão</button>
+						</div>
+					{/if}
+				</div>
+
+				<div class="mt-6 flex flex-col gap-3 border-t-2 border-b2 pt-5">
+					<h4 class="m-0 font-mincho text-base leading-6 font-bold">Ajustar à imagem do fundo</h4>
+					{#if !cena.fundo}
+						<p class="m-0 text-sm leading-5 text-mut">A cena ainda não tem fundo. Escolha um na aba Imagens.</p>
+					{:else if iso}
+						<p class="m-0 max-w-[60ch] text-sm leading-5 text-mut">Na vista isométrica a imagem se encaixa na grade pela largura (os dois lados do mapa somados), sem mudar o tamanho da cena.</p>
+						<button type="button" class="{botao} self-start" disabled={medindo} onclick={ajustarAImagem}>Encaixar a imagem na grade</button>
+					{:else}
+						<p class="m-0 max-w-[60ch] text-sm leading-5 text-mut">A cena ganha a proporção da imagem e o fundo estica nela. Com “pixels por quadrado”, o tamanho sai exato (imagem ÷ pixels); em branco, a largura de hoje fica e a altura acompanha.</p>
+						<div class="flex flex-wrap items-end gap-3">
+							<label class="flex flex-col gap-1.5 text-sm font-semibold">Pixels por quadrado
+								<input type="number" min="1" max="1000" step="1" bind:value={pxPorQuadrado} placeholder="opcional, ex.: 70" class="{input} w-44" aria-label="Pixels por quadrado da imagem" />
+							</label>
+							<button type="button" class={botao} disabled={medindo} onclick={ajustarAImagem}>{medindo ? 'Lendo a imagem…' : 'Ajustar à imagem'}</button>
+						</div>
+					{/if}
+				</div>
+			{:else if aba === 'vista'}
+				<!-- só com a migração da vista isométrica aplicada (sem a coluna, salvar a cena falharia) -->
+				{#if cena.visao === undefined}
+					<p class="m-0 text-sm leading-5 text-mut">A vista isométrica ainda não está disponível neste banco.</p>
+				{:else}
+					<div role="radiogroup" aria-label="Vista da cena" class="grid gap-3 sm:grid-cols-2">
+						{#each [['topo', 'De cima', 'O quadro de sempre: a grade vista de cima.'], ['isometrica', 'Isométrica', 'A grade em losangos, com tokens e objetos de pé.']] as const as [v, nome, dica] (v)}
+							{@const on = (cena.visao ?? 'topo') === v}
+							<button type="button" role="radio" aria-checked={on} class="flex flex-col gap-3 border-2 p-3 text-left {on ? 'border-[var(--vermelhao)] bg-b1' : 'border-b3 hover:border-mut'}" onclick={() => mesa.patchCena({ visao: v })}>
+								<span class="flex h-[84px] items-center justify-center border-2 border-b3 bg-b2" aria-hidden="true">
+									<svg width="96" height="72" viewBox="0 0 96 72" class="fill-none stroke-current stroke-[1.5] {on ? 'text-fg' : 'text-mut'}">
+										{#if v === 'topo'}
+											<path d="M24 6h48v60H24zM40 6v60M56 6v60M24 26h48M24 46h48" />
+										{:else}
+											<path d="M48 4l40 20-40 20L8 24zM28 14l40 20M68 14L28 34M8 24v10l40 20 40-20V24M48 44v10" />
+										{/if}
+									</svg>
+								</span>
+								<span class="flex flex-col gap-0.5">
+									<span class="text-sm leading-5 font-semibold">{nome}{on ? ' · em uso' : ''}</span>
+									<span class="text-xs leading-4 text-mut">{dica}</span>
+								</span>
+							</button>
+						{/each}
+					</div>
+					{#if iso}
+						<div class="mt-6 flex flex-col gap-5 border-t-2 border-b2 pt-5">
+							<div class="flex flex-col gap-2">
+								<span class="text-sm leading-5 font-semibold">Proporção do quadrado</span>
+								<span class="text-xs leading-4 text-mut">Largura dividida pela altura do losango. 2:1 é o padrão da pixel art.</span>
+								<div class="max-w-[360px]">{@render segmentos('Proporção do losango', [[2, '2:1'], [1.75, '1,75:1'], [1.5, '1,5:1']], cena.iso_razao, (v: number) => mesa.patchCena({ iso_razao: v }))}</div>
+							</div>
+							<div class="flex items-center gap-4">
+								<span class="flex min-w-0 flex-1 flex-col gap-0.5">
+									<span class="text-sm leading-5 font-semibold">Canto da vista ao abrir · {cena.iso_rotacao}°</span>
+									<span class="text-xs leading-4 text-mut">{cena.fundo ? 'Com fundo na cena a vista não gira: a arte existe de um canto só.' : 'Cada pessoa também pode girar a própria vista pelo quadro (teclas [ e ]).'}</span>
+								</span>
+								<span class="flex flex-none gap-2">
+									<button type="button" class="h-10 w-10 border-2 border-b3 bg-b1 font-pixel text-base font-bold" aria-label="Girar o canto inicial para a esquerda" onclick={() => mesa.patchCena({ iso_rotacao: ((cena.iso_rotacao + 270) % 360) as 0 | 90 | 180 | 270 })}>⟲</button>
+									<button type="button" class="h-10 w-10 border-2 border-b3 bg-b1 font-pixel text-base font-bold" aria-label="Girar o canto inicial para a direita" onclick={() => mesa.patchCena({ iso_rotacao: ((cena.iso_rotacao + 90) % 360) as 0 | 90 | 180 | 270 })}>⟳</button>
+								</span>
+							</div>
+						</div>
+					{/if}
+				{/if}
+			{:else if aba === 'imagens'}
+				<div class="flex flex-col gap-2 pb-5">
+					<span class="text-sm leading-5 font-semibold">Modo da cena</span>
+					<span class="text-xs leading-4 text-mut">Tática mostra o quadro. Narrativa mostra a imagem da cena para todos, com o chat ao lado.</span>
+					<div class="max-w-[360px]">{@render segmentos('Modo da cena', [['tatica', 'Tática'], ['narrativa', 'Narrativa']], cena.modo, (v: 'tatica' | 'narrativa') => mesa.patchCena({ modo: v }))}</div>
+				</div>
+				<div class="flex flex-col border-t-2 border-b2">
+					{@render imagemDaCena('Imagem da narrativa', 'Aparece para todos no modo Narrativa.', cena.imagem, cena.imagem ? 'Trocar' : 'Escolher', () => (ui.modal = { tipo: 'imagem', alvo: 'imagem' }))}
+					{@render imagemDaCena('Fundo do quadro', 'O mapa sob a grade, no modo Tática.', cena.fundo, cena.fundo ? 'Trocar' : 'Escolher', () => (ui.modal = { tipo: 'imagem', alvo: 'fundo' }))}
+				</div>
+				{#if cena.fundo}
+					<div class="mt-5 flex flex-col gap-1 border-t-2 border-b2 pt-5">
+						<h4 class="m-0 mb-2 font-mincho text-base leading-6 font-bold">Ajustes do fundo</h4>
+						<label class="flex min-h-12 items-center gap-4 text-sm font-semibold"><span class="w-32 flex-none">Opacidade</span>
+							<input type="range" min="10" max="100" step="5" value={Math.round(cena.fundo_opacidade * 100)} onchange={(e) => mesa.patchCena({ fundo_opacidade: +e.currentTarget.value / 100 })} class="min-w-0 flex-1" aria-label="Opacidade do fundo" />
+							<span class="w-12 flex-none text-right font-pixel text-xs">{Math.round(cena.fundo_opacidade * 100)}%</span>
+						</label>
+						{@render opcao('Esticar o fundo na cena', 'Ligado, a imagem cobre a cena inteira. Desligado, você escolhe a largura e arrasta o fundo sob a grade.', !cena.fundo_escala, () => mesa.patchCena(cena.fundo_escala ? { fundo_escala: null, fundo_x: 0, fundo_y: 0 } : { fundo_escala: larguraPadrao, fundo_x: 0, fundo_y: 0 }))}
+						{#if cena.fundo_escala}
+							<label class="flex min-h-12 items-center gap-4 border-t-2 border-b2 text-sm font-semibold"><span class="w-32 flex-none">Largura</span>
+								<input type="range" min="5" max={Math.max(200, larguraPadrao * 3)} step={iso ? 0.25 : 1} value={cena.fundo_escala} onchange={(e) => mesa.patchCena({ fundo_escala: +e.currentTarget.value })} class="min-w-0 flex-1" aria-label="Largura do fundo" />
+								<span class="w-12 flex-none text-right font-pixel text-xs">{cena.fundo_escala}{iso ? ' q' : ' m'}</span>
+							</label>
+							<div class="border-t-2 border-b2 pt-3">
+								<button type="button" class={botao} onclick={() => ((ui.modal = null), ui.escolher('fundo'), ui.avisar('Arraste para mover o fundo; Esc volta a mover os tokens.'))}>Mover o fundo no quadro</button>
+							</div>
+						{/if}
+					</div>
+				{/if}
+			{:else}
+				<!-- a pilha de camadas, de cima para baixo; o token fica entre elas -->
+				<ol class="m-0 flex list-none flex-col gap-1.5 p-0" aria-label="Ordem das camadas, de cima para baixo">
+					<li class="flex items-baseline gap-3 border-2 border-b3 px-3 py-2"><b class="w-16 flex-none text-sm">Acima</b><span class="text-xs leading-4 text-mut">Sobre os tokens, em qualquer vista: a copa da árvore, o telhado.</span></li>
+					<li class="flex items-baseline gap-3 border-2 border-[var(--vermelhao)] bg-grena px-3 py-2 text-papel"><b class="w-16 flex-none text-sm">Tokens</b><span class="text-xs leading-4">E o que fica em pé com eles.</span></li>
+					<li class="flex items-baseline gap-3 border-2 border-b3 px-3 py-2"><b class="w-16 flex-none text-sm">Meio</b><span class="text-xs leading-4 text-mut">{iso ? 'Passa à frente ou atrás de cada token, conforme a posição.' : 'Sob os tokens (na vista isométrica passa à frente ou atrás deles).'}</span></li>
+					<li class="flex items-baseline gap-3 border-2 border-b3 px-3 py-2"><b class="w-16 flex-none text-sm">Chão</b><span class="text-xs leading-4 text-mut">Sob tudo: o piso, o tapete.</span></li>
+					<li class="flex items-baseline gap-3 border-2 border-b3 bg-b1 px-3 py-2"><b class="w-16 flex-none text-sm">Fundo</b><span class="text-xs leading-4 text-mut">O mapa da cena, sob todas as camadas.</span></li>
+				</ol>
+				<div class="mt-6 flex flex-col border-t-2 border-b2">
+					<h4 class="m-0 mt-5 mb-2 font-mincho text-base leading-6 font-bold">Imagens desta cena</h4>
+					{#each imagens as o (o.id)}
+						<div class="flex flex-wrap items-center gap-3 border-t-2 border-b2 py-2.5 first:border-t-0">
+							<img src={urlImagemMesa(o.imagem)} alt="" class="h-11 w-11 flex-none border-2 border-b3 bg-b1 object-contain [image-rendering:pixelated]" />
+							<span class="min-w-[120px] flex-1 truncate text-sm font-semibold" title={o.imagem ?? ''}>{nomeDaImagem(o)}{o.visivel ? '' : ' · escondida'}</span>
+							<div class="w-[240px] max-w-full">{@render segmentos(`Camada de ${nomeDaImagem(o)}`, CAMADAS, o.camada ?? 'meio', (c: 'acima' | 'meio' | 'chao') => mesa.atualizarObjeto(o.id, { camada: c }))}</div>
+							<button type="button" class="{botao} px-3" title="Fecha e seleciona a imagem no quadro" onclick={() => escolher(o)}>Ver</button>
+						</div>
+					{:else}
+						<p class="m-0 py-3 text-sm leading-5 text-mut">Nenhuma imagem nesta cena. Ponha uma pela Biblioteca de artes (ferramenta Objeto) e volte aqui para escolher a camada.</p>
+					{/each}
+				</div>
+			{/if}
+		</div>
+	</div>
+
+	<!-- rodapé -->
+	<div class="flex h-16 flex-none items-center gap-3 border-t-2 border-b3 bg-b0 px-5">
+		<span class="min-w-0 flex-1 text-xs leading-4 text-mut">As mudanças valem na hora, para todos na mesa.</span>
+		<button type="button" class="btn-jogo btn-primario min-h-11" onclick={() => (ui.modal = null)}>Pronto</button>
+	</div>
 </div>

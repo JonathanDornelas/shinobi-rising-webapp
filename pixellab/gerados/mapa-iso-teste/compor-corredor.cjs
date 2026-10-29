@@ -1,6 +1,6 @@
 // Monta o corredor isométrico escuro (12 × 30 quadrados, losango 64 × 32) com as peças do PixelLab.
 //   node compor-corredor.cjs <scratchpad> <saida.png> [prévia-com-grade.png]
-// A imagem tem (L + A) × 32 de largura: com "fundo_escala = L + A" (42) o app a encaixa na grade isométrica.
+// A imagem tem (L + A) × 32 de largura: com "fundo_escala = (L + A) / 2" (21) o app a encaixa na grade isométrica.
 // Nada alto passa do topo do losango (o app põe o canto de cima da imagem no canto de cima do mapa).
 const fs = require('fs');
 const path = require('path');
@@ -87,7 +87,7 @@ for (const e of pe) {
 	blit(o, Math.round(px - (o.minX + o.maxX) / 2), Math.round(py - o.maxY - 1 + e.sobe), false);
 }
 fs.writeFileSync(saida, encode(W, H, Buffer.from(img)));
-console.log('corredor', W + 'x' + H, '→', saida, '· fundo_escala =', L + A, '· cena', L + ' × ' + A);
+console.log('corredor', W + 'x' + H, '→', saida, '· fundo_escala =', (L + A) / 2, '· cena', L + ' × ' + A);
 if (previa) {
 	// prévia com a grade do app por cima (para conferir o encaixe)
 	const copia = new Uint8Array(img);

@@ -1039,6 +1039,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 				<span class="font-pixel text-[11px] leading-none font-bold tracking-[0.1em] text-title">MESA</span>
 				<div class="grid grid-cols-5 gap-1.5">
 					{#if temMusica}<button type="button" class="flex min-h-14 flex-col items-center justify-center gap-1 border-2 border-b3 font-pixel text-[10px] leading-none font-bold" onclick={() => ((ui.musicaOculta = false), (ui.pop = 'musica'), (mobil = null))}>♪ MÚSICA</button>{/if}
+					{#if data.mestre && cena}<button type="button" class="flex min-h-14 flex-col items-center justify-center gap-1 border-2 border-b3 font-pixel text-[10px] leading-none font-bold" onclick={() => ((mobil = null), (ui.modal = { tipo: 'config' }))}>⚙ CENA</button>{/if}
 					{#if data.mestre}<button type="button" class="flex min-h-14 flex-col items-center justify-center gap-1 border-2 border-b3 font-pixel text-[10px] leading-none font-bold" onclick={() => ((mobil = null), (ui.modal = { tipo: 'artes' }))}>▣ ARTES</button>{/if}
 					<button type="button" class="flex min-h-14 flex-col items-center justify-center gap-1 border-2 border-b3 font-pixel text-[10px] leading-none font-bold" onclick={() => mesa.desfazerUltimo()}>↶ DESFAZER</button>
 				</div>
@@ -1083,7 +1084,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			</div>
 			{#if mesa.iniciativa.ativa}<span class="border-2 border-grena px-2 py-1.5 font-pixel text-sm leading-none font-bold tracking-[0.08em] text-acc">RODADA {mesa.iniciativa.rodada ?? 1}</span>{/if}
 			{#if data.mestre && cena}
-				<button type="button" class="flex h-10 w-10 items-center justify-center border-2 border-b3 p-0" aria-label="Configurações da cena" title="Configurações da cena"onclick={() => ((ui.pop = null), (ui.modal = { tipo: 'config' }))}><Icone id="nav/ic-nav-configuracoes" /></button>
+				<button type="button" class="flex h-10 w-10 items-center justify-center border-2 border-b3 p-0" aria-label="Configurações da cena" title="Configurações da cena" onclick={() => ((ui.pop = null), (ui.modal = { tipo: 'config' }))}><Icone id="nav/ic-nav-configuracoes" /></button>
 			{/if}
 
 			{#if ui.pop === 'cena' && data.mestre}
@@ -1297,7 +1298,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 
 {#if ui.modal}
 	<div class="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(10,8,7,.72)] p-4" role="presentation" onclick={(e) => e.target === e.currentTarget && (ui.modal = null)}>
-		<div role="dialog" aria-modal="true" class="flex{ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' || ui.modal.tipo === 'config' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]'} max-h-full max-w-full flex-col overflow-y-auto border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_#000]">
+		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'config' ? 'h-[min(660px,calc(100dvh-2rem))] w-[min(880px,100%)] overflow-hidden' : (ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]') + ' overflow-y-auto'} max-h-full max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_#000]">
 			{#if ui.modal.tipo === 'imagem' && cena}
 				{@const alvo = ui.modal.alvo}
 				<ArtesMesa {mesa} {campanha} {alvo} atual={cena[alvo]} aoEscolher={escolherDaBiblioteca} aoArmar={armarArte} aoFechar={() => (ui.modal = null)} />

@@ -677,6 +677,11 @@ export class Mesa {
 		return true;
 	}
 
+	/** Mostra uma mudança da cena só nesta tela, sem gravar (o controle que se arrasta usa; ao soltar, `patchCena` grava). */
+	previa(patch: Partial<MesaCena>) {
+		if (this.cenaId) this.cenas = this.cenas.map((c) => (c.id === this.cenaId ? { ...c, ...patch } : c));
+	}
+
 	/** Terreno difícil (só o Mestre): a lista inteira de quadrados da cena. */
 	definirTerreno(quadrados: [number, number][]) {
 		return this.patchCena({ terreno: quadrados.slice(0, 10000) });
