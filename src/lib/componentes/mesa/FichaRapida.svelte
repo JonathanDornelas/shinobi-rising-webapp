@@ -14,6 +14,10 @@
 		estadoPc: (f: FichaMesa, patch: Partial<FichaMesa['estado']>, descricao: string) => void;
 		pvNpc: (n: Npc, membro: number, pv: number) => void;
 		recursoNpc: (n: Npc, membro: number, k: 'pv' | 'pc' | 'pe', valor: number) => void;
+		/** o Mestre devolve o NPC inteiro: recursos cheios e sem estados (todos os membros) */
+		restaurarNpc: (n: Npc) => void;
+		/** idem para a ficha completa de um NPC */
+		restaurarFicha: (f: FichaMesa) => void;
 		token: (t: MesaToken, patch: Partial<MesaToken>) => void;
 		medirJutsu: (t: MesaToken, j: JutsuMesa) => void;
 		usarJutsu: (t: MesaToken, j: JutsuMesa, parte?: 'ataque' | 'dano' | 'tudo') => void;
@@ -476,6 +480,13 @@
 				</div>
 			{/if}
 
+			{#if mesa.mestre && !mesa.somenteLeitura && (dados.tipo === 'npc' || (dados.tipo === 'pc' && dados.ficha.jogadorId === mesa.eu))}
+				<!-- o Mestre devolve o NPC inteiro de uma vez (a ficha completa do Mestre é um NPC) -->
+				<div class="mx-3 mb-2.5 flex items-center gap-2">
+					<button type="button" class="{btn} flex items-center gap-1.5 {celular ? 'min-h-11 px-2.5' : ''}" title="PV, PC e PE cheios e sem estados{dados.tipo === 'npc' && dados.npc.membros > 1 ? ' (todos os membros)' : dados.tipo === 'pc' ? ', Fadiga e saves zerados' : ''}" onclick={() => (dados.tipo === 'npc' ? acoes.restaurarNpc(dados.npc) : dados.tipo === 'pc' && acoes.restaurarFicha(dados.ficha))}><Icone id="item/ic-item-kit-medico" class="h-5 w-5" />RESTAURAR TUDO</button>
+					<span class="text-xs leading-4 text-mut">Recursos cheios, sem estados</span>
+				</div>
+			{/if}
 			{#if mesa.mestre && !mesa.somenteLeitura}
 				<!-- tamanho no quadro (cap. 4): o do bestiário entra sozinho; o Mestre ajusta ou encolhe para caber -->
 				<div class="mx-3 mb-2.5 flex items-center gap-1.5">

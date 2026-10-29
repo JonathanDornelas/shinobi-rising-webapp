@@ -230,6 +230,25 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		}
 	}
 	const pvNpc = (n: Npc, membro: number, pv: number) => recursoNpc(n, membro, 'pv', pv);
+	/** RESTAURAR TUDO do Mestre: o NPC (todos os membros) volta com PV, PC e PE cheios, e os tokens dele sem estados. */
+	async function restaurarNpc(n: Npc) {
+		const cheio = (k: 'pv' | 'pc' | 'pe') => Array.from({ length: n.membros }, () => n[k] ?? 0);
+		const antes = { pv_atual: n.pv_atual, pc_atual: n.pc_atual, pe_atual: n.pe_atual };
+		n.pv_atual = cheio('pv');
+		n.pc_atual = cheio('pc');
+		n.pe_atual = cheio('pe');
+		const { error } = await supabase().from('npcs').update({ pv_atual: n.pv_atual, pc_atual: n.pc_atual, pe_atual: n.pe_atual } as Partial<Npc>).eq('id', n.id);
+		if (error) {
+			Object.assign(n, antes);
+			return void toasts.mostrar('Não foi possível restaurar o NPC.', 'erro');
+		}
+		for (const t of mesa.tokens.filter((x) => x.npc_id === n.id)) await mesa.atualizarToken(t.id, { condicoes: [], ferimento: 0 });
+		ui.avisar(`${nomeCurto(n.nome)} restaurado: PV, PC e PE cheios, sem estados.`);
+	}
+	/** A ficha completa do NPC (do Mestre) volta inteira: recursos, sem estados, Fadiga, saves, chakra selado nem KKG. */
+	function restaurarFicha(f: FichaMesa) {
+		void estadoPc(f, { pv: f.max.pv, pc: f.max.pc, pe: f.max.pe, condicoes: [], fadiga: 0, saves: { sucessos: 0, falhas: 0 }, pcSelado: 0, kkg: f.estado.kkg ? { ...f.estado.kkg, ativa: false, cena: null } : undefined }, `${f.nome} restaurado pelo Mestre: PV, PC e PE cheios, sem estados`);
+	}
 	function rolar(t: MesaToken, r: { expr: string; rotulo: string; partes: [string, string][] }, tipo: 'teste' | 'ataque' | 'dano' | 'cura' | 'iniciativa', d20: boolean, origem = 'Mesa', critico = false, modo?: 'normal' | 'vantagem' | 'desvantagem') {
 		return rolador.rolar({ campanha, expressao: r.expr, rotulo: r.rotulo, personagem: t.personagem_id, npc: data.mestre ? t.npc_id : null, d20, tipo, origem, partes: r.partes, critico, modo });
 	}
@@ -405,6 +424,8 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		estadoPc,
 		pvNpc,
 		recursoNpc,
+		restaurarNpc,
+		restaurarFicha,
 		token: (t, patch) => mesa.atualizarToken(t.id, patch),
 		medirJutsu,
 		usarJutsu,
