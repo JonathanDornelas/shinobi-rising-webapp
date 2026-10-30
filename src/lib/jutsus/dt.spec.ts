@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import bestiario from '#lib/livro/gerado/bestiario.json';
 import type { Criatura } from '#lib/livro/tipos.ts';
-import { comDt, dtDoLancador, dtNaFichaDaCriatura } from './dt.ts';
+import { comDt, dtDoLancador, dtNaFichaDaCriatura, pedeDt } from './dt.ts';
 
 describe('DT do Jutsu (cap. 2)', () => {
 	it('Sasuke do cap. 3: CTR +4, Treinado (+2) no Goukakyu, rank C → 10 + 2 + 4 + 2 = 18', () => {
@@ -22,5 +22,11 @@ describe('DT do Jutsu (cap. 2)', () => {
 	});
 	it('troca "DT do Jutsu" pelo número na Resistência', () => {
 		expect(comDt('Acrobacia (DT do Jutsu)', dtDoLancador('C', 'Ninjutsu', { CTR: 4 }, 2))).toBe('Acrobacia (DT 18)');
+	});
+	it('só pede a DT quem tem Resistência ou fala de DT no efeito (o Konoha Reppuu não)', () => {
+		expect(pedeDt('—', '1d6 + FOR de dano, e o alvo cai (Caído).')).toBe(false);
+		expect(pedeDt('', '')).toBe(false);
+		expect(pedeDt('Acrobacia (DT do Jutsu)', '')).toBe(true);
+		expect(pedeDt('—', 'é preciso um teste de Percepção contra a DT do Jutsu para perceber')).toBe(true);
 	});
 });

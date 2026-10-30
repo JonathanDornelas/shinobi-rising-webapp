@@ -3,6 +3,8 @@
 import { claDaFicha } from '#lib/clas/servidor.ts';
 import { jutsusDaFicha } from '#lib/jutsus/servidor.ts';
 import { armasDaCampanha, itensDaCampanha } from '#lib/equipamentos/catalogo.server.ts';
+import { idsCriados, infoItens } from '#lib/equipamentos/info.server.ts';
+import type { ItemInventario } from '#lib/personagem/progressao.ts';
 import { jutsus as jutsusDoLivro } from '#lib/livro/dados.server.ts';
 import { normalizarJutsu, paraJutsuLivro, rolagemDoJutsu, type JutsuDados } from '#lib/jutsus/regras.ts';
 import { slugJutsuCriado } from '#lib/jutsus/status.ts';
@@ -29,6 +31,11 @@ export async function carregarFichaCompleta(locals: App.Locals, campanhaId: stri
 	// itens criados e aprovados na campanha entram na loja (a versão mais nova de cada um)
 	const substituidos = new Set((itens ?? []).map((i) => i.anterior_id).filter(Boolean));
 	catalogo.loja.push(...itensDaCampanha((itens ?? []).filter((i) => !substituidos.has(i.id))));
+	// o cartão de cada item (hover no inventário): os da campanha e as armas e marionetes forjadas pelo resumo
+	const mochila = (p.inventario as ItemInventario[] | null) ?? [];
+	const faltam = idsCriados(mochila).filter((id) => !(itens ?? []).some((i) => i.id === id));
+	const { data: forjados } = faltam.length ? await locals.supabase.from('equipamentos_criados').select('id, tipo, nome, resumo').in('id', faltam) : { data: [] };
+	Object.assign(catalogo.infoItens, infoItens([...catalogo.loja, ...mochila], [...(itens ?? []).map((i) => ({ ...i, tipo: 'item' })), ...(forjados ?? [])]));
 	// NPC de ficha completa, aberto pelo Mestre: ele dá ao NPC qualquer jutsu (do livro, de qualquer clã, ou criado e
 	// aprovado na campanha) e põe no inventário as armas e marionetes criadas na campanha
 	if (p.npc && mestre) {
@@ -48,6 +55,7 @@ export async function carregarFichaCompleta(locals: App.Locals, campanhaId: stri
 				})
 		);
 		catalogo.loja.push(...armasDaCampanha((armas ?? []).filter((a) => !velhos.has(a.id))));
+		Object.assign(catalogo.infoItens, infoItens(catalogo.loja, armas ?? []));
 	}
 	return {
 		completa: { ...p, dono: p.jogador_id === usuarioId, mestre },

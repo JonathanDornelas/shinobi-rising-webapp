@@ -6,6 +6,7 @@ import { claParaFicha, slugCarta, type ClaDados } from '#lib/clas/regras.ts';
 import { normalizarJutsu, paraJutsuLivro, rolagemDoJutsu, type JutsuDados } from '#lib/jutsus/regras.ts';
 import type { JutsuCriadoFicha } from '#lib/jutsus/servidor.ts';
 import { slugJutsuCriado } from '#lib/jutsus/status.ts';
+import { infoItens } from '#lib/equipamentos/info.server.ts';
 import { CLAS, ESPECIALIZACOES, JUTSUS_ACADEMIA, PESOS } from './dados.ts';
 import { defKkg, type DefKkg } from './kkg.ts';
 import type { JutsuFicha } from './progressao.ts';
@@ -185,6 +186,7 @@ export function catalogoFicha(claSlug: string | null, criado?: { id: string; dad
 		const cartas = criado.dados.cartas.filter((c) => c.tipo === 'jutsu');
 		return {
 			loja: base.loja,
+			infoItens: infoItens(base.loja),
 			especializacoes: base.especializacoes,
 			armas: base.armas,
 			jutsus: [...jutsus.filter((j) => !j.cla).map(jutsuFicha), ...proprios, ...originais],
@@ -195,6 +197,7 @@ export function catalogoFicha(claSlug: string | null, criado?: { id: string; dad
 	}
 	return {
 		loja: base.loja,
+		infoItens: infoItens(base.loja),
 		especializacoes: base.especializacoes,
 		armas: base.armas,
 		jutsus: [...[...jutsus.filter((j) => !j.cla), ...doCla].map(jutsuFicha), ...proprios],

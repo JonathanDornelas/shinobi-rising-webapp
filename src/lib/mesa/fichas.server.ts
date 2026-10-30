@@ -2,7 +2,7 @@
 // cada ficha). Usa as mesmas contas da ficha (P3): custo real do jutsu, ataque com a perícia do tipo e a proficiência,
 // dano lido do efeito, armas do inventário e perícias.
 import { claDaFicha } from '#lib/clas/servidor.ts';
-import { comDt, dtDoLancador, dtFixa, dtNaFichaDaCriatura } from '#lib/jutsus/dt.ts';
+import { comDt, dtDoLancador, dtFixa, dtNaFichaDaCriatura, pedeDt } from '#lib/jutsus/dt.ts';
 import { jutsusDaFicha } from '#lib/jutsus/servidor.ts';
 import { equipamentos, jutsus as catalogoJutsus } from '#lib/livro/dados.server.ts';
 import { catalogoFicha } from '#lib/personagem/catalogo.server.ts';
@@ -10,6 +10,7 @@ import { custoKkg } from '#lib/personagem/kkg.ts';
 import { ATRIBUTOS, NIVEIS_PROFICIENCIA } from '#lib/personagem/dados.ts';
 import { cargaInventario, custoJutsu, estadoAtual, ficha, inventarioInicial, type EstadoJogo, type ItemInventario } from '#lib/personagem/progressao.ts';
 import { linhasPericia, type FichaDados, type ItemLoja } from '#lib/personagem/regras.ts';
+import { idsCriados, infoItem } from '#lib/equipamentos/info.server.ts';
 import { ataqueDoJutsu, curaDoEfeito, danoDoEfeito, danoNormal, somar, teste } from '#lib/rolagens/expressoes.ts';
 import { partesAtaqueJutsu, partesDanoAtributo, partesPericia, type Parte } from '#lib/rolagens/partes.ts';
 import { atributosDaCriatura, periciasDaCriatura } from './atributos.ts';
@@ -39,7 +40,7 @@ export function jutsusDoNpc(n: { jutsus: string[] | null; acerto: number | null;
 			const efeito = (j.efeito ?? []).map((x) => x.t).join('');
 			const dano = danoDoEfeito(efeito);
 			const res = v('Resistência');
-			const dt = daCriatura ? dtNaFichaDaCriatura(daCriatura, j) : n.dt != null ? dtFixa(n.dt, 'DT da ficha do NPC: a mesma em todos os jutsus dele.') : null;
+			const dt = !pedeDt(res, efeito) ? null : daCriatura ? dtNaFichaDaCriatura(daCriatura, j) : n.dt != null ? dtFixa(n.dt, 'DT da ficha do NPC: a mesma em todos os jutsus dele.') : null;
 			return {
 				slug: j.slug,
 				nome: j.nome,
@@ -169,7 +170,7 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 			const atributo = dano?.atributo as keyof typeof calc.atributos | null | undefined;
 			const valorAtr = atributo ? calc.atributos[atributo] : 0;
 			const v = (k: string) => j.info.find((i) => i.k === k)?.v ?? '';
-			const dt = dtDoLancador(j.rank, j.tipo, calc.atributos, bonus);
+			const dt = pedeDt(v('Resistência'), j.efeito) ? dtDoLancador(j.rank, j.tipo, calc.atributos, bonus) : null;
 			return {
 				slug: j.slug,
 				nome: j.nome,
@@ -199,6 +200,8 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 	const buki = linhas.find((l) => l.id === 'bukijutsu');
 	const mochila = (p.inventario as ItemInventario[] | null) ?? inventarioInicial(dados, loja);
 	const inventario = mochila.filter((i) => i.grupo === 'Armas' && !i.selado);
+	const ids = idsCriados(mochila);
+	const { data: criados } = ids.length ? await sb.from('equipamentos_criados').select('id, tipo, nome, resumo').in('id', ids) : { data: [] };
 	// uma linha por modo de uso: a Kunai (Versátil) tem o golpe e o arremesso (cap. 12)
 	const armas: ArmaMesa[] = [...new Map(inventario.map((i) => [i.nome, i])).values()].flatMap((i) => {
 		const arma = armaDoCatalogo(i.nome);
@@ -268,7 +271,7 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 		})),
 		distancias,
 		notas: p.anotacoes ?? '',
-		inventario: mochila.map((i) => ({ nome: i.qualidade ? `${i.nome} (${i.qualidade})` : i.nome, qtd: i.qtd, grupo: i.grupo, icone: i.icone, nota: i.nota ?? null, selado: !!i.selado })),
+		inventario: mochila.map((i) => ({ nome: i.qualidade ? `${i.nome} (${i.qualidade})` : i.nome, qtd: i.qtd, grupo: i.grupo, icone: i.icone, nota: i.nota ?? null, selado: !!i.selado, info: infoItem(i, criados ?? []) })),
 		carga: { atual: Math.round(cargaInventario(mochila) * 10) / 10, max: r.cargaMax },
 		ryo: p.ryo,
 		kkg: catalogo.kkg ? { def: catalogo.kkg, ...custoKkg(catalogo.kkg, calc.nivel) } : null,

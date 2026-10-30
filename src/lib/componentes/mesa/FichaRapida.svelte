@@ -61,6 +61,7 @@
 	import VerImagem from '../ui/VerImagem.svelte';
 	import DadoHud from './DadoHud.svelte';
 	import TooltipAcao from './TooltipAcao.svelte';
+	import CartaoItem from '../equipamento/CartaoItem.svelte';
 	import { corElemento } from '#lib/mesa/hud.ts';
 	import { estiloFoco, type FocoArte } from '#lib/bestiario/foco.ts';
 
@@ -102,6 +103,23 @@
 	function esconderDica() {
 		clearTimeout(dicaTimer);
 		dica = null;
+	}
+	// o cartão do item da mochila: o mesmo atraso no hover; no celular, o toque abre e fecha
+	type ItemFicha = Extract<DadosFicha, { tipo: 'pc' }>['ficha']['inventario'][number];
+	let dicaItem = $state<{ item: ItemFicha; ancora: DOMRect } | null>(null);
+	function mostrarItem(item: ItemFicha, linha: HTMLElement, agora = false) {
+		clearTimeout(dicaTimer);
+		const abrir = () => {
+			const j = linha.closest('[role=dialog]')?.getBoundingClientRect() ?? linha.getBoundingClientRect();
+			const l = linha.getBoundingClientRect();
+			dicaItem = { item, ancora: celular ? l : new DOMRect(j.left, l.top, j.width, l.height) };
+		};
+		if (agora) abrir();
+		else dicaTimer = setTimeout(abrir, 250);
+	}
+	function esconderItem() {
+		clearTimeout(dicaTimer);
+		dicaItem = null;
 	}
 	const FAIXAS = ['Ileso', 'Ferido', 'Muito ferido', 'Caído'];
 	const cor = $derived(corCss(mesa.corDe(mesa.donoDe(token))));
@@ -674,7 +692,7 @@
 						{#if itens.length}
 							<span class="px-3 pt-2 pb-1 font-pixel text-[11px] leading-none font-bold tracking-[0.08em] text-title">{g.toUpperCase()}</span>
 							{#each itens as i, n (n)}
-								<div class="flex items-center gap-2 border-b-2 border-b1 px-3 py-1">
+								<div class="flex items-center gap-2 border-b-2 border-b1 px-3 py-1 outline-offset-[-2px] hover:bg-b1 {dicaItem?.item === i ? 'bg-b1' : ''}" role="button" aria-label="{i.nome}: ver o que faz" aria-expanded={dicaItem?.item === i} data-item tabindex="0" onkeydown={(e) => e.key === 'Escape' && esconderItem()} onmouseenter={(e) => !celular && mostrarItem(i, e.currentTarget)} onmouseleave={() => !celular && esconderItem()} onfocus={(e) => !celular && mostrarItem(i, e.currentTarget, true)} onblur={esconderItem} onclick={(e) => celular && (dicaItem?.item === i ? esconderItem() : mostrarItem(i, e.currentTarget, true))}>
 									<Icone id={i.icone} />
 									<span class="flex min-w-0 flex-1 flex-col"><span class="text-sm leading-[18px] font-semibold">{i.nome}</span>{#if i.nota || i.selado}<span class="text-xs leading-4 text-mut">{[i.selado ? 'Selado num pergaminho' : '', i.nota ?? ''].filter(Boolean).join(' · ')}</span>{/if}</span>
 									<b class="font-pixel text-sm">×{i.qtd}</b>
@@ -720,3 +738,5 @@
 
 {#if ampliada && foto}<VerImagem src={foto} alt={token.nome} aoFechar={() => (ampliada = false)} />{/if}
 {#if dica}<TooltipAcao acao={dica.acao} ancora={dica.ancora} />{/if}
+<svelte:window onpointerdown={(e) => celular && dicaItem && !(e.target as HTMLElement).closest('[data-item]') && esconderItem()} />
+{#if dicaItem}<CartaoItem nome={dicaItem.item.nome} icone={dicaItem.item.icone} qtd={dicaItem.item.qtd} nota={dicaItem.item.nota} info={dicaItem.item.info} ancora={dicaItem.ancora} />{/if}

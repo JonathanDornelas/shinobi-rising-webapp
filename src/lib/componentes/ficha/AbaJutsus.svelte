@@ -25,7 +25,7 @@
 	import MenuVantagem from '../rolagens/MenuVantagem.svelte';
 	import MetaJutsu from '../jutsu/MetaJutsu.svelte';
 	import { alcanceCurto, areaCurta, resistenciaCurta } from '#lib/jutsus/meta.ts';
-	import { comDt, dtDoLancador } from '#lib/jutsus/dt.ts';
+	import { comDt, dtDoLancador, pedeDt } from '#lib/jutsus/dt.ts';
 	import Glosa from '../regras/Glosa.svelte';
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
 	import { partesAtaqueJutsu, partesDanoAtributo, type Parte } from '#lib/rolagens/partes.ts';
@@ -176,8 +176,9 @@
 	}
 
 	// rolagens do jutsu: ataque (1d20 + perícia do tipo + proficiência, cap. 4 e 9) e dano/cura lidos do efeito
-	/** DT do jutsu para esta ficha: 10 + rank + atributo-chave + proficiência no jutsu (cap. 2). */
+	/** DT do jutsu para esta ficha: 10 + rank + atributo-chave + proficiência no jutsu (cap. 2); null se ele não pede DT. */
 	function dtDe(j: JutsuFicha) {
+		if (!pedeDt(j.info.find((i) => i.k === 'Resistência')?.v, j.efeito)) return null;
 		const prof = f.calc.proficiencias.find((p) => p.tipo === 'jutsu' && p.alvo === j.slug);
 		return dtDoLancador(j.rank, j.tipo, f.calc.atributos, prof ? NIVEIS_PROFICIENCIA[prof.nivel - 1].bonus : 0);
 	}
@@ -215,7 +216,7 @@
 			{#if c.final !== c.base}<span class="t-num text-sm text-mut line-through">{c.base}</span>{/if}
 			<span class="t-num leading-none {grande ? 'text-[22px]' : 'text-lg'}" style:color={c.final < c.base ? '#7FD3E6' : c.final > c.base ? 'var(--warn)' : undefined}>{c.final} {c.unidade}</span>
 		</span>
-		<SeloDt dt={dtDe(j)} />
+		{#if dtDe(j)}<SeloDt dt={dtDe(j)!} />{/if}
 	</span>
 {/snippet}
 

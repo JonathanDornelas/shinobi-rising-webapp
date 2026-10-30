@@ -55,5 +55,11 @@ export function dtNaFichaDaCriatura(
 /** DT fixa do bloco (NPC de ficha rápida, criatura do bestiário). */
 export const dtFixa = (dt: number, nota: string): DtJutsu => ({ total: dt, partes: [], nota });
 
+/**
+ * O jutsu pede a DT? Só quando o card tem Resistência ou o efeito fala de uma DT (o Mushi Bunshin pede Percepção contra
+ * a DT do Jutsu). Ataque que só rola contra a Defesa, como o Konoha Reppuu ("Resistência: —"), não tem DT.
+ */
+export const pedeDt = (resistencia: string | null | undefined, efeito: string | null | undefined) => (!!resistencia && resistencia.trim() !== '—') || /\bDT\b/.test(efeito ?? '');
+
 /** Troca "DT do Jutsu" no texto da Resistência pelo número ("Acrobacia (DT do Jutsu)" → "Acrobacia (DT 16)"). */
 export const comDt = (texto: string, dt: DtJutsu | null | undefined) => (dt ? texto.replace(/DT do Jutsu/i, `DT ${dt.total}`) : texto);

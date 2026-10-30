@@ -10,6 +10,7 @@
 	import Icone from '../ui/Icone.svelte';
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
 	import Modal from '../ui/Modal.svelte';
+	import CartaoItem from '../equipamento/CartaoItem.svelte';
 
 	let { f }: { f: FichaJogo } = $props();
 	const GRUPOS = [
@@ -33,6 +34,20 @@
 		qtdSelar = Math.max(1, maximo);
 	}
 
+	// o cartão do item (o que ele faz, preço, peso, propriedades): hover ou foco no nome; no toque, abre e fecha
+	let cartao = $state<{ item: ItemInventario; ancora: DOMRect } | null>(null);
+	let cartaoTimer: ReturnType<typeof setTimeout> | undefined;
+	function mostrarCartao(item: ItemInventario, el: HTMLElement, agora = false) {
+		clearTimeout(cartaoTimer);
+		const abrir = () => (cartao = { item, ancora: (el.closest('li') ?? el).getBoundingClientRect() });
+		if (agora) abrir();
+		else cartaoTimer = setTimeout(abrir, 250);
+	}
+	function esconderCartao() {
+		clearTimeout(cartaoTimer);
+		cartao = null;
+	}
+
 	let loja = $state<'comprar' | 'adicionar' | null>(null);
 	let filtro = $state('');
 	let qtds = $state<Record<string, number>>({});
@@ -53,7 +68,12 @@
 	};
 </script>
 
-<svelte:window onkeydown={(e) => e.key === 'Escape' && (selando = null)} onclick={(e) => selando && !(e.target as HTMLElement).closest('[data-selar]') && (selando = null)} />
+<svelte:window
+	onkeydown={(e) => e.key === 'Escape' && ((selando = null), esconderCartao())}
+	onclick={(e) => selando && !(e.target as HTMLElement).closest('[data-selar]') && (selando = null)}
+	onpointerdown={(e) => cartao && e.pointerType !== 'mouse' && !(e.target as HTMLElement).closest('[data-cartao]') && esconderCartao()}
+	onscroll={esconderCartao}
+/>
 
 <div class="grid items-start gap-5 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
 	<div class="flex flex-col gap-3.5">
@@ -72,8 +92,21 @@
 							{@const destinos = pergaminhos.filter((p) => p.id !== i.id).map((p) => ({ p, cabe: quantoCabe(f.inventario, i, p) })).filter((d) => d.cabe > 0)}
 							<li class="group grid grid-cols-[32px_minmax(0,1fr)_auto_56px] items-center gap-3 border-b-2 border-b3 px-3.5 py-1 last:border-b-0" style:box-shadow={corQualidade(i.qualidade) ? `inset 4px 0 0 ${corQualidade(i.qualidade)}` : undefined} title={i.qualidade && i.qualidade !== 'Comum' ? `Qualidade ${i.qualidade}` : undefined}>
 								<Icone id={i.icone} />
-								<span class="flex min-w-0 flex-col gap-0.5">
-									<span class="text-sm leading-5 font-semibold">{i.nome}</span>
+								<span
+									class="flex min-w-0 cursor-help flex-col gap-0.5 self-stretch justify-center outline-offset-2"
+									role="button"
+									aria-label="{i.nome}: ver o que faz"
+									aria-expanded={cartao?.item === i}
+									data-cartao
+									tabindex="0"
+									onpointerenter={(e) => e.pointerType === 'mouse' && mostrarCartao(i, e.currentTarget)}
+									onpointerleave={(e) => e.pointerType === 'mouse' && esconderCartao()}
+									onfocus={(e) => mostrarCartao(i, e.currentTarget, true)}
+									onblur={esconderCartao}
+									onclick={(e) => (cartao?.item === i ? esconderCartao() : mostrarCartao(i, e.currentTarget, true))}
+									onkeydown={(e) => e.key === 'Escape' && esconderCartao()}
+								>
+									<span class="self-start text-sm leading-5 font-semibold underline decoration-field decoration-dotted underline-offset-[3px]">{i.nome}</span>
 									{#if i.nota}<span class="text-xs leading-4 text-mut">{i.nota}</span>{/if}
 								</span>
 								<span class="flex items-center gap-1">
@@ -218,3 +251,5 @@
 		</div>
 	</Modal>
 {/if}
+
+{#if cartao}<CartaoItem nome={cartao.item.nome} icone={cartao.item.icone} qtd={cartao.item.qtd} nota={cartao.item.nota} info={f.catalogo.infoItens[cartao.item.id] ?? null} ancora={cartao.ancora} />{/if}
