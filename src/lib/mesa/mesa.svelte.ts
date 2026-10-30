@@ -108,6 +108,12 @@ export class Mesa {
 	private canal: RealtimeChannel | null = null;
 	private desfazer: Desfazer[] = [];
 	private ultimoEnvio: Record<string, number> = {};
+	/**
+	 * Os valores que esta tela mandou para cada campo da cena, há pouco. O aviso do banco de uma mudança nossa mais velha
+	 * pode chegar depois de uma mais nova (ligar e desligar a grade rápido, por exemplo) e desfaria a nova na tela: um aviso
+	 * que traz um valor que mandamos antes, mas não o último, é eco velho e fica de fora. Valor de outra pessoa passa sempre.
+	 */
+	private enviadosAqui = new Map<string, { valores: string[]; quando: number }>();
 
 	cena = $derived(this.cenas.find((c) => c.id === this.cenaId) ?? null);
 	cores = $derived(coresDosMembros(this.membros));
@@ -217,6 +223,12 @@ export class Mesa {
 					if (!Array.isArray(c.reveladas)) c.reveladas = antiga?.reveladas ?? [];
 					if (c.participantes != null && !Array.isArray(c.participantes)) c.participantes = antiga?.participantes ?? null;
 					if (!c.iniciativa || typeof c.iniciativa !== 'object' || Array.isArray(c.iniciativa)) c.iniciativa = antiga?.iniciativa ?? {};
+					// eco velho de uma mudança nossa (veio depois de uma mais nova): o campo fica como está aqui
+					if (antiga && c.id === this.cenaId)
+						for (const [campo, e] of this.enviadosAqui) {
+							const v = JSON.stringify((c as Record<string, unknown>)[campo]);
+							if (Date.now() - e.quando < 10000 && v !== e.valores.at(-1) && e.valores.includes(v)) (c as Record<string, unknown>)[campo] = (antiga as Record<string, unknown>)[campo];
+						}
 					this.cenas = lista(this.cenas, c);
 					// o Mestre ativou outra cena: quem joga vai junto
 					if (!this.mestre && c.ativa && c.id !== cena) this.trocouCena++;
@@ -664,6 +676,11 @@ export class Mesa {
 		if (!this.cenaId) return false;
 		const antes = this.cenas;
 		this.cenas = this.cenas.map((c) => (c.id === this.cenaId ? { ...c, ...patch } : c));
+		for (const [campo, valor] of Object.entries(patch)) {
+			const e = this.enviadosAqui.get(campo);
+			const valores = [...(e && Date.now() - e.quando < 10000 ? e.valores : []), JSON.stringify(valor)].slice(-8);
+			this.enviadosAqui.set(campo, { valores, quando: Date.now() });
+		}
 		const { error } = await sb().from('mesa_cenas').update(patch).eq('id', this.cenaId);
 		if (error) {
 			this.cenas = antes;

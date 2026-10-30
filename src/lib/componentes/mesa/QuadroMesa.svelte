@@ -386,8 +386,20 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	}
 
 	$effect(() => {
-		const baixo = (e: KeyboardEvent) => e.code === 'Space' && (espaco = true);
-		const cima = (e: KeyboardEvent) => e.code === 'Space' && (espaco = false);
+		// o espaço segura para arrastar a vista; num botão que ficou com o foco do clique do mouse (o último clicado, como o da
+		// grade) ele também "clicaria" o botão ao soltar e desfaria o clique. Ali o espaço não chega ao botão; com o foco vindo
+		// do teclado (:focus-visible) o espaço segue apertando o botão, e campos de texto recebem normalmente
+		const noBotao = (e: KeyboardEvent) => e.target instanceof Element && !!e.target.closest('button, [role="button"], [role="switch"], [role="tab"], [role="radio"]') && !e.target.matches(':focus-visible');
+		const baixo = (e: KeyboardEvent) => {
+			if (e.code !== 'Space') return;
+			if (noBotao(e)) e.preventDefault();
+			espaco = true;
+		};
+		const cima = (e: KeyboardEvent) => {
+			if (e.code !== 'Space') return;
+			if (noBotao(e)) e.preventDefault();
+			espaco = false;
+		};
 		addEventListener('keydown', baixo);
 		addEventListener('keyup', cima);
 		return () => {
