@@ -355,8 +355,8 @@
 					</span>
 				{:else}
 					<!-- o jeito direto: puxar a borda da grade no quadro, com o mouse -->
-					<button type="button" class="btn-jogo {ui.bordas ? 'btn-fantasma' : 'btn-primario'} min-h-9 w-full text-xs" aria-pressed={ui.bordas} onclick={() => (ui.bordas ? (ui.bordas = false) : puxarNoQuadro())}>{ui.bordas ? 'Parar de redimensionar' : 'Redimensionar no quadro'}</button>
-					<p class={dica}>Puxe a borda ou o canto da grade com o mouse, ou mude as medidas na planta. Quem ficar de fora é puxado para dentro.</p>
+					<button type="button" class="btn-jogo {ui.bordas ? 'btn-fantasma' : 'btn-primario'} min-h-9 w-full text-xs" aria-pressed={ui.bordas} onclick={() => (ui.bordas ? (ui.bordas = false) : puxarNoQuadro())}>{ui.bordas ? 'Parar de ajustar' : 'Ajustar a grade no quadro'}</button>
+					<p class={dica}>A imagem fica parada e você ajusta a grade com o mouse: bordas de qualquer lado, deslizar e tamanho dos quadrados. Ou mude as medidas na planta.</p>
 				{/if}
 			</section>
 

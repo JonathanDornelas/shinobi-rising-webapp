@@ -11,7 +11,7 @@
 	import { urlImagemMesa } from '#lib/mesa/imagens.ts';
 	import { retanguloFoco, type FocoArte } from '#lib/bestiario/foco.ts';
 	import { calcularMolde, nomeCurto, type UiMesa } from '#lib/mesa/ui.svelte.ts';
-	import type { MesaObjeto } from '#lib/supabase/banco.ts';
+	import type { MesaCena, MesaObjeto } from '#lib/supabase/banco.ts';
 	import { caminhoNevoa, celulasEntre, emRuns, grade as gradeNevoa, indice as indiceNevoa, pintar as pintarNevoa, type Run } from '#lib/mesa/nevoa.ts';
 import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as limitarObj, objetoEm, objetoEmTela, tamanhoInicial } from '#lib/mesa/objetos.ts';
 	import { ESTILOS, estiloDoJutsu, estiloValido } from '#lib/mesa/efeitos.ts';
@@ -78,45 +78,125 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	});
 	let arrastoFundo = $state<{ mx: number; my: number; dx: number; dy: number } | null>(null);
 	/**
-	 * Redimensionar a grade no quadro: com o modo ligado, a borda da direita, a de baixo e o canto da grade viram alças.
-	 * Puxar muda a largura e a altura da cena, de quadrado em quadrado, e o quadro mostra na hora (o fundo esticado estica
-	 * junto, então dá para casar os quadrados desenhados com os da grade); ao soltar, grava.
+	 * Ajustar a grade ao mapa (só o Mestre, nas duas vistas). A imagem fica parada na tela e a grade se ajusta por cima:
+	 * - as quatro bordas e os quatro cantos põem ou tiram quadrados daquele lado (de quadrado em quadrado);
+	 * - arrastar o miolo desliza a grade sobre o mapa, para as linhas caírem nas do piso desenhado;
+	 * - a alça do primeiro quadrado (o do canto 0, 0) muda o tamanho dos quadrados até ele casar com uma casa do piso.
+	 * Por baixo, o que muda é a cena (tamanho) e onde o fundo fica nela; a câmera anda junto para a imagem não sair do lugar.
 	 */
-	type Borda = 'direita' | 'baixo' | 'canto';
-	let arrastoBorda = $state<{ borda: Borda; l0: number; a0: number } | null>(null);
-	let bordaSob = $state<Borda | null>(null);
-	/** A alça sob o ponto, medida na tela (vale nas duas vistas: na isométrica as bordas são os lados do losango). */
-	function bordaEm(p: { tx: number; ty: number }, toque: boolean): Borda | null {
+	type Ajuste =
+		| { tipo: 'borda'; x: -1 | 0 | 1; y: -1 | 0 | 1; ret: { x0: number; y0: number; x1: number; y1: number } }
+		| { tipo: 'mover'; sx: number; sy: number; v0: [number, number]; img: { x: number; y: number; w: number } }
+		| { tipo: 'quadrado'; o: [number, number]; q: [number, number]; zoom0: number; v0: [number, number]; img: { x: number; y: number; w: number } };
+	type Alca = { tipo: 'borda'; x: -1 | 0 | 1; y: -1 | 0 | 1 } | { tipo: 'mover' } | { tipo: 'quadrado' };
+	let ajuste = $state<Ajuste | null>(null);
+	let alcaSob = $state<Alca | null>(null);
+	/** A configuração da projeção para outro tamanho de cena (mesma vista e mesmo canto). */
+	const cfgPara = (l: number, a: number) => cfgIso(l, a, { tw: 1, eh: 0.25, razao: cena?.iso_razao ?? 2, rotacao: cfgI.rotacao });
+	/** O que gravar para a imagem ficar na caixa `t` (em tela) numa cena de `l` × `a`. */
+	function fundoEm(t: { x: number; y: number; w: number }, l: number, a: number): Partial<MesaCena> {
+		const b = iso ? caixaDaCena(cfgPara(l, a), 0, 0) : { x: 0, y: 0 };
+		const r = (v: number) => Math.round(v * 1000) / 1000;
+		return { fundo_escala: r(Math.min(1000, Math.max(1, t.w))), fundo_x: r(t.x - b.x), fundo_y: r(t.y - b.y) };
+	}
+	/** O ponto da grade (em metros da tela) visto na tela, em pixels do quadro. */
+	const naTela = (gx: number, gy: number): [number, number] => {
+		const [tx, ty] = paraTela(gx, gy);
+		return [(tx - ui.vx) * s, (ty - ui.vy) * s];
+	};
+	// ao ligar o modo com o fundo esticado na cena, ele passa a ter tamanho próprio (no lugar em que está): só assim a grade
+	// pode mudar por baixo dele sem a imagem esticar junto
+	$effect(() => {
+		if (!ui.bordas || !mesa.mestre || !cena?.fundo || cena.fundo_escala) return;
+		untrack(() => void mesa.patchCena(fundoEm(caixaFundo, L, A)));
+	});
+	/** A alça sob o ponto, medida na tela (na isométrica as bordas são os lados do losango). */
+	function alcaEm(p: { tx: number; ty: number; mx: number; my: number }, toque: boolean): Alca | null {
 		if (!ui.bordas || !mesa.mestre || mesa.somenteLeitura) return null;
 		const h = F(toque ? 22 : 10);
-		const canto = paraTela(L, A);
-		if (Math.hypot(p.tx - canto[0], p.ty - canto[1]) <= h * 1.6) return 'canto';
-		if (distSegmento(p.tx, p.ty, paraTela(L, 0), canto) <= h) return 'direita';
-		if (distSegmento(p.tx, p.ty, paraTela(0, A), canto) <= h) return 'baixo';
+		const perto = (gx: number, gy: number, r: number) => {
+			const [x, y] = paraTela(gx, gy);
+			return Math.hypot(p.tx - x, p.ty - y) <= r;
+		};
+		for (const x of [-1, 1] as const) for (const y of [-1, 1] as const) if (perto(x < 0 ? 0 : L, y < 0 ? 0 : A, h * 1.6)) return { tipo: 'borda', x, y };
+		if (fundo && perto(1, 1, h * 1.4)) return { tipo: 'quadrado' };
+		const lado = (a: [number, number], b: [number, number]) => distSegmento(p.tx, p.ty, paraTela(...a), paraTela(...b)) <= h;
+		if (lado([0, 0], [0, A])) return { tipo: 'borda', x: -1, y: 0 };
+		if (lado([L, 0], [L, A])) return { tipo: 'borda', x: 1, y: 0 };
+		if (lado([0, 0], [L, 0])) return { tipo: 'borda', x: 0, y: -1 };
+		if (lado([0, A], [L, A])) return { tipo: 'borda', x: 0, y: 1 };
+		if (fundo && p.mx >= 0 && p.my >= 0 && p.mx <= L && p.my <= A) return { tipo: 'mover' };
 		return null;
 	}
-	/**
-	 * Muda o tamanho sem a cena pular na tela: na isométrica girada a projeção depende da largura e da altura, então a
-	 * vista anda junto para o canto (0, 0) da grade ficar no mesmo lugar e a borda puxada acompanhar o mouse.
-	 */
-	function semMexerAOrigem(mudar: () => void) {
-		const [x0, y0] = paraTela(0, 0);
-		mudar();
-		const [x1, y1] = paraTela(0, 0);
-		ui.vx += x1 - x0;
-		ui.vy += y1 - y0;
+	function comecarAjuste(a: Alca, p: { sx: number; sy: number }) {
+		const img = { x: caixaFundo.x, y: caixaFundo.y, w: caixaFundo.w };
+		if (a.tipo === 'borda') ajuste = { ...a, ret: { x0: 0, y0: 0, x1: L, y1: A } };
+		else if (a.tipo === 'mover') ajuste = { tipo: 'mover', sx: p.sx, sy: p.sy, v0: [ui.vx, ui.vy], img };
+		else ajuste = { tipo: 'quadrado', o: naTela(0, 0), q: naTela(1, 1), zoom0: ui.zoom, v0: [ui.vx, ui.vy], img };
 	}
-	async function soltarBorda() {
-		const d = arrastoBorda;
-		if (!d) return;
-		arrastoBorda = null;
-		const [l, a] = [L, A];
-		if (l === d.l0 && a === d.a0) return;
-		// volta ao tamanho gravado e grava o novo (se falhar, o quadro fica como estava)
-		let gravou: Promise<boolean> = Promise.resolve(false);
-		semMexerAOrigem(() => mesa.previa({ largura: d.l0, altura: d.a0 }));
-		semMexerAOrigem(() => (gravou = mesa.redimensionarCena(l, a)));
-		if (await gravou) ui.avisar(`A cena agora tem ${l} × ${a} quadrados.`);
+	/** Os quadrados maiores ou menores (fator `r`), com o canto 0, 0 da grade e a imagem parados na tela. */
+	function escalarQuadrados(r: number, zoom0: number, v0: [number, number], img: { x: number; y: number; w: number }) {
+		const [ox, oy] = paraTela(0, 0);
+		const v: [number, number] = [ox - (ox - v0[0]) / r, oy - (oy - v0[1]) / r];
+		ui.zoom = zoom0 * r;
+		ui.vx = v[0];
+		ui.vy = v[1];
+		mesa.previa(fundoEm({ x: v[0] + (img.x - v0[0]) / r, y: v[1] + (img.y - v0[1]) / r, w: img.w / r }, L, A));
+	}
+	function moverAjuste(p: { sx: number; sy: number; mx: number; my: number }) {
+		const a = ajuste;
+		if (!a) return;
+		if (a.tipo === 'borda') {
+			// a borda puxada vai para a linha da grade mais perto do mouse; a cena fica entre 5 e 200 quadrados
+			const r = { ...a.ret };
+			if (a.x < 0) r.x0 = Math.max(L - 200, Math.min(L - 5, Math.round(p.mx)));
+			if (a.x > 0) r.x1 = Math.min(200, Math.max(5, Math.round(p.mx)));
+			if (a.y < 0) r.y0 = Math.max(A - 200, Math.min(A - 5, Math.round(p.my)));
+			if (a.y > 0) r.y1 = Math.min(200, Math.max(5, Math.round(p.my)));
+			ajuste = { ...a, ret: r };
+		} else if (a.tipo === 'mover') {
+			// a grade anda com o mouse e a imagem fica: a câmera vai junto com a grade e o fundo volta o mesmo tanto
+			const d = [(p.sx - a.sx) / s, (p.sy - a.sy) / s];
+			ui.vx = a.v0[0] - d[0];
+			ui.vy = a.v0[1] - d[1];
+			mesa.previa(fundoEm({ x: a.img.x - d[0], y: a.img.y - d[1], w: a.img.w }, L, A));
+		} else {
+			// o primeiro quadrado acompanha o mouse: o fator é a projeção do mouse na diagonal dele
+			const [ux, uy] = [a.q[0] - a.o[0], a.q[1] - a.o[1]];
+			const r = ((p.sx - a.o[0]) * ux + (p.sy - a.o[1]) * uy) / (ux * ux + uy * uy || 1);
+			escalarQuadrados(Math.min(20, 8 / a.zoom0, Math.max(0.05, 0.1 / a.zoom0, r)), a.zoom0, a.v0, a.img);
+		}
+	}
+	async function soltarAjuste() {
+		const a = ajuste;
+		ajuste = null;
+		if (!a || !cena) return;
+		if (a.tipo !== 'borda') {
+			await mesa.patchCena({ fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y });
+			return;
+		}
+		const { x0, y0, x1, y1 } = a.ret;
+		if (x0 === 0 && y0 === 0 && x1 === L && y1 === A) return;
+		const [l, alt, dx, dy] = [x1 - x0, y1 - y0, -x0, -y0];
+		// o canto 0, 0 de antes vira o (dx, dy) da cena nova: a câmera anda o tanto que ele andaria na tela, e a imagem também
+		const [ax, ay] = paraTela(0, 0);
+		const [bx, by] = iso ? projetar(dx, dy, 0, cfgPara(l, alt)) : [dx, dy];
+		const dv = [bx - ax, by - ay];
+		const novoFundo = cena.fundo ? fundoEm({ x: caixaFundo.x + dv[0], y: caixaFundo.y + dv[1], w: caixaFundo.w }, l, alt) : {};
+		const gravou = mesa.reenquadrarCena(dx, dy, l, alt, novoFundo);
+		ui.vx += dv[0];
+		ui.vy += dv[1];
+		if (await gravou) ui.avisar(`A cena agora tem ${l} × ${alt} quadrados.`);
+		else {
+			ui.vx -= dv[0];
+			ui.vy -= dv[1];
+		}
+	}
+	/** Ajuste fino do tamanho dos quadrados (o − e o + do aviso). */
+	function quadradosUmPouco(r: number) {
+		if (!cena?.fundo) return;
+		escalarQuadrados(r, ui.zoom, [ui.vx, ui.vy], { x: caixaFundo.x, y: caixaFundo.y, w: caixaFundo.w });
+		void mesa.patchCena({ fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y });
 	}
 	const caixaFundo = $derived.by(() => {
 		// isométrica: a arte (já isométrica, subida pelo Mestre) fica na tela, a partir do canto de cima à esquerda do mapa
@@ -344,9 +424,9 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 			pan = { sx: p.sx, sy: p.sy, vx: ui.vx, vy: ui.vy };
 			return;
 		}
-		const borda = bordaEm(p, e.pointerType === 'touch');
-		if (borda && cena) {
-			arrastoBorda = { borda, l0: cena.largura, a0: cena.altura };
+		const alca = alcaEm(p, e.pointerType === 'touch');
+		if (alca && cena) {
+			comecarAjuste(alca, p);
 			return;
 		}
 		// mira de jutsu: clique escolhe alvo ou fixa o molde
@@ -522,15 +602,8 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		}
 		const p = ponto(e);
 		const g = grade(p.mx, p.my);
-		if (arrastoBorda) {
-			const d = arrastoBorda;
-			const medida = (v: number) => Math.min(200, Math.max(5, Math.round(v)));
-			const l = d.borda === 'baixo' ? d.l0 : medida(p.mx);
-			const a = d.borda === 'direita' ? d.a0 : medida(p.my);
-			if (l !== L || a !== A) semMexerAOrigem(() => mesa.previa({ largura: l, altura: a }));
-			return;
-		}
-		bordaSob = ui.bordas ? bordaEm(p, e.pointerType === 'touch') : null;
+		if (ajuste) return moverAjuste(p);
+		alcaSob = ui.bordas ? alcaEm(p, e.pointerType === 'touch') : null;
 		if (pan) {
 			ui.vx = pan.vx - (p.sx - pan.sx) / s;
 			ui.vy = pan.vy - (p.sy - pan.sy) / s;
@@ -613,7 +686,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			void mesa.patchCena({ nevoa: true, reveladas: runs });
 			return;
 		}
-		if (arrastoBorda) return void soltarBorda();
+		if (ajuste) return void soltarAjuste();
 		if (arrastoFundo) {
 			const c = caixaFundo;
 			arrastoFundo = null;
@@ -712,15 +785,16 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		return { t, corId: mesa.corDe(mesa.donoDe(t)), cor: corCss(mesa.corDe(mesa.donoDe(t))), corpo: a.corpo ? quadradosEmVolta(t, a.corpo, L, A) : [], lista: a.lista };
 	});
 	const reguaMinha = $derived(ui.regua ? { pontos: ui.regua.cur ? [...ui.regua.pontos, ui.regua.cur] : ui.regua.pontos, feita: ui.regua.feita, fixa: ui.regua.fixa, t: ui.regua.t } : null);
-	/** O cursor da alça aponta para onde a borda anda na tela (na isométrica os lados do losango ficam na diagonal). */
-	function cursorBorda(b: Borda) {
-		const [ox, oy] = paraTela(L / 2, A / 2);
-		const [px, py] = b === 'canto' ? paraTela(L, A) : b === 'direita' ? paraTela(L, A / 2) : paraTela(L / 2, A);
-		const ang = (((Math.atan2(py - oy, px - ox) * 180) / Math.PI) % 180 + 180) % 180;
+	/** O cursor da alça aponta para onde ela anda na tela (na isométrica os lados do losango ficam na diagonal). */
+	function cursorAlca(a: Alca) {
+		if (a.tipo === 'mover') return 'move';
+		const [ox, oy] = a.tipo === 'quadrado' ? paraTela(0, 0) : paraTela(L / 2, A / 2);
+		const [px, py] = a.tipo === 'quadrado' ? paraTela(1, 1) : paraTela((L / 2) * (1 + a.x), (A / 2) * (1 + a.y));
+		const ang = ((((Math.atan2(py - oy, px - ox) * 180) / Math.PI) % 180) + 180) % 180;
 		return ang < 22.5 || ang >= 157.5 ? 'ew-resize' : ang < 67.5 ? 'nwse-resize' : ang < 112.5 ? 'ns-resize' : 'nesw-resize';
 	}
 	const cursor = $derived(
-		arrastoBorda || bordaSob ? cursorBorda((arrastoBorda?.borda ?? bordaSob)!) : arrasto || pan ? 'grabbing' : ui.mira && !ui.mira.fixa ? 'crosshair' : ui.ferramenta === 'mover' ? 'default' : ui.ferramenta === 'borracha' || ui.ferramenta === 'terreno' ? 'cell' : ui.ferramenta === 'fundo' ? 'move' : ui.ferramenta === 'objeto' && ui.armada ? 'copy' : ui.ferramenta === 'nevoa' ? 'cell' : 'crosshair'
+		ajuste || alcaSob ? cursorAlca(ajuste ?? alcaSob!) : arrasto || pan ? 'grabbing' : ui.mira && !ui.mira.fixa ? 'crosshair' : ui.ferramenta === 'mover' ? 'default' : ui.ferramenta === 'borracha' || ui.ferramenta === 'terreno' ? 'cell' : ui.ferramenta === 'fundo' ? 'move' : ui.ferramenta === 'objeto' && ui.armada ? 'copy' : ui.ferramenta === 'nevoa' ? 'cell' : 'crosshair'
 	);
 	const corMolde = $derived(molde ? (molde.ok ? corCss(mesa.corDe(mesa.donoDe(molde.lancador))) : 'var(--mesa-vermelhao)') : '');
 	const letras = (i: number) => (i < 26 ? String.fromCharCode(65 + i) : String.fromCharCode(65 + Math.floor(i / 26) - 1) + String.fromCharCode(65 + (i % 26)));
@@ -909,7 +983,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 					</g>
 				{:else if fundo}
 					<clipPath id="recorte-cena"><rect x="0" y="0" width={L} height={A} /></clipPath>
-				<image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} preserveAspectRatio="none" clip-path="url(#recorte-cena)" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} />
+				<image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} preserveAspectRatio="none" clip-path={ui.bordas ? undefined : 'url(#recorte-cena)'} opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} />
 				{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
 			{/if}
 			{#if cena?.grade !== false}
@@ -918,21 +992,39 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 					<path d={grade5} fill="none" style="stroke: var(--fg)" stroke-opacity={0.18 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" />
 				{/if}
 				{#if ui.bordas && mesa.mestre}
-					{@const quente = arrastoBorda?.borda ?? bordaSob}
-					{@const [cx, cy] = paraTela(L, A)}
-					{@const [dx, dy] = paraTela(L, A / 2)}
-					{@const [bx, by] = paraTela(L / 2, A)}
-					<!-- redimensionar a grade: o contorno da cena com as alças da direita, de baixo e do canto. As linhas vão na
-					     grade (viram losango na isométrica) com traço fixo na tela; as alças e a medida, já na tela, sem deformar. -->
+					{@const quente = ajuste ?? alcaSob}
+					{@const r = ajuste?.tipo === 'borda' ? ajuste.ret : null}
+					<!-- ajustar a grade: o contorno da cena, o primeiro quadrado e as alças. O que é da grade vai em metros (vira
+					     losango na isométrica) com traço fixo na tela; as alças e a medida vão na tela, sem deformar. -->
 					<g pointer-events="none">
-						<rect x="0" y="0" width={L} height={A} fill="none" style="stroke: var(--acc)" stroke-width="2" stroke-dasharray="8 5" vector-effect="non-scaling-stroke" />
-						<line x1={L} y1="0" x2={L} y2={A} style="stroke: var(--acc)" stroke-width={quente === 'direita' || quente === 'canto' ? 5 : 3} vector-effect="non-scaling-stroke" />
-						<line x1="0" y1={A} x2={L} y2={A} style="stroke: var(--acc)" stroke-width={quente === 'baixo' || quente === 'canto' ? 5 : 3} vector-effect="non-scaling-stroke" />
+						<rect x="0" y="0" width={L} height={A} fill="none" style="stroke: var(--acc)" stroke-width={quente?.tipo === 'mover' ? 3 : 2} stroke-dasharray="8 5" vector-effect="non-scaling-stroke" />
+						{#if fundo}<rect x="0" y="0" width="1" height="1" style="fill: color-mix(in srgb, var(--acc) 30%, transparent); stroke: var(--acc)" stroke-width={quente?.tipo === 'quadrado' ? 3 : 2} vector-effect="non-scaling-stroke" />{/if}
+						{#if quente?.tipo === 'borda'}
+							{@const [xa, xb] = quente.x < 0 ? [0, 0] : quente.x > 0 ? [L, L] : [0, L]}
+							{@const [ya, yb] = quente.y < 0 ? [0, 0] : quente.y > 0 ? [A, A] : [0, A]}
+							{#if quente.x}<line x1={xa} y1="0" x2={xb} y2={A} style="stroke: var(--acc)" stroke-width="5" vector-effect="non-scaling-stroke" />{/if}
+							{#if quente.y}<line x1="0" y1={ya} x2={L} y2={yb} style="stroke: var(--acc)" stroke-width="5" vector-effect="non-scaling-stroke" />{/if}
+						{/if}
+						{#if r}
+							<!-- a cena nova, quadrado por quadrado, enquanto a borda é puxada -->
+							{@const linhas = Array.from({ length: r.x1 - r.x0 + 1 }, (_, i) => `M${r.x0 + i} ${r.y0}V${r.y1}`).join('') + Array.from({ length: r.y1 - r.y0 + 1 }, (_, i) => `M${r.x0} ${r.y0 + i}H${r.x1}`).join('')}
+							<path d={linhas} fill="none" style="stroke: var(--acc)" stroke-opacity="0.55" stroke-width="1" vector-effect="non-scaling-stroke" />
+							<rect x={r.x0} y={r.y0} width={r.x1 - r.x0} height={r.y1 - r.y0} fill="none" style="stroke: var(--acc)" stroke-width="3" vector-effect="non-scaling-stroke" />
+						{/if}
 						<g transform={desfazer}>
-							<rect x={dx - F(7)} y={dy - F(7)} width={F(14)} height={F(14)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
-							<rect x={bx - F(7)} y={by - F(7)} width={F(14)} height={F(14)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
-							<rect x={cx - F(9)} y={cy - F(9)} width={F(18)} height={F(18)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
-							<text x={cx + F(16)} y={cy + F(30)} font-size={F(15)} class="font-pixel" font-weight="700" style="fill: var(--acc); stroke: var(--ink); paint-order: stroke" stroke-width={F(4)}>{L} × {A}</text>
+							{#each [[0, 0], [L / 2, 0], [L, 0], [L, A / 2], [L, A], [L / 2, A], [0, A], [0, A / 2]] as [gx, gy], i (i)}
+								{@const [hx, hy] = paraTela(gx, gy)}
+								{@const lado = i % 2 ? F(12) : F(16)}
+								<rect x={hx - lado / 2} y={hy - lado / 2} width={lado} height={lado} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
+							{/each}
+							{#if fundo}
+								{@const [qx, qy] = paraTela(1, 1)}
+								<circle cx={qx} cy={qy} r={F(8)} style="fill: var(--ink); stroke: var(--acc)" stroke-width={F(3)} />
+							{/if}
+							{#if r}
+								{@const [cx, cy] = paraTela(r.x1, r.y1)}
+								<text x={cx + F(14)} y={cy + F(28)} font-size={F(15)} class="font-pixel" font-weight="700" style="fill: var(--acc); stroke: var(--ink); paint-order: stroke" stroke-width={F(4)}>{r.x1 - r.x0} × {r.y1 - r.y0}</text>
+							{/if}
 						</g>
 					</g>
 				{/if}
@@ -1179,9 +1271,16 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		{/if}
 	</svg>
 	{#if ui.bordas && mesa.mestre}
-		<div class="absolute top-3 left-1/2 z-20 flex w-max max-w-[calc(100%-24px)] -translate-x-1/2 items-center gap-3 border-2 border-[var(--acc)] bg-sup py-1.5 pr-1.5 pl-3 shadow-[4px_4px_0_var(--sombra)]" role="group" aria-label="Redimensionar a grade">
-			<span class="max-w-[34ch] text-xs leading-4">Puxe uma das bordas grossas ou o canto da grade. Cada quadrado é 1 m.</span>
+		<div class="absolute top-3 left-1/2 z-20 flex w-max max-w-[calc(100%-24px)] -translate-x-1/2 flex-wrap items-center gap-x-3 gap-y-1.5 border-2 border-[var(--acc)] bg-sup py-1.5 pr-1.5 pl-3 shadow-[4px_4px_0_var(--sombra)]" role="group" aria-label="Ajustar a grade ao mapa">
+			<span class="max-w-[46ch] text-xs leading-4">{fundo ? 'A imagem fica parada. Bordas e cantos põem ou tiram quadrados; o miolo desliza a grade; a bolinha do primeiro quadrado muda o tamanho dele até casar com o piso.' : 'Bordas e cantos põem ou tiram quadrados de qualquer lado.'}</span>
 			<span class="font-pixel text-sm font-bold" aria-live="polite">{L} × {A}</span>
+			{#if fundo}
+				<span class="flex items-center border-2 border-b3" role="group" aria-label="Tamanho dos quadrados, ajuste fino">
+					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Quadrados um pouco menores" title="Quadrados 1% menores" onclick={() => quadradosUmPouco(0.99)}>−</button>
+					<span class="px-1 text-[11px] font-semibold">quadrado</span>
+					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Quadrados um pouco maiores" title="Quadrados 1% maiores" onclick={() => quadradosUmPouco(1.01)}>+</button>
+				</span>
+			{/if}
 			<button type="button" class="btn-jogo btn-primario min-h-9 text-xs" onclick={() => (ui.bordas = false)}>PRONTO</button>
 		</div>
 	{/if}

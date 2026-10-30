@@ -11,6 +11,7 @@ import { mascararCena } from './cenas.ts';
 import { limitarPosicao } from './musica.ts';
 import { limpar as limparRuns } from './nevoa.ts';
 import { coresDosMembros } from './cores.ts';
+import { deslocarQuadrados, deslocarRuns, deslocarToken } from './reenquadrar.ts';
 import type { Quadrado } from './geometria.ts';
 import { molduraDoToken, molduraPorId } from './molduras.ts';
 import { nomeReal, siglaDoNome } from './nomes.ts';
@@ -683,6 +684,32 @@ export class Mesa {
 		const fora = this.tokens.filter((t) => t.x + t.tamanho > L || t.y + t.tamanho > A);
 		if (!(await this.patchCena({ largura: L, altura: A }))) return false;
 		for (const t of fora) await this.atualizarToken(t.id, { x: Math.max(0, Math.min(t.x, L - t.tamanho)), y: Math.max(0, Math.min(t.y, A - t.tamanho)) });
+		return true;
+	}
+
+	/**
+	 * Reenquadrar a cena (só o Mestre): `dx` colunas entram à esquerda e `dy` linhas em cima (negativo: saem) e a cena
+	 * passa a ter `largura` × `altura`. Tokens, objetos, terreno, névoa e efeitos andam junto e ficam no mesmo lugar do mapa
+	 * (os traços do lápis ficam onde estão). `fundo` é onde a imagem fica na cena nova, pela conta do quadro.
+	 */
+	async reenquadrarCena(dx: number, dy: number, largura: number, altura: number, fundo: Partial<MesaCena>) {
+		const c = this.cena;
+		if (!this.mestre || this.somenteLeitura || !c) return false;
+		const L = Math.min(200, Math.max(5, Math.round(largura)));
+		const A = Math.min(200, Math.max(5, Math.round(altura)));
+		const terreno = deslocarQuadrados(Array.isArray(c.terreno) ? c.terreno : [], dx, dy, L, A);
+		const reveladas = deslocarRuns(Array.isArray(c.reveladas) ? c.reveladas : [], dx, dy, L, A);
+		if (!(await this.patchCena({ largura: L, altura: A, terreno, reveladas, ...fundo }))) return false;
+		const tokens = this.tokens.map((t) => [t, deslocarToken(t, dx, dy, L, A)] as const).filter(([t, [x, y]]) => x !== t.x || y !== t.y);
+		await Promise.all(tokens.map(([t, [x, y]]) => this.atualizarToken(t.id, { x, y })));
+		if (dx || dy) {
+			await Promise.all(this.objetos.map((o) => this.atualizarObjeto(o.id, { x: o.x + dx, y: o.y + dy })));
+			for (const e of this.efeitos) {
+				const patch = { quadrados: deslocarQuadrados(e.quadrados, dx, dy, L, A), rotulo_x: e.rotulo_x + dx, rotulo_y: e.rotulo_y + dy };
+				this.efeitos = this.efeitos.map((k) => (k.id === e.id ? { ...k, ...patch } : k));
+				await sb().from('mesa_efeitos').update(patch).eq('id', e.id);
+			}
+		}
 		return true;
 	}
 

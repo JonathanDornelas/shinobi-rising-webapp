@@ -1291,6 +1291,10 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 						<button type="button" class="flex h-9 w-9 items-center justify-center border-r-2 border-b3 {cena.grade !== false ? '' : 'text-mut'}" aria-pressed={cena.grade !== false} aria-label="Linhas da grade" title={cena.grade !== false ? 'Esconder as linhas da grade (as medidas e as posições continuam valendo)' : 'Mostrar as linhas da grade'} onclick={() => mesa.patchCena({ grade: cena.grade === false })}>
 							<svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true" class="fill-none stroke-current stroke-[1.5]"><path d="M1 5.5h14M1 10.5h14M5.5 1v14M10.5 1v14" />{#if cena.grade === false}<path d="M2 14L14 2" stroke-width="2" />{/if}</svg>
 						</button>
+						<!-- ajustar a grade ao mapa direto no quadro (as alças nas bordas, o miolo e o primeiro quadrado) -->
+						<button type="button" class="flex h-9 w-9 items-center justify-center border-r-2 border-b3 {ui.bordas ? 'bg-[var(--acc)] text-[var(--ink)]' : ''}" aria-pressed={ui.bordas} aria-label="Ajustar a grade ao mapa" title={ui.bordas ? 'Parar de ajustar a grade' : 'Ajustar a grade ao mapa: puxar as bordas, deslizar e mudar o tamanho dos quadrados'} onclick={() => ((ui.bordas = !ui.bordas), ui.bordas && ui.escolher('mover'))}>
+							<svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true" class="fill-none stroke-current stroke-[1.5]"><path d="M3 3h10v10H3zM3 8h10M8 3v10" stroke-dasharray="2 1.5" /><path d="M11 11l4 4M15 11.5V15h-3.5" /></svg>
+						</button>
 					{/if}
 					<button type="button" class="h-9 w-9 border-r-2 border-b3 font-pixel text-base font-bold" aria-label="Diminuir zoom" onclick={() => quadro?.zoomEm(1 / 1.25)}>−</button>
 					<span class="min-w-[52px] text-center font-pixel text-[13px] font-bold">{Math.round(ui.zoom * 100)}%</span>
