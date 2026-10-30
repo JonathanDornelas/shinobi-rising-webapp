@@ -229,6 +229,8 @@ Os PV de um ninja dizem em que estado ele está. Acima de zero, ele luta. Em zer
 
 Pense num ninja com 40 PV máximos. Em 0 PV, ele fica Inconsciente. Se continuar apanhando e chegar a -15, ainda está vivo, à beira da morte. Em -20, a metade negativa dos seus PV, ele morre na hora.
 
+**Quem cai solta o chakra.** No instante em que chega a 0 PV, o ninja perde o controle do próprio chakra, e toda técnica que cobra um custo recorrente, por turno ou por cena, se desfaz. A Kekkei Genkai ativa se apaga e o Sharingan se fecha. Os Portões se fecham, com os custos de fechar do cap. 16. O Modo Sennin termina, e os jutsus sustentados acabam. Depois de se levantar, quem quiser de volta ativa e paga de novo.
+
 ### Saves de Morte (Testes de Salvaguarda) {#saves-de-morte-testes-de-salvaguarda}
 
 Caído e sangrando, o ninja ainda luta, e quem decide essa luta é o espírito. No começo de cada turno em que estiver Inconsciente, com 0 PV ou menos, você faz um Save de Morte. Resultados bons marcam sucessos, ruins marcam falhas: três sucessos e você se estabiliza, três falhas e é o fim.

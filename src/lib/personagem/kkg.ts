@@ -173,6 +173,15 @@ export function efeitoKkg(def: DefKkg, nivel: number, estagio = 1) {
 	};
 }
 
+/**
+ * Quem cai (PV 0 ou menos) solta o chakra: a KKG ativa se apaga, e para voltar paga de novo (cap. 4, Estados de Vida).
+ * Devolve a KKG desligada, ou null quando nada muda (de pé, ou já desligada).
+ */
+export function apagarAoCair(estado: { pv?: number; kkg?: EstadoKkg }): EstadoKkg | null {
+	if ((estado.pv ?? 1) > 0 || !estado.kkg?.ativa) return null;
+	return { ...estado.kkg, ativa: false, cena: null };
+}
+
 /** A KKG está valendo? (ativa, ou sempre ligada; o Sharingan precisa ter despertado). */
 export function kkgLigada(def: DefKkg | null, estado: EstadoKkg | undefined): boolean {
 	if (!def) return false;

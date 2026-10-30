@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { claVazio } from '#lib/clas/regras.ts';
-import { custoKkg, defesaKkg, defKkg, efeitoKkg, kkgLigada, periciasComKkg } from './kkg.ts';
+import { apagarAoCair, custoKkg, defesaKkg, defKkg, efeitoKkg, kkgLigada, periciasComKkg } from './kkg.ts';
 import type { LinhaPericia } from './regras.ts';
 
 describe('Kekkei Genkai na ficha', () => {
@@ -52,5 +52,15 @@ describe('Kekkei Genkai na ficha', () => {
 		expect(defKkg(null, c)).toMatchObject({ custo: 0, sempre: true });
 		expect(kkgLigada(defKkg(null, c), undefined)).toBe(true);
 		expect(defKkg(null, claVazio(false))).toBeNull();
+	});
+});
+
+describe('quem cai solta o chakra (cap. 4)', () => {
+	it('PV 0 ou menos apaga a KKG ativa; de pé, ou já desligada, nada muda', () => {
+		expect(apagarAoCair({ pv: 0, kkg: { ativa: true, estagio: 2, cena: 'c1' } })).toEqual({ ativa: false, estagio: 2, cena: null });
+		expect(apagarAoCair({ pv: -5, kkg: { ativa: true } })).toEqual({ ativa: false, cena: null });
+		expect(apagarAoCair({ pv: 1, kkg: { ativa: true } })).toBeNull();
+		expect(apagarAoCair({ pv: 0, kkg: { ativa: false } })).toBeNull();
+		expect(apagarAoCair({ pv: 0 })).toBeNull();
 	});
 });

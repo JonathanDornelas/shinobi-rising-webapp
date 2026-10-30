@@ -33,6 +33,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	let moduloFicha: Promise<typeof import('#lib/componentes/mesa/FichaCompleta.svelte')> | null = null;
 	const carregarFicha = () => (moduloFicha ??= import('#lib/componentes/mesa/FichaCompleta.svelte'));
 	import type { EstadoJogo } from '#lib/personagem/progressao.ts';
+	import { apagarAoCair } from '#lib/personagem/kkg.ts';
 	import PainelMesa from '#lib/componentes/mesa/PainelMesa.svelte';
 	import BuscaBestiario from '#lib/componentes/npc/BuscaBestiario.svelte';
 	import { npcDoVerbete } from '#lib/bestiario/npc.ts';
@@ -207,6 +208,12 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	const filas = new Map<string, Promise<void>>();
 	function estadoPc(f: FichaMesa, patch: Partial<FichaMesa['estado']>, descricao: string) {
 		f.estado = { ...f.estado, ...patch };
+		// caiu (PV 0 ou menos): a KKG ativa, como o Sharingan, se apaga (cap. 4)
+		const apagada = 'pv' in patch ? apagarAoCair(f.estado) : null;
+		if (apagada) {
+			f.estado = { ...f.estado, kkg: apagada };
+			descricao = `${descricao}; caiu e o ${f.kkg?.def.nome ?? 'KKG'} apagou`.slice(0, 200);
+		}
 		// o token muda na hora para quem clicou; o banco copia para o grupo (gatilho mesa_token_da_ficha)
 		const condicoes = f.estado.condicoes ?? [];
 		const ferimento = faixa(f.estado.pv ?? f.max.pv, f.max.pv);

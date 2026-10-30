@@ -25,7 +25,7 @@ import {
 	type JutsuFicha
 } from './progressao.ts';
 import type { FichaDados, ItemLoja } from './regras.ts';
-import { custoKkg, efeitoKkg, kkgLigada, type DefKkg } from './kkg.ts';
+import { apagarAoCair, custoKkg, efeitoKkg, kkgLigada, type DefKkg } from './kkg.ts';
 
 type Recurso = 'pv' | 'pc' | 'pe';
 const NOME: Record<Recurso, string> = { pv: 'PV', pc: 'PC', pe: 'PE' };
@@ -93,7 +93,10 @@ export class FichaJogo {
 		const extra: EstadoJogo = {};
 		if (k === 'pv' && novo > 0 && a.pv <= 0) extra.saves = { sucessos: 0, falhas: 0 };
 		if (k === 'pe' && novo === 0 && a.pe > 0) extra.fadiga = Math.min(5, a.fadiga + 1);
-		this.mudar({ ...this.estado, [k]: novo, ...extra }, `${NOME[k]} ${a[k]} → ${novo}${extra.fadiga ? ' (+1 Fadiga)' : ''}`, `recurso/ic-recurso-${k}`);
+		// caiu: a KKG ativa (o Sharingan) se apaga
+		const kkg = k === 'pv' ? apagarAoCair({ pv: novo, kkg: this.estado.kkg }) : null;
+		if (kkg) extra.kkg = kkg;
+		this.mudar({ ...this.estado, [k]: novo, ...extra }, `${NOME[k]} ${a[k]} → ${novo}${extra.fadiga ? ' (+1 Fadiga)' : ''}${kkg ? `; caiu e o ${this.kkg?.def?.nome ?? 'KKG'} apagou` : ''}`, `recurso/ic-recurso-${k}`);
 	}
 
 	definir(k: Recurso, valor: number) {
