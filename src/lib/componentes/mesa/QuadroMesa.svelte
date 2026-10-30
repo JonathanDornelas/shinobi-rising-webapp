@@ -78,16 +78,18 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	});
 	let arrastoFundo = $state<{ mx: number; my: number; dx: number; dy: number } | null>(null);
 	/**
-	 * Ajustar a grade ao mapa (só o Mestre, nas duas vistas). A imagem fica parada na tela e a grade se ajusta por cima:
-	 * - as quatro bordas e os quatro cantos põem ou tiram quadrados daquele lado (de quadrado em quadrado);
+	 * Ajustar a grade ao mapa (só o Mestre, nas duas vistas). O quadrado da grade nunca muda de tamanho (tokens e tudo o
+	 * mais seguem na mesma proporção); quem se ajusta é o encaixe entre a grade e a imagem:
+	 * - as quatro bordas e os quatro cantos põem ou tiram quadrados daquele lado (de quadrado em quadrado), com a imagem parada;
 	 * - arrastar o miolo desliza a grade sobre o mapa, para as linhas caírem nas do piso desenhado;
-	 * - a alça do primeiro quadrado (o do canto 0, 0) muda o tamanho dos quadrados até ele casar com uma casa do piso.
-	 * Por baixo, o que muda é a cena (tamanho) e onde o fundo fica nela; a câmera anda junto para a imagem não sair do lugar.
+	 * - a bolinha do primeiro quadrado aumenta ou diminui a imagem (presa no canto 0, 0 da grade) até o piso casar com os
+	 *   quadrados.
+	 * Por baixo, o que muda é a cena (tamanho) e onde o fundo fica nela; a câmera anda junto quando a grade anda.
 	 */
 	type Ajuste =
 		| { tipo: 'borda'; x: -1 | 0 | 1; y: -1 | 0 | 1; ret: { x0: number; y0: number; x1: number; y1: number } }
 		| { tipo: 'mover'; sx: number; sy: number; v0: [number, number]; img: { x: number; y: number; w: number } }
-		| { tipo: 'quadrado'; o: [number, number]; q: [number, number]; zoom0: number; v0: [number, number]; img: { x: number; y: number; w: number } };
+		| { tipo: 'quadrado'; o: [number, number]; q: [number, number]; img: { x: number; y: number; w: number } };
 	type Alca = { tipo: 'borda'; x: -1 | 0 | 1; y: -1 | 0 | 1 } | { tipo: 'mover' } | { tipo: 'quadrado' };
 	let ajuste = $state<Ajuste | null>(null);
 	let alcaSob = $state<Alca | null>(null);
@@ -132,16 +134,12 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		const img = { x: caixaFundo.x, y: caixaFundo.y, w: caixaFundo.w };
 		if (a.tipo === 'borda') ajuste = { ...a, ret: { x0: 0, y0: 0, x1: L, y1: A } };
 		else if (a.tipo === 'mover') ajuste = { tipo: 'mover', sx: p.sx, sy: p.sy, v0: [ui.vx, ui.vy], img };
-		else ajuste = { tipo: 'quadrado', o: naTela(0, 0), q: naTela(1, 1), zoom0: ui.zoom, v0: [ui.vx, ui.vy], img };
+		else ajuste = { tipo: 'quadrado', o: naTela(0, 0), q: naTela(1, 1), img };
 	}
-	/** Os quadrados maiores ou menores (fator `r`), com o canto 0, 0 da grade e a imagem parados na tela. */
-	function escalarQuadrados(r: number, zoom0: number, v0: [number, number], img: { x: number; y: number; w: number }) {
+	/** A imagem maior ou menor (fator `r`), presa no canto 0, 0 da grade; a grade e a câmera não mexem. */
+	function escalarImagem(r: number, img: { x: number; y: number; w: number }) {
 		const [ox, oy] = paraTela(0, 0);
-		const v: [number, number] = [ox - (ox - v0[0]) / r, oy - (oy - v0[1]) / r];
-		ui.zoom = zoom0 * r;
-		ui.vx = v[0];
-		ui.vy = v[1];
-		mesa.previa(fundoEm({ x: v[0] + (img.x - v0[0]) / r, y: v[1] + (img.y - v0[1]) / r, w: img.w / r }, L, A));
+		mesa.previa(fundoEm({ x: ox + (img.x - ox) * r, y: oy + (img.y - oy) * r, w: img.w * r }, L, A));
 	}
 	function moverAjuste(p: { sx: number; sy: number; mx: number; my: number }) {
 		const a = ajuste;
@@ -161,10 +159,11 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 			ui.vy = a.v0[1] - d[1];
 			mesa.previa(fundoEm({ x: a.img.x - d[0], y: a.img.y - d[1], w: a.img.w }, L, A));
 		} else {
-			// o primeiro quadrado acompanha o mouse: o fator é a projeção do mouse na diagonal dele
+			// a bolinha para fora aumenta a imagem e para dentro diminui: o fator é a projeção do mouse na diagonal do
+			// primeiro quadrado (1 = onde a bolinha estava)
 			const [ux, uy] = [a.q[0] - a.o[0], a.q[1] - a.o[1]];
 			const r = ((p.sx - a.o[0]) * ux + (p.sy - a.o[1]) * uy) / (ux * ux + uy * uy || 1);
-			escalarQuadrados(Math.min(20, 8 / a.zoom0, Math.max(0.05, 0.1 / a.zoom0, r)), a.zoom0, a.v0, a.img);
+			escalarImagem(Math.min(20, Math.max(0.05, r)), a.img);
 		}
 	}
 	async function soltarAjuste() {
@@ -192,10 +191,10 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 			ui.vy -= dv[1];
 		}
 	}
-	/** Ajuste fino do tamanho dos quadrados (o − e o + do aviso). */
-	function quadradosUmPouco(r: number) {
+	/** Ajuste fino do tamanho da imagem (o − e o + do aviso). */
+	function imagemUmPouco(r: number) {
 		if (!cena?.fundo) return;
-		escalarQuadrados(r, ui.zoom, [ui.vx, ui.vy], { x: caixaFundo.x, y: caixaFundo.y, w: caixaFundo.w });
+		escalarImagem(r, { x: caixaFundo.x, y: caixaFundo.y, w: caixaFundo.w });
 		void mesa.patchCena({ fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y });
 	}
 	const caixaFundo = $derived.by(() => {
@@ -1272,13 +1271,13 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 	</svg>
 	{#if ui.bordas && mesa.mestre}
 		<div class="absolute top-3 left-1/2 z-20 flex w-max max-w-[calc(100%-24px)] -translate-x-1/2 flex-wrap items-center gap-x-3 gap-y-1.5 border-2 border-[var(--acc)] bg-sup py-1.5 pr-1.5 pl-3 shadow-[4px_4px_0_var(--sombra)]" role="group" aria-label="Ajustar a grade ao mapa">
-			<span class="max-w-[46ch] text-xs leading-4">{fundo ? 'A imagem fica parada. Bordas e cantos põem ou tiram quadrados; o miolo desliza a grade; a bolinha do primeiro quadrado muda o tamanho dele até casar com o piso.' : 'Bordas e cantos põem ou tiram quadrados de qualquer lado.'}</span>
+			<span class="max-w-[46ch] text-xs leading-4">{fundo ? 'Os quadrados não mudam de tamanho. Bordas e cantos põem ou tiram quadrados; o miolo desliza a grade sobre o mapa; a bolinha aumenta ou diminui o mapa até o piso casar com os quadrados.' : 'Bordas e cantos põem ou tiram quadrados de qualquer lado.'}</span>
 			<span class="font-pixel text-sm font-bold" aria-live="polite">{L} × {A}</span>
 			{#if fundo}
-				<span class="flex items-center border-2 border-b3" role="group" aria-label="Tamanho dos quadrados, ajuste fino">
-					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Quadrados um pouco menores" title="Quadrados 1% menores" onclick={() => quadradosUmPouco(0.99)}>−</button>
-					<span class="px-1 text-[11px] font-semibold">quadrado</span>
-					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Quadrados um pouco maiores" title="Quadrados 1% maiores" onclick={() => quadradosUmPouco(1.01)}>+</button>
+				<span class="flex items-center border-2 border-b3" role="group" aria-label="Tamanho do mapa, ajuste fino">
+					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Mapa um pouco menor" title="Mapa 1% menor" onclick={() => imagemUmPouco(0.99)}>−</button>
+					<span class="px-1 text-[11px] font-semibold">mapa</span>
+					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Mapa um pouco maior" title="Mapa 1% maior" onclick={() => imagemUmPouco(1.01)}>+</button>
 				</span>
 			{/if}
 			<button type="button" class="btn-jogo btn-primario min-h-9 text-xs" onclick={() => (ui.bordas = false)}>PRONTO</button>
