@@ -108,6 +108,8 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	});
 
 	let quadro = $state<ReturnType<typeof QuadroMesa>>();
+	/** Largura da barra do zoom (canto de baixo à direita): a barra das minimizadas para antes dela, sem cobrir os botões. */
+	let larguraZoom = $state(220);
 	const cena = $derived(mesa.cena);
 	const ativa = $derived(data.cenas.find((c) => c.ativa) ?? mesa.cenas.find((c) => c.ativa) ?? null);
 
@@ -1282,7 +1284,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 				{@render sobreQuadro()}
 				<div class="pointer-events-none absolute inset-x-3 bottom-16 z-[7] flex justify-center"><PainelObjeto {mesa} {ui} /></div>
 				<JukeboxMesa {mesa} {ui} classe="absolute bottom-16 left-3 z-[8]" />
-				<div class="absolute right-3 bottom-3 z-[6] flex items-center border-2 border-b3 bg-sup shadow-[4px_4px_0_var(--sombra)]">
+				<div class="absolute right-3 bottom-3 z-[6] flex items-center border-2 border-b3 bg-sup shadow-[4px_4px_0_var(--sombra)]" bind:offsetWidth={larguraZoom}>
 {#if cena?.visao === 'isometrica' && !cena.fundo}
 <button type="button" class="h-9 w-9 border-r-2 border-b3 font-pixel text-base font-bold" aria-label="Girar a vista para a esquerda" title="Girar a vista (teclas [ e ])" onclick={() => ui.girarIso(cena.iso_rotacao, -1)}>⟲</button>
 						<button type="button" class="h-9 w-9 border-r-2 border-b3 font-pixel text-base font-bold" aria-label="Girar a vista para a direita" title="Girar a vista (teclas [ e ])" onclick={() => ui.girarIso(cena.iso_rotacao, 1)}>⟳</button>
@@ -1301,7 +1303,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 					<button type="button" class="h-9 w-9 border-l-2 border-b3 font-pixel text-base font-bold" aria-label="Aumentar zoom" onclick={() => quadro?.zoomEm(1.25)}>+</button>
 					<button type="button" class="h-9 w-9 border-l-2 border-b3 font-pixel text-sm font-bold" aria-label="Ajustar à tela" title="Ajustar à tela" onclick={() => quadro?.ajustar()}>⤢</button>
 				</div>
-				<div class="absolute right-[220px] bottom-3 left-3 z-[6]">
+				<div class="absolute bottom-3 left-3 z-[6]" style:right="{larguraZoom + 20}px">
 					<BarraMinimizadas itens={minimizadas}>
 						{#snippet depois()}
 							{#if !ui.painelAberto && ultima}
