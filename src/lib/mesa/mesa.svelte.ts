@@ -59,6 +59,9 @@ type Desfazer = { tipo: 'mover'; id: string; x: number; y: number; movido: numbe
 
 const sb = () => supabase();
 
+/** Clone criado por um jutsu (ou pelo Clonar): ligado a outro token, com a sigla CL. */
+const ehClone = (t: MesaToken) => !!t.ligado_a && t.sigla === 'CL';
+
 export class Mesa {
 	readonly campanha: string;
 	readonly eu: string;
@@ -380,6 +383,11 @@ export class Mesa {
 				if (t.crescido_turnos! <= 1) await this.voltarAoNormal(t);
 				else await this.atualizarToken(t.id, { crescido_turnos: t.crescido_turnos! - 1 });
 			}
+			// clones de jutsu com duração em turnos (crescido_turnos guarda o que falta): somem no zero
+			for (const t of this.tokens.filter((x) => ehClone(x) && x.crescido_turnos != null)) {
+				if (t.crescido_turnos! <= 1) await this.remover(t.id);
+				else await this.atualizarToken(t.id, { crescido_turnos: t.crescido_turnos! - 1 });
+			}
 		}
 		await this.patchCena({ iniciativa: { ...i, vez, rodada } });
 		await this.zerarMovido();
@@ -387,8 +395,9 @@ export class Mesa {
 
 	async encerrarCombate() {
 		await this.patchCena({ iniciativa: { ativa: false, limpa_em: this.iniciativa.limpa_em } });
-		// fim do combate: quem estava crescido volta ao normal
+		// fim do combate: quem estava crescido volta ao normal, e os clones de jutsu se desfazem
 		for (const t of this.tokens.filter((x) => x.tamanho_base != null)) await this.voltarAoNormal(t);
+		for (const t of this.tokens.filter(ehClone)) await this.remover(t.id);
 		await this.zerarMovido();
 	}
 

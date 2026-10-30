@@ -79,7 +79,8 @@ class Sessao {
 	async carregarNotificacoes() {
 		if (!this.usuario) return;
 		this.carregandoNotificacoes = true;
-		const { data, error } = await supabase().from('notificacoes').select('*').order('criada_em', { ascending: false }).limit(50);
+		// "o Mestre concedeu" não vira notificação (o registro da ficha já conta)
+		const { data, error } = await supabase().from('notificacoes').select('*').neq('tipo', 'concedido').order('criada_em', { ascending: false }).limit(50);
 		this.carregandoNotificacoes = false;
 		this.notificacoesErro = !!error;
 		if (data) this.notificacoes = data;
@@ -89,6 +90,7 @@ class Sessao {
 		this.canal = supabase()
 			.channel(`notificacoes:${id}`)
 			.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notificacoes', filter: `usuario_id=eq.${id}` }, (p) => {
+				if ((p.new as Notificacao).tipo === 'concedido') return;
 				this.notificacoes = [p.new as Notificacao, ...this.notificacoes];
 			})
 			.subscribe();

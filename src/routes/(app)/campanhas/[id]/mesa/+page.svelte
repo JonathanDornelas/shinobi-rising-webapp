@@ -423,9 +423,11 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		let feitos = 0;
 		for (let i = 0; i < Math.min(n, 10); i++) {
 			const [x, y] = lugarLivre(t.x + 1, t.y);
-			if (await mesa.colocar({ nome: `Clone de ${primeiro}`.slice(0, 60), sigla: 'CL', ligado_a: t.id, dono_id: t.dono_id, x, y, pv, pv_max: pv, visivel: true })) feitos++;
+			// a duração do jutsu vai no clone: turnos (Mizu Bunshin, 3) somem na rodada certa; a cena some no fim do combate
+			if (await mesa.colocar({ nome: `Clone de ${primeiro}`.slice(0, 60), sigla: 'CL', ligado_a: t.id, dono_id: t.dono_id, x, y, pv, pv_max: pv, visivel: true, crescido_turnos: j.turnos ?? null })) feitos++;
 		}
-		if (feitos) ui.avisar(`${feitos} clone${feitos > 1 ? 's' : ''} de ${primeiro} na cena, com ${pv} PV${pv === 1 ? ' (some ao sofrer qualquer dano)' : ''}. Apague os que não quiser.`);
+		const dura = j.turnos ? `${j.turnos} turnos` : 'o fim do combate';
+		if (feitos) ui.avisar(`${feitos} clone${feitos > 1 ? 's' : ''} de ${primeiro} com ${pv} PV, até ${dura}${pv === 1 ? ' ou até sofrer dano' : ''}. Apague os que não quiser.`);
 	}
 	/** Canto livre mais perto de (x, y) para um token de n × n quadrados, dentro da cena. */
 	function lugarLivre(x: number, y: number, n = 1) {

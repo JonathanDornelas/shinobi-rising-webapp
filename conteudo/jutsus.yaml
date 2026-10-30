@@ -2691,7 +2691,7 @@
     - k: Alcance
       v: Pessoal
     - k: Duração
-      v: Até serem atingidos
+      v: 1 cena (ou até serem atingidos)
     - k: Área
       v: 1d4 clones a até 5m
     - k: Ataque
