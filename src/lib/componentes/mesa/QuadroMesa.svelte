@@ -83,14 +83,17 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	 * - as quatro bordas e os quatro cantos põem ou tiram quadrados daquele lado (de quadrado em quadrado), com a imagem parada;
 	 * - arrastar o miolo desliza a grade sobre o mapa, para as linhas caírem nas do piso desenhado;
 	 * - a bolinha do primeiro quadrado aumenta ou diminui a imagem (presa no canto 0, 0 da grade) até o piso casar com os
-	 *   quadrados.
+	 *   quadrados;
+	 * - a bolinha no cabo, acima da borda de cima, gira a imagem em volta do centro da grade (a grade fica reta; Shift
+	 *   gira de 15 em 15 graus).
 	 * Por baixo, o que muda é a cena (tamanho) e onde o fundo fica nela; a câmera anda junto quando a grade anda.
 	 */
 	type Ajuste =
 		| { tipo: 'borda'; x: -1 | 0 | 1; y: -1 | 0 | 1; ret: { x0: number; y0: number; x1: number; y1: number } }
 		| { tipo: 'mover'; sx: number; sy: number; v0: [number, number]; img: { x: number; y: number; w: number } }
-		| { tipo: 'quadrado'; o: [number, number]; q: [number, number]; img: { x: number; y: number; w: number } };
-	type Alca = { tipo: 'borda'; x: -1 | 0 | 1; y: -1 | 0 | 1 } | { tipo: 'mover' } | { tipo: 'quadrado' };
+		| { tipo: 'quadrado'; o: [number, number]; q: [number, number]; img: { x: number; y: number; w: number } }
+		| { tipo: 'girar'; centro: [number, number]; a0: number; rot0: number; img: { x: number; y: number; w: number; h: number } };
+	type Alca = { tipo: 'borda'; x: -1 | 0 | 1; y: -1 | 0 | 1 } | { tipo: 'mover' } | { tipo: 'quadrado' } | { tipo: 'girar' };
 	let ajuste = $state<Ajuste | null>(null);
 	let alcaSob = $state<Alca | null>(null);
 	/** A configuração da projeção para outro tamanho de cena (mesma vista e mesmo canto). */
@@ -112,6 +115,16 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		if (!ui.bordas || !mesa.mestre || !cena?.fundo || cena.fundo_escala) return;
 		untrack(() => void mesa.patchCena(fundoEm(caixaFundo, L, A)));
 	});
+	/** Dá para girar o fundo (a cena tem a coluna da rotação e há uma imagem). */
+	const podeGirar = $derived(!!fundo && cena?.fundo_rotacao !== undefined);
+	/** A bolinha de girar: num cabo para fora do meio da borda de cima da grade (em metros da tela). */
+	function alcaDeGirar(): { base: [number, number]; ponta: [number, number] } {
+		const base = paraTela(L / 2, 0);
+		const [cx, cy] = paraTela(L / 2, A / 2);
+		const [dx, dy] = [base[0] - cx, base[1] - cy];
+		const n = Math.hypot(dx, dy) || 1;
+		return { base, ponta: [base[0] + (dx / n) * F(34), base[1] + (dy / n) * F(34)] };
+	}
 	/** A alça sob o ponto, medida na tela (na isométrica as bordas são os lados do losango). */
 	function alcaEm(p: { tx: number; ty: number; mx: number; my: number }, toque: boolean): Alca | null {
 		if (!ui.bordas || !mesa.mestre || mesa.somenteLeitura) return null;
@@ -122,6 +135,10 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		};
 		for (const x of [-1, 1] as const) for (const y of [-1, 1] as const) if (perto(x < 0 ? 0 : L, y < 0 ? 0 : A, h * 1.6)) return { tipo: 'borda', x, y };
 		if (fundo && perto(1, 1, h * 1.4)) return { tipo: 'quadrado' };
+		if (podeGirar) {
+			const { ponta } = alcaDeGirar();
+			if (Math.hypot(p.tx - ponta[0], p.ty - ponta[1]) <= h * 1.4) return { tipo: 'girar' };
+		}
 		const lado = (a: [number, number], b: [number, number]) => distSegmento(p.tx, p.ty, paraTela(...a), paraTela(...b)) <= h;
 		if (lado([0, 0], [0, A])) return { tipo: 'borda', x: -1, y: 0 };
 		if (lado([L, 0], [L, A])) return { tipo: 'borda', x: 1, y: 0 };
@@ -134,14 +151,30 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		const img = { x: caixaFundo.x, y: caixaFundo.y, w: caixaFundo.w };
 		if (a.tipo === 'borda') ajuste = { ...a, ret: { x0: 0, y0: 0, x1: L, y1: A } };
 		else if (a.tipo === 'mover') ajuste = { tipo: 'mover', sx: p.sx, sy: p.sy, v0: [ui.vx, ui.vy], img };
-		else ajuste = { tipo: 'quadrado', o: naTela(0, 0), q: naTela(1, 1), img };
+		else if (a.tipo === 'quadrado') ajuste = { tipo: 'quadrado', o: naTela(0, 0), q: naTela(1, 1), img };
+		else {
+			const centro = naTela(L / 2, A / 2);
+			ajuste = { tipo: 'girar', centro, a0: Math.atan2(p.sy - centro[1], p.sx - centro[0]), rot0: cena?.fundo_rotacao ?? 0, img: { ...img, h: caixaFundo.h } };
+		}
 	}
 	/** A imagem maior ou menor (fator `r`), presa no canto 0, 0 da grade; a grade e a câmera não mexem. */
 	function escalarImagem(r: number, img: { x: number; y: number; w: number }) {
 		const [ox, oy] = paraTela(0, 0);
 		mesa.previa(fundoEm({ x: ox + (img.x - ox) * r, y: oy + (img.y - oy) * r, w: img.w * r }, L, A));
 	}
-	function moverAjuste(p: { sx: number; sy: number; mx: number; my: number }) {
+	/**
+	 * A imagem girada para `rot` graus (era `rot0`), em volta do centro da grade: o centro da imagem gira em volta dele e
+	 * a imagem gira em volta do próprio centro o mesmo tanto, então tudo gira junto como uma folha só.
+	 */
+	function girarImagem(rot: number, rot0: number, img: { x: number; y: number; w: number; h: number }) {
+		const [px, py] = paraTela(L / 2, A / 2);
+		const t = ((rot - rot0) * Math.PI) / 180;
+		const [cx, cy] = [img.x + img.w / 2 - px, img.y + img.h / 2 - py];
+		const [nx, ny] = [px + cx * Math.cos(t) - cy * Math.sin(t), py + cx * Math.sin(t) + cy * Math.cos(t)];
+		const graus = ((((rot + 180) % 360) + 360) % 360) - 180;
+		mesa.previa({ ...fundoEm({ x: nx - img.w / 2, y: ny - img.h / 2, w: img.w }, L, A), fundo_rotacao: Math.round(graus * 100) / 100 });
+	}
+	function moverAjuste(p: { sx: number; sy: number; mx: number; my: number }, passo15 = false) {
 		const a = ajuste;
 		if (!a) return;
 		if (a.tipo === 'borda') {
@@ -158,12 +191,17 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 			ui.vx = a.v0[0] - d[0];
 			ui.vy = a.v0[1] - d[1];
 			mesa.previa(fundoEm({ x: a.img.x - d[0], y: a.img.y - d[1], w: a.img.w }, L, A));
-		} else {
+		} else if (a.tipo === 'quadrado') {
 			// a bolinha para fora aumenta a imagem e para dentro diminui: o fator é a projeção do mouse na diagonal do
 			// primeiro quadrado (1 = onde a bolinha estava)
 			const [ux, uy] = [a.q[0] - a.o[0], a.q[1] - a.o[1]];
 			const r = ((p.sx - a.o[0]) * ux + (p.sy - a.o[1]) * uy) / (ux * ux + uy * uy || 1);
 			escalarImagem(Math.min(20, Math.max(0.05, r)), a.img);
+		} else if (a.tipo === 'girar') {
+			// o quanto o mouse girou em volta do centro da grade; com Shift, de 15 em 15 graus
+			const giro = ((Math.atan2(p.sy - a.centro[1], p.sx - a.centro[0]) - a.a0) * 180) / Math.PI;
+			const rot = passo15 ? Math.round((a.rot0 + giro) / 15) * 15 : a.rot0 + giro;
+			girarImagem(rot, a.rot0, a.img);
 		}
 	}
 	async function soltarAjuste() {
@@ -171,7 +209,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		ajuste = null;
 		if (!a || !cena) return;
 		if (a.tipo !== 'borda') {
-			await mesa.patchCena({ fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y });
+			await mesa.patchCena({ fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, ...(a.tipo === 'girar' ? { fundo_rotacao: cena.fundo_rotacao } : {}) });
 			return;
 		}
 		const { x0, y0, x1, y1 } = a.ret;
@@ -190,6 +228,13 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 			ui.vx -= dv[0];
 			ui.vy -= dv[1];
 		}
+	}
+	/** Ajuste fino do giro (o ⟲ e o ⟳ do aviso), ou volta a 0. */
+	function girarUmPouco(graus: number | null) {
+		if (!cena?.fundo || !podeGirar) return;
+		const rot0 = cena.fundo_rotacao ?? 0;
+		girarImagem(graus === null ? 0 : rot0 + graus, rot0, { x: caixaFundo.x, y: caixaFundo.y, w: caixaFundo.w, h: caixaFundo.h });
+		void mesa.patchCena({ fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, fundo_rotacao: cena.fundo_rotacao });
 	}
 	/** Ajuste fino do tamanho da imagem (o − e o + do aviso). */
 	function imagemUmPouco(r: number) {
@@ -613,7 +658,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		}
 		const p = ponto(e);
 		const g = grade(p.mx, p.my);
-		if (ajuste) return moverAjuste(p);
+		if (ajuste) return moverAjuste(p, e.shiftKey);
 		alcaSob = ui.bordas ? alcaEm(p, e.pointerType === 'touch') : null;
 		if (pan) {
 			ui.vx = pan.vx - (p.sx - pan.sx) / s;
@@ -796,9 +841,11 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		return { t, corId: mesa.corDe(mesa.donoDe(t)), cor: corCss(mesa.corDe(mesa.donoDe(t))), corpo: a.corpo ? quadradosEmVolta(t, a.corpo, L, A) : [], lista: a.lista };
 	});
 	const reguaMinha = $derived(ui.regua ? { pontos: ui.regua.cur ? [...ui.regua.pontos, ui.regua.cur] : ui.regua.pontos, feita: ui.regua.feita, fixa: ui.regua.fixa, t: ui.regua.t } : null);
+	const CURSOR_GIRAR = `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 12a7 7 0 1 1-2.05-4.95" fill="none" stroke="#fff" stroke-width="4"/><path d="M19 12a7 7 0 1 1-2.05-4.95" fill="none" stroke="#111" stroke-width="2"/><path d="M20 3v6h-6" fill="none" stroke="#fff" stroke-width="4"/><path d="M20 3v6h-6" fill="none" stroke="#111" stroke-width="2"/></svg>')}") 12 12, grab`;
 	/** O cursor da alça aponta para onde ela anda na tela (na isométrica os lados do losango ficam na diagonal). */
 	function cursorAlca(a: Alca) {
 		if (a.tipo === 'mover') return 'move';
+		if (a.tipo === 'girar') return CURSOR_GIRAR;
 		const [ox, oy] = a.tipo === 'quadrado' ? paraTela(0, 0) : paraTela(L / 2, A / 2);
 		const [px, py] = a.tipo === 'quadrado' ? paraTela(1, 1) : paraTela((L / 2) * (1 + a.x), (A / 2) * (1 + a.y));
 		const ang = ((((Math.atan2(py - oy, px - ox) * 180) / Math.PI) % 180) + 180) % 180;
@@ -989,13 +1036,13 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			<!-- fundo do quadro: o mapa estica na cena inteira, sob a grade -->
 				{#if fundo && iso}
 					<g transform={desfazer}>
-						<image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} />
-						{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
+						<image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} />
+						{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
 					</g>
 				{:else if fundo}
 					<clipPath id="recorte-cena"><rect x="0" y="0" width={L} height={A} /></clipPath>
-				<image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} preserveAspectRatio="none" clip-path={ui.bordas ? undefined : 'url(#recorte-cena)'} opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} />
-				{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
+				<g clip-path={ui.bordas ? undefined : 'url(#recorte-cena)'}><image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} /></g>
+				{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
 			{/if}
 			{#if cena?.grade !== false}
 				<!-- dois traçados (linhas de 1 m e de 5 m) com 1 px fixo: o zoom e a câmera não mexem na grade -->
@@ -1028,6 +1075,11 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 								{@const lado = i % 2 ? F(12) : F(16)}
 								<rect x={hx - lado / 2} y={hy - lado / 2} width={lado} height={lado} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
 							{/each}
+							{#if podeGirar}
+								{@const g = alcaDeGirar()}
+								<line x1={g.base[0]} y1={g.base[1]} x2={g.ponta[0]} y2={g.ponta[1]} style="stroke: var(--acc)" stroke-width={F(quente?.tipo === 'girar' ? 3 : 2)} />
+								<circle cx={g.ponta[0]} cy={g.ponta[1]} r={F(quente?.tipo === 'girar' ? 9 : 7)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
+							{/if}
 							{#if fundo}
 								{@const [qx, qy] = paraTela(1, 1)}
 								<circle cx={qx} cy={qy} r={F(8)} style="fill: var(--ink); stroke: var(--acc)" stroke-width={F(3)} />
@@ -1283,13 +1335,20 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 	</svg>
 	{#if ui.bordas && mesa.mestre}
 		<div class="absolute top-3 left-1/2 z-20 flex w-max max-w-[calc(100%-24px)] -translate-x-1/2 flex-wrap items-center gap-x-3 gap-y-1.5 border-2 border-[var(--acc)] bg-sup py-1.5 pr-1.5 pl-3 shadow-[4px_4px_0_var(--sombra)]" role="group" aria-label="Ajustar a grade ao mapa">
-			<span class="max-w-[46ch] text-xs leading-4">{fundo ? 'Os quadrados não mudam de tamanho. Bordas e cantos põem ou tiram quadrados; o miolo desliza a grade sobre o mapa; a bolinha aumenta ou diminui o mapa até o piso casar com os quadrados.' : 'Bordas e cantos põem ou tiram quadrados de qualquer lado.'}</span>
+			<span class="max-w-[46ch] text-xs leading-4">{fundo ? `Os quadrados não mudam de tamanho. Bordas e cantos põem ou tiram quadrados; o miolo desliza a grade sobre o mapa; a bolinha do canto aumenta ou diminui o mapa${podeGirar ? ' e a do cabo gira (Shift: de 15 em 15°)' : ''}.` : 'Bordas e cantos põem ou tiram quadrados de qualquer lado.'}</span>
 			<span class="font-pixel text-sm font-bold" aria-live="polite">{L} × {A}</span>
 			{#if fundo}
 				<span class="flex items-center border-2 border-b3" role="group" aria-label="Tamanho do mapa, ajuste fino">
 					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Mapa um pouco menor" title="Mapa 1% menor" onclick={() => imagemUmPouco(0.99)}>−</button>
 					<span class="px-1 text-[11px] font-semibold">mapa</span>
 					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Mapa um pouco maior" title="Mapa 1% maior" onclick={() => imagemUmPouco(1.01)}>+</button>
+				</span>
+			{/if}
+			{#if podeGirar}
+				<span class="flex items-center border-2 border-b3" role="group" aria-label="Giro do mapa, ajuste fino">
+					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Girar o mapa meio grau para a esquerda" title="Meio grau para a esquerda" onclick={() => girarUmPouco(-0.5)}>⟲</button>
+					<button type="button" class="min-w-12 px-1 font-pixel text-[11px] font-bold" title="Voltar o mapa a 0°" onclick={() => girarUmPouco(null)}>{(cena?.fundo_rotacao ?? 0).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}°</button>
+					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Girar o mapa meio grau para a direita" title="Meio grau para a direita" onclick={() => girarUmPouco(0.5)}>⟳</button>
 				</span>
 			{/if}
 			<button type="button" class="btn-jogo btn-primario min-h-9 text-xs" onclick={() => (ui.bordas = false)}>PRONTO</button>

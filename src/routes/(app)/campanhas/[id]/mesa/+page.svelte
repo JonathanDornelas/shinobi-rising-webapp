@@ -662,7 +662,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		if (!cena) return;
 		const { data: c, error } = await supabase()
 			.from('mesa_cenas')
-			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [], camadas: cena.camadas, modo: cena.modo, imagem: cena.imagem, fundo: cena.fundo, fundo_opacidade: cena.fundo_opacidade, fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, grade: cena.grade, pasta_id: cena.pasta_id, nome_publico: cena.nome_publico, nevoa: cena.nevoa, reveladas: cena.reveladas ?? [] })
+			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [], camadas: cena.camadas, modo: cena.modo, imagem: cena.imagem, fundo: cena.fundo, fundo_opacidade: cena.fundo_opacidade, fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, ...(cena.fundo_rotacao !== undefined ? { fundo_rotacao: cena.fundo_rotacao } : {}), grade: cena.grade, pasta_id: cena.pasta_id, nome_publico: cena.nome_publico, nevoa: cena.nevoa, reveladas: cena.reveladas ?? [] })
 			.select('*')
 			.single();
 		if (error || !c) return void toasts.mostrar('Não foi possível duplicar a cena.', 'erro');
