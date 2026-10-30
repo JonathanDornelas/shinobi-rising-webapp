@@ -354,11 +354,9 @@
 						<button type="button" class="{quadradinho} h-9 w-9" aria-label="Desfazer as medidas" title="Voltar a {cena.largura} × {cena.altura}" onclick={() => ((largura = cena.largura), (altura = cena.altura))}>✕</button>
 					</span>
 				{:else}
-					{#if !iso}
-						<!-- o jeito direto: puxar a borda da grade no quadro, com o mouse -->
-						<button type="button" class="btn-jogo {ui.bordas ? 'btn-fantasma' : 'btn-primario'} min-h-9 w-full text-xs" aria-pressed={ui.bordas} onclick={() => (ui.bordas ? (ui.bordas = false) : puxarNoQuadro())}>{ui.bordas ? 'Parar de redimensionar' : 'Redimensionar no quadro'}</button>
-					{/if}
-					<p class={dica}>{iso ? 'Mude as medidas nas bordas da planta, de 5 a 200 m.' : 'Puxe a borda ou o canto da grade com o mouse, ou mude as medidas na planta.'} Quem ficar de fora é puxado para dentro.</p>
+					<!-- o jeito direto: puxar a borda da grade no quadro, com o mouse -->
+					<button type="button" class="btn-jogo {ui.bordas ? 'btn-fantasma' : 'btn-primario'} min-h-9 w-full text-xs" aria-pressed={ui.bordas} onclick={() => (ui.bordas ? (ui.bordas = false) : puxarNoQuadro())}>{ui.bordas ? 'Parar de redimensionar' : 'Redimensionar no quadro'}</button>
+					<p class={dica}>Puxe a borda ou o canto da grade com o mouse, ou mude as medidas na planta. Quem ficar de fora é puxado para dentro.</p>
 				{/if}
 			</section>
 

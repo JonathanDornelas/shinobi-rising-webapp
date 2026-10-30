@@ -94,7 +94,7 @@ export class UiMesa {
 		}, 3500);
 	}
 
-	/** Redimensionar a grade no quadro (só o Mestre, vista de cima): a borda da direita, a de baixo e o canto viram alças. */
+	/** Redimensionar a grade no quadro (só o Mestre, nas duas vistas): a borda da direita, a de baixo e o canto viram alças. */
 	bordas = $state(false);
 
 	escolher(f: Ferramenta) {

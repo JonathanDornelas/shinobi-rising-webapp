@@ -85,21 +85,38 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	type Borda = 'direita' | 'baixo' | 'canto';
 	let arrastoBorda = $state<{ borda: Borda; l0: number; a0: number } | null>(null);
 	let bordaSob = $state<Borda | null>(null);
-	function bordaEm(p: { mx: number; my: number }, toque: boolean): Borda | null {
-		if (!ui.bordas || iso || !mesa.mestre || mesa.somenteLeitura) return null;
+	/** A alça sob o ponto, medida na tela (vale nas duas vistas: na isométrica as bordas são os lados do losango). */
+	function bordaEm(p: { tx: number; ty: number }, toque: boolean): Borda | null {
+		if (!ui.bordas || !mesa.mestre || mesa.somenteLeitura) return null;
 		const h = F(toque ? 22 : 10);
-		const direita = Math.abs(p.mx - L) <= h && p.my >= -h && p.my <= A + h;
-		const baixo = Math.abs(p.my - A) <= h && p.mx >= -h && p.mx <= L + h;
-		return direita && baixo ? 'canto' : direita ? 'direita' : baixo ? 'baixo' : null;
+		const canto = paraTela(L, A);
+		if (Math.hypot(p.tx - canto[0], p.ty - canto[1]) <= h * 1.6) return 'canto';
+		if (distSegmento(p.tx, p.ty, paraTela(L, 0), canto) <= h) return 'direita';
+		if (distSegmento(p.tx, p.ty, paraTela(0, A), canto) <= h) return 'baixo';
+		return null;
+	}
+	/**
+	 * Muda o tamanho sem a cena pular na tela: na isométrica girada a projeção depende da largura e da altura, então a
+	 * vista anda junto para o canto (0, 0) da grade ficar no mesmo lugar e a borda puxada acompanhar o mouse.
+	 */
+	function semMexerAOrigem(mudar: () => void) {
+		const [x0, y0] = paraTela(0, 0);
+		mudar();
+		const [x1, y1] = paraTela(0, 0);
+		ui.vx += x1 - x0;
+		ui.vy += y1 - y0;
 	}
 	async function soltarBorda() {
 		const d = arrastoBorda;
 		if (!d) return;
 		arrastoBorda = null;
 		const [l, a] = [L, A];
+		if (l === d.l0 && a === d.a0) return;
 		// volta ao tamanho gravado e grava o novo (se falhar, o quadro fica como estava)
-		mesa.previa({ largura: d.l0, altura: d.a0 });
-		if ((l !== d.l0 || a !== d.a0) && (await mesa.redimensionarCena(l, a))) ui.avisar(`A cena agora tem ${l} × ${a} quadrados.`);
+		let gravou: Promise<boolean> = Promise.resolve(false);
+		semMexerAOrigem(() => mesa.previa({ largura: d.l0, altura: d.a0 }));
+		semMexerAOrigem(() => (gravou = mesa.redimensionarCena(l, a)));
+		if (await gravou) ui.avisar(`A cena agora tem ${l} × ${a} quadrados.`);
 	}
 	const caixaFundo = $derived.by(() => {
 		// isométrica: a arte (já isométrica, subida pelo Mestre) fica na tela, a partir do canto de cima à esquerda do mapa
@@ -510,7 +527,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			const medida = (v: number) => Math.min(200, Math.max(5, Math.round(v)));
 			const l = d.borda === 'baixo' ? d.l0 : medida(p.mx);
 			const a = d.borda === 'direita' ? d.a0 : medida(p.my);
-			if (l !== L || a !== A) mesa.previa({ largura: l, altura: a });
+			if (l !== L || a !== A) semMexerAOrigem(() => mesa.previa({ largura: l, altura: a }));
 			return;
 		}
 		bordaSob = ui.bordas ? bordaEm(p, e.pointerType === 'touch') : null;
@@ -695,9 +712,15 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		return { t, corId: mesa.corDe(mesa.donoDe(t)), cor: corCss(mesa.corDe(mesa.donoDe(t))), corpo: a.corpo ? quadradosEmVolta(t, a.corpo, L, A) : [], lista: a.lista };
 	});
 	const reguaMinha = $derived(ui.regua ? { pontos: ui.regua.cur ? [...ui.regua.pontos, ui.regua.cur] : ui.regua.pontos, feita: ui.regua.feita, fixa: ui.regua.fixa, t: ui.regua.t } : null);
-	const cursorBorda = { direita: 'ew-resize', baixo: 'ns-resize', canto: 'nwse-resize' } as const;
+	/** O cursor da alça aponta para onde a borda anda na tela (na isométrica os lados do losango ficam na diagonal). */
+	function cursorBorda(b: Borda) {
+		const [ox, oy] = paraTela(L / 2, A / 2);
+		const [px, py] = b === 'canto' ? paraTela(L, A) : b === 'direita' ? paraTela(L, A / 2) : paraTela(L / 2, A);
+		const ang = (((Math.atan2(py - oy, px - ox) * 180) / Math.PI) % 180 + 180) % 180;
+		return ang < 22.5 || ang >= 157.5 ? 'ew-resize' : ang < 67.5 ? 'nwse-resize' : ang < 112.5 ? 'ns-resize' : 'nesw-resize';
+	}
 	const cursor = $derived(
-		arrastoBorda || bordaSob ? cursorBorda[(arrastoBorda?.borda ?? bordaSob)!] : arrasto || pan ? 'grabbing' : ui.mira && !ui.mira.fixa ? 'crosshair' : ui.ferramenta === 'mover' ? 'default' : ui.ferramenta === 'borracha' || ui.ferramenta === 'terreno' ? 'cell' : ui.ferramenta === 'fundo' ? 'move' : ui.ferramenta === 'objeto' && ui.armada ? 'copy' : ui.ferramenta === 'nevoa' ? 'cell' : 'crosshair'
+		arrastoBorda || bordaSob ? cursorBorda((arrastoBorda?.borda ?? bordaSob)!) : arrasto || pan ? 'grabbing' : ui.mira && !ui.mira.fixa ? 'crosshair' : ui.ferramenta === 'mover' ? 'default' : ui.ferramenta === 'borracha' || ui.ferramenta === 'terreno' ? 'cell' : ui.ferramenta === 'fundo' ? 'move' : ui.ferramenta === 'objeto' && ui.armada ? 'copy' : ui.ferramenta === 'nevoa' ? 'cell' : 'crosshair'
 	);
 	const corMolde = $derived(molde ? (molde.ok ? corCss(mesa.corDe(mesa.donoDe(molde.lancador))) : 'var(--mesa-vermelhao)') : '');
 	const letras = (i: number) => (i < 26 ? String.fromCharCode(65 + i) : String.fromCharCode(65 + Math.floor(i / 26) - 1) + String.fromCharCode(65 + (i % 26)));
@@ -894,17 +917,23 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				<path d={grade1} fill="none" style="stroke: var(--fg)" stroke-opacity={0.09 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" />
 					<path d={grade5} fill="none" style="stroke: var(--fg)" stroke-opacity={0.18 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" />
 				{/if}
-				{#if ui.bordas && !iso && mesa.mestre}
+				{#if ui.bordas && mesa.mestre}
 					{@const quente = arrastoBorda?.borda ?? bordaSob}
-					<!-- redimensionar a grade: o contorno da cena com as alças da direita, de baixo e do canto -->
+					{@const [cx, cy] = paraTela(L, A)}
+					{@const [dx, dy] = paraTela(L, A / 2)}
+					{@const [bx, by] = paraTela(L / 2, A)}
+					<!-- redimensionar a grade: o contorno da cena com as alças da direita, de baixo e do canto. As linhas vão na
+					     grade (viram losango na isométrica) com traço fixo na tela; as alças e a medida, já na tela, sem deformar. -->
 					<g pointer-events="none">
-						<rect x="0" y="0" width={L} height={A} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" />
-						<line x1={L} y1="0" x2={L} y2={A} style="stroke: var(--acc)" stroke-width={F(quente === 'direita' || quente === 'canto' ? 5 : 3)} />
-						<line x1="0" y1={A} x2={L} y2={A} style="stroke: var(--acc)" stroke-width={F(quente === 'baixo' || quente === 'canto' ? 5 : 3)} />
-						<rect x={L - F(5)} y={A / 2 - F(16)} width={F(10)} height={F(32)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
-						<rect x={L / 2 - F(16)} y={A - F(5)} width={F(32)} height={F(10)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
-						<rect x={L - F(9)} y={A - F(9)} width={F(18)} height={F(18)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
-						<text x={L + F(16)} y={A + F(30)} font-size={F(15)} class="font-pixel" font-weight="700" style="fill: var(--acc); stroke: var(--ink); paint-order: stroke" stroke-width={F(4)}>{L} × {A}</text>
+						<rect x="0" y="0" width={L} height={A} fill="none" style="stroke: var(--acc)" stroke-width="2" stroke-dasharray="8 5" vector-effect="non-scaling-stroke" />
+						<line x1={L} y1="0" x2={L} y2={A} style="stroke: var(--acc)" stroke-width={quente === 'direita' || quente === 'canto' ? 5 : 3} vector-effect="non-scaling-stroke" />
+						<line x1="0" y1={A} x2={L} y2={A} style="stroke: var(--acc)" stroke-width={quente === 'baixo' || quente === 'canto' ? 5 : 3} vector-effect="non-scaling-stroke" />
+						<g transform={desfazer}>
+							<rect x={dx - F(7)} y={dy - F(7)} width={F(14)} height={F(14)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
+							<rect x={bx - F(7)} y={by - F(7)} width={F(14)} height={F(14)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
+							<rect x={cx - F(9)} y={cy - F(9)} width={F(18)} height={F(18)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
+							<text x={cx + F(16)} y={cy + F(30)} font-size={F(15)} class="font-pixel" font-weight="700" style="fill: var(--acc); stroke: var(--ink); paint-order: stroke" stroke-width={F(4)}>{L} × {A}</text>
+						</g>
 					</g>
 				{/if}
 
@@ -1149,9 +1178,9 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			</g>
 		{/if}
 	</svg>
-	{#if ui.bordas && !iso && mesa.mestre}
+	{#if ui.bordas && mesa.mestre}
 		<div class="absolute top-3 left-1/2 z-20 flex w-max max-w-[calc(100%-24px)] -translate-x-1/2 items-center gap-3 border-2 border-[var(--acc)] bg-sup py-1.5 pr-1.5 pl-3 shadow-[4px_4px_0_var(--sombra)]" role="group" aria-label="Redimensionar a grade">
-			<span class="max-w-[34ch] text-xs leading-4">Puxe a borda da direita, a de baixo ou o canto da grade. Cada quadrado é 1 m.</span>
+			<span class="max-w-[34ch] text-xs leading-4">Puxe uma das bordas grossas ou o canto da grade. Cada quadrado é 1 m.</span>
 			<span class="font-pixel text-sm font-bold" aria-live="polite">{L} × {A}</span>
 			<button type="button" class="btn-jogo btn-primario min-h-9 text-xs" onclick={() => (ui.bordas = false)}>PRONTO</button>
 		</div>
