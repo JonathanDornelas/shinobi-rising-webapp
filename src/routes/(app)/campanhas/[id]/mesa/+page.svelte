@@ -1252,7 +1252,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			{:else}
 			{#if ui.elencoAberto && data.mestre && cena}
 				<!-- o painel da esquerda: o Elenco ou as configurações da cena, com o quadro sempre à vista -->
-				<div class="flex min-h-0 flex-none flex-col border-r-2 border-b3 bg-b2 {ui.ladoEsquerdo === 'cena' ? 'w-[360px]' : 'w-[280px]'}">
+				<div class="flex min-h-0 flex-none flex-col w-[280px] border-r-2 border-b3 bg-b2">
 					<div role="tablist" aria-label="Painel da esquerda" class="flex h-11 flex-none items-stretch border-b-2 border-b3 bg-b0">
 						{#each [['elenco', 'ELENCO', '/icons/nav/ic-nav-npcs-32.png'], ['cena', 'CENA', '/icons/nav/ic-nav-configuracoes-32.png']] as const as [id, nome, ic] (id)}
 							{@const on = ui.ladoEsquerdo === id}
@@ -1407,7 +1407,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 
 {#if ui.modal}
 	<div class="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(10,8,7,.72)] p-4" role="presentation" onclick={(e) => e.target === e.currentTarget && (ui.modal = null)}>
-		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'config' ? 'h-[min(660px,calc(100dvh-2rem))] w-[min(880px,100%)] overflow-hidden' : (ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]') + ' overflow-y-auto'} max-h-full max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_var(--sombra)]">
+		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'config' ? 'h-[min(660px,calc(100dvh-2rem))] w-[min(400px,100%)] overflow-hidden' : (ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]') + ' overflow-y-auto'} max-h-full max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_var(--sombra)]">
 			{#if ui.modal.tipo === 'imagem' && cena}
 				{@const alvo = ui.modal.alvo}
 				<ArtesMesa {mesa} {campanha} {alvo} atual={cena[alvo]} aoEscolher={escolherDaBiblioteca} aoArmar={armarArte} aoFechar={() => (ui.modal = null)} />
