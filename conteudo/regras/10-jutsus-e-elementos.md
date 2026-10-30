@@ -66,7 +66,7 @@ No choque de jutsus, o elemento combinado conta como os elementos que o formam. 
 Lançar um jutsu contra um alvo é um ataque como outro qualquer: um teste da perícia do jutsu, com a proficiência se houver, contra a Defesa do alvo. Jutsus de área não rolam ataque; cada alvo resiste contra a DT do Jutsu (cap. 2).
 
 :::na-mesa{titulo="Lançar um jutsu"}
-- **Alvo único:** 1d20 + perícia do jutsu (+ proficiência) contra a Defesa do alvo
+- **Alvo único:** 1d20 + perícia do jutsu (+ proficiência) contra a Defesa do alvo; acerta se passar dela (empate erra)
 - **Área:** sem ataque; cada alvo faz uma Resistência contra a DT do Jutsu
 :::
 

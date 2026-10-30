@@ -125,7 +125,7 @@ Debaixo d'água, o ar acaba. Um ninja prende o fôlego por 10 rodadas, mais 2 po
 
 ## Ataque e Defesa {#ataque-e-defesa}
 
-Atacar é fazer um teste da perícia do golpe contra a Defesa do alvo, somando a proficiência quando ela vale. Se o total igualar ou passar a Defesa, o ataque acerta. A Defesa de todo ninja parte de 10 e soma a Acrobacia; contra ilusões, o que conta é a Defesa Mental, que parte de 10 e soma a Percepção.
+Atacar é fazer um teste da perícia do golpe contra a Defesa do alvo, somando a proficiência quando ela vale. O ataque só acerta se o total passar a Defesa: empatar não basta, e o golpe que só iguala raspa sem efeito. A Defesa de todo ninja parte de 10 e soma a Acrobacia; contra ilusões, o que conta é a Defesa Mental, que parte de 10 e soma a Percepção, e o empate também fica com quem defende.
 
 | Tipo | Role o d20 e some | Defesa do alvo |
 | - | - | - |
@@ -145,7 +145,7 @@ Algumas técnicas e especializações dão Redução de Dano (RD), que é subtra
 
 :::na-mesa{titulo="Ataque e dano"}
 - **Ataque:** 1d20 + perícia do golpe + proficiência, se houver
-- **Acerta:** total igual ou maior que a Defesa do alvo
+- **Acerta:** total maior que a Defesa (ou a Defesa Mental) do alvo; empate erra
 - **Jutsu de área:** sem ataque; cada alvo resiste contra a DT do Jutsu (normalmente Acrobacia); quem passa sofre metade do dano e ignora as condições
 - **Alvos adicionais:** custo uma vez; um ataque por alvo; um dano só, para cada alvo atingido
 - **Dano com armas e desarmado:** + FOR corpo a corpo, + AGI à distância

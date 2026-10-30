@@ -126,8 +126,8 @@ Os seis atributos do sistema.
 | Perícia | Valor total: atributo ligado + pontos de treino |
 | Crítico | 20 natural no d20: sucesso espetacular; em ataques, os dados de dano dobram |
 | Falha crítica | 1 natural no d20: o ataque erra; em testes, o Mestre narra uma complicação |
-| Defesa | 10 + Acrobacia (o alvo de ataques físicos, de armas e de Ninjutsu) |
-| Defesa Mental | 10 + Percepção (o alvo de ataques de Genjutsu) |
+| Defesa | 10 + Acrobacia (o alvo de ataques físicos, de armas e de Ninjutsu); o ataque precisa passar dela, e o empate erra |
+| Defesa Mental | 10 + Percepção (o alvo de ataques de Genjutsu); o ataque precisa passar dela, e o empate erra |
 | DT do Jutsu | 10 + bônus de rank (E +0, D +1, C +2, B +3, A +4, S +5) + atributo-chave do lançador, mais a proficiência no jutsu, se houver |
 | Resistência | Teste do alvo contra a DT de um efeito (por exemplo, 1d20 + VIG contra veneno) |
 | Esquiva Ativa | Reação e 10 PE: 1d20 + Acrobacia substitui a Defesa contra um ataque |
