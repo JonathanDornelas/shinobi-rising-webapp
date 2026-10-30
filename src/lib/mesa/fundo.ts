@@ -40,3 +40,18 @@ export function fundoPorFator(fator: number, proporcao: number, c: CenaParaFundo
 	const h = w * proporcao;
 	return { fundo_escala: r2(w), fundo_x: r2((caixa.w - w) / 2), fundo_y: r2((caixa.h - h) / 2) };
 }
+
+/**
+ * Alinhar à grade (vista de cima): o Mestre ajusta uma moldura de n × n quadrados sobre n × n quadrados desenhados no
+ * mapa. A imagem é escalada para essa moldura virar n metros de lado, e deslocada para o canto dela cair num cruzamento
+ * da grade. `fundo` é onde a imagem está agora (canto e largura, em metros); a moldura também está em metros.
+ */
+export function alinharFundo(fundo: { x: number; y: number; w: number }, caixa: { x: number; y: number; lado: number; n: number }) {
+	const k = caixa.n / caixa.lado;
+	const w = Math.min(1000, Math.max(1, fundo.w * k));
+	const kk = w / fundo.w;
+	const gx = Math.round(caixa.x);
+	const gy = Math.round(caixa.y);
+	const lim = (v: number) => Math.min(1000, Math.max(-1000, v));
+	return { fundo_escala: r2(w), fundo_x: r2(lim(gx - (caixa.x - fundo.x) * kk)), fundo_y: r2(lim(gy - (caixa.y - fundo.y) * kk)) };
+}

@@ -92,7 +92,11 @@ export class UiMesa {
 		}, 3500);
 	}
 
+	/** Alinhar à grade (ferramenta do fundo): a moldura de n × n quadrados que o Mestre ajusta sobre o mapa, em metros. */
+	alinhar = $state<{ x: number; y: number; lado: number; n: number } | null>(null);
+
 	escolher(f: Ferramenta) {
+		if (f !== 'fundo') this.alinhar = null;
 		this.ferramenta = f;
 		this.pop = f === 'medir' ? 'medir' : f === 'lapis' || f === 'apontar' ? 'lapis' : f === 'alfinete' || f === 'texto' || f === 'nevoa' || f === 'objeto' ? f : null;
 		if (f !== 'mover' && f !== 'alfinete' && f !== 'texto' && f !== 'objeto') this.objSel = null;

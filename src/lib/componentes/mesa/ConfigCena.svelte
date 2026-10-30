@@ -150,6 +150,16 @@
 	const fator = $derived(fatorDosQuadrados(cena.fundo_escala, paraFundo));
 	const fundoNoPadrao = $derived(!cena.fundo_escala && !cena.fundo_x && !cena.fundo_y);
 	const paraFator = (f: number) => fundoPorFator(f, proporcaoImagem ?? 1, paraFundo);
+	/**
+	 * Alinhar arrastando: abre no quadro uma moldura de 3 × 3 quadrados no meio da cena; o Mestre a casa com os quadrados
+	 * do mapa e aplica. O fundo precisa estar em escala (com a proporção da imagem), não esticado na cena.
+	 */
+	async function alinharNoQuadro() {
+		if (!cena.fundo_escala && !(await mesa.patchCena({ fundo_escala: larguraPadrao, fundo_x: 0, fundo_y: 0 }))) return;
+		ui.modal = null;
+		ui.escolher('fundo');
+		ui.alinhar = { x: Math.max(0, cena.largura / 2 - 1.5), y: Math.max(0, cena.altura / 2 - 1.5), lado: 3, n: 3 };
+	}
 	/** Voltar ao padrão: o fundo cobre a cena inteira, como antes de mexer. */
 	const quadradosPadrao = () => mesa.patchCena({ fundo_escala: null, fundo_x: 0, fundo_y: 0 });
 
@@ -356,6 +366,7 @@
 							<button type="button" class="h-10 w-10 flex-none border-2 border-b3 bg-b1 font-pixel text-base font-bold disabled:opacity-50" aria-label="Quadrados maiores" disabled={fator >= 4} onclick={() => mesa.patchCena(paraFator(Math.round(fator * 20 + 1) / 20))}>+</button>
 							<span class="w-14 flex-none text-right font-pixel text-sm font-bold" aria-live="polite">{Math.round(fator * 100)}%</span>
 							<button type="button" class={botao} disabled={fundoNoPadrao} title="Volta o mapa a cobrir a cena inteira" onclick={quadradosPadrao}>Padrão</button>
+							{#if !iso}<button type="button" class={botao} title="Casar a grade com o mapa arrastando uma moldura de quadrados" onclick={alinharNoQuadro}>Alinhar arrastando</button>{/if}
 						</div>
 					{/if}
 				</div>
@@ -447,6 +458,7 @@
 							</label>
 							<div class="border-t-2 border-b2 pt-3">
 								<button type="button" class={botao} onclick={() => ((ui.modal = null), ui.escolher('fundo'), ui.avisar('Arraste para mover o fundo; Esc volta a mover os tokens.'))}>Mover o fundo no quadro</button>
+								{#if !iso}<button type="button" class="{botao} ml-2" title="Uma moldura de quadrados que você casa com os quadrados desenhados no mapa" onclick={alinharNoQuadro}>Alinhar a grade ao mapa</button>{/if}
 							</div>
 						{/if}
 					</div>

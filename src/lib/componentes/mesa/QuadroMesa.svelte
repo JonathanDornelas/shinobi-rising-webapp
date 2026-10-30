@@ -9,6 +9,7 @@
 	import { custoCaminho, custoTrechos, infoMovimento, provocaReacao, quadradosEmVolta, trechos, type Quadrado } from '#lib/mesa/geometria.ts';
 	import type { Mesa } from '#lib/mesa/mesa.svelte.ts';
 	import { urlImagemMesa } from '#lib/mesa/imagens.ts';
+	import { alinharFundo } from '#lib/mesa/fundo.ts';
 	import { retanguloFoco, type FocoArte } from '#lib/bestiario/foco.ts';
 	import { calcularMolde, nomeCurto, type UiMesa } from '#lib/mesa/ui.svelte.ts';
 	import type { MesaObjeto } from '#lib/supabase/banco.ts';
@@ -77,6 +78,18 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		im.src = u;
 	});
 	let arrastoFundo = $state<{ mx: number; my: number; dx: number; dy: number } | null>(null);
+	/** Alinhar à grade: arrastando a moldura inteira, a borda da direita, a de baixo ou o canto. */
+	/** Aplica a moldura: a imagem escala e anda para os quadrados dela virarem quadrados da grade (grava na cena). */
+	async function aplicarAlinhamento() {
+		const a = ui.alinhar;
+		if (!a) return;
+		const c = caixaFundo;
+		if (await mesa.patchCena(alinharFundo({ x: c.x, y: c.y, w: c.w }, a))) {
+			ui.alinhar = null;
+			ui.avisar('Grade alinhada ao mapa. Ajuste de novo quando quiser.');
+		}
+	}
+	let arrastoAlinhar: { modo: 'mover' | 'direita' | 'baixo' | 'canto'; mx: number; my: number; caixa: { x: number; y: number; lado: number; n: number } } | null = null;
 	const caixaFundo = $derived.by(() => {
 		// isométrica: a arte (já isométrica, subida pelo Mestre) fica na tela, a partir do canto de cima à esquerda do mapa
 		if (iso) {
@@ -354,9 +367,19 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 				else if (k) ui.avisar('Esse traço é de outra pessoa.');
 				break;
 			}
-			case 'fundo':
+			case 'fundo': {
+				const a = ui.alinhar;
+				if (a && !iso && mesa.mestre) {
+					const h = F(14);
+					const dentro = p.mx >= a.x - h && p.mx <= a.x + a.lado + h && p.my >= a.y - h && p.my <= a.y + a.lado + h;
+					const naDireita = Math.abs(p.mx - (a.x + a.lado)) <= h;
+					const embaixo = Math.abs(p.my - (a.y + a.lado)) <= h;
+					if (dentro) arrastoAlinhar = { modo: naDireita && embaixo ? 'canto' : naDireita ? 'direita' : embaixo ? 'baixo' : 'mover', mx: p.mx, my: p.my, caixa: { ...a } };
+					break;
+				}
 				if (mesa.mestre && cena?.fundo_escala) arrastoFundo = iso ? { mx: p.tx, my: p.ty, dx: 0, dy: 0 } : { mx: p.mx, my: p.my, dx: 0, dy: 0 };
 				break;
+			}
 			case 'terreno':
 				if (!mesa.mestre || mesa.somenteLeitura) break;
 				pintura = { por: !mesa.terreno.has(`${g[0]},${g[1]}`), feitos: new Set(mesa.terreno) };
@@ -503,6 +526,14 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			if (mudou) nevoaTemp = emRuns(n.grade, L, A);
 			return;
 		}
+		if (arrastoAlinhar) {
+			const d = arrastoAlinhar;
+			const dx = p.mx - d.mx;
+			const dy = p.my - d.my;
+			const lado = (v: number) => Math.max(0.2, d.caixa.lado + v);
+			ui.alinhar = d.modo === 'mover' ? { ...d.caixa, x: d.caixa.x + dx, y: d.caixa.y + dy } : { ...d.caixa, lado: lado(d.modo === 'direita' ? dx : d.modo === 'baixo' ? dy : (dx + dy) / 2) };
+			return;
+		}
 		if (arrastoFundo)return void (arrastoFundo = { ...arrastoFundo, dx: (iso ? p.tx : p.mx) - arrastoFundo.mx, dy: (iso ? p.ty : p.my) - arrastoFundo.my });
 		const m = ui.mira;
 		if (m && !m.fixa) {
@@ -555,6 +586,10 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			const runs = emRuns(grade, L, A);
 			nevoaTemp = null;
 			void mesa.patchCena({ nevoa: true, reveladas: runs });
+			return;
+		}
+		if (arrastoAlinhar) {
+			arrastoAlinhar = null;
 			return;
 		}
 		if (arrastoFundo) {
@@ -851,8 +886,22 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			{#if cena?.grade !== false}
 				<!-- dois traçados (linhas de 1 m e de 5 m) com 1 px fixo: o zoom e a câmera não mexem na grade -->
 				<path d={grade1} fill="none" style="stroke: var(--fg)" stroke-opacity={0.09 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" />
-				<path d={grade5} fill="none" style="stroke: var(--fg)" stroke-opacity={0.18 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" />
-			{/if}
+					<path d={grade5} fill="none" style="stroke: var(--fg)" stroke-opacity={0.18 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" />
+				{/if}
+				{#if ui.alinhar && !iso && mesa.mestre}
+					{@const a = ui.alinhar}
+					<!-- alinhar à grade: a moldura de n × n quadrados que o Mestre casa com os quadrados desenhados no mapa -->
+					<g pointer-events="none">
+						<rect x={a.x} y={a.y} width={a.lado} height={a.lado} style="fill: color-mix(in srgb, var(--acc) 12%, transparent); stroke: var(--acc)" stroke-width={F(3)} />
+						{#each Array.from({ length: a.n - 1 }, (_, i) => (a.lado * (i + 1)) / a.n) as d (d)}
+							<line x1={a.x + d} y1={a.y} x2={a.x + d} y2={a.y + a.lado} style="stroke: var(--acc)" stroke-width={F(1.5)} stroke-dasharray="{F(5)} {F(4)}" />
+							<line x1={a.x} y1={a.y + d} x2={a.x + a.lado} y2={a.y + d} style="stroke: var(--acc)" stroke-width={F(1.5)} stroke-dasharray="{F(5)} {F(4)}" />
+						{/each}
+						<rect x={a.x + a.lado - F(4)} y={a.y + a.lado / 2 - F(10)} width={F(8)} height={F(20)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(1.5)} />
+						<rect x={a.x + a.lado / 2 - F(10)} y={a.y + a.lado - F(4)} width={F(20)} height={F(8)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(1.5)} />
+						<rect x={a.x + a.lado - F(8)} y={a.y + a.lado - F(8)} width={F(16)} height={F(16)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
+					</g>
+				{/if}
 
 			{#if terrenoVisivel.size}
 				{@const d = [...terrenoVisivel].map((k) => `M${k.replace(',', ' ')}h1v1h-1z`).join('')}
@@ -1095,6 +1144,19 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			</g>
 		{/if}
 	</svg>
+	{#if ui.alinhar && !iso && mesa.mestre}
+		{@const a = ui.alinhar}
+		<div class="absolute top-3 left-1/2 z-20 flex w-max max-w-[calc(100%-24px)] -translate-x-1/2 flex-wrap items-center gap-2 border-2 border-[var(--acc)] bg-sup px-3 py-2 shadow-[4px_4px_0_var(--sombra)]" role="group" aria-label="Alinhar a grade ao mapa">
+			<span class="max-w-[36ch] text-xs leading-4">Cubra {a.n} × {a.n} quadrados do mapa com a moldura: arraste o meio para mover e a borda ou o canto para casar o tamanho.</span>
+			<span class="flex items-center border-2 border-b3" role="group" aria-label="Quadrados na moldura">
+				<button type="button" class="h-9 w-8 font-pixel text-base font-bold disabled:opacity-40" aria-label="Menos quadrados" disabled={a.n <= 1} onclick={() => (ui.alinhar = { ...a, n: a.n - 1 })}>−</button>
+				<span class="min-w-12 text-center font-pixel text-xs font-bold">{a.n} × {a.n}</span>
+				<button type="button" class="h-9 w-8 font-pixel text-base font-bold disabled:opacity-40" aria-label="Mais quadrados" disabled={a.n >= 10} onclick={() => (ui.alinhar = { ...a, n: a.n + 1 })}>+</button>
+			</span>
+			<button type="button" class="btn-jogo btn-primario min-h-9 text-xs" onclick={aplicarAlinhamento}>APLICAR</button>
+			<button type="button" class="btn-jogo btn-fantasma min-h-9 text-xs" onclick={() => (ui.alinhar = null)}>CANCELAR</button>
+		</div>
+	{/if}
 	{#if rascunho}
 		<!-- texto novo: digite e Enter põe no quadro (Shift+Enter quebra a linha; Esc cancela) -->
 		<textarea

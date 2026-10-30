@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { caixaDaCenaEmQuadrados, fatorDosQuadrados, fundoPorFator, larguraPadraoDoFundo } from './fundo.ts';
+import { alinharFundo, caixaDaCenaEmQuadrados, fatorDosQuadrados, fundoPorFator, larguraPadraoDoFundo } from './fundo.ts';
 import { cfgIso, projetar } from './projecao.ts';
 
 const topo = { largura: 40, altura: 30, iso: false, razao: 2 };
@@ -49,5 +49,20 @@ describe('fundo da cena: tamanho dos quadrados', () => {
 	it('ida e volta: o fator gravado volta a ser o mesmo', () => {
 		for (const c of [topo, iso, { ...iso, razao: 1.75 }])
 			for (const f of [0.25, 0.5, 1, 1.5, 3, 4]) expect(fatorDosQuadrados(fundoPorFator(f, 0.6, c).fundo_escala, c)).toBeCloseTo(f, 1);
+	});
+});
+
+describe('alinhar o fundo à grade', () => {
+	it('a moldura de 3 quadrados do mapa vira 3 m de grade, com o canto num cruzamento', () => {
+		// a imagem tem 40 m de largura no canto (0, 0); os quadrados desenhados medem 1,5 m: a moldura de 3 tem 4,5 m em (10,2; 6,7)
+		const r = alinharFundo({ x: 0, y: 0, w: 40 }, { x: 10.2, y: 6.7, lado: 4.5, n: 3 });
+		const k = 3 / 4.5;
+		expect(r.fundo_escala).toBeCloseTo(40 * k, 1);
+		// o canto da moldura, depois de escalado, cai em (10, 7)
+		expect(r.fundo_x + 10.2 * k).toBeCloseTo(10, 1);
+		expect(r.fundo_y + 6.7 * k).toBeCloseTo(7, 1);
+	});
+	it('moldura que já casa com a grade não mexe na imagem', () => {
+		expect(alinharFundo({ x: 2, y: 3, w: 30 }, { x: 5, y: 6, lado: 3, n: 3 })).toEqual({ fundo_escala: 30, fundo_x: 2, fundo_y: 3 });
 	});
 });

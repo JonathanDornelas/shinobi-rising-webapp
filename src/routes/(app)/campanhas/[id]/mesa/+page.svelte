@@ -1268,6 +1268,11 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 <button type="button" class="h-9 w-9 border-r-2 border-b3 font-pixel text-base font-bold" aria-label="Girar a vista para a esquerda" title="Girar a vista (teclas [ e ])" onclick={() => ui.girarIso(cena.iso_rotacao, -1)}>⟲</button>
 						<button type="button" class="h-9 w-9 border-r-2 border-b3 font-pixel text-base font-bold" aria-label="Girar a vista para a direita" title="Girar a vista (teclas [ e ])" onclick={() => ui.girarIso(cena.iso_rotacao, 1)}>⟳</button>
 					{/if}
+					{#if data.mestre && cena}
+						<button type="button" class="flex h-9 w-9 items-center justify-center border-r-2 border-b3 {cena.grade !== false ? '' : 'text-mut'}" aria-pressed={cena.grade !== false} aria-label="Linhas da grade" title={cena.grade !== false ? 'Esconder as linhas da grade (as medidas e as posições continuam valendo)' : 'Mostrar as linhas da grade'} onclick={() => mesa.patchCena({ grade: cena.grade === false })}>
+							<svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true" class="fill-none stroke-current stroke-[1.5]"><path d="M1 5.5h14M1 10.5h14M5.5 1v14M10.5 1v14" />{#if cena.grade === false}<path d="M2 14L14 2" stroke-width="2" />{/if}</svg>
+						</button>
+					{/if}
 					<button type="button" class="h-9 w-9 border-r-2 border-b3 font-pixel text-base font-bold" aria-label="Diminuir zoom" onclick={() => quadro?.zoomEm(1 / 1.25)}>−</button>
 					<span class="min-w-[52px] text-center font-pixel text-[13px] font-bold">{Math.round(ui.zoom * 100)}%</span>
 					<button type="button" class="h-9 w-9 border-l-2 border-b3 font-pixel text-base font-bold" aria-label="Aumentar zoom" onclick={() => quadro?.zoomEm(1.25)}>+</button>
