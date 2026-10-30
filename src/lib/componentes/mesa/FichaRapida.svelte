@@ -43,6 +43,7 @@
 	import { lembrarTamanho } from '#lib/mesa/tamanho.ts';
 	import { efeitoKkg, kkgLigada } from '#lib/personagem/kkg.ts';
 	import MenuVantagem from '../rolagens/MenuVantagem.svelte';
+	import MenuCritico from '../rolagens/MenuCritico.svelte';
 	import MetaJutsu, { type Meta as MetaCurta } from '../jutsu/MetaJutsu.svelte';
 	import { alcanceCurto, areaCurta, resistenciaCurta } from '#lib/jutsus/meta.ts';
 	import SavesMorte from '../ficha/SavesMorte.svelte';
@@ -81,10 +82,10 @@
 	/** O uso de um jutsu em botões: ATAQUE (ou USAR, sem rolagem de ataque) paga o custo; DANO ou CURA rola o efeito. */
 	function botoesUso(j: JutsuMesa, falta = false) {
 		const custo = j.custo ? `Gasta ${j.custo} ${j.unidade}` : '';
-		const b: { n: string; acao: () => void; dica?: string; desab?: boolean; vantagem?: boolean }[] = [
+		const b: { n: string; acao: () => void; dica?: string; desab?: boolean; vantagem?: boolean; critico?: boolean }[] = [
 			{ n: j.ataque ? 'ATAQUE' : 'USAR', acao: () => acoes.usarJutsu(token, j, 'ataque'), desab: falta, dica: [custo, j.ataque ? 'rola o ataque' : ''].filter(Boolean).join(' e ') || undefined, vantagem: !!j.ataque }
 		];
-		if (j.dano) b.push({ n: 'DANO', acao: () => acoes.usarJutsu(token, j, 'dano'), dica: `Rola o dano${j.resistencia ? ` (${j.resistencia})` : ''}; crítico se o último ataque foi 20 natural` });
+		if (j.dano) b.push({ n: 'DANO', acao: () => acoes.usarJutsu(token, j, 'dano'), dica: `Rola o dano${j.resistencia ? ` (${j.resistencia})` : ''}; crítico sozinho se o último ataque foi 20 natural, ou escolha na setinha`, critico: true });
 		else if (j.cura) b.push({ n: 'CURA', acao: () => acoes.usarJutsu(token, j, 'dano') });
 		return b;
 	}
@@ -327,7 +328,7 @@
 	{#if m.texto}<span class="text-xs leading-4 text-mut">{m.texto}</span>{/if}
 {/snippet}
 
-{#snippet linhaAcao(icone: string | null, nome: string, meta: Meta, aviso: string | null, botoes: { n: string; acao: () => void; dica?: string; desab?: boolean; vantagem?: boolean }[], ver?: () => void, hud?: JutsuMesa | ArmaMesa, exprs?: { ataque: string | null; dano: string | null })}
+{#snippet linhaAcao(icone: string | null, nome: string, meta: Meta, aviso: string | null, botoes: { n: string; acao: () => void; dica?: string; desab?: boolean; vantagem?: boolean; critico?: boolean }[], ver?: () => void, hud?: JutsuMesa | ArmaMesa, exprs?: { ataque: string | null; dano: string | null })}
 	<!-- o nome e os dados ocupam a largura; os botões ficam à direita e descem para a linha de baixo quando não cabem -->
 	<div class="flex flex-wrap items-center gap-x-2 gap-y-1.5 border-b-2 border-b1 px-3 py-2" role="group" onmouseenter={(e) => hud && mostrarDica(hud, e.currentTarget)} onmouseleave={esconderDica}>
 		{#if icone}<Icone id={icone} class="self-start" />{/if}
@@ -361,6 +362,11 @@
 						<span class="flex">
 							<button type="button" class="{btn} border-r-0 {celular ? 'min-h-11 px-2.5' : ''}" title={b.dica} disabled={b.desab} onclick={b.acao}>{b.n}</button>
 							<MenuVantagem aoAtacar={b.acao} rotulo={b.n} desab={b.desab} class="{btn} border-l-2 border-l-b3 px-1.5 {celular ? 'min-h-11 px-2' : ''}" />
+						</span>
+					{:else if b.critico}
+						<span class="flex">
+							<button type="button" class="{btn} border-r-0 {celular ? 'min-h-11 px-2.5' : ''}" title={b.dica} disabled={b.desab} onclick={b.acao}>{b.n}</button>
+							<MenuCritico aoRolar={b.acao} rotulo={b.n} desab={b.desab} class="{btn} border-l-2 border-l-b3 px-1.5 {celular ? 'min-h-11 px-2' : ''}" />
 						</span>
 					{:else}
 						<button type="button" class="{btn} {celular ? 'min-h-11 px-2.5' : ''}" title={b.dica} disabled={b.desab} onclick={b.acao}>{b.n}</button>
@@ -591,7 +597,7 @@
 					{#each dados.ficha.armas as a, i (`${i}:${a.nome}`)}
 						{@render linhaAcao(null, a.nome, { alcance: a.rotuloAlcance }, null, [
 							{ n: 'MEDIR', acao: () => acoes.aneis(token, a.alcance <= 2 ? a.alcance : 0, a.alcance > 2 ? [{ r: a.alcance, rotulo: `${a.nome} · ${a.alcance} m` }] : [], a.nome) },
-							{ n: 'ATAQUE', acao: () => acoes.atacar(token, a, 'ataque'), vantagem: true }, ...(a.dano ? [{ n: 'DANO', acao: () => acoes.atacar(token, a, 'dano'), dica: 'Crítico se o último ataque foi 20 natural' }] : [])
+							{ n: 'ATAQUE', acao: () => acoes.atacar(token, a, 'ataque'), vantagem: true }, ...(a.dano ? [{ n: 'DANO', acao: () => acoes.atacar(token, a, 'dano'), dica: 'Crítico sozinho se o último ataque foi 20 natural; na setinha, escolha crítico ou normal', critico: true }] : [])
 						], undefined, a)}
 					{/each}
 					<!-- os jutsus ficam só na aba JUTSUS; aqui, as armas, as manobras de todo ninja e as medidas -->
@@ -607,7 +613,7 @@
 					{#each dados.extras.ataques as a, i (`${i}:${a.nome}`)}
 						{@render linhaAcao(null, a.nome, { alcance: a.rotuloAlcance }, null, [
 							{ n: 'MEDIR', acao: () => acoes.aneis(token, a.alcance <= 2 ? Math.max(a.alcance, alcanceCorpo(token.tamanho)) : 0, a.alcance > 2 ? [{ r: a.alcance, rotulo: `${a.nome} · ${a.alcance} m` }] : [], a.nome) },
-							{ n: 'ATAQUE', acao: () => acoes.atacar(token, a, 'ataque'), vantagem: true }, ...(a.dano ? [{ n: 'DANO', acao: () => acoes.atacar(token, a, 'dano'), dica: 'Crítico se o último ataque foi 20 natural' }] : [])
+							{ n: 'ATAQUE', acao: () => acoes.atacar(token, a, 'ataque'), vantagem: true }, ...(a.dano ? [{ n: 'DANO', acao: () => acoes.atacar(token, a, 'dano'), dica: 'Crítico sozinho se o último ataque foi 20 natural; na setinha, escolha crítico ou normal', critico: true }] : [])
 						], undefined, a)}
 					{/each}
 					<div class="flex flex-wrap gap-1 px-3 py-2">
@@ -625,7 +631,7 @@
 				{:else if aba === 'acoes' && dados.tipo === 'npc' && ataqueNpc}
 					{@render linhaAcao(null, 'Ataque', { texto: ataqueNpc.texto || 'Sem ataque anotado' }, null, [
 						...(ataqueNpc.ataque ? [{ n: 'ATAQUE', acao: () => acoes.rolar(token, { expr: ataqueNpc!.ataque!, rotulo: `Ataque · ${token.nome}`, partes: [] }, 'ataque', true), vantagem: true }] : []),
-						...(ataqueNpc.dano ? [{ n: 'DANO', acao: () => acoes.rolar(token, { expr: ataqueNpc!.dano!, rotulo: `Dano · ${token.nome}`, partes: [] }, 'dano', false) }] : [])
+						...(ataqueNpc.dano ? [{ n: 'DANO', acao: () => acoes.rolar(token, { expr: ataqueNpc!.dano!, rotulo: `Dano · ${token.nome}`, partes: [] }, 'dano', false), dica: 'Na setinha, escolha crítico ou normal', critico: true }] : [])
 					], undefined, undefined, ataqueNpc.ataque || ataqueNpc.dano ? { ataque: ataqueNpc.ataque, dano: ataqueNpc.dano } : undefined)}
 					{#if dados.npc.especial}{@render linhaAcao(null, 'Especial', { texto: dados.npc.especial }, null, [])}{/if}
 					<div class="flex flex-wrap gap-1 px-3 py-2">

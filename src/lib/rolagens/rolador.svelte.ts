@@ -65,6 +65,17 @@ export type EstiloDados = 'pixel' | '3d';
 
 class Rolador {
 	modo = $state<Exclude<ModoRolagem, 'critico'>>('normal');
+	/**
+	 * Crítico escolhido na setinha do DANO (true crítico, false normal): vale só para a próxima rolagem de dano, e some
+	 * em 5 s para não sobrar para um dano de outra hora se a ação não chegar a rolar.
+	 */
+	private criticoEscolhido: { valor: boolean; ate: number } | null = null;
+	get critico(): boolean | null {
+		return this.criticoEscolhido && Date.now() < this.criticoEscolhido.ate ? this.criticoEscolhido.valor : null;
+	}
+	set critico(valor: boolean | null) {
+		this.criticoEscolhido = valor === null ? null : { valor, ate: Date.now() + 5000 };
+	}
 	oculta = $state(false);
 	/** Rótulo da rolagem em andamento (o dado gira). */
 	rolando = $state<string | null>(null);
@@ -168,6 +179,12 @@ class Rolador {
 	}
 
 	async rolar(p: PedidoRolagem): Promise<Rolagem | null> {
+		if (p.tipo === 'dano' && this.critico !== null) {
+			// a escolha manual vale no lugar do último ataque; o rótulo diz qual foi
+			const base = p.rotulo.replace(/\s*\(crítico\)/i, '');
+			p = { ...p, critico: this.critico, rotulo: this.critico ? `${base.slice(0, 70)} (crítico)` : base };
+			this.critico = null;
+		}
 		if (this.rolando) return null;
 		const expressao = paraServidor(p.expressao);
 		this.rolando = p.rotulo;

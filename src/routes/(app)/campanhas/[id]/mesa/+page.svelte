@@ -41,6 +41,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	import SeloDt from '#lib/componentes/regras/SeloDt.svelte';
 	import BarraMinimizadas, { type Minimizada } from '#lib/componentes/mesa/BarraMinimizadas.svelte';
 	import MenuVantagem from '#lib/componentes/rolagens/MenuVantagem.svelte';
+	import MenuCritico from '#lib/componentes/rolagens/MenuCritico.svelte';
 	import { urlRetrato } from '#lib/personagem/retrato.ts';
 	import { TAMANHOS } from '#lib/bestiario/npc.ts';
 	import { alcanceCorpo } from '#lib/mesa/geometria.ts';
@@ -372,10 +373,11 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	 */
 	async function danoEmVarios(t: MesaToken, j: JutsuMesa, quem: MesaToken[], origem: string) {
 		const nomes = quem.map((q) => nomeCurto(q.nome)).join(', ');
+		const escolhido = rolador.critico;
 		await rolar(t, { ...j.dano!, rotulo: `${j.dano!.rotulo} → ${nomes}`.slice(0, 80) }, 'dano', false, origem);
 		const comCritico = quem.filter((q) => criticos.delete(`${t.id}:${j.slug}>${q.id}`));
 		const dados = j.dano!.expr.match(/\d+d\d+/gi)?.join('+');
-		if (comCritico.length && dados) await rolar(t, { expr: dados, rotulo: `Crítico · ${j.nome} → ${comCritico.map((q) => nomeCurto(q.nome)).join(', ')}`.slice(0, 80), partes: [['Dados extras do crítico', dados]] }, 'dano', false, origem);
+		if (escolhido === null && comCritico.length && dados) await rolar(t, { expr: dados, rotulo: `Crítico · ${j.nome} → ${comCritico.map((q) => nomeCurto(q.nome)).join(', ')}`.slice(0, 80), partes: [['Dados extras do crítico', dados]] }, 'dano', false, origem);
 	}
 	async function pagarEAtacar(t: MesaToken, j: JutsuMesa, alvos: string, varios: MesaToken[] = []) {
 		const f = fichaDe(t);
@@ -945,7 +947,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 							<button type="button" class="btn-jogo btn-primario min-h-9 {molde.ok ? '' : 'opacity-80'}" title={j.custo ? `Gasta ${j.custo} ${j.unidade}${j.ataque ? ' e rola o ataque' : ''}. Fora do alcance é aviso, não bloqueio.` : 'Fora do alcance é aviso, não bloqueio.'} onclick={() => usarJutsu(molde.lancador, j, 'ataque')}>{j.ataque ? 'ATAQUE' : 'USAR'}</button>
 							{#if j.ataque}<MenuVantagem aoAtacar={() => usarJutsu(molde.lancador, j, 'ataque')} rotulo="Ataque" class="btn-jogo btn-primario min-h-9 border-l-2 border-l-[var(--vermelhao-lo)] px-2 {molde.ok ? '' : 'opacity-80'}" />{/if}
 						</span>
-						{#if j.dano || j.cura}<button type="button" class="btn-jogo min-h-9 border-2 border-field" title="Rola o {j.dano ? 'dano (crítico se o ataque foi 20 natural)' : 'a cura'} nos alvos da régua" onclick={() => usarJutsu(molde.lancador, j, 'dano')}>{j.dano ? 'DANO' : 'CURA'}</button>{/if}
+						{#if j.dano || j.cura}<span class="flex"><button type="button" class="btn-jogo min-h-9 border-2 border-field {j.dano ? 'border-r-0' : ''}" title="Rola o {j.dano ? 'dano (crítico sozinho se o ataque foi 20 natural; na setinha, crítico ou normal)' : 'a cura'} nos alvos da régua" onclick={() => usarJutsu(molde.lancador, j, 'dano')}>{j.dano ? 'DANO' : 'CURA'}</button>{#if j.dano}<MenuCritico aoRolar={() => usarJutsu(molde.lancador, j, 'dano')} rotulo="Dano" class="btn-jogo min-h-9 border-2 border-field px-2" />{/if}</span>{/if}
 					{/if}
 				</div>
 			</section>
@@ -1084,7 +1086,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 										<button type="button" class="btn-jogo btn-primario min-h-11 flex-1" onclick={() => usarJutsu(molde.lancador, ui.mira!.jutsu, 'ataque')}>{ui.mira.jutsu.ataque ? 'ATAQUE' : 'USAR'}</button>
 										{#if ui.mira.jutsu.ataque}<MenuVantagem aoAtacar={() => usarJutsu(molde.lancador, ui.mira!.jutsu, 'ataque')} rotulo="Ataque" class="btn-jogo btn-primario min-h-11 border-l-2 border-l-[var(--vermelhao-lo)] px-3" />{/if}
 									</span>
-									{#if ui.mira.jutsu.dano || ui.mira.jutsu.cura}<button type="button" class="btn-jogo min-h-11 flex-1 border-2 border-field" onclick={() => usarJutsu(molde.lancador, ui.mira!.jutsu, 'dano')}>{ui.mira.jutsu.dano ? 'DANO' : 'CURA'}</button>{/if}
+									{#if ui.mira.jutsu.dano || ui.mira.jutsu.cura}<span class="flex flex-1"><button type="button" class="btn-jogo min-h-11 flex-1 border-2 border-field {ui.mira.jutsu.dano ? 'border-r-0' : ''}" onclick={() => usarJutsu(molde.lancador, ui.mira!.jutsu, 'dano')}>{ui.mira.jutsu.dano ? 'DANO' : 'CURA'}</button>{#if ui.mira.jutsu.dano}<MenuCritico aoRolar={() => usarJutsu(molde.lancador, ui.mira!.jutsu, 'dano')} rotulo="Dano" class="btn-jogo min-h-11 border-2 border-field px-3" />{/if}</span>{/if}
 								{/if}
 							<button type="button" class="min-h-11 w-12 border-2 border-field font-pixel text-sm" aria-label="Cancelar régua" onclick={() => (ui.mira = null)}>✕</button>
 						</div>
