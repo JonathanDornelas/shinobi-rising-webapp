@@ -3,7 +3,7 @@
 	// no valor sorteado no servidor, do mesmo jeito em todas as telas, e a legenda mostra quem rolou e o total.
 	// Depois de uns segundos, tudo some.
 	// Sem WebGL (ou se a biblioteca falhar), a rolagem volta para o aviso em pixel.
-	import { untrack } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 	import { conta, destaque } from '#lib/rolagens/expressoes.ts';
 	import { corDaRolagem } from '#lib/rolagens/registro.ts';
@@ -13,6 +13,8 @@
 	/** Quanto tempo os dados ficam parados na mesa com a legenda. */
 	const FICA = 2800;
 	const SUMIR = 400;
+	/** Com outras rolagens na fila, a legenda fica só este tanto antes dos próximos dados caírem. */
+	const NA_FILA = 900;
 
 	let camada = $state<HTMLDivElement>();
 	let visivel = $state(false);
@@ -23,6 +25,17 @@
 	$effect(() => {
 		const l = rolador.lance;
 		if (l) untrack(() => jogar(l.r));
+	});
+
+	// a biblioteca, as texturas, os sons e os shaders ficam prontos com a tela parada, antes da primeira rolagem: sem
+	// isso, o primeiro dado demora a cair (baixa tudo na hora) e engasga
+	onMount(() => {
+		if (!rolador.usar3d) return;
+		const ocioso = (f: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(f, { timeout: 4000 }) : setTimeout(f, 1500));
+		ocioso(() => {
+			if (!rolador.usar3d || rolador.lance) return;
+			void import('#lib/rolagens/dados3d.ts').then((m) => m.temWebgl() && m.preaquecer(camada!, rolador.som)).catch(() => null);
+		});
 	});
 
 	async function jogar(r: Rolagem) {
@@ -39,6 +52,9 @@
 			rolador.liberar(r.id);
 			if (minha !== vez) return;
 			legenda = r;
+			// a vez dos dados passa para a próxima rolagem da fila (depois de um instante com a legenda), ou a mesa fica livre
+			if (rolador.temFila) return void (tempo = setTimeout(() => minha === vez && rolador.proximo(), NA_FILA));
+			rolador.proximo();
 			// rolagem sem dados que a mesa desenhe (só números, d2, d3): fica só a legenda
 			tempo = setTimeout(() => {
 				if (minha !== vez) return;

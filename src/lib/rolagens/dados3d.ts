@@ -73,6 +73,8 @@ type Caixa = {
 let caixa: Caixa | null = null;
 let preparando: Promise<Caixa> | null = null;
 let comSom = false;
+/** A cor dos dados já aplicada: trocar de cor refaz as texturas, então só troca quando muda. */
+let corAtual: string | null = null;
 
 /** Cria a cena uma vez só, no elemento fixo que cobre a tela (o canvas é transparente). */
 function preparar(onde: HTMLElement): Promise<Caixa> {
@@ -157,16 +159,16 @@ export function temWebgl() {
 export async function lancar(onde: HTMLElement, detalhe: TermoRolagem[], opcoes: { cor?: string | null; som: boolean; semente: string }) {
 	const n = notacao3d(detalhe);
 	if (!n) return false;
+	// o preparo do aquecimento termina antes (a biblioteca e os sons); o lance invisível dele, não: este o substitui
+	if (aquecendo) await aquecendo;
+	lanceDeAquecimento = false;
 	const c = await preparar(onde);
 	if (opcoes.som && !comSom) {
 		await c.loadSounds().catch(() => null);
 		comSom = true;
 	}
 	c.sounds = opcoes.som;
-	const fundo = opcoes.cor ?? '#5c1e15';
-	await c.updateConfig({
-		theme_customColorset: { name: `shinobi-${fundo}`, foreground: '#f4e4d6', background: fundo, outline: '#1b1210', texture: 'none', material: 'plastic' }
-	});
+	await pintar(c, opcoes.cor ?? COR_PADRAO);
 	// (a leitura que a biblioteca devolve não serve para conferir o d4: ela não relê o d4 depois de trocar as faces;
 	// a face de cima está certa, conferida nos prints)
 	// o lançamento é calculado de forma síncrona no começo de roll(): só ali o Math.random vira o sorteio com
@@ -196,6 +198,42 @@ export async function lancar(onde: HTMLElement, detalhe: TermoRolagem[], opcoes:
 	await rolando;
 	return true;
 }
+
+const COR_PADRAO = '#5c1e15';
+async function pintar(c: Caixa, fundo: string) {
+	if (fundo === corAtual) return;
+	await c.updateConfig({
+		theme_customColorset: { name: `shinobi-${fundo}`, foreground: '#f4e4d6', background: fundo, outline: '#1b1210', texture: 'none', material: 'plastic' }
+	});
+	corAtual = fundo;
+}
+
+/**
+ * Deixa tudo pronto antes da primeira rolagem (com a tela parada): a biblioteca, a fonte, as texturas na cor padrão,
+ * os sons e os shaders. Os shaders só compilam quando o dado aparece pela primeira vez, então um lance de cada dado
+ * cai na camada ainda invisível, sem som, e some. Uma rolagem de verdade que chegue no meio toma o lugar dele.
+ */
+export function preaquecer(onde: HTMLElement, som: boolean) {
+	aquecendo ??= (async () => {
+		const c = await preparar(onde);
+		await pintar(c, COR_PADRAO);
+		if (som && !comSom) {
+			await c.loadSounds().catch(() => null);
+			comSom = true;
+		}
+		c.sounds = false;
+		lanceDeAquecimento = true;
+		void c
+			.roll('1d4+1d6+1d8+1d10+1d12+1d20')
+			.then(() => lanceDeAquecimento && c.clearDice())
+			.catch(() => null)
+			.finally(() => (lanceDeAquecimento = false));
+	})().catch(() => null);
+	return aquecendo;
+}
+let aquecendo: Promise<unknown> | null = null;
+/** O lance invisível do aquecimento ainda está na mesa (uma rolagem de verdade o substitui). */
+let lanceDeAquecimento = false;
 
 /** Tira os dados da mesa (depois de mostrar o resultado). */
 export function limpar() {

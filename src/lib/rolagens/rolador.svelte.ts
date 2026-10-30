@@ -58,6 +58,8 @@ const GIRO = 900;
 const AVISO = 7000;
 /** Teto da espera pelos dados 3D: se eles não avisarem que pararam (biblioteca lenta, aba em segundo plano), a rolagem entra no registro assim mesmo. */
 const ESPERA_DADOS = 10000;
+/** Quantas rolagens esperam a vez dos dados 3D; passou disso, a mais antiga vai para o registro sem animação. */
+const MAX_FILA = 4;
 const JANELA_PADRAO: Janela = { aberta: false, minimizada: false, x: null, y: null, w: 420, h: 640, alturaMovel: 420 };
 
 /** Como as rolagens aparecem na tela. */
@@ -99,13 +101,21 @@ class Rolador {
 	estilo = $state<EstiloDados>('3d');
 	/** Som das batidas dos dados 3D. */
 	som = $state(true);
-	/** Rolagem que os dados 3D vão jogar agora (n muda a cada lance, mesmo da mesma rolagem). */
+	/** Rolagem que os dados 3D estão jogando agora (n muda a cada lance, mesmo da mesma rolagem). */
 	lance = $state<{ r: Rolagem; n: number } | null>(null);
+	/**
+	 * As rolagens que esperam a vez dos dados 3D (duas pessoas rolando juntas, ataque e dano em seguida): uma de cada
+	 * vez, na ordem em que chegaram, para nenhuma interromper a outra nem sumir.
+	 */
+	private fila: Rolagem[] = [];
+	/** Rolagens minhas a caminho do servidor, e a chave de cada uma (o clique duplo na mesma rolagem vale uma vez). */
+	private pendentes = 0;
+	private emVoo = new Set<string>();
 	/** Ficha aberta agora (para o PD gasto no registro aparecer nela sem recarregar). */
 	fichaAberta: { id: string; aoGastarPd: (pd: number) => void } | null = null;
 
 	/** Rolagens que os dados 3D ainda estão jogando: o resultado só entra no registro quando eles param (suspense). */
-	private retidas = new Map<string, { r: Rolagem; limite: ReturnType<typeof setTimeout> }>();
+	private retidas = new Map<string, { r: Rolagem; limite: ReturnType<typeof setTimeout> | null }>();
 	/** Quem espera os dados pararem (o rolar() de quem rolou: a ficha, o dano e o PD só mudam depois). */
 	private esperas = new Map<string, () => void>();
 
@@ -127,9 +137,16 @@ class Rolador {
 	get usar3d() {
 		return this.estilo === '3d' && !matchMedia('(prefers-reduced-motion: reduce)').matches;
 	}
+	/** Sem dados 3D: a rolagem da vez e as da fila vão direto para o registro, e quem esperava segue. */
+	private soltarTudo() {
+		this.lance = null;
+		this.fila = [];
+		for (const id of [...this.retidas.keys()]) this.liberar(id);
+	}
 	escolherEstilo(estilo: EstiloDados) {
 		this.estilo = estilo;
 		if (estilo === '3d') this.dispensar();
+		else this.soltarTudo();
 		gravar('dados', { estilo, som: this.som });
 	}
 	alternarSom(som = !this.som) {
@@ -185,29 +202,43 @@ class Rolador {
 			p = { ...p, critico: this.critico, rotulo: this.critico ? `${base.slice(0, 70)} (crítico)` : base };
 			this.critico = null;
 		}
-		if (this.rolando) return null;
 		const expressao = paraServidor(p.expressao);
+		// outra rolagem minha ainda indo não bloqueia esta (as duas valem e os dados jogam uma depois da outra); só o
+		// clique duplo, a mesma rolagem ainda a caminho, é ignorado
+		const chave = [p.campanha, p.rotulo, expressao, p.personagem ?? '', p.npc ?? '', p.tipo ?? ''].join('|');
+		if (this.emVoo.has(chave)) return null;
+		this.emVoo.add(chave);
+		this.pendentes++;
 		this.rolando = p.rotulo;
 		this.ladosRolando = Number(/\d+d(\d+)/i.exec(expressao)?.[1] ?? 20);
 		this.aviso = null;
 		const modo: ModoRolagem = p.critico ? 'critico' : (p.modo ?? (p.d20 ? this.modo : 'normal'));
-		const [{ data, error }] = await Promise.all([
-			supabase().rpc('rolar', {
-				campanha: p.campanha,
-				expressao,
-				rotulo: p.rotulo,
-				personagem: p.personagem ?? null,
-				modo,
-				oculta: p.oculta ?? this.oculta,
-				npc: p.npc ?? null,
-				tipo: p.tipo ?? 'livre',
-				origem: p.origem ?? null,
-				partes: (p.partes ?? []) as unknown as Json
-			}),
-			// com os dados 3D, eles giram no lugar do dado do aviso: sem espera
-			new Promise((ok) => setTimeout(ok, this.usar3d || matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : GIRO))
-		]);
-		this.rolando = null;
+		let resposta: { data: Rolagem | null; error: { message: string } | null };
+		try {
+			[resposta] = await Promise.all([
+				supabase().rpc('rolar', {
+					campanha: p.campanha,
+					expressao,
+					rotulo: p.rotulo,
+					personagem: p.personagem ?? null,
+					modo,
+					oculta: p.oculta ?? this.oculta,
+					npc: p.npc ?? null,
+					tipo: p.tipo ?? 'livre',
+					origem: p.origem ?? null,
+					partes: (p.partes ?? []) as unknown as Json
+				}),
+				// com os dados 3D, eles giram no lugar do dado do aviso: sem espera
+				new Promise((ok) => setTimeout(ok, this.usar3d || matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : GIRO))
+			]);
+		} catch {
+			resposta = { data: null, error: null };
+		} finally {
+			this.emVoo.delete(chave);
+			this.pendentes--;
+			if (!this.pendentes) this.rolando = null;
+		}
+		const { data, error } = resposta;
 		if (error || !data) {
 			toasts.mostrar(error?.message && !/^[A-Z_]+$/.test(error.message) ? error.message : 'Não foi possível rolar. Confira a conexão.', 'erro');
 			return null;
@@ -226,11 +257,42 @@ class Rolador {
 		return new Promise((ok) => this.esperas.set(id, ok));
 	}
 
+	/** Põe a rolagem na vez dos dados 3D: joga agora se a mesa está livre, senão espera na fila. */
+	private enfileirar(r: Rolagem) {
+		if (!this.lance) return this.comecar(r);
+		this.fila.push(r);
+		// fila longa demais (muita gente rolando junto): a mais antiga que espera vai direto para o registro, sem animação
+		if (this.fila.length > MAX_FILA) this.liberar(this.fila.shift()!.id);
+	}
+
+	/** Os dados 3D jogam esta rolagem; se eles não avisarem que pararam, a rolagem sai sozinha e a fila anda. */
+	private comecar(r: Rolagem) {
+		this.lance = { r, n: (this.lance?.n ?? 0) + 1 };
+		const h = this.retidas.get(r.id);
+		if (h)
+			h.limite = setTimeout(() => {
+				this.liberar(r.id);
+				if (this.lance?.r.id === r.id) this.proximo();
+			}, ESPERA_DADOS);
+	}
+
+	/** Os dados 3D terminaram a rolagem da vez (Dados3D chama): a próxima da fila, ou a mesa fica livre. */
+	proximo() {
+		const r = this.fila.shift();
+		if (r) this.comecar(r);
+		else this.lance = null;
+	}
+
+	/** Há rolagens esperando a vez dos dados 3D? */
+	get temFila() {
+		return this.fila.length > 0;
+	}
+
 	/** Os dados 3D pararam: o resultado entra no registro e quem esperava segue. */
 	liberar(id: string) {
 		const h = this.retidas.get(id);
 		if (h) {
-			clearTimeout(h.limite);
+			if (h.limite) clearTimeout(h.limite);
 			this.retidas.delete(id);
 			this.guardar(h.r, true);
 		}
@@ -262,20 +324,19 @@ class Rolador {
 
 	/** Uma rolagem nova (minha, ou de outra pessoa pelo Realtime). */
 	receber(r: Rolagem, mostrar: boolean) {
-		if (!this.recentes.some((x) => x.id === r.id) && !this.retidas.has(r.id)) {
-			// os dados 3D vão jogar esta rolagem (a minha, mesmo chegando pelo Realtime antes da resposta, ou a de outra pessoa): o
-			// resultado só vai para o registro quando eles pararem, para não estragar o suspense
-			const vaiJogar = this.usar3d && ((mostrar && !this.rolando) || (r.autor_id === this.eu && !!this.rolando));
-			if (vaiJogar) {
-				this.retidas.set(r.id, { r, limite: setTimeout(() => this.liberar(r.id), ESPERA_DADOS) });
-			} else this.guardar(r, mostrar);
-		}
-		if (!mostrar || this.rolando) return;
-		// dados 3D: todas as rolagens visíveis rolam na tela, como numa mesa de verdade
-		if (this.usar3d) {
-			this.lance = { r, n: (this.lance?.n ?? 0) + 1 };
+		const nova = !this.recentes.some((x) => x.id === r.id) && !this.retidas.has(r.id);
+		// dados 3D: todas as rolagens visíveis rolam na tela, como numa mesa de verdade, e a minha começa assim que chega
+		// (pelo Realtime ou pela resposta, o que vier antes). O resultado só vai para o registro quando os dados param,
+		// para não estragar o suspense
+		if (nova && this.usar3d && (mostrar || (r.autor_id === this.eu && this.pendentes > 0))) {
+			this.retidas.set(r.id, { r, limite: null });
+			this.enfileirar(r);
 			return;
 		}
+		if (nova) this.guardar(r, mostrar);
+		if (!mostrar || this.usar3d) return;
+		// aviso em pixel: não cobre o dado girando da minha rolagem a caminho (a dos outros fica no registro)
+		if (this.pendentes && r.autor_id !== this.eu) return;
 		// rolagens dos outros não pulam na tela quando a janela de rolagens já está aberta
 		if (r.autor_id !== this.eu && this.janela.aberta && !this.janela.minimizada) return;
 		this.aviso = r;
@@ -312,8 +373,7 @@ class Rolador {
 	/** Os dados 3D falharam (sem WebGL): esta rolagem e as próximas vão para o aviso em pixel. */
 	voltarAoPixel(r: Rolagem | null) {
 		this.estilo = 'pixel';
-		this.lance = null;
-		for (const id of [...this.retidas.keys()]) this.liberar(id);
+		this.soltarTudo();
 		if (r) this.receber(r, true);
 	}
 
