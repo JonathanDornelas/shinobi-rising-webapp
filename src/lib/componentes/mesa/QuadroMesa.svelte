@@ -84,40 +84,68 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	 * - arrastar o miolo desliza a grade sobre o mapa, para as linhas caírem nas do piso desenhado;
 	 * - a bolinha do primeiro quadrado aumenta ou diminui a imagem (presa no canto 0, 0 da grade) até o piso casar com os
 	 *   quadrados;
-	 * - a bolinha no cabo, acima da borda de cima, gira a imagem em volta do centro da grade (a grade fica reta; Shift
-	 *   gira de 15 em 15 graus).
+	 * - a bolinha no cabo, acima da borda de cima, gira a grade em volta do centro dela por cima do mapa, que fica reto
+	 *   (Shift: de 15 em 15 graus).
 	 * Por baixo, o que muda é a cena (tamanho) e onde o fundo fica nela; a câmera anda junto quando a grade anda.
 	 */
 	type Ajuste =
 		| { tipo: 'borda'; x: -1 | 0 | 1; y: -1 | 0 | 1; ret: { x0: number; y0: number; x1: number; y1: number } }
 		| { tipo: 'mover'; sx: number; sy: number; v0: [number, number]; img: { x: number; y: number; w: number } }
 		| { tipo: 'quadrado'; o: [number, number]; q: [number, number]; img: { x: number; y: number; w: number } }
-		| { tipo: 'girar'; centro: [number, number]; a0: number; rot0: number; img: { x: number; y: number; w: number; h: number } };
+		| { tipo: 'girar'; centro: [number, number]; a0: number; rot0: number; v0: [number, number]; img: { x: number; y: number; w: number; h: number } };
 	type Alca = { tipo: 'borda'; x: -1 | 0 | 1; y: -1 | 0 | 1 } | { tipo: 'mover' } | { tipo: 'quadrado' } | { tipo: 'girar' };
 	let ajuste = $state<Ajuste | null>(null);
 	let alcaSob = $state<Alca | null>(null);
 	/** A configuração da projeção para outro tamanho de cena (mesma vista e mesmo canto). */
 	const cfgPara = (l: number, a: number) => cfgIso(l, a, { tw: 1, eh: 0.25, razao: cena?.iso_razao ?? 2, rotacao: cfgI.rotacao });
-	/** O que gravar para a imagem ficar na caixa `t` (em tela) numa cena de `l` × `a`. */
+	/** O que gravar para a imagem ficar na caixa `t` (em tela, sem o giro) numa cena de `l` × `a`. */
 	function fundoEm(t: { x: number; y: number; w: number }, l: number, a: number): Partial<MesaCena> {
 		const b = iso ? caixaDaCena(cfgPara(l, a), 0, 0) : { x: 0, y: 0 };
 		const r = (v: number) => Math.round(v * 1000) / 1000;
 		return { fundo_escala: r(Math.min(1000, Math.max(1, t.w))), fundo_x: r(t.x - b.x), fundo_y: r(t.y - b.y) };
 	}
-	/** O ponto da grade (em metros da tela) visto na tela, em pixels do quadro. */
+	/**
+	 * A grade girada sobre o mapa. O fundo guarda o quanto a imagem está girada em relação à grade (`fundo_rotacao`) e o
+	 * quadro inteiro é desenhado girado ao contrário, em volta da origem da tela: a imagem aparece reta e a grade (com os
+	 * tokens, o terreno e tudo o que segue nela) aparece inclinada por cima do mapa. Os dados não mudam, só o desenho.
+	 * "Vista" é a tela já girada: a câmera (ui.vx, ui.vy) e o zoom são medidos nela.
+	 */
+	const giroVista = $derived(-(cena?.fundo_rotacao ?? 0));
+	function girarVetor(x: number, y: number, graus: number): [number, number] {
+		if (!graus) return [x, y];
+		const t = (graus * Math.PI) / 180;
+		return [x * Math.cos(t) - y * Math.sin(t), x * Math.sin(t) + y * Math.cos(t)];
+	}
+	/** Da tela (sem o giro) para a vista, e de volta. */
+	const naVista = (tx: number, ty: number) => girarVetor(tx, ty, giroVista);
+	const daVista = (vx: number, vy: number) => girarVetor(vx, vy, -giroVista);
+	/** O ponto da grade visto na tela, em pixels do quadro. */
 	const naTela = (gx: number, gy: number): [number, number] => {
-		const [tx, ty] = paraTela(gx, gy);
-		return [(tx - ui.vx) * s, (ty - ui.vy) * s];
+		const [vx, vy] = naVista(...paraTela(gx, gy));
+		return [(vx - ui.vx) * s, (vy - ui.vy) * s];
 	};
+	type Caixa = { x: number; y: number; w: number; h: number };
+	/** A imagem como aparece na vista: reta, com o centro levado pelo giro. */
+	function imagemNaVista(): Caixa {
+		const c = caixaFundo;
+		const [cx, cy] = naVista(c.x + c.w / 2, c.y + c.h / 2);
+		return { x: cx - c.w / 2, y: cy - c.h / 2, w: c.w, h: c.h };
+	}
+	/** O que gravar para a imagem aparecer na caixa `b` da vista, numa cena `l` × `a` com a imagem girada `rot` graus. */
+	function fundoDaVista(b: { x: number; y: number; w: number }, l: number, a: number, rot = cena?.fundo_rotacao ?? 0): Partial<MesaCena> {
+		const h = b.w * proporcaoFundo;
+		const [cx, cy] = girarVetor(b.x + b.w / 2, b.y + h / 2, rot);
+		return fundoEm({ x: cx - b.w / 2, y: cy - h / 2, w: b.w }, l, a);
+	}
 	// ao ligar o modo com o fundo esticado na cena, ele passa a ter tamanho próprio (no lugar em que está): só assim a grade
 	// pode mudar por baixo dele sem a imagem esticar junto
 	$effect(() => {
 		if (!ui.bordas || !mesa.mestre || !cena?.fundo || cena.fundo_escala) return;
 		untrack(() => void mesa.patchCena(fundoEm(caixaFundo, L, A)));
 	});
-	/** Dá para girar o fundo (a cena tem a coluna da rotação e há uma imagem). */
+	/** Dá para girar a grade (a cena tem a coluna do giro e há uma imagem para casar). */
 	const podeGirar = $derived(!!fundo && cena?.fundo_rotacao !== undefined);
-	/** A bolinha de girar: num cabo para fora do meio da borda de cima da grade (em metros da tela). */
+	/** A bolinha de girar: num cabo para fora do meio da borda de cima da grade (em metros da tela, sem o giro). */
 	function alcaDeGirar(): { base: [number, number]; ponta: [number, number] } {
 		const base = paraTela(L / 2, 0);
 		const [cx, cy] = paraTela(L / 2, A / 2);
@@ -148,31 +176,33 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		return null;
 	}
 	function comecarAjuste(a: Alca, p: { sx: number; sy: number }) {
-		const img = { x: caixaFundo.x, y: caixaFundo.y, w: caixaFundo.w };
+		const img = imagemNaVista();
 		if (a.tipo === 'borda') ajuste = { ...a, ret: { x0: 0, y0: 0, x1: L, y1: A } };
 		else if (a.tipo === 'mover') ajuste = { tipo: 'mover', sx: p.sx, sy: p.sy, v0: [ui.vx, ui.vy], img };
 		else if (a.tipo === 'quadrado') ajuste = { tipo: 'quadrado', o: naTela(0, 0), q: naTela(1, 1), img };
 		else {
 			const centro = naTela(L / 2, A / 2);
-			ajuste = { tipo: 'girar', centro, a0: Math.atan2(p.sy - centro[1], p.sx - centro[0]), rot0: cena?.fundo_rotacao ?? 0, img: { ...img, h: caixaFundo.h } };
+			ajuste = { tipo: 'girar', centro, a0: Math.atan2(p.sy - centro[1], p.sx - centro[0]), rot0: cena?.fundo_rotacao ?? 0, v0: [ui.vx, ui.vy], img };
 		}
 	}
 	/** A imagem maior ou menor (fator `r`), presa no canto 0, 0 da grade; a grade e a câmera não mexem. */
 	function escalarImagem(r: number, img: { x: number; y: number; w: number }) {
-		const [ox, oy] = paraTela(0, 0);
-		mesa.previa(fundoEm({ x: ox + (img.x - ox) * r, y: oy + (img.y - oy) * r, w: img.w * r }, L, A));
+		const [ox, oy] = naVista(...paraTela(0, 0));
+		mesa.previa(fundoDaVista({ x: ox + (img.x - ox) * r, y: oy + (img.y - oy) * r, w: img.w * r }, L, A));
 	}
 	/**
-	 * A imagem girada para `rot` graus (era `rot0`), em volta do centro da grade: o centro da imagem gira em volta dele e
-	 * a imagem gira em volta do próprio centro o mesmo tanto, então tudo gira junto como uma folha só.
+	 * A grade girada sobre o mapa, com a imagem chegando a `rot` graus em relação a ela (era `rot0`). A vista gira, a câmera
+	 * anda para o centro da grade ficar parado na tela, e a imagem fica parada e reta.
 	 */
-	function girarImagem(rot: number, rot0: number, img: { x: number; y: number; w: number; h: number }) {
-		const [px, py] = paraTela(L / 2, A / 2);
-		const t = ((rot - rot0) * Math.PI) / 180;
-		const [cx, cy] = [img.x + img.w / 2 - px, img.y + img.h / 2 - py];
-		const [nx, ny] = [px + cx * Math.cos(t) - cy * Math.sin(t), py + cx * Math.sin(t) + cy * Math.cos(t)];
-		const graus = ((((rot + 180) % 360) + 360) % 360) - 180;
-		mesa.previa({ ...fundoEm({ x: nx - img.w / 2, y: ny - img.h / 2, w: img.w }, L, A), fundo_rotacao: Math.round(graus * 100) / 100 });
+	function girarGrade(rot: number, rot0: number, v0: [number, number], img: Caixa) {
+		const graus = Math.round((((((rot + 180) % 360) + 360) % 360) - 180) * 100) / 100;
+		const c = paraTela(L / 2, A / 2);
+		const [ax, ay] = girarVetor(...c, -rot0);
+		const [bx, by] = girarVetor(...c, -graus);
+		const dv = [bx - ax, by - ay];
+		ui.vx = v0[0] + dv[0];
+		ui.vy = v0[1] + dv[1];
+		mesa.previa({ ...fundoDaVista({ x: img.x + dv[0], y: img.y + dv[1], w: img.w }, L, A, graus), fundo_rotacao: graus });
 	}
 	function moverAjuste(p: { sx: number; sy: number; mx: number; my: number }, passo15 = false) {
 		const a = ajuste;
@@ -190,7 +220,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 			const d = [(p.sx - a.sx) / s, (p.sy - a.sy) / s];
 			ui.vx = a.v0[0] - d[0];
 			ui.vy = a.v0[1] - d[1];
-			mesa.previa(fundoEm({ x: a.img.x - d[0], y: a.img.y - d[1], w: a.img.w }, L, A));
+			mesa.previa(fundoDaVista({ x: a.img.x - d[0], y: a.img.y - d[1], w: a.img.w }, L, A));
 		} else if (a.tipo === 'quadrado') {
 			// a bolinha para fora aumenta a imagem e para dentro diminui: o fator é a projeção do mouse na diagonal do
 			// primeiro quadrado (1 = onde a bolinha estava)
@@ -198,10 +228,11 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 			const r = ((p.sx - a.o[0]) * ux + (p.sy - a.o[1]) * uy) / (ux * ux + uy * uy || 1);
 			escalarImagem(Math.min(20, Math.max(0.05, r)), a.img);
 		} else if (a.tipo === 'girar') {
-			// o quanto o mouse girou em volta do centro da grade; com Shift, de 15 em 15 graus
+			// a grade gira o tanto que o mouse girou em volta do centro dela (a imagem, ao contrário em relação à grade);
+			// com Shift, a grade fica de 15 em 15 graus
 			const giro = ((Math.atan2(p.sy - a.centro[1], p.sx - a.centro[0]) - a.a0) * 180) / Math.PI;
-			const rot = passo15 ? Math.round((a.rot0 + giro) / 15) * 15 : a.rot0 + giro;
-			girarImagem(rot, a.rot0, a.img);
+			const grade = passo15 ? Math.round((giro - a.rot0) / 15) * 15 : giro - a.rot0;
+			girarGrade(-grade, a.rot0, a.v0, a.img);
 		}
 	}
 	async function soltarAjuste() {
@@ -215,11 +246,13 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		const { x0, y0, x1, y1 } = a.ret;
 		if (x0 === 0 && y0 === 0 && x1 === L && y1 === A) return;
 		const [l, alt, dx, dy] = [x1 - x0, y1 - y0, -x0, -y0];
-		// o canto 0, 0 de antes vira o (dx, dy) da cena nova: a câmera anda o tanto que ele andaria na tela, e a imagem também
+		// o canto 0, 0 de antes vira o (dx, dy) da cena nova: a câmera anda o tanto que ele andaria na tela (girado como a
+		// vista), e a imagem também
 		const [ax, ay] = paraTela(0, 0);
 		const [bx, by] = iso ? projetar(dx, dy, 0, cfgPara(l, alt)) : [dx, dy];
-		const dv = [bx - ax, by - ay];
-		const novoFundo = cena.fundo ? fundoEm({ x: caixaFundo.x + dv[0], y: caixaFundo.y + dv[1], w: caixaFundo.w }, l, alt) : {};
+		const dv = naVista(bx - ax, by - ay);
+		const img = imagemNaVista();
+		const novoFundo = cena.fundo ? fundoDaVista({ x: img.x + dv[0], y: img.y + dv[1], w: img.w }, l, alt) : {};
 		const gravou = mesa.reenquadrarCena(dx, dy, l, alt, novoFundo);
 		ui.vx += dv[0];
 		ui.vy += dv[1];
@@ -229,17 +262,17 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 			ui.vy -= dv[1];
 		}
 	}
-	/** Ajuste fino do giro (o ⟲ e o ⟳ do aviso), ou volta a 0. */
-	function girarUmPouco(graus: number | null) {
+	/** Ajuste fino do giro da grade (o ⟲ e o ⟳ do aviso: graus da grade, + no sentido do relógio), ou volta a 0. */
+	function girarUmPouco(grade: number | null) {
 		if (!cena?.fundo || !podeGirar) return;
 		const rot0 = cena.fundo_rotacao ?? 0;
-		girarImagem(graus === null ? 0 : rot0 + graus, rot0, { x: caixaFundo.x, y: caixaFundo.y, w: caixaFundo.w, h: caixaFundo.h });
+		girarGrade(grade === null ? 0 : rot0 - grade, rot0, [ui.vx, ui.vy], imagemNaVista());
 		void mesa.patchCena({ fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, fundo_rotacao: cena.fundo_rotacao });
 	}
 	/** Ajuste fino do tamanho da imagem (o − e o + do aviso). */
 	function imagemUmPouco(r: number) {
 		if (!cena?.fundo) return;
-		escalarImagem(r, { x: caixaFundo.x, y: caixaFundo.y, w: caixaFundo.w });
+		escalarImagem(r, imagemNaVista());
 		void mesa.patchCena({ fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y });
 	}
 	const caixaFundo = $derived.by(() => {
@@ -319,8 +352,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		const r = svg!.getBoundingClientRect();
 		const sx = e.clientX - r.left;
 		const sy = e.clientY - r.top;
-		const tx = sx / s + ui.vx;
-		const ty = sy / s + ui.vy;
+		const [tx, ty] = daVista(sx / s + ui.vx, sy / s + ui.vy);
 		const [mx, my] = daTela(tx, ty);
 		return { sx, sy, tx, ty, mx, my };
 }
@@ -363,23 +395,27 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	/** Ajustar à tela; na abertura, sem deixar os tokens minúsculos (zoom mínimo de 67%, centrado no grupo). */
 	export function ajustar(inicial = false) {
 		if (!W || !H) return;
-		const area = iso ? caixaDaCena(cfgI, 0.5, 1) : { x: 0, y: 0, w: L, h: A };
+		const a0 = iso ? caixaDaCena(cfgI, 0.5, 1) : { x: 0, y: 0, w: L, h: A };
+		// a caixa da cena na vista (com a grade girada, a caixa dos quatro cantos girados)
+		const cantos = [naVista(a0.x, a0.y), naVista(a0.x + a0.w, a0.y), naVista(a0.x, a0.y + a0.h), naVista(a0.x + a0.w, a0.y + a0.h)];
+		const [xs, ys] = [cantos.map((c) => c[0]), cantos.map((c) => c[1])];
+		const area = { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) };
 		const caber = Math.min(W / (area.w * BASE), H / (area.h * BASE)) * 0.96;
 		ui.zoom = Math.max(0.25, Math.min(4, inicial ? Math.max(caber, 0.9) : caber));
 		const ts = mesa.tokens.filter((t) => t.visivel || mesa.mestre);
-		const cs = ts.map((t) => paraTela(t.x + t.tamanho / 2, t.y + t.tamanho / 2));
+		const cs = ts.map((t) => naVista(...paraTela(t.x + t.tamanho / 2, t.y + t.tamanho / 2)));
 		const [cx, cy] = inicial && ts.length && caber < 0.9 ? [cs.reduce((a, c) => a + c[0], 0) / cs.length, cs.reduce((a, c) => a + c[1], 0) / cs.length] : [area.x + area.w / 2, area.y + area.h / 2];
 		ui.vx = cx - W / (BASE * ui.zoom) / 2;
 		ui.vy = cy - H / (BASE * ui.zoom) / 2;
 	}
 	export function centralizar(t: MesaToken) {
-		const [px, py] = paraTela(t.x + t.tamanho / 2, t.y + t.tamanho / 2);
+		const [px, py] = naVista(...paraTela(t.x + t.tamanho / 2, t.y + t.tamanho / 2));
 		ui.vx = px - W / s / 2;
 		ui.vy = py - H / s / 2;
 }
 	/** Quadrado no centro da vista (onde entra quem é posto sem posição). */
 	export function centroDaVista(): [number, number] {
-		const [gx, gy] = daTela(ui.vx + W / s / 2, ui.vy + H / s / 2);
+		const [gx, gy] = daTela(...daVista(ui.vx + W / s / 2, ui.vy + H / s / 2));
 		return [Math.min(L - 1, Math.max(0, Math.floor(gx))), Math.min(A - 1, Math.max(0, Math.floor(gy)))];
 	}
 	export function zoomEm(fator: number, sx = W / 2, sy = H / 2) {
@@ -848,7 +884,8 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		if (a.tipo === 'girar') return CURSOR_GIRAR;
 		const [ox, oy] = a.tipo === 'quadrado' ? paraTela(0, 0) : paraTela(L / 2, A / 2);
 		const [px, py] = a.tipo === 'quadrado' ? paraTela(1, 1) : paraTela((L / 2) * (1 + a.x), (A / 2) * (1 + a.y));
-		const ang = ((((Math.atan2(py - oy, px - ox) * 180) / Math.PI) % 180) + 180) % 180;
+		const [vx, vy] = naVista(px - ox, py - oy);
+		const ang = ((((Math.atan2(vy, vx) * 180) / Math.PI) % 180) + 180) % 180;
 		return ang < 22.5 || ang >= 157.5 ? 'ew-resize' : ang < 67.5 ? 'nwse-resize' : ang < 112.5 ? 'ns-resize' : 'nesw-resize';
 	}
 	const cursor = $derived(
@@ -1031,7 +1068,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				<path d="M0.12 0.12l0.14 0.14M0.26 0.12l-0.14 0.14" style="stroke: var(--mesa-siena)" stroke-width="0.045" stroke-opacity="0.9" />
 			</pattern>
 		</defs>
-		<g transform="translate({-ui.vx * s} {-ui.vy * s}) scale({s}) {matrizTxt}">
+		<g transform="translate({-ui.vx * s} {-ui.vy * s}) scale({s}) {giroVista ? `rotate(${giroVista})` : ''} {matrizTxt}">
 			<rect x="0" y="0" width={L} height={A} style="fill: var(--b1)" />
 			<!-- fundo do quadro: o mapa estica na cena inteira, sob a grade -->
 				{#if fundo && iso}
@@ -1334,8 +1371,9 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		{/if}
 	</svg>
 	{#if ui.bordas && mesa.mestre}
-		<div class="absolute top-3 left-1/2 z-20 flex w-max max-w-[calc(100%-24px)] -translate-x-1/2 flex-wrap items-center gap-x-3 gap-y-1.5 border-2 border-[var(--acc)] bg-sup py-1.5 pr-1.5 pl-3 shadow-[4px_4px_0_var(--sombra)]" role="group" aria-label="Ajustar a grade ao mapa">
-			<span class="max-w-[46ch] text-xs leading-4">{fundo ? `Os quadrados não mudam de tamanho. Bordas e cantos põem ou tiram quadrados; o miolo desliza a grade sobre o mapa; a bolinha do canto aumenta ou diminui o mapa${podeGirar ? ' e a do cabo gira (Shift: de 15 em 15°)' : ''}.` : 'Bordas e cantos põem ou tiram quadrados de qualquer lado.'}</span>
+		<!-- o aviso deixa o clique passar para o quadro (as alças podem ficar embaixo dele); só os botões pegam o clique -->
+		<div class="pointer-events-none absolute top-3 left-1/2 z-20 [&_button]:pointer-events-auto flex w-max max-w-[calc(100%-24px)] -translate-x-1/2 flex-wrap items-center gap-x-3 gap-y-1.5 border-2 border-[var(--acc)] bg-sup py-1.5 pr-1.5 pl-3 shadow-[4px_4px_0_var(--sombra)]" role="group" aria-label="Ajustar a grade ao mapa">
+			<span class="max-w-[46ch] text-xs leading-4">{fundo ? `Os quadrados não mudam de tamanho. Bordas e cantos põem ou tiram quadrados; o miolo desliza a grade sobre o mapa; a bolinha do canto aumenta ou diminui o mapa${podeGirar ? ' e a do cabo gira a grade (Shift: de 15 em 15°)' : ''}.` : 'Bordas e cantos põem ou tiram quadrados de qualquer lado.'}</span>
 			<span class="font-pixel text-sm font-bold" aria-live="polite">{L} × {A}</span>
 			{#if fundo}
 				<span class="flex items-center border-2 border-b3" role="group" aria-label="Tamanho do mapa, ajuste fino">
@@ -1345,10 +1383,10 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				</span>
 			{/if}
 			{#if podeGirar}
-				<span class="flex items-center border-2 border-b3" role="group" aria-label="Giro do mapa, ajuste fino">
-					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Girar o mapa meio grau para a esquerda" title="Meio grau para a esquerda" onclick={() => girarUmPouco(-0.5)}>⟲</button>
-					<button type="button" class="min-w-12 px-1 font-pixel text-[11px] font-bold" title="Voltar o mapa a 0°" onclick={() => girarUmPouco(null)}>{(cena?.fundo_rotacao ?? 0).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}°</button>
-					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Girar o mapa meio grau para a direita" title="Meio grau para a direita" onclick={() => girarUmPouco(0.5)}>⟳</button>
+				<span class="flex items-center border-2 border-b3" role="group" aria-label="Giro da grade, ajuste fino">
+					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Girar a grade meio grau para a esquerda" title="Meio grau para a esquerda" onclick={() => girarUmPouco(-0.5)}>⟲</button>
+					<button type="button" class="min-w-12 px-1 font-pixel text-[11px] font-bold" title="Voltar a grade a 0°" onclick={() => girarUmPouco(null)}>{(giroVista || 0).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}°</button>
+					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Girar a grade meio grau para a direita" title="Meio grau para a direita" onclick={() => girarUmPouco(0.5)}>⟳</button>
 				</span>
 			{/if}
 			<button type="button" class="btn-jogo btn-primario min-h-9 text-xs" onclick={() => (ui.bordas = false)}>PRONTO</button>
@@ -1358,7 +1396,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		<!-- texto novo: digite e Enter põe no quadro (Shift+Enter quebra a linha; Esc cancela) -->
 		<textarea
 			class="absolute z-20 min-h-10 w-[240px] -translate-x-1/2 -translate-y-1/2 resize-none border-2 border-[var(--vermelhao)] bg-sup px-2 py-1.5 text-sm text-fg shadow-[4px_4px_0_var(--sombra)]"
-style="left: {(paraTela(rascunho.x, rascunho.y)[0] - ui.vx) * s}px; top: {(paraTela(rascunho.x, rascunho.y)[1] - ui.vy) * s}px; font-family: {FONTES[ui.textoNovo.fonte].familia}"
+style="left: {(naVista(...paraTela(rascunho.x, rascunho.y))[0] - ui.vx) * s}px; top: {(naVista(...paraTela(rascunho.x, rascunho.y))[1] - ui.vy) * s}px; font-family: {FONTES[ui.textoNovo.fonte].familia}"
 			rows="2"
 			maxlength="300"
 			placeholder="Digite o texto e aperte Enter"
