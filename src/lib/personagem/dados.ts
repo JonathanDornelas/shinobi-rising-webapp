@@ -168,16 +168,16 @@ export function ptDaSessao(sessao: string, semanas: number): number {
 /** Cap. 4 · Estados Especiais (ícones em static/icons/estado). */
 export const CONDICOES = [
 	{ id: 'amedrontado', nome: 'Amedrontado', efeito: 'Desvantagem em ataques enquanto vir a fonte do medo' },
-	{ id: 'atordoado', nome: 'Atordoado', efeito: 'Perde a ação primária do próximo turno e não usa Reações' },
+	{ id: 'atordoado', nome: 'Atordoado', efeito: 'Perde a ação primária do próximo turno e não usa Reações; desvantagem nas Resistências físicas' },
 	{ id: 'caido', nome: 'Caído', efeito: '-2 em ataques; corpo a corpo contra ele com vantagem' },
 	{ id: 'cego', nome: 'Cego', efeito: 'Cegueira Total; falha em testes que dependam da visão' },
-	{ id: 'controlado', nome: 'Controlado', efeito: 'Age conforme o controlador; Resistência ao fim de cada turno, sem custo (passou, age normalmente)' },
+	{ id: 'controlado', nome: 'Controlado', efeito: 'Age conforme o controlador; Resistência ao fim de cada turno, sem custo (passou, age normalmente); desvantagem nas Resistências físicas' },
 	{ id: 'desprevenido', nome: 'Desprevenido', efeito: 'Antes de agir: sem Reações e -2 na Defesa' },
 	{ id: 'em-chamas', nome: 'Em chamas', efeito: '1d6 de dano por turno até apagar' },
-	{ id: 'em-genjutsu', nome: 'Em genjutsu', efeito: 'Resistência de ESP ao fim de cada turno, sem custo (passou, age normalmente)' },
+	{ id: 'em-genjutsu', nome: 'Em genjutsu', efeito: 'Resistência de ESP ao fim de cada turno, sem custo (passou, age normalmente); desvantagem nas Resistências físicas' },
 	{ id: 'envenenado', nome: 'Envenenado', efeito: 'Dano do veneno por turno e -1 em testes' },
 	{ id: 'imobilizado', nome: 'Imobilizado', efeito: 'Não se desloca; -2 em ataques e na Defesa' },
-	{ id: 'paralisado', nome: 'Paralisado', efeito: 'Não age nem usa Reações' },
+	{ id: 'paralisado', nome: 'Paralisado', efeito: 'Não age nem usa Reações; falha nas Resistências físicas (Acrobacia, AGI, FOR)' },
 	{ id: 'sangrando', nome: 'Sangrando', efeito: '1d4 PV por turno; Medicina DT 15 estanca' }
 ] as const;
 

@@ -223,7 +223,7 @@ Os PV de um ninja dizem em que estado ele está. Acima de zero, ele luta. Em zer
 | PV atual | Estado | Efeito |
 | - | - | - |
 | Maior que 0 | Saudável (ou ferido) | Age normalmente |
-| Exatamente 0 | Inconsciente (Caído) | Cai no chão; não age nem fala. Começa a fazer Saves de Morte no próximo turno |
+| Exatamente 0 | Inconsciente (Caído) | Cai no chão; não age nem fala e falha nas Resistências físicas. Começa a fazer Saves de Morte no próximo turno |
 | Abaixo de 0, mas acima de menos a metade dos PV máximos | Morrendo | Inconsciente. Continua fazendo Saves de Morte, e cada novo dano marca 1 falha automática (2 se for crítico) |
 | Igual ou abaixo de menos a metade dos PV máximos | Morte Imediata | Sem Saves: morte instantânea por trauma massivo (com 40 PV máximos, morre em -20 PV) |
 
@@ -321,18 +321,27 @@ Um ninja atordoado, preso numa sombra ou envolto em chamas não luta como antes.
 
 | Estado | Efeito |
 | - | - |
-| Atordoado | Perde a ação primária do próximo turno e não pode usar Reações até lá |
-| Paralisado | Não pode agir nem usar Reações; ataques corpo a corpo contra ele têm vantagem |
+| Atordoado | Perde a ação primária do próximo turno e não pode usar Reações até lá; desvantagem nas Resistências físicas |
+| Paralisado | Não pode agir nem usar Reações; falha nas Resistências físicas; ataques corpo a corpo contra ele têm vantagem |
 | Imobilizado (Preso) | Não pode se deslocar; -2 em ataques e na Defesa. Pode usar a ação primária para tentar escapar, com a Resistência indicada pelo efeito |
-| Controlado | Age como o controlador determina (como no Kage Mane ou no Shintenshin); tenta se libertar com a Resistência indicada, ao fim de cada turno |
+| Controlado | Age como o controlador determina (como no Kage Mane ou no Shintenshin); tenta se libertar com a Resistência indicada, ao fim de cada turno; desvantagem nas Resistências físicas |
 | Caído | -2 em ataques; ataques corpo a corpo contra ele têm vantagem, e à distância, desvantagem. Levantar custa a ação secundária |
 | Cego | Segue as regras de Cegueira Total (Visão e Encobrimento) e falha em testes que dependam da visão |
 | Amedrontado | Desvantagem em ataques enquanto puder ver a fonte do medo; não pode se aproximar dela por vontade própria |
 | Em chamas | Sofre 1d6 de dano por turno até apagar o fogo (ação secundária, água ou rolar no chão) |
 | Envenenado | Sofre o dano do veneno a cada turno (Tabela de Venenos, cap. 11) e tem -1 em testes até ser curado |
 | Sangrando | Perde 1d4 PV por turno; um teste de Medicina (DT 15, ação primária) estanca |
-| Em Genjutsu | Percebe o que o lançador determina. Repete a Resistência de ESP ao fim de cada turno; um aliado adjacente pode gastar a ação primária e 2 PC (Kai) para dar vantagem nesse teste |
+| Em Genjutsu | Percebe o que o lançador determina. Repete a Resistência de ESP ao fim de cada turno; um aliado adjacente pode gastar a ação primária e 2 PC (Kai) para dar vantagem nesse teste; desvantagem nas Resistências físicas |
 | Desprevenido | Na primeira rodada, antes de agir, não pode usar Reações e tem -2 na Defesa |
+
+**Esquivar sem poder se mexer.** Quem não manda no próprio corpo não sai da frente de uma Bola de Fogo. As Resistências físicas, as de Acrobacia, AGI e FOR, dependem de mover o corpo a tempo: pular para fora do cone, rolar para longe da explosão, forçar a saída de uma prisão. Paralisado ou Inconsciente, o alvo falha nelas sozinho, sem rolar, e leva o dano inteiro do jutsu de área. Atordoado, Em Genjutsu ou Controlado, ele ainda se mexe por instinto, mas mal, e rola essas Resistências com desvantagem. As de VIG e de ESP não mudam, porque o corpo continua lutando contra o veneno e a mente contra a ilusão.
+
+:::na-mesa{titulo="Resistências físicas"}
+- **Quais são:** Acrobacia, AGI e FOR
+- **Paralisado ou Inconsciente:** falha sem rolar; contra dano em área, leva o dano inteiro
+- **Atordoado, Em Genjutsu ou Controlado:** desvantagem
+- **VIG e ESP:** sem mudança
+:::
 
 **Sair de um estado.** A Resistência que livra de um estado, como a de quem está Em Genjutsu ou Controlado ao fim de cada turno, não custa ação nem chakra. Quem passa se liberta na hora e volta a agir normalmente, com todas as ações e Reações, sem esperar um turno a mais. O Imobilizado é a exceção: tentar escapar custa a ação primária, como diz a tabela.
 
