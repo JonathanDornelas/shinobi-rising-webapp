@@ -31,6 +31,7 @@
 		pastas = $bindable(),
 		subDe,
 		celular = false,
+		embutido = false,
 		onAbrir,
 		onColocar,
 		onMoverNpc,
@@ -44,6 +45,8 @@
 		pastas: NpcPasta[];
 		subDe: (t: MesaToken) => string;
 		celular?: boolean;
+		/** Dentro do painel da esquerda com as abas Elenco e Cena: sem cabeçalho e ocupando a largura dele. */
+		embutido?: boolean;
 		onAbrir: (t: MesaToken) => void;
 		/** Põe na cena um personagem, NPC ou pasta inteira (sem posição: perto do centro da vista). */
 		onColocar: (dados: string, x?: number, y?: number) => void;
@@ -187,8 +190,8 @@
 	</div>
 {/snippet}
 
-<aside aria-label="Elenco" class="flex min-h-0 flex-col bg-b2 {celular ? 'h-full w-full' : 'w-[280px] flex-none border-r-2 border-b3'}">
-	<div class="flex h-11 flex-none items-center gap-2 border-b-2 border-b3 bg-b0 pr-1.5 pl-3">
+<aside aria-label="Elenco" class="flex min-h-0 flex-col bg-b2 {celular || embutido ? 'h-full w-full flex-1' : 'w-[280px] flex-none border-r-2 border-b3'}">
+	<div class="{embutido ? 'hidden' : 'flex'} h-11 flex-none items-center gap-2 border-b-2 border-b3 bg-b0 pr-1.5 pl-3">
 		<img src="/icons/nav/ic-nav-npcs-32.png" width="32" height="32" alt="" class="[image-rendering:pixelated]" />
 		<span class="flex-1 font-pixel text-[13px] leading-none font-bold tracking-[0.1em] text-title">ELENCO</span>
 		<button type="button" class="h-8 w-8 font-pixel text-sm" aria-label={celular ? 'Fechar Elenco' : 'Recolher Elenco'} title={celular ? 'Fechar' : 'Recolher'} onclick={() => (onFechar ? onFechar() : (ui.elencoAberto = false))}>{celular ? '✕' : '«'}</button>

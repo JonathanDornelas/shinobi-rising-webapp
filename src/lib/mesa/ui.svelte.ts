@@ -77,6 +77,8 @@ export class UiMesa {
 	aviso = $state<{ texto: string; t: number } | null>(null);
 	anuncio = $state('');
 	elencoAberto = $state(true);
+	/** O painel da esquerda mostra o Elenco ou as configurações da cena (o Mestre ajusta vendo o quadro). */
+	ladoEsquerdo = $state<'elenco' | 'cena'>('elenco');
 	painelAberto = $state(true);
 	abaPainel = $state<'rolagens' | 'iniciativa'>('rolagens');
 	naoVistas = $state(0);
@@ -92,8 +94,8 @@ export class UiMesa {
 		}, 3500);
 	}
 
-	/** Alinhar à grade (ferramenta do fundo): a moldura de n × n quadrados que o Mestre ajusta sobre o mapa, em metros. */
-	alinhar = $state<{ x: number; y: number; lado: number; n: number } | null>(null);
+	/** Redimensionar a grade (ferramenta do fundo): o quadrado-âncora da grade de pré-visualização sobre o mapa, em metros. */
+	alinhar = $state<{ x: number; y: number; lado: number } | null>(null);
 
 	escolher(f: Ferramenta) {
 		if (f !== 'fundo') this.alinhar = null;

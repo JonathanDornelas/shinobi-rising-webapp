@@ -1176,7 +1176,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			</div>
 			{#if mesa.iniciativa.ativa}<span class="border-2 border-grena px-2 py-1.5 font-pixel text-sm leading-none font-bold tracking-[0.08em] text-acc">RODADA {mesa.iniciativa.rodada ?? 1}</span>{/if}
 			{#if data.mestre && cena}
-				<button type="button" class="flex h-10 w-10 items-center justify-center border-2 border-b3 p-0" aria-label="Configurações da cena" title="Configurações da cena" onclick={() => ((ui.pop = null), (ui.modal = { tipo: 'config' }))}><Icone id="nav/ic-nav-configuracoes" /></button>
+				<button type="button" class="flex h-10 w-10 items-center justify-center border-2 border-b3 p-0" aria-label="Configurações da cena" title="Configurações da cena (no painel da esquerda)" aria-pressed={ui.elencoAberto && ui.ladoEsquerdo === 'cena'} onclick={() => ((ui.pop = null), ui.elencoAberto && ui.ladoEsquerdo === 'cena' ? (ui.ladoEsquerdo = 'elenco') : ((ui.elencoAberto = true), (ui.ladoEsquerdo = 'cena')))}><Icone id="nav/ic-nav-configuracoes" /></button>
 			{/if}
 
 			{#if ui.pop === 'cena' && data.mestre}
@@ -1250,7 +1250,25 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			{#if narrativa}
 				{@render telaNarrativa()}
 			{:else}
-			{#if ui.elencoAberto}
+			{#if ui.elencoAberto && data.mestre && cena}
+				<!-- o painel da esquerda: o Elenco ou as configurações da cena, com o quadro sempre à vista -->
+				<div class="flex min-h-0 flex-none flex-col border-r-2 border-b3 bg-b2 {ui.ladoEsquerdo === 'cena' ? 'w-[360px]' : 'w-[280px]'}">
+					<div role="tablist" aria-label="Painel da esquerda" class="flex h-11 flex-none items-stretch border-b-2 border-b3 bg-b0">
+						{#each [['elenco', 'ELENCO', '/icons/nav/ic-nav-npcs-32.png'], ['cena', 'CENA', '/icons/nav/ic-nav-configuracoes-32.png']] as const as [id, nome, ic] (id)}
+							{@const on = ui.ladoEsquerdo === id}
+							<button type="button" role="tab" aria-selected={on} class="flex flex-1 items-center justify-center gap-1.5 border-b-[3px] font-pixel text-[12px] leading-none font-bold tracking-[0.1em] {on ? 'border-[var(--vermelhao)] bg-b2 text-title' : 'border-transparent text-mut hover:text-fg'}" onclick={() => (ui.ladoEsquerdo = id)}>
+								<img src={ic} width="24" height="24" alt="" class="[image-rendering:pixelated]" />{nome}
+							</button>
+						{/each}
+						<button type="button" class="w-9 flex-none font-pixel text-sm" aria-label="Recolher o painel" title="Recolher" onclick={() => (ui.elencoAberto = false)}>«</button>
+					</div>
+					{#if ui.ladoEsquerdo === 'cena'}
+						<ConfigCena lateral {mesa} {ui} {cena} quemJoga={cena.participantes ? `${participantes.length} de ${data.personagens.length}` : 'todos'} podeColocarGrupo={participantes.length > 0} aoParticipantes={abrirParticipantes} aoColocarGrupo={colocarOGrupo} />
+					{:else}
+						<ElencoMesa embutido {mesa} {ui} personagens={participantes} npcs={itensNpc} bind:pastas {subDe} onAbrir={abrirDoElenco} onColocar={colocar} onMoverNpc={moverNpc} onBestiario={() => (ui.modal = { tipo: 'bestiario' })} />
+					{/if}
+				</div>
+			{:else if ui.elencoAberto}
 				<ElencoMesa {mesa} {ui} personagens={participantes} npcs={itensNpc} bind:pastas {subDe} onAbrir={abrirDoElenco} onColocar={colocar} onMoverNpc={moverNpc} onBestiario={() => (ui.modal = { tipo: 'bestiario' })} />
 			{:else}
 				<div class="flex w-10 flex-none flex-col items-center border-r-2 border-b3 bg-b2 pt-1.5"><button type="button" class="h-8 w-8 border-2 border-b3 font-pixel text-sm" aria-label="Abrir Elenco" title="Abrir Elenco" onclick={() => (ui.elencoAberto = true)}>»</button></div>

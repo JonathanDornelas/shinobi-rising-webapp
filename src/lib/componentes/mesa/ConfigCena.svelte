@@ -16,7 +16,8 @@
 		quemJoga,
 		podeColocarGrupo,
 		aoParticipantes,
-		aoColocarGrupo
+		aoColocarGrupo,
+		lateral = false
 	}: {
 		mesa: Mesa;
 		ui: UiMesa;
@@ -26,6 +27,8 @@
 		podeColocarGrupo: boolean;
 		aoParticipantes: () => void;
 		aoColocarGrupo: () => void;
+		/** No painel da esquerda (o quadro fica à vista enquanto o Mestre ajusta): abas em faixa e uma coluna. */
+		lateral?: boolean;
 	} = $props();
 
 	const ABAS = [
@@ -73,6 +76,12 @@
 	let largura = $state(cena.largura);
 	// svelte-ignore state_referenced_locally
 	let altura = $state(cena.altura);
+	// no painel da esquerda a configuração fica aberta: os campos acompanham a cena quando ela muda por fora (outra cena,
+	// a grade redimensionada no quadro)
+	$effect.pre(() => {
+		largura = cena.largura;
+		altura = cena.altura;
+	});
 	let pxPorQuadrado = $state<number | null>(null);
 	let medindo = $state(false);
 	const L = $derived(Math.min(200, Math.max(5, Math.round(+largura || 0))));
@@ -151,14 +160,15 @@
 	const fundoNoPadrao = $derived(!cena.fundo_escala && !cena.fundo_x && !cena.fundo_y);
 	const paraFator = (f: number) => fundoPorFator(f, proporcaoImagem ?? 1, paraFundo);
 	/**
-	 * Alinhar arrastando: abre no quadro uma moldura de 3 × 3 quadrados no meio da cena; o Mestre a casa com os quadrados
-	 * do mapa e aplica. O fundo precisa estar em escala (com a proporção da imagem), não esticado na cena.
+	 * Redimensionar a grade: o quadro mostra uma grade de pré-visualização sobre o mapa parado, a partir de um quadrado no
+	 * meio da cena; o Mestre puxa até casar com os quadrados desenhados e aplica. O fundo precisa estar em escala (com a
+	 * proporção da imagem), não esticado na cena.
 	 */
 	async function alinharNoQuadro() {
 		if (!cena.fundo_escala && !(await mesa.patchCena({ fundo_escala: larguraPadrao, fundo_x: 0, fundo_y: 0 }))) return;
 		ui.modal = null;
 		ui.escolher('fundo');
-		ui.alinhar = { x: Math.max(0, cena.largura / 2 - 1.5), y: Math.max(0, cena.altura / 2 - 1.5), lado: 3, n: 3 };
+		ui.alinhar = { x: Math.floor(cena.largura / 2), y: Math.floor(cena.altura / 2), lado: 1 };
 	}
 	/** Voltar ao padrão: o fundo cobre a cena inteira, como antes de mexer. */
 	const quadradosPadrao = () => mesa.patchCena({ fundo_escala: null, fundo_x: 0, fundo_y: 0 });
@@ -249,15 +259,15 @@
 
 <div class="flex min-h-0 flex-1 flex-col">
 	<!-- cabeçalho -->
-	<div class="flex h-14 flex-none items-center gap-3 border-b-2 border-[var(--vermelhao-lo)] bg-b0 pr-2 pl-5">
+	<div class="{lateral ? 'hidden' : 'flex'} h-14 flex-none items-center gap-3 border-b-2 border-[var(--vermelhao-lo)] bg-b0 pr-2 pl-5">
 		<h2 class="m-0 font-mincho text-lg leading-6 font-bold">Configurações da cena</h2>
 		<span class="min-w-0 flex-1 truncate text-sm text-mut" title={cena.nome}>{cena.nome}</span>
 		<button type="button" class="flex h-10 w-10 flex-none items-center justify-center border-2 border-transparent font-pixel text-sm hover:border-b3" aria-label="Fechar" onclick={() => (ui.modal = null)}>✕</button>
 	</div>
 
-	<div class="flex min-h-0 flex-1 flex-col sm:flex-row">
+	<div class="flex min-h-0 flex-1 flex-col {lateral ? '' : 'sm:flex-row'}">
 		<!-- abas: coluna à esquerda, faixa no topo no celular -->
-		<div role="tablist" aria-label="Tipos de configuração" aria-orientation="vertical" tabindex="-1" class="flex flex-none gap-0 overflow-x-auto border-b-2 border-b3 bg-b0 sm:w-[184px] sm:flex-col sm:overflow-x-visible sm:overflow-y-auto sm:border-r-2 sm:border-b-0 sm:py-2" onkeydown={teclado}>
+		<div role="tablist" aria-label="Tipos de configuração" aria-orientation="vertical" tabindex="-1" class="flex flex-none gap-0 overflow-x-auto border-b-2 border-b3 bg-b0 {lateral ? '' : 'sm:w-[184px] sm:flex-col sm:overflow-x-visible sm:overflow-y-auto sm:border-r-2 sm:border-b-0 sm:py-2'}" onkeydown={teclado}>
 			{#each ABAS as a (a.id)}
 				<button
 					type="button"
@@ -266,7 +276,7 @@
 					aria-selected={aba === a.id}
 					aria-controls="painel-config"
 					tabindex={aba === a.id ? 0 : -1}
-					class="flex min-h-12 flex-none items-center gap-2.5 border-b-[3px] px-4 text-sm font-semibold sm:border-b-0 sm:border-l-[3px] {aba === a.id ? 'border-[var(--vermelhao)] bg-b1 text-fg' : 'border-transparent text-mut hover:text-fg'}"
+					class="flex flex-none items-center border-b-[3px] font-semibold {lateral ? 'min-h-12 flex-1 flex-col justify-center gap-1 px-1 text-[11px] leading-none' : 'min-h-12 gap-2.5 px-4 text-sm sm:border-b-0 sm:border-l-[3px]'} {aba === a.id ? 'border-[var(--vermelhao)] bg-b1 text-fg' : 'border-transparent text-mut hover:text-fg'}"
 					onclick={() => (aba = a.id)}
 				>
 					<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" class="flex-none fill-none stroke-current stroke-2 [stroke-linecap:square]"><path d={a.icone} /></svg>
@@ -276,7 +286,7 @@
 		</div>
 
 		<!-- o painel: altura fixa, rola por dentro -->
-		<div bind:this={painel} role="tabpanel" id="painel-config" aria-labelledby="aba-{aba}" tabindex="-1" class="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto px-5 py-5 sm:px-7">
+		<div bind:this={painel} role="tabpanel" id="painel-config" aria-labelledby="aba-{aba}" tabindex="-1" class="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto {lateral ? 'px-4 py-4' : 'px-5 py-5 sm:px-7'}">
 			<div class="mb-5 flex flex-col gap-1">
 				<h3 class="m-0 font-mincho text-[22px] leading-7 font-bold">{TITULOS[aba][0]}</h3>
 				<p class="m-0 max-w-[60ch] text-[13px] leading-[18px] text-mut">{TITULOS[aba][1]}</p>
@@ -324,7 +334,7 @@
 					</div>
 				</div>
 			{:else if aba === 'tamanho'}
-				<div class="grid gap-6 md:grid-cols-[1fr_190px]">
+				<div class="grid gap-6 {lateral ? '' : 'md:grid-cols-[1fr_190px]'}">
 					<div class="flex flex-col gap-4">
 						<div class="flex flex-wrap items-end gap-3">
 							<label class="flex flex-col gap-1.5 text-sm font-semibold">Largura
@@ -339,7 +349,7 @@
 						<button type="button" class="btn-jogo btn-primario min-h-10 self-start" disabled={!mudou} onclick={aplicarTamanho}>Aplicar {L} × {A}</button>
 					</div>
 					<!-- a proporção da cena, para enxergar o formato antes de aplicar -->
-					<div class="flex h-[150px] items-center justify-center border-2 border-b3 bg-b1 p-3" aria-hidden="true">
+					<div class="flex {lateral ? 'h-[110px]' : 'h-[150px]'} items-center justify-center border-2 border-b3 bg-b1 p-3" aria-hidden="true">
 						<div class="relative flex max-h-full max-w-full items-center justify-center border-2 border-[var(--vermelhao)] bg-b2 font-pixel text-xs font-bold" style="aspect-ratio: {L} / {A}; {L >= A ? 'width: 100%' : 'height: 100%'}">{L} × {A}</div>
 					</div>
 				</div>
@@ -366,8 +376,11 @@
 							<button type="button" class="h-10 w-10 flex-none border-2 border-b3 bg-b1 font-pixel text-base font-bold disabled:opacity-50" aria-label="Quadrados maiores" disabled={fator >= 4} onclick={() => mesa.patchCena(paraFator(Math.round(fator * 20 + 1) / 20))}>+</button>
 							<span class="w-14 flex-none text-right font-pixel text-sm font-bold" aria-live="polite">{Math.round(fator * 100)}%</span>
 							<button type="button" class={botao} disabled={fundoNoPadrao} title="Volta o mapa a cobrir a cena inteira" onclick={quadradosPadrao}>Padrão</button>
-							{#if !iso}<button type="button" class={botao} title="Casar a grade com o mapa arrastando uma moldura de quadrados" onclick={alinharNoQuadro}>Alinhar arrastando</button>{/if}
 						</div>
+						{#if !iso}
+							<!-- o jeito direto: puxar a grade com o mouse sobre o mapa, em vez de adivinhar a porcentagem -->
+							<button type="button" class="btn-jogo btn-primario min-h-10 self-start" title="Puxe a grade com o mouse até casar com os quadrados desenhados no mapa" onclick={alinharNoQuadro}>Redimensionar a grade no mapa</button>
+						{/if}
 					{/if}
 				</div>
 
@@ -393,7 +406,7 @@
 				{#if cena.visao === undefined}
 					<p class="m-0 text-sm leading-5 text-mut">A vista isométrica ainda não está disponível neste banco.</p>
 				{:else}
-					<div role="radiogroup" aria-label="Vista da cena" class="grid gap-3 sm:grid-cols-2">
+					<div role="radiogroup" aria-label="Vista da cena" class="grid gap-3 {lateral ? '' : 'sm:grid-cols-2'}">
 						{#each [['topo', 'De cima', 'O quadro de sempre: a grade vista de cima.'], ['isometrica', 'Isométrica', 'A grade em losangos, com tokens e objetos de pé.']] as const as [v, nome, dica] (v)}
 							{@const on = (cena.visao ?? 'topo') === v}
 							<button type="button" role="radio" aria-checked={on} class="flex flex-col gap-3 border-2 p-3 text-left {on ? 'border-[var(--vermelhao)] bg-b1' : 'border-b3 hover:border-mut'}" onclick={() => mesa.patchCena({ visao: v })}>
@@ -458,7 +471,7 @@
 							</label>
 							<div class="border-t-2 border-b2 pt-3">
 								<button type="button" class={botao} onclick={() => ((ui.modal = null), ui.escolher('fundo'), ui.avisar('Arraste para mover o fundo; Esc volta a mover os tokens.'))}>Mover o fundo no quadro</button>
-								{#if !iso}<button type="button" class="{botao} ml-2" title="Uma moldura de quadrados que você casa com os quadrados desenhados no mapa" onclick={alinharNoQuadro}>Alinhar a grade ao mapa</button>{/if}
+								{#if !iso}<button type="button" class="{botao} ml-2" title="Puxe a grade com o mouse até casar com os quadrados desenhados no mapa" onclick={alinharNoQuadro}>Redimensionar a grade</button>{/if}
 							</div>
 						{/if}
 					</div>
@@ -560,7 +573,7 @@
 	</div>
 
 	<!-- rodapé -->
-	<div class="flex h-16 flex-none items-center gap-3 border-t-2 border-b3 bg-b0 px-5">
+	<div class="{lateral ? 'hidden' : 'flex'} h-16 flex-none items-center gap-3 border-t-2 border-b3 bg-b0 px-5">
 		<span class="min-w-0 flex-1 text-xs leading-4 text-mut">As mudanças valem na hora, para todos na mesa.</span>
 		<button type="button" class="btn-jogo btn-primario min-h-11" onclick={() => (ui.modal = null)}>Pronto</button>
 	</div>

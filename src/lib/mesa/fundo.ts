@@ -42,16 +42,21 @@ export function fundoPorFator(fator: number, proporcao: number, c: CenaParaFundo
 }
 
 /**
- * Alinhar à grade (vista de cima): o Mestre ajusta uma moldura de n × n quadrados sobre n × n quadrados desenhados no
- * mapa. A imagem é escalada para essa moldura virar n metros de lado, e deslocada para o canto dela cair num cruzamento
- * da grade. `fundo` é onde a imagem está agora (canto e largura, em metros); a moldura também está em metros.
+ * Redimensionar a grade sobre o mapa (vista de cima): a imagem fica parada e o Mestre puxa uma grade de pré-visualização
+ * até os quadrados dela casarem com os desenhados. `grade` é um cruzamento dessa grade (x, y) e o lado de um quadrado,
+ * em metros da cena de agora; `fundo` é onde a imagem está (canto e tamanho, em metros). O resultado faz cada quadrado
+ * da pré-visualização virar 1 quadrado da cena: a imagem ganha a nova largura e posição, e a cena passa a ter os
+ * quadrados inteiros que cabem na imagem.
  */
-export function alinharFundo(fundo: { x: number; y: number; w: number }, caixa: { x: number; y: number; lado: number; n: number }) {
-	const k = caixa.n / caixa.lado;
-	const w = Math.min(1000, Math.max(1, fundo.w * k));
-	const kk = w / fundo.w;
-	const gx = Math.round(caixa.x);
-	const gy = Math.round(caixa.y);
-	const lim = (v: number) => Math.min(1000, Math.max(-1000, v));
-	return { fundo_escala: r2(w), fundo_x: r2(lim(gx - (caixa.x - fundo.x) * kk)), fundo_y: r2(lim(gy - (caixa.y - fundo.y) * kk)) };
+export function gradeNoMapa(fundo: { x: number; y: number; w: number; h: number }, grade: { x: number; y: number; lado: number }) {
+	const k = 1 / grade.lado;
+	const antes = { x: Math.floor((grade.x - fundo.x) / grade.lado + 1e-9), y: Math.floor((grade.y - fundo.y) / grade.lado + 1e-9) };
+	const depois = { x: Math.floor((fundo.x + fundo.w - grade.x) / grade.lado + 1e-9), y: Math.floor((fundo.y + fundo.h - grade.y) / grade.lado + 1e-9) };
+	return {
+		largura: Math.min(200, Math.max(5, antes.x + depois.x)),
+		altura: Math.min(200, Math.max(5, antes.y + depois.y)),
+		fundo_escala: r2(Math.min(1000, Math.max(1, fundo.w * k))),
+		fundo_x: r2(antes.x - (grade.x - fundo.x) * k),
+		fundo_y: r2(antes.y - (grade.y - fundo.y) * k)
+	};
 }

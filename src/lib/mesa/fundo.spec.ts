@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { alinharFundo, caixaDaCenaEmQuadrados, fatorDosQuadrados, fundoPorFator, larguraPadraoDoFundo } from './fundo.ts';
+import { caixaDaCenaEmQuadrados, gradeNoMapa, fatorDosQuadrados, fundoPorFator, larguraPadraoDoFundo } from './fundo.ts';
 import { cfgIso, projetar } from './projecao.ts';
 
 const topo = { largura: 40, altura: 30, iso: false, razao: 2 };
@@ -52,17 +52,17 @@ describe('fundo da cena: tamanho dos quadrados', () => {
 	});
 });
 
-describe('alinhar o fundo à grade', () => {
-	it('a moldura de 3 quadrados do mapa vira 3 m de grade, com o canto num cruzamento', () => {
-		// a imagem tem 40 m de largura no canto (0, 0); os quadrados desenhados medem 1,5 m: a moldura de 3 tem 4,5 m em (10,2; 6,7)
-		const r = alinharFundo({ x: 0, y: 0, w: 40 }, { x: 10.2, y: 6.7, lado: 4.5, n: 3 });
-		const k = 3 / 4.5;
-		expect(r.fundo_escala).toBeCloseTo(40 * k, 1);
-		// o canto da moldura, depois de escalado, cai em (10, 7)
-		expect(r.fundo_x + 10.2 * k).toBeCloseTo(10, 1);
-		expect(r.fundo_y + 6.7 * k).toBeCloseTo(7, 1);
+describe('redimensionar a grade sobre o mapa', () => {
+	it('quadrados desenhados de 1,5 m viram quadrados de 1 m, e a cena fica com os inteiros que cabem', () => {
+		// imagem de 30 × 18 m no canto (0, 0); um cruzamento desenhado em (0,6; 0,3), quadrados de 1,5 m
+		const r = gradeNoMapa({ x: 0, y: 0, w: 30, h: 18 }, { x: 0.6, y: 0.3, lado: 1.5 });
+		// 0,6 m antes do cruzamento (não cabe um quadrado inteiro) e 29,4 m depois: 19 colunas; 17,7 m: 11 linhas
+		expect(r).toMatchObject({ largura: 19, altura: 11, fundo_escala: 20 });
+		// o cruzamento cai num cruzamento da cena nova (0, 0)
+		expect(r.fundo_x + 0.6 / 1.5).toBeCloseTo(0, 5);
+		expect(r.fundo_y + 0.3 / 1.5).toBeCloseTo(0, 5);
 	});
-	it('moldura que já casa com a grade não mexe na imagem', () => {
-		expect(alinharFundo({ x: 2, y: 3, w: 30 }, { x: 5, y: 6, lado: 3, n: 3 })).toEqual({ fundo_escala: 30, fundo_x: 2, fundo_y: 3 });
+	it('a grade que já casa não muda nada', () => {
+		expect(gradeNoMapa({ x: 0, y: 0, w: 30, h: 20 }, { x: 4, y: 5, lado: 1 })).toEqual({ largura: 30, altura: 20, fundo_escala: 30, fundo_x: 0, fundo_y: 0 });
 	});
 });
