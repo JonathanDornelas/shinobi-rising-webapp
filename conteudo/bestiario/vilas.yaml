@@ -333,7 +333,7 @@
       ataques:
         - { nome: Golpe de mão aberta, alcance: Corpo a corpo }
       jutsus:
-        - { slug: raigyaku-suihei-choppu }
+        - { slug: raiton-raigen-raikochu }
         - { slug: jibashi }
       tracos:
         - &corpo-forjado { nome: Corpo forjado, efeito: "Tem vantagem nas Resistências contra **Atordoado**." }
@@ -477,6 +477,7 @@
         - { slug: bunshin-daibakuha }
         - { slug: iwa-bunshin-no-jutsu }
         - { slug: doton-dochu-senko }
+        - { slug: kage-bunshin-no-jutsu }
       tracos:
         - *pe-no-chao
         - { nome: Detonação, efeito: "Uma vez por cena, detona todas as etiquetas que espalhou: cada um numa área de 6 m de raio resiste com Acrobacia contra a DT 18 e sofre 4d8 de dano, ou metade se passar." }
@@ -743,6 +744,7 @@
         - { slug: bubitorappu }
         - { slug: senpuku }
         - { slug: kirigakure-no-jutsu-ilusorio }
+        - { slug: chakra-no-mesu }
       tracos:
         - *emboscada
     - nome: Jounin

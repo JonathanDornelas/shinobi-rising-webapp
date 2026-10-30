@@ -161,6 +161,7 @@
         - { slug: choharite }
         - { slug: hari-jizou-akimichi-hen }
         - { slug: nikudan-sensha }
+        - { slug: baika-no-jutsu }
       tracos:
         - *a5
         - *a6
@@ -179,6 +180,7 @@
         - { slug: choharite }
         - { slug: choudan-bakugeki }
         - { slug: nikudan-sensha }
+        - { slug: baika-no-jutsu }
       tracos:
         - *a5
         - *a6
@@ -194,6 +196,9 @@
         - { slug: choudan-bakugeki }
         - { slug: daburu-nikudan-sensha }
         - { slug: chou-baika-no-jutsu }
+        - { slug: karori-kontororu }
+        - { slug: nikudan-sensha }
+        - { slug: baika-no-jutsu }
       tracos:
         - *a5
         - *a6
@@ -366,6 +371,8 @@
         - slug: garouga
         - slug: gatenga
         - slug: gatsuuga
+        - { slug: shikyaku-no-jutsu }
+        - { slug: juujin-bunshin }
       tracos:
         - *a11
         - *a12
@@ -683,6 +690,7 @@
         - { slug: genjutsu-sharingan }
         - { slug: katon-hosenka-tsumabeni }
         - { slug: uchihagaeshi }
+        - { slug: sofushasan-no-tachi }
       tracos:
         - *a20
         - *a21
@@ -722,6 +730,7 @@
         - { slug: karyuu-endan }
         - { slug: katon-ryuka-no-jutsu }
         - { slug: genjutsu-sharingan }
+        - { slug: sofushasan-no-tachi }
       tracos:
         - *a20
         - *a21
@@ -1095,6 +1104,7 @@
         - { slug: suika-no-jutsu }
         - { slug: suiton-tate-eboshi }
         - { slug: suiton-mizu-bunshin }
+        - { slug: mizudeppo-no-jutsu }
       tracos:
         - *a32
         - *a33
@@ -1109,6 +1119,7 @@
         - { slug: suiton-bolha-afogadora }
         - { slug: mizudeppo-nicho }
         - { slug: suika-no-jutsu }
+        - { slug: mizudeppo-no-jutsu }
       tracos:
         - *a32
         - *a33
@@ -1216,6 +1227,7 @@
         - { slug: sabakuha }
         - { slug: suna-no-kaiwan }
         - { slug: suna-no-tate }
+        - { slug: sabaku-kyu }
       tracos:
         - *a35
         - *a36

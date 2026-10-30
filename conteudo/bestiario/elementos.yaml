@@ -277,6 +277,7 @@
         - { slug: doton-dochu-eigyo-no-jutsu }
         - { slug: senpuku }
         - { slug: meisaigakure-no-jutsu }
+        - { slug: chakra-no-mesu }
       tracos:
         - *doton-pe-na-terra
         - *doton-terreno-de-pedra
@@ -328,7 +329,7 @@
         - { nome: Soco elétrico, alcance: Corpo a corpo }
       jutsus:
         - { slug: jibashi }
-        - { slug: raigyaku-suihei-choppu }
+        - { slug: raiton-raiju-tsuiga }
       tracos:
         - &raiton-reflexo-eletrico { nome: Reflexo elétrico, efeito: "Não pode ser surpreendido: sempre age na primeira rodada, mesmo numa emboscada." }
     - nome: Chunin
@@ -1206,6 +1207,7 @@
         - { slug: gojo-kibaku-fuda }
         - { slug: kibaku-jirai }
         - { slug: bakuton-jiraiken }
+        - { slug: kage-bunshin-no-jutsu }
       tracos:
         - *bakuton-detonacao
         - *bakuton-campo-minado
@@ -1223,6 +1225,7 @@
         - { slug: kibaku-jirai }
         - { slug: bunshin-daibakuha }
         - { slug: gojo-kibaku-fuda }
+        - { slug: kage-bunshin-no-jutsu }
       tracos:
         - *bakuton-detonacao
         - *bakuton-campo-minado
