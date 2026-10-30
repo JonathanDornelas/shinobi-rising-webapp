@@ -950,7 +950,7 @@
     - k: Alcance
       v: Pessoal
     - k: Duração
-      v: 1 cena
+      v: 3 turnos
     - k: Área
       v: 1 clone a até 5m
     - k: Ataque
@@ -2227,7 +2227,7 @@
     - k: Alcance
       v: Pessoal
     - k: Duração
-      v: 1 cena
+      v: 3 turnos
     - k: Área
       v: 1 clone; explosão em esfera de 6m
     - k: Ataque
@@ -2691,7 +2691,7 @@
     - k: Alcance
       v: Pessoal
     - k: Duração
-      v: 1 cena (ou até serem atingidos)
+      v: 2 turnos (ou até serem atingidos)
     - k: Área
       v: 1d4 clones a até 5m
     - k: Ataque
@@ -2778,7 +2778,7 @@
     - k: Alcance
       v: Pessoal
     - k: Duração
-      v: 1 cena
+      v: 3 turnos
     - k: Área
       v: Até 3 clones a até 5m
     - k: Ataque
@@ -2793,7 +2793,7 @@
   notas:
     - Na sua vez, cada clone pode fazer uma ação secundária e um ataque básico (desarmado ou com arma). Clones só lançam jutsus se você pagar o custo.
     - Ao se desfazer, o clone transmite ao usuário o que viu e aprendeu.
-  pj: "clones autônomos (8) + duração de 1 cena (2) + até 5m (2): 12 PJ, rank B."
+  pj: "clones autônomos (8) + 2 clones extras (2) + até 5m (2): 12 PJ, rank B."
   capitulo: 10
   ancora: ninjutsu-geral-sem-elemento
   cla: null
