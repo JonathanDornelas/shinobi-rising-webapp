@@ -94,11 +94,10 @@ export class UiMesa {
 		}, 3500);
 	}
 
-	/** Redimensionar a grade (ferramenta do fundo): o quadrado-âncora da grade de pré-visualização sobre o mapa, em metros. */
-	alinhar = $state<{ x: number; y: number; lado: number } | null>(null);
+	/** Redimensionar a grade no quadro (só o Mestre, vista de cima): a borda da direita, a de baixo e o canto viram alças. */
+	bordas = $state(false);
 
 	escolher(f: Ferramenta) {
-		if (f !== 'fundo') this.alinhar = null;
 		this.ferramenta = f;
 		this.pop = f === 'medir' ? 'medir' : f === 'lapis' || f === 'apontar' ? 'lapis' : f === 'alfinete' || f === 'texto' || f === 'nevoa' || f === 'objeto' ? f : null;
 		if (f !== 'mover' && f !== 'alfinete' && f !== 'texto' && f !== 'objeto') this.objSel = null;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { caixaDaCenaEmQuadrados, gradeNoMapa, fatorDosQuadrados, fundoPorFator, larguraPadraoDoFundo } from './fundo.ts';
+import { caixaDaCenaEmQuadrados, fatorDosQuadrados, fundoPorFator, larguraPadraoDoFundo } from './fundo.ts';
 import { cfgIso, projetar } from './projecao.ts';
 
 const topo = { largura: 40, altura: 30, iso: false, razao: 2 };
@@ -49,20 +49,5 @@ describe('fundo da cena: tamanho dos quadrados', () => {
 	it('ida e volta: o fator gravado volta a ser o mesmo', () => {
 		for (const c of [topo, iso, { ...iso, razao: 1.75 }])
 			for (const f of [0.25, 0.5, 1, 1.5, 3, 4]) expect(fatorDosQuadrados(fundoPorFator(f, 0.6, c).fundo_escala, c)).toBeCloseTo(f, 1);
-	});
-});
-
-describe('redimensionar a grade sobre o mapa', () => {
-	it('quadrados desenhados de 1,5 m viram quadrados de 1 m, e a cena fica com os inteiros que cabem', () => {
-		// imagem de 30 × 18 m no canto (0, 0); um cruzamento desenhado em (0,6; 0,3), quadrados de 1,5 m
-		const r = gradeNoMapa({ x: 0, y: 0, w: 30, h: 18 }, { x: 0.6, y: 0.3, lado: 1.5 });
-		// 0,6 m antes do cruzamento (não cabe um quadrado inteiro) e 29,4 m depois: 19 colunas; 17,7 m: 11 linhas
-		expect(r).toMatchObject({ largura: 19, altura: 11, fundo_escala: 20 });
-		// o cruzamento cai num cruzamento da cena nova (0, 0)
-		expect(r.fundo_x + 0.6 / 1.5).toBeCloseTo(0, 5);
-		expect(r.fundo_y + 0.3 / 1.5).toBeCloseTo(0, 5);
-	});
-	it('a grade que já casa não muda nada', () => {
-		expect(gradeNoMapa({ x: 0, y: 0, w: 30, h: 20 }, { x: 4, y: 5, lado: 1 })).toEqual({ largura: 30, altura: 20, fundo_escala: 30, fundo_x: 0, fundo_y: 0 });
 	});
 });

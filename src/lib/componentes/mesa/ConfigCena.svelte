@@ -153,16 +153,11 @@
 	const fator = $derived(fatorDosQuadrados(cena.fundo_escala, paraFundo));
 	const fundoNoPadrao = $derived(!cena.fundo_escala && !cena.fundo_x && !cena.fundo_y);
 	const paraFator = (f: number) => fundoPorFator(f, proporcaoImagem ?? 1, paraFundo);
-	/**
-	 * Redimensionar a grade: o quadro mostra uma grade de pré-visualização sobre o mapa parado, a partir de um quadrado no
-	 * meio da cena; o Mestre puxa até casar com os quadrados desenhados e aplica. O fundo precisa estar em escala (com a
-	 * proporção da imagem), não esticado na cena.
-	 */
-	async function alinharNoQuadro() {
-		if (!cena.fundo_escala && !(await mesa.patchCena({ fundo_escala: larguraPadrao, fundo_x: 0, fundo_y: 0 }))) return;
+	/** Redimensionar a grade no quadro: liga as alças da borda da grade e o Mestre puxa com o mouse. */
+	function puxarNoQuadro() {
 		ui.modal = null;
-		ui.escolher('fundo');
-		ui.alinhar = { x: Math.floor(cena.largura / 2), y: Math.floor(cena.altura / 2), lado: 1 };
+		ui.bordas = true;
+		ui.escolher('mover');
 	}
 	/** Voltar ao padrão: o fundo cobre a cena inteira, como antes de mexer. */
 	const quadradosPadrao = () => mesa.patchCena({ fundo_escala: null, fundo_x: 0, fundo_y: 0 });
@@ -359,7 +354,11 @@
 						<button type="button" class="{quadradinho} h-9 w-9" aria-label="Desfazer as medidas" title="Voltar a {cena.largura} × {cena.altura}" onclick={() => ((largura = cena.largura), (altura = cena.altura))}>✕</button>
 					</span>
 				{:else}
-					<p class={dica}>Mude as medidas nas bordas da planta, de 5 a 200 m. Quem ficar de fora é puxado para dentro.</p>
+					{#if !iso}
+						<!-- o jeito direto: puxar a borda da grade no quadro, com o mouse -->
+						<button type="button" class="btn-jogo {ui.bordas ? 'btn-fantasma' : 'btn-primario'} min-h-9 w-full text-xs" aria-pressed={ui.bordas} onclick={() => (ui.bordas ? (ui.bordas = false) : puxarNoQuadro())}>{ui.bordas ? 'Parar de redimensionar' : 'Redimensionar no quadro'}</button>
+					{/if}
+					<p class={dica}>{iso ? 'Mude as medidas nas bordas da planta, de 5 a 200 m.' : 'Puxe a borda ou o canto da grade com o mouse, ou mude as medidas na planta.'} Quem ficar de fora é puxado para dentro.</p>
 				{/if}
 			</section>
 
@@ -368,13 +367,8 @@
 				{#if !cena.fundo}
 					<p class={dica}>Escolha um fundo na aba Imagens para casar a grade com o mapa.</p>
 				{:else}
-					{#if !iso}
-						<p class={dica}>Puxe a grade sobre o mapa até os quadrados dela casarem com os desenhados.</p>
-						<!-- o jeito direto: puxar a grade com o mouse, em vez de adivinhar a porcentagem -->
-						<button type="button" class="btn-jogo btn-primario min-h-9 w-full text-xs" onclick={alinharNoQuadro}>Redimensionar a grade</button>
-					{/if}
-					<div class="flex items-center justify-between gap-2 {iso ? '' : 'pt-1'}">
-						<span class={dica}>{iso ? 'Aumente ou diminua até os losangos casarem com os do mapa.' : 'Ou na mão, em relação ao mapa:'}</span>
+					<div class="flex items-center justify-between gap-2">
+						<span class={dica}>{iso ? 'Aumente ou diminua até os losangos casarem com os do mapa.' : 'O tamanho dos quadrados em relação ao mapa.'}</span>
 						<button type="button" class={botao} disabled={fundoNoPadrao} title="Volta o mapa a cobrir a cena inteira" onclick={quadradosPadrao}>Padrão</button>
 					</div>
 					<div class="flex items-center gap-1.5">
@@ -480,7 +474,6 @@
 						</label>
 						<div class="flex flex-col gap-1.5 pt-1">
 							<button type="button" class="{botao} w-full" onclick={() => ((ui.modal = null), ui.escolher('fundo'), ui.avisar('Arraste para mover o fundo; Esc volta a mover os tokens.'))}>Mover o fundo no quadro</button>
-							{#if !iso}<button type="button" class="{botao} w-full" title="Puxe a grade com o mouse até casar com os quadrados desenhados no mapa" onclick={alinharNoQuadro}>Redimensionar a grade</button>{/if}
 						</div>
 					{/if}
 				</section>

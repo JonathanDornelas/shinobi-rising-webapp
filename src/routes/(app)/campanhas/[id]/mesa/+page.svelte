@@ -738,6 +738,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 			else if (ui.armada) ui.armada = null;
 			else if (ui.objSel) ui.objSel = null;
 			else if (ui.ferramenta === 'fundo') ui.escolher('mover');
+			else if (ui.bordas) ui.bordas = false;
 			else ui.sel = null;
 			return;
 		}

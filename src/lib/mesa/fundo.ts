@@ -40,23 +40,3 @@ export function fundoPorFator(fator: number, proporcao: number, c: CenaParaFundo
 	const h = w * proporcao;
 	return { fundo_escala: r2(w), fundo_x: r2((caixa.w - w) / 2), fundo_y: r2((caixa.h - h) / 2) };
 }
-
-/**
- * Redimensionar a grade sobre o mapa (vista de cima): a imagem fica parada e o Mestre puxa uma grade de pré-visualização
- * até os quadrados dela casarem com os desenhados. `grade` é um cruzamento dessa grade (x, y) e o lado de um quadrado,
- * em metros da cena de agora; `fundo` é onde a imagem está (canto e tamanho, em metros). O resultado faz cada quadrado
- * da pré-visualização virar 1 quadrado da cena: a imagem ganha a nova largura e posição, e a cena passa a ter os
- * quadrados inteiros que cabem na imagem.
- */
-export function gradeNoMapa(fundo: { x: number; y: number; w: number; h: number }, grade: { x: number; y: number; lado: number }) {
-	const k = 1 / grade.lado;
-	const antes = { x: Math.floor((grade.x - fundo.x) / grade.lado + 1e-9), y: Math.floor((grade.y - fundo.y) / grade.lado + 1e-9) };
-	const depois = { x: Math.floor((fundo.x + fundo.w - grade.x) / grade.lado + 1e-9), y: Math.floor((fundo.y + fundo.h - grade.y) / grade.lado + 1e-9) };
-	return {
-		largura: Math.min(200, Math.max(5, antes.x + depois.x)),
-		altura: Math.min(200, Math.max(5, antes.y + depois.y)),
-		fundo_escala: r2(Math.min(1000, Math.max(1, fundo.w * k))),
-		fundo_x: r2(antes.x - (grade.x - fundo.x) * k),
-		fundo_y: r2(antes.y - (grade.y - fundo.y) * k)
-	};
-}

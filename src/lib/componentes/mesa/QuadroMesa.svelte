@@ -9,7 +9,6 @@
 	import { custoCaminho, custoTrechos, infoMovimento, provocaReacao, quadradosEmVolta, trechos, type Quadrado } from '#lib/mesa/geometria.ts';
 	import type { Mesa } from '#lib/mesa/mesa.svelte.ts';
 	import { urlImagemMesa } from '#lib/mesa/imagens.ts';
-	import { gradeNoMapa } from '#lib/mesa/fundo.ts';
 	import { retanguloFoco, type FocoArte } from '#lib/bestiario/foco.ts';
 	import { calcularMolde, nomeCurto, type UiMesa } from '#lib/mesa/ui.svelte.ts';
 	import type { MesaObjeto } from '#lib/supabase/banco.ts';
@@ -79,35 +78,29 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	});
 	let arrastoFundo = $state<{ mx: number; my: number; dx: number; dy: number } | null>(null);
 	/**
-	 * Redimensionar a grade sobre o mapa: a imagem fica parada e uma grade de pré-visualização, puxada pelo quadrado-âncora
-	 * (o miolo encaixa as linhas, a borda ou o canto muda o tamanho), cobre o mapa. Aplicar faz cada quadrado dela virar um
-	 * quadrado da cena: a cena ganha o número de quadrados que cabem no mapa e o mapa continua no mesmo lugar sob a grade.
+	 * Redimensionar a grade no quadro: com o modo ligado, a borda da direita, a de baixo e o canto da grade viram alças.
+	 * Puxar muda a largura e a altura da cena, de quadrado em quadrado, e o quadro mostra na hora (o fundo esticado estica
+	 * junto, então dá para casar os quadrados desenhados com os da grade); ao soltar, grava.
 	 */
-	let arrastoAlinhar: { modo: 'mover' | 'direita' | 'baixo' | 'canto'; mx: number; my: number; caixa: { x: number; y: number; lado: number } } | null = null;
-	const previaGrade = $derived.by(() => {
-		const g = ui.alinhar;
-		if (!g || iso) return null;
-		const c = caixaFundo;
-		const xs: number[] = [];
-		const ys: number[] = [];
-		for (let x = g.x - Math.floor((g.x - c.x) / g.lado) * g.lado; x <= c.x + c.w + 1e-6 && xs.length < 400; x += g.lado) xs.push(x);
-		for (let y = g.y - Math.floor((g.y - c.y) / g.lado) * g.lado; y <= c.y + c.h + 1e-6 && ys.length < 400; y += g.lado) ys.push(y);
-		const r = gradeNoMapa({ x: c.x, y: c.y, w: c.w, h: c.h }, g);
-		return { d: xs.map((x) => `M${x} ${c.y}V${c.y + c.h}`).join('') + ys.map((y) => `M${c.x} ${y}H${c.x + c.w}`).join(''), colunas: r.largura, linhas: r.altura };
-	});
-	async function aplicarGrade() {
-		const g = ui.alinhar;
-		if (!g) return;
-		const c = caixaFundo;
-		const r = gradeNoMapa({ x: c.x, y: c.y, w: c.w, h: c.h }, g);
-		if (!(await mesa.redimensionarCena(r.largura, r.altura))) return;
-		if (await mesa.patchCena({ fundo_escala: r.fundo_escala, fundo_x: r.fundo_x, fundo_y: r.fundo_y })) {
-			ui.escolher('mover');
-			ui.avisar(`Grade ajustada ao mapa: ${r.largura} × ${r.altura} quadrados.`);
-		}
+	type Borda = 'direita' | 'baixo' | 'canto';
+	let arrastoBorda = $state<{ borda: Borda; l0: number; a0: number } | null>(null);
+	let bordaSob = $state<Borda | null>(null);
+	function bordaEm(p: { mx: number; my: number }, toque: boolean): Borda | null {
+		if (!ui.bordas || iso || !mesa.mestre || mesa.somenteLeitura) return null;
+		const h = F(toque ? 22 : 10);
+		const direita = Math.abs(p.mx - L) <= h && p.my >= -h && p.my <= A + h;
+		const baixo = Math.abs(p.my - A) <= h && p.mx >= -h && p.mx <= L + h;
+		return direita && baixo ? 'canto' : direita ? 'direita' : baixo ? 'baixo' : null;
 	}
-	/** O quadrado-âncora um pouco maior ou menor (ajuste fino de 1%). */
-	const ajustarLado = (fator: number) => ui.alinhar && (ui.alinhar = { ...ui.alinhar, lado: Math.max(0.2, ui.alinhar.lado * fator) });
+	async function soltarBorda() {
+		const d = arrastoBorda;
+		if (!d) return;
+		arrastoBorda = null;
+		const [l, a] = [L, A];
+		// volta ao tamanho gravado e grava o novo (se falhar, o quadro fica como estava)
+		mesa.previa({ largura: d.l0, altura: d.a0 });
+		if ((l !== d.l0 || a !== d.a0) && (await mesa.redimensionarCena(l, a))) ui.avisar(`A cena agora tem ${l} × ${a} quadrados.`);
+	}
 	const caixaFundo = $derived.by(() => {
 		// isométrica: a arte (já isométrica, subida pelo Mestre) fica na tela, a partir do canto de cima à esquerda do mapa
 		if (iso) {
@@ -334,6 +327,11 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 			pan = { sx: p.sx, sy: p.sy, vx: ui.vx, vy: ui.vy };
 			return;
 		}
+		const borda = bordaEm(p, e.pointerType === 'touch');
+		if (borda && cena) {
+			arrastoBorda = { borda, l0: cena.largura, a0: cena.altura };
+			return;
+		}
 		// mira de jutsu: clique escolhe alvo ou fixa o molde
 		const m = ui.mira;
 		if (m && !m.fixa) {
@@ -386,21 +384,6 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 				break;
 			}
 			case 'fundo': {
-				const a = ui.alinhar;
-				if (a && !iso && mesa.mestre) {
-					const h = F(14);
-					const dentro = p.mx >= a.x - h && p.mx <= a.x + a.lado + h && p.my >= a.y - h && p.my <= a.y + a.lado + h;
-					const naDireita = Math.abs(p.mx - (a.x + a.lado)) <= h;
-					const embaixo = Math.abs(p.my - (a.y + a.lado)) <= h;
-					if (dentro) arrastoAlinhar = { modo: naDireita && embaixo ? 'canto' : naDireita ? 'direita' : embaixo ? 'baixo' : 'mover', mx: p.mx, my: p.my, caixa: { ...a } };
-					// fora do quadrado-âncora: ele vem para onde clicou (e segue o mouse), para pegar outro quadrado do mapa
-					else {
-						const novo = { ...a, x: p.mx - a.lado / 2, y: p.my - a.lado / 2 };
-						ui.alinhar = novo;
-						arrastoAlinhar = { modo: 'mover', mx: p.mx, my: p.my, caixa: novo };
-					}
-					break;
-				}
 				if (mesa.mestre && cena?.fundo_escala) arrastoFundo = iso ? { mx: p.tx, my: p.ty, dx: 0, dy: 0 } : { mx: p.mx, my: p.my, dx: 0, dy: 0 };
 				break;
 			}
@@ -522,6 +505,15 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		}
 		const p = ponto(e);
 		const g = grade(p.mx, p.my);
+		if (arrastoBorda) {
+			const d = arrastoBorda;
+			const medida = (v: number) => Math.min(200, Math.max(5, Math.round(v)));
+			const l = d.borda === 'baixo' ? d.l0 : medida(p.mx);
+			const a = d.borda === 'direita' ? d.a0 : medida(p.my);
+			if (l !== L || a !== A) mesa.previa({ largura: l, altura: a });
+			return;
+		}
+		bordaSob = ui.bordas ? bordaEm(p, e.pointerType === 'touch') : null;
 		if (pan) {
 			ui.vx = pan.vx - (p.sx - pan.sx) / s;
 			ui.vy = pan.vy - (p.sy - pan.sy) / s;
@@ -548,14 +540,6 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			for (const [x, y] of celulasEntre(n.ultimo[0], n.ultimo[1], g[0], g[1])) mudou = pintarNevoa(n.grade, L, A, x, y, ui.nevoaPincel, n.revelar) || mudou;
 			n.ultimo = g;
 			if (mudou) nevoaTemp = emRuns(n.grade, L, A);
-			return;
-		}
-		if (arrastoAlinhar) {
-			const d = arrastoAlinhar;
-			const dx = p.mx - d.mx;
-			const dy = p.my - d.my;
-			const lado = (v: number) => Math.max(0.2, d.caixa.lado + v);
-			ui.alinhar = d.modo === 'mover' ? { ...d.caixa, x: d.caixa.x + dx, y: d.caixa.y + dy } : { ...d.caixa, lado: lado(d.modo === 'direita' ? dx : d.modo === 'baixo' ? dy : (dx + dy) / 2) };
 			return;
 		}
 		if (arrastoFundo)return void (arrastoFundo = { ...arrastoFundo, dx: (iso ? p.tx : p.mx) - arrastoFundo.mx, dy: (iso ? p.ty : p.my) - arrastoFundo.my });
@@ -612,10 +596,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			void mesa.patchCena({ nevoa: true, reveladas: runs });
 			return;
 		}
-		if (arrastoAlinhar) {
-			arrastoAlinhar = null;
-			return;
-		}
+		if (arrastoBorda) return void soltarBorda();
 		if (arrastoFundo) {
 			const c = caixaFundo;
 			arrastoFundo = null;
@@ -714,8 +695,9 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		return { t, corId: mesa.corDe(mesa.donoDe(t)), cor: corCss(mesa.corDe(mesa.donoDe(t))), corpo: a.corpo ? quadradosEmVolta(t, a.corpo, L, A) : [], lista: a.lista };
 	});
 	const reguaMinha = $derived(ui.regua ? { pontos: ui.regua.cur ? [...ui.regua.pontos, ui.regua.cur] : ui.regua.pontos, feita: ui.regua.feita, fixa: ui.regua.fixa, t: ui.regua.t } : null);
+	const cursorBorda = { direita: 'ew-resize', baixo: 'ns-resize', canto: 'nwse-resize' } as const;
 	const cursor = $derived(
-		arrasto || pan ? 'grabbing' : ui.mira && !ui.mira.fixa ? 'crosshair' : ui.ferramenta === 'mover' ? 'default' : ui.ferramenta === 'borracha' || ui.ferramenta === 'terreno' ? 'cell' : ui.ferramenta === 'fundo' ? 'move' : ui.ferramenta === 'objeto' && ui.armada ? 'copy' : ui.ferramenta === 'nevoa' ? 'cell' : 'crosshair'
+		arrastoBorda || bordaSob ? cursorBorda[(arrastoBorda?.borda ?? bordaSob)!] : arrasto || pan ? 'grabbing' : ui.mira && !ui.mira.fixa ? 'crosshair' : ui.ferramenta === 'mover' ? 'default' : ui.ferramenta === 'borracha' || ui.ferramenta === 'terreno' ? 'cell' : ui.ferramenta === 'fundo' ? 'move' : ui.ferramenta === 'objeto' && ui.armada ? 'copy' : ui.ferramenta === 'nevoa' ? 'cell' : 'crosshair'
 	);
 	const corMolde = $derived(molde ? (molde.ok ? corCss(mesa.corDe(mesa.donoDe(molde.lancador))) : 'var(--mesa-vermelhao)') : '');
 	const letras = (i: number) => (i < 26 ? String.fromCharCode(65 + i) : String.fromCharCode(65 + Math.floor(i / 26) - 1) + String.fromCharCode(65 + (i % 26)));
@@ -907,21 +889,22 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				<image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} preserveAspectRatio="none" clip-path="url(#recorte-cena)" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} />
 				{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
 			{/if}
-			{#if cena?.grade !== false && !previaGrade}
+			{#if cena?.grade !== false}
 				<!-- dois traçados (linhas de 1 m e de 5 m) com 1 px fixo: o zoom e a câmera não mexem na grade -->
 				<path d={grade1} fill="none" style="stroke: var(--fg)" stroke-opacity={0.09 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" />
 					<path d={grade5} fill="none" style="stroke: var(--fg)" stroke-opacity={0.18 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" />
 				{/if}
-				{#if ui.alinhar && previaGrade && mesa.mestre}
-					{@const a = ui.alinhar}
-					<!-- redimensionar a grade: a pré-visualização cobre o mapa inteiro e acompanha o quadrado-âncora -->
+				{#if ui.bordas && !iso && mesa.mestre}
+					{@const quente = arrastoBorda?.borda ?? bordaSob}
+					<!-- redimensionar a grade: o contorno da cena com as alças da direita, de baixo e do canto -->
 					<g pointer-events="none">
-						<path d={previaGrade.d} fill="none" style="stroke: var(--ink)" stroke-opacity="0.55" stroke-width="3" vector-effect="non-scaling-stroke" />
-						<path d={previaGrade.d} fill="none" style="stroke: var(--acc)" stroke-width="1.25" vector-effect="non-scaling-stroke" />
-						<rect x={a.x} y={a.y} width={a.lado} height={a.lado} style="fill: color-mix(in srgb, var(--acc) 22%, transparent); stroke: var(--acc)" stroke-width={F(3)} />
-						<rect x={a.x + a.lado - F(4)} y={a.y + a.lado / 2 - F(10)} width={F(8)} height={F(20)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(1.5)} />
-						<rect x={a.x + a.lado / 2 - F(10)} y={a.y + a.lado - F(4)} width={F(20)} height={F(8)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(1.5)} />
-						<rect x={a.x + a.lado - F(8)} y={a.y + a.lado - F(8)} width={F(16)} height={F(16)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
+						<rect x="0" y="0" width={L} height={A} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" />
+						<line x1={L} y1="0" x2={L} y2={A} style="stroke: var(--acc)" stroke-width={F(quente === 'direita' || quente === 'canto' ? 5 : 3)} />
+						<line x1="0" y1={A} x2={L} y2={A} style="stroke: var(--acc)" stroke-width={F(quente === 'baixo' || quente === 'canto' ? 5 : 3)} />
+						<rect x={L - F(5)} y={A / 2 - F(16)} width={F(10)} height={F(32)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
+						<rect x={L / 2 - F(16)} y={A - F(5)} width={F(32)} height={F(10)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
+						<rect x={L - F(9)} y={A - F(9)} width={F(18)} height={F(18)} style="fill: var(--acc); stroke: var(--ink)" stroke-width={F(2)} />
+						<text x={L + F(16)} y={A + F(30)} font-size={F(15)} class="font-pixel" font-weight="700" style="fill: var(--acc); stroke: var(--ink); paint-order: stroke" stroke-width={F(4)}>{L} × {A}</text>
 					</g>
 				{/if}
 
@@ -1166,16 +1149,11 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			</g>
 		{/if}
 	</svg>
-	{#if previaGrade && mesa.mestre}
-		<div class="absolute top-3 left-1/2 z-20 flex w-max max-w-[calc(100%-24px)] -translate-x-1/2 flex-wrap items-center gap-2 border-2 border-[var(--acc)] bg-sup px-3 py-2 shadow-[4px_4px_0_var(--sombra)]" role="group" aria-label="Redimensionar a grade">
-			<span class="max-w-[40ch] text-xs leading-4">Puxe a borda ou o canto do quadrado destacado até ele casar com um quadrado do mapa. Arraste o miolo (ou clique no mapa) para encaixar as linhas.</span>
-			<span class="flex items-center border-2 border-b3" role="group" aria-label="Ajuste fino do tamanho">
-				<button type="button" class="h-9 w-8 font-pixel text-base font-bold" aria-label="Quadrados um pouco menores" onclick={() => ajustarLado(0.99)}>−</button>
-				<span class="min-w-16 text-center font-pixel text-xs font-bold" title="A cena fica com esse número de quadrados">{previaGrade.colunas} × {previaGrade.linhas}</span>
-				<button type="button" class="h-9 w-8 font-pixel text-base font-bold" aria-label="Quadrados um pouco maiores" onclick={() => ajustarLado(1.01)}>+</button>
-			</span>
-			<button type="button" class="btn-jogo btn-primario min-h-9 text-xs" onclick={aplicarGrade}>APLICAR</button>
-			<button type="button" class="btn-jogo btn-fantasma min-h-9 text-xs" onclick={() => (ui.alinhar = null)}>CANCELAR</button>
+	{#if ui.bordas && !iso && mesa.mestre}
+		<div class="absolute top-3 left-1/2 z-20 flex w-max max-w-[calc(100%-24px)] -translate-x-1/2 items-center gap-3 border-2 border-[var(--acc)] bg-sup py-1.5 pr-1.5 pl-3 shadow-[4px_4px_0_var(--sombra)]" role="group" aria-label="Redimensionar a grade">
+			<span class="max-w-[34ch] text-xs leading-4">Puxe a borda da direita, a de baixo ou o canto da grade. Cada quadrado é 1 m.</span>
+			<span class="font-pixel text-sm font-bold" aria-live="polite">{L} × {A}</span>
+			<button type="button" class="btn-jogo btn-primario min-h-9 text-xs" onclick={() => (ui.bordas = false)}>PRONTO</button>
 		</div>
 	{/if}
 	{#if rascunho}
