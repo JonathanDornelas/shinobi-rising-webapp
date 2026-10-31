@@ -55,9 +55,12 @@
 		esgotado: { nome: 'ESGOTADO', classe: 'border-b3 text-mut' },
 		revogado: { nome: 'REVOGADO', classe: 'border-[#5E6B73] text-mut line-through' }
 	} as const;
-	/** Personagem ativo do membro: a ficha completa (Mestre ou dono) ou o resumo público do grupo. */
-	const personagemDe = (id: string) =>
-		data.personagens.find((p) => p.jogador_id === id && p.situacao === 'ativo')?.nome || data.grupo.find((g) => g.jogador_id === id && g.situacao === 'ativo')?.nome;
+	/** Personagens ativos do membro (pode ter vários): a ficha completa (Mestre ou dono) ou o resumo público do grupo. */
+	const personagemDe = (id: string) => {
+		const meus = data.personagens.filter((p) => p.jogador_id === id && p.situacao === 'ativo').map((p) => p.nome);
+		const nomes = meus.length ? meus : data.grupo.filter((g) => g.jogador_id === id && g.situacao === 'ativo').map((g) => g.nome);
+		return nomes.filter(Boolean).join(', ') || undefined;
+	};
 	const convites = $derived(data.convites.map((cv) => ({ ...cv, situacao: situacaoConvite(cv) })));
 </script>
 

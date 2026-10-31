@@ -18,6 +18,8 @@ export interface Regua {
 	linha?: number;
 	/** alvos: quantos dá para escolher. */
 	alvos?: number;
+	/** alvos: o custo de cada alvo além do primeiro, na unidade do jutsu ("+2 PC por alvo adicional"). */
+	custoAlvo?: number;
 	/** esfera centrada no usuário. */
 	emSi?: boolean;
 }
@@ -43,7 +45,12 @@ export function lerAlcance(texto: string): Pick<Regua, 'alcance' | 'rotuloAlcanc
 	return { alcance: m, rotuloAlcance: nome ? `${nome[1]} · ${m} m` : `${m} m` };
 }
 
-export function lerArea(texto: string): Pick<Regua, 'forma' | 'n' | 'cone' | 'linha' | 'alvos' | 'emSi'> {
+/** "+2 PC por alvo adicional": o custo de cada alvo a mais; "no máximo 2" depois dele conta os alvos a mais. */
+const POR_ALVO = /\+\s*(\d+)\s*(?:PC|PE)\s*por alvo (?:adicional|extra)(?:[^.|]*?no m[áa]ximo\s*(\d+))?/i;
+/** Sem limite escrito no card, os alvos a mais vão até este total (o Mestre pode cortar antes). */
+export const MAX_ALVOS_PAGOS = 5;
+
+export function lerArea(texto: string): Pick<Regua, 'forma' | 'n' | 'cone' | 'linha' | 'alvos' | 'emSi' | 'custoAlvo'> {
 	const t = texto.trim();
 	if (/^pessoal$/i.test(t)) return { forma: 'nenhuma', n: 0 };
 	if (/massiva|quil[ôo]metro|centenas de metros|toda a área/i.test(t)) return { forma: 'cena', n: 0 };
@@ -64,6 +71,8 @@ export function lerArea(texto: string): Pick<Regua, 'forma' | 'n' | 'cone' | 'li
 	const ate = /at[ée]\s*(\d+)\s*(?:alvos|aliados|criaturas)/i.exec(t);
 	const doisOuTres = /(\d+)\s*ou\s*(\d+)\s*alvos/i.exec(t);
 	if (/alvo|aliado|criatura|receptáculo/i.test(t) && !/clone/i.test(t)) {
+		const pago = POR_ALVO.exec(t);
+		if (pago) return { forma: 'alvos', n: 0, alvos: max ? +max[1] : pago[2] ? 1 + +pago[2] : MAX_ALVOS_PAGOS, custoAlvo: +pago[1] };
 		const alvos = max ? +max[1] : extra ? 1 + +extra[1] : ate ? +ate[1] : doisOuTres ? +doisOuTres[2] : 1;
 		return { forma: 'alvos', n: 0, alvos };
 	}
@@ -71,9 +80,12 @@ export function lerArea(texto: string): Pick<Regua, 'forma' | 'n' | 'cone' | 'li
 }
 
 /** A régua de um jutsu do catálogo (linha de informação do card). */
-export function reguaDoCard(info: { k: string; v: string }[]): Regua {
+export function reguaDoCard(info: { k: string; v: string }[], efeito = ''): Regua {
 	const alcance = lerAlcance(info.find((i) => i.k === 'Alcance')?.v ?? '');
 	const area = lerArea(info.find((i) => i.k === 'Área')?.v ?? 'Alvo único');
+	// o custo por alvo a mais às vezes está no efeito ("Rajada: +2 PC por alvo adicional (no máximo 2)"), não na Área
+	const pago = area.forma === 'alvos' && !area.custoAlvo ? POR_ALVO.exec(efeito) : null;
+	if (pago) return { ...alcance, ...area, alvos: Math.max(area.alvos ?? 1, pago[2] ? 1 + +pago[2] : MAX_ALVOS_PAGOS), custoAlvo: +pago[1] };
 	return { ...alcance, ...area };
 }
 

@@ -323,13 +323,35 @@ export class Mesa {
 				if (status !== 'SUBSCRIBED') return;
 				this.canal?.track({ em: Date.now() });
 				// voltou depois de cair (wifi, aba dormindo): o que mudou enquanto isso não chega pelo tempo real
-				if (caiu && this.jaConectou) void this.ressincronizar();
+				if (caiu && this.jaConectou) void this.ressincronizar(true);
 				this.jaConectou = true;
 			});
 		if (this.cena?.mostrar_pv && !this.mestre) this.lerPvs();
+		this.vigiar();
+	}
+
+	/**
+	 * Redes de segurança do tempo real. A aba em segundo plano tem os relógios atrasados pelo navegador e a conexão pode cair
+	 * sem aviso; o que mudou nesse meio-tempo se perde. Ao voltar para a aba (depois de 5 s escondida), a cena é relida; e,
+	 * com a aba à vista, uma releitura silenciosa a cada 45 s pega algum aviso perdido.
+	 */
+	private escondidaDesde = 0;
+	private vigia: ReturnType<typeof setInterval> | undefined;
+	private aoMudarVisibilidade = () => {
+		if (document.visibilityState === 'hidden') return void (this.escondidaDesde = Date.now());
+		if (this.escondidaDesde && Date.now() - this.escondidaDesde > 5000) void this.ressincronizar();
+		this.escondidaDesde = 0;
+	};
+	private vigiar() {
+		if (typeof document === 'undefined') return;
+		document.addEventListener('visibilitychange', this.aoMudarVisibilidade);
+		clearInterval(this.vigia);
+		this.vigia = setInterval(() => document.visibilityState === 'visible' && this.conectado && void this.ressincronizar(), 45000);
 	}
 
 	desconectar() {
+		if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', this.aoMudarVisibilidade);
+		clearInterval(this.vigia);
 		if (this.canal) sb().removeChannel(this.canal);
 		if (this.canalDiario) sb().removeChannel(this.canalDiario);
 		this.canal = null;
@@ -340,10 +362,10 @@ export class Mesa {
 	/** O canal já entrou uma vez: um novo SUBSCRIBED depois de cair pede para reler a cena. */
 	private jaConectou = false;
 	/**
-	 * Relê o que fica salvo da cena (tokens, traços, efeitos, objetos, as cenas e a música), depois de a conexão cair e
-	 * voltar: os avisos do banco desse intervalo se perderam.
+	 * Relê o que fica salvo da cena (tokens, traços, efeitos, objetos, as cenas e a música): depois de a conexão cair e
+	 * voltar (avisar = true: a página mostra um aviso), ao voltar para a aba e de tempos em tempos (em silêncio).
 	 */
-	async ressincronizar() {
+	async ressincronizar(avisar = false) {
 		const cena = this.cenaId;
 		if (!cena) return;
 		const [tk, tr, ef, ob, cs, jk] = await Promise.all([
@@ -368,10 +390,10 @@ export class Mesa {
 		}
 		if (!jk.error) this.jukebox = (jk.data as MesaJukebox | null) ?? null;
 		if (this.cena?.mostrar_pv && !this.mestre) this.lerPvs();
-		this.aoRessincronizar?.();
+		this.aoRessincronizar?.(avisar);
 	}
-	/** A página relê o que é dela (as fichas) junto com a cena. */
-	aoRessincronizar: (() => void) | null = null;
+	/** A página relê o que é dela (as fichas) junto com a cena; `avisar`: a conexão tinha caído. */
+	aoRessincronizar: ((avisar: boolean) => void) | null = null;
 	/** A ficha de um personagem da cena mudou (pelo token, que o banco atualiza junto): a página relê o estado dela. */
 	aoMudarFicha: ((personagem: string) => void) | null = null;
 

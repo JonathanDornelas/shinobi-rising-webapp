@@ -70,6 +70,15 @@ Lançar um jutsu contra um alvo é um ataque como outro qualquer: um teste da pe
 - **Área:** sem ataque; cada alvo faz uma Resistência contra a DT do Jutsu
 :::
 
+**Manter um jutsu.** Alguns efeitos ficam enquanto você paga: os de duração "sustentado" e os que falam em custo de manutenção. A manutenção sai no começo de cada turno seu, sem gastar ação, e o card diz quanto, como em "2 PC/turno". Quando ele não diz, a manutenção é metade do custo do jutsu, arredondada para cima. Dá para manter mais de um efeito ao mesmo tempo, pagando cada um. Quem deixa de pagar encerra o efeito na hora, e cair Inconsciente encerra todos (cap. 4).
+
+:::na-mesa{titulo="Manutenção"}
+- **Quando:** no começo de cada turno seu, sem ação
+- **Quanto:** o valor do card; sem valor, metade do custo do jutsu (arredondada para cima)
+- **Vários ao mesmo tempo:** pode, pagando cada um
+- **Parar de pagar ou cair Inconsciente:** o efeito acaba
+:::
+
 ## Catálogo de Jutsus {#catalogo-de-jutsus}
 
 ### Estrutura Padrão de um Jutsu {#estrutura-padrao-de-um-jutsu}

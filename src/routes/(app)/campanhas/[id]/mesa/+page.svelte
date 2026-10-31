@@ -33,7 +33,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	let moduloFicha: Promise<typeof import('#lib/componentes/mesa/FichaCompleta.svelte')> | null = null;
 	const carregarFicha = () => (moduloFicha ??= import('#lib/componentes/mesa/FichaCompleta.svelte'));
 	import { mesclarEstado, type EstadoJogo } from '#lib/personagem/progressao.ts';
-	import { apagarAoCair } from '#lib/personagem/kkg.ts';
+	import { apagarAoCair, MANTER_KKG } from '#lib/personagem/kkg.ts';
 	import PainelMesa from '#lib/componentes/mesa/PainelMesa.svelte';
 	import BuscaBestiario from '#lib/componentes/npc/BuscaBestiario.svelte';
 	import { npcDoVerbete } from '#lib/bestiario/npc.ts';
@@ -104,9 +104,9 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		// a ficha de um personagem mudou em outra tela (o token chegou com outro PV ou outros estados); a conexão caiu e
 		// voltou: as fichas abertas aqui são relidas do banco
 		m.aoMudarFicha = (pid) => relerFicha(pid);
-		m.aoRessincronizar = () => {
+		m.aoRessincronizar = (avisar) => {
 			fichas.forEach((f) => relerFicha(f.id));
-			toasts.mostrar('A conexão voltou e a cena foi atualizada.', 'sucesso');
+			if (avisar) toasts.mostrar('A conexão voltou e a cena foi atualizada.', 'sucesso');
 		};
 		m.conectar();
 		return () => m.desconectar();
@@ -337,7 +337,8 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	}
 	// ficha completa numa janela grande: o jogador abre a dele, o Mestre qualquer uma; minimizada, fica montada
 	let fichaCompleta = $state<{ pid: string; nome: string; min: boolean } | null>(null);
-	const minhaFichaId = $derived(fichas.find((f) => f.jogadorId === data.eu)?.id ?? null);
+	/** As fichas do jogador (ele pode ter vários personagens em jogo); o Mestre não tem. */
+	const minhasFichas = $derived(fichas.filter((f) => f.jogadorId === data.eu));
 	function abrirFichaCompleta(pid: string) {
 		if (fichaCompleta?.pid === pid) return void (fichaCompleta = { ...fichaCompleta, min: false });
 		fichaCompleta = { pid, nome: fichas.find((f) => f.id === pid)?.nome ?? 'Ficha', min: false };
@@ -447,22 +448,26 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		if (escolhido === null && comCritico.length && dados) await rolar(t, { expr: dados, rotulo: `Crítico · ${j.nome} → ${comCritico.map((q) => nomeCurto(q.nome)).join(', ')}`.slice(0, 80), partes: [['Dados extras do crítico', dados]] }, 'dano', false, origem);
 	}
 	async function pagarEAtacar(t: MesaToken, j: JutsuMesa, alvos: string, varios: MesaToken[] = []) {
+		// alvos a mais que o card cobra ("+2 PC por alvo adicional"): cada um além do primeiro soma o custo dele
+		const extra = j.regua.custoAlvo && varios.length > 1 ? (varios.length - 1) * j.regua.custoAlvo : 0;
+		const custo = j.custo + extra;
+		const quantos = extra ? ` (${varios.length} alvos)` : '';
 		const f = fichaDe(t);
 		if (f) {
 			const k = j.unidade === 'PE' ? 'pe' : 'pc';
 			const atual = f.estado[k] ?? f.max[k];
-			if (atual < j.custo) return void toasts.mostrar(`Faltam ${j.custo - atual} ${j.unidade} para ${j.nome}.`, 'aviso'), false;
-			const novo = atual - j.custo;
-			await estadoPc(f, { [k]: novo, ...(k === 'pe' && novo === 0 ? { fadiga: Math.min(5, (f.estado.fadiga ?? 0) + 1) } : {}) }, `−${j.custo} ${j.unidade} · ${j.nome} (Mesa)`);
+			if (atual < custo) return void toasts.mostrar(`Faltam ${custo - atual} ${j.unidade} para ${j.nome}${quantos}.`, 'aviso'), false;
+			const novo = atual - custo;
+			await estadoPc(f, { [k]: novo, ...(k === 'pe' && novo === 0 ? { fadiga: Math.min(5, (f.estado.fadiga ?? 0) + 1) } : {}) }, `−${custo} ${j.unidade} · ${j.nome}${quantos} (Mesa)`);
 		}
 		// o NPC também paga o jutsu (quando a ficha dele tem o recurso)
 		const n = npcDe(t);
-		if (n && j.custo > 0) {
+		if (n && custo > 0) {
 			const k = j.unidade === 'PE' ? 'pe' : 'pc';
 			if (n[k] > 0) {
 				const atual = recursoDosMembros(n, k)[(t.membro ?? 1) - 1];
-				if (atual < j.custo) return void toasts.mostrar(`Faltam ${j.custo - atual} ${j.unidade} para ${j.nome}.`, 'aviso'), false;
-				await recursoNpc(n, t.membro ?? 1, k, atual - j.custo);
+				if (atual < custo) return void toasts.mostrar(`Faltam ${custo - atual} ${j.unidade} para ${j.nome}${quantos}.`, 'aviso'), false;
+				await recursoNpc(n, t.membro ?? 1, k, atual - custo);
 			}
 		}
 		if (j.ataque && varios.length) {
@@ -771,6 +776,30 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		}
 		ui.avisar(`“${cena.nome}” agora é a cena do grupo.`);
 	}
+	/**
+	 * Em combate, a Kekkei Genkai ligada custa 1 PC no começo de cada turno do personagem (cap. 8); sem PC, apaga. Só a
+	 * tela do Mestre cobra (quem passa os turnos), uma vez por vez; ao abrir a página no meio de um turno, não cobra.
+	 */
+	let vezCobrada = '';
+	$effect(() => {
+		const i = mesa.iniciativa;
+		if (!data.mestre || mesa.somenteLeitura || !i.ativa || !i.ordem?.length) return;
+		const chave = `${mesa.cenaId}:${i.rodada ?? 1}:${i.vez ?? 0}`;
+		if (chave === vezCobrada) return;
+		const primeira = !vezCobrada;
+		vezCobrada = chave;
+		const entrada = i.ordem[Math.abs(Math.trunc(i.vez ?? 0)) % i.ordem.length];
+		if (primeira || !entrada?.personagem_id) return;
+		untrack(() => manterKkg(entrada.personagem_id!));
+	});
+	function manterKkg(pid: string) {
+		const f = fichas.find((x) => x.id === pid);
+		const e = f?.estado.kkg;
+		if (!f?.kkg || f.kkg.def.sempre || !e?.ativa) return;
+		const pc = f.estado.pc ?? f.max.pc;
+		if (pc >= MANTER_KKG) void estadoPc(f, { pc: pc - MANTER_KKG }, `Turno com o ${f.kkg.def.nome} ativo: −${MANTER_KKG} PC`);
+		else void estadoPc(f, { kkg: { ...e, ativa: false, cena: null } }, `${f.kkg.def.nome} apagou: sem PC para manter no turno`);
+	}
 
 	// ------------------------------------------------------------------ régua de jutsu: barra
 	const molde = $derived(ui.mira ? calcularMolde(ui.mira, mesa, mesa.tokens.filter((t) => t.visivel || data.mestre)) : null);
@@ -871,11 +900,13 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 	});
 
 	const hoverToken = $derived(ui.hover ? mesa.tokens.find((t) => t.id === ui.hover!.token) : null);
-	const minhaFicha = $derived(data.personagens.find((p) => p.jogadorId === data.eu) ?? null);
+	const meusPersonagens = $derived(data.personagens.filter((p) => p.jogadorId === data.eu));
+	/** Os que ainda não estão no quadro e podem entrar (o Mestre pode limitar quem joga a cena). */
+	const paraEntrar = $derived(meusPersonagens.filter((p) => participa(p.id) && !mesa.tokens.some((t) => t.personagem_id === p.id && !t.ligado_a)));
 	const comoQuem = $derived.by(() => {
 		const sel = mesa.tokens.find((t) => t.id === ui.sel);
 		if (data.mestre && sel?.npc_id) return { nome: sel.nome, personagem: null, npc: sel.npc_id };
-		const f = fichas.find((x) => x.jogadorId === data.eu);
+		const f = (sel?.personagem_id && minhasFichas.find((x) => x.id === sel.personagem_id)) || minhasFichas[0];
 		return f ? { nome: f.nome, personagem: f.id, npc: null } : { nome: data.mestre ? 'Mestre' : 'você', personagem: null, npc: null };
 	});
 	function rolarLivre(expr: string, oculta: boolean) {
@@ -959,7 +990,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 	<div class="pointer-events-none absolute inset-x-3 top-3 z-[45] flex flex-col items-center gap-2">
 		{#if !mesa.conectado}<div role="status" class="pointer-events-auto border-2 border-warn bg-sup px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_var(--sombra)]">Sem conexão. O que você mexer agora pode não ser salvo; quando a conexão voltar, a cena se atualiza sozinha.</div>{/if}
 		{#if mesa.travada}<div role="status" class="pointer-events-auto border-2 border-warn bg-sup px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_var(--sombra)]">Mesa travada pelo Mestre.</div>{/if}
-		{#if !data.mestre && minhaFicha && !participa(minhaFicha.id)}<div role="status" class="pointer-events-auto border-2 border-info bg-sup px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_var(--sombra)]">Você assiste a esta cena: o Mestre escolheu quem joga nela.</div>{/if}
+		{#if !data.mestre && meusPersonagens.length && !meusPersonagens.some((p) => participa(p.id))}<div role="status" class="pointer-events-auto border-2 border-info bg-sup px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_var(--sombra)]">Você assiste a esta cena: o Mestre escolheu quem joga nela.</div>{/if}
 		{#if data.mestre && cena && !cena.ativa}
 			<div role="status" class="pointer-events-auto flex items-center gap-3 border-2 border-info bg-sup px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_var(--sombra)]">
 				<span>Você está vendo “{cena.nome}”.{ativa ? ` O grupo vê “${ativa.nome}”.` : ' O grupo ainda não tem cena aberta.'}</span>
@@ -1095,7 +1126,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			<span class="font-mincho text-xl leading-[26px] font-bold">{data.mestre ? 'Cena vazia' : 'O Mestre ainda está montando a cena'}</span>
 			<span class="text-sm leading-5 text-mut">{data.mestre ? 'Arraste personagens e NPCs do Elenco para o quadro.' : 'Você pode entrar com o seu personagem quando quiser.'}</span>
 			{#if data.mestre && data.personagens.length}<button type="button" class="btn-jogo btn-primario min-h-11" onclick={colocarOGrupo}>COLOCAR O GRUPO</button>{/if}
-			{#if !data.mestre && minhaFicha && !mesa.travada && participa(minhaFicha.id)}<button type="button" class="btn-jogo btn-primario min-h-11" onclick={() => colocar(JSON.stringify({ tipo: 'pc', id: minhaFicha.id }))}>ENTRAR NA CENA</button>{/if}
+			{#if !data.mestre && !mesa.travada}{#each paraEntrar as p (p.id)}<button type="button" class="btn-jogo btn-primario min-h-11" onclick={() => colocar(JSON.stringify({ tipo: 'pc', id: p.id }))}>{meusPersonagens.length > 1 ? `ENTRAR COM ${(p.nome || 'personagem').split(' ')[0].toUpperCase()}` : 'ENTRAR NA CENA'}</button>{/each}{/if}
 		</div>
 	{/if}
 	{#if suaVez}<div role="alert" class="absolute top-[40%] left-1/2 z-[9] -translate-x-1/2 border-2 border-acc bg-sup px-5 py-3.5 font-mincho text-[22px] leading-none font-bold text-acc shadow-[4px_4px_0_var(--sombra)]">{suaVez}</div>{/if}
@@ -1135,7 +1166,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			<span class="flex items-center gap-1 font-pixel text-xs leading-none font-bold text-mut"><span class="h-2 w-2 bg-ok"></span>{mesa.online.length}</span>
 			{#if mesa.iniciativa.ativa}<span class="font-pixel text-xs leading-none font-bold text-acc">R{mesa.iniciativa.rodada}</span>{/if}
 			{#if Array.isArray(mesa.diario)}<button type="button" class="flex h-10 w-10 items-center justify-center border-2 border-b3 p-0 {ui.diarioAberto ? 'bg-b2' : ''}" aria-label="Diário do grupo" aria-pressed={ui.diarioAberto} onclick={() => (ui.diarioAberto = !ui.diarioAberto)}><Icone id="equip/ic-equip-pergaminho" /></button>{/if}
-			{#if minhaFichaId}<button type="button" class="min-h-10 border-2 border-b3 px-2 font-pixel text-[11px] font-bold" onclick={() => abrirFichaCompleta(minhaFichaId!)}>FICHA</button>{/if}
+			{#each minhasFichas as f (f.id)}<button type="button" class="min-h-10 border-2 border-b3 px-2 font-pixel text-[11px] font-bold" onclick={() => abrirFichaCompleta(f.id)}>{minhasFichas.length > 1 ? f.nome.split(' ')[0].toUpperCase() : 'FICHA'}</button>{/each}
 		</div>
 		<div class="relative min-h-0 flex-1">
 			{#if narrativa}
@@ -1245,7 +1276,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 				{/if}
 			</nav>
 			<span class="flex-1"></span>
-			{#if minhaFichaId}<button type="button" class="flex min-h-10 items-center gap-1.5 border-2 border-b3 bg-b2 px-2.5 font-pixel text-xs font-bold hover:border-mut" title="A sua ficha inteira numa janela grande" onclick={() => abrirFichaCompleta(minhaFichaId!)}>MINHA FICHA ⤢</button>{/if}
+			{#each minhasFichas as f (f.id)}<button type="button" class="flex min-h-10 items-center gap-1.5 border-2 border-b3 bg-b2 px-2.5 font-pixel text-xs font-bold hover:border-mut" title="A ficha inteira de {f.nome} numa janela grande" onclick={() => abrirFichaCompleta(f.id)}>{minhasFichas.length > 1 ? `${f.nome.split(' ')[0].toUpperCase()} ⤢` : 'MINHA FICHA ⤢'}</button>{/each}
 			<div aria-label="Quem está na mesa" class="flex items-center gap-1.5">
 				{#each data.membros as m (m.id)}
 					{@const on = mesa.online.includes(m.id) || m.id === data.eu}

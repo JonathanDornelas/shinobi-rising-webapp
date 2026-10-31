@@ -24,7 +24,7 @@ Gentileza dolorosa. Os Yuki tendem ao pacifismo — odeiam matar, mas o KKG os m
 
 Combinação Vento + Água gerando gelo manipulável.
 
-- Custo: 6 PC por cena para ativar (depois disso, jutsus Hyōton têm seu custo normal).
+- Custo: 6 PC para ativar e, em combate, 1 PC por turno para manter (enquanto ativo, jutsus Hyōton têm seu custo normal).
 - Permite jutsus exclusivos de gelo, listados abaixo.
 
 #### Marcos por Nível {#marcos-por-nivel}

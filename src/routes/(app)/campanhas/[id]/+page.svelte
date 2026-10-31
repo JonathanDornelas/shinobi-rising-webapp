@@ -31,8 +31,8 @@
 	const jogadores = $derived(data.membros.filter((m) => m.papel === 'jogador'));
 	const arquivada = $derived(!!c.arquivada_em);
 	// ---------------------------------------------------------------- fichas
-	/** A ficha ativa do jogador (falecidas e arquivadas ficam na lista de Personagens). */
-	const fichaDe = (jogador: string) => data.personagens.find((p) => p.jogador_id === jogador && p.situacao === 'ativo');
+	/** As fichas ativas do jogador, que pode ter várias em jogo (falecidas e arquivadas ficam na lista de Personagens). */
+	const fichasDe = (jogador: string) => data.personagens.filter((p) => p.jogador_id === jogador && p.situacao === 'ativo');
 	const ativas = $derived(data.personagens.filter((p) => p.status === 'aprovada' && p.situacao === 'ativo' && !p.pre_gerado));
 	let recompensando = $state(false);
 	const SEM_FICHAS = 'Nenhuma ficha aprovada e ativa para receber recompensas';
@@ -49,7 +49,10 @@
 	}
 	const nomeFicha = (id: string) => data.personagens.find((p) => p.id === id)?.nome ?? 'Personagem';
 	const eu = $derived(data.usuario?.id ?? sessao.usuario?.id ?? '');
-	const minha = $derived(fichaDe(eu));
+	const minhas = $derived(fichasDe(eu));
+	/** O grupo do Mestre: uma linha por ficha; o jogador sem ficha ganha uma linha só. */
+	type Ficha = (typeof data.personagens)[number];
+	const linhasGrupo = $derived(jogadores.flatMap((j): { j: (typeof jogadores)[number]; f: Ficha | undefined }[] => (fichasDe(j.id).length ? fichasDe(j.id).map((f) => ({ j, f })) : [{ j, f: undefined }])));
 	const contagem = (s: string) => data.personagens.filter((p) => p.jogador_id === eu && p.status === s).length;
 	const emRevisao = $derived(data.personagens.filter((p) => p.status === 'em_revisao'));
 	let criando = $state(false);
@@ -218,8 +221,7 @@
 					{@render cabeca('Grupo')}
 					{#if jogadores.length}
 						<ul class="m-0 flex list-none flex-col p-0">
-							{#each jogadores as j, i (j.id)}
-								{@const f = fichaDe(j.id)}
+							{#each linhasGrupo as { j, f }, i (f?.id ?? j.id)}
 								<li style:background={i % 2 ? 'var(--b1)' : undefined}>
 									<svelte:element
 										this={f ? 'a' : 'div'}
@@ -341,9 +343,9 @@
 					<span class="btn-jogo btn-primario text-[13px]">ENTRAR NA MESA</span>
 				</a>
 			{/if}
-			<section class="painel-sombra" aria-label="Meu personagem">
-				{@render cabeca('Meu personagem')}
-				{#if !minha}
+			<section class="painel-sombra" aria-label="Meus personagens">
+				{@render cabeca(minhas.length > 1 ? 'Meus personagens' : 'Meu personagem')}
+				{#if !minhas.length}
 					<div class="flex items-center gap-5 p-5 max-sm:flex-col max-sm:items-start md:p-7">
 						<Icone id="acao/ic-acao-criar-personagem" tamanho={96} />
 						<div class="flex flex-col gap-2">
@@ -355,8 +357,9 @@
 						</div>
 					</div>
 				{:else}
+					{#each minhas as minha, n (minha.id)}
 					{@const r = minha.resumo}
-					<div class="flex items-start gap-[18px] p-4 max-sm:flex-col">
+					<div class="flex items-start gap-[18px] p-4 max-sm:flex-col {n ? 'border-t-2 border-b3' : ''}">
 						<Retrato nome={minha.nome || '?'} foto={minha.retrato} tamanho={128} class="max-sm:hidden" />
 						<div class="flex min-w-0 flex-1 flex-col gap-2">
 							<div class="flex flex-wrap items-center gap-2.5">
@@ -410,6 +413,13 @@
 							{minha.status === 'rascunho' ? 'CONTINUAR FICHA' : minha.status === 'ajustes' ? 'REVISAR FICHA' : 'ABRIR FICHA'}
 						</a>
 					</div>
+					{/each}
+					{#if !arquivada}
+						<!-- o jogador pode ter vários personagens em jogo na mesma campanha -->
+						<div class="flex border-t-2 border-b3 px-4 py-3">
+							<button type="button" class="btn-jogo btn-contorno min-h-10 text-xs" disabled={criando} aria-busy={criando} onclick={criarPersonagem}>{#if criando}<Girando />{/if}+ CRIAR OUTRO PERSONAGEM</button>
+						</div>
+					{/if}
 				{/if}
 			</section>
 
@@ -417,11 +427,12 @@
 				{@render cabeca('Grupo')}
 				<ul class="m-0 grid list-none gap-2.5 p-3.5 sm:grid-cols-2 lg:grid-cols-3">
 					{#each data.membros.filter((m) => m.id !== eu) as m (m.id)}
-						{@const f = m.papel === 'jogador' ? data.grupo.find((g) => g.jogador_id === m.id && g.situacao === 'ativo') : undefined}
+						{@const dele = m.papel === 'jogador' ? data.grupo.filter((g) => g.jogador_id === m.id && g.situacao === 'ativo') : []}
+						{@const f = dele[0]}
 						<li class="flex items-center gap-2.5 border-2 border-b3 bg-b1 p-2.5">
 							<Retrato nome={f?.nome || m.nome} foto={f?.retrato ?? m.avatar} tamanho={40} />
 							<div class="flex min-w-0 flex-col gap-0.5">
-								<span class="truncate font-mincho text-[15px] leading-5 font-bold">{f?.nome || m.nome}</span>
+								<span class="truncate font-mincho text-[15px] leading-5 font-bold">{dele.length > 1 ? dele.map((g) => g.nome).join(', ') : f?.nome || m.nome}</span>
 								<span class="flex items-center gap-1 text-xs leading-4 text-mut">
 									{#if m.papel === 'mestre'}Mestre · {m.nome}{:else if f}
 										<IconeCla resumo={f.resumo} />NV {f.nivel} · {m.nome}

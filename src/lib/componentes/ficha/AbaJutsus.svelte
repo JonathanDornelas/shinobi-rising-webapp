@@ -65,7 +65,7 @@
 			unidade: c.unidade === 'PE' ? 'PE' : 'PC',
 			alcance: v('Alcance'),
 			area: v('Área'),
-			regua: reguaDoCard(j.info),
+			regua: reguaDoCard(j.info, j.efeito),
 			resistencia: res && res !== '—' ? comDt(res, dtDe(j)) : null,
 			dt: dtDe(j),
 			ataque: rr.ataque,

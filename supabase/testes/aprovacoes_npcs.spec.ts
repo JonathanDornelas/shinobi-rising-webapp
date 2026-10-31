@@ -59,8 +59,7 @@ describe('pré-gerados', () => {
 		]);
 	});
 
-	it('quem já tem ficha não assume; quem não tem assume e vira dono', async () => {
-		await expect(banco.como(bruno, `select assumir_pre_gerado($1)`, [pre])).rejects.toThrow(/já tem uma ficha/);
+	it('qualquer jogador assume (pode ter vários personagens) e vira dono', async () => {
 		await banco.como(aiko, `select assumir_pre_gerado($1)`, [pre]);
 		expect(await um(banco.como(aiko, `select jogador_id, pre_gerado from personagens where id = $1`, [pre]))).toEqual({ jogador_id: aiko.id, pre_gerado: false });
 		const [n] = await banco.como<{ texto: string }>(kaito, `select texto from notificacoes where tipo = 'pre_gerado'`);

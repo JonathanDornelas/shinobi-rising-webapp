@@ -9,7 +9,7 @@
 	const k = $derived(f.kkg!);
 	const cor = $derived(k.def.cor);
 	const semDespertar = $derived(!!k.def.estagios && k.estagio < 1);
-	const custoTexto = $derived(k.def.sempre ? 'Sempre ativa' : k.custo ? `${k.custo} PC por cena` : 'Sem custo');
+	const custoTexto = $derived(k.def.sempre ? 'Sempre ativa' : k.custo ? `${k.custo} PC para ativar, 1 PC por turno em combate` : 'Sem custo');
 </script>
 
 <section

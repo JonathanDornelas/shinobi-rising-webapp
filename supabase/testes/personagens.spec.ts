@@ -29,8 +29,9 @@ describe('criação', () => {
 		await expect(criar(intruso, 'Infiltrado')).rejects.toThrow();
 	});
 
-	it('uma ficha ativa por jogador na campanha', async () => {
-		await expect(criar(aiko, 'Outra')).rejects.toThrow(/duplicate|unique/);
+	it('o jogador pode ter mais de uma ficha ativa na campanha', async () => {
+		const [outra] = await criar(aiko, 'Outra');
+		expect(outra.id).toBeTruthy();
 	});
 
 	it('não dá para mudar o status nem o nível direto', async () => {
@@ -39,7 +40,7 @@ describe('criação', () => {
 	});
 
 	it('o rascunho é visível para o dono e o Mestre, não para o grupo', async () => {
-		expect(await banco.como(kaito, `select nome from personagens`)).toEqual([{ nome: 'Hana Nara' }]);
+		expect(await banco.como(kaito, `select nome from personagens order by nome`)).toEqual([{ nome: 'Hana Nara' }, { nome: 'Outra' }]);
 		expect(await banco.como(bruno, `select nome from personagens`)).toEqual([]);
 	});
 });

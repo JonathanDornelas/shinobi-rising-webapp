@@ -31,7 +31,7 @@ Olho que evolui em três estágios (1, 2 ou 3 tomoe) — pequenos pontos negros 
 | 2º | 2 tomoe em cada olho | +2 em Percepção; +1 na Defesa; +1 de dano em jutsus | Vencer um combate contra inimigo de nível igual ou superior |
 | 3º | 3 tomoe em cada olho (forma final básica) | +3 em Percepção; +2 na Defesa; cópia de jutsus | O Mangekyou só desperta com trauma (ver Mangekyou Sharingan, nesta seção) |
 
-Custo: 3 PC por cena para manter ativo (os marcos reduzem).
+Custo: 3 PC para ativar (os marcos reduzem) e, em combate, 1 PC por turno para manter (cap. 8).
 
 #### Como funciona a cópia de jutsus {#como-funciona-a-copia-de-jutsus}
 

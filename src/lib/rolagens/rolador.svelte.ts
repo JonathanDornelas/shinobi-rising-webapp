@@ -38,7 +38,10 @@ export interface CampanhaMesa {
 	nome: string;
 	mestreId: string | null;
 	arquivada: boolean;
+	/** A ficha em nome de quem as rolagens rápidas saem (a escolhida, ou a primeira). */
 	ficha: { id: string; nome: string } | null;
+	/** Todas as fichas ativas do jogador nesta campanha (ele pode ter vários personagens). */
+	fichas: { id: string; nome: string }[];
 }
 
 export interface Janela {
@@ -169,8 +172,9 @@ class Rolador {
 			sb.from('personagens').select('id, nome, campanha_id').eq('jogador_id', eu).eq('status', 'aprovada').eq('situacao', 'ativo').eq('npc', false).eq('pre_gerado', false)
 		]);
 		this.campanhas = (ks ?? []).map((k) => {
-			const f = (fichas ?? []).find((x) => x.campanha_id === k.id);
-			return { id: k.id, nome: k.nome, mestreId: k.mestre_id, arquivada: !!k.arquivada_em, ficha: f ? { id: f.id, nome: f.nome } : null };
+			const minhas = (fichas ?? []).filter((x) => x.campanha_id === k.id).map((f) => ({ id: f.id, nome: f.nome }));
+			const escolhida = ler<string | null>(`rolador-ficha:${k.id}`, null);
+			return { id: k.id, nome: k.nome, mestreId: k.mestre_id, arquivada: !!k.arquivada_em, ficha: minhas.find((f) => f.id === escolhida) ?? minhas[0] ?? null, fichas: minhas };
 		});
 		if (this.mesa && !this.campanhas.some((k) => k.id === this.mesa!.id)) this.mesa = null;
 		if (!this.mesa && this.campanhas[0]) this.mesa = { id: this.campanhas[0].id, nome: this.campanhas[0].nome };
@@ -185,6 +189,11 @@ class Rolador {
 	}
 
 	campanha = (id: string) => this.campanhas.find((k) => k.id === id) ?? null;
+	/** Em nome de qual personagem as rolagens rápidas desta campanha saem (fica guardado neste navegador). */
+	escolherFicha(campanha: string, ficha: string) {
+		this.campanhas = this.campanhas.map((k) => (k.id === campanha ? { ...k, ficha: k.fichas.find((f) => f.id === ficha) ?? k.ficha } : k));
+		gravar(`rolador-ficha:${campanha}`, ficha);
+	}
 	souMestre = (campanha: string) => this.campanha(campanha)?.mestreId === this.eu;
 	/** Quem vê a rolagem: todos, quem rolou e o Mestre, ou só o Mestre (oculta do próprio Mestre). */
 	visibilidade(r: Pick<Rolagem, 'oculta' | 'autor_id' | 'campanha_id'>): 'todos' | 'eu' | 'mestre' {

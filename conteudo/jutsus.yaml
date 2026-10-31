@@ -11952,7 +11952,7 @@
       v: Primária
   descricao:
     - Em Modo Sennin, o ninja ergue uma estátua de madeira titânica, com milhares de mãos, e luta de cima da cabeça dela.
-  efeito: 8d10 de dano em todos na área (metade com sucesso na Resistência), sob a chuva de mãos. A estátua continua em campo até o fim da cena e pode repetir o golpe a cada turno, pelo custo de manutenção.
+  efeito: 8d10 de dano em todos na área (metade com sucesso na Resistência), sob a chuva de mãos. A estátua continua em campo até o fim da cena e pode repetir o golpe a cada turno, pelo custo de manutenção (metade do custo do jutsu, cap. 10).
   notas:
     - Exige o Modo Sennin ativo (cap. 15).
   pj: "dano 8d10 (25) + Longo (4) + esfera 15m (8) + clone ou invocação (8) − exige outra técnica (−1): 44 PJ, rank S."

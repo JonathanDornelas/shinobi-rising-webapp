@@ -84,10 +84,6 @@
 							<button type="button" class="link font-semibold" onclick={() => f.liberarPc()}>Liberar agora</button>
 						</div>
 					{/if}
-					<div class="flex gap-1.5 px-3 pb-3">
-						<button type="button" class="btn-jogo btn-contorno min-h-10 flex-1 px-2 text-xs" onclick={() => f.descanso('curto')}>DESCANSO CURTO</button>
-						<button type="button" class="btn-jogo btn-contorno min-h-10 flex-1 px-2 text-xs" onclick={() => f.descanso('longo')}>DESCANSO LONGO</button>
-					</div>
 				</div>
 			{/if}
 		</div>
@@ -124,6 +120,16 @@
 			<button type="button" class="flex h-8 items-center gap-1 disabled:cursor-default max-lg:h-7" disabled={!f.editavel || f.atual.pic <= 0} title="Usar 1 PIC (favor do clã)" onclick={() => f.usarPic()}>
 				<Icone id="recurso/ic-recurso-pic" alt="Pontos de Influência do Clã" class="max-lg:h-6! max-lg:w-6!" /><span class="t-num text-sm">{f.atual.pic}/{f.max.pic}</span>
 			</button>
+		</div>
+	{/if}
+	{#if f.editavel}
+		<!-- o descanso à vista (antes ficava dentro do painel de ajuste de uma barra); o toast tem Desfazer -->
+		<div class="flex flex-col gap-[5px]">
+			<span class="font-pixel text-xs font-bold tracking-[0.06em] text-mut">DESCANSO</span>
+			<span class="flex gap-1">
+				<button type="button" class="btn-jogo btn-contorno min-h-8 px-2 text-[11px] max-lg:min-h-7" title="Descanso curto: recupera ¼ do máximo de PV, PC e PE" onclick={() => f.descanso('curto')}>CURTO</button>
+				<button type="button" class="btn-jogo btn-contorno min-h-8 px-2 text-[11px] max-lg:min-h-7" title="Descanso longo: PV, PC e PE cheios e 1 nível de Fadiga a menos" onclick={() => f.descanso('longo')}>LONGO</button>
+			</span>
 		</div>
 	{/if}
 	<div class="flex flex-col gap-[5px]">

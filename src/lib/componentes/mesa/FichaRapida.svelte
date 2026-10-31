@@ -47,7 +47,7 @@
 	import MetaJutsu, { type Meta as MetaCurta } from '../jutsu/MetaJutsu.svelte';
 	import { alcanceCurto, areaCurta, resistenciaCurta } from '#lib/jutsus/meta.ts';
 	import SavesMorte from '../ficha/SavesMorte.svelte';
-	import { aplicarSave } from '#lib/personagem/progressao.ts';
+	import { aplicarSave, descansar } from '#lib/personagem/progressao.ts';
 	import SeloDt from '../regras/SeloDt.svelte';
 	import { CONDICOES } from '#lib/personagem/dados.ts';
 	import { curar } from '#lib/personagem/progressao.ts';
@@ -183,6 +183,15 @@
 		} else if (dados.tipo === 'npc') acoes.recursoNpc(dados.npc, token.membro ?? 1, k, novo);
 		else acoes.token(token, { pv: novo });
 		ui.mudarFicha(token.id, { dano: '' });
+	}
+
+	/** Descanso curto (¼ dos máximos) ou longo (tudo cheio e 1 nível de Fadiga a menos), cap. 4: o jogador faz pela Mesa. */
+	function descanso(tipo: 'curto' | 'longo') {
+		if (dados.tipo !== 'pc') return;
+		// só os campos do estado entram na conta (o `atual` daqui também traz o máximo e o PC selado)
+		const e = { pv: atual.pv, pc: atual.pc, pe: atual.pe, fadiga: atual.fadiga, condicoes: atual.condicoes, saves: dados.ficha.estado.saves ?? { sucessos: 0, falhas: 0 }, pd: dados.ficha.pd, pic: 0, situacao: 'bem' as const };
+		const { pv, pc, pe, fadiga, saves } = descansar(e, { pv: atual.max.pv, pc: dados.ficha.max.pc, pe: atual.max.pe }, tipo);
+		acoes.estadoPc(dados.ficha, { pv, pc, pe, fadiga, saves, pcSelado: 0 }, tipo === 'curto' ? 'Descanso curto na Mesa: ¼ dos máximos recuperado' : 'Descanso longo na Mesa: recursos restaurados');
 	}
 
 	/** Saves de Morte do personagem caído (PV 0 ou menos, acima da morte imediata). */
@@ -487,6 +496,10 @@
 						/>
 						<button type="button" class={btn} onclick={aplicar}>APLICAR</button>
 						{#if recurso === 'pc' && atual.max.pc > 0}<button type="button" class={btn} title="Juuken: o PC sai do atual e do máximo até a ficha descansar" onclick={selar}>SELAR</button>{/if}
+						{#if dados.tipo === 'pc'}
+							<button type="button" class={btn} title="Descanso curto: recupera ¼ do máximo de PV, PC e PE" onclick={() => descanso('curto')}>D. CURTO</button>
+							<button type="button" class={btn} title="Descanso longo: PV, PC e PE cheios e 1 nível de Fadiga a menos" onclick={() => descanso('longo')}>D. LONGO</button>
+						{/if}
 						{#if dados.tipo === 'pc' && dados.ficha.pd > 0}
 							<span class="flex gap-px font-pixel text-[15px] font-bold text-acc" title="{dados.ficha.pd} PD" aria-label="{dados.ficha.pd} Pontos de Destino">{'★'.repeat(dados.ficha.pd)}</span>
 						{/if}
@@ -570,7 +583,7 @@
 					<Icone id={kkg.def.icone} />
 					<span class="flex min-w-0 flex-1 flex-col">
 						<span class="truncate text-sm leading-[18px] font-semibold">{kkg.def.nome}{kkg.def.estagios && kkg.estagio ? ` · ${kkg.def.estagios[kkg.estagio - 1].rotulo}` : ''}</span>
-						<span class="truncate text-xs leading-4 text-mut">{kkg.def.sempre ? 'Sempre ativa' : kkg.ligada ? kkg.efeito.textos.slice(0, 2).join(' · ') : `${kkg.custo} PC por cena`}</span>
+						<span class="truncate text-xs leading-4 text-mut">{kkg.def.sempre ? 'Sempre ativa' : kkg.ligada ? kkg.efeito.textos.slice(0, 2).join(' · ') : `${kkg.custo} PC para ativar · 1 por turno`}</span>
 					</span>
 					{#if editavel && !kkg.def.sempre}
 						{#if kkg.ativa}

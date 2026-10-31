@@ -1,8 +1,9 @@
-// Kekkei Genkai em jogo (cap. 8 e os verbetes dos clãs): ativar paga o custo em PC por cena e liga os bônus até
-// desativar; numa cena nova, a KKG ainda ativa cobra de novo (na Mesa, ao trocar a cena do grupo). Os marcos reduzem o
+// Kekkei Genkai em jogo (cap. 8, Ativar e Manter uma Kekkei Genkai, e os verbetes dos clãs): ativar paga o custo em PC
+// e liga os bônus até desativar; em combate, cada turno do personagem custa 1 PC (a Mesa cobra na vez dele); numa cena
+// nova, a KKG ainda ativa cobra a ativação de novo (na Mesa, ao trocar a cena do grupo). Os marcos reduzem o
 // custo (Byakugan Kanzen, Sharingan Desenvolvido, Olhos que Leem o Combate, Maestria da Hidratação). O Sharingan tem os
 // três estágios de tomoe, escolhidos na ficha (o despertar é narrativo). Clã criado com KKG: o custo vem da limitação
-// comprada (5 ou 10 PC por cena); sem ela, a KKG fica sempre ativa e não tem botão.
+// comprada (5 ou 10 PC para ativar); sem ela, a KKG fica sempre ativa e não tem botão.
 import { BENEFICIOS_KKG, TIPOS_KKG } from '#lib/clas/dados.ts';
 import type { ClaDados } from '#lib/clas/regras.ts';
 import type { LinhaPericia } from './regras.ts';
@@ -19,7 +20,7 @@ export interface DefKkg {
 	icone: string;
 	/** Cor da linhagem, para o cartão ativo. */
 	cor: string;
-	/** PC por cena; 0 com `sempre`, a KKG não se ativa (fica ligada). */
+	/** PC para ativar (e a cada cena nova); 0 com `sempre`, a KKG não se ativa (fica ligada). Em combate, mais 1 PC por turno. */
 	custo: number;
 	sempre?: boolean;
 	reducoes: { nivel: number; custo: number; nome: string }[];
@@ -157,7 +158,7 @@ export function defKkg(claSlug: string | null | undefined, criado?: ClaDados | n
 	return claSlug ? (OFICIAIS[claSlug] ?? null) : null;
 }
 
-/** O custo por cena no nível da ficha, com o marco que o reduziu. */
+/** O custo de ativar no nível da ficha, com o marco que o reduziu. */
 export function custoKkg(def: DefKkg, nivel: number): { custo: number; reducao: string | null } {
 	const r = def.reducoes.filter((x) => nivel >= x.nivel).at(-1);
 	return r ? { custo: r.custo, reducao: r.nome } : { custo: def.custo, reducao: null };
@@ -202,3 +203,6 @@ export function periciasComKkg(linhas: LinhaPericia[], def: DefKkg | null, estad
 
 /** Bônus na Defesa com a KKG ligada (Sharingan). */
 export const defesaKkg = (def: DefKkg | null, estado: EstadoKkg | undefined, nivel: number) => (def && kkgLigada(def, estado) ? efeitoKkg(def, nivel, estado?.estagio ?? 1).defesa : 0);
+
+/** Em combate, manter a KKG ligada custa 1 PC no começo de cada turno do personagem (cap. 8). */
+export const MANTER_KKG = 1;

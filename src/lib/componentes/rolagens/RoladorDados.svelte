@@ -161,7 +161,15 @@
 			</div>
 		</div>
 		<button type="button" class="btn-jogo btn-primario com-icone min-h-[52px] justify-center text-[15px]" disabled={!!rolador.rolando || !campanha} onclick={rolar}><img src="/icons/dado/ic-dado-d20-32.png" width="32" height="32" alt="" class="[image-rendering:pixelated]" />ROLAR</button>
-		{#if campanha}<span class="text-xs text-mut">{comoQuem} · {campanha.nome}</span>{:else}<span class="text-xs text-mut">Entre numa campanha para rolar dados.</span>{/if}
+		{#if campanha && !mestre && campanha.fichas.length > 1}
+			<!-- vários personagens: o jogador escolhe em nome de quem rola -->
+			<label class="flex items-center gap-1.5 text-xs text-mut">como
+				<select class="min-w-0 border-2 border-b3 bg-b1 px-1 py-0.5 text-xs font-semibold text-fg" value={campanha.ficha?.id} onchange={(e) => rolador.escolherFicha(campanha.id, e.currentTarget.value)} aria-label="Rolar como">
+					{#each campanha.fichas as f (f.id)}<option value={f.id} class="bg-b2">{f.nome}</option>{/each}
+				</select>
+				· {campanha.nome}</label
+			>
+		{:else if campanha}<span class="text-xs text-mut">{comoQuem} · {campanha.nome}</span>{:else}<span class="text-xs text-mut">Entre numa campanha para rolar dados.</span>{/if}
 	{/if}
 
 	<EscolhaDados {compacto} />

@@ -135,6 +135,17 @@ Dá para aprender um jutsu do clã antes do nível em que ele viria. Para isso, 
 
 Quem aprende antes um jutsu que receberia automaticamente num certo nível não ganha outra técnica no lugar quando chegar lá.
 
+### Ativar e Manter uma Kekkei Genkai {#ativar-e-manter-uma-kekkei-genkai}
+
+Os olhos que mudam de cor, os ossos que viram lâmina, o corpo que vira água: a maioria das linhagens não fica ligada o tempo todo. Ativar a Kekkei Genkai custa o valor do clã, que os marcos reduzem (o Sharingan custa 3 PC, 2 no nível 8 e 1 no 13). Em combate, mantê-la ligada custa 1 PC no começo de cada turno seu, sem gastar ação. Sem PC para pagar, ela se apaga, e cair Inconsciente também apaga (cap. 4). Fora de combate, quem a mantém ligada paga a ativação de novo a cada cena nova.
+
+:::na-mesa{titulo="Kekkei Genkai ativa"}
+- **Ativar:** o custo do clã (os marcos reduzem)
+- **Manter, em combate:** 1 PC no começo de cada turno seu, sem ação
+- **Sem PC ou Inconsciente:** apaga; para voltar, ativa e paga de novo
+- **Fora de combate:** cada cena nova cobra a ativação de novo
+:::
+
 ## 8.3 Catálogo de Clãs {#catalogo-de-clas}
 
 Cada clã abaixo é um subcapítulo próprio, com os nove componentes completos. Use as fichas para escolher o seu clã ou como referência para criar um (cap. 8.4).
@@ -282,8 +293,8 @@ Se o seu clã tem Kekkei Genkai, ela é construída com Pontos de KKG. Você com
 
 | Limitação | Devolve PKG | Detalhes |
 | - | - | - |
-| Custo de chakra para ativar (5 PC por cena) | 1 | Não fica ativa o tempo todo |
-| Custo alto (10 PC por cena) | 2 | Reservada para momentos críticos |
+| Custo de chakra para ativar (5 PC, e 1 por turno em combate) | 1 | Não fica ativa o tempo todo |
+| Custo alto (10 PC, e 1 por turno em combate) | 2 | Reservada para momentos críticos |
 | Cega temporariamente após o uso | 2 | Como o uso prolongado do Sharingan |
 | Cega permanentemente após N usos | 4 | Como o Mangekyou; drama narrativo |
 | Reduz a expectativa de vida | 3 | Cada uso longo encurta a vida |
@@ -364,7 +375,7 @@ Quando o receptor não pertence ao clã de origem do dōjutsu, como alguém de f
 | Limitação | Efeito mecânico |
 | - | - |
 | Bônus reduzidos | Todos os bônus mecânicos do dōjutsu funcionam pela metade (arredondado para baixo): se a KKG dá +4 em Percepção, vira +2. |
-| Custo dobrado | Ativar o dōjutsu custa o dobro em PC (Sharingan e Byakugan transplantados: 6 PC por cena em vez de 3). |
+| Custo dobrado | Ativar o dōjutsu custa o dobro em PC (Sharingan e Byakugan transplantados: 6 PC para ativar em vez de 3; manter continua 1 PC por turno). |
 | Habilidades avançadas indisponíveis | Habilidades que exigem um despertar específico (Mangekyou, Tenseigan, evoluções) não podem ser despertadas num receptor de fora do clã; o olho fica preso na forma básica. |
 | Progressão limitada | Os marcos por nível do clã não se aplicam: o olho não evolui com o personagem como evoluiria num membro nato. |
 | Esforço físico | Cada cena de uso causa 1 nível de fadiga a mais, porque o corpo rejeita em parte o chakra do clã; nos momentos críticos, o receptor desperta com dor de cabeça. |

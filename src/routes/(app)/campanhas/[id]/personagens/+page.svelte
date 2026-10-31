@@ -77,8 +77,7 @@
 	let filtro = $state<Filtro>('Todos');
 	const visiveis = $derived(cards.filter((x) => filtro === 'Todos' || x.grupo === filtro));
 	const conta = (f: Filtro) => (f === 'Todos' ? cards.length : cards.filter((x) => x.grupo === f).length);
-	// pré-gerados: o Mestre cria fichas prontas; quem não tem ficha ativa assume uma
-	const temFichaAtiva = $derived(data.personagens.some((p) => p.jogador_id === eu && !p.pre_gerado && p.situacao === 'ativo' && p.status !== 'rejeitada'));
+	// pré-gerados: o Mestre cria fichas prontas; qualquer jogador assume uma (pode ter vários personagens)
 	let ocupado = $state(false);
 	async function criarPreGerado() {
 		ocupado = true;
@@ -148,8 +147,8 @@
 						</a>
 						{#if x.preGerado && x.grupo === 'Ativo' && data.papel === 'jogador'}
 							<div class="flex items-center gap-2 border-2 border-t-0 border-frame bg-b2 px-3.5 py-2">
-								<span class="flex-1 text-[13px] leading-[18px] text-mut">{temFichaAtiva ? 'Você já tem uma ficha ativa nesta campanha.' : 'Disponível: quem assumir passa a ser o dono.'}</span>
-								<button type="button" class="btn-jogo btn-primario min-h-10 text-xs" disabled={ocupado || temFichaAtiva || !!c.arquivada_em} onclick={() => assumir(x)}>ASSUMIR</button>
+								<span class="flex-1 text-[13px] leading-[18px] text-mut">Disponível: quem assumir passa a ser o dono.</span>
+								<button type="button" class="btn-jogo btn-primario min-h-10 text-xs" disabled={ocupado || !!c.arquivada_em} onclick={() => assumir(x)}>ASSUMIR</button>
 							</div>
 						{/if}
 					</li>
