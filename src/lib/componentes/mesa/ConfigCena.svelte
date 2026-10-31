@@ -464,6 +464,9 @@
 						<span class="w-9 flex-none text-right font-pixel text-[10px]">{Math.round(cena.fundo_opacidade * 100)}%</span>
 					</label>
 					{@render opcao('Esticar na cena', 'A imagem cobre a cena inteira.', !cena.fundo_escala, () => mesa.patchCena(cena.fundo_escala ? { fundo_escala: null, fundo_x: 0, fundo_y: 0 } : { fundo_escala: larguraPadrao, fundo_x: 0, fundo_y: 0 }))}
+					{#if iso && cena.fundo_escala && cena.fundo_recorte !== undefined}
+						{@render opcao('Grade só dentro da imagem', 'O que passa da borda do mapa some; os quadrados das pontas ficam cortados. Para a grade cobrir o mapa todo, use Cobrir a imagem ao ajustar a grade.', !!cena.fundo_recorte, () => mesa.patchCena({ fundo_recorte: !cena.fundo_recorte }))}
+					{/if}
 					{#if cena.fundo_escala}
 						<label class="flex h-8 items-center gap-2">
 							<span class="{nomeLinha} w-[76px] flex-none">Largura</span>

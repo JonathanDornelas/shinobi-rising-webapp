@@ -436,6 +436,8 @@ export type MesaCena = {
 	fundo_y: number;
 	/** O fundo girado, em graus no sentido horário da tela, em volta do centro da imagem (sem a migração: undefined). */
 	fundo_rotacao?: number;
+	/** Isométrica: a grade fica só dentro do retângulo da imagem (ausente enquanto a migração não roda). */
+	fundo_recorte?: boolean;
 	grade: boolean;
 	/** Vista de cima (o quadro de sempre) ou isométrica: só muda o desenho, os dados seguem na grade. */
 	visao: 'topo' | 'isometrica';

@@ -145,6 +145,15 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	});
 	/** Dá para girar a grade (a cena tem a coluna do giro e há uma imagem para casar). */
 	const podeGirar = $derived(!!fundo && cena?.fundo_rotacao !== undefined);
+	/**
+	 * Isométrica com mapa: a grade pode cobrir a imagem inteira e ficar só dentro dela (o losango não cabe num retângulo
+	 * sem sobrar). O chão da cena, a grade, o terreno, os traços, a névoa e a base dos efeitos são cortados pelo retângulo
+	 * da imagem; os quadrados das pontas ficam pela metade. Ajustando a grade, o recorte some para o Mestre ver tudo. A
+	 * coluna fundo_recorte pode ainda não existir no banco: sem ela, a opção não aparece.
+	 */
+	const podeRecortar = $derived(iso && !!fundo && !!cena?.fundo_escala && cena?.fundo_recorte !== undefined);
+	const recortar = $derived(podeRecortar && !!cena?.fundo_recorte && !ui.bordas);
+	const clipCena = $derived(recortar ? 'url(#recorte-imagem)' : undefined);
 	/** A bolinha de girar: num cabo para fora do meio da borda de cima da grade (em metros da tela, sem o giro). */
 	function alcaDeGirar(): { base: [number, number]; ponta: [number, number] } {
 		const base = paraTela(L / 2, 0);
@@ -243,8 +252,16 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 			await mesa.patchCena({ fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, ...(a.tipo === 'girar' ? { fundo_rotacao: cena.fundo_rotacao } : {}) });
 			return;
 		}
-		const { x0, y0, x1, y1 } = a.ret;
-		if (x0 === 0 && y0 === 0 && x1 === L && y1 === A) return;
+		await reenquadrar(a.ret);
+	}
+	/**
+	 * A cena passa a ir de (x0, y0) a (x1, y1) da grade de agora (negativo ou além do tamanho: quadrados novos), com a
+	 * imagem parada no mapa e a câmera junto. Devolve se gravou.
+	 */
+	async function reenquadrar(ret: { x0: number; y0: number; x1: number; y1: number }, extra: Partial<MesaCena> = {}) {
+		if (!cena) return false;
+		const { x0, y0, x1, y1 } = ret;
+		if (x0 === 0 && y0 === 0 && x1 === L && y1 === A) return Object.keys(extra).length ? mesa.patchCena(extra) : true;
 		const [l, alt, dx, dy] = [x1 - x0, y1 - y0, -x0, -y0];
 		// o canto 0, 0 de antes vira o (dx, dy) da cena nova: a câmera anda o tanto que ele andaria na tela (girado como a
 		// vista), e a imagem também
@@ -253,14 +270,42 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		const dv = naVista(bx - ax, by - ay);
 		const img = imagemNaVista();
 		const novoFundo = cena.fundo ? fundoDaVista({ x: img.x + dv[0], y: img.y + dv[1], w: img.w }, l, alt) : {};
-		const gravou = mesa.reenquadrarCena(dx, dy, l, alt, novoFundo);
+		const gravou = mesa.reenquadrarCena(dx, dy, l, alt, { ...novoFundo, ...extra });
 		ui.vx += dv[0];
 		ui.vy += dv[1];
-		if (await gravou) ui.avisar(`A cena agora tem ${l} × ${alt} quadrados.`);
-		else {
-			ui.vx -= dv[0];
-			ui.vy -= dv[1];
+		if (await gravou) {
+			ui.avisar(`A cena agora tem ${l} × ${alt} quadrados.`);
+			return true;
 		}
+		ui.vx -= dv[0];
+		ui.vy -= dv[1];
+		return false;
+	}
+	/**
+	 * Cobrir a imagem (isométrica): a grade cresce (ou encolhe) até o losango cobrir o mapa inteiro, sem a imagem sair do
+	 * lugar, e passa a ficar só dentro dela. Os quatro cantos da imagem (girada, se for o caso) voltam para a grade: a cena
+	 * vai do menor ao maior deles, arredondado para fora.
+	 */
+	export async function cobrirImagem() {
+		if (!podeRecortar || !cena) return;
+		const c = caixaFundo;
+		const [mx, my] = [c.x + c.w / 2, c.y + c.h / 2];
+		const rot = cena.fundo_rotacao ?? 0;
+		const cantos = [
+			[c.x, c.y],
+			[c.x + c.w, c.y],
+			[c.x, c.y + c.h],
+			[c.x + c.w, c.y + c.h]
+		].map(([x, y]) => {
+			const [rx, ry] = girarVetor(x - mx, y - my, rot);
+			return daTela(mx + rx, my + ry);
+		});
+		const xs = cantos.map((p) => p[0]);
+		const ys = cantos.map((p) => p[1]);
+		const ret = { x0: Math.floor(Math.min(...xs) + 1e-6), y0: Math.floor(Math.min(...ys) + 1e-6), x1: Math.ceil(Math.max(...xs) - 1e-6), y1: Math.ceil(Math.max(...ys) - 1e-6) };
+		if (ret.x1 - ret.x0 > 200 || ret.y1 - ret.y0 > 200) return ui.avisar(`Para cobrir a imagem, a cena precisaria de ${ret.x1 - ret.x0} × ${ret.y1 - ret.y0} quadrados (o máximo é 200). Diminua o mapa um pouco e tente de novo.`);
+		if (ret.x1 - ret.x0 < 5 || ret.y1 - ret.y0 < 5) return ui.avisar('A imagem é pequena demais para uma cena (o mínimo é 5 × 5 quadrados).');
+		await reenquadrar(ret, { fundo_recorte: true });
 	}
 	/** Ajuste fino do giro da grade (o ⟲ e o ⟳ do aviso: graus da grade, + no sentido do relógio), ou volta a 0. */
 	function girarUmPouco(grade: number | null) {
@@ -395,7 +440,8 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	/** Ajustar à tela; na abertura, sem deixar os tokens minúsculos (zoom mínimo de 67%, centrado no grupo). */
 	export function ajustar(inicial = false) {
 		if (!W || !H) return;
-		const a0 = iso ? caixaDaCena(cfgI, 0.5, 1) : { x: 0, y: 0, w: L, h: A };
+		// com a grade só dentro da imagem, o que se vê é a imagem: ela enquadra, não o losango inteiro
+		const a0 = iso ? (recortar ? caixaFundo : caixaDaCena(cfgI, 0.5, 1)) : { x: 0, y: 0, w: L, h: A };
 		// a caixa da cena na vista (com a grade girada, a caixa dos quatro cantos girados)
 		const cantos = [naVista(a0.x, a0.y), naVista(a0.x + a0.w, a0.y), naVista(a0.x, a0.y + a0.h), naVista(a0.x + a0.w, a0.y + a0.h)];
 		const [xs, ys] = [cantos.map((c) => c[0]), cantos.map((c) => c[1])];
@@ -1025,7 +1071,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		{@const sp = SPRITES_FX[estilo]}
 		{@const tam = sp ? tamanhoDoSprite(sp.w, sp.h) : null}
 		<g pointer-events="none" opacity={opacidade}>
-			<path {d} style="fill: {ESTILOS[estilo].cor}" fill-opacity="0.2" />
+			<path {d} style="fill: {ESTILOS[estilo].cor}" fill-opacity="0.2" clip-path={clipCena} />
 			{#if sp && tam}
 				{#each spritesDoEfeito(lista, estilo, semente, limite) as q (`${q.x},${q.y}`)}
 					{@const cx = q.x + 0.5 + q.dx}
@@ -1103,7 +1149,13 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			</pattern>
 		</defs>
 		<g transform="translate({-ui.vx * s} {-ui.vy * s}) scale({s}) {giroVista ? `rotate(${giroVista})` : ''} {matrizTxt}">
-			<rect x="0" y="0" width={L} height={A} style="fill: var(--b1)" />
+			<rect x="0" y="0" width={L} height={A} style="fill: var(--b1)" clip-path={clipCena} />
+			{#if recortar}
+				<!-- o retângulo da imagem, na tela (como a imagem: sem a projeção e girado com ela), corta a grade -->
+				<clipPath id="recorte-imagem">
+					<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform="{desfazer ?? ''} {cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : ''}" />
+				</clipPath>
+			{/if}
 			<!-- fundo do quadro: o mapa estica na cena inteira, sob a grade -->
 				{#if fundo && iso}
 					<g transform={desfazer}>
@@ -1117,8 +1169,8 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			{/if}
 			{#if cena?.grade !== false}
 				<!-- dois traçados (linhas de 1 m e de 5 m) com 1 px fixo: o zoom e a câmera não mexem na grade -->
-				<path d={grade1} fill="none" style="stroke: var(--fg)" stroke-opacity={0.09 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" />
-					<path d={grade5} fill="none" style="stroke: var(--fg)" stroke-opacity={0.18 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" />
+				<path d={grade1} fill="none" style="stroke: var(--fg)" stroke-opacity={0.09 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" clip-path={clipCena} />
+					<path d={grade5} fill="none" style="stroke: var(--fg)" stroke-opacity={0.18 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" clip-path={clipCena} />
 				{/if}
 				{#if ui.bordas && mesa.mestre}
 					{@const quente = ajuste ?? alcaSob}
@@ -1165,8 +1217,8 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 
 			{#if terrenoVisivel.size}
 				{@const d = [...terrenoVisivel].map((k) => `M${k.replace(',', ' ')}h1v1h-1z`).join('')}
-				<path {d} style="fill: var(--mesa-siena)" fill-opacity="0.14" pointer-events="none" />
-				<path {d} fill="url(#terreno)" pointer-events="none" />
+				<path {d} style="fill: var(--mesa-siena)" fill-opacity="0.14" pointer-events="none" clip-path={clipCena} />
+				<path {d} fill="url(#terreno)" pointer-events="none" clip-path={clipCena} />
 			{/if}
 
 {#each imagensBaixo as o0 (o0.id)}
@@ -1196,7 +1248,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			{/each}
 
 			{#each mesa.tracos as k (k.id)}
-				<path d={caminho(k.pontos)} fill="none" style="stroke: {corCss(mesa.corDe(k.autor_id))}" stroke-width={k.espessura} stroke-linecap="square" stroke-linejoin="miter" pointer-events="none" />
+				<path d={caminho(k.pontos)} clip-path={clipCena} fill="none" style="stroke: {corCss(mesa.corDe(k.autor_id))}" stroke-width={k.espessura} stroke-linecap="square" stroke-linejoin="miter" pointer-events="none" />
 			{/each}
 			{#each mesa.temporarios as k (k.id)}
 				<path d={caminho(k.pontos)} fill="none" style="stroke: {corCss(mesa.corDe(k.usuario))}" stroke-width={k.espessura} stroke-linecap="square" opacity={Math.max(0, 1 - (agora - k.t) / 3000)} pointer-events="none" />
@@ -1319,8 +1371,8 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 
 			{#if nevoaLigada}
 				<!-- a névoa: o grupo não vê o que está coberto; o Mestre vê esmaecido, com hachura -->
-				<path d={caminhoDaNevoa} fill-rule="evenodd" style="fill: var(--b0)" fill-opacity={mesa.mestre ? 0.55 : 1} pointer-events="none" />
-				{#if mesa.mestre}<path d={caminhoDaNevoa} fill-rule="evenodd" fill="url(#nevoa-hachura)" pointer-events="none" />{/if}
+				<path d={caminhoDaNevoa} fill-rule="evenodd" style="fill: var(--b0)" fill-opacity={mesa.mestre ? 0.55 : 1} pointer-events="none" clip-path={clipCena} />
+				{#if mesa.mestre}<path d={caminhoDaNevoa} fill-rule="evenodd" fill="url(#nevoa-hachura)" pointer-events="none" clip-path={clipCena} />{/if}
 			{/if}
 
 			{#if iso}
@@ -1422,6 +1474,9 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 					<button type="button" class="min-w-12 px-1 font-pixel text-[11px] font-bold" title="Voltar a grade a 0°" onclick={() => girarUmPouco(null)}>{(giroVista || 0).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}°</button>
 					<button type="button" class="h-8 w-8 font-pixel text-base font-bold" aria-label="Girar a grade meio grau para a direita" title="Meio grau para a direita" onclick={() => girarUmPouco(0.5)}>⟳</button>
 				</span>
+			{/if}
+			{#if podeRecortar}
+				<button type="button" class="btn-jogo min-h-9 border-2 border-b3 px-2.5 text-xs" title="A grade cresce até cobrir o mapa inteiro e passa a ficar só dentro dele (os quadrados das pontas ficam cortados); a imagem não sai do lugar" onclick={() => void cobrirImagem()}>COBRIR A IMAGEM</button>
 			{/if}
 			<button type="button" class="btn-jogo btn-primario min-h-9 text-xs" onclick={() => (ui.bordas = false)}>PRONTO</button>
 		</div>
