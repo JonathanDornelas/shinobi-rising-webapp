@@ -1,0 +1,406 @@
+{
+	"katon": {
+		"fps": 12,
+		"partes": [
+			{
+				"name": "burn_status",
+				"around": "canvas",
+				"core": true,
+				"role": "linger"
+			}
+		]
+	},
+	"suiton": {
+		"fps": 10,
+		"partes": [
+			{
+				"name": "churn_pool",
+				"around": "canvas",
+				"core": true,
+				"size": 0.45,
+				"colour": [
+					"#0b2a4a",
+					"#14508a",
+					"#2a86c8",
+					"#6cc0f0",
+					"#d8f2ff",
+					"#6cc0f0",
+					"#2a86c8",
+					"#14508a"
+				],
+				"params": {
+					"light": false
+				},
+				"amount": 0
+			},
+			{
+				"name": "bubbles_rise",
+				"around": "canvas",
+				"size": 0.5,
+				"colour": [
+					"#14508a",
+					"#6cc0f0",
+					"#e8f8ff"
+				],
+				"amount": 0.6
+			}
+		]
+	},
+	"doton": {
+		"fps": 10,
+		"partes": [
+			{
+				"name": "ground_cracks",
+				"around": "canvas",
+				"core": true,
+				"size": 0.7,
+				"colour": [
+					"#1e140a",
+					"#5c4022",
+					"#b08a50",
+					"#f0d090"
+				]
+			},
+			{
+				"name": "slam_dust",
+				"around": "canvas",
+				"size": 0.35,
+				"opacity": 0.7,
+				"colour": [
+					"#4a3a26",
+					"#8a7050",
+					"#c8b08a"
+				]
+			},
+			{
+				"name": "debris_burst",
+				"around": "canvas",
+				"size": 0.55,
+				"amount": 1.5,
+				"colour": [
+					"#3a2a16",
+					"#6e5230",
+					"#a88456"
+				]
+			}
+		]
+	},
+	"raiton": {
+		"fps": 12,
+		"partes": [
+			{
+				"name": "soft_glow",
+				"around": "canvas",
+				"size": 0.45,
+				"opacity": 0.55,
+				"colour": [
+					"#5a4a10",
+					"#c8a828",
+					"#fff3a6",
+					"#ffffff"
+				]
+			},
+			{
+				"name": "lightning_arcs",
+				"around": "canvas",
+				"core": true,
+				"size": 0.75,
+				"amount": 2.2,
+				"colour": [
+					"#5a4a10",
+					"#e0c030",
+					"#fff3a6",
+					"#ffffff"
+				]
+			}
+		]
+	},
+	"fuuton": {
+		"fps": 12,
+		"partes": [
+			{
+				"name": "speed_lines",
+				"around": "canvas",
+				"core": true,
+				"size": 0.5,
+				"colour": [
+					"#5f8a4a",
+					"#a8d890",
+					"#e6f5d8"
+				]
+			},
+			{
+				"name": "leaf_fall",
+				"around": "canvas",
+				"size": 0.4,
+				"amount": 0.4,
+				"colour": [
+					"#3e6b22",
+					"#6fa34a",
+					"#a8d890"
+				]
+			}
+		]
+	},
+	"mokuton": {
+		"fps": 10,
+		"partes": [
+			{
+				"name": "vine_growth",
+				"around": "canvas",
+				"core": true,
+				"size": 0.5
+			}
+		]
+	},
+	"hyoton": {
+		"fps": 10,
+		"partes": [
+			{
+				"name": "frost_mist",
+				"around": "canvas",
+				"core": true,
+				"size": 0.5,
+				"opacity": 0.6
+			},
+			{
+				"name": "ice_spikes",
+				"around": "canvas",
+				"size": 0.4
+			}
+		]
+	},
+	"yoton": {
+		"fps": 10,
+		"partes": [
+			{
+				"name": "lava_pool",
+				"around": "canvas",
+				"core": true,
+				"size": 0.45
+			}
+		]
+	},
+	"ranton": {
+		"fps": 12,
+		"partes": [
+			{
+				"name": "cloud_puff",
+				"around": "canvas",
+				"size": 0.5,
+				"colour": [
+					"#1c2a52",
+					"#34508e",
+					"#5a7ac0",
+					"#8aa8e8"
+				]
+			},
+			{
+				"name": "lightning_arcs",
+				"around": "canvas",
+				"core": true,
+				"size": 0.65,
+				"amount": 2.2,
+				"colour": [
+					"#1c2a52",
+					"#5a88e0",
+					"#9ec4ff",
+					"#ffffff"
+				]
+			}
+		]
+	},
+	"jiton": {
+		"fps": 10,
+		"partes": [
+			{
+				"name": "frost_mist",
+				"around": "canvas",
+				"size": 0.45,
+				"opacity": 0.75,
+				"colour": [
+					"#1a1e22",
+					"#3a4248",
+					"#6a767e",
+					"#9aa7b0"
+				]
+			},
+			{
+				"name": "orbit_motes",
+				"around": "canvas",
+				"core": true,
+				"size": 0.6,
+				"amount": 2.5,
+				"colour": [
+					"#1e2428",
+					"#4a555c",
+					"#9aa7b0",
+					"#dfe6ea"
+				]
+			}
+		]
+	},
+	"futton": {
+		"fps": 10,
+		"partes": [
+			{
+				"name": "frost_mist",
+				"around": "canvas",
+				"size": 0.4,
+				"opacity": 0.55,
+				"colour": [
+					"#8a9aa4",
+					"#c4d0d8",
+					"#e4edf3",
+					"#ffffff"
+				]
+			},
+			{
+				"name": "steam_vent",
+				"around": "canvas",
+				"core": true,
+				"size": 0.7,
+				"amount": 1.4
+			}
+		]
+	},
+	"shakuton": {
+		"fps": 10,
+		"partes": [
+			{
+				"name": "soft_glow",
+				"around": "canvas",
+				"size": 0.6,
+				"opacity": 0.9,
+				"colour": [
+					"#7a2a08",
+					"#e8692e",
+					"#ffb45a",
+					"#ffe0a0"
+				]
+			},
+			{
+				"name": "ember_rise",
+				"around": "canvas",
+				"core": true,
+				"size": 0.75,
+				"amount": 2.2,
+				"colour": [
+					"#7a2a08",
+					"#e8692e",
+					"#ffb45a",
+					"#ffe0a0"
+				]
+			}
+		]
+	},
+	"bakuton": {
+		"fps": 12,
+		"partes": [
+			{
+				"name": "cartoon_boom",
+				"around": "canvas",
+				"core": true,
+				"size": 0.4
+			}
+		]
+	},
+	"jinton": {
+		"fps": 10,
+		"partes": [
+			{
+				"name": "soft_glow",
+				"around": "canvas",
+				"size": 0.5,
+				"opacity": 0.9,
+				"colour": [
+					"#8a8070",
+					"#d8cfbc",
+					"#f4efe4",
+					"#ffffff"
+				]
+			},
+			{
+				"name": "twinkles",
+				"around": "canvas",
+				"core": true,
+				"size": 0.6,
+				"amount": 2.5,
+				"colour": [
+					"#8a8070",
+					"#d8cfbc",
+					"#ffffff"
+				]
+			}
+		]
+	},
+	"taijutsu": {
+		"fps": 12,
+		"partes": [
+			{
+				"name": "hit_star",
+				"around": "canvas",
+				"core": true,
+				"size": 0.5,
+				"colour": [
+					"#7a5a08",
+					"#e0b020",
+					"#ffd84d",
+					"#ffffff"
+				]
+			}
+		]
+	},
+	"genjutsu": {
+		"fps": 10,
+		"partes": [
+			{
+				"name": "portal_swirl",
+				"around": "canvas",
+				"core": true,
+				"size": 0.35,
+				"colour": [
+					"#1e0e3a",
+					"#4a2a8a",
+					"#7a5ad0",
+					"#b79cff",
+					"#efe4ff"
+				]
+			}
+		]
+	},
+	"bukijutsu": {
+		"fps": 12,
+		"partes": [
+			{
+				"name": "cross_slash",
+				"around": "canvas",
+				"core": true,
+				"size": 0.45,
+				"colour": [
+					"#5a646e",
+					"#a8b4c0",
+					"#e8eef4",
+					"#ffffff"
+				]
+			}
+		]
+	},
+	"ninjutsu": {
+		"fps": 10,
+		"partes": [
+			{
+				"name": "square_sigil",
+				"around": "canvas",
+				"core": true,
+				"size": 0.35,
+				"colour": [
+					"#0a3a48",
+					"#1a7a90",
+					"#6ad6f2",
+					"#d8f8ff"
+				]
+			}
+		]
+	}
+}

@@ -14,10 +14,10 @@
 	import type { MesaCena, MesaObjeto } from '#lib/supabase/banco.ts';
 	import { caminhoNevoa, celulasEntre, emRuns, grade as gradeNevoa, indice as indiceNevoa, pintar as pintarNevoa, type Run } from '#lib/mesa/nevoa.ts';
 import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as limitarObj, objetoEm, objetoEmTela, tamanhoInicial } from '#lib/mesa/objetos.ts';
-	import { ESTILOS, estiloDoJutsu, estiloValido } from '#lib/mesa/efeitos.ts';
+	import { ESTILOS, estiloDoJutsu, estiloValido, faseDoQuadrado, spritesDoEfeito, tamanhoDoSprite } from '#lib/mesa/efeitos.ts';
+	import { SPRITES_FX } from '#lib/mesa/fx-sprites.ts';
 	import { caixaDaCena, cfgIso, desfazerProjecao, emPe as emPeIso, inverter, matrizIso, ordemDePintura, projetar } from '#lib/mesa/projecao.ts';
 	import { camadaEmPe, camadaPadrao, camadasDaCena, indiceDaCamada, indiceDosTokens } from '#lib/mesa/camadas.ts';
-	import EfeitosFx from './EfeitosFx.svelte';
 
 	let {
 		mesa,
@@ -441,6 +441,9 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		};
 		caixa!.addEventListener('wheel', roda, { passive: false });
 		requestAnimationFrame(() => ajustar(true));
+		// as tiras dos efeitos (18, uns 40 KB) chegam com a tela parada: o primeiro jutsu deixado na cena já aparece animado
+		const ocioso = (f: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(f, { timeout: 5000 }) : setTimeout(f, 2000));
+		ocioso(() => Object.keys(SPRITES_FX).forEach((e) => (new Image().src = `/mesa/fx/${e}.png`)));
 		return () => caixa?.removeEventListener('wheel', roda);
 	});
 
@@ -1014,13 +1017,45 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				/>
 {/snippet}
 
-<!-- o efeito de um jutsu: base translúcida na cor do estilo e o desenho animado do elemento ou do tipo -->
-{#snippet efeitoFx(lista: Quadrado[], estilo: string, opacidade = 1)}
+<!-- o efeito de um jutsu: base translúcida na cor do estilo e, por cima, o elemento em movimento (fogo, água, raio…), um
+     desenho em pixel art por quadrado, cada um na sua fase; de pé na isométrica. Numa área enorme, uma amostra espalhada. -->
+{#snippet efeitoFx(lista: Quadrado[], estilo: string, opacidade = 1, semente = '', limite = 120)}
 	{#if lista?.length}
 		{@const d = lista.map(([x, y]) => `M${x} ${y}h1v1h-1z`).join('')}
-		<g class="fx fx-{estilo}" pointer-events="none" opacity={opacidade}>
-			<path {d} style="fill: {ESTILOS[estilo].cor}" fill-opacity="0.22" />
-			<path {d} fill="url(#fx-{estilo})" class="fx-camada" />
+		{@const sp = SPRITES_FX[estilo]}
+		{@const tam = sp ? tamanhoDoSprite(sp.w, sp.h) : null}
+		<g pointer-events="none" opacity={opacidade}>
+			<path {d} style="fill: {ESTILOS[estilo].cor}" fill-opacity="0.2" />
+			{#if sp && tam}
+				{#each spritesDoEfeito(lista, estilo, semente, limite) as q (`${q.x},${q.y}`)}
+					{@const cx = q.x + 0.5 + q.dx}
+					{@const cy = q.y + 0.5 + q.dy}
+					{@const w = tam.w * q.k}
+					{@const h = tam.h * q.k}
+					<g transform={emPe(cx, cy, (sp.py - 0.5) * h)}>
+						<svg
+							x={iso ? cx - w / 2 : cx - sp.px * w}
+							y={iso ? cy - h / 2 : cy - sp.py * h}
+							width={w}
+							height={h}
+							viewBox={q.espelho ? `${-sp.w} 0 ${sp.w} ${sp.h}` : `0 0 ${sp.w} ${sp.h}`}
+							preserveAspectRatio="none"
+							overflow="hidden"
+						>
+							<!-- espelhado: a imagem vira e o viewBox começa em −w, onde o quadro da vez cai -->
+							<g transform={q.espelho ? 'scale(-1 1)' : undefined}>
+								<image
+									href="/mesa/fx/{estilo}.png"
+									width={sp.w * sp.quadros}
+									height={sp.h}
+									class="fx-quadros"
+									style="--fim: {-sp.w * sp.quadros}px; --pico: {-sp.w * sp.pico}px; animation-duration: {sp.ms}ms; animation-timing-function: steps({sp.quadros}); animation-delay: -{faseDoQuadrado(semente, q.x, q.y, sp.ms)}ms"
+								/>
+							</g>
+						</svg>
+					</g>
+				{/each}
+			{/if}
 		</g>
 	{/if}
 {/snippet}
@@ -1052,7 +1087,6 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		ondblclick={aoClicarDuplo}
 		oncontextmenu={(e) => e.preventDefault()}
 	>
-		<EfeitosFx />
 		<defs>
 			<!-- névoa vista pelo Mestre: hachura fina por cima do esmaecido -->
 			<pattern id="nevoa-hachura" width="0.5" height="0.5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -1154,7 +1188,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			{#each mesa.efeitos as ef (ef.id)}
 				{@const c = corCss(mesa.corDe(ef.autor_id))}
 				{#if estiloValido(ef.estilo)}
-					{@render efeitoFx(ef.quadrados, ef.estilo!)}
+					{@render efeitoFx(ef.quadrados, ef.estilo!, 1, ef.id)}
 				{:else}
 					{@render quadrados(ef.quadrados, mesa.corDe(ef.autor_id))}
 				{/if}
@@ -1198,7 +1232,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				{/if}
 				<!-- fora do alcance: quadrados em cinza (o vermelhão é a cor do Mestre); o anel e o rótulo avisam em vermelho -->
 				{@render quadrados(molde.quadrados, molde.ok ? mesa.corDe(mesa.donoDe(molde.lancador)) : 'ardosia')}
-				{#if molde.ok && estiloDoJutsu(ui.mira.jutsu)}{@render efeitoFx(molde.quadrados, estiloDoJutsu(ui.mira.jutsu)!, 0.8)}{/if}
+				{#if molde.ok && estiloDoJutsu(ui.mira.jutsu)}{@render efeitoFx(molde.quadrados, estiloDoJutsu(ui.mira.jutsu)!, 0.8, 'mira', 60)}{/if}
 				{#if molde.forma === 'cena'}
 					<!-- área maior que a cena: a cena inteira acende -->
 					<rect x="0" y="0" width={L} height={A} style="fill: {corMolde}" fill-opacity="0.12" pointer-events="none" />
@@ -1414,56 +1448,23 @@ style="left: {(naVista(...paraTela(rascunho.x, rascunho.y))[0] - ui.vx) * s}px; 
 </div>
 
 <style>
-	/* efeitos de área: cada estilo anima à sua maneira (raio pisca, impacto pulsa, cristal brilha); parados com movimento reduzido */
-	.fx-raiton .fx-camada,
-	.fx-ranton .fx-camada {
-		animation: fx-relampago 2.6s steps(1) infinite;
+	/* efeitos de área: a tira de quadros anda em passos (um quadro por vez); com movimento reduzido, fica parada no quadro
+	   mais cheio (o primeiro de uma explosão ou de um golpe é quase vazio) */
+	.fx-quadros {
+		image-rendering: pixelated;
+		animation-name: fx-quadros;
+		animation-iteration-count: infinite;
+		will-change: transform;
 	}
-	.fx-hyoton .fx-camada,
-	.fx-bukijutsu .fx-camada {
-		animation: fx-brilho 2.4s ease-in-out infinite alternate;
-	}
-	.fx-bakuton .fx-camada,
-	.fx-taijutsu .fx-camada,
-	.fx-ninjutsu .fx-camada,
-	.fx-yoton .fx-camada {
-		animation: fx-batida 1.5s ease-in-out infinite;
-	}
-	@keyframes fx-relampago {
-		0%,
-		60%,
-		100% {
-			opacity: 0.35;
-		}
-		62%,
-		68% {
-			opacity: 1;
-		}
-		64% {
-			opacity: 0.4;
-		}
-	}
-	@keyframes fx-brilho {
-		from {
-			opacity: 0.55;
-		}
+	@keyframes fx-quadros {
 		to {
-			opacity: 1;
-		}
-	}
-	@keyframes fx-batida {
-		0%,
-		100% {
-			opacity: 0.6;
-		}
-		50% {
-			opacity: 1;
+			transform: translateX(var(--fim));
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.fx .fx-camada {
+		.fx-quadros {
 			animation: none;
-			opacity: 0.85;
+			transform: translateX(var(--pico));
 		}
 	}
 	.ping {
