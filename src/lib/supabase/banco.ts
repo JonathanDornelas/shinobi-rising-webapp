@@ -438,6 +438,10 @@ export type MesaCena = {
 	fundo_rotacao?: number;
 	/** Isométrica: a grade fica só dentro do retângulo da imagem (ausente enquanto a migração não roda). */
 	fundo_recorte?: boolean;
+	/** Relógios da cena (ver mesa/relogios.ts); ausente enquanto a migração não roda. */
+	relogios?: unknown;
+	/** Clima sobre o mapa (chuva, neve, névoa…); ausente enquanto a migração não roda. */
+	clima?: ClimaCena | null;
 	grade: boolean;
 	/** Vista de cima (o quadro de sempre) ou isométrica: só muda o desenho, os dados seguem na grade. */
 	visao: 'topo' | 'isometrica';
@@ -511,8 +515,26 @@ export type MesaJukebox = {
 	atualizada_em: string;
 };
 
+export type ClimaCena = 'chuva' | 'neve' | 'nevoa' | 'folhas' | 'petalas' | 'cinzas';
+
+/** Uma entrada do diário do grupo (missão, NPC, pista ou nota). */
+export type EntradaDiario = {
+	id: string;
+	campanha_id: string;
+	autor_id: string;
+	tipo: 'missao' | 'npc' | 'pista' | 'nota';
+	titulo: string;
+	texto: string;
+	privado: boolean;
+	feito: boolean;
+	criado_em: string;
+	atualizado_em: string;
+};
+
 export type MesaToken = {
 	id: string;
+	/** Já gastou a Reação nesta rodada; ausente enquanto a migração não roda. */
+	reagiu?: boolean;
 	cena_id: string;
 	campanha_id: string;
 	personagem_id: string | null;
@@ -614,6 +636,7 @@ export type Database = {
 			mesa_objetos: Tabela<MesaObjeto, 'cena_id' | 'tipo'>;
 			mesa_artes: Tabela<MesaArte, 'campanha_id' | 'nome' | 'caminho' | 'largura' | 'altura'>;
 			mesa_jukebox: Tabela<MesaJukebox, 'campanha_id' | 'fonte' | 'ref'>;
+			mesa_diario: Tabela<EntradaDiario, 'campanha_id' | 'tipo' | 'titulo'>;
 		};
 		Views: { [_ in never]: never };
 		Functions: {

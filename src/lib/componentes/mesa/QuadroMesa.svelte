@@ -454,6 +454,27 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		ui.vx = cx - W / (BASE * ui.zoom) / 2;
 		ui.vy = cy - H / (BASE * ui.zoom) / 2;
 	}
+	/** Leva a vista até o ponto (x, y) da grade, deslizando em 400 ms (parado para quem pede menos movimento). */
+	export function irPara(x: number, y: number) {
+		const [px, py] = naVista(...paraTela(x, y));
+		const fim = [px - W / s / 2, py - H / s / 2];
+		const ini = [ui.vx, ui.vy];
+		if (matchMedia('(prefers-reduced-motion: reduce)').matches) return void ([ui.vx, ui.vy] = fim);
+		const t0 = performance.now();
+		const passo = (t: number) => {
+			const k = Math.min(1, (t - t0) / 400);
+			const e = 1 - (1 - k) ** 3;
+			ui.vx = ini[0] + (fim[0] - ini[0]) * e;
+			ui.vy = ini[1] + (fim[1] - ini[1]) * e;
+			if (k < 1) requestAnimationFrame(passo);
+		};
+		requestAnimationFrame(passo);
+	}
+	// "Olhem aqui": o Mestre puxou a vista de todos
+	$effect(() => {
+		const o = mesa.olhar;
+		if (o) untrack(() => irPara(o.x, o.y));
+	});
 	export function centralizar(t: MesaToken) {
 		const [px, py] = naVista(...paraTela(t.x + t.tamanho / 2, t.y + t.tamanho / 2));
 		ui.vx = px - W / s / 2;
@@ -540,10 +561,11 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 
 	function aoBaixar(e: PointerEvent) {
 		if (e.button === 2) return;
-		// Alt+clique: ping no mapa, com qualquer ferramenta
+		// Alt+clique: ping no mapa, com qualquer ferramenta; Shift+Alt+clique do Mestre: "Olhem aqui" (a vista de todos vai até lá)
 		if (e.altKey && e.button === 0) {
 			const q = ponto(e);
-			mesa.ping(q.mx, q.my);
+			if (e.shiftKey && mesa.mestre) mesa.olharTodos(q.mx, q.my);
+			else mesa.ping(q.mx, q.my);
 			return;
 		}
 		svg!.setPointerCapture(e.pointerId);
@@ -1007,6 +1029,16 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 						{#if iso}<circle {cx} {cy} r={0.42 * n} fill="#000" fill-opacity="0.3" pointer-events="none" />{/if}
 						<g opacity={t.visivel ? 1 : 0.5} transform={emPe(cx, cy, sobeToken(t))}>
 							{#if mesa.daVez.has(t.id)}<circle {cx} {cy} r={(mol ? rm : r) + 0.12} fill="none" style="stroke: var(--acc)" stroke-width={0.1} />{/if}
+							{#if t.reagiu && mesa.iniciativa.ativa}
+								<!-- Reação gasta nesta rodada: um R riscado no canto de cima à esquerda -->
+								{@const q = Math.max(0.3, 0.28 * n)}
+								<g pointer-events="none">
+									<title>Reação gasta nesta rodada</title>
+									<rect x={cx - r - 0.06} y={cy - r - 0.06} width={q} height={q} style="fill: var(--b0); stroke: var(--mut)" stroke-width={0.04} />
+									<text x={cx - r - 0.06 + q / 2} y={cy - r - 0.06 + q * 0.74} text-anchor="middle" font-size={q * 0.72} font-family="'Pixelify Sans'" font-weight="700" style="fill: var(--mut)">R</text>
+									<line x1={cx - r - 0.02} y1={cy - r - 0.06 + q - 0.04} x2={cx - r - 0.1 + q} y2={cy - r - 0.02} style="stroke: var(--mesa-vermelhao)" stroke-width={0.05} />
+								</g>
+							{/if}
 						{#if ui.sel === t.id}<circle {cx} {cy} r={(mol ? rm : r) + 0.22} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
 						<circle {cx} {cy} r={rf} style="fill: {caido ? 'var(--b3)' : 'var(--b2)'}" />
 						{#if foto}

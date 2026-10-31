@@ -790,3 +790,8 @@
 		--b3: #e6d2bf;
 	}
 }
+
+/* Mesa no modo imersivo: o cabeçalho do site e a barra de baixo saem, o quadro fica com a tela */
+:root[data-imersivo] [data-shell] {
+	display: none;
+}

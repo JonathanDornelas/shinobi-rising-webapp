@@ -42,7 +42,7 @@
 	<a {href} class="p-3 {ativo ? 'text-b0fg shadow-[inset_0_-3px_0_var(--vermelhao)]' : 'text-b0mut hover:text-b0fg'}" aria-current={ativo ? 'page' : undefined}>{rotulo}</a>
 {/snippet}
 
-<header class="relative z-40 flex h-14 items-center gap-2.5 border-b-2 border-ink bg-b0 pr-1.5 pl-3 md:h-16 md:gap-4 md:px-5 lg:gap-6 lg:px-6 print:hidden">
+<header data-shell class="relative z-40 flex h-14 items-center gap-2.5 border-b-2 border-ink bg-b0 pr-1.5 pl-3 md:h-16 md:gap-4 md:px-5 lg:gap-6 lg:px-6 print:hidden">
 	<a href={sessao.usuario ? '/campanhas' : '/'} class="flex items-center gap-2.5" aria-label="Shinobi no Michi, página inicial">
 		<Icone id="marca/ic-marca" />
 		<span class="hidden font-pixel text-[17px] leading-none font-bold tracking-[.08em] whitespace-nowrap text-b0fg lg:inline">SHINOBI NO MICHI</span>

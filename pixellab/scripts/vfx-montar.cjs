@@ -2,6 +2,7 @@
 // horizontal em static/mesa/fx/<estilo>.png, e o manifesto src/lib/mesa/fx-sprites.ts guarda o tamanho, os quadros, a
 // duração e o ponto de apoio (pivot) de cada um.
 //   node vfx-montar.cjs <lote> [<lote que substitui> ...]   (o último lote com o estilo vence)
+//   node vfx-montar.cjs --clima <lote>   (o clima da cena: static/mesa/clima e src/lib/mesa/clima-sprites.ts)
 const fs = require('fs');
 const path = require('path');
 const png = { exports: {} };
@@ -9,8 +10,10 @@ new Function('require', 'module', 'exports', fs.readFileSync(path.join(__dirname
 const { decode, encode } = png.exports;
 
 const RAIZ = path.join(__dirname, '..', '..');
-const SAIDA = path.join(RAIZ, 'static', 'mesa', 'fx');
-const lotes = process.argv.slice(2);
+const clima = process.argv[2] === '--clima';
+const SAIDA = path.join(RAIZ, 'static', 'mesa', clima ? 'clima' : 'fx');
+const MANIFESTO = path.join(RAIZ, 'src', 'lib', 'mesa', clima ? 'clima-sprites.ts' : 'fx-sprites.ts');
+const lotes = process.argv.slice(clima ? 3 : 2);
 const escolhidos = {};
 for (const lote of lotes) for (const d of fs.readdirSync(lote)) if (fs.existsSync(path.join(lote, d, 'folha.json'))) escolhidos[d] = path.join(lote, d);
 
@@ -41,8 +44,23 @@ for (const [estilo, dir] of Object.entries(escolhidos).sort()) {
 }
 
 const linhas = Object.entries(manifesto).map(([k, v]) => `\t${k}: { w: ${v.w}, h: ${v.h}, quadros: ${v.quadros}, ms: ${v.ms}, px: ${v.px}, py: ${v.py}, pico: ${v.pico} }`);
+if (clima) {
+	fs.writeFileSync(
+		MANIFESTO,
+		`// Gerado por pixellab/scripts/vfx-montar.cjs --clima a partir da vfx_workbench do PixelLab (pixellab/vfx-clima.json).
+// O clima da cena: cada um é uma tira horizontal em /mesa/clima/<clima>.png (\`quadros\` quadros de \`w\` × \`h\` px em
+// \`ms\` milissegundos, em loop), repetida em ladrilhos sobre o mapa; \`pico\` fica parado para quem pede menos movimento.
+import type { SpriteFx } from './fx-sprites.ts';
+
+export const SPRITES_CLIMA: Record<string, SpriteFx> = {
+${linhas.join(',\n')}
+};
+`
+	);
+	process.exit(0);
+}
 fs.writeFileSync(
-	path.join(RAIZ, 'src', 'lib', 'mesa', 'fx-sprites.ts'),
+	MANIFESTO,
 	`// Gerado por pixellab/scripts/vfx-montar.cjs a partir dos efeitos da vfx_workbench do PixelLab (pixellab/vfx-jutsus.json).
 // Cada estilo de efeito é uma tira horizontal em /mesa/fx/<estilo>.png: \`quadros\` quadros de \`w\` × \`h\` px que passam
 // em \`ms\` milissegundos, em loop; (px, py) é o ponto de apoio do desenho (fração do quadro), que vai no meio do quadrado;

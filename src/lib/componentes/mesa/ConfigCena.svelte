@@ -455,6 +455,19 @@
 				{@render imagemDaCena('Narrativa', 'Aparece no modo Narrativa.', cena.imagem, cena.imagem ? 'Trocar' : 'Escolher', () => (ui.modal = { tipo: 'imagem', alvo: 'imagem' }))}
 				{@render imagemDaCena('Fundo do quadro', 'O mapa sob a grade.', cena.fundo, cena.fundo ? 'Trocar' : 'Escolher', () => (ui.modal = { tipo: 'imagem', alvo: 'fundo' }))}
 			</section>
+			{#if cena.clima !== undefined}
+				<!-- o clima sobre o mapa inteiro (ladrilhos animados da vfx_workbench), para todos -->
+				<section class={secao}>
+					<h3 class={titulo}>Clima</h3>
+					<div class="grid grid-cols-4 gap-1" role="radiogroup" aria-label="Clima da cena">
+						{#each [[null, 'Nenhum'], ['chuva', 'Chuva'], ['neve', 'Neve'], ['nevoa', 'Névoa'], ['folhas', 'Folhas'], ['petalas', 'Pétalas'], ['cinzas', 'Cinzas']] as const as [v, n] (n)}
+							{@const on = (cena.clima ?? null) === v}
+							<button type="button" role="radio" aria-checked={on} class="min-h-8 border-2 px-1 text-xs font-semibold {on ? 'border-[var(--vermelhao)] bg-b1 text-fg' : 'border-b3 text-mut hover:border-mut hover:text-fg'}" onclick={() => mesa.patchCena({ clima: v })}>{n}</button>
+						{/each}
+					</div>
+					<p class={dica}>Cai sobre o mapa inteiro, para todos. Parado para quem pede menos movimento.</p>
+				</section>
+			{/if}
 			{#if cena.fundo}
 				<section class={secao}>
 					<h3 class={titulo}>Ajustes do fundo</h3>

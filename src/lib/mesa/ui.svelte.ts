@@ -77,6 +77,11 @@ export class UiMesa {
 	aviso = $state<{ texto: string; t: number } | null>(null);
 	anuncio = $state('');
 	elencoAberto = $state(true);
+	/** Modo imersivo: só o quadro na tela (sem os painéis, a barra da Mesa e o cabeçalho do site). */
+	imersivo = $state(false);
+	/** O diário do grupo aberto sobre o quadro, e o quadro de atalhos (tecla ?). */
+	diarioAberto = $state(false);
+	atalhosAbertos = $state(false);
 	/** O painel da esquerda mostra o Elenco ou as configurações da cena (o Mestre ajusta vendo o quadro). */
 	ladoEsquerdo = $state<'elenco' | 'cena'>('elenco');
 	painelAberto = $state(true);

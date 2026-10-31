@@ -1,0 +1,8 @@
+{
+	"chuva": { "fps": 12, "partes": [{ "name": "rain_streaks", "around": "canvas", "core": true, "size": 1 }] },
+	"neve": { "fps": 10, "partes": [{ "name": "snowfall", "around": "canvas", "core": true, "size": 1 }] },
+	"nevoa": { "fps": 8, "partes": [{ "name": "frost_mist", "around": "canvas", "core": true, "size": 1.2, "opacity": 0.5, "colour": ["#7d8a96", "#aab6c0", "#d4dde4", "#f2f6f8"] }] },
+	"folhas": { "fps": 10, "partes": [{ "name": "leaf_fall", "around": "canvas", "core": true, "size": 1 }] },
+	"petalas": { "fps": 10, "partes": [{ "name": "leaf_fall", "around": "canvas", "core": true, "size": 1, "colour": ["#b8577a", "#e88aa8", "#f7c3d3", "#fff0f5"] }] },
+	"cinzas": { "fps": 10, "partes": [{ "name": "snowfall", "around": "canvas", "core": true, "size": 1, "colour": ["#3a3430", "#6e625a", "#a8998c", "#e8692e"] }] }
+}

@@ -70,6 +70,15 @@ Nada é construído antes da escolha do usuário.
 4. **Depois:** sons (11), diário (12) e segurança (4), se o grupo quiser.
 5. **Longo prazo:** visão automática (13). É o recurso mais pesado dos concorrentes, e a névoa manual já cobre o básico.
 
+## Situação (2026-10-31)
+
+- **Feito, aguardando teste local:** Olhem aqui (1), Reação da rodada (2), Relógios da cena (3), Atalhos visíveis (4, só o
+  quadro "?"; a barra de ações rápidas ficou de fora, a ficha rápida já cobre), Clima da cena (5), Diário do grupo (8) e, a
+  pedido, o **modo imersivo** (tecla I: some a barra da Mesa, os painéis e o cabeçalho do site).
+- **Fora, por escolha do usuário:** mostrar imagem a todos (6) e efeitos sonoros (7).
+- **Banco:** a migração `supabase/migrations/20261115120000_mesa_qualidade_de_vida.sql` (coluna `reagiu` nos tokens,
+  `relogios` e `clima` nas cenas, tabela `mesa_diario`). Sem ela, essas quatro ferramentas não aparecem; o resto funciona.
+
 ## Escolha do usuário e como fazer
 
 O usuário escolheu as quatro rápidas, o clima e o pacote imagem, sons e diário. Ficaram fora, por ora: pedir teste e

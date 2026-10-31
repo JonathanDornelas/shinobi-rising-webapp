@@ -40,7 +40,7 @@
 	}
 </script>
 
-<nav aria-label="Navegação principal" class="fixed right-0 bottom-0 left-0 z-40 grid h-16 grid-cols-5 border-t-2 border-ink bg-b0 pb-[env(safe-area-inset-bottom)] md:hidden print:hidden">
+<nav data-shell aria-label="Navegação principal" class="fixed right-0 bottom-0 left-0 z-40 grid h-16 grid-cols-5 border-t-2 border-ink bg-b0 pb-[env(safe-area-inset-bottom)] md:hidden print:hidden">
 	{#each itens as item (item.rotulo)}
 		{@const on = ativo(item.href)}
 		{#if item.href}

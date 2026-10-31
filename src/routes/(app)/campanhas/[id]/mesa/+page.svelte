@@ -47,6 +47,11 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	import { TAMANHOS } from '#lib/bestiario/npc.ts';
 	import { alcanceCorpo } from '#lib/mesa/geometria.ts';
 	import QuadroMesa from '#lib/componentes/mesa/QuadroMesa.svelte';
+	import RelogiosMesa from '#lib/componentes/mesa/RelogiosMesa.svelte';
+	import ClimaMesa from '#lib/componentes/mesa/ClimaMesa.svelte';
+	import DiarioMesa from '#lib/componentes/mesa/DiarioMesa.svelte';
+	import AtalhosMesa from '#lib/componentes/mesa/AtalhosMesa.svelte';
+	import { TECLAS_FERRAMENTA } from '#lib/mesa/atalhos.ts';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import type { PageProps } from './$types';
 
@@ -84,6 +89,15 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 				ui.aneis = null;
 			}
 		});
+	});
+	$effect(() => {
+		const m = mesa;
+		untrack(() => void m.carregarDiario());
+	});
+	$effect(() => {
+		const on = ui.imersivo && !celular;
+		document.documentElement.toggleAttribute('data-imersivo', on);
+		return () => document.documentElement.removeAttribute('data-imersivo');
 	});
 	$effect(() => {
 		const m = mesa;
@@ -407,6 +421,8 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		// jutsu de alvos adicionais ("Alvo único +2") com vários alvos marcados: um ataque por alvo, custo e dano uma vez (cap. 20)
 		const varios = j.regua.forma === 'alvos' && (j.regua.alvos ?? 1) > 1 && (m?.quem.length ?? 0) > 1 ? m!.quem.slice(0, j.regua.alvos) : [];
 		if (parte !== 'dano' && !(await pagarEAtacar(t, j, alvos, varios))) return;
+		// o Kawarimi é Reação: gasta a desta rodada
+		if (parte !== 'dano' && /kawarimi/.test(j.slug) && mesa.iniciativa.ativa) void mesa.marcarReacao(t, true);
 		if (parte !== 'ataque' && varios.length && j.dano) await danoEmVarios(t, j, varios, alvos);
 		else if (parte !== 'ataque') {
 			if (j.dano) await rolarDano(t, j.slug, { ...j.dano, rotulo: j.resistencia && !j.ataque ? `${j.dano.rotulo} (${j.resistencia.split('(')[0].trim()})`.slice(0, 80) : j.dano.rotulo }, 'dano', alvos);
@@ -778,11 +794,15 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 			return;
 		}
 		if (e.ctrlKey || e.metaKey || e.altKey) return;
-		const ferramentas: Record<string, Ferramenta> = { v: 'mover', m: 'medir', l: 'lapis', p: 'apontar', e: 'borracha', a: 'alfinete', x: 'texto', ...(data.mestre ? { t: 'terreno' as const, o: 'objeto' as const, f: 'nevoa' as const } : {}) };
+		// as ferramentas e os atalhos vêm de #lib/mesa/atalhos.ts (a mesma lista do quadro "?")
+		const ferramentas: Record<string, Ferramenta> = Object.fromEntries(TECLAS_FERRAMENTA.filter((t) => data.mestre || !t.mestre).map((t) => [t.tecla, t.ferramenta]));
 		const k = e.key.toLowerCase();
+		if (e.key === '?') return void (ui.atalhosAbertos = !ui.atalhosAbertos);
+		if (k === 'i' && !ui.mira) return void (ui.imersivo = !ui.imersivo);
 		if (ferramentas[k] && !ui.mira) return void ui.escolher(ferramentas[k]);
 		if (e.key === 'Escape') {
-			if (ui.modal) ui.modal = null;
+			if (ui.atalhosAbertos) ui.atalhosAbertos = false;
+			else if (ui.modal) ui.modal = null;
 			else if (ui.pop) ui.pop = null;
 			else if (ui.mira) ui.mira = null;
 			else if (ui.regua) {
@@ -1114,6 +1134,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			<span class="flex-1 truncate font-mincho text-base leading-none font-bold">{cena?.nome ?? 'Mesa'}</span>
 			<span class="flex items-center gap-1 font-pixel text-xs leading-none font-bold text-mut"><span class="h-2 w-2 bg-ok"></span>{mesa.online.length}</span>
 			{#if mesa.iniciativa.ativa}<span class="font-pixel text-xs leading-none font-bold text-acc">R{mesa.iniciativa.rodada}</span>{/if}
+			{#if Array.isArray(mesa.diario)}<button type="button" class="flex h-10 w-10 items-center justify-center border-2 border-b3 p-0 {ui.diarioAberto ? 'bg-b2' : ''}" aria-label="Diário do grupo" aria-pressed={ui.diarioAberto} onclick={() => (ui.diarioAberto = !ui.diarioAberto)}><Icone id="equip/ic-equip-pergaminho" /></button>{/if}
 			{#if minhaFichaId}<button type="button" class="min-h-10 border-2 border-b3 px-2 font-pixel text-[11px] font-bold" onclick={() => abrirFichaCompleta(minhaFichaId!)}>FICHA</button>{/if}
 		</div>
 		<div class="relative min-h-0 flex-1">
@@ -1121,8 +1142,11 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 				{@render telaNarrativa()}
 			{:else}
 				<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} {focoDe} onSoltar={colocar} />
+				<ClimaMesa clima={cena?.clima} />
 				{@render barras()}
 				{@render sobreQuadro()}
+				<div class="pointer-events-none absolute top-2 left-2 z-[9]"><RelogiosMesa {mesa} /></div>
+				{#if ui.diarioAberto}<div class="pointer-events-none absolute inset-x-2 top-2 bottom-20 z-[30] flex justify-center"><DiarioMesa {mesa} aoFechar={() => (ui.diarioAberto = false)} /></div>{/if}
 			{/if}
 			<div class="pointer-events-none absolute inset-x-2 bottom-2 flex flex-col gap-1.5">
 				<PainelObjeto {mesa} {ui} classe="w-full" />
@@ -1208,8 +1232,9 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 		{/if}
 	</div>
 {:else}
-	<div class="flex h-[calc(100dvh-64px)] min-h-[560px] flex-col bg-b1 text-fg">
-		<!-- barra da Mesa: caminho, cena, quem está online, rodada e configurações -->
+	<div class="flex {ui.imersivo ? 'h-dvh' : 'h-[calc(100dvh-64px)]'} min-h-[560px] flex-col bg-b1 text-fg">
+		<!-- barra da Mesa: caminho, cena, quem está online, rodada e configurações (some no modo imersivo) -->
+		{#if !ui.imersivo}
 		<div class="relative flex h-14 flex-none items-center gap-4 border-b-2 border-b3 bg-b0 px-4">
 			<nav aria-label="Caminho" class="flex min-w-0 items-center gap-2 text-sm leading-none font-medium text-mut">
 				<a href="/campanhas/{campanha}" class="truncate hover:text-fg">{data.campanha.nome}</a><span aria-hidden="true">›</span><span>Mesa</span><span aria-hidden="true">›</span>
@@ -1231,6 +1256,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 				{/each}
 			</div>
 			{#if mesa.iniciativa.ativa}<span class="border-2 border-grena px-2 py-1.5 font-pixel text-sm leading-none font-bold tracking-[0.08em] text-acc">RODADA {mesa.iniciativa.rodada ?? 1}</span>{/if}
+			{@render botoesExtras('h-10 w-10')}
 			{#if data.mestre && cena}
 				<button type="button" class="flex h-10 w-10 items-center justify-center border-2 border-b3 p-0" aria-label="Configurações da cena" title="Configurações da cena (no painel da esquerda)" aria-pressed={ui.elencoAberto && ui.ladoEsquerdo === 'cena'} onclick={() => ((ui.pop = null), ui.elencoAberto && ui.ladoEsquerdo === 'cena' ? (ui.ladoEsquerdo = 'elenco') : ((ui.elencoAberto = true), (ui.ladoEsquerdo = 'cena')))}><Icone id="nav/ic-nav-configuracoes" /></button>
 			{/if}
@@ -1301,12 +1327,16 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			{/if}
 		</div>
 
+		{/if}
+
 		<!-- isolate: as janelas de ficha empilham entre si aqui dentro e não passam por cima dos menus da barra -->
 		<div class="relative isolate flex min-h-0 flex-1">
 			{#if narrativa}
 				{@render telaNarrativa()}
 			{:else}
-			{#if ui.elencoAberto && data.mestre && cena}
+			{#if ui.imersivo}
+				<!-- modo imersivo: sem painéis; as ferramentas seguem nas teclas (?) -->
+			{:else if ui.elencoAberto && data.mestre && cena}
 				<!-- o painel da esquerda: o Elenco ou as configurações da cena, com o quadro sempre à vista -->
 				<div class="flex min-h-0 flex-none flex-col w-[280px] border-r-2 border-b3 bg-b2">
 					<div role="tablist" aria-label="Painel da esquerda" class="flex h-11 flex-none items-stretch border-b-2 border-b3 bg-b0">
@@ -1329,12 +1359,21 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			{:else}
 				<div class="flex w-10 flex-none flex-col items-center border-r-2 border-b3 bg-b2 pt-1.5"><button type="button" class="h-8 w-8 border-2 border-b3 font-pixel text-sm" aria-label="Abrir Elenco" title="Abrir Elenco" onclick={() => (ui.elencoAberto = true)}>»</button></div>
 			{/if}
-			{@render trilho()}
+			{#if !ui.imersivo}{@render trilho()}{/if}
 
 			<div class="relative min-w-0 flex-1 overflow-hidden bg-[var(--fundo)]">
 				<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} {focoDe} onSoltar={colocar} />
+				<ClimaMesa clima={cena?.clima} />
 				{@render barras()}
 				{@render sobreQuadro()}
+				<div class="pointer-events-none absolute top-3 left-3 z-[9]"><RelogiosMesa {mesa} /></div>
+				{#if ui.imersivo}
+					<!-- modo imersivo: o que sobra da barra, pequeno, no canto -->
+					<div class="absolute top-2 right-2 z-[31] flex items-center gap-1 opacity-60 transition-opacity hover:opacity-100 focus-within:opacity-100">
+						{@render botoesExtras('h-7 w-7')}
+					</div>
+				{/if}
+				{#if ui.diarioAberto}<div class="pointer-events-none absolute right-3 bottom-16 z-[30] flex items-start {ui.imersivo ? 'top-11' : 'top-3'}"><DiarioMesa {mesa} aoFechar={() => (ui.diarioAberto = false)} /></div>{/if}
 				<div class="pointer-events-none absolute inset-x-3 bottom-16 z-[7] flex justify-center"><PainelObjeto {mesa} {ui} /></div>
 				<JukeboxMesa {mesa} {ui} classe="absolute bottom-16 left-3 z-[8]" />
 				<div class="absolute right-3 bottom-3 z-[6] flex items-center border-2 border-b3 bg-sup shadow-[4px_4px_0_var(--sombra)]" bind:offsetWidth={larguraZoom}>
@@ -1359,7 +1398,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 				<div class="absolute bottom-3 left-3 z-[6]" style:right="{larguraZoom + 20}px">
 					<BarraMinimizadas itens={minimizadas}>
 						{#snippet depois()}
-							{#if !ui.painelAberto && ultima}
+							{#if (!ui.painelAberto || ui.imersivo) && ultima}
 								<button type="button" class="flex min-h-9 max-w-[320px] items-center gap-2.5 border-2 border-[var(--vermelhao-lo)] bg-b0 pr-2.5 pl-1" onclick={() => ((ui.painelAberto = true), (ui.naoVistas = 0))}>
 									<Icone id="dado/ic-dado-d20" /><span class="truncate text-[13px] leading-none font-medium">{mesa.quemDe(ultima)} · {ultima.rotulo}</span><b class="font-pixel text-lg leading-none">{ultima.total}</b>
 								</button>
@@ -1371,7 +1410,9 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			</div>
 			{/if}
 
-			{#if ui.painelAberto}
+			{#if ui.imersivo}
+				<!-- modo imersivo: as rolagens aparecem nos dados e na última rolagem, embaixo -->
+			{:else if ui.painelAberto}
 				<PainelMesa {mesa} {ui} {rolagens} {comoQuem} onRolar={rolarLivre} />
 			{:else}
 				<div class="flex w-12 flex-none flex-col items-center gap-1.5 border-l-2 border-b3 bg-b2 pt-1.5">
@@ -1437,6 +1478,17 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 		</div>
 	</div>
 {/if}
+
+{#snippet botoesExtras(tam: string)}
+	<!-- diário, atalhos e modo imersivo: na barra da Mesa e, no modo imersivo, pequenos no canto do quadro -->
+	{#if Array.isArray(mesa.diario)}
+		<button type="button" class="flex {tam} flex-none items-center justify-center border-2 border-b3 bg-b0 p-0 {ui.diarioAberto ? 'border-[var(--vermelhao)]' : ''}" aria-label="Diário do grupo" aria-pressed={ui.diarioAberto} title="Diário do grupo: missões, NPCs, pistas e notas" onclick={() => (ui.diarioAberto = !ui.diarioAberto)}><Icone id="equip/ic-equip-pergaminho" class={tam === 'h-7 w-7' ? 'h-5 w-5' : ''} /></button>
+	{/if}
+	<button type="button" class="flex {tam} flex-none items-center justify-center border-2 border-b3 bg-b0 p-0 font-pixel text-sm font-bold" aria-label="Atalhos da Mesa" title="Atalhos da Mesa (?)" onclick={() => (ui.atalhosAbertos = true)}>?</button>
+	<button type="button" class="flex {tam} flex-none items-center justify-center border-2 border-b3 bg-b0 p-0 {ui.imersivo ? 'border-[var(--acc)]' : ''}" aria-label={ui.imersivo ? 'Sair do modo imersivo' : 'Modo imersivo'} aria-pressed={ui.imersivo} title={ui.imersivo ? 'Sair do modo imersivo (I)' : 'Modo imersivo: só o quadro na tela (I)'} onclick={() => (ui.imersivo = !ui.imersivo)}>
+		<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="fill-none stroke-current stroke-[1.6]">{#if ui.imersivo}<path d="M6 1v5H1M10 1v5h5M6 15v-5H1M10 15v-5h5" />{:else}<path d="M1 6V1h5M15 6V1h-5M1 10v5h5M15 10v5h-5" />{/if}</svg>
+	</button>
+{/snippet}
 
 {#snippet chipFicha(classe: string)}
 	<div class="flex items-center border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[4px_4px_0_var(--b0)] {classe}">
@@ -1602,3 +1654,5 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 		</div>
 	</div>
 {/if}
+
+{#if ui.atalhosAbertos}<AtalhosMesa mestre={data.mestre} aoFechar={() => (ui.atalhosAbertos = false)} />{/if}

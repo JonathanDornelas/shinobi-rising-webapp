@@ -422,6 +422,7 @@
 							<button type="button" class="h-7 w-7" aria-label="Subir o token" disabled={(token.elevacao ?? 0) >= 60} onclick={() => mesa.atualizarToken(token.id, { elevacao: Math.min(60, (token.elevacao ?? 0) + 1) })}>+</button>
 						</span>
 					{/if}
+					{#if mesa.temReacao && mesa.iniciativa.ativa && token.reagiu !== undefined}<button type="button" aria-pressed={!!token.reagiu} class="inline-flex min-h-7 items-center gap-1 border-2 px-1.5 font-pixel text-[11px] leading-none font-bold {token.reagiu ? 'border-b3 text-mut line-through' : 'border-ok text-ok'}" title={token.reagiu ? 'A Reação desta rodada já foi gasta (Esquiva Ativa, Kawarimi, golpe de oportunidade). Volta na rodada nova. Clique para desfazer.' : 'Reação disponível nesta rodada. Clique quando gastar (a Esquiva Ativa e o Kawarimi marcam sozinhos).'} disabled={!mesa.podeMover(token)} onclick={() => mesa.marcarReacao(token)}>REAÇÃO</button>{/if}
 					{#if nomeAlvo}<button type="button" aria-pressed={nomeEscondido} class="inline-flex min-h-7 items-center gap-1 border-2 px-1.5 font-pixel text-[11px] leading-none font-bold {nomeEscondido ? 'border-warn text-warn' : 'border-b3 hover:border-mut'}" title={nomeEscondido ? 'Os jogadores veem ??? no lugar do nome. Clique para mostrar o nome.' : 'Esconder o nome dos jogadores (eles passam a ver ???)'} onclick={() => nomeAlvo && mesa.definirNomeOculto(nomeAlvo.tipo, nomeAlvo.id, !nomeEscondido)}>{nomeEscondido ? 'NOME: ???' : 'NOME VISÍVEL'}</button>{/if}
 					{#if dados.tipo === 'pc'}<button type="button" class="inline-flex min-h-7 items-center gap-1 border-2 border-b3 px-1.5 font-pixel text-[11px] leading-none font-bold hover:border-mut" title="A ficha inteira numa janela grande" onclick={() => dados.tipo === 'pc' && acoes.abrirFichaCompleta(dados.ficha.id)}>FICHA COMPLETA ⤢</button>{/if}
 				</span>
@@ -601,7 +602,7 @@
 						], undefined, a)}
 					{/each}
 					<!-- os jutsus ficam só na aba JUTSUS; aqui, as armas, as manobras de todo ninja e as medidas -->
-					{@render linhaAcao('recurso/ic-recurso-pe', 'Esquiva Ativa', { acao: 'Reação', custo: [10, 'PE'], texto: 'Acrobacia vira a Defesa; contra área, vantagem na Resistência' }, null, [{ n: 'USAR', acao: () => acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 10) }, 'Esquiva Ativa: −10 PE'), desab: atual.pe < 10 }])}
+					{@render linhaAcao('recurso/ic-recurso-pe', 'Esquiva Ativa', { acao: 'Reação', custo: [10, 'PE'], texto: 'Acrobacia vira a Defesa; contra área, vantagem na Resistência' }, null, [{ n: 'USAR', acao: () => (acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 10) }, 'Esquiva Ativa: −10 PE'), void mesa.marcarReacao(token, true)), desab: atual.pe < 10 || !!token.reagiu, dica: token.reagiu ? 'A Reação desta rodada já foi gasta' : undefined }])}
 					{@render linhaAcao('recurso/ic-recurso-defesa', 'Defesa Total', { acao: 'Primária', texto: '+5 na Defesa e na Defesa Mental até o seu próximo turno' }, null, [])}
 					{@render linhaAcao('pericia/ic-pericia-taijutsu', 'Combo Taijutsu', { acao: 'Secundária', custo: [5, 'PE'], texto: 'Segundo ataque com −5, só Taijutsu ou desarmado' }, null, [{ n: 'USAR', acao: () => acoes.estadoPc(dados.ficha, { pe: Math.max(0, atual.pe - 5) }, 'Combo Taijutsu: −5 PE'), desab: atual.pe < 5 }])}
 					<div class="flex flex-wrap gap-1 px-3 py-2">
@@ -733,6 +734,7 @@
 		{#if dados.tipo === 'pc'}<a class="min-h-8 text-xs leading-8 font-semibold text-link underline underline-offset-[3px]" href="/campanhas/{mesa.campanha}/personagens/{dados.ficha.id}" target="_blank" rel="noopener" title="A página da ficha, numa aba nova">Ficha em nova aba ↗</a>{/if}
 		{#if dados.tipo === 'npc'}<a class="min-h-8 text-xs leading-8 font-semibold text-link underline underline-offset-[3px]" href="/campanhas/{mesa.campanha}/npcs" target="_blank" rel="noopener" title="A lista de NPCs, numa aba nova">NPCs ↗</a>{/if}
 		<button type="button" class="min-h-8 text-xs font-semibold text-link underline underline-offset-[3px]" title="Centralizar o quadro neste token" onclick={() => acoes.centralizar(token)}>Centralizar</button>
+		{#if mesa.mestre}<button type="button" class="min-h-8 text-xs font-semibold text-link underline underline-offset-[3px]" title="Leva a vista de todos até este token (ou Shift+Alt+clique no quadro)" onclick={() => mesa.olharTodos(token.x + token.tamanho / 2, token.y + token.tamanho / 2)}>Mostrar a todos</button>{/if}
 		{#if (dados.tipo === 'pc' && dados.editavel && token.dono_id === mesa.eu) || (mesa.mestre && dados.tipo === 'pc')}
 			<button type="button" class="min-h-8 text-xs font-semibold text-link underline underline-offset-[3px]" title="Criar um clone ligado a este token" onclick={() => acoes.clone(token)}>Clonar</button>
 		{/if}

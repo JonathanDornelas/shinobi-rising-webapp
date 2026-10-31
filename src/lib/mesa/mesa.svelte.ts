@@ -6,12 +6,13 @@ import { sessao } from '#lib/estado/sessao.svelte.ts';
 import { toasts } from '#lib/estado/toasts.svelte.ts';
 import { ordemIniciativa } from '#lib/rolagens/registro.ts';
 import { supabase } from '#lib/supabase/cliente.ts';
-import type { CorMesa, IniciativaCena, MesaArte, MesaCena, MesaCenaPasta, MesaEfeito, MesaJukebox, MesaObjeto, MesaToken, MesaTraco, Papel, Rolagem } from '#lib/supabase/banco.ts';
+import type { CorMesa, EntradaDiario, IniciativaCena, MesaArte, MesaCena, MesaCenaPasta, MesaEfeito, MesaJukebox, MesaObjeto, MesaToken, MesaTraco, Papel, Rolagem } from '#lib/supabase/banco.ts';
 import { mascararCena } from './cenas.ts';
 import { limitarPosicao } from './musica.ts';
 import { limpar as limparRuns } from './nevoa.ts';
 import { coresDosMembros } from './cores.ts';
 import { deslocarQuadrados, deslocarRuns, deslocarToken } from './reenquadrar.ts';
+import { avancarRodada, relogiosDaCena, type Relogio } from './relogios.ts';
 import type { Quadrado } from './geometria.ts';
 import { molduraDoToken, molduraPorId } from './molduras.ts';
 import { nomeReal, siglaDoNome } from './nomes.ts';
@@ -104,6 +105,10 @@ export class Mesa {
 	conectado = $state(true);
 	/** A cena ativa mudou enquanto o jogador estava nela: a página recarrega. */
 	trocouCena = $state(0);
+	/** "Olhem aqui": o Mestre puxou a vista de todos para este ponto (t muda a cada pedido). */
+	olhar = $state<{ x: number; y: number; t: number } | null>(null);
+	/** Diário do grupo: as entradas que esta pessoa pode ler; null = ainda não carregado; false = a tabela não existe. */
+	diario = $state<EntradaDiario[] | null | false>(null);
 
 	private canal: RealtimeChannel | null = null;
 	private desfazer: Desfazer[] = [];
@@ -124,6 +129,11 @@ export class Mesa {
 	get travada() {
 		return !!this.cena?.travada && !this.mestre;
 	}
+	/** Os relógios da cena, e se o banco já tem a coluna (sem ela, a ferramenta não aparece). */
+	relogios = $derived<Relogio[]>(relogiosDaCena(this.cena?.relogios));
+	temRelogios = $derived(this.cena?.relogios !== undefined);
+	/** A Reação da rodada só aparece quando o banco já tem a coluna nos tokens. */
+	temReacao = $derived(this.tokens.some((t) => t.reagiu !== undefined));
 
 	constructor(d: {
 		campanha: string;
@@ -288,6 +298,13 @@ export class Mesa {
 			})
 			.on('broadcast', { event: 'pulso' }, ({ payload }) => (this.pulso = { token: (payload as { token: string }).token, t: Date.now() }))
 			.on('broadcast', { event: 'ping' }, ({ payload }) => this.receberPing(payload as { id: string; usuario: string; x: number; y: number }))
+			// "Olhem aqui": só o Mestre puxa a vista dos outros
+			.on('broadcast', { event: 'olhar' }, ({ payload }) => {
+				const { usuario, dados } = payload as { usuario: string; dados: { x: number; y: number } };
+				if (this.membro(usuario)?.papel !== 'mestre' || !Number.isFinite(dados?.x) || !Number.isFinite(dados?.y)) return;
+				this.olhar = { x: dados.x, y: dados.y, t: Date.now() };
+				this.receberPing({ id: crypto.randomUUID(), usuario, x: dados.x, y: dados.y });
+			})
 			.on('broadcast', { event: 'moldura-mesa' }, ({ payload }) => {
 				const { dados } = payload as { dados: { id: string | null; universal: boolean } };
 				this.molduraMesa = { id: molduraPorId(dados.id)?.id ?? null, universal: !!dados.universal };
@@ -314,7 +331,9 @@ export class Mesa {
 
 	desconectar() {
 		if (this.canal) sb().removeChannel(this.canal);
+		if (this.canalDiario) sb().removeChannel(this.canalDiario);
 		this.canal = null;
+		this.canalDiario = null;
 		this.jaConectou = false;
 	}
 
@@ -391,8 +410,16 @@ export class Mesa {
 		setTimeout(() => (this.pings = this.pings.filter((k) => k.id !== p.id)), 2500);
 	}
 
+	/** "Olhem aqui" (só o Mestre): a vista de todos vai até o ponto, com um ping nele. */
+	olharTodos(x: number, y: number) {
+		if (!this.mestre) return;
+		const p = { x: Math.round(x * 100) / 100, y: Math.round(y * 100) / 100 };
+		this.receberPing({ id: crypto.randomUUID(), usuario: this.eu, ...p });
+		this.enviar('olhar', p, true);
+	}
+
 	/** Manda o que é passageiro, no máximo 20 vezes por segundo (o último estado sempre sai: null limpa). */
-	enviar(evento: 'fantasma' | 'regua' | 'molde' | 'apontar' | 'pulso' | 'ping' | 'moldura' | 'moldura-mesa', dados: unknown, forcar = false) {
+	enviar(evento: 'fantasma' | 'regua' | 'molde' | 'apontar' | 'pulso' | 'ping' | 'moldura' | 'moldura-mesa' | 'olhar', dados: unknown, forcar = false) {
 		if (!this.canal || !this.conectado) return;
 		const agora = Date.now();
 		// o molde pode ter mais de mil quadrados: vai no máximo 6 vezes por segundo; o resto, 20
@@ -435,7 +462,7 @@ export class Mesa {
 			return;
 		}
 		await this.patchCena({ iniciativa: { ativa: true, rodada: 1, vez: 0, ordem } });
-		await this.zerarMovido();
+		await Promise.all([this.zerarMovido(), this.zerarReacoes()]);
 	}
 
 	async proximoTurno() {
@@ -459,12 +486,15 @@ export class Mesa {
 			// (crescido_turnos guarda o que falta) somem no zero. Tudo de uma vez, sem um token esperar o outro.
 			const crescidos = this.tokens.filter((x) => x.tamanho_base != null && x.crescido_turnos != null);
 			const clones = this.tokens.filter((x) => ehClone(x) && x.crescido_turnos != null);
+			await this.zerarReacoes();
 			await Promise.all([
 				...crescidos.map((t) => (t.crescido_turnos! <= 1 ? this.voltarAoNormal(t) : this.atualizarToken(t.id, { crescido_turnos: t.crescido_turnos! - 1 }))),
 				...clones.map((t) => (t.crescido_turnos! <= 1 ? this.remover(t.id) : this.atualizarToken(t.id, { crescido_turnos: t.crescido_turnos! - 1 })))
 			]);
 		}
-		await this.patchCena({ iniciativa: { ...i, vez, rodada } });
+		// os relógios que contam rodadas andam junto (na mesma gravação da cena)
+		const relogios = rodada !== (i.rodada ?? 1) ? avancarRodada(this.relogios) : null;
+		await this.patchCena({ iniciativa: { ...i, vez, rodada }, ...(relogios ? { relogios } : {}) });
 		await this.zerarMovido();
 	}
 
@@ -490,6 +520,19 @@ export class Mesa {
 		const daVez = ordem[ini.vez ?? 0];
 		[ordem[i], ordem[j]] = [ordem[j], ordem[i]];
 		await this.patchCena({ iniciativa: { ...ini, ordem, vez: ordem.indexOf(daVez) } });
+	}
+
+	/** Rodada nova (ou combate novo): todos os tokens voltam a ter a Reação. */
+	private async zerarReacoes() {
+		const ids = this.tokens.filter((t) => t.reagiu).map((t) => t.id);
+		if (!ids.length) return;
+		this.tokens = this.tokens.map((t) => (t.reagiu ? { ...t, reagiu: false } : t));
+		await sb().from('mesa_tokens').update({ reagiu: false }).in('id', ids);
+	}
+	/** Marca (ou desmarca) a Reação do token nesta rodada: o dono ou o Mestre. */
+	marcarReacao(t: MesaToken, reagiu = !t.reagiu) {
+		if (t.reagiu === undefined || !!t.reagiu === reagiu || !this.podeMover(t)) return Promise.resolve(false);
+		return this.atualizarToken(t.id, { reagiu }, 'Não foi possível marcar a Reação.');
 	}
 
 	private async zerarMovido() {
@@ -673,6 +716,61 @@ export class Mesa {
 		if (error) {
 			this.objetos = antes;
 			toasts.mostrar('Não foi possível tirar o objeto.', 'erro');
+		}
+	}
+
+	// ------------------------------------------------------------------ relógios da cena (Mestre)
+	definirRelogios(lista: Relogio[]) {
+		return this.patchCena({ relogios: lista });
+	}
+
+	// ------------------------------------------------------------------ diário do grupo
+	/** Lê o diário uma vez (depois, o tempo real mantém); sem a tabela no banco, fica false e o diário não aparece. */
+	async carregarDiario() {
+		if (this.diario !== null) return;
+		const { data, error } = await sb().from('mesa_diario').select('*').eq('campanha_id', this.campanha).order('criado_em');
+		this.diario = error ? false : ((data ?? []) as EntradaDiario[]);
+		if (error || this.canalDiario) return;
+		const aviso = (p: RealtimePostgresChangesPayload<Record<string, unknown>>) => {
+			if (!Array.isArray(this.diario)) return;
+			if (p.eventType === 'DELETE') return void (this.diario = this.diario.filter((d) => d.id !== (p.old as { id?: string }).id));
+			const e = p.new as unknown as EntradaDiario;
+			if (e.campanha_id !== this.campanha) return;
+			// virou privada de outra pessoa: some daqui
+			if (e.privado && e.autor_id !== this.eu) return void (this.diario = this.diario.filter((d) => d.id !== e.id));
+			this.diario = this.diario.some((d) => d.id === e.id) ? this.diario.map((d) => (d.id === e.id ? e : d)) : [...this.diario, e];
+		};
+		this.canalDiario = sb()
+			.channel(`diario:${this.campanha}`)
+			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_diario', filter: `campanha_id=eq.${this.campanha}` }, aviso)
+			// o Realtime não filtra DELETE (o registro antigo só traz o id)
+			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_diario' }, aviso)
+			.subscribe();
+	}
+	private canalDiario: RealtimeChannel | null = null;
+	async salvarEntrada(e: Partial<EntradaDiario> & Pick<EntradaDiario, 'tipo' | 'titulo'>) {
+		if (this.somenteLeitura || !Array.isArray(this.diario)) return null;
+		const { id, ...campos } = e;
+		const q = id
+			? sb().from('mesa_diario').update({ titulo: campos.titulo, texto: campos.texto, privado: campos.privado, feito: campos.feito, tipo: campos.tipo }).eq('id', id)
+			: sb().from('mesa_diario').insert({ ...campos, campanha_id: this.campanha });
+		const { data, error } = await q.select('*').single();
+		if (error || !data) {
+			toasts.mostrar('Não foi possível salvar no diário.', 'erro');
+			return null;
+		}
+		const nova = data as EntradaDiario;
+		if (Array.isArray(this.diario)) this.diario = this.diario.some((d) => d.id === nova.id) ? this.diario.map((d) => (d.id === nova.id ? nova : d)) : [...this.diario, nova];
+		return nova;
+	}
+	async apagarEntrada(id: string) {
+		if (!Array.isArray(this.diario)) return;
+		const antes = this.diario;
+		this.diario = this.diario.filter((d) => d.id !== id);
+		const { error } = await sb().from('mesa_diario').delete().eq('id', id);
+		if (error) {
+			this.diario = antes;
+			toasts.mostrar('Não foi possível apagar do diário.', 'erro');
 		}
 	}
 
