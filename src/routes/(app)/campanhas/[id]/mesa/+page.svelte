@@ -32,7 +32,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	// a ficha completa (todas as abas da ficha) só é baixada quando alguém a abre
 	let moduloFicha: Promise<typeof import('#lib/componentes/mesa/FichaCompleta.svelte')> | null = null;
 	const carregarFicha = () => (moduloFicha ??= import('#lib/componentes/mesa/FichaCompleta.svelte'));
-	import type { EstadoJogo } from '#lib/personagem/progressao.ts';
+	import { mesclarEstado, type EstadoJogo } from '#lib/personagem/progressao.ts';
 	import { apagarAoCair } from '#lib/personagem/kkg.ts';
 	import PainelMesa from '#lib/componentes/mesa/PainelMesa.svelte';
 	import BuscaBestiario from '#lib/componentes/npc/BuscaBestiario.svelte';
@@ -87,6 +87,13 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	});
 	$effect(() => {
 		const m = mesa;
+		// a ficha de um personagem mudou em outra tela (o token chegou com outro PV ou outros estados); a conexão caiu e
+		// voltou: as fichas abertas aqui são relidas do banco
+		m.aoMudarFicha = (pid) => relerFicha(pid);
+		m.aoRessincronizar = () => {
+			fichas.forEach((f) => relerFicha(f.id));
+			toasts.mostrar('A conexão voltou e a cena foi atualizada.', 'sucesso');
+		};
 		m.conectar();
 		return () => m.desconectar();
 	});
@@ -218,12 +225,48 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		const condicoes = f.estado.condicoes ?? [];
 		const ferimento = faixa(f.estado.pv ?? f.max.pv, f.max.pv);
 		mesa.tokens = mesa.tokens.map((t) => (t.personagem_id === f.id ? { ...t, condicoes, ferimento } : t));
+		pendentes.set(f.id, (pendentes.get(f.id) ?? 0) + 1);
 		const fila = (filas.get(f.id) ?? Promise.resolve()).then(async () => {
-			const { error } = await supabase().rpc('atualizar_estado', { ficha: f.id, estado: $state.snapshot(f.estado) as unknown as Json, descricao });
+			// o banco pode ter mudado por outra tela (o jogador gastou PC na ficha dele): grava o que mudou aqui por cima dele
+			const escrito = $state.snapshot(f.estado) as EstadoJogo;
+			const { data: atual } = await supabase().from('personagens').select('estado').eq('id', f.id).maybeSingle();
+			const estado = atual ? mesclarEstado(base(f), escrito, (atual.estado ?? {}) as EstadoJogo) : escrito;
+			const { error } = await supabase().rpc('atualizar_estado', { ficha: f.id, estado: estado as unknown as Json, descricao });
 			if (error) toasts.mostrar('Não foi possível salvar a ficha.', 'erro');
+			else {
+				bases.set(f.id, estado);
+				// o que veio do banco entra; o que mudou aqui enquanto gravava fica
+				f.estado = mesclarEstado(escrito, $state.snapshot(f.estado) as EstadoJogo, estado);
+			}
 		});
 		filas.set(f.id, fila);
+		void fila.finally(() => pendentes.set(f.id, (pendentes.get(f.id) ?? 1) - 1));
 		return fila;
+	}
+	/** O último estado de cada ficha lido do banco ou gravado por esta tela (a base para juntar com o das outras). */
+	const bases = new Map<string, EstadoJogo>();
+	const base = (f: FichaMesa) => bases.get(f.id) ?? (bases.set(f.id, $state.snapshot(f.estado) as EstadoJogo), bases.get(f.id)!);
+	/** Gravações de estado ainda na fila, por ficha. */
+	const pendentes = new Map<string, number>();
+	/**
+	 * A ficha mudou em outra tela (o token do personagem chegou com outro PV ou outros estados, copiados do banco): relê o
+	 * estado dela. Com gravação daqui na fila, não precisa: a gravação já junta com o do banco.
+	 */
+	const relendo = new Map<string, ReturnType<typeof setTimeout>>();
+	function relerFicha(pid: string) {
+		clearTimeout(relendo.get(pid));
+		relendo.set(
+			pid,
+			setTimeout(async () => {
+				const f = fichas.find((x) => x.id === pid);
+				if (!f || pendentes.get(pid)) return;
+				const { data: atual } = await supabase().from('personagens').select('estado').eq('id', pid).maybeSingle();
+				if (!atual || pendentes.get(pid)) return;
+				const servidor = (atual.estado ?? {}) as EstadoJogo;
+				f.estado = mesclarEstado(base(f), $state.snapshot(f.estado) as EstadoJogo, servidor);
+				bases.set(pid, servidor);
+			}, 300)
+		);
 	}
 	/** PV, PC ou PE de um membro do NPC (a tropa guarda um valor por membro). */
 	async function recursoNpc(n: Npc, membro: number, k: 'pv' | 'pc' | 'pe', valor: number) {
@@ -325,6 +368,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		const f = fichas.find((x) => x.id === pid);
 		if (!f) return;
 		f.estado = estado;
+		bases.set(pid, $state.snapshot(estado) as EstadoJogo);
 		const condicoes = estado.condicoes ?? [];
 		const ferimento = faixa(estado.pv ?? f.max.pv, f.max.pv);
 		mesa.tokens = mesa.tokens.map((t) => (t.personagem_id === pid ? { ...t, condicoes, ferimento } : t));
@@ -893,7 +937,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 
 {#snippet barras()}
 	<div class="pointer-events-none absolute inset-x-3 top-3 z-[45] flex flex-col items-center gap-2">
-		{#if !mesa.conectado}<div role="status" class="pointer-events-auto border-2 border-warn bg-sup px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_var(--sombra)]">Sem conexão. Seus movimentos aparecem para o grupo quando a conexão voltar.</div>{/if}
+		{#if !mesa.conectado}<div role="status" class="pointer-events-auto border-2 border-warn bg-sup px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_var(--sombra)]">Sem conexão. O que você mexer agora pode não ser salvo; quando a conexão voltar, a cena se atualiza sozinha.</div>{/if}
 		{#if mesa.travada}<div role="status" class="pointer-events-auto border-2 border-warn bg-sup px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_var(--sombra)]">Mesa travada pelo Mestre.</div>{/if}
 		{#if !data.mestre && minhaFicha && !participa(minhaFicha.id)}<div role="status" class="pointer-events-auto border-2 border-info bg-sup px-3 py-2 text-sm font-semibold shadow-[4px_4px_0_var(--sombra)]">Você assiste a esta cena: o Mestre escolheu quem joga nela.</div>{/if}
 		{#if data.mestre && cena && !cena.ativa}

@@ -185,6 +185,10 @@ export class Mesa {
 					if (novo.cena_id !== cena) return;
 					const velho = this.tokens.find((t) => t.id === novo.id);
 					this.tokens = lista(this.tokens, this.comNome(novo));
+					// a cada mudança no estado da ficha, o banco regrava o token do personagem (a faixa de ferimento e os estados):
+					// um aviso do token sem ele ter andado nem mudado de forma é a ficha mudando em outra tela
+					const parado = velho && velho.x === novo.x && velho.y === novo.y && velho.tamanho === novo.tamanho && velho.visivel === novo.visivel && velho.elevacao === novo.elevacao;
+					if (novo.personagem_id && parado) this.aoMudarFicha?.(novo.personagem_id);
 					// o PV visível só muda com ferimento, PV, entrada ou saída de token: andar não pede nova leitura
 					if (this.cena?.mostrar_pv && !this.mestre && (!velho || velho.ferimento !== novo.ferimento || velho.pv !== novo.pv || velho.pv_max !== novo.pv_max)) this.lerPvs();
 					return;
@@ -294,10 +298,16 @@ export class Mesa {
 			})
 			.on('presence', { event: 'sync' }, () => {
 				this.online = Object.keys(this.canal?.presenceState() ?? {});
+				this.limparQuemSaiu();
 			})
 			.subscribe((status) => {
+				const caiu = !this.conectado;
 				this.conectado = status === 'SUBSCRIBED';
-				if (status === 'SUBSCRIBED') this.canal?.track({ em: Date.now() });
+				if (status !== 'SUBSCRIBED') return;
+				this.canal?.track({ em: Date.now() });
+				// voltou depois de cair (wifi, aba dormindo): o que mudou enquanto isso não chega pelo tempo real
+				if (caiu && this.jaConectou) void this.ressincronizar();
+				this.jaConectou = true;
 			});
 		if (this.cena?.mostrar_pv && !this.mestre) this.lerPvs();
 	}
@@ -305,6 +315,60 @@ export class Mesa {
 	desconectar() {
 		if (this.canal) sb().removeChannel(this.canal);
 		this.canal = null;
+		this.jaConectou = false;
+	}
+
+	/** O canal já entrou uma vez: um novo SUBSCRIBED depois de cair pede para reler a cena. */
+	private jaConectou = false;
+	/**
+	 * Relê o que fica salvo da cena (tokens, traços, efeitos, objetos, as cenas e a música), depois de a conexão cair e
+	 * voltar: os avisos do banco desse intervalo se perderam.
+	 */
+	async ressincronizar() {
+		const cena = this.cenaId;
+		if (!cena) return;
+		const [tk, tr, ef, ob, cs, jk] = await Promise.all([
+			sb().from('mesa_tokens').select('*').eq('cena_id', cena).order('criado_em'),
+			sb().from('mesa_tracos').select('*').eq('cena_id', cena).order('criado_em'),
+			sb().from('mesa_efeitos').select('*').eq('cena_id', cena).order('criado_em'),
+			sb().from('mesa_objetos').select('*').eq('cena_id', cena).order('criado_em'),
+			sb().from('mesa_cenas').select('*').eq('campanha_id', this.campanha).order('criada_em'),
+			sb().from('mesa_jukebox').select('*').eq('campanha_id', this.campanha).maybeSingle()
+		]);
+		// trocou de cena no meio (ou a resposta é de outra): fica o que está
+		if (cena !== this.cenaId) return;
+		if (tk.data) this.tokens = (tk.data as MesaToken[]).map((t) => this.comNome(t));
+		if (tr.data) this.tracos = tr.data as MesaTraco[];
+		if (ef.data) this.efeitos = ef.data as MesaEfeito[];
+		if (ob.data) this.objetos = ob.data as MesaObjeto[];
+		if (cs.data) {
+			this.cenas = (cs.data as MesaCena[]).map((c) => mascararCena(c, this.mestre));
+			const atual = this.cenas.find((c) => c.id === cena);
+			// a cena foi apagada, ou o Mestre ativou outra enquanto a conexão estava fora: quem joga vai junto
+			if (!this.mestre && (!atual || this.cenas.some((c) => c.ativa && c.id !== cena))) this.trocouCena++;
+		}
+		if (!jk.error) this.jukebox = (jk.data as MesaJukebox | null) ?? null;
+		if (this.cena?.mostrar_pv && !this.mestre) this.lerPvs();
+		this.aoRessincronizar?.();
+	}
+	/** A página relê o que é dela (as fichas) junto com a cena. */
+	aoRessincronizar: (() => void) | null = null;
+	/** A ficha de um personagem da cena mudou (pelo token, que o banco atualiza junto): a página relê o estado dela. */
+	aoMudarFicha: ((personagem: string) => void) | null = null;
+
+	/** Quem saiu da mesa (fechou a aba, caiu) não deixa para trás o fantasma do arrasto, a régua ou a mira de jutsu. */
+	private limparQuemSaiu() {
+		const on = new Set(this.online);
+		const sem = <T>(r: Record<string, T>) => {
+			const fora = Object.keys(r).filter((u) => !on.has(u));
+			if (!fora.length) return r;
+			const novo = { ...r };
+			for (const u of fora) delete novo[u];
+			return novo;
+		};
+		this.fantasmas = sem(this.fantasmas);
+		this.reguas = sem(this.reguas);
+		this.moldes = sem(this.moldes);
 	}
 
 	private receber(campo: 'fantasmas' | 'reguas' | 'moldes', payload: unknown) {
@@ -391,16 +455,14 @@ export class Mesa {
 				...(acabam.length ? [sb().from('mesa_efeitos').delete().in('id', acabam)] : []),
 				...comTurnos.filter((x) => x.turnos! > 1).map((e) => sb().from('mesa_efeitos').update({ turnos: e.turnos! - 1 }).eq('id', e.id))
 			]);
-			// e quem cresceu por um jutsu também: no zero, volta ao tamanho normal
-			for (const t of this.tokens.filter((x) => x.tamanho_base != null && x.crescido_turnos != null)) {
-				if (t.crescido_turnos! <= 1) await this.voltarAoNormal(t);
-				else await this.atualizarToken(t.id, { crescido_turnos: t.crescido_turnos! - 1 });
-			}
-			// clones de jutsu com duração em turnos (crescido_turnos guarda o que falta): somem no zero
-			for (const t of this.tokens.filter((x) => ehClone(x) && x.crescido_turnos != null)) {
-				if (t.crescido_turnos! <= 1) await this.remover(t.id);
-				else await this.atualizarToken(t.id, { crescido_turnos: t.crescido_turnos! - 1 });
-			}
+			// e quem cresceu por um jutsu também: no zero, volta ao tamanho normal; os clones de jutsu com duração em turnos
+			// (crescido_turnos guarda o que falta) somem no zero. Tudo de uma vez, sem um token esperar o outro.
+			const crescidos = this.tokens.filter((x) => x.tamanho_base != null && x.crescido_turnos != null);
+			const clones = this.tokens.filter((x) => ehClone(x) && x.crescido_turnos != null);
+			await Promise.all([
+				...crescidos.map((t) => (t.crescido_turnos! <= 1 ? this.voltarAoNormal(t) : this.atualizarToken(t.id, { crescido_turnos: t.crescido_turnos! - 1 }))),
+				...clones.map((t) => (t.crescido_turnos! <= 1 ? this.remover(t.id) : this.atualizarToken(t.id, { crescido_turnos: t.crescido_turnos! - 1 })))
+			]);
 		}
 		await this.patchCena({ iniciativa: { ...i, vez, rodada } });
 		await this.zerarMovido();
@@ -409,8 +471,7 @@ export class Mesa {
 	async encerrarCombate() {
 		await this.patchCena({ iniciativa: { ativa: false, limpa_em: this.iniciativa.limpa_em } });
 		// fim do combate: quem estava crescido volta ao normal, e os clones de jutsu se desfazem
-		for (const t of this.tokens.filter((x) => x.tamanho_base != null)) await this.voltarAoNormal(t);
-		for (const t of this.tokens.filter(ehClone)) await this.remover(t.id);
+		await Promise.all([...this.tokens.filter((x) => x.tamanho_base != null).map((t) => this.voltarAoNormal(t)), ...this.tokens.filter(ehClone).map((t) => this.remover(t.id))]);
 		await this.zerarMovido();
 	}
 

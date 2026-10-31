@@ -13,48 +13,58 @@ export const load: PageServerLoad = async ({ locals, params, parent, url }) => {
 	const mestre = papel === 'mestre';
 	const sb = locals.supabase;
 
-	const [{ data: cenas, error: e1 }, { data: cores }, { data: rolagens }, { data: molduras }] = await Promise.all([
+	// fichas completas que dá para ler: o Mestre, todas as ativas; o jogador, a própria
+	const jogaveis = personagens.filter((p) => p.status === 'aprovada' && p.situacao === 'ativo' && !p.pre_gerado && (mestre || p.jogador_id === usuario.id));
+	const ids = [...jogaveis.map((p) => p.id), ...(mestre ? npcFichas.filter((p) => p.status === 'aprovada').map((p) => p.id) : [])];
+
+	// 1ª leva: tudo o que não depende da cena, de uma vez (cada leva é uma ida e volta ao banco)
+	const [
+		{ data: cenas, error: e1 },
+		{ data: cores },
+		{ data: rolagens },
+		{ data: molduras },
+		{ data: jukebox },
+		{ data: pastasCenas },
+		{ data: artes },
+		{ data: linhas },
+		{ data: npcs },
+		{ data: pastas },
+		{ data: revelados }
+	] = await Promise.all([
 		sb.from('mesa_cenas').select('*').eq('campanha_id', params.id).order('criada_em'),
 		sb.from('membros').select('usuario_id, cor').eq('campanha_id', params.id),
 		sb.from('rolagens').select('*').eq('campanha_id', params.id).order('criada_em', { ascending: false }).limit(50),
 		// a moldura de token de cada um (preferência do perfil)
-		sb.from('perfis').select('id, moldura:preferencias->>moldura').in('id', membros.map((m) => m.id))
+		sb.from('perfis').select('id, moldura:preferencias->>moldura').in('id', membros.map((m) => m.id)),
+		// a música da campanha (todos), as pastas das cenas e a biblioteca de artes (só o Mestre)
+		sb.from('mesa_jukebox').select('*').eq('campanha_id', params.id).maybeSingle(),
+		mestre ? sb.from('mesa_cena_pastas').select('*').eq('campanha_id', params.id).order('ordem').order('nome') : Promise.resolve({ data: [] as MesaCenaPasta[] }),
+		mestre ? sb.from('mesa_artes').select('*').eq('campanha_id', params.id).order('criada_em', { ascending: false }) : Promise.resolve({ data: [] as MesaArte[] }),
+		ids.length
+			? sb.from('personagens').select('id, jogador_id, nome, nivel, dados, resumo, estado, inventario, ryo, retrato, cla_id, anotacoes, npc, pasta_id').in('id', ids)
+			: Promise.resolve({ data: [] as never[] }),
+		mestre ? sb.from('npcs').select('*').eq('campanha_id', params.id).order('nome') : Promise.resolve({ data: [] as Npc[] }),
+		mestre ? sb.from('npc_pastas').select('*').eq('campanha_id', params.id).order('ordem').order('nome') : Promise.resolve({ data: [] as NpcPasta[] }),
+		mestre ? Promise.resolve({ data: [] as NpcRevelado[] }) : sb.rpc('npcs_revelados', { campanha: params.id })
 	]);
 	if (e1) error(500, 'Não foi possível carregar a Mesa.');
 	const pedida = url.searchParams.get('cena');
 	const lista = (cenas ?? []) as MesaCena[];
 	const cena = (mestre && pedida ? lista.find((c) => c.id === pedida) : null) ?? lista.find((c) => c.ativa) ?? (mestre ? lista[0] : null) ?? null;
 
-	const [{ data: tokens }, { data: tracos }, { data: efeitos }, { data: objetos }] = cena
-		? await Promise.all([
-				sb.from('mesa_tokens').select('*').eq('cena_id', cena.id).order('criado_em'),
-				sb.from('mesa_tracos').select('*').eq('cena_id', cena.id).order('criado_em'),
-				sb.from('mesa_efeitos').select('*').eq('cena_id', cena.id).order('criado_em'),
-				sb.from('mesa_objetos').select('*').eq('cena_id', cena.id).order('criado_em')
-			])
-		: [{ data: [] }, { data: [] }, { data: [] }, { data: [] }];
-	// a música da campanha (todos), as pastas das cenas e a biblioteca de artes (só o Mestre)
-	const [{ data: jukebox }, { data: pastasCenas }, { data: artes }] = await Promise.all([
-		sb.from('mesa_jukebox').select('*').eq('campanha_id', params.id).maybeSingle(),
-		mestre ? sb.from('mesa_cena_pastas').select('*').eq('campanha_id', params.id).order('ordem').order('nome') : Promise.resolve({ data: [] as MesaCenaPasta[] }),
-		mestre ? sb.from('mesa_artes').select('*').eq('campanha_id', params.id).order('criada_em', { ascending: false }) : Promise.resolve({ data: [] as MesaArte[] })
+	// 2ª leva: o que está na cena e as fichas rápidas calculadas (cada ficha lê o clã, os jutsus e os itens criados dela)
+	const [[{ data: tokens }, { data: tracos }, { data: efeitos }, { data: objetos }], fichasLidas] = await Promise.all([
+		cena
+			? Promise.all([
+					sb.from('mesa_tokens').select('*').eq('cena_id', cena.id).order('criado_em'),
+					sb.from('mesa_tracos').select('*').eq('cena_id', cena.id).order('criado_em'),
+					sb.from('mesa_efeitos').select('*').eq('cena_id', cena.id).order('criado_em'),
+					sb.from('mesa_objetos').select('*').eq('cena_id', cena.id).order('criado_em')
+				])
+			: Promise.resolve([{ data: [] }, { data: [] }, { data: [] }, { data: [] }]),
+		Promise.all((linhas ?? []).map((l) => fichaMesa(sb, l)))
 	]);
-
-	// fichas completas que dá para ler: o Mestre, todas as ativas; o jogador, a própria
-	const jogaveis = personagens.filter((p) => p.status === 'aprovada' && p.situacao === 'ativo' && !p.pre_gerado && (mestre || p.jogador_id === usuario.id));
-	const ids = [...jogaveis.map((p) => p.id), ...(mestre ? npcFichas.filter((p) => p.status === 'aprovada').map((p) => p.id) : [])];
-	const { data: linhas } = ids.length
-		? await sb.from('personagens').select('id, jogador_id, nome, nivel, dados, resumo, estado, inventario, ryo, retrato, cla_id, anotacoes, npc, pasta_id').in('id', ids)
-		: { data: [] };
-	const fichas = (await Promise.all((linhas ?? []).map((l) => fichaMesa(sb, l)))).filter((f): f is FichaMesa => !!f);
-
-	const [{ data: npcs }, { data: pastas }, { data: revelados }] = mestre
-		? await Promise.all([
-				sb.from('npcs').select('*').eq('campanha_id', params.id).order('nome'),
-				sb.from('npc_pastas').select('*').eq('campanha_id', params.id).order('ordem').order('nome'),
-				Promise.resolve({ data: [] as NpcRevelado[] })
-			])
-		: await Promise.all([Promise.resolve({ data: [] as Npc[] }), Promise.resolve({ data: [] as NpcPasta[] }), sb.rpc('npcs_revelados', { campanha: params.id })]);
+	const fichas = fichasLidas.filter((f): f is FichaMesa => !!f);
 
 	return {
 		titulo: cena ? `Mesa · ${mascararCena(cena, mestre).nome}` : 'Mesa',

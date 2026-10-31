@@ -20,6 +20,7 @@ import {
 	estadoAtual,
 	ficha,
 	inventarioInicial,
+	mesclarEstado,
 	type EstadoJogo,
 	type ItemInventario,
 	type JutsuFicha
@@ -39,6 +40,8 @@ export class FichaJogo {
 	salvando = $state(false);
 
 	private historico: { estado: EstadoJogo; descricao: string }[] = [];
+	/** O último estado lido do banco ou gravado: a base para juntar com o que outra tela (a Mesa) mudou nesse meio-tempo. */
+	private base: EstadoJogo = {};
 	private pendente: string[] = [];
 	private temporizador: ReturnType<typeof setTimeout> | undefined;
 
@@ -53,6 +56,7 @@ export class FichaJogo {
 		this.catalogo = catalogo;
 		this.editavel = editavel;
 		this.estado = p.estado ?? {};
+		this.base = $state.snapshot(this.estado) as EstadoJogo;
 		this.inventario = p.inventario ?? inventarioInicial(p.dados, catalogo.loja as ItemLoja[]);
 		this.ryo = p.ryo;
 	}
@@ -79,9 +83,16 @@ export class FichaJogo {
 		const descricao = this.pendente.join(' · ');
 		this.pendente = [];
 		this.salvando = true;
-		const { error } = await supabase().rpc('atualizar_estado', { ficha: this.id, estado: $state.snapshot(this.estado) as unknown as Json, descricao: descricao.slice(0, 200) });
+		// o Mestre pode ter mudado a ficha pela Mesa enquanto isso: grava o que mudou aqui por cima do que está no banco
+		const escrito = $state.snapshot(this.estado) as EstadoJogo;
+		const { data: atual } = await supabase().from('personagens').select('estado').eq('id', this.id).maybeSingle();
+		const estado = atual ? mesclarEstado(this.base, escrito, (atual.estado ?? {}) as EstadoJogo) : escrito;
+		const { error } = await supabase().rpc('atualizar_estado', { ficha: this.id, estado: estado as unknown as Json, descricao: descricao.slice(0, 200) });
 		this.salvando = false;
-		if (error) toasts.mostrar('Não foi possível salvar o ajuste. Confira a conexão.', 'erro');
+		if (error) return void toasts.mostrar('Não foi possível salvar o ajuste. Confira a conexão.', 'erro');
+		this.base = estado;
+		// o que veio do banco entra; o que mudou aqui enquanto gravava fica
+		this.estado = mesclarEstado(escrito, $state.snapshot(this.estado) as EstadoJogo, estado);
 	}
 
 	ajustar(k: Recurso, delta: number) {

@@ -16,7 +16,8 @@ import {
 	progressoXp,
 	quantoCabe,
 	type ItemInventario,
-	type JutsuFicha
+	type JutsuFicha,
+	mesclarEstado
 } from './progressao.ts';
 import { atributosTotais, fichaVazia, linhasPericia, nivelDe, recursos, type FichaDados, type ItemLoja } from './regras.ts';
 
@@ -204,5 +205,19 @@ describe('Save de Morte (cap. 4)', () => {
 	it('o terceiro sucesso estabiliza; a terceira falha é a morte', () => {
 		expect(aplicarSave({ sucessos: 2, falhas: 0 }, 12, 12).texto).toMatch(/estabilizado/);
 		expect(aplicarSave({ sucessos: 0, falhas: 2 }, 5, 5).texto).toMatch(/morte/);
+	});
+});
+
+describe('estado de duas telas ao mesmo tempo', () => {
+	it('o que esta tela mudou vale; o que a outra mudou no banco fica', () => {
+		const base = { pv: 30, pc: 20, pe: 15 };
+		// o Mestre aplicou 8 de dano aqui; no banco, o jogador já tinha gastado 5 PC
+		expect(mesclarEstado(base, { ...base, pv: 22 }, { ...base, pc: 15 })).toEqual({ pv: 22, pc: 15, pe: 15 });
+	});
+	it('campo apagado aqui sai; campo novo do banco entra; objetos comparam pelo conteúdo', () => {
+		const base = { pv: 10, condicoes: ['caido'], kkg: { ativa: true } };
+		const local = { pv: 10, kkg: { ativa: true } };
+		expect(mesclarEstado(base, local, { ...base, pd: 2 })).toEqual({ pv: 10, kkg: { ativa: true }, pd: 2 });
+		expect(mesclarEstado(base, { ...base, kkg: { ativa: true } }, { ...base, kkg: { ativa: false } })).toEqual({ ...base, kkg: { ativa: false } });
 	});
 });

@@ -346,6 +346,23 @@ export interface EstadoAtual {
 	situacao: 'bem' | 'caido' | 'morte';
 }
 
+/**
+ * Junta o estado desta tela com o que está no banco, campo a campo: o que esta tela mudou desde `base` (o último estado
+ * que ela leu ou gravou) vale; o resto vem do banco, onde outra tela (o Mestre na Mesa, o jogador na ficha) pode ter
+ * mudado outra coisa. Sem isso, gravar o estado inteiro desfazia o gasto de PC de um com o dano aplicado pelo outro.
+ */
+export function mesclarEstado(base: EstadoJogo, local: EstadoJogo, servidor: EstadoJogo): EstadoJogo {
+	const r: Record<string, unknown> = { ...servidor };
+	const b = base as Record<string, unknown>;
+	const l = local as Record<string, unknown>;
+	for (const k of new Set([...Object.keys(b), ...Object.keys(l)])) {
+		if (JSON.stringify(l[k]) === JSON.stringify(b[k])) continue;
+		if (l[k] === undefined) delete r[k];
+		else r[k] = l[k];
+	}
+	return r as EstadoJogo;
+}
+
 /** Soma um ajuste ao recurso; a cura de quem está com PV negativo conta a partir de 0 (cap. 4, Estabilizar Aliado Caído). */
 export const curar = (k: 'pv' | 'pc' | 'pe', atual: number, delta: number) => (k === 'pv' && delta > 0 && atual < 0 ? delta : atual + delta);
 
