@@ -207,8 +207,12 @@ class Rolador {
 	async conectar(eu: string | null) {
 		if (eu === this.eu) return;
 		this.eu = eu;
-		if (this.canal) supabase().removeChannel(this.canal);
+		clearTimeout(this.religar);
+		this.tentativas = 0;
+		// sai daqui antes de remover: o CLOSED que vem depois não pede para religar
+		const velho = this.canal;
 		this.canal = null;
+		if (velho) void supabase().removeChannel(velho);
 		this.recentes = [];
 		this.campanhas = [];
 		this.aparencias.clear();
@@ -225,7 +229,14 @@ class Rolador {
 		});
 		if (this.mesa && !this.campanhas.some((k) => k.id === this.mesa!.id)) this.mesa = null;
 		if (!this.mesa && this.campanhas[0]) this.mesa = { id: this.campanhas[0].id, nome: this.campanhas[0].nome };
-		this.canal = sb
+		this.assinar(eu);
+	}
+	/** Quantas vezes seguidas o canal caiu (a espera para religar dobra, até 30 s). */
+	private tentativas = 0;
+	private religar: ReturnType<typeof setTimeout> | undefined;
+	/** A assinatura ao vivo das rolagens; se o servidor fechar o canal, um novo entra sozinho (o Supabase não volta). */
+	private assinar(eu: string) {
+		const canal: RealtimeChannel = (this.canal = supabase()
 			.channel(`rolagens:${eu}`)
 			.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'rolagens' }, (p) => {
 				const r = p.new as Rolagem;
@@ -233,11 +244,24 @@ class Rolador {
 			})
 			.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'rolagens' }, (p) => this.atualizar(p.new as Rolagem))
 			.subscribe((status) => {
+				if (this.canal !== canal) return;
 				const caiu = this.caiu;
 				this.caiu = status !== 'SUBSCRIBED';
+				if (status === 'CLOSED' || status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+					clearTimeout(this.religar);
+					const ms = Math.min(30000, 1000 * 2 ** this.tentativas++) * (0.75 + Math.random() * 0.5);
+					this.religar = setTimeout(() => {
+						if (this.canal !== canal || this.eu !== eu) return;
+						this.canal = null;
+						void supabase().removeChannel(canal);
+						this.assinar(eu);
+					}, ms);
+					return;
+				}
+				if (status === 'SUBSCRIBED') this.tentativas = 0;
 				// a conexão caiu e voltou: as rolagens desse intervalo não chegaram pelo tempo real; entram no registro agora
 				if (status === 'SUBSCRIBED' && caiu) void this.buscarPerdidas();
-			});
+			}));
 	}
 	/** O canal das rolagens estava fora (começa como "fora": a primeira entrada não busca nada). */
 	private caiu = false;

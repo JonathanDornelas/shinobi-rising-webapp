@@ -3,6 +3,7 @@
 	// flutuando e o painel de rolagens e iniciativa à direita. No celular, quadro em tela cheia, dock e painéis inferiores.
 	import { goto, refreshAll } from '$app/navigation';
 	import { onMount, untrack } from 'svelte';
+	import { dev } from '$app/env';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 	import { CORES, corCss, nomeCor } from '#lib/mesa/cores.ts';
 	import { MOLDURAS, molduraPorId } from '#lib/mesa/molduras.ts';
@@ -67,6 +68,10 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	// svelte-ignore state_referenced_locally
 	let mesa = $state(criar());
 	const ui = new UiMesa();
+	// só em desenvolvimento: o teste de carga lê a Mesa de fora, para comparar a tela com o banco
+	$effect(() => {
+		if (dev) (window as unknown as { __mesa?: Mesa }).__mesa = mesa;
+	});
 	// svelte-ignore state_referenced_locally
 	let fichas = $state<FichaMesa[]>(data.fichas);
 	// svelte-ignore state_referenced_locally
@@ -1093,12 +1098,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 		{/each}
 		<span class="my-0.5 h-0.5 w-7 flex-none bg-b3"></span>
 		<span aria-hidden="true" class="font-pixel text-[9px] leading-none font-bold tracking-[0.06em] text-mut">MESA</span>
-		{#if temMusica}
-			<button type="button" aria-pressed={musicaVisivel} aria-label="Música da mesa" title={musicaVisivel ? 'Esconder o cartão da música (ela continua tocando)' : 'Mostrar o cartão da música'} class="relative flex h-10 w-10 flex-none items-center justify-center border-2 {musicaVisivel ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3 text-fg'}" onclick={alternarMusica}>
-				<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" class="fill-none stroke-current stroke-2 [stroke-linecap:square]"><path d="M9 18V5l11-2v13 M9 18a3 3 0 1 1-3-3 M20 16a3 3 0 1 1-3-3" /></svg>
-				{#if mesa.jukebox?.tocando}<span aria-hidden="true" class="absolute -top-1 -right-1 h-2.5 w-2.5 bg-ok"></span>{/if}
-			</button>
-		{/if}
+		{#if temMusica}{@render botaoMusica('')}{/if}
 		{#if data.mestre}
 			<button type="button" aria-label="Biblioteca de artes" title="Biblioteca de artes: mapas e objetos" class="flex h-10 w-10 flex-none items-center justify-center border-2 border-b3" onclick={() => ((ui.pop = null), (ui.modal = { tipo: 'artes' }))}>
 				<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" class="fill-none stroke-current stroke-2 [stroke-linecap:square]"><path d="M3 6h6l2 2h10v11H3z M3 12h18" /></svg>
@@ -1521,6 +1521,11 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			{#if narrativa}
 				<div class="relative flex min-w-0 flex-1">
 					{@render telaNarrativa()}
+					{#if temMusica}
+						<!-- a jukebox continua na narrativa: o botão no canto e o cartão logo abaixo -->
+						<div class="absolute right-3 z-[8] {ui.imersivo ? 'top-12' : 'top-3'}">{@render botaoMusica('bg-[rgba(14,11,10,.8)]')}</div>
+						<JukeboxMesa {mesa} {ui} classe="absolute right-3 z-[8] {ui.imersivo ? 'top-[100px]' : 'top-16'}" />
+					{/if}
 					{#if ui.imersivo}
 						<!-- modo imersivo na narrativa: o botão de sair (e o diário, os atalhos) no canto da imagem -->
 						<div class="absolute top-2 right-2 z-[31] flex items-center gap-1 opacity-60 transition-opacity hover:opacity-100 focus-within:opacity-100">
@@ -1657,6 +1662,14 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 		</div>
 	</div>
 {/if}
+
+<!-- a música da mesa: na barra de ferramentas do quadro e, na narrativa (sem barra), no canto da imagem -->
+{#snippet botaoMusica(extra: string)}
+	<button type="button" aria-pressed={musicaVisivel} aria-label="Música da mesa" title={musicaVisivel ? 'Esconder o cartão da música (ela continua tocando)' : 'Mostrar o cartão da música'} class="relative flex h-10 w-10 flex-none items-center justify-center border-2 {musicaVisivel ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3 text-fg'} {extra}" onclick={alternarMusica}>
+		<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" class="fill-none stroke-current stroke-2 [stroke-linecap:square]"><path d="M9 18V5l11-2v13 M9 18a3 3 0 1 1-3-3 M20 16a3 3 0 1 1-3-3" /></svg>
+		{#if mesa.jukebox?.tocando}<span aria-hidden="true" class="absolute -top-1 -right-1 h-2.5 w-2.5 bg-ok"></span>{/if}
+	</button>
+{/snippet}
 
 {#snippet botoesExtras(tam: string)}
 	<!-- diário, atalhos e modo imersivo: na barra da Mesa e, no modo imersivo, pequenos no canto do quadro -->

@@ -191,9 +191,15 @@ export class Mesa {
 			switch (p.table) {
 				case 'mesa_tokens': {
 					if (apagou) return void (this.tokens = this.tokens.filter((t) => t.id !== idAntigo(p)));
-					const novo = p.new as unknown as MesaToken;
+					let novo = p.new as unknown as MesaToken;
 					if (novo.cena_id !== cena) return;
 					const velho = this.tokens.find((t) => t.id === novo.id);
+					// o andar já chegou pelo broadcast: um aviso do banco com uma posição anterior a essa é velho e não volta o token
+					const a = this.andados.get(novo.id);
+					if (velho && a && Date.now() - a.quando < 4000) {
+						const k = `${novo.x},${novo.y}`;
+						if (k !== a.posicoes.at(-1) && a.posicoes.includes(k)) novo = { ...novo, x: velho.x, y: velho.y, movido: velho.movido };
+					}
 					this.tokens = lista(this.tokens, this.comNome(novo));
 					// a cada mudança no estado da ficha, o banco regrava o token do personagem (a faixa de ferimento e os estados):
 					// um aviso do token sem ele ter andado nem mudado de forma é a ficha mudando em outra tela
@@ -257,7 +263,7 @@ export class Mesa {
 				}
 			}
 		};
-		this.canal = sb()
+		const canal: RealtimeChannel = (this.canal = sb()
 			.channel(`mesa:${this.campanha}`, { config: { broadcast: { self: false }, presence: { key: this.eu } } })
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_tokens', filter: `cena_id=eq.${cena}` }, rotear)
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_tracos', filter: `cena_id=eq.${cena}` }, rotear)
@@ -296,6 +302,7 @@ export class Mesa {
 				const t = payload as TracoTemporario;
 				this.temporarios = [...this.temporarios.filter((x) => x.id !== t.id), { ...t, t: Date.now() }];
 			})
+			.on('broadcast', { event: 'andou' }, ({ payload }) => this.receberAndou(payload as { id: string; x: number; y: number; movido: number }))
 			.on('broadcast', { event: 'pulso' }, ({ payload }) => (this.pulso = { token: (payload as { token: string }).token, t: Date.now() }))
 			.on('broadcast', { event: 'ping' }, ({ payload }) => this.receberPing(payload as { id: string; usuario: string; x: number; y: number }))
 			// "Olhem aqui": só o Mestre puxa a vista dos outros
@@ -318,16 +325,45 @@ export class Mesa {
 				this.limparQuemSaiu();
 			})
 			.subscribe((status) => {
+				if (this.canal !== canal) return;
 				const caiu = !this.conectado;
 				this.conectado = status === 'SUBSCRIBED';
+				// o servidor fechou o canal (limite de mensagens, queda longa): o Supabase não volta sozinho
+				if (status === 'CLOSED' || status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') return void this.reconectarDepois(canal);
 				if (status !== 'SUBSCRIBED') return;
+				this.tentativas = 0;
 				this.canal?.track({ em: Date.now() });
 				// voltou depois de cair (wifi, aba dormindo): o que mudou enquanto isso não chega pelo tempo real
 				if (caiu && this.jaConectou) void this.ressincronizar(true);
 				this.jaConectou = true;
-			});
+			}));
 		if (this.cena?.mostrar_pv && !this.mestre) this.lerPvs();
 		this.vigiar();
+	}
+
+	/** Quantas vezes seguidas o canal caiu (a espera para religar dobra a cada uma, até 30 s). */
+	private tentativas = 0;
+	private religar: ReturnType<typeof setTimeout> | undefined;
+	private reconectarDepois(canal: RealtimeChannel) {
+		clearTimeout(this.religar);
+		const ms = Math.min(30000, 1000 * 2 ** this.tentativas++) * (0.75 + Math.random() * 0.5);
+		this.religar = setTimeout(() => {
+			if (this.canal !== canal) return;
+			this.canal = null;
+			void sb().removeChannel(canal);
+			// o canal novo, ao entrar, relê a cena (jaConectou continua valendo)
+			this.conectar();
+		}, ms);
+	}
+
+	/** O andar de um token que outra tela já gravou: aparece aqui sem esperar o aviso do banco (meio segundo mais tarde). */
+	private andados = new Map<string, { posicoes: string[]; quando: number }>();
+	private receberAndou(p: { id: string; x: number; y: number; movido: number }) {
+		if (!p || typeof p.x !== 'number' || typeof p.y !== 'number' || !this.tokens.some((t) => t.id === p.id)) return;
+		const a = this.andados.get(p.id);
+		const posicoes = [...(a && Date.now() - a.quando < 4000 ? a.posicoes : []), `${p.x},${p.y}`].slice(-8);
+		this.andados.set(p.id, { posicoes, quando: Date.now() });
+		this.trocar(p.id, { x: p.x, y: p.y, movido: p.movido });
 	}
 
 	/**
@@ -346,16 +382,26 @@ export class Mesa {
 		if (typeof document === 'undefined') return;
 		document.addEventListener('visibilitychange', this.aoMudarVisibilidade);
 		clearInterval(this.vigia);
-		this.vigia = setInterval(() => document.visibilityState === 'visible' && this.conectado && void this.ressincronizar(), 45000);
+		// a cada 12 s, a conferência leve (tokens e a cena); a cada 45 s, tudo. Vale também com a conexão caída
+		let voltas = 0;
+		this.vigia = setInterval(() => {
+			if (document.visibilityState !== 'visible') return;
+			if (++voltas % 4 === 0) void this.ressincronizar();
+			else void this.conferir();
+		}, 12000);
 	}
 
 	desconectar() {
 		if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', this.aoMudarVisibilidade);
 		clearInterval(this.vigia);
-		if (this.canal) sb().removeChannel(this.canal);
-		if (this.canalDiario) sb().removeChannel(this.canalDiario);
+		clearTimeout(this.religar);
+		this.tentativas = 0;
+		// o canal sai daqui antes de ser removido: o CLOSED que vem depois não pede para religar
+		const [canal, diario] = [this.canal, this.canalDiario];
 		this.canal = null;
 		this.canalDiario = null;
+		if (canal) void sb().removeChannel(canal);
+		if (diario) void sb().removeChannel(diario);
 		this.jaConectou = false;
 	}
 
@@ -391,6 +437,32 @@ export class Mesa {
 		if (!jk.error) this.jukebox = (jk.data as MesaJukebox | null) ?? null;
 		if (this.cena?.mostrar_pv && !this.mestre) this.lerPvs();
 		this.aoRessincronizar?.(avisar);
+	}
+	/** Tokens mexidos nesta tela (e quando): a conferência não os volta enquanto a gravação ainda pode estar a caminho. */
+	private mexidoAqui = new Map<string, number>();
+	/**
+	 * Conferência leve: os tokens e a cena atual. Sob carga, o tempo real às vezes descarta avisos sem fechar o canal (visto
+	 * no teste de estresse); assim nada fica diferente do banco por mais que uns segundos.
+	 */
+	async conferir() {
+		const cena = this.cenaId;
+		if (!cena) return;
+		const [tk, c] = await Promise.all([sb().from('mesa_tokens').select('*').eq('cena_id', cena).order('criado_em'), sb().from('mesa_cenas').select('*').eq('id', cena).maybeSingle()]);
+		if (cena !== this.cenaId) return;
+		const agora = Date.now();
+		if (tk.data) {
+			const novos = (tk.data as MesaToken[]).map((t) => {
+				const m = this.mexidoAqui.get(t.id);
+				return (m && agora - m < 4000 && this.tokens.find((k) => k.id === t.id)) || this.comNome(t);
+			});
+			if (JSON.stringify(novos) !== JSON.stringify(this.tokens)) this.tokens = novos;
+		}
+		// a cena: só se ninguém aqui a mudou há pouco (a resposta pode ser de antes da gravação)
+		const mudouAqui = [...this.enviadosAqui.values()].some((e) => agora - e.quando < 4000);
+		if (c.data && !mudouAqui) {
+			const nova = mascararCena(c.data as MesaCena, this.mestre);
+			if (JSON.stringify(nova) !== JSON.stringify(this.cena)) this.cenas = this.cenas.map((x) => (x.id === cena ? nova : x));
+		}
 	}
 	/** A página relê o que é dela (as fichas) junto com a cena; `avisar`: a conexão tinha caído. */
 	aoRessincronizar: ((avisar: boolean) => void) | null = null;
@@ -440,12 +512,15 @@ export class Mesa {
 		this.enviar('olhar', p, true);
 	}
 
-	/** Manda o que é passageiro, no máximo 20 vezes por segundo (o último estado sempre sai: null limpa). */
+	/**
+	 * Manda o que é passageiro, no máximo 12 vezes por segundo (o último estado sempre sai: null limpa). É a maior parte do
+	 * tráfego do tempo real: com vários arrastando juntos, 20 por segundo estourava o limite e o servidor fechava o canal.
+	 */
 	enviar(evento: 'fantasma' | 'regua' | 'molde' | 'apontar' | 'pulso' | 'ping' | 'moldura' | 'moldura-mesa' | 'olhar', dados: unknown, forcar = false) {
 		if (!this.canal || !this.conectado) return;
 		const agora = Date.now();
-		// o molde pode ter mais de mil quadrados: vai no máximo 6 vezes por segundo; o resto, 20
-		if (!forcar && dados != null && agora - (this.ultimoEnvio[evento] ?? 0) < (evento === 'molde' ? 160 : 50)) return;
+		// o molde pode ter mais de mil quadrados: vai no máximo 6 vezes por segundo; o resto, 12
+		if (!forcar && dados != null && agora - (this.ultimoEnvio[evento] ?? 0) < (evento === 'molde' ? 160 : 80)) return;
 		this.ultimoEnvio[evento] = agora;
 		const payload = evento === 'apontar' || evento === 'pulso' || evento === 'ping' ? dados : { usuario: this.eu, dados };
 		this.canal.send({ type: 'broadcast', event: evento, payload });
@@ -595,6 +670,7 @@ export class Mesa {
 
 	// ------------------------------------------------------------------ tokens
 	private trocar(id: string, patch: Partial<MesaToken>) {
+		this.mexidoAqui.set(id, Date.now());
 		this.tokens = this.tokens.map((t) => (t.id === id ? { ...t, ...patch } : t));
 	}
 
@@ -617,7 +693,7 @@ export class Mesa {
 		if (!t || (t.x === x && t.y === y)) return;
 		this.desfazer.push({ tipo: 'mover', id, x: t.x, y: t.y, movido: t.movido });
 		const movido = this.daVez.has(id) ? t.movido + metros : 0;
-		await this.atualizarToken(id, { x, y, movido });
+		if ((await this.atualizarToken(id, { x, y, movido })) && t.visivel && this.conectado) this.canal?.send({ type: 'broadcast', event: 'andou', payload: { id, x, y, movido } });
 	}
 
 	async colocar(novo: Partial<MesaToken> & { nome: string }) {
@@ -762,12 +838,26 @@ export class Mesa {
 			if (e.privado && e.autor_id !== this.eu) return void (this.diario = this.diario.filter((d) => d.id !== e.id));
 			this.diario = this.diario.some((d) => d.id === e.id) ? this.diario.map((d) => (d.id === e.id ? e : d)) : [...this.diario, e];
 		};
-		this.canalDiario = sb()
+		this.assinarDiario(aviso);
+	}
+	/** O canal do diário; fechado pelo servidor, um novo entra depois de uns segundos e relê as entradas. */
+	private assinarDiario(aviso: (p: RealtimePostgresChangesPayload<Record<string, unknown>>) => void, tentativa = 0) {
+		const canal: RealtimeChannel = (this.canalDiario = sb()
 			.channel(`diario:${this.campanha}`)
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_diario', filter: `campanha_id=eq.${this.campanha}` }, aviso)
 			// o Realtime não filtra DELETE (o registro antigo só traz o id)
 			.on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'mesa_diario' }, aviso)
-			.subscribe();
+			.subscribe((status) => {
+				if (this.canalDiario !== canal || !(status === 'CLOSED' || status === 'CHANNEL_ERROR' || status === 'TIMED_OUT')) return;
+				setTimeout(async () => {
+					if (this.canalDiario !== canal) return;
+					this.canalDiario = null;
+					void sb().removeChannel(canal);
+					const { data } = await sb().from('mesa_diario').select('*').eq('campanha_id', this.campanha).order('criado_em');
+					if (data && Array.isArray(this.diario)) this.diario = data as EntradaDiario[];
+					this.assinarDiario(aviso, tentativa + 1);
+				}, Math.min(30000, 2000 * 2 ** tentativa));
+			}));
 	}
 	private canalDiario: RealtimeChannel | null = null;
 	async salvarEntrada(e: Partial<EntradaDiario> & Pick<EntradaDiario, 'tipo' | 'titulo'>) {
