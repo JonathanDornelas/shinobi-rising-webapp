@@ -1,6 +1,7 @@
 <script lang="ts">
 	// C8 · Conceder recompensas: XP por rank de missão (cap. 17), PT bônus (cap. 18), ryo, motivo,
-	// PD da sessão e PIC do arco, com prévia de quem alcança um nível novo.
+	// PD da sessão e PIC do arco, com prévia de quem alcança um nível novo. Os NPCs de ficha completa também recebem
+	// (eles progridem como os personagens do grupo): ficam num grupo à parte, fora da seleção inicial.
 	import { refreshAll } from '$app/navigation';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 	import { numero } from '#lib/formatar.ts';
@@ -21,7 +22,21 @@
 		claNome?: string | null;
 		claBrasao?: { kamon: string; cor: string } | null;
 	}
-	let { campanha, fichas, aoFechar }: { campanha: string; fichas: Ficha[]; aoFechar: () => void } = $props();
+	let {
+		campanha,
+		fichas,
+		npcs = [],
+		inicial,
+		aoFechar
+	}: {
+		campanha: string;
+		fichas: Ficha[];
+		/** NPCs de ficha completa, aprovados e ativos */
+		npcs?: Ficha[];
+		/** quem já vem marcado (sem isto, o grupo inteiro) */
+		inicial?: string[];
+		aoFechar: () => void;
+	} = $props();
 
 	const RANKS = [
 		{ r: 'E', xp: 50 },
@@ -32,7 +47,8 @@
 		{ r: 'S', xp: 1500 }
 	];
 	// svelte-ignore state_referenced_locally
-	let selecionadas = $state<string[]>(fichas.map((f) => f.id));
+	let selecionadas = $state<string[]>(inicial ?? fichas.map((f) => f.id));
+	const todas = $derived([...fichas, ...npcs]);
 	let rank = $state<string | null>('C');
 	let xp = $state(200);
 	let pt = $state(1);
@@ -56,7 +72,7 @@
 		return n;
 	};
 	const previa = $derived(
-		fichas
+		todas
 			.filter((f) => selecionadas.includes(f.id))
 			.map((f) => ({ ...f, depois: f.xp + (xp || 0), alcanca: nivelDoXp(f.xp + (xp || 0)) > Math.max(f.nivel, nivelDoXp(f.xp)) ? nivelDoXp(f.xp + (xp || 0)) : null }))
 	);
@@ -87,6 +103,16 @@
 	}
 </script>
 
+{#snippet linha(f: Ficha)}
+	{@const on = selecionadas.includes(f.id)}
+	<label class="flex min-h-12 cursor-pointer items-center gap-2.5 border-2 bg-b1 px-2.5 {on ? 'border-vermelhao' : 'border-b3'}">
+		<input type="checkbox" class="caixa" checked={on} onchange={() => alternar(f.id)} />
+		<IconeCla resumo={f} />
+		<span class="flex-1 text-[15px] leading-5 font-semibold">{f.nome}</span>
+		<span class="t-num text-[13px] text-mut">NV {f.nivel}</span>
+	</label>
+{/snippet}
+
 <Modal rotulo="Conceder recompensas" largura={760} topo={80} {aoFechar}>
 	<div class="flex items-center gap-2.5 bg-grena py-3 pr-3 pl-5">
 		<Icone id="acao/ic-acao-conceder" />
@@ -97,21 +123,24 @@
 		<div class="grid gap-5 p-5 md:grid-cols-2">
 			<fieldset class="m-0 flex flex-col gap-2 border-0 p-0">
 				<legend class="sr-only">Personagens</legend>
-				<div class="flex items-center">
-					<span class="t-rotulo flex-1 text-xs" aria-hidden="true">Personagens</span>
-					<button type="button" class="link text-[13px] font-semibold" onclick={() => (selecionadas = fichas.map((f) => f.id))}>Todos</button>
-				</div>
-				{#each fichas as f (f.id)}
-					{@const on = selecionadas.includes(f.id)}
-					<label class="flex min-h-12 cursor-pointer items-center gap-2.5 border-2 bg-b1 px-2.5 {on ? 'border-vermelhao' : 'border-b3'}">
-						<input type="checkbox" class="caixa" checked={on} onchange={() => alternar(f.id)} />
-						<IconeCla resumo={f} />
-						<span class="flex-1 text-[15px] leading-5 font-semibold">{f.nome}</span>
-						<span class="t-num text-[13px] text-mut">NV {f.nivel}</span>
-					</label>
-				{:else}
-					<p class="m-0 text-sm text-mut">Nenhuma ficha aprovada e ativa ainda.</p>
-				{/each}
+				{#if fichas.length || !npcs.length}
+					<div class="flex items-center">
+						<span class="t-rotulo flex-1 text-xs" aria-hidden="true">Personagens</span>
+						<button type="button" class="link text-[13px] font-semibold" onclick={() => (selecionadas = [...new Set([...selecionadas, ...fichas.map((f) => f.id)])])}>Todos</button>
+					</div>
+					{#each fichas as f (f.id)}
+						{@render linha(f)}
+					{:else}
+						<p class="m-0 text-sm text-mut">Nenhuma ficha aprovada e ativa ainda.</p>
+					{/each}
+				{/if}
+				{#if npcs.length}
+					<div class="flex items-center {fichas.length ? 'mt-2' : ''}">
+						<span class="t-rotulo flex-1 text-xs" aria-hidden="true">NPCs de ficha completa</span>
+						<button type="button" class="link text-[13px] font-semibold" onclick={() => (selecionadas = [...new Set([...selecionadas, ...npcs.map((f) => f.id)])])}>Todos</button>
+					</div>
+					{#each npcs as f (f.id)}{@render linha(f)}{/each}
+				{/if}
 			</fieldset>
 			<div class="flex flex-col gap-3">
 				<span class="t-rotulo text-xs" id="rot-rank">XP por rank de missão</span>

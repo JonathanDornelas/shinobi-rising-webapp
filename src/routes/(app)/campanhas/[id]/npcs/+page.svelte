@@ -17,7 +17,10 @@
 	import { nomeRank, pvDosMembros, RANKS_NPC, TAGS_NPC } from '#lib/npcs/dados.ts';
 	import { ataqueNpc, gerarNpc } from '#lib/npcs/gerador.ts';
 	import { fichaVazia, resumoFicha } from '#lib/personagem/regras.ts';
-	import { hrefEditar, hrefFicha } from '#lib/personagem/status.ts';
+	import { hrefEditar, hrefFicha, hrefNivel } from '#lib/personagem/status.ts';
+	import { progressoXp } from '#lib/personagem/progressao.ts';
+	import ModalRecompensas from '#lib/componentes/campanha/ModalRecompensas.svelte';
+	import { numero } from '#lib/formatar.ts';
 	import { teste } from '#lib/rolagens/expressoes.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
@@ -107,6 +110,10 @@
 		npcs.filter((n) => naPasta(n, pastaSel) && (!filtroRank || n.rank === filtroRank) && (!filtroTag || n.tags.includes(filtroTag)) && (!filtroVisivel || (filtroVisivel === 'revelado') === n.revelado))
 	);
 
+	// NPCs de ficha completa progridem como o grupo: o Mestre concede XP e PT e sobe o nível pela ficha
+	let recompensando = $state<string | null>(null);
+	const emJogo = (p: (typeof fichasNpc)[number]) => p.status === 'aprovada' && p.situacao === 'ativo';
+	const paraRecompensa = (p: (typeof fichasNpc)[number]) => ({ id: p.id, nome: p.nome, nivel: p.nivel, xp: p.xp, cla: p.resumo.cla, claNome: p.resumo.claNome, claBrasao: p.resumo.claBrasao });
 	const fichasVisiveis = $derived(fichasNpc.filter((f) => naPasta(f, pastaSel) && !filtroRank && !filtroTag && !filtroVisivel));
 
 	// ---------------------------------------------------------------- editar, criar, excluir
@@ -292,6 +299,17 @@
 								</span>
 								<SeloStatus status={p.status} />
 							</a>
+							{#if emJogo(p)}
+								{@const x = progressoXp(p.nivel, p.xp)}
+								<div class="flex flex-wrap items-center gap-2">
+									<div class="flex min-w-[140px] flex-1 flex-col gap-1">
+										<span class="t-num text-xs text-mut">{numero(p.xp)} / {numero(x.alvo)} XP · {p.pt} PT</span>
+										<div class="h-2 border-2 border-ink bg-b3" role="progressbar" aria-label="XP de {p.nome} até o próximo nível" aria-valuenow={Math.round(x.fracao * 100)} aria-valuemin={0} aria-valuemax={100}><div class="h-full bg-acc" style:width="{x.fracao * 100}%"></div></div>
+									</div>
+									{#if ativa}<button type="button" class="btn-jogo btn-contorno min-h-8 px-2 text-xs" onclick={() => (recompensando = p.id)}>CONCEDER</button>{/if}
+									{#if ativa && x.podeSubir}<a href={hrefNivel(k.id, p.id)} class="btn-jogo btn-primario min-h-8 px-2 text-xs">SUBIR DE NÍVEL</a>{/if}
+								</div>
+							{/if}
 							<div class="flex flex-wrap items-center gap-2">
 								<button type="button" class="link text-xs font-semibold" aria-pressed={fichaOculta(p)} disabled={!ativa} onclick={() => alternarNomeFicha(p)}>{fichaOculta(p) ? 'Nome escondido (???) · mostrar' : 'Esconder o nome dos jogadores'}</button>
 								{#if pastas.length && ativa}
@@ -491,4 +509,8 @@
 
 {#if editando}
 	<EditorNpc npc={editando} catalogo={data.catalogoJutsus} {salvando} aoSalvar={salvar} aoExcluir={excluir} aoFechar={() => (editando = null)} />
+{/if}
+
+{#if recompensando}
+	<ModalRecompensas campanha={k.id} fichas={[]} npcs={fichasNpc.filter(emJogo).map(paraRecompensa)} inicial={[recompensando]} aoFechar={() => (recompensando = null)} />
 {/if}

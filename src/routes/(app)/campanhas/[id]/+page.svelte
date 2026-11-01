@@ -34,6 +34,8 @@
 	/** As fichas ativas do jogador, que pode ter várias em jogo (falecidas e arquivadas ficam na lista de Personagens). */
 	const fichasDe = (jogador: string) => data.personagens.filter((p) => p.jogador_id === jogador && p.situacao === 'ativo');
 	const ativas = $derived(data.personagens.filter((p) => p.status === 'aprovada' && p.situacao === 'ativo' && !p.pre_gerado));
+	/** NPCs de ficha completa também ganham XP e sobem de nível (como as fichas do grupo, administradas pelo Mestre). */
+	const npcsAtivos = $derived((data.npcFichas ?? []).filter((p) => p.status === 'aprovada' && p.situacao === 'ativo'));
 	let recompensando = $state(false);
 	const SEM_FICHAS = 'Nenhuma ficha aprovada e ativa para receber recompensas';
 
@@ -491,7 +493,7 @@
 {/snippet}
 
 {#if recompensando}
-	<ModalRecompensas campanha={c.id} fichas={ativas.map((p) => ({ id: p.id, nome: p.nome, nivel: p.nivel, xp: p.xp, cla: p.resumo.cla, claNome: p.resumo.claNome, claBrasao: p.resumo.claBrasao }))} aoFechar={() => (recompensando = false)} />
+	<ModalRecompensas campanha={c.id} fichas={ativas.map((p) => ({ id: p.id, nome: p.nome, nivel: p.nivel, xp: p.xp, cla: p.resumo.cla, claNome: p.resumo.claNome, claBrasao: p.resumo.claBrasao }))} npcs={npcsAtivos.map((p) => ({ id: p.id, nome: p.nome, nivel: p.nivel, xp: p.xp, cla: p.resumo.cla, claNome: p.resumo.claNome, claBrasao: p.resumo.claBrasao }))} aoFechar={() => (recompensando = false)} />
 {/if}
 
 {#if confirmandoSaida}
