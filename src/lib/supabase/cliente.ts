@@ -7,7 +7,9 @@ import type { Database } from './banco.ts';
 let cliente: SupabaseClient<Database> | null = null;
 
 export function supabase(): SupabaseClient<Database> {
-	cliente ??= createBrowserClient<Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+	// o batimento do tempo real roda num Web Worker: numa aba em segundo plano o navegador atrasa os relógios da página
+	// (até uma vez por minuto), o batimento falhava, o servidor derrubava a conexão e os avisos desse intervalo se perdiam
+	cliente ??= createBrowserClient<Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY, { realtime: { worker: true } });
 	return cliente;
 }
 

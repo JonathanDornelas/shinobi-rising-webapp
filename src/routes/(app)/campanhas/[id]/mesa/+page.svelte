@@ -1276,7 +1276,6 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 				{/if}
 			</nav>
 			<span class="flex-1"></span>
-			{#each minhasFichas as f (f.id)}<button type="button" class="flex min-h-10 items-center gap-1.5 border-2 border-b3 bg-b2 px-2.5 font-pixel text-xs font-bold hover:border-mut" title="A ficha inteira de {f.nome} numa janela grande" onclick={() => abrirFichaCompleta(f.id)}>{minhasFichas.length > 1 ? `${f.nome.split(' ')[0].toUpperCase()} ⤢` : 'MINHA FICHA ⤢'}</button>{/each}
 			<div aria-label="Quem está na mesa" class="flex items-center gap-1.5">
 				{#each data.membros as m (m.id)}
 					{@const on = mesa.online.includes(m.id) || m.id === data.eu}

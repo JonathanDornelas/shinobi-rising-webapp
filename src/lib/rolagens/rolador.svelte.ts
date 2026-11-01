@@ -185,7 +185,21 @@ class Rolador {
 				this.receber(r, r.autor_id !== eu);
 			})
 			.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'rolagens' }, (p) => this.atualizar(p.new as Rolagem))
-			.subscribe();
+			.subscribe((status) => {
+				const caiu = this.caiu;
+				this.caiu = status !== 'SUBSCRIBED';
+				// a conexão caiu e voltou: as rolagens desse intervalo não chegaram pelo tempo real; entram no registro agora
+				if (status === 'SUBSCRIBED' && caiu) void this.buscarPerdidas();
+			});
+	}
+	/** O canal das rolagens estava fora (começa como "fora": a primeira entrada não busca nada). */
+	private caiu = false;
+	private async buscarPerdidas() {
+		const desde = this.recentes[0]?.criada_em;
+		let q = supabase().from('rolagens').select('*').order('criada_em', { ascending: false }).limit(30);
+		if (desde) q = q.gt('criada_em', desde);
+		const { data } = await q;
+		for (const r of ((data ?? []) as Rolagem[]).reverse()) this.receber(r, false);
 	}
 
 	campanha = (id: string) => this.campanhas.find((k) => k.id === id) ?? null;
