@@ -3,7 +3,8 @@ import type { Rolagem } from '#lib/supabase/banco.ts';
 
 let resposta: (args: Record<string, unknown>) => { data: unknown; error: unknown } = () => ({ data: null, error: { message: 'X' } });
 const rpc = vi.fn(async (_nome: string, args: Record<string, unknown>) => resposta(args));
-vi.mock('#lib/supabase/cliente.ts', () => ({ supabase: () => ({ rpc }) }));
+const perfil = { select: () => perfil, eq: () => perfil, maybeSingle: async () => ({ data: null }) };
+vi.mock('#lib/supabase/cliente.ts', () => ({ supabase: () => ({ rpc, from: () => perfil }) }));
 vi.mock('#lib/estado/toasts.svelte.ts', () => ({ toasts: { mostrar: () => {} } }));
 // "menos movimento" ligado = aviso em pixel; desligado = dados 3D
 let poucoMovimento = true;

@@ -7,6 +7,7 @@
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
 	import { conta, destaque } from '#lib/rolagens/expressoes.ts';
 	import { corDaRolagem } from '#lib/rolagens/registro.ts';
+	import { corDoDado } from '#lib/rolagens/aparencia-dados.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 	import type { Rolagem } from '#lib/supabase/banco.ts';
 
@@ -46,8 +47,9 @@
 		try {
 			const { lancar, limpar, temWebgl } = await import('#lib/rolagens/dados3d.ts');
 			if (!temWebgl()) throw new Error('sem WebGL');
-			// a semente é o id da rolagem: a mesma queda em todas as telas da mesa
-			const rolou = await lancar(camada!, r.detalhe, { cor: corDaRolagem(r), som: rolador.som, semente: r.id });
+			// a semente é o id da rolagem: a mesma queda em todas as telas da mesa; a cor e o estilo são os de quem rolou
+			const ap = await rolador.aparenciaDe(r.autor_id);
+			const rolou = await lancar(camada!, r.detalhe, { cor: corDoDado(ap, corDaRolagem(r)), estilo: ap.estilo, som: rolador.som, semente: r.id });
 			// os dados pararam: agora o resultado vale (registro, ficha rápida, dano), não quando a legenda some
 			rolador.liberar(r.id);
 			if (minha !== vez) return;

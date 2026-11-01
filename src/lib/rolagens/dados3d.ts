@@ -7,6 +7,7 @@
 // do cannon-es não tem nada aleatório e anda em passos fixos, então as mesmas condições dão a mesma queda.
 // O módulo só é baixado por quem escolhe os dados 3D (import dinâmico).
 import type { TermoRolagem } from '#lib/supabase/banco.ts';
+import { APARENCIA_PADRAO, corDosNumeros, estiloDado } from './aparencia-dados.ts';
 
 /** Dados que a biblioteca desenha; os outros (d2, d3…) ficam só no aviso. */
 const LADOS = new Set([4, 6, 8, 10, 12, 20, 100]);
@@ -67,13 +68,14 @@ type Caixa = {
 	scene: unknown;
 	sounds: boolean;
 	volume: number;
+	colorData: unknown;
 	DiceFactory: { get(tipo: string): { font: string } };
 };
 
 let caixa: Caixa | null = null;
 let preparando: Promise<Caixa> | null = null;
 let comSom = false;
-/** A cor dos dados já aplicada: trocar de cor refaz as texturas, então só troca quando muda. */
+/** A cor e o estilo dos dados já aplicados: trocar refaz as texturas, então só troca quando muda. */
 let corAtual: string | null = null;
 
 /** Cria a cena uma vez só, no elemento fixo que cobre a tela (o canvas é transparente). */
@@ -114,6 +116,17 @@ function preparar(onde: HTMLElement): Promise<Caixa> {
 				quadro = requestAnimationFrame(() => c.setDimensions({ ...MESA }));
 			});
 		};
+		// as batidas são sempre as de plástico (as únicas que vêm com o jogo), qualquer que seja o estilo do dado
+		const carregarSons = c.loadSounds.bind(c);
+		c.loadSounds = async () => {
+			const cores = c.colorData;
+			c.colorData = { texture: { material: 'plastic' } };
+			try {
+				await carregarSons();
+			} finally {
+				c.colorData = cores;
+			}
+		};
 		for (const d of ['d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100']) c.DiceFactory.get(d).font = 'Pixelify Sans';
 		await c.initialize();
 		caixa = c;
@@ -153,10 +166,9 @@ export function temWebgl() {
 }
 
 /**
- * Joga os dados da rolagem e resolve quando todos param. `cor` pinta os dados (dano na cor do elemento, cura em
- * verde); sem cor, grená com números em papel.
+ * Joga os dados da rolagem e resolve quando todos param, na cor e no estilo de quem rolou (aparencia-dados.ts).
  */
-export async function lancar(onde: HTMLElement, detalhe: TermoRolagem[], opcoes: { cor?: string | null; som: boolean; semente: string }) {
+export async function lancar(onde: HTMLElement, detalhe: TermoRolagem[], opcoes: { cor: string; estilo: string; som: boolean; semente: string }) {
 	const n = notacao3d(detalhe);
 	if (!n) return false;
 	// o preparo do aquecimento termina antes (a biblioteca e os sons); o lance invisível dele, não: este o substitui
@@ -168,7 +180,7 @@ export async function lancar(onde: HTMLElement, detalhe: TermoRolagem[], opcoes:
 		comSom = true;
 	}
 	c.sounds = opcoes.som;
-	await pintar(c, opcoes.cor ?? COR_PADRAO);
+	await pintar(c, opcoes.cor, opcoes.estilo);
 	// (a leitura que a biblioteca devolve não serve para conferir o d4: ela não relê o d4 depois de trocar as faces;
 	// a face de cima está certa, conferida nos prints)
 	// o lançamento é calculado de forma síncrona no começo de roll(): só ali o Math.random vira o sorteio com
@@ -199,13 +211,16 @@ export async function lancar(onde: HTMLElement, detalhe: TermoRolagem[], opcoes:
 	return true;
 }
 
-const COR_PADRAO = '#5c1e15';
-async function pintar(c: Caixa, fundo: string) {
-	if (fundo === corAtual) return;
+/** Pinta os dados (a textura do estilo é baixada só na primeira vez que alguém o usa). A física não muda com o estilo. */
+async function pintar(c: Caixa, fundo: string, estilo: string) {
+	const nome = `shinobi-${estilo}-${fundo}`;
+	if (nome === corAtual) return;
+	const e = estiloDado(estilo);
+	const { letra, contorno } = corDosNumeros(fundo);
 	await c.updateConfig({
-		theme_customColorset: { name: `shinobi-${fundo}`, foreground: '#f4e4d6', background: fundo, outline: '#1b1210', texture: 'none', material: 'plastic' }
+		theme_customColorset: { name: nome, foreground: letra, background: fundo, outline: contorno, texture: e.textura, material: e.material }
 	});
-	corAtual = fundo;
+	corAtual = nome;
 }
 
 /**
@@ -216,7 +231,7 @@ async function pintar(c: Caixa, fundo: string) {
 export function preaquecer(onde: HTMLElement, som: boolean) {
 	aquecendo ??= (async () => {
 		const c = await preparar(onde);
-		await pintar(c, COR_PADRAO);
+		await pintar(c, APARENCIA_PADRAO.cor, APARENCIA_PADRAO.estilo);
 		if (som && !comSom) {
 			await c.loadSounds().catch(() => null);
 			comSom = true;

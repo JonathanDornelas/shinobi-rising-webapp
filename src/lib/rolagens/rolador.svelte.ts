@@ -2,12 +2,14 @@
 // acompanha ao vivo as rolagens de todas as campanhas de quem está logado (Realtime, filtrado pelo RLS) e guarda o
 // estado da janela flutuante (R2), que abre em qualquer tela pelo botão do canto ou pela tecla R.
 // Cada pessoa escolhe como as rolagens aparecem: os dados 3D na tela inteira (padrão) ou o aviso em pixel no canto,
-// com som nas batidas (Dados3D.svelte). A escolha fica neste navegador.
+// com som nas batidas (Dados3D.svelte). A escolha fica neste navegador. A cor e o estilo dos dados 3D ficam no perfil
+// (aparencia-dados.ts): quem assiste vê os dados de quem rolou do jeito que essa pessoa escolheu.
 import type { RealtimeChannel } from '@supabase/supabase-js';
 import { gravar, ler } from '#lib/estado/armazenamento.ts';
 import { toasts } from '#lib/estado/toasts.svelte.ts';
 import { supabase } from '#lib/supabase/cliente.ts';
 import type { Json, ModoRolagem, Rolagem, TipoRolagem } from '#lib/supabase/banco.ts';
+import { APARENCIA_PADRAO, estiloDado, normalizarAparencia, type AparenciaDado } from './aparencia-dados.ts';
 import { paraServidor } from './expressoes.ts';
 
 export interface PedidoRolagem {
@@ -104,6 +106,11 @@ class Rolador {
 	estilo = $state<EstiloDados>('3d');
 	/** Som das batidas dos dados 3D. */
 	som = $state(true);
+	/** A cor e o estilo dos meus dados 3D (do perfil). */
+	meuDado = $state<AparenciaDado>({ ...APARENCIA_PADRAO });
+	private salvarDado: ((a: AparenciaDado) => void) | null = null;
+	/** A aparência dos dados de cada pessoa da mesa: a última lida do perfil e a leitura em andamento. */
+	private aparencias = new Map<string, { a: AparenciaDado | null; busca: Promise<AparenciaDado> | null }>();
 	/** Rolagem que os dados 3D estão jogando agora (n muda a cada lance, mesmo da mesma rolagem). */
 	lance = $state<{ r: Rolagem; n: number } | null>(null);
 	/**
@@ -157,6 +164,45 @@ class Rolador {
 		gravar('dados', { estilo: this.estilo, som });
 	}
 
+	/** O perfil carregou: a cor e o estilo dos meus dados, e como guardar uma mudança. */
+	conectarDado(dado: unknown, salvar: (a: AparenciaDado) => void) {
+		this.meuDado = normalizarAparencia(dado);
+		this.salvarDado = salvar;
+	}
+	escolherDado(parcial: Partial<AparenciaDado>) {
+		this.meuDado = { ...this.meuDado, ...parcial };
+		this.salvarDado?.(this.meuDado);
+	}
+	/** Lê de novo a aparência dos dados de quem rolou (pode ter mudado desde a última rolagem dessa pessoa). */
+	private buscarAparencia(autor: string) {
+		const antes = this.aparencias.get(autor)?.a ?? null;
+		const busca = Promise.resolve(supabase().from('perfis').select('preferencias').eq('id', autor).maybeSingle()).then(
+			({ data }) => {
+				const a = data ? normalizarAparencia(data.preferencias?.dado) : (antes ?? APARENCIA_PADRAO);
+				this.aparencias.set(autor, { a, busca: null });
+				return a;
+			},
+			() => antes ?? APARENCIA_PADRAO
+		);
+		this.aparencias.set(autor, { a: antes, busca });
+	}
+	/** Com que cor e estilo os dados desta pessoa caem: espera a leitura do perfil um pouco; depois, vai com a última conhecida. */
+	async aparenciaDe(autor: string | null): Promise<AparenciaDado> {
+		if (!autor) return APARENCIA_PADRAO;
+		if (autor === this.eu) return this.meuDado;
+		if (!this.aparencias.has(autor)) this.buscarAparencia(autor);
+		const { a, busca } = this.aparencias.get(autor)!;
+		if (!busca) return a ?? APARENCIA_PADRAO;
+		return Promise.race([busca, new Promise<AparenciaDado>((ok) => setTimeout(() => ok(a ?? APARENCIA_PADRAO), 1500))]);
+	}
+	/** Um d20 só nesta tela, para ver a cor e o estilo escolhidos (não vai para o servidor nem para o registro). */
+	previa() {
+		if (!this.usar3d || this.lance) return;
+		const v = 1 + Math.floor(Math.random() * 20);
+		const r = { id: `previa-${Date.now()}`, autor_id: this.eu, quem: 'Seu dado', rotulo: estiloDado(this.meuDado.estilo).nome, expressao: '1d20', modo: 'normal', tipo: 'livre', detalhe: [{ sinal: 1, lados: 20, valores: [v], usados: [v] }], total: v, d20: null } as unknown as Rolagem;
+		this.comecar(r);
+	}
+
 	/** Com sessão: campanhas, fichas e a assinatura ao vivo de todas as rolagens visíveis. */
 	async conectar(eu: string | null) {
 		if (eu === this.eu) return;
@@ -165,6 +211,7 @@ class Rolador {
 		this.canal = null;
 		this.recentes = [];
 		this.campanhas = [];
+		this.aparencias.clear();
 		if (!eu) return;
 		const sb = supabase();
 		const [{ data: ks }, { data: fichas }] = await Promise.all([
@@ -353,6 +400,8 @@ class Rolador {
 		// para não estragar o suspense
 		if (nova && this.usar3d && (mostrar || (r.autor_id === this.eu && this.pendentes > 0))) {
 			this.retidas.set(r.id, { r, limite: null });
+			// a cor e o estilo dos dados de quem rolou já começam a vir do perfil enquanto a rolagem espera a vez
+			if (r.autor_id && r.autor_id !== this.eu) this.buscarAparencia(r.autor_id);
 			this.enfileirar(r);
 			return;
 		}

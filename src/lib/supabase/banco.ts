@@ -20,6 +20,8 @@ export type Preferencias = {
 	favoritos?: { jutsus?: string[] };
 	/** Moldura dos tokens na Mesa (src/lib/mesa/molduras.ts). */
 	moldura?: string | null;
+	/** Cor e estilo dos dados 3D (src/lib/rolagens/aparencia-dados.ts): todos na mesa veem os dados assim. */
+	dado?: import('#lib/rolagens/aparencia-dados.ts').AparenciaDado;
 }
 
 export type VilaCampanha = {
