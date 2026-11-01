@@ -27,7 +27,7 @@ export async function carregarFichaCompleta(locals: App.Locals, campanhaId: stri
 		locals.supabase.from('equipamentos_criados').select('id, nome, resumo, anterior_id').eq('campanha_id', campanhaId).eq('tipo', 'item').eq('status', 'aprovado'),
 		locals.supabase.from('equipamentos_criados').select('id, tipo, nome, resumo').eq('personagem_id', p.id).eq('status', 'aprovado').eq('entregue', false)
 	]);
-	const catalogo = catalogoFicha(cla(p.resumo), criado, jutsusCriados);
+	const catalogo = catalogoFicha(cla(p.resumo), criado, jutsusCriados, p.dados);
 	// itens criados e aprovados na campanha entram na loja (a versão mais nova de cada um)
 	const substituidos = new Set((itens ?? []).map((i) => i.anterior_id).filter(Boolean));
 	catalogo.loja.push(...itensDaCampanha((itens ?? []).filter((i) => !substituidos.has(i.id))));

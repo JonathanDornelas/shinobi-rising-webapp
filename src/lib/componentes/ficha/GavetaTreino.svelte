@@ -15,6 +15,8 @@
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
 	import { aplicarTreinos, opcoesTreino, rotuloAlvo, type OpcaoTreino } from '#lib/personagem/progressao.ts';
 	import { jutsusConhecidos, resumoFicha, type ItemLoja, type Treino } from '#lib/personagem/regras.ts';
+	import FiltrosJutsu from '../jutsu/FiltrosJutsu.svelte';
+	import { filtroVazio, passa, type CamposJutsu } from '#lib/jutsus/filtro.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
 	import type { Json } from '#lib/supabase/banco.ts';
 	import Glosa from '../regras/Glosa.svelte';
@@ -41,7 +43,7 @@
 	];
 	let aba = $state<Aba>('jutsu');
 	let carrinho = $state<OpcaoTreino[]>([]);
-	let filtro = $state('');
+	let filtro = $state(filtroVazio());
 	let gastando = $state(false);
 
 	const nomeEsp = (id: string) => f.catalogo.especializacoes.find((e) => e.id === id)?.nome ?? id;
@@ -50,9 +52,12 @@
 	const opcoes = $derived(opcoesTreino(f.dados, f.catalogo.jutsus, nomeEsp));
 	const custo = $derived(carrinho.reduce((t, c) => t + c.pt, 0));
 	const resta = $derived(pt - custo);
+	/** O que os filtros leem de cada jutsu (bloqueado: falta nível, afinidade ou PT). */
+	const campos = (o: OpcaoTreino): CamposJutsu => ({ nome: o.nome, traducao: o.traducao, ...(o.jutsu ?? { tipo: '', rank: '', elemento: null, efeito: '', acao: '' }), bloqueado: !!o.bloqueio || o.pt > resta });
+	const jutsusDoTreino = $derived(opcoes.filter((o) => o.grupo === 'jutsu'));
 	const lista = $derived(
 		opcoes
-			.filter((o) => o.grupo === aba && (aba !== 'jutsu' || `${o.nome} ${o.traducao ?? ''}`.toLowerCase().includes(filtro.trim().toLowerCase())))
+			.filter((o) => o.grupo === aba && (aba !== 'jutsu' || noCarrinho(o) || passa(filtro, campos(o))))
 			.sort((a, b) => Number(!!a.bloqueio) - Number(!!b.bloqueio) || a.pt - b.pt)
 	);
 	const noCarrinho = (o: OpcaoTreino) => carrinho.some((c) => c.chave === o.chave);
@@ -179,7 +184,7 @@
 			{/each}
 		</div>
 		<div class="flex flex-1 flex-col gap-2 overflow-y-auto px-5 py-3.5">
-			{#if aba === 'jutsu'}<input class="campo h-10 text-[15px]" placeholder="Filtrar jutsus…" aria-label="Filtrar jutsus" bind:value={filtro} />{/if}
+			{#if aba === 'jutsu'}<FiltrosJutsu lista={jutsusDoTreino.map(campos)} bind:filtro total={lista.length} />{/if}
 			{#if aba === 'proficiencia'}
 				<div class="flex flex-wrap items-end gap-2 border-2 border-dashed border-b3 p-2.5">
 					<label class="flex flex-col gap-1 text-xs font-semibold">

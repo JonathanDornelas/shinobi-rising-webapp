@@ -9,6 +9,8 @@
 	import type { StatusCriacao } from '#lib/supabase/banco.ts';
 	import Glosa from '../regras/Glosa.svelte';
 	import Icone from '../ui/Icone.svelte';
+	import FiltrosJutsu from '../jutsu/FiltrosJutsu.svelte';
+	import { filtroVazio, passa, type CamposJutsu } from '#lib/jutsus/filtro.ts';
 
 	let { c }: { c: Criador } = $props();
 	const cla = $derived(regrasCla(c.ficha));
@@ -29,6 +31,12 @@
 	// volta do criador de jutsus para este passo
 	const volta = $derived(`/campanhas/${page.params.id}/personagens/${page.params.pid}/editar?passo=9`);
 	const semAfinidade = (el: string | null) => (el && !meus.includes(el) ? `Exige afinidade com ${ELEMENTOS.find((e) => e.id === el)?.nome ?? el}` : '');
+	// os filtros valem para as duas colunas (Rank E e Rank D); os escolhidos ficam sempre à vista
+	let filtro = $state(filtroVazio());
+	type Item = (typeof c.catalogo.jutsusE)[number];
+	const campos = (j: Item): CamposJutsu => ({ nome: j.nome, traducao: j.traducao, tipo: j.tipo, rank: j.rank, elemento: j.elemento, efeito: j.efeito, acao: j.acao, bloqueado: !!semAfinidade(j.elemento) });
+	const todos = $derived([...c.catalogo.jutsusE, ...c.catalogo.jutsusD]);
+	const visivel = (rank: 'E' | 'D', j: Item) => c.ficha.jutsus[rank].includes(j.slug) || passa(filtro, campos(j));
 </script>
 
 <span class="t-rotulo">Já conhecidos</span>
@@ -77,7 +85,8 @@
 	</div>
 {/if}
 
-<div class="mt-1.5 grid gap-3 md:grid-cols-2">
+<div class="mt-1.5"><FiltrosJutsu lista={todos.map(campos)} bind:filtro rank={false} /></div>
+<div class="grid gap-3 md:grid-cols-2">
 	{#each [['E', c.catalogo.jutsusE], ['D', c.catalogo.jutsusD]] as const as [rank, lista] (rank)}
 		{@const qtd = c.ficha.jutsus[rank].length}
 		{@const falta = rank === 'E' && qtd < JUTSUS_INICIAIS.E}
@@ -88,7 +97,7 @@
 				<span class="flex-1 font-pixel text-[13px] leading-none font-bold tracking-[0.08em]">RANK {rank}</span>
 				<span class="t-num text-base" style:color={falta ? 'var(--err)' : undefined}>{qtd}/{JUTSUS_INICIAIS[rank]}</span>
 			</div>
-			{#each lista as j (j.slug)}
+			{#each lista.filter((j) => visivel(rank, j)) as j (j.slug)}
 				{@const on = c.ficha.jutsus[rank].includes(j.slug)}
 				{@const motivo = semAfinidade(j.elemento)}
 				<label class="flex min-h-10 cursor-pointer items-center gap-2 border-2 px-2 py-1 text-sm {on ? 'border-vermelhao bg-grena text-papel' : 'border-b3 bg-b1'} {motivo && !on ? 'opacity-50' : ''}" title={motivo || undefined}>
@@ -104,6 +113,8 @@
 						<span class="text-xs leading-4 {on ? 'text-papel/80' : 'text-mut'}">{j.tipo} · {j.custo}{j.elemento ? ` · ${ELEMENTOS.find((e) => e.id === j.elemento)?.nome}` : ''}{motivo ? ` · ${motivo}` : ''}</span>
 					</span>
 				</label>
+			{:else}
+				<p class="m-0 px-1 py-2 text-[13px] text-mut">Nenhum jutsu Rank {rank} com esses filtros.</p>
 			{/each}
 			{#if c.editavel}
 				<form method="POST" action="/campanhas/{page.params.id}/jutsus?/criar">

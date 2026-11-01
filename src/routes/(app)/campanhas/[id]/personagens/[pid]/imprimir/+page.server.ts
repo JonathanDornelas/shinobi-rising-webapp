@@ -17,6 +17,6 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		campanha,
 		personagem: p,
 		jogador: membros.find((m) => m.id === p.jogador_id)?.nome ?? '',
-		catalogo: catalogoFicha(cla && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(cla) ? cla : null)
+		catalogo: catalogoFicha(cla && !['sem', 'novo-sem-kkg', 'novo-com-kkg'].includes(cla) ? cla : null, null, [], p.dados)
 	};
 };

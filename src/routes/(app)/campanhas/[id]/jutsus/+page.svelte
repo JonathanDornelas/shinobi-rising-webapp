@@ -77,7 +77,8 @@
 	const concessao = (j: Jutsu): Concessao | null => {
 		const c = porSlug.get(j.slug);
 		if (c) return c.status === 'aprovado' ? { tipo: 'jutsu', slug: j.slug, nome: c.nome, custo: CUSTO_JUTSU[c.rank ?? 'C'] ?? 0 } : null;
-		return j.cla ? null : { tipo: 'jutsu', slug: j.slug, nome: j.nome, custo: CUSTO_JUTSU[j.rank] ?? 0 };
+		// jutsu de clã: o custo do jutsu de clã antecipado (cap. 8), o normal do rank + 1 PT
+		return { tipo: 'jutsu', slug: j.slug, nome: j.nome, custo: (CUSTO_JUTSU[j.rank] ?? 0) + (j.cla ? 1 : 0) };
 	};
 	const podeExcluir = (c: Criado) => c.autor_id === eu || mestre;
 	const paraExcluir = (c: Criado): CriacaoExcluir => ({

@@ -132,6 +132,15 @@ describe('treino (cap. 18)', () => {
 		expect(custoJutsu(g, jutsu('shunshin-no-jutsu', '4 PC', 4, 'Ninjutsu')).final).toBe(2);
 		expect(opcoesTreino(g, [], (id) => id).find((o) => o.chave === 'prof:jutsu:kage-mane-no-jutsu')!.nome).toMatch(/Experiente → Mestre/);
 	});
+	it('jutsus do próprio clã (o Mokuton dos Senju): o normal + 1 PT, sem pedir afinidade elemental', () => {
+		const f = hana();
+		const moku = { ...jutsu('mokuton-henge', '5 PC', 5, 'Ninjutsu', 'D', 'mokuton'), cla: 'senju' };
+		const caro = { ...jutsu('mokuton-mokuryu-no-jutsu', '19 PC', 19, 'Ninjutsu', 'A', 'mokuton'), cla: 'senju' };
+		const ops = opcoesTreino(f, [moku, caro], (id) => id);
+		expect(ops.find((o) => o.chave === 'jutsu:mokuton-henge')).toMatchObject({ pt: 3, bloqueio: '' });
+		expect(ops.find((o) => o.chave === 'jutsu:mokuton-mokuryu-no-jutsu')!.bloqueio).toBe('Rank A exige nível 11');
+		expect(ops.find((o) => o.chave === 'jutsu:mokuton-henge')!.jutsu).toMatchObject({ rank: 'D', elemento: 'mokuton' });
+	});
 });
 
 describe('em jogo', () => {

@@ -145,7 +145,7 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 	const dados = p.dados as FichaDados;
 	if (!dados?.conceito) return null;
 	const [criado, jutsusCriados] = await Promise.all([claDaFicha(sb, p.cla_id), jutsusDaFicha(sb, p.id, p.cla_id, p.dados)]);
-	const catalogo = catalogoFicha(claDe(p.resumo), criado, jutsusCriados);
+	const catalogo = catalogoFicha(claDe(p.resumo), criado, jutsusCriados, p.dados);
 	const loja = catalogo.loja as ItemLoja[];
 	const calc = ficha(dados, loja);
 	const r = calc.recursos;

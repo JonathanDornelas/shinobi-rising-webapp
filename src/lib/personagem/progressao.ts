@@ -1,6 +1,7 @@
 // Progressão e ficha em jogo: XP e nível (cap. 17), marcos de clã (cap. 8.3), treino com PT (cap. 18),
 // custo real dos jutsus (cap. 9), PIC, estado em jogo (cap. 4) e inventário (cap. 11). Puro, como regras.ts.
 import type { EstadoKkg } from './kkg.ts';
+import { acaoDe } from '#lib/livro/filtros-jutsu.ts';
 import {
 	ATRIBUTOS,
 	CUSTO_ELEMENTO,
@@ -203,6 +204,8 @@ export interface OpcaoTreino {
 	icone: string;
 	bloqueio: string;
 	treino: Treino;
+	/** Jutsu: o que os filtros da lista leem. */
+	jutsu?: { tipo: string; rank: string; elemento: string | null; efeito: string; acao: string };
 }
 
 export function opcoesTreino(f: FichaDados, jutsus: JutsuFicha[], nomeEsp: (id: string) => string): OpcaoTreino[] {
@@ -211,23 +214,27 @@ export function opcoesTreino(f: FichaDados, jutsus: JutsuFicha[], nomeEsp: (id: 
 	const conhecidos = new Set(jutsusConhecidos(f));
 	const els = elementos(f);
 
-	// jutsus gerais (os de clã chegam pelos marcos)
+	// jutsus gerais e os do próprio clã (o catálogo da ficha só traz os do clã dela): os do clã que não vieram ainda (o
+	// marco é mais à frente, ou o jutsu não está em marco nenhum) custam o normal do rank + 1 PT e pedem um mestre ou a
+	// biblioteca do clã (cap. 8, Aprendendo Jutsus de Clã Avançados); a técnica do clã não pede afinidade elemental
 	for (const j of jutsus) {
-		if (j.cla || conhecidos.has(j.slug)) continue;
-		const pt = CUSTO_JUTSU[j.rank];
+		if (conhecidos.has(j.slug)) continue;
+		const doCla = !!j.cla;
+		const pt = CUSTO_JUTSU[j.rank] ? CUSTO_JUTSU[j.rank] + (doCla ? 1 : 0) : 0;
 		if (!pt) continue;
 		const min = PROGRESSAO.rankPorNivel[j.rank];
-		const bloqueio = min && nivel < min ? `Rank ${j.rank} exige nível ${min}` : j.elemento && !els.includes(j.elemento) ? `Exige afinidade com ${nomeElemento(j.elemento)}` : j.rank === 'S' ? 'Rank S exige aprovação do Mestre' : '';
+		const bloqueio = min && nivel < min ? `Rank ${j.rank} exige nível ${min}` : !doCla && j.elemento && !els.includes(j.elemento) ? `Exige afinidade com ${nomeElemento(j.elemento)}` : j.rank === 'S' ? 'Rank S exige aprovação do Mestre' : '';
 		ops.push({
 			chave: `jutsu:${j.slug}`,
 			grupo: 'jutsu',
 			nome: j.nome,
 			traducao: j.traducao,
-			descricao: [j.origem !== j.tipo ? j.origem : '', `Rank ${j.rank}`, j.tipo, j.custo].filter(Boolean).join(' · '),
+			descricao: [j.origem !== j.tipo ? j.origem : '', `Rank ${j.rank}`, j.tipo, j.custo, doCla ? 'com um mestre ou a biblioteca do clã (+1 PT)' : ''].filter(Boolean).join(' · '),
 			pt,
 			icone: `rank/ic-rank-${j.rank.toLowerCase()}`,
 			bloqueio,
-			treino: { tipo: 'jutsu', slug: j.slug, pt }
+			treino: { tipo: 'jutsu', slug: j.slug, pt },
+			jutsu: { tipo: j.tipo, rank: j.rank, elemento: j.elemento, efeito: j.efeito, acao: acaoDe(j) }
 		});
 	}
 
