@@ -140,6 +140,8 @@ export type Personagem = {
 	capa: string | null;
 	/** Caderno do dono (o Mestre lê). */
 	anotacoes: string;
+	/** História do personagem em texto livre (ausente enquanto a migração não roda). */
+	historia?: string;
 }
 
 /** Jutsu ou habilidade criada (cap. 20); `dados` é um JutsuDados ou HabilidadeDados (src/lib/jutsus/regras.ts). */
@@ -690,6 +692,7 @@ export type Database = {
 			conceder_item: { Args: { ficha: string; item: Json; custo_ryo?: number }; Returns: undefined };
 			receber_entregas: { Args: { ficha: string; inventario: Json }; Returns: undefined };
 			salvar_anotacoes: { Args: { ficha: string; texto: string }; Returns: undefined };
+			salvar_historia: { Args: { ficha: string; texto: string }; Returns: undefined };
 			usar_pd: { Args: { rolagem: string; acao: 'rerrolar' | 'mais5' }; Returns: Rolagem };
 			rolagens_ocultas_do_mestre: { Args: { desde?: string | null }; Returns: { id: string; campanha_id: string; criada_em: string; mestre: string }[] };
 			definir_capa_ficha: { Args: { ficha: string; capa: string | null }; Returns: undefined };

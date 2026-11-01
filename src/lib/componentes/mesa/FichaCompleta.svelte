@@ -205,7 +205,7 @@
 				{:else if aba === 'cla'}<AbaCla {f} />
 				{:else if aba === 'equip'}<AbaEquipamento {f} mesa={{ medir: naMesa.medirArma, atacar: naMesa.atacar }} />
 				{:else if aba === 'prog'}<AbaProgressao {f} pt={p.pt} xp={p.xp} registros={dados!.registros} pedidos={dados!.pedidos} aoTreinar={() => window.open(`/campanhas/${campanha}/personagens/${pid}?treino=1`, '_blank')} />
-				{:else if aba === 'hist'}<AbaHistoria {f} />
+				{:else if aba === 'hist'}<AbaHistoria {f} historia={{ ficha: p.id, inicial: p.historia, editavel: p.dono && !dados!.arquivada }} />
 				{:else if aba === 'notas'}<AbaAnotacoes ficha={p.id} inicial={p.anotacoes ?? ''} editavel={p.dono && !dados!.arquivada} />
 				{:else}<AbaRegistro registros={dados!.registros} />{/if}
 			</div>

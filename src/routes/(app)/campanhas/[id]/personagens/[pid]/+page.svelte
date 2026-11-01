@@ -301,7 +301,7 @@
 			{:else if aba === 'cla'}<AbaCla {f} />
 			{:else if aba === 'equip'}<AbaEquipamento {f} />
 			{:else if aba === 'prog'}<AbaProgressao {f} pt={p.pt} xp={p.xp} registros={data.registros} pedidos={data.pedidos} aoTreinar={() => (treinando = true)} />
-			{:else if aba === 'hist'}<AbaHistoria {f} />
+			{:else if aba === 'hist'}<AbaHistoria {f} historia={{ ficha: p.id, inicial: p.historia, editavel: p.dono && !data.arquivada }} />
 			{:else if aba === 'notas'}
 				<AbaAnotacoes ficha={p.id} inicial={p.anotacoes ?? ''} editavel={p.dono && !data.arquivada} />
 			{:else}<AbaRegistro registros={data.registros} />
