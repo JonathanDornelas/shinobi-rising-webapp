@@ -4,7 +4,7 @@
 	// viram de lado, para não aparecer a repetição; quem pede menos movimento vê o quadro parado.
 	import { SPRITES_CLIMA } from '#lib/mesa/clima-sprites.ts';
 
-	let { clima }: { clima: string | null | undefined } = $props();
+	let { clima, opacidade = 1 }: { clima: string | null | undefined; opacidade?: number } = $props();
 	const ESCALA = 2;
 	let W = $state(0);
 	let H = $state(0);
@@ -28,8 +28,9 @@
 	});
 </script>
 
-<div class="pointer-events-none absolute inset-0 overflow-hidden" bind:clientWidth={W} bind:clientHeight={H} aria-hidden="true">
-	{#if sp}
+<div class="pointer-events-none absolute inset-0 overflow-hidden" style:opacity={opacidade < 1 ? opacidade : undefined} bind:clientWidth={W} bind:clientHeight={H} aria-hidden="true">
+	<!-- na opacidade zero, os ladrilhos nem são montados (nada animando à toa) -->
+	{#if sp && opacidade > 0}
 		{#each ladrilhos as l, i (i)}
 			<div
 				class="clima-ladrilho"

@@ -84,6 +84,12 @@ export class UiMesa {
 		this.gradeOculta = !this.gradeOculta;
 		gravar('mesa-grade-oculta', this.gradeOculta);
 	}
+	/** A opacidade do clima (chuva, neve...) só nesta tela, de 0 a 1 (fica guardada neste navegador). */
+	climaOpacidade = $state(Math.min(1, Math.max(0, ler<number>('mesa-clima-opacidade', 1))));
+	mudarClimaOpacidade(v: number) {
+		this.climaOpacidade = Math.min(1, Math.max(0, v));
+		gravar('mesa-clima-opacidade', this.climaOpacidade);
+	}
 	/** Modo imersivo: só o quadro na tela (sem os painéis, a barra da Mesa e o cabeçalho do site). */
 	imersivo = $state(false);
 	/** O diário do grupo aberto sobre o quadro, e o quadro de atalhos (tecla ?). */
