@@ -1443,7 +1443,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 		<!-- isolate: as janelas de ficha empilham entre si aqui dentro e não passam por cima dos menus da barra -->
 		<div class="relative isolate flex min-h-0 flex-1">
 			<!-- o painel da esquerda fica também na cena narrativa (é nele que o Mestre volta para o mapa); o « recolhe -->
-			{#if ui.imersivo && !narrativa}
+			{#if ui.imersivo}
 				<!-- modo imersivo: sem painéis; as ferramentas seguem nas teclas (?) -->
 			{:else if ui.elencoAberto && data.mestre && cena}
 				<!-- o painel da esquerda: o Elenco ou as configurações da cena, com o quadro sempre à vista -->
@@ -1471,7 +1471,16 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			{#if !ui.imersivo && !narrativa}{@render trilho()}{/if}
 
 			{#if narrativa}
-				{@render telaNarrativa()}
+				<div class="relative flex min-w-0 flex-1">
+					{@render telaNarrativa()}
+					{#if ui.imersivo}
+						<!-- modo imersivo na narrativa: o botão de sair (e o diário, os atalhos) no canto da imagem -->
+						<div class="absolute top-2 right-2 z-[31] flex items-center gap-1 opacity-60 transition-opacity hover:opacity-100 focus-within:opacity-100">
+							{@render botoesExtras('h-7 w-7')}
+						</div>
+						{#if ui.diarioAberto}<div class="pointer-events-none absolute top-11 right-3 bottom-16 z-[30] flex items-start"><DiarioMesa {mesa} aoFechar={() => (ui.diarioAberto = false)} /></div>{/if}
+					{/if}
+				</div>
 			{:else}
 			<div class="relative min-w-0 flex-1 overflow-hidden bg-[var(--fundo)]">
 				<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} {focoDe} onSoltar={colocar} />
