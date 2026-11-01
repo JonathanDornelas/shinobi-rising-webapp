@@ -1442,10 +1442,8 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 
 		<!-- isolate: as janelas de ficha empilham entre si aqui dentro e não passam por cima dos menus da barra -->
 		<div class="relative isolate flex min-h-0 flex-1">
-			{#if narrativa}
-				{@render telaNarrativa()}
-			{:else}
-			{#if ui.imersivo}
+			<!-- o painel da esquerda fica também na cena narrativa (é nele que o Mestre volta para o mapa); o « recolhe -->
+			{#if ui.imersivo && !narrativa}
 				<!-- modo imersivo: sem painéis; as ferramentas seguem nas teclas (?) -->
 			{:else if ui.elencoAberto && data.mestre && cena}
 				<!-- o painel da esquerda: o Elenco ou as configurações da cena, com o quadro sempre à vista -->
@@ -1470,8 +1468,11 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			{:else}
 				<div class="flex w-10 flex-none flex-col items-center border-r-2 border-b3 bg-b2 pt-1.5"><button type="button" class="h-8 w-8 border-2 border-b3 font-pixel text-sm" aria-label="Abrir Elenco" title="Abrir Elenco" onclick={() => (ui.elencoAberto = true)}>»</button></div>
 			{/if}
-			{#if !ui.imersivo}{@render trilho()}{/if}
+			{#if !ui.imersivo && !narrativa}{@render trilho()}{/if}
 
+			{#if narrativa}
+				{@render telaNarrativa()}
+			{:else}
 			<div class="relative min-w-0 flex-1 overflow-hidden bg-[var(--fundo)]">
 				<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} {focoDe} onSoltar={colocar} />
 				<ClimaMesa clima={cena?.clima} opacidade={ui.climaOpacidade} />
