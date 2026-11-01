@@ -12,8 +12,8 @@
 
 	let { data, children }: LayoutProps = $props();
 	const c = $derived(data.campanha);
-	// a Mesa ocupa a tela toda: sem sub-cabeçalho nem menu da campanha
-	const naMesa = $derived(page.url.pathname.endsWith('/mesa'));
+	// a Mesa (e a ficha dela numa janela à parte) ocupa a tela toda: sem sub-cabeçalho nem menu da campanha
+	const naMesa = $derived(page.url.pathname.endsWith('/mesa') || page.url.pathname.includes('/mesa/janela/'));
 	// o painel de rolagens (em qualquer tela) acompanha a última campanha aberta
 	$effect(() => {
 		const mesa = { id: c.id, nome: c.nome };

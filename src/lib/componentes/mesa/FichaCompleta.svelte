@@ -1,12 +1,17 @@
 <script lang="ts" module>
 	import type { JutsuMesa } from '#lib/mesa/tipos.ts';
 
-	/** O que a Mesa oferece à aba de jutsus da ficha completa (medir com a régua, usar com alvos). */
+	/**
+	 * O que a Mesa oferece à ficha completa: os jutsus (medir com a régua, ATAQUE e DANO com alvos) e as armas (medir,
+	 * ATAQUE e DANO). Na aba separada, podeMedir e hud ficam de fora (a ficha decide pelo próprio card).
+	 */
 	export interface JutsusNaMesa {
 		medir: (slug: string) => void;
-		usar: (slug: string) => Promise<boolean>;
-		podeMedir: (slug: string) => boolean;
-		hud: (slug: string) => JutsuMesa | null;
+		usar: (slug: string, parte: 'ataque' | 'dano') => Promise<boolean>;
+		podeMedir?: (slug: string) => boolean;
+		hud?: (slug: string) => JutsuMesa | null;
+		medirArma: (nome: string) => void;
+		atacar: (nome: string, parte: 'ataque' | 'dano') => void;
 	}
 </script>
 
@@ -45,6 +50,8 @@
 		celular = false,
 		estado = null,
 		naMesa,
+		janela = null,
+		aoDestacar,
 		aoEstado,
 		aoMinimizar,
 		aoFechar,
@@ -57,6 +64,10 @@
 		/** o estado da ficha rápida (FichaMesa), para as duas mostrarem o mesmo */
 		estado?: EstadoJogo | null;
 		naMesa: JutsusNaMesa;
+		/** aberta numa janela à parte (o segundo monitor): ocupa a janela inteira; ligada diz se a Mesa responde */
+		janela?: { ligada: boolean } | null;
+		/** abre a ficha numa janela à parte, ainda ligada à Mesa */
+		aoDestacar?: () => void;
 		aoEstado: (estado: EstadoJogo) => void;
 		aoMinimizar: () => void;
 		aoFechar: () => void;
@@ -132,7 +143,7 @@
 	let y = $state(56);
 	let arrasto: { x: number; y: number; jx: number; jy: number } | null = null;
 	function pegar(e: PointerEvent) {
-		if ((e.target as HTMLElement).closest('button, a')) return;
+		if (janela || (e.target as HTMLElement).closest('button, a')) return;
 		(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
 		arrasto = { x: e.clientX, y: e.clientY, jx: x, jy: y };
 	}
@@ -147,14 +158,14 @@
 <div
 	role="dialog"
 	aria-label="Ficha completa{p ? ` de ${p.nome}` : ''}"
-	class={celular
+	class={celular || janela
 		? 'fixed inset-0 z-[56] flex flex-col bg-b1'
 		: 'fixed z-50 flex h-[calc(100dvh-80px)] min-h-[320px] w-[940px] max-w-[calc(100vw-32px)] min-w-[420px] resize flex-col overflow-hidden border-2 border-[var(--vermelhao-lo)] bg-b1 shadow-[8px_8px_0_var(--sombra)]'}
-	style:left={celular ? undefined : `${x}px`}
-	style:top={celular ? undefined : `${y}px`}
-	style:width={celular ? undefined : `${largura}px`}
+	style:left={celular || janela ? undefined : `${x}px`}
+	style:top={celular || janela ? undefined : `${y}px`}
+	style:width={celular || janela ? undefined : `${largura}px`}
 	style:display={min ? 'none' : undefined}
-	use:lembrarTamanho={celular ? null : { propria: `completa:${pid}`, geral: 'completa' }}
+	use:lembrarTamanho={celular || janela ? null : { propria: `completa:${pid}`, geral: 'completa' }}
 >
 	<div class="flex flex-none cursor-move touch-none items-center gap-2.5 border-b-2 border-b3 bg-b0 py-1.5 pr-1.5 pl-2 select-none" role="presentation" onpointerdown={pegar} onpointermove={arrastar} onpointerup={() => (arrasto = null)}>
 		{#if p}<button type="button" class="flex-none cursor-zoom-in p-0 disabled:cursor-default" disabled={!p.retrato} title={p.retrato ? 'Ver o retrato inteiro' : undefined} aria-label="Ver o retrato de {p.nome} inteiro" onclick={() => (ampliada = true)}><Retrato nome={p.nome || '?'} foto={p.retrato} tamanho={40} /></button>{/if}
@@ -162,9 +173,15 @@
 			<span class="truncate font-mincho text-lg leading-6 font-bold">{p?.nome ?? 'Ficha completa'}</span>
 			{#if p && f}<span class="truncate text-xs leading-4 text-mut">{[dados?.catalogo.cla ? `Clã ${dados.catalogo.cla.nome}` : null, vila?.nome.replace(/gakure$/, ''), `Nível ${p.nivel}`, rankSugerido(p.nivel).split(' ')[0]].filter(Boolean).join(' · ')}</span>{/if}
 		</div>
+		{#if janela}
+			<span role="status" class="flex h-9 items-center gap-1.5 border-2 px-2 font-pixel text-[11px] font-bold {janela.ligada ? 'border-[var(--vermelhao-lo)] text-fg' : 'border-b3 text-mut'}" title={janela.ligada ? 'MEDIR, ATAQUE e DANO acontecem na Mesa' : 'Abra a Mesa desta campanha neste navegador; sem ela, a ficha rola sozinha (sem régua nem alvos)'}><span class="h-2 w-2" style:background={janela.ligada ? 'var(--ok, #7FB069)' : 'var(--mut)'}></span>{janela.ligada ? 'LIGADA À MESA' : 'SEM MESA'}</span>
+		{/if}
 		<a class={botao} href="/campanhas/{campanha}/personagens/{pid}" target="_blank" rel="noopener" title="Abrir a página da ficha (treino, nível, impressão) numa aba nova">PÁGINA ↗</a>
-		<button type="button" class={botao} aria-label="Minimizar" title="Minimizar" onclick={aoMinimizar}>–</button>
-		<button type="button" class={botao} aria-label="Fechar" title="Fechar" onclick={aoFechar}>✕</button>
+		{#if aoDestacar && !celular}<button type="button" class={botao} title="Abrir a ficha numa janela à parte (para o segundo monitor); MEDIR, ATAQUE e DANO continuam valendo na Mesa" onclick={aoDestacar}>JANELA ⧉</button>{/if}
+		{#if !janela}
+			<button type="button" class={botao} aria-label="Minimizar" title="Minimizar" onclick={aoMinimizar}>–</button>
+			<button type="button" class={botao} aria-label="Fechar" title="Fechar" onclick={aoFechar}>✕</button>
+		{/if}
 	</div>
 
 	{#if erro}
@@ -184,9 +201,9 @@
 			<div class="flex flex-col gap-5 px-3 pt-4 pb-6" role="tabpanel">
 				{#if aba === 'visao'}<AbaVisao {f} aoAbrirJutsus={() => (aba = 'jutsus')} />
 				{:else if aba === 'pericias'}<AbaPericias {f} />
-				{:else if aba === 'jutsus'}<AbaJutsus {f} mesa={{ medir: (j) => naMesa.medir(j.slug), usar: (j) => naMesa.usar(j.slug), podeMedir: (j) => naMesa.podeMedir(j.slug), hud: (j) => naMesa.hud(j.slug) }} />
+				{:else if aba === 'jutsus'}<AbaJutsus {f} mesa={{ medir: (j) => naMesa.medir(j.slug), usar: (j, parte) => naMesa.usar(j.slug, parte), podeMedir: naMesa.podeMedir && ((j) => naMesa.podeMedir!(j.slug)), hud: naMesa.hud && ((j) => naMesa.hud!(j.slug)) }} />
 				{:else if aba === 'cla'}<AbaCla {f} />
-				{:else if aba === 'equip'}<AbaEquipamento {f} />
+				{:else if aba === 'equip'}<AbaEquipamento {f} mesa={{ medir: naMesa.medirArma, atacar: naMesa.atacar }} />
 				{:else if aba === 'prog'}<AbaProgressao {f} pt={p.pt} xp={p.xp} registros={dados!.registros} pedidos={dados!.pedidos} aoTreinar={() => window.open(`/campanhas/${campanha}/personagens/${pid}?treino=1`, '_blank')} />
 				{:else if aba === 'hist'}<AbaHistoria {f} />
 				{:else if aba === 'notas'}<AbaAnotacoes ficha={p.id} inicial={p.anotacoes ?? ''} editavel={p.dono && !dados!.arquivada} />

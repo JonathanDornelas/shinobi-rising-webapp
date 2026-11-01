@@ -23,6 +23,7 @@
 	import BotaoFavorito from '../regras/BotaoFavorito.svelte';
 	import SeloDt from '../regras/SeloDt.svelte';
 	import MenuVantagem from '../rolagens/MenuVantagem.svelte';
+	import MenuCritico from '../rolagens/MenuCritico.svelte';
 	import MetaJutsu from '../jutsu/MetaJutsu.svelte';
 	import { alcanceCurto, areaCurta, resistenciaCurta } from '#lib/jutsus/meta.ts';
 	import { comDt, dtDoLancador, pedeDt } from '#lib/jutsus/dt.ts';
@@ -34,18 +35,20 @@
 	import TooltipAcao from '../mesa/TooltipAcao.svelte';
 	import DadoHud from '../mesa/DadoHud.svelte';
 	import { corElemento } from '#lib/mesa/hud.ts';
-	import { clonesDoJutsu, reguaDoCard } from '#lib/mesa/regua.ts';
+	import { clonesDoJutsu, reguaDoCard, temRegua } from '#lib/mesa/regua.ts';
 
 	/**
-	 * Dentro da Mesa: MEDIR liga a régua do jutsu (e a janela da ficha minimiza), e USAR vai pelo caminho da Mesa
-	 * (alvos na régua, crescer o token); usar devolve false quando o personagem não está na cena.
+	 * Dentro da Mesa (ou numa aba ligada a ela): MEDIR liga a régua do jutsu, ATAQUE paga o custo e rola o ataque, e DANO
+	 * rola o dano ou a cura com os alvos da régua, como na ficha rápida. usar devolve false quando o personagem não está
+	 * na cena (aí a ficha usa sozinha).
 	 */
 	interface NaMesa {
 		medir: (j: JutsuFicha) => void;
-		usar: (j: JutsuFicha) => Promise<boolean>;
-		podeMedir: (j: JutsuFicha) => boolean;
+		usar: (j: JutsuFicha, parte: 'ataque' | 'dano') => Promise<boolean>;
+		/** sem isto, a ficha decide pela régua do próprio card */
+		podeMedir?: (j: JutsuFicha) => boolean;
 		/** o jutsu como a Mesa o vê, para o tooltip de ação (HUD) */
-		hud: (j: JutsuFicha) => JutsuMesa | null;
+		hud?: (j: JutsuFicha) => JutsuMesa | null;
 	}
 	let { f, mesa }: { f: FichaJogo; mesa?: NaMesa } = $props();
 	// tooltip de ação na Mesa: ao lado da linha, depois de um instante com o mouse parado
@@ -80,7 +83,7 @@
 		};
 	}
 	function mostrarDica(j: JutsuFicha, linha: HTMLElement) {
-		const acao = mesa?.hud(j) ?? hudLocal(j);
+		const acao = mesa?.hud?.(j) ?? hudLocal(j);
 		if (!acao || matchMedia('(hover: none)').matches) return;
 		clearTimeout(dicaTimer);
 		dicaTimer = setTimeout(() => (dica = { acao, ancora: linha.getBoundingClientRect() }), 400);
@@ -198,14 +201,24 @@
 	}
 
 	// usar o jutsu: debita PC/PE e já rola o ataque e o dano (ou a cura)
-	async function usar(j: JutsuFicha) {
+	/** Gasta o custo e rola o ataque; sem soAtaque, já rola o dano ou a cura também (fora da Mesa). */
+	async function usar(j: JutsuFicha, soAtaque = false) {
 		f.gastarJutsu(j);
 		const r = rolagens(j);
 		const campanha = page.params.id!;
 		const origem = 'Ficha · Jutsus';
 		if (r.ataque) await rolador.rolar({ campanha, expressao: r.ataque.expr, rotulo: r.ataque.rotulo, personagem: f.id, d20: true, tipo: 'ataque', origem, partes: r.ataque.partes });
+		if (soAtaque) return;
 		if (r.dano) await rolador.rolar({ campanha, expressao: r.dano.expr, rotulo: r.dano.rotulo, personagem: f.id, tipo: 'dano', origem, partes: r.dano.partes });
 		else if (r.cura) await rolador.rolar({ campanha, expressao: r.cura, rotulo: `Cura · ${j.nome}`, personagem: f.id, tipo: 'cura', origem });
+	}
+	/** Fora da cena, o DANO da Mesa rola daqui mesmo (sem alvos). */
+	function rolarDano(j: JutsuFicha) {
+		const r = rolagens(j);
+		const campanha = page.params.id!;
+		const origem = 'Ficha · Jutsus';
+		if (r.dano) return rolador.rolar({ campanha, expressao: r.dano.expr, rotulo: r.dano.rotulo, personagem: f.id, tipo: 'dano', origem, partes: r.dano.partes });
+		if (r.cura) return rolador.rolar({ campanha, expressao: r.cura, rotulo: `Cura · ${j.nome}`, personagem: f.id, tipo: 'cura', origem });
 	}
 </script>
 
@@ -221,12 +234,34 @@
 {/snippet}
 
 {#snippet botaoUsar(j: JutsuFicha, classe: string)}
-	{#if mesa}
-		<div class="flex flex-col gap-1 {classe}">
-			{#if mesa.podeMedir(j)}<button type="button" class="btn-jogo min-h-8 w-full border-2 border-b3 px-3 text-xs" title="Liga a régua do jutsu no quadro e minimiza a ficha" onclick={() => mesa.medir(j)}>MEDIR</button>{/if}
-			{@render usarBotao(j, 'w-full')}
-		</div>
-	{:else}{@render usarBotao(j, classe)}{/if}
+	{#if mesa}{@render botoesMesa(j, mesa, classe)}{:else}{@render usarBotao(j, classe)}{/if}
+{/snippet}
+
+<!-- na Mesa: ATAQUE (ou USAR) com a setinha da vantagem; embaixo, MEDIR e DANO (ou CURA) com a setinha do crítico -->
+{#snippet botoesMesa(j: JutsuFicha, m: NaMesa, classe: string)}
+	{@const s = situacao(j)}
+	{@const rr = rolagens(j)}
+	{@const medir = m.podeMedir ? m.podeMedir(j) : temRegua(reguaDoCard(j.info, j.efeito))}
+	{@const atacar = async () => (await m.usar(j, 'ataque')) || usar(j, true)}
+	{@const danar = async () => (await m.usar(j, 'dano')) || rolarDano(j)}
+	{@const cor = s.usavel ? 'btn-primario' : 'bg-b3 text-mut'}
+	<div class="flex flex-col gap-1 {classe}">
+		<span class="flex">
+			<button type="button" class="btn-jogo min-h-9 min-w-0 flex-1 px-3 text-xs {cor}" disabled={!s.usavel} title={s.bloqueadoRank ? 'Esgotado: sem jutsus de Rank B ou superior' : s.falta > 0 ? `Faltam ${s.falta} ${s.c.unidade}` : !f.editavel ? 'Ficha somente leitura' : rr.ataque ? 'Gasta o custo e rola o ataque' : 'Gasta o custo'} onclick={atacar}>{rr.ataque ? 'ATAQUE' : 'USAR'} · {s.c.final} {s.c.unidade}</button>
+			{#if rr.ataque}<MenuVantagem aoAtacar={atacar} rotulo="Ataque de {j.nome}" desab={!s.usavel} class="btn-jogo min-h-9 border-l-2 border-l-[var(--vermelhao-lo)] px-2 text-xs {cor}" />{/if}
+		</span>
+		{#if medir || rr.dano || rr.cura}
+			<span class="flex gap-1">
+				{#if medir}<button type="button" class="btn-jogo min-h-8 flex-1 border-2 border-b3 px-2 text-xs" title="Liga a régua do jutsu no quadro" onclick={() => m.medir(j)}>MEDIR</button>{/if}
+				{#if rr.dano}
+					<span class="flex flex-1">
+						<button type="button" class="btn-jogo min-h-8 min-w-0 flex-1 border-2 border-b3 px-2 text-xs" disabled={!f.editavel} title="Rola o dano{j.info.some((i) => i.k === 'Resistência' && i.v !== '—') ? ' (com a Resistência dos alvos)' : ''}; crítico sozinho se o último ataque foi 20 natural, ou escolha na setinha" onclick={danar}>DANO</button>
+						<MenuCritico aoRolar={danar} rotulo="Dano de {j.nome}" desab={!f.editavel} class="btn-jogo min-h-8 border-2 border-l-0 border-b3 px-1.5 text-xs" />
+					</span>
+				{:else if rr.cura}<button type="button" class="btn-jogo min-h-8 flex-1 border-2 border-b3 px-2 text-xs" disabled={!f.editavel} onclick={danar}>CURA</button>{/if}
+			</span>
+		{/if}
+	</div>
 {/snippet}
 
 {#snippet usarBotao(j: JutsuFicha, classe: string)}
@@ -238,9 +273,9 @@
 		class="btn-jogo min-h-9 min-w-0 flex-1 px-3 text-xs {s.usavel ? 'btn-primario' : 'bg-b3 text-mut'}"
 		disabled={!s.usavel}
 		title={s.bloqueadoRank ? 'Esgotado: sem jutsus de Rank B ou superior' : s.falta > 0 ? `Faltam ${s.falta} ${s.c.unidade}` : !f.editavel ? 'Ficha somente leitura' : 'Gasta o custo e já rola o ataque e o dano'}
-		onclick={async () => (mesa && (await mesa.usar(j))) || usar(j)}>USAR · {s.c.final} {s.c.unidade}</button
+		onclick={() => usar(j)}>USAR · {s.c.final} {s.c.unidade}</button
 	>
-	{#if comAtaque}<MenuVantagem aoAtacar={async () => (mesa && (await mesa.usar(j))) || usar(j)} rotulo="Usar {j.nome}" desab={!s.usavel} class="btn-jogo min-h-9 border-l-2 border-l-[var(--vermelhao-lo)] px-2 text-xs {s.usavel ? 'btn-primario' : 'bg-b3 text-mut'}" />{/if}
+	{#if comAtaque}<MenuVantagem aoAtacar={() => usar(j)} rotulo="Usar {j.nome}" desab={!s.usavel} class="btn-jogo min-h-9 border-l-2 border-l-[var(--vermelhao-lo)] px-2 text-xs {s.usavel ? 'btn-primario' : 'bg-b3 text-mut'}" />{/if}
 	</span
 	>
 {/snippet}

@@ -1,3 +1,11 @@
+<script lang="ts" module>
+	/** Na Mesa (ou numa aba ligada a ela): as armas medem o alcance no quadro, atacam e rolam o dano como na ficha rápida. */
+	export interface ArmasNaMesa {
+		medir: (nome: string) => void;
+		atacar: (nome: string, parte: 'ataque' | 'dano') => void;
+	}
+</script>
+
 <script lang="ts">
 	// P3 · Equipamento: inventário por grupo, carga (cap. 11), ryo, comprar (debita) e adicionar (espólio, não debita).
 	// Pergaminhos de armazenamento: selar (1 PC) tira o item da mochila e ele deixa de pesar; invocar (1 PC) devolve.
@@ -9,10 +17,12 @@
 	import { somar } from '#lib/rolagens/expressoes.ts';
 	import Icone from '../ui/Icone.svelte';
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
+	import MenuVantagem from '../rolagens/MenuVantagem.svelte';
+	import MenuCritico from '../rolagens/MenuCritico.svelte';
 	import Modal from '../ui/Modal.svelte';
 	import CartaoItem from '../equipamento/CartaoItem.svelte';
 
-	let { f }: { f: FichaJogo } = $props();
+	let { f, mesa }: { f: FichaJogo; mesa?: ArmasNaMesa } = $props();
 	const GRUPOS = [
 		{ id: 'Armas', icone: 'equip/ic-equip-arma-curta' },
 		{ id: 'Itens', icone: 'equip/ic-equip-kit' },
@@ -150,7 +160,14 @@
 									{/if}
 									{#if f.editavel && g.id === 'Armas'}
 										{@const dano = danoArma(i)}
-										{#if dano}<BotaoRolar class="mr-1 w-9" expressao={dano} rotulo="Dano · {i.nome}" personagem={f.id} tipo="dano" origem="Ficha · Equipamento" partes={f.calc.proficiencias.some((p) => p.tipo === 'arma' && p.alvo === i.nome) ? [['Proficiência', '+1']] : []} />{/if}
+										{#if mesa}
+											{@const btn = 'btn-jogo min-h-8 border-2 border-b3 px-1.5 text-[11px]'}
+											<span class="mr-1 flex gap-1">
+												<button type="button" class={btn} title="O alcance de {i.nome} no quadro" onclick={() => mesa.medir(i.nome)}>MEDIR</button>
+												<span class="flex"><button type="button" class={btn} onclick={() => mesa.atacar(i.nome, 'ataque')}>ATAQUE</button><MenuVantagem aoAtacar={() => mesa.atacar(i.nome, 'ataque')} rotulo="Ataque com {i.nome}" class="{btn} border-l-0" /></span>
+												{#if dano}<span class="flex"><button type="button" class={btn} title="Crítico sozinho se o último ataque foi 20 natural; na setinha, escolha" onclick={() => mesa.atacar(i.nome, 'dano')}>DANO</button><MenuCritico aoRolar={() => mesa.atacar(i.nome, 'dano')} rotulo="Dano de {i.nome}" class="{btn} border-l-0" /></span>{/if}
+											</span>
+										{:else if dano}<BotaoRolar class="mr-1 w-9" expressao={dano} rotulo="Dano · {i.nome}" personagem={f.id} tipo="dano" origem="Ficha · Equipamento" partes={f.calc.proficiencias.some((p) => p.tipo === 'arma' && p.alvo === i.nome) ? [['Proficiência', '+1']] : []} />{/if}
 									{/if}
 									{#if f.editavel}<button type="button" class="btn-icone h-8 w-8 font-pixel" aria-label="Usar ou descartar 1 {i.nome}" onclick={() => f.alterarQtd(i.id, -1)}>−</button>{/if}
 									<span class="t-num w-9 text-center text-[15px]">×{i.qtd}</span>

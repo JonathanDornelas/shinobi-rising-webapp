@@ -29,6 +29,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	import ElencoMesa, { type ItemNpc } from '#lib/componentes/mesa/ElencoMesa.svelte';
 	import FichaRapida, { type AcoesFicha, type DadosFicha } from '#lib/componentes/mesa/FichaRapida.svelte';
 	import type { JutsusNaMesa } from '#lib/componentes/mesa/FichaCompleta.svelte';
+	import { abrirPonte, idDaAba, temPonte, urlJanela, type MsgPonte } from '#lib/mesa/ponte-ficha.ts';
 	// a ficha completa (todas as abas da ficha) só é baixada quando alguém a abre
 	let moduloFicha: Promise<typeof import('#lib/componentes/mesa/FichaCompleta.svelte')> | null = null;
 	const carregarFicha = () => (moduloFicha ??= import('#lib/componentes/mesa/FichaCompleta.svelte'));
@@ -355,29 +356,109 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	]);
 	const tokenDaFicha = (pid: string) => mesa.tokens.find((t) => t.personagem_id === pid && !t.ligado_a) ?? null;
 	const jutsuDaFicha = (pid: string, slug: string) => fichas.find((f) => f.id === pid)?.jutsus.find((j) => j.slug === slug) ?? null;
-	// os jutsus da ficha completa usam a régua e o USAR da Mesa; MEDIR minimiza a janela para o quadro aparecer
-	const naMesa: JutsusNaMesa = {
-		hud: (slug) => (fichaCompleta ? jutsuDaFicha(fichaCompleta.pid, slug) : null),
-		podeMedir: (slug) => {
-			const j = fichaCompleta && jutsuDaFicha(fichaCompleta.pid, slug);
-			return !!j && temRegua(j.regua);
-		},
-		medir: (slug) => {
-			if (!fichaCompleta) return;
-			const t = tokenDaFicha(fichaCompleta.pid);
-			const j = jutsuDaFicha(fichaCompleta.pid, slug);
-			if (!t) return void ui.avisar('Coloque o personagem na cena para medir o jutsu.');
-			if (!j) return;
-			medirJutsu(t, j);
-		},
-		usar: async (slug) => {
-			const t = fichaCompleta && tokenDaFicha(fichaCompleta.pid);
-			const j = fichaCompleta && jutsuDaFicha(fichaCompleta.pid, slug);
-			if (!t || !j) return false;
-			await usarJutsu(t, j);
-			return true;
+	// a ficha completa (na janela da Mesa ou numa aba à parte) usa a régua, o ATAQUE e o DANO da Mesa, como a ficha
+	// rápida; MEDIR minimiza a janela para o quadro aparecer
+	function acoesDaFicha(pid: string): JutsusNaMesa {
+		const arma = (nome: string) => fichas.find((f) => f.id === pid)?.armas.find((a) => a.nome === nome) ?? null;
+		return {
+			hud: (slug) => jutsuDaFicha(pid, slug),
+			podeMedir: (slug) => {
+				const j = jutsuDaFicha(pid, slug);
+				return !!j && temRegua(j.regua);
+			},
+			medir: (slug) => {
+				const t = tokenDaFicha(pid);
+				const j = jutsuDaFicha(pid, slug);
+				if (!t) return void ui.avisar('Coloque o personagem na cena para medir o jutsu.');
+				if (j) medirJutsu(t, j);
+			},
+			usar: async (slug, parte) => {
+				const t = tokenDaFicha(pid);
+				const j = jutsuDaFicha(pid, slug);
+				if (!t || !j) return false;
+				await usarJutsu(t, j, parte);
+				return true;
+			},
+			medirArma: (nome) => {
+				const t = tokenDaFicha(pid);
+				const a = arma(nome);
+				if (!t) return void ui.avisar('Coloque o personagem na cena para medir o alcance.');
+				if (!a) return;
+				acoes.aneis(t, a.alcance <= 2 ? a.alcance : 0, a.alcance > 2 ? [{ r: a.alcance, rotulo: `${a.nome} · ${a.alcance} m` }] : [], a.nome);
+				if (fichaCompleta && !fichaCompleta.min) fichaCompleta = { ...fichaCompleta, min: true };
+			},
+			atacar: (nome, parte) => {
+				const t = tokenDaFicha(pid);
+				const a = arma(nome);
+				if (!t) return void ui.avisar('Coloque o personagem na cena para atacar pela Mesa.');
+				if (a) void atacar(t, a, parte);
+			}
+		};
+	}
+
+	// a ficha completa numa janela à parte (o segundo monitor): pede pela ponte e a Mesa faz (ponte-ficha.ts)
+	const aba = typeof sessionStorage === 'undefined' ? '' : idDaAba();
+	let ponte: BroadcastChannel | null = null;
+	/** As fichas abertas em janela, e o último estado mandado para cada uma (para não mandar de novo o mesmo). */
+	let janelas = $state<string[]>([]);
+	const enviado = new Map<string, string>();
+	const podeAbrirFicha = (pid: string) => data.mestre || minhasFichas.some((f) => f.id === pid);
+	function destacarFicha(pid: string) {
+		const largura = Math.min(1000, screen.availWidth);
+		window.open(urlJanela(campanha, pid, aba), `ficha-${pid}`, `popup,width=${largura},height=${Math.min(960, screen.availHeight)}`);
+		if (fichaCompleta?.pid === pid) fichaCompleta = null;
+	}
+	function ouvirPonte(m: MsgPonte) {
+		if (m.tipo === 'ola') {
+			if ((m.aba && m.aba !== aba) || !podeAbrirFicha(m.pid)) return;
+			if (!janelas.includes(m.pid)) janelas = [...janelas, m.pid];
+			if (fichaCompleta?.pid === m.pid) fichaCompleta = null;
+			const estado = fichas.find((f) => f.id === m.pid)?.estado ?? null;
+			if (estado) enviado.set(m.pid, JSON.stringify(estado));
+			ponte?.postMessage({ tipo: 'aqui', pid: m.pid, aba, estado: estado && $state.snapshot(estado) } satisfies MsgPonte);
+		} else if (m.tipo === 'acao') {
+			if ((m.aba && m.aba !== aba) || !podeAbrirFicha(m.pid)) return;
+			// a vantagem e o crítico vêm da setinha da ficha, na outra janela
+			rolador.modo = m.modo;
+			if (m.critico !== null) rolador.critico = m.critico;
+			const a = acoesDaFicha(m.pid);
+			const responder = (ok: boolean) => ponte?.postMessage({ tipo: 'feito', id: m.id, ok } satisfies MsgPonte);
+			if (m.acao === 'usar') void a.usar(m.alvo, m.parte ?? 'ataque').then(responder);
+			else {
+				if (m.acao === 'medir') a.medir(m.alvo);
+				else if (m.acao === 'medirArma') a.medirArma(m.alvo);
+				else a.atacar(m.alvo, m.parte ?? 'ataque');
+				responder(true);
+			}
+		} else if (m.tipo === 'estado' && m.de === 'ficha' && janelas.includes(m.pid)) {
+			enviado.set(m.pid, JSON.stringify(m.estado));
+			estadoDaCompleta(m.pid, m.estado);
 		}
-	};
+	}
+	onMount(() => {
+		if (!temPonte()) return;
+		ponte = abrirPonte(campanha);
+		ponte.onmessage = (e) => ouvirPonte(e.data as MsgPonte);
+		const tchau = () => ponte?.postMessage({ tipo: 'tchau', aba } satisfies MsgPonte);
+		addEventListener('pagehide', tchau);
+		return () => {
+			tchau();
+			removeEventListener('pagehide', tchau);
+			ponte?.close();
+			ponte = null;
+		};
+	});
+	// o que muda na Mesa (dano, PC gasto, estados) chega à ficha da outra janela
+	$effect(() => {
+		for (const pid of janelas) {
+			const estado = fichas.find((f) => f.id === pid)?.estado;
+			if (!estado) continue;
+			const json = JSON.stringify(estado);
+			if (enviado.get(pid) === json) continue;
+			enviado.set(pid, json);
+			untrack(() => ponte?.postMessage({ tipo: 'estado', pid, estado: $state.snapshot(estado), de: 'mesa' } satisfies MsgPonte));
+		}
+	});
 	/** A ficha completa mudou o estado (salvo por ela): a ficha rápida e o token acompanham. */
 	function estadoDaCompleta(pid: string, estado: EstadoJogo) {
 		const f = fichas.find((x) => x.id === pid);
@@ -1173,7 +1254,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 				{@render telaNarrativa()}
 			{:else}
 				<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} {focoDe} onSoltar={colocar} />
-				<ClimaMesa clima={cena?.clima} />
+				<ClimaMesa clima={cena?.clima} opacidade={ui.climaOpacidade} />
 				{@render barras()}
 				{@render sobreQuadro()}
 				<div class="pointer-events-none absolute top-2 left-2 z-[9]"><RelogiosMesa {mesa} /></div>
@@ -1393,7 +1474,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 
 			<div class="relative min-w-0 flex-1 overflow-hidden bg-[var(--fundo)]">
 				<QuadroMesa bind:this={quadro} {mesa} {ui} {pvDe} {deslocamentoDe} {fotoDe} {focoDe} onSoltar={colocar} />
-				<ClimaMesa clima={cena?.clima} />
+				<ClimaMesa clima={cena?.clima} opacidade={ui.climaOpacidade} />
 				{@render barras()}
 				{@render sobreQuadro()}
 				<div class="pointer-events-none absolute top-3 left-3 z-[9]"><RelogiosMesa {mesa} /></div>
@@ -1416,6 +1497,13 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 						<button type="button" class="flex h-9 w-9 items-center justify-center border-r-2 border-b3 {ui.gradeOculta ? 'text-mut' : ''}" aria-pressed={!ui.gradeOculta} aria-label="Linhas da grade, só na sua tela" title={ui.gradeOculta ? 'Mostrar as linhas da grade na sua tela' : 'Esconder as linhas da grade só na sua tela (as medidas e as posições continuam valendo)'} onclick={() => ui.alternarGradeLocal()}>
 							<svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true" class="fill-none stroke-current stroke-[1.5]"><path d="M1 5.5h14M1 10.5h14M5.5 1v14M10.5 1v14" />{#if ui.gradeOculta}<path d="M2 14L14 2" stroke-width="2" />{/if}</svg>
 						</button>
+						{#if cena.clima}
+							<!-- o clima mais forte ou mais fraco, só na própria tela -->
+							<label class="flex h-9 items-center gap-1.5 border-r-2 border-b3 px-2" title="Opacidade do clima, só na sua tela: {Math.round(ui.climaOpacidade * 100)}%">
+								<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="flex-none fill-current {ui.climaOpacidade ? '' : 'text-mut'}"><path d="M4 9h8a3 3 0 0 0 0-6 4 4 0 0 0-7.5 1A2.5 2.5 0 0 0 4 9zM5 11h1v2H5zM8 12h1v2H8zM11 11h1v2h-1z" /></svg>
+								<input type="range" min="0" max="100" step="5" class="w-20 accent-[var(--vermelhao)]" value={Math.round(ui.climaOpacidade * 100)} aria-label="Opacidade do clima, só na sua tela" oninput={(e) => ui.mudarClimaOpacidade(+e.currentTarget.value / 100)} />
+							</label>
+						{/if}
 					{/if}
 					{#if data.mestre && cena}
 						<!-- ajustar a grade ao mapa direto no quadro (as alças nas bordas, o miolo e o primeiro quadrado) -->
@@ -1540,7 +1628,8 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			min={fichaCompleta.min}
 			{celular}
 			estado={fichas.find((f) => f.id === pid)?.estado ?? null}
-			{naMesa}
+			naMesa={acoesDaFicha(pid)}
+			aoDestacar={temPonte() ? () => destacarFicha(pid) : undefined}
 			aoEstado={(e) => estadoDaCompleta(pid, e)}
 			aoMinimizar={() => fichaCompleta && (fichaCompleta = { ...fichaCompleta, min: true })}
 			aoFechar={() => (fichaCompleta = null)}
