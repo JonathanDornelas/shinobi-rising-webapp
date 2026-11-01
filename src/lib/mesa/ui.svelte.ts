@@ -4,6 +4,7 @@ import type { MesaToken } from '#lib/supabase/banco.ts';
 import type { JutsuMesa } from './tipos.ts';
 import { distancia, distanciaEntre, moldeDirecional, moldeParede, moldeQuadrado, naArea, quadradosEsfera, angulo, type Quadrado } from './geometria.ts';
 import type { Ferramenta, Mesa } from './mesa.svelte.ts';
+import { gravar, ler } from '#lib/estado/armazenamento.ts';
 
 /** A mira de um jutsu (régua de jutsu): o lançador, o ponto mirado e as escolhas da forma. */
 export interface Mira {
@@ -77,6 +78,12 @@ export class UiMesa {
 	aviso = $state<{ texto: string; t: number } | null>(null);
 	anuncio = $state('');
 	elencoAberto = $state(true);
+	/** O jogador escondeu as linhas da grade só na tela dele (fica guardado neste navegador; não muda nada para os outros). */
+	gradeOculta = $state(ler<boolean>('mesa-grade-oculta', false));
+	alternarGradeLocal() {
+		this.gradeOculta = !this.gradeOculta;
+		gravar('mesa-grade-oculta', this.gradeOculta);
+	}
 	/** Modo imersivo: só o quadro na tela (sem os painéis, a barra da Mesa e o cabeçalho do site). */
 	imersivo = $state(false);
 	/** O diário do grupo aberto sobre o quadro, e o quadro de atalhos (tecla ?). */
