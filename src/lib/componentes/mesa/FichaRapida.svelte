@@ -41,7 +41,7 @@
 	// L11 · M3 · CMP-42 · Ficha rápida: janela arrastável sobre o quadro (quantas quiser), minimizável em chip; no celular, painel
 	// inferior em duas alturas. Recursos com o campo "−7 / +5", estados, fadiga, abas de ações, jutsus, perícias e notas.
 	import { lembrarTamanho } from '#lib/mesa/tamanho.ts';
-	import { efeitoKkg, kkgLigada } from '#lib/personagem/kkg.ts';
+	import { custoKkg, efeitoKkg, kkgLigada } from '#lib/personagem/kkg.ts';
 	import MenuVantagem from '../rolagens/MenuVantagem.svelte';
 	import MenuCritico from '../rolagens/MenuCritico.svelte';
 	import MetaJutsu, { type Meta as MetaCurta } from '../jutsu/MetaJutsu.svelte';
@@ -257,7 +257,7 @@
 		const k = dados.ficha.kkg;
 		const e = dados.ficha.estado.kkg ?? {};
 		const estagio = e.estagio ?? 1;
-		return { ...k, estagio, ativa: !!e.ativa, ligada: kkgLigada(k.def, e), efeito: efeitoKkg(k.def, dados.ficha.nivel, estagio) };
+		return { ...k, ...custoKkg(k.def, dados.ficha.nivel, estagio), estagio, ativa: !!e.ativa, ligada: kkgLigada(k.def, e), efeito: efeitoKkg(k.def, dados.ficha.nivel, estagio) };
 	});
 	const cenaDoGrupo = $derived(mesa.cenas.find((c) => c.ativa)?.id ?? null);
 	function ativarKkg() {
@@ -583,7 +583,7 @@
 					<Icone id={kkg.def.icone} />
 					<span class="flex min-w-0 flex-1 flex-col">
 						<span class="truncate text-sm leading-[18px] font-semibold">{kkg.def.nome}{kkg.def.estagios && kkg.estagio ? ` · ${kkg.def.estagios[kkg.estagio - 1].rotulo}` : ''}</span>
-						<span class="truncate text-xs leading-4 text-mut">{kkg.def.sempre ? 'Sempre ativa' : kkg.ligada ? kkg.efeito.textos.slice(0, 2).join(' · ') : `${kkg.custo} PC para ativar · 1 por turno`}</span>
+						<span class="truncate text-xs leading-4 text-mut">{kkg.def.sempre ? 'Sempre ativa' : kkg.ligada ? kkg.efeito.textos.slice(0, 2).join(' · ') : `${kkg.custo} PC por turno`}</span>
 					</span>
 					{#if editavel && !kkg.def.sempre}
 						{#if kkg.ativa}

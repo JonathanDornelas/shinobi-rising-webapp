@@ -26,7 +26,7 @@ O usuário pode liquefazer parte ou todo o próprio corpo, virando água viva te
 
 - Reação (5 PC): o corpo vira água contra um ataque físico — o dano desse ataque cai à metade (ou a zero, se for desarmado ou de arma sem chakra).
 - Limitação importante: jutsus de Raiton (Liberação de Raio) causam dano DOBRADO no estado líquido.
-- Forma líquida contínua (10 PC para ativar e, em combate, 1 PC por turno): RD 5 contra dano físico e escapa automaticamente de prisões físicas.
+- Forma líquida contínua (10 PC por turno de combate; fora de combate, entrar nela custa um turno): RD 5 contra dano físico e escapa automaticamente de prisões físicas.
 
 #### Marcos por Nível {#marcos-por-nivel}
 

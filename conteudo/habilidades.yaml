@@ -135,7 +135,7 @@
     - O Hyuuga enxerga os tenketsu e os acerta com precisão absoluta.
   efeito: Seus golpes de Juuken selam 2d4 PC (em vez de 1d4); num acerto crítico, o alvo também não pode lançar jutsus no próximo turno.
   notas:
-    - O Byakugan passa a custar 2 PC por cena.
+    - O Byakugan custa 1 PC a menos por turno.
   capitulo: 8
   ancora: jutsus-e-habilidades-do-cla-6
   cla: hyuuga
@@ -145,7 +145,7 @@
   origem: Clã Hyuuga
   descricao:
     - Anos de treino tornam o Byakugan tão natural quanto respirar.
-  efeito: O Byakugan passa a ser gratuito, com alcance de 2 km (5 km concentrando-se, como ação primária), e você vê através de paredes de até 1 m.
+  efeito: O Byakugan custa 1 PC a menos por turno, alcança 2 km (5 km concentrando-se, como ação primária) e vê através de paredes de até 1 m.
   notas:
     - Inimigos só aproveitam o ponto cego atrás da nuca se souberem que ele existe.
   capitulo: 8
@@ -157,7 +157,7 @@
   origem: Clã Uchiha
   descricao:
     - O Sharingan amadurece e lê músculos e chakra com uma clareza cada vez maior.
-  efeito: O Sharingan passa a custar 2 PC por cena e você ganha +2 nos testes de cópia.
+  efeito: O Sharingan custa 1 PC a menos por turno (mínimo 1) e você ganha +2 nos testes de cópia.
   notas:
     - Enquanto o Sharingan estiver ativo, +1 nas rolagens de ataque físicas (leitura de movimento).
   capitulo: 8
@@ -169,7 +169,7 @@
   origem: Clã Uchiha
   descricao:
     - O Uchiha enxerga o golpe antes de ele começar.
-  efeito: O Sharingan passa a custar 1 PC por cena e pode copiar jutsus de Rank B.
+  efeito: O Sharingan custa mais 1 PC a menos por turno (2 a menos, com o marco do nível 8; mínimo 1) e pode copiar jutsus de Rank B.
   notas:
     - Uma vez por rodada, quando um inimigo que você vê atacar você, imponha −2 nessa rolagem.
   capitulo: 8
@@ -292,7 +292,7 @@
   origem: Clã Hozuki
   descricao:
     - A forma líquida vira o estado natural do Hozuki.
-  efeito: A forma líquida contínua passa a custar 5 PC por cena, e uma vez por cena você pode entrar nela como Reação sem custo.
+  efeito: A forma líquida contínua custa 1 PC a menos por turno, e uma vez por cena você pode entrar nela como Reação sem custo.
   notas: []
   capitulo: 8
   ancora: jutsus-e-habilidades-do-cla-11

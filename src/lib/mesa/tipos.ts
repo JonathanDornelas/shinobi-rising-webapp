@@ -121,7 +121,7 @@ export interface FichaMesa {
 	inventario: { nome: string; qtd: number; grupo: string; icone: string; nota: string | null; selado: boolean; info: InfoItem | null }[];
 	carga: { atual: number; max: number };
 	ryo: number;
-	/** Kekkei Genkai do clã, com o custo por cena no nível da ficha (o estado dela fica em estado.kkg). */
+	/** Kekkei Genkai do clã, com o custo por turno no nível da ficha (no estágio 1; o estado dela fica em estado.kkg). */
 	kkg: { def: DefKkg; custo: number; reducao: string | null } | null;
 	nivel: number;
 }

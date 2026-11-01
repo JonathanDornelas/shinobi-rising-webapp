@@ -4,15 +4,18 @@ import { apagarAoCair, custoKkg, defesaKkg, defKkg, efeitoKkg, kkgLigada, perici
 import type { LinhaPericia } from './regras.ts';
 
 describe('Kekkei Genkai na ficha', () => {
-	it('custo por cena com a redução dos marcos', () => {
+	it('custo por turno: o Sharingan sobe a cada tomoe, e cada marco tira 1 (mínimo 1)', () => {
 		const byakugan = defKkg('hyuuga')!;
 		expect(custoKkg(byakugan, 5)).toEqual({ custo: 3, reducao: null });
-		expect(custoKkg(byakugan, 13)).toEqual({ custo: 0, reducao: 'Byakugan Kanzen' });
+		expect(custoKkg(byakugan, 8)).toEqual({ custo: 2, reducao: 'Tenketsu no Kiwami' });
+		expect(custoKkg(byakugan, 13)).toEqual({ custo: 1, reducao: 'Tenketsu no Kiwami e Byakugan Kanzen' });
 		const sharingan = defKkg('uchiha')!;
-		expect(custoKkg(sharingan, 7).custo).toBe(3);
-		expect(custoKkg(sharingan, 8)).toEqual({ custo: 2, reducao: 'Sharingan Desenvolvido' });
-		expect(custoKkg(sharingan, 15)).toEqual({ custo: 1, reducao: 'Olhos que Leem o Combate' });
-		expect(custoKkg(defKkg('hozuki')!, 13).custo).toBe(5);
+		expect([1, 2, 3].map((e) => custoKkg(sharingan, 7, e).custo)).toEqual([3, 5, 6]);
+		expect(custoKkg(sharingan, 8, 3)).toEqual({ custo: 5, reducao: 'Sharingan Desenvolvido' });
+		expect(custoKkg(sharingan, 15, 3)).toEqual({ custo: 4, reducao: 'Sharingan Desenvolvido e Olhos que Leem o Combate' });
+		expect(custoKkg(sharingan, 15, 1).custo).toBe(1);
+		expect(custoKkg(defKkg('hozuki')!, 13).custo).toBe(9);
+		expect(custoKkg(defKkg('kaguya')!, 5).custo).toBe(5);
 		expect(defKkg('nara')).toBeNull();
 	});
 

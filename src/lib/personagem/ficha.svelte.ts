@@ -186,9 +186,9 @@ export class FichaJogo {
 		if (!def) return null;
 		const e = this.estado.kkg ?? {};
 		const estagio = e.estagio ?? 1;
-		return { def, ...custoKkg(def, this.calc.nivel), estagio, ativa: !!e.ativa, ligada: kkgLigada(def, e), efeito: efeitoKkg(def, this.calc.nivel, estagio) };
+		return { def, ...custoKkg(def, this.calc.nivel, estagio), estagio, ativa: !!e.ativa, ligada: kkgLigada(def, e), efeito: efeitoKkg(def, this.calc.nivel, estagio) };
 	});
-	/** Ativar: paga o custo da cena (PC) e liga os bônus até desativar. */
+	/** Ativar: paga o custo de um turno (PC) e liga os bônus até desativar; em combate, a Mesa cobra cada turno seguinte. */
 	ativarKkg(cena: string | null = null) {
 		const k = this.kkg;
 		if (!k || k.ativa || k.def.sempre) return;
@@ -201,16 +201,16 @@ export class FichaJogo {
 		if (!k?.ativa) return;
 		this.mudar({ ...this.estado, kkg: { ...this.estado.kkg, ativa: false, cena: null } }, `Desativou o ${k.def.nome}`, k.def.icone);
 	}
-	/** Cena nova com a KKG ainda ativa: paga de novo (ou ela apaga, sem PC). */
-	novaCenaKkg(cena: string | null = null) {
+	/** Um turno de combate com a KKG ligada: paga o custo por turno (ou ela apaga, sem PC). */
+	turnoKkg() {
 		const k = this.kkg;
-		if (!k?.ativa) return;
+		if (!k?.ativa || k.def.sempre) return;
 		if (this.atual.pc < k.custo) {
-			this.mudar({ ...this.estado, kkg: { ...this.estado.kkg, ativa: false, cena: null } }, `${k.def.nome} apagou: sem PC para a cena nova`, k.def.icone);
+			this.mudar({ ...this.estado, kkg: { ...this.estado.kkg, ativa: false, cena: null } }, `${k.def.nome} apagou: sem PC para manter no turno`, k.def.icone);
 			return;
 		}
 		const pc = this.atual.pc - k.custo;
-		this.mudar({ ...this.estado, pc, kkg: { ...this.estado.kkg, cena } }, `Cena nova com o ${k.def.nome}: −${k.custo} PC. PC ${pc}/${this.max.pc}`, k.def.icone);
+		this.mudar({ ...this.estado, pc }, `Turno com o ${k.def.nome} ativo: −${k.custo} PC. PC ${pc}/${this.max.pc}`, k.def.icone);
 	}
 	estagioKkg(estagio: number) {
 		const k = this.kkg;

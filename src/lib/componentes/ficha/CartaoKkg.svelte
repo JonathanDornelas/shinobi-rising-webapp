@@ -1,7 +1,7 @@
 <script lang="ts">
-	// Kekkei Genkai na ficha completa: ATIVAR paga o custo da cena em PC e liga os bônus (Percepção, Defesa) até desativar;
-	// CENA NOVA paga de novo. O Sharingan escolhe o estágio de tomoe (o despertar é narrativo). Ativa, a borda e o brilho
-	// tomam a cor da linhagem.
+	// Kekkei Genkai na ficha completa: ATIVAR paga o custo de um turno em PC e liga os bônus (Percepção, Defesa) até
+	// desativar; TURNO paga cada turno de combate fora da Mesa (na Mesa, ela cobra sozinha). O Sharingan escolhe o estágio
+	// de tomoe (o despertar é narrativo), e cada estágio custa mais por turno. Ativa, a borda e o brilho tomam a cor da linhagem.
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
 	import Icone from '../ui/Icone.svelte';
 
@@ -9,7 +9,7 @@
 	const k = $derived(f.kkg!);
 	const cor = $derived(k.def.cor);
 	const semDespertar = $derived(!!k.def.estagios && k.estagio < 1);
-	const custoTexto = $derived(k.def.sempre ? 'Sempre ativa' : k.custo ? `${k.custo} PC para ativar, 1 PC por turno em combate` : 'Sem custo');
+	const custoTexto = $derived(k.def.sempre ? 'Sempre ativa' : `${k.custo} PC por turno`);
 </script>
 
 <section
@@ -26,7 +26,7 @@
 		</div>
 		<span class="flex flex-col items-end gap-0.5">
 			<span class="font-pixel text-xs leading-none font-bold whitespace-nowrap" style:color={k.ligada ? cor : undefined}>{k.ligada ? 'ATIVA' : semDespertar ? 'ADORMECIDA' : 'INATIVA'}</span>
-			<span class="text-xs leading-4 whitespace-nowrap text-mut" title={k.reducao ? `Reduzido pelo marco ${k.reducao}` : undefined}>{custoTexto}{k.reducao ? ` · ${k.reducao}` : ''}</span>
+			<span class="text-xs leading-4 whitespace-nowrap text-mut" title={k.reducao ? `Reduzido pelos marcos: ${k.reducao} (−1 PC por turno cada, mínimo 1)` : undefined}>{custoTexto}{k.reducao ? ' · com marcos' : ''}</span>
 		</span>
 	</div>
 
@@ -43,7 +43,7 @@
 						disabled={!f.editavel}
 						class="flex min-h-9 items-center gap-1 border-r-2 border-frame px-2.5 text-xs font-semibold last:border-r-0 disabled:cursor-default {on ? 'text-white' : 'text-mut hover:text-fg'}"
 						style:background={on ? (n ? cor : 'var(--b3)') : undefined}
-						title={n ? k.def.estagios[n - 1].efeitos.join(' · ') : 'O despertar vem com um trauma: decisão do Mestre'}
+						title={n ? `${k.def.estagios[n - 1].custo} PC por turno (antes dos marcos) · ${k.def.estagios[n - 1].efeitos.join(' · ')}` : 'O despertar vem com um trauma: decisão do Mestre'}
 						onclick={() => f.estagioKkg(n)}
 					>
 						{#if n}{#each { length: n } as _, i (i)}<span class="h-2 w-2 rounded-full border border-ink {on ? 'bg-ink' : 'bg-[#D8342C]'}" aria-hidden="true"></span>{/each}<span class="sr-only">{n} tomoe</span>{:else}Não despertou{/if}
@@ -65,11 +65,11 @@
 	{#if f.editavel && !k.def.sempre}
 		<div class="flex flex-wrap items-center gap-2 border-t-2 border-b3 px-3.5 py-2.5">
 			{#if k.ativa}
-				<button type="button" class="btn-jogo btn-contorno min-h-10 text-xs" title="Numa cena nova, manter ativo custa de novo" disabled={f.atual.pc < k.custo} onclick={() => f.novaCenaKkg()}>CENA NOVA{k.custo ? ` · −${k.custo} PC` : ''}</button>
+				<button type="button" class="btn-jogo btn-contorno min-h-10 text-xs" title="Paga um turno de combate com a KKG ligada (na Mesa, a vez de cada um já cobra sozinha)" onclick={() => f.turnoKkg()}>TURNO · −{k.custo} PC</button>
 				<span class="flex-1"></span>
 				<button type="button" class="btn-jogo btn-fantasma min-h-10 text-xs" onclick={() => f.desativarKkg()}>DESATIVAR</button>
 			{:else}
-				<span class="flex-1 text-xs leading-4 text-mut">{semDespertar ? 'Escolha o estágio quando o Sharingan despertar.' : f.atual.pc < k.custo ? `Faltam ${k.custo - f.atual.pc} PC.` : 'Paga o custo da cena e liga os bônus.'}</span>
+				<span class="flex-1 text-xs leading-4 text-mut">{semDespertar ? 'Escolha o estágio quando o Sharingan despertar.' : f.atual.pc < k.custo ? `Faltam ${k.custo - f.atual.pc} PC.` : 'Paga um turno e liga os bônus; em combate, cada turno cobra de novo.'}</span>
 				<button type="button" class="btn-jogo btn-primario com-icone min-h-10 text-xs" disabled={semDespertar || f.atual.pc < k.custo} onclick={() => f.ativarKkg()}><Icone id="recurso/ic-recurso-pc" />ATIVAR{k.custo ? ` · −${k.custo} PC` : ''}</button>
 			{/if}
 		</div>

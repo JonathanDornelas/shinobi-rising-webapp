@@ -35,7 +35,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	let moduloFicha: Promise<typeof import('#lib/componentes/mesa/FichaCompleta.svelte')> | null = null;
 	const carregarFicha = () => (moduloFicha ??= import('#lib/componentes/mesa/FichaCompleta.svelte'));
 	import { mesclarEstado, type EstadoJogo } from '#lib/personagem/progressao.ts';
-	import { apagarAoCair, MANTER_KKG } from '#lib/personagem/kkg.ts';
+	import { apagarAoCair, custoKkg } from '#lib/personagem/kkg.ts';
 	import PainelMesa from '#lib/componentes/mesa/PainelMesa.svelte';
 	import BuscaBestiario from '#lib/componentes/npc/BuscaBestiario.svelte';
 	import { npcDoVerbete } from '#lib/bestiario/npc.ts';
@@ -893,18 +893,11 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		if (error) return void toasts.mostrar('Não foi possível ativar a cena.', 'erro');
 		mesa.cenas = mesa.cenas.map((c) => ({ ...c, ativa: c.id === cena.id }));
 		data.cenas = data.cenas.map((c) => ({ ...c, ativa: c.id === cena.id }));
-		// cena nova: quem manteve a Kekkei Genkai ativa paga o custo de novo; sem PC, ela apaga
-		for (const f of fichas) {
-			const e = f.estado.kkg;
-			if (!f.kkg || f.kkg.def.sempre || !e?.ativa || e.cena === cena.id) continue;
-			const pc = f.estado.pc ?? f.max.pc;
-			if (pc >= f.kkg.custo) void estadoPc(f, { pc: pc - f.kkg.custo, kkg: { ...e, cena: cena.id } }, `Cena nova (${cena.nome}) com o ${f.kkg.def.nome}: −${f.kkg.custo} PC`);
-			else void estadoPc(f, { kkg: { ...e, ativa: false, cena: null } }, `${f.kkg.def.nome} apagou: sem PC para a cena ${cena.nome}`);
-		}
 		ui.avisar(`“${cena.nome}” agora é a cena do grupo.`);
 	}
 	/**
-	 * Em combate, a Kekkei Genkai ligada custa 1 PC no começo de cada turno do personagem (cap. 8); sem PC, apaga. Só a
+	 * Em combate, a Kekkei Genkai ligada custa o valor dela no começo de cada turno do personagem (cap. 8: o Sharingan, pelo
+	 * estágio; os marcos tiram 1 cada); sem PC, apaga. Só a
 	 * tela do Mestre cobra (quem passa os turnos), uma vez por vez; ao abrir a página no meio de um turno, não cobra.
 	 */
 	let vezCobrada = '';
@@ -924,7 +917,8 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		const e = f?.estado.kkg;
 		if (!f?.kkg || f.kkg.def.sempre || !e?.ativa) return;
 		const pc = f.estado.pc ?? f.max.pc;
-		if (pc >= MANTER_KKG) void estadoPc(f, { pc: pc - MANTER_KKG }, `Turno com o ${f.kkg.def.nome} ativo: −${MANTER_KKG} PC`);
+		const custo = custoKkg(f.kkg.def, f.nivel, e.estagio ?? 1).custo;
+		if (pc >= custo) void estadoPc(f, { pc: pc - custo }, `Turno com o ${f.kkg.def.nome} ativo: −${custo} PC`);
 		else void estadoPc(f, { kkg: { ...e, ativa: false, cena: null } }, `${f.kkg.def.nome} apagou: sem PC para manter no turno`);
 	}
 

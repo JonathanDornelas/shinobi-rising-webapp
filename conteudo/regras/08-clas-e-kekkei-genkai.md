@@ -137,13 +137,14 @@ Quem aprende antes um jutsu que receberia automaticamente num certo nível não 
 
 ### Ativar e Manter uma Kekkei Genkai {#ativar-e-manter-uma-kekkei-genkai}
 
-Os olhos que mudam de cor, os ossos que viram lâmina, o corpo que vira água: a maioria das linhagens não fica ligada o tempo todo. Ativar a Kekkei Genkai custa o valor do clã, que os marcos reduzem (o Sharingan custa 3 PC, 2 no nível 8 e 1 no 13). Em combate, mantê-la ligada custa 1 PC no começo de cada turno seu, sem gastar ação. Sem PC para pagar, ela se apaga, e cair Inconsciente também apaga (cap. 4). Fora de combate, quem a mantém ligada paga a ativação de novo a cada cena nova.
+Os olhos que mudam de cor, os ossos que viram lâmina, o corpo que vira água: a maioria das linhagens não fica ligada o tempo todo, porque cada instante com ela acesa queima chakra. A Kekkei Genkai custa PC por turno, no valor do clã. Em combate, você paga esse valor no começo de cada turno seu, sem gastar ação, enquanto ela estiver ligada. Fora de combate, onde não há turnos, ligá-la custa o valor de um turno, uma vez. O Sharingan pesa mais a cada estágio: 3 PC por turno com um tomoe, 5 com dois e 6 com três. Os marcos do clã aliviam o peso, e cada um tira 1 PC por turno, sem nunca descer de 1. Sem PC para pagar, ela se apaga, e cair Inconsciente também apaga (cap. 4).
 
 :::na-mesa{titulo="Kekkei Genkai ativa"}
-- **Ativar:** o custo do clã (os marcos reduzem)
-- **Manter, em combate:** 1 PC no começo de cada turno seu, sem ação
-- **Sem PC ou Inconsciente:** apaga; para voltar, ativa e paga de novo
-- **Fora de combate:** cada cena nova cobra a ativação de novo
+- **Custo:** o valor do clã, em PC por turno (Sharingan: 3, 5 ou 6, pelo tomoe)
+- **Em combate:** paga no começo de cada turno seu, sem ação
+- **Fora de combate:** ligar custa um turno, uma vez
+- **Marcos:** cada um tira 1 PC por turno (mínimo 1)
+- **Sem PC ou Inconsciente:** apaga; para voltar, paga de novo
 :::
 
 ## 8.3 Catálogo de Clãs {#catalogo-de-clas}
@@ -293,8 +294,8 @@ Se o seu clã tem Kekkei Genkai, ela é construída com Pontos de KKG. Você com
 
 | Limitação | Devolve PKG | Detalhes |
 | - | - | - |
-| Custo de chakra para ativar (5 PC, e 1 por turno em combate) | 1 | Não fica ativa o tempo todo |
-| Custo alto (10 PC, e 1 por turno em combate) | 2 | Reservada para momentos críticos |
+| Custo de chakra (5 PC por turno) | 1 | Não fica ativa o tempo todo |
+| Custo alto (10 PC por turno) | 2 | Reservada para momentos críticos |
 | Cega temporariamente após o uso | 2 | Como o uso prolongado do Sharingan |
 | Cega permanentemente após N usos | 4 | Como o Mangekyou; drama narrativo |
 | Reduz a expectativa de vida | 3 | Cada uso longo encurta a vida |
@@ -317,7 +318,7 @@ A conta é simples: você tem 5 PKG, mais o que as limitações devolvem, e o qu
 :::
 
 :::exemplo{titulo="Dois clãs criados"}
-**Kasai Joushou, com KKG elemental.** Um clã pequeno de Iwagakure que combina Fogo e Vento em brasas voadoras. É temido, visto como um bando de pirômanos. O Bônus Hereditário (3 PB) vai em +1 CTR (2 PB) e +1 em Sobrevivência (1 PB). A KKG gasta 11 PKG: a combinação de Fogo e Vento (5), um jutsu exclusivo de rank B (4) e resistência a fogo (2). As limitações devolvem 6: custo de 10 PC por cena (2), cegueira temporária (2) e vulnerabilidade à água (2). Com os 5 PKG de base, a conta fecha em equilíbrio: 11 gastos, 5 + 6 disponíveis.
+**Kasai Joushou, com KKG elemental.** Um clã pequeno de Iwagakure que combina Fogo e Vento em brasas voadoras. É temido, visto como um bando de pirômanos. O Bônus Hereditário (3 PB) vai em +1 CTR (2 PB) e +1 em Sobrevivência (1 PB). A KKG gasta 11 PKG: a combinação de Fogo e Vento (5), um jutsu exclusivo de rank B (4) e resistência a fogo (2). As limitações devolvem 6: custo de 10 PC por turno (2), cegueira temporária (2) e vulnerabilidade à água (2). Com os 5 PKG de base, a conta fecha em equilíbrio: 11 gastos, 5 + 6 disponíveis.
 
 **Tsuki no Mai, sem KKG.** Dançarinos-assassinos com leques de guerra. Sem KKG, o Bônus Hereditário sobe para 4 PB: +1 AGI (2), +1 em Acrobacia (1) e +1 em Furtividade (1). O jutsu assinatura é o Tsukikage no Mai, seguido de quatro jutsus de vento e furtividade. Nos marcos, no nível 4, ganham +5 em Furtividade automaticamente nas noites de lua cheia; no nível 7, podem dançar até entrar num transe que recupera PC. É um clã estabelecido (3 PIC) da Vila da Cachoeira.
 :::
@@ -375,7 +376,7 @@ Quando o receptor não pertence ao clã de origem do dōjutsu, como alguém de f
 | Limitação | Efeito mecânico |
 | - | - |
 | Bônus reduzidos | Todos os bônus mecânicos do dōjutsu funcionam pela metade (arredondado para baixo): se a KKG dá +4 em Percepção, vira +2. |
-| Custo dobrado | Ativar o dōjutsu custa o dobro em PC (Sharingan e Byakugan transplantados: 6 PC para ativar em vez de 3; manter continua 1 PC por turno). |
+| Custo dobrado | O dōjutsu custa o dobro de PC por turno (um Byakugan transplantado custa 6 por turno em vez de 3; um Sharingan, o dobro do estágio). |
 | Habilidades avançadas indisponíveis | Habilidades que exigem um despertar específico (Mangekyou, Tenseigan, evoluções) não podem ser despertadas num receptor de fora do clã; o olho fica preso na forma básica. |
 | Progressão limitada | Os marcos por nível do clã não se aplicam: o olho não evolui com o personagem como evoluiria num membro nato. |
 | Esforço físico | Cada cena de uso causa 1 nível de fadiga a mais, porque o corpo rejeita em parte o chakra do clã; nos momentos críticos, o receptor desperta com dor de cabeça. |

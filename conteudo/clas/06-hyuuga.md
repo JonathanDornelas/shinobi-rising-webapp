@@ -24,7 +24,7 @@ Tradição acima de tudo. Os Hyuuga acreditam que o destino é fixo, e que a fun
 
 Visão de quase 360° (apenas pequeno ponto cego atrás do pescoço), capacidade de ver chakra fluindo, e visão dos 361 tenketsu (pontos de chakra) do corpo humano.
 
-- Custo de ativação: 3 PC (os marcos reduzem); em combate, 1 PC por turno para manter (cap. 8). Alcance da visão: 50 m.
+- Custo: 3 PC por turno em combate; fora de combate, ligar custa um turno (cap. 8). Os marcos dos níveis 8 e 13 tiram 1 cada. Alcance da visão: 50 m.
 - Concede +5 em Percepção e visão através de objetos finos (papel, panos, paredes finas até 30 cm).
 - Vê fluxos de chakra: ao ser alvo de um jutsu, sabe o tipo e o elemento antes do efeito (vantagem em Esquiva Ativa e Kawarimi contra ele) e tem vantagem em Resistências contra Genjutsu.
 
