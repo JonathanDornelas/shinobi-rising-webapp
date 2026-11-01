@@ -444,6 +444,8 @@ export type MesaCena = {
 	relogios?: unknown;
 	/** Clima sobre o mapa (chuva, neve, névoa…); ausente enquanto a migração não roda. */
 	clima?: ClimaCena | null;
+	/** Narrativa: os retratos que o Mestre trouxe para cima da imagem (ver mesa/narrativa.ts). */
+	em_cena?: unknown;
 	grade: boolean;
 	/** Vista de cima (o quadro de sempre) ou isométrica: só muda o desenho, os dados seguem na grade. */
 	visao: 'topo' | 'isometrica';

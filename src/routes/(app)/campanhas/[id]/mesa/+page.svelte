@@ -50,6 +50,8 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	import QuadroMesa from '#lib/componentes/mesa/QuadroMesa.svelte';
 	import RelogiosMesa from '#lib/componentes/mesa/RelogiosMesa.svelte';
 	import ClimaMesa from '#lib/componentes/mesa/ClimaMesa.svelte';
+	import EmCenaNarrativa from '#lib/componentes/mesa/EmCenaNarrativa.svelte';
+	import { alternarEmCena, lerEmCena, type EmCena } from '#lib/mesa/narrativa.ts';
 	import DiarioMesa from '#lib/componentes/mesa/DiarioMesa.svelte';
 	import AtalhosMesa from '#lib/componentes/mesa/AtalhosMesa.svelte';
 	import { TECLAS_FERRAMENTA } from '#lib/mesa/atalhos.ts';
@@ -647,6 +649,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		const bx = x ?? c[0];
 		const by = y ?? c[1];
 		const d = JSON.parse(dados) as { tipo: 'pc' | 'npc' | 'ficha' | 'pasta'; id: string; tamanho?: number };
+		if (narrativa && data.mestre && d.tipo !== 'pasta') return narrar(d.tipo, d.id);
 		if (d.tipo === 'pc') {
 			const p = data.personagens.find((k) => k.id === d.id);
 			if (!p || mesa.tokens.some((t) => t.personagem_id === p.id)) return;
@@ -690,6 +693,10 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		}
 	}
 	function abrirDoElenco(t: MesaToken) {
+		if (narrativa && data.mestre) {
+			if (t.npc_id) return void narrar('npc', t.npc_id);
+			if (t.personagem_id) return void narrar(data.npcFichas.some((f) => f.id === t.personagem_id) ? 'ficha' : 'pc', t.personagem_id);
+		}
 		quadro?.centralizar(t);
 		ui.sel = t.id;
 		ui.abrirFicha(t.id);
@@ -759,6 +766,40 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	$effect(() => {
 		if (narrativa) untrack(() => (ui.painelAberto = true));
 	});
+	// quem está em cena na narrativa: o Mestre clica no Elenco e o retrato entra sobre a imagem (clicar de novo tira)
+	const emCena = $derived(lerEmCena(cena?.em_cena));
+	/** O que a cena guarda de cada um; o nome de quem está escondido do grupo fica de fora. */
+	function quemNarrar(tipo: 'pc' | 'npc' | 'ficha', id: string): EmCena | null {
+		const chave = `${tipo}:${id}`;
+		if (tipo === 'pc') {
+			const p = data.personagens.find((k) => k.id === id);
+			return p ? { chave, nome: p.nome, retrato: p.retrato ?? null } : null;
+		}
+		if (tipo === 'npc') {
+			const n = npcs.find((k) => k.id === id);
+			if (!n) return null;
+			const arte = n.retrato ?? n.arte ?? null;
+			const foco = focoDaArte(url(arte), n.enquadramento);
+			return { chave, nome: n.nome_oculto ? null : n.nome, retrato: arte, foco: foco && { x: foco.x, y: foco.y, zoom: foco.zoom } };
+		}
+		const f = data.npcFichas.find((k) => k.id === id);
+		return f ? { chave, nome: f.nome_oculto ? null : f.nome, retrato: f.retrato ?? null } : null;
+	}
+	function narrar(tipo: 'pc' | 'npc' | 'ficha', id: string) {
+		if (cena?.em_cena === undefined) return void ui.avisar('Falta a migração do banco para trazer personagens à narrativa.');
+		const item = quemNarrar(tipo, id);
+		if (!item) return;
+		const lista = alternarEmCena(emCena, item);
+		if (!lista) return void ui.avisar('A cena já está cheia (12 retratos). Tire alguém antes.');
+		void mesa.patchCena({ em_cena: lista });
+	}
+	/** O nome verdadeiro (só o Mestre tem os NPCs) de quem está na cena. */
+	function nomeEmCena(chave: string) {
+		const [tipo, id] = chave.split(':');
+		return tipo === 'pc' ? (data.personagens.find((k) => k.id === id)?.nome ?? null) : tipo === 'npc' ? (npcs.find((k) => k.id === id)?.nome ?? null) : (data.npcFichas.find((k) => k.id === id)?.nome ?? null);
+	}
+	const tirarDeCena = (chave: string) => void mesa.patchCena({ em_cena: emCena.filter((e) => e.chave !== chave) });
+	const alternarNomeEmCena = (chave: string) => void mesa.patchCena({ em_cena: emCena.map((e) => (e.chave === chave ? { ...e, nome: e.nome ? null : nomeEmCena(chave) } : e)) });
 	const escolherImagem = (alvo: 'imagem' | 'fundo', caminho: string | null) => mesa.patchCena({ [alvo]: caminho } as Partial<MesaCena>);
 	/** Da biblioteca (ou do livro): vira o fundo, a imagem da narrativa, ou nada. */
 	function escolherDaBiblioteca(alvo: 'imagem' | 'fundo', caminho: string | null) {
@@ -1228,6 +1269,13 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 		<div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(14,11,10,.92)] to-transparent px-6 pt-12 pb-5">
 			<span class="font-mincho text-[28px] leading-9 font-bold text-papel max-md:text-xl">{cena?.nome}</span>
 		</div>
+		<EmCenaNarrativa lista={emCena} mestre={data.mestre} foto={(e) => url(e.retrato)} nomeReal={nomeEmCena} aoTirar={data.mestre ? tirarDeCena : undefined} aoNome={data.mestre ? alternarNomeEmCena : undefined} />
+		{#if data.mestre && !emCena.length && cena?.em_cena !== undefined && !ui.imersivo}
+			<p class="pointer-events-none absolute top-3 left-3 max-w-[300px] border border-[rgba(201,162,92,.45)] bg-[rgba(14,11,10,.72)] px-3 py-2 text-xs leading-4 text-papel/85">Clique em personagens e NPCs no Elenco para trazê-los à cena, um a um. Clicar de novo tira.</p>
+		{/if}
+		{#if data.mestre && emCena.length > 1}
+			<button type="button" class="absolute top-3 left-3 z-[6] border border-[rgba(201,162,92,.55)] bg-[rgba(14,11,10,.8)] px-2.5 py-1.5 font-pixel text-[11px] font-bold text-papel opacity-60 transition-opacity hover:opacity-100" onclick={() => mesa.patchCena({ em_cena: [] })}>TIRAR TODOS</button>
+		{/if}
 	</div>
 {/snippet}
 
