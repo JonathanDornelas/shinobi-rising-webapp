@@ -300,7 +300,6 @@
 				<h3 class={titulo}>Na mesa</h3>
 				{@render opcao('Travar a mesa', 'Só o Mestre move os tokens.', cena.travada, () => mesa.patchCena({ travada: !cena.travada }))}
 				{@render opcao('PV à vista', 'O grupo vê os números de PV.', cena.mostrar_pv, () => mesa.patchCena({ mostrar_pv: !cena.mostrar_pv }))}
-				{@render opcao('Linhas da grade', 'As de 1 m e as de 5 m.', cena.grade, () => mesa.patchCena({ grade: !cena.grade }))}
 				{@render opcao('Coordenadas', 'Letras e números nas bordas.', cena.coordenadas, () => mesa.patchCena({ coordenadas: !cena.coordenadas }))}
 			</section>
 			<section class={secao}>

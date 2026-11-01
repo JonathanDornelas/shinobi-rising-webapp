@@ -1199,8 +1199,8 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				<g clip-path={ui.bordas ? undefined : 'url(#recorte-cena)'}><image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} /></g>
 				{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
 			{/if}
-			<!-- a grade: o Mestre esconde para todos; o jogador também pode esconder só na tela dele -->
-			{#if cena?.grade !== false && !(ui.gradeOculta && !mesa.mestre)}
+			<!-- a grade: cada um esconde só na própria tela; ajustando a grade ao mapa, ela aparece -->
+			{#if !ui.gradeOculta || ui.bordas}
 				<!-- dois traçados (linhas de 1 m e de 5 m) com 1 px fixo: o zoom e a câmera não mexem na grade -->
 				<path d={grade1} fill="none" style="stroke: var(--fg)" stroke-opacity={0.09 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" clip-path={clipCena} />
 					<path d={grade5} fill="none" style="stroke: var(--fg)" stroke-opacity={0.18 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" clip-path={clipCena} />
