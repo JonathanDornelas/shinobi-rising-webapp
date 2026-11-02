@@ -26,7 +26,7 @@
 		{ id: 'catalogo', nome: 'Clã do catálogo', texto: 'Clãs oficiais permitidos na campanha', icone: 'nav/ic-nav-clas', bloqueio: c.catalogo.clas.length ? '' : 'A campanha não permite clãs do catálogo' },
 		{ id: 'novo-sem-kkg', nome: 'Criar clã sem KKG', texto: '4 PB para distribuir · cap. 8.4', icone: 'acao/ic-acao-criar-cla', bloqueio: c.ctx.clasSemKkg ? '' : 'A campanha não permite clãs personalizados sem KKG' },
 		{ id: 'novo-com-kkg', nome: 'Criar clã com KKG', texto: 'Balança de PKG · cap. 8.4', icone: 'kkg/ic-kkg-combinacao', selo: 'EXIGE APROVAÇÃO DO MESTRE', bloqueio: c.ctx.clasComKkg ? '' : 'A campanha não permite clãs personalizados com KKG' },
-		{ id: 'sem', nome: 'Sem clã', texto: '+2 pontos de perícia e +5 PT iniciais', icone: 'vila/ic-vila-sem', bloqueio: '' }
+		{ id: 'sem', nome: 'Sem clã', texto: 'Mais uma perícia treinada e +5 PT iniciais', icone: 'vila/ic-vila-sem', bloqueio: '' }
 	]);
 	const cla = $derived(c.catalogo.clas.find((x) => x.slug === c.ficha.cla.slug));
 	const regras = $derived(c.ficha.cla.tipo === 'catalogo' && c.ficha.cla.slug ? CLAS[c.ficha.cla.slug] : null);
@@ -160,5 +160,5 @@
 		{/if}
 	</div>
 {:else if c.ficha.cla.tipo === 'sem'}
-	<div class="painel px-3.5 py-3 text-[15px] leading-[22px] font-semibold">Sem clã: +2 pontos de perícia e +5 PT iniciais. Os passos 5 e 6 já contam com eles.</div>
+	<div class="painel px-3.5 py-3 text-[15px] leading-[22px] font-semibold">Sem clã: mais uma perícia treinada e +5 PT iniciais. Os passos 5 e 6 já contam com eles.</div>
 {/if}

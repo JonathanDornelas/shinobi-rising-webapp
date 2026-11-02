@@ -43,7 +43,7 @@ Manipulação dos próprios ossos como armas. O Kaguya pode crescer ossos do cor
 | 9 | +1 FOR |
 | 10 | +3 PIC; Tessenka no Mai: Tsuru (Dança da Clematis: Vinha) |
 | 11 | Tessenka no Mai: Hana (Dança da Clematis: Flor) |
-| 12 | +1 em Atletismo |
+| 12 | Treina Atletismo |
 | 13 | Maldição Contida |
 | 14 | Sawarabi no Mai (Dança do Broto de Samambaia) |
 | 15 | +1 FOR; limite de FOR +9 |

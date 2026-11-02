@@ -12,6 +12,7 @@ import {
 	JUTSUS_INICIAIS,
 	PACOTES,
 	PERICIAS,
+	BONUS_TREINADA,
 	PERICIAS_COMBATE,
 	PROGRESSAO,
 	RECURSOS,
@@ -81,6 +82,8 @@ export interface FichaDados {
 	sensei: string;
 	/** Depois da aprovação: níveis alcançados e treinos. O nível atual é 1 + niveis.length. */
 	progresso: { niveis: EscolhaNivel[]; treinos: Treino[] };
+	/** Perícias escolhidas no lugar das que um bônus repetiu (a ficha corrige uma vez; não se desfaz). */
+	correcaoPericias?: Pericia[];
 }
 
 export function fichaVazia(): FichaDados {
@@ -214,9 +217,13 @@ export interface LinhaPericia {
 	atributo: Atributo;
 	valorAtributo: number;
 	distancia?: { atributo: Atributo; valor: number; total: number };
+	/** +2 se treinada, 0 se não (cap. 3). */
 	treino: number;
+	/** Quem a treinou: a criação, a vila, o clã, o background, um marco, um nível ou a correção. */
+	fontes: string[];
+	/** O que soma por cima do treino (especializações). */
 	bonus: BonusPericia[];
-	/** treino + bônus (o "valor da perícia"), limitado a +5 na criação. */
+	/** treino + bônus (o "valor da perícia"). */
 	valor: number;
 	total: number;
 	combate: boolean;
@@ -290,45 +297,81 @@ export function limiteAtributo(f: FichaDados, a: Atributo, delta: 1 | -1): strin
 	return '';
 }
 
+/** Quantas perícias a criação treina (4; 5 sem clã) e quantas o jogador já escolheu. */
 export function pontosPericia(f: FichaDados) {
-	const limite = CRIACAO.pontosPericia + (f.cla.tipo === 'sem' ? CRIACAO.semCla.pericia : 0);
-	const usados = Object.values(f.pericias).reduce((s, v) => s + (v ?? 0), 0);
+	const limite = CRIACAO.periciasTreinadas + (f.cla.tipo === 'sem' ? CRIACAO.semCla.pericia : 0);
+	const usados = Object.values(f.pericias).filter((v) => (v ?? 0) > 0).length;
 	return { limite, usados, restantes: limite - usados };
 }
 
-/** Pontos de treino numa perícia: criação + 1 por escolha de nível. */
-export const treinoPericia = (f: FichaDados, p: Pericia) => (f.pericias[p] ?? 0) + f.progresso.niveis.filter((n) => n.pericia === p).length;
+/**
+ * As perícias que a criação treinou. Fichas da regra antiga guardam pontos (até +3 em cada): ficam treinadas as de mais
+ * pontos, até o limite da criação (empate: a ordem das perícias).
+ */
+export function periciasDaCriacao(f: FichaDados): Pericia[] {
+	const { limite } = pontosPericia(f);
+	return PERICIAS.map((p) => p.id)
+		.filter((p) => (f.pericias[p] ?? 0) > 0)
+		.sort((a, b) => (f.pericias[b] ?? 0) - (f.pericias[a] ?? 0))
+		.slice(0, limite);
+}
+
+/**
+ * Quem treina cada perícia (cap. 3): a criação, os bônus de vila, clã e background, os marcos do clã, os níveis 5, 9,
+ * 13 e 17 e a correção. Um bônus que cai numa perícia já treinada não soma: deixa uma perícia por escolher (`faltam`),
+ * que a ficha corrige uma vez (`correcaoPericias`).
+ */
+export function periciasTreinadas(f: FichaDados): { fontes: Map<Pericia, string[]>; faltam: number; repetidas: { fonte: string; pericia: Pericia }[] } {
+	const fontes = new Map<Pericia, string[]>();
+	const repetidas: { fonte: string; pericia: Pericia }[] = [];
+	const treinar = (p: Pericia, fonte: string) => {
+		if (fontes.has(p)) return void repetidas.push({ fonte, pericia: p });
+		fontes.set(p, [fonte]);
+	};
+	for (const p of periciasDaCriacao(f)) treinar(p, 'Criação');
+	for (const g of ganhos(f)) {
+		for (const p of g.ganho.pericias ?? []) treinar(p, g.fonte);
+		if (g.ganho.escolhaPericia && g.escolha) treinar(g.escolha, g.fonte);
+	}
+	const nomeCla = regrasCla(f)?.nome ?? 'Clã';
+	for (const n of f.progresso.niveis) for (const p of n.marco?.pericias ?? []) treinar(p, `${nomeCla} NV ${n.nivel}`);
+	// os níveis que treinam uma perícia (5, 9, 13 e 17): as escolhas feitas ao subir, na ordem
+	const nivel = nivelDe(f);
+	const vagas = (PROGRESSAO.niveisPericia as readonly number[]).filter((n) => n <= nivel);
+	const escolhas = f.progresso.niveis.flatMap((n) => (n.pericia ? [n.pericia] : []));
+	vagas.forEach((nv, i) => (escolhas[i] ? treinar(escolhas[i], `NV ${nv}`) : repetidas.push({ fonte: `NV ${nv}`, pericia: escolhas[i] })));
+	let faltam = repetidas.length;
+	for (const p of f.correcaoPericias ?? []) {
+		if (faltam <= 0 || fontes.has(p)) continue;
+		fontes.set(p, ['Correção']);
+		faltam--;
+	}
+	return { fontes, faltam, repetidas };
+}
+
+/** O treino de uma perícia: +2 se treinada, 0 se não. */
+export const treinoPericia = (f: FichaDados, p: Pericia) => (periciasTreinadas(f).fontes.has(p) ? BONUS_TREINADA : 0);
 
 export function linhasPericia(f: FichaDados): LinhaPericia[] {
 	const at = atributosTotais(f);
-	const fontes = ganhos(f);
-	const nivel = nivelDe(f);
 	const esps = especializacoes(f);
-	const nomeCla = regrasCla(f)?.nome ?? 'Clã';
-	// Treino vai até +3 na criação e +5 depois; clã, vila, background e marcos passam do limite em até +2 (cap. 3).
-	const teto = (nivel === 1 ? CRIACAO.periciaTreinoMax : PROGRESSAO.periciaTreinoMax) + 2;
+	const { fontes } = periciasTreinadas(f);
 	return PERICIAS.map((p) => {
+		// treinada: +2 (cap. 3); as especializações somam por cima (cap. 19)
+		const treino = fontes.has(p.id) ? BONUS_TREINADA : 0;
 		const bonus: BonusPericia[] = [];
-		for (const g of fontes) {
-			const fixas = g.ganho.pericias ?? [];
-			if (fixas.includes(p.id)) bonus.push({ fonte: g.fonte, valor: 1 });
-			if (g.ganho.escolhaPericia && g.escolha === p.id) bonus.push({ fonte: g.fonte, valor: 1 });
-		}
-		for (const n of f.progresso.niveis) for (const mp of n.marco?.pericias ?? []) if (mp === p.id) bonus.push({ fonte: `${nomeCla} NV ${n.nivel}`, valor: 1 });
-		const treino = treinoPericia(f, p.id);
-		const valorBase = Math.min(treino + bonus.reduce((s, b) => s + b.valor, 0), teto);
-		// Especializações somam em testes, fora do teto (cap. 19).
 		for (const e of esps) {
 			const v = valorNivel(ESPECIALIZACOES[e.id]?.pericias?.[p.id], e.nivel);
 			if (v) bonus.push({ fonte: `Esp. NV ${e.nivel}`, valor: v });
 		}
-		const valor = valorBase + bonus.filter((b) => b.fonte.startsWith('Esp.')).reduce((s, b) => s + b.valor, 0);
+		const valor = treino + bonus.reduce((s, b) => s + b.valor, 0);
 		const linha: LinhaPericia = {
 			id: p.id,
 			nome: p.nome,
 			atributo: p.atributo,
 			valorAtributo: at[p.atributo],
 			treino,
+			fontes: fontes.get(p.id) ?? [],
 			bonus,
 			valor,
 			total: valor + at[p.atributo],
@@ -496,12 +539,13 @@ export function analisar(f: FichaDados, ctx: ContextoCampanha, opcoes: { jutsusD
 	// 5 · Perícias
 	const op = pontosPericia(f);
 	const linhas = linhasPericia(f);
-	if (Object.values(f.pericias).some((t) => (t ?? 0) > CRIACAO.periciaTreinoMax)) add('bloqueio', 'Nenhuma perícia passa de +3 de treino na criação', 5);
-	if (op.restantes < 0) add('bloqueio', `${-op.restantes} pontos de perícia acima do limite`, 5);
-	else if (op.restantes > 0) add('aviso', `${op.restantes} ${op.restantes === 1 ? 'ponto' : 'pontos'} de perícia não ${op.restantes === 1 ? 'gasto' : 'gastos'}`, 5);
-	else add('ok', 'Todos os pontos de perícia gastos', 5);
-	if (linhas.some((l) => PERICIAS_COMBATE.includes(l.id) && l.valor >= 2)) add('ok', 'Perícia de combate em +2 ou mais', 5);
-	else add('aviso', 'Nenhuma perícia de combate em +2 (recomendado pelo livro)', 5);
+	const { repetidas } = periciasTreinadas(f);
+	if (op.restantes < 0) add('bloqueio', `${-op.restantes} ${-op.restantes === 1 ? 'perícia treinada' : 'perícias treinadas'} acima do limite (${op.limite})`, 5);
+	else if (op.restantes > 0) add('bloqueio', `Escolha mais ${op.restantes} ${op.restantes === 1 ? 'perícia para treinar' : 'perícias para treinar'}`, 5);
+	else add('ok', `${op.limite} perícias treinadas`, 5);
+	for (const r of repetidas.filter((x) => !x.fonte.startsWith('NV'))) add('aviso', `${r.fonte} treina ${nomePericia(r.pericia)}, que já era treinada: troque uma das escolhas`, 5);
+	if (linhas.some((l) => PERICIAS_COMBATE.includes(l.id) && l.treino > 0)) add('ok', 'Uma perícia de combate treinada', 5);
+	else add('aviso', 'Nenhuma perícia de combate treinada (recomendado pelo livro)', 5);
 
 	// 6 · Proficiências
 	const pt = ptDisponiveis(f);

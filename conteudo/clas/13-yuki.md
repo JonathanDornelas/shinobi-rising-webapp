@@ -42,7 +42,7 @@ Combinação Vento + Água gerando gelo manipulável.
 | 9 | +1 CTR |
 | 10 | +3 PIC; Hyōton: Hyōgan Dōmu (Domo de Iceberg) |
 | 11 | Hyōton: Mangehyō (Dez Mil Pétalas de Gelo) |
-| 12 | +1 em Sobrevivência |
+| 12 | Treina Sobrevivência |
 | 13 | Espelho da Alma |
 | 14 | Makyō Hakuhyō (Espelho Demoníaco de Gelo Fino) |
 | 15 | +1 CTR; limite de CTR +9 |

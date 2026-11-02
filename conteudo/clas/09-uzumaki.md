@@ -19,7 +19,7 @@ Vínculos eternos. Os Uzumaki acreditam que selar algo — em pergaminhos, corpo
 
 - +1 ESP (limite de criação +5).
 - +5 PC iniciais (longevidade de chakra; os marcos aumentam a reserva).
-- +1 em Selamento.
+- Treina Selamento.
 
 #### Kekkei Genkai {#kekkei-genkai}
 
@@ -40,7 +40,7 @@ Nenhum padrão. A longevidade hereditária e a vasta reserva de chakra são vant
 | 9 | +1 ESP |
 | 10 | +3 PIC; Uzumaki Kekkai (Barreira de Redemoinho) |
 | 11 | Kongō Fūsa (Correntes de Selamento Adamantinas) |
-| 12 | +1 em Selamento |
+| 12 | Treina Selamento |
 | 13 | Longevidade Uzumaki |
 | 14 | Hakke no Fūin Shiki (Fórmula do Selo de Oito Trigramas) |
 | 15 | +1 ESP; limite de ESP +9 |

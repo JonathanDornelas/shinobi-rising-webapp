@@ -77,7 +77,7 @@ describe('marcos do Esqueleto Padrão', () => {
 		expect(l).toHaveLength(20);
 		expect(l[0].texto).toBe('Hōka no Jutsu; +1 PIC');
 		expect(l[4].texto).toBe('+1 CTR');
-		expect(l[11].texto).toBe('+1 em Sobrevivência');
+		expect(l[11].texto).toBe('Treina Sobrevivência');
 		expect(l[14].texto).toBe('+1 CTR; limite de CTR +9');
 		expect(l[9]).toMatchObject({ texto: '+3 PIC', completo: false });
 	});
@@ -116,7 +116,7 @@ describe('o clã na ficha do personagem', () => {
 		f.vila.id = 'iwa';
 		expect(recursos(f).pv).toBe(20 + 5 + 5);
 		expect(atributosTotais(f).CTR).toBe(0);
-		expect(linhasPericia(f).find((p) => p.id === 'sobrevivencia')!.bonus).toContainEqual({ fonte: 'Kasai Joushou', valor: 1 });
+		expect(linhasPericia(f).find((p) => p.id === 'sobrevivencia')).toMatchObject({ treino: 2, fontes: ['Kasai Joushou'] });
 		expect(jutsusConhecidos(f)).toContain('cla-0f8e1c2a-a');
 		expect(elementos(f)).toEqual(['katon']);
 		expect(picMaximo(f)).toBe(2 + 1);

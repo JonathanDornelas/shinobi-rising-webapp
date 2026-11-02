@@ -46,7 +46,8 @@ export class FichaJogo {
 	private temporizador: ReturnType<typeof setTimeout> | undefined;
 
 	readonly id: string;
-	readonly dados: FichaDados;
+	/** Os dados da ficha (reativos: a correção das perícias muda a ficha na hora). */
+	dados = $state() as FichaDados;
 	readonly catalogo: CatalogoFicha;
 	readonly editavel: boolean;
 

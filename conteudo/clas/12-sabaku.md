@@ -42,7 +42,7 @@ Manipulação inata de areia (raríssimo, exige aprovação narrativa do Mestre)
 | 9 | +1 CTR |
 | 10 | +3 PIC; Sabaku Rō (Prisão de Areia) |
 | 11 | Ryūsa Bakuryū (Cachoeira de Areia Movediça) |
-| 12 | +1 em Sobrevivência |
+| 12 | Treina Sobrevivência |
 | 13 | Areia Autônoma |
 | 14 | Sabaku Taisō (Enterro de Areia Gigante) |
 | 15 | +1 CTR; limite de CTR +9 |

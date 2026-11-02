@@ -12,7 +12,7 @@ Dois ninjas aprendem o mesmo jutsu de fogo no mesmo dia. Dez anos depois, um del
 
 Especializações são o foco profundo de um ninja numa área: o sensor que sente chakra a quilômetros, o médico que traz um aliado de volta, o mestre de um elemento.
 
-Cada especialização tem 3 níveis. Os benefícios dos níveis anteriores continuam valendo, mas, quando um nível muda um número que já existia, como uma redução de custo, o valor novo substitui o antigo; as tabelas já mostram o total. E reduções de custo de especializações diferentes não se somam: vale a maior.
+Cada especialização tem 3 níveis. As de combate (Genjutsu, Ninjutsu, Bukijutsu, Selamento, Taijutsu e Marionete) somam +1, +2 e +3 na perícia delas, o que vale nos testes e nos ataques. Os benefícios dos níveis anteriores continuam valendo, mas, quando um nível muda um número que já existia, como uma redução de custo, o valor novo substitui o antigo; as tabelas já mostram o total. E reduções de custo de especializações diferentes não se somam: vale a maior.
 
 :::destaque{titulo="Quando se ganha uma especialização"}
 Todo personagem começa com 1 Especialização no nível 1, na criação. Ganha especializações novas nos níveis 4, 7, 10, 13, 16 e 19, chegando a até 7 no nível 19 ou acima. Para subir uma especialização que já tem, gasta Pontos de Treino (cap. 18).
@@ -64,25 +64,25 @@ Todo personagem começa com 1 Especialização no nível 1, na criação. Ganha 
 
 | Nível | Benefício |
 | - | - |
-| 1 | +1 na DT dos seus Genjutsus; -1 PC :sem[em Genjutsu] |
-| 2 | +2 na DT; -2 PC; +1 nas rolagens de ataque de Genjutsu |
-| 3 | +3 na DT; -2 PC; +1 no ataque; vantagem nas suas Resistências contra Genjutsu |
+| 1 | +1 em Genjutsu; +1 na DT dos seus Genjutsus; -1 PC :sem[em Genjutsu] |
+| 2 | +2 em Genjutsu; +2 na DT; -2 PC |
+| 3 | +3 em Genjutsu; +3 na DT; -2 PC; vantagem nas suas Resistências contra Genjutsu |
 
 ### Especialização: Ninjutsu {#especializacao-ninjutsu}
 
 | Nível | Benefício |
 | - | - |
-| 1 | +1 nas rolagens de Ninjutsu; -1 PC em Ninjutsu |
-| 2 | +1 nas rolagens; +2 de dano em Ninjutsu; -2 PC |
-| 3 | +2 nas rolagens; +3 de dano em Ninjutsu; -2 PC |
+| 1 | +1 em Ninjutsu; -1 PC em Ninjutsu |
+| 2 | +2 em Ninjutsu; +2 de dano em Ninjutsu; -2 PC |
+| 3 | +3 em Ninjutsu; +3 de dano em Ninjutsu; -2 PC |
 
 ### Especialização: Bukijutsu {#especializacao-bukijutsu}
 
 | Nível | Benefício |
 | - | - |
-| 1 | +1 nas rolagens de Bukijutsu; saca qualquer arma como ação livre |
-| 2 | +1 dado de dano da arma (1d6 vira 2d6); num acerto crítico, faz um ataque bônus (uma vez por turno) |
-| 3 | +2 nas rolagens de Bukijutsu; +2 dados de dano da arma (total) |
+| 1 | +1 em Bukijutsu; saca qualquer arma como ação livre |
+| 2 | +2 em Bukijutsu; +1 dado de dano da arma (1d6 vira 2d6); num acerto crítico, faz um ataque bônus (uma vez por turno) |
+| 3 | +3 em Bukijutsu; +2 dados de dano da arma (total) |
 
 ### Especialização: Selamento (Fuuinjutsu) {#especializacao-selamento-fuuinjutsu}
 
@@ -104,17 +104,17 @@ Todo personagem começa com 1 Especialização no nível 1, na criação. Ganha 
 
 | Nível | Benefício |
 | - | - |
-| 1 | Dano desarmado 1d8; +1 nas rolagens de Taijutsu; +10 PE máximos; libera os Portões 2 e 3 (cap. 16) |
-| 2 | Dano desarmado 1d10; +20 PE máximos (total); libera os Portões 4 e 5 |
-| 3 | Dano desarmado 1d12; +2 nas rolagens de Taijutsu; libera os Portões 6 a 8 |
+| 1 | Dano desarmado 1d8; +1 em Taijutsu; +10 PE máximos; libera os Portões 2 e 3 (cap. 16) |
+| 2 | Dano desarmado 1d10; +2 em Taijutsu; +20 PE máximos (total); libera os Portões 4 e 5 |
+| 3 | Dano desarmado 1d12; +3 em Taijutsu; libera os Portões 6 a 8 |
 
 ### Especialização: Marionete (Kugutsu) {#especializacao-marionete-kugutsu}
 
 | Nível | Benefício |
 | - | - |
-| 1 | Controla 1 marionete em combate; +3 em testes de manipulação fina; saca os fios como ação livre |
-| 2 | Controla 2 marionetes ao mesmo tempo; +3 de dano com armas embutidas; saca a 2ª marionete como ação livre |
-| 3 | Controla até 10 marionetes (2 PC por turno cada); pode criar Hitokugutsu (cap. 13) |
+| 1 | +1 em Kugutsu; controla 1 marionete em combate; +3 em testes de manipulação fina; saca os fios como ação livre |
+| 2 | +2 em Kugutsu; controla 2 marionetes ao mesmo tempo; +3 de dano com armas embutidas; saca a 2ª marionete como ação livre |
+| 3 | +3 em Kugutsu; controla até 10 marionetes (2 PC por turno cada); pode criar Hitokugutsu (cap. 13) |
 
 ### Especialização: Invocação (Kuchiyose) {#especializacao-invocacao-kuchiyose}
 

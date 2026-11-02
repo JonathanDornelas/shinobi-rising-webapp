@@ -39,7 +39,7 @@ Nenhum padrão. Mokuton (Liberação de Madeira) aparece em descendentes raríss
 | 9 | +1 VIG |
 | 10 | +3 PIC; Mil Técnicas |
 | 11 | Aprende 1 jutsu de Rank A, sem custo de PT |
-| 12 | +1 em Sobrevivência |
+| 12 | Treina Sobrevivência |
 | 13 | Regeneração Senju |
 | 14 | Pode combinar 2 elementos que domina em jutsus combinados (cap. 20, +5 PJ) |
 | 15 | +1 VIG; limite de VIG +9 |

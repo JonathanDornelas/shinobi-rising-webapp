@@ -8,6 +8,8 @@ import {
 	normalizarFicha,
 	orcamentoAtributos,
 	pontosPericia,
+	periciasDaCriacao,
+	periciasTreinadas,
 	ptDisponiveis,
 	recursos,
 	type ContextoCampanha,
@@ -42,7 +44,7 @@ function hana(): FichaDados {
 	f.atributos = { FOR: 0, AGI: 2, VIG: 1, INT: 2, CTR: 2, ESP: 1 };
 	f.vila = { id: 'konoha', escolha: 'acrobacia' };
 	f.cla = { tipo: 'catalogo', slug: 'nara', escolha: null };
-	f.pericias = { ninjutsu: 3, investigacao: 2, acrobacia: 2, percepcao: 1, furtividade: 2, bukijutsu: 2 };
+	f.pericias = { ninjutsu: 1, percepcao: 1, furtividade: 1, bukijutsu: 1 };
 	f.proficiencias = [
 		{ tipo: 'jutsu', alvo: 'kage-mane-no-jutsu', nivel: 2 },
 		{ tipo: 'arma', alvo: 'Kunai', nivel: 1 }
@@ -51,7 +53,7 @@ function hana(): FichaDados {
 	f.elemento = 'doton';
 	f.jutsus = { E: ['kai', 'konoha-reppuu'], D: ['doryuuheki'] };
 	f.equipamento.pacote = 'A';
-	f.background = { id: 'estudioso', escolha: null, proprio: { nome: '', pericia: null, traco: '' } };
+	f.background = { id: 'atleta', escolha: null, proprio: { nome: '', pericia: null, traco: '' } };
 	return f;
 }
 
@@ -96,8 +98,8 @@ describe('recursos (cap. 6, Passo 8)', () => {
 	it('defesa usa a Acrobacia total; carga e ryo do Pacote B', () => {
 		const f = hana();
 		const acro = linhasPericia(f).find((p) => p.id === 'acrobacia')!;
-		expect(acro.total).toBe(2 + 1 + 2); // treino + Konoha (escolha) + AGI
-		expect(recursos(f).defesa).toBe(10 + 5);
+		expect(acro.total).toBe(2 + 2); // treinada por Konoha (escolha) + AGI
+		expect(recursos(f).defesa).toBe(10 + 4);
 		f.equipamento = { pacote: 'B', compras: [{ id: 'arma-kunai', qtd: 12 }, { id: 'arma-katana-espada', qtd: 1 }] };
 		const r = recursos(f, loja);
 		expect(r.ryo).toBe(14000 - 3600 - 5000);
@@ -106,18 +108,37 @@ describe('recursos (cap. 6, Passo 8)', () => {
 });
 
 describe('perícias e proficiências (cap. 3 e 6)', () => {
-	it('sem clã ganha +2 pontos de perícia e +5 PT', () => {
+	it('sem clã treina mais 1 perícia e ganha +5 PT', () => {
 		const f = hana();
 		f.cla = { tipo: 'sem', slug: null, escolha: null };
-		expect(pontosPericia(f).limite).toBe(14);
+		expect(pontosPericia(f).limite).toBe(5);
 		expect(ptDisponiveis(f).total).toBe(9);
 	});
-	it('bônus de vila, clã e background somam e o valor para em +5', () => {
+	it('treinada vale +2; vila, clã e background treinam as perícias deles', () => {
 		const f = hana();
-		f.pericias.investigacao = 3;
-		const inv = linhasPericia(f).find((p) => p.id === 'investigacao')!;
-		expect(inv.bonus.map((b) => b.fonte).sort()).toEqual(['Estudioso', 'Nara']);
-		expect(inv.valor).toBe(5);
+		const l = (id: string) => linhasPericia(f).find((p) => p.id === id)!;
+		expect(l('ninjutsu')).toMatchObject({ treino: 2, valor: 2, total: 2 + 2, fontes: ['Criação'] });
+		expect(l('investigacao')).toMatchObject({ treino: 2, fontes: ['Nara'] });
+		expect(l('persuasao').fontes).toEqual(['Konohagakure'.replace(/gakure$/, '')]);
+		expect(l('medicina')).toMatchObject({ treino: 0, valor: 0 });
+	});
+	it('bônus que repete uma perícia treinada deixa uma por escolher; a correção a preenche', () => {
+		const f = hana();
+		f.background = { id: 'estudioso', escolha: null, proprio: { nome: '', pericia: null, traco: '' } };
+		expect(periciasTreinadas(f)).toMatchObject({ faltam: 1, repetidas: [{ fonte: 'Estudioso', pericia: 'investigacao' }] });
+		f.correcaoPericias = ['medicina'];
+		expect(periciasTreinadas(f).faltam).toBe(0);
+		expect(linhasPericia(f).find((p) => p.id === 'medicina')).toMatchObject({ treino: 2, fontes: ['Correção'] });
+	});
+	it('ficha da regra antiga (pontos até +3): ficam treinadas as 4 de mais pontos', () => {
+		const f = hana();
+		f.pericias = { ninjutsu: 3, investigacao: 2, acrobacia: 2, percepcao: 1, furtividade: 2, bukijutsu: 2 };
+		expect(periciasDaCriacao(f)).toEqual(['ninjutsu', 'acrobacia', 'bukijutsu', 'furtividade']);
+	});
+	it('a especialização de combate soma +1, +2 e +3 na perícia dela', () => {
+		const f = hana();
+		f.especializacao = 'ninjutsu';
+		expect(linhasPericia(f).find((p) => p.id === 'ninjutsu')!.valor).toBe(2 + 1);
 	});
 	it('categoria de arma custa 1 PT a mais por nível', () => {
 		const f = hana();
@@ -135,7 +156,7 @@ describe('revisão (cap. 6, Passo 12)', () => {
 	it('ficha vazia bloqueia nos passos certos', () => {
 		const a = analisar(fichaVazia(), ctx, { jutsusD, loja });
 		const passos = new Set(a.verificacoes.filter((v) => v.nivel === 'bloqueio').map((v) => v.passo));
-		expect([...passos].sort((x, y) => x - y)).toEqual([1, 3, 4, 7, 9, 10, 11]);
+		expect([...passos].sort((x, y) => x - y)).toEqual([1, 3, 4, 5, 7, 9, 10, 11]);
 	});
 	it('jutsu D de outro elemento, clã fora da campanha e pacote não liberado bloqueiam', () => {
 		const f = hana();

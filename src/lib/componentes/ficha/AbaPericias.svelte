@@ -1,5 +1,6 @@
 <script lang="ts">
-	// P3 · Perícias (somente leitura: mudam ao subir de nível) e proficiências com os pips de nível (CMP-15).
+	// P3 · Perícias (treinada: +2; mudam ao subir de nível) e proficiências com os pips de nível (CMP-15). Na ficha da
+	// regra antiga, o aviso de correção deixa escolher as perícias que um bônus repetido deixou de treinar.
 	import { NIVEIS_PROFICIENCIA, TIPOS_PROFICIENCIA, custoProficiencia } from '#lib/personagem/dados.ts';
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
 	import { rotuloAlvo } from '#lib/personagem/progressao.ts';
@@ -9,6 +10,7 @@
 	import { partesPericia } from '#lib/rolagens/partes.ts';
 	import Icone from '../ui/Icone.svelte';
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
+	import CorrecaoPericias from './CorrecaoPericias.svelte';
 
 	let { f }: { f: FichaJogo } = $props();
 	// com a KKG ligada, o bônus dela entra como mais um bônus da linha (Percepção do Byakugan e do Sharingan)
@@ -16,10 +18,11 @@
 	const profs = $derived(f.calc.proficiencias);
 </script>
 
+<CorrecaoPericias {f} />
 <div class="grid items-start gap-5 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
 	<div class="painel-sombra" role="table" aria-label="Perícias">
 		<div role="row" class="grid {f.editavel ? 'grid-cols-[minmax(0,1fr)_44px_104px]' : 'grid-cols-[minmax(0,1fr)_44px_64px]'} gap-2 bg-vermelhao px-3.5 py-2.5 md:gap-3 font-pixel text-xs leading-4 font-bold tracking-[0.08em] text-white {f.editavel ? 'md:grid-cols-[minmax(0,1fr)_88px_64px_minmax(0,1.1fr)_112px]' : 'md:grid-cols-[minmax(0,1fr)_88px_64px_minmax(0,1.1fr)_64px]'}">
-			<span role="columnheader">PERÍCIA</span><span role="columnheader" class="max-md:hidden">ATRIB.</span><span role="columnheader">TREINO</span><span role="columnheader" class="max-md:hidden">BÔNUS</span><span role="columnheader" class="text-right">TOTAL</span>
+			<span role="columnheader">PERÍCIA</span><span role="columnheader" class="max-md:hidden">ATRIB.</span><span role="columnheader">TREINO</span><span role="columnheader" class="max-md:hidden">TREINADA POR</span><span role="columnheader" class="text-right">TOTAL</span>
 		</div>
 		{#each linhas as p, i (p.id)}
 			<div role="row" class="grid {f.editavel ? 'grid-cols-[minmax(0,1fr)_44px_104px]' : 'grid-cols-[minmax(0,1fr)_44px_64px]'} items-center gap-2 px-3.5 py-0.5 md:gap-3 {f.editavel ? 'md:grid-cols-[minmax(0,1fr)_88px_64px_minmax(0,1.1fr)_112px]' : 'md:grid-cols-[minmax(0,1fr)_88px_64px_minmax(0,1.1fr)_64px]'}" style:background={i % 2 ? 'var(--b1)' : 'var(--b2)'}>
@@ -29,7 +32,8 @@
 				<span role="cell" class="justify-self-start border-2 border-b3 px-1.5 py-1 font-pixel text-xs leading-none font-semibold max-md:hidden">{p.atributo} {sinal(p.valorAtributo)}{#if p.distancia}<br /><span class="text-mut">{p.distancia.atributo} {sinal(p.distancia.valor)}</span>{/if}</span>
 				<span role="cell" class="t-num text-base text-mut">+{p.treino}</span>
 				<div role="cell" class="flex flex-wrap gap-1 max-md:hidden">
-					{#each p.bonus as b, j (j)}<span class="border-2 border-[rgba(217,168,43,.5)] bg-[rgba(217,168,43,.14)] px-1.5 py-1 text-xs leading-none font-semibold">{b.fonte} +{b.valor}</span>{/each}
+					{#each p.fontes as fonte (fonte)}<span class="border-2 border-[rgba(217,168,43,.5)] bg-[rgba(217,168,43,.14)] px-1.5 py-1 text-xs leading-none font-semibold">{fonte}</span>{/each}
+					{#each p.bonus as b, j (j)}<span class="border-2 border-b3 px-1.5 py-1 text-xs leading-none font-semibold">{b.fonte} +{b.valor}</span>{/each}
 				</div>
 				<span role="cell" class="flex flex-col items-end gap-1 py-1">
 					<span class="flex items-center gap-2"><span class="t-num text-2xl leading-none">{sinal(p.total)}</span>{#if f.editavel}<BotaoRolar class="w-9" expressao={teste(p.total)} rotulo="Perícia · {p.nome}" personagem={f.id} d20 tipo="teste" origem="Ficha · Perícias" partes={partesPericia(p)} />{/if}</span>

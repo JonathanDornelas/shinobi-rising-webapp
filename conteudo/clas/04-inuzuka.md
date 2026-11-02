@@ -18,7 +18,7 @@ Lealdade absoluta. O cão e o ninja são um — feri-lo é ferir o outro. Os Inu
 #### Bônus Hereditário {#bonus-hereditario}
 
 - +1 AGI (limite de criação +5).
-- +1 em Rastreamento ou Percepção.
+- Treina Rastreamento ou Percepção.
 - Cão ninja hereditário (ver Companheiros).
 
 #### Kekkei Genkai {#kekkei-genkai}
@@ -40,7 +40,7 @@ Nenhum, mas o vínculo simbiótico com o cão é hereditário e sobrenatural.
 | 9 | +1 AGI |
 | 10 | +3 PIC; Garouga (Presa de Lobo Sobre Presa) |
 | 11 | Gatenga (Presas Rotativas) |
-| 12 | +1 em Rastreamento ou Percepção |
+| 12 | Treina Rastreamento ou Percepção |
 | 13 | Inuzuka Ryu no Kizuna (Vínculo da Matilha) |
 | 14 | Jinjuu Kongou Henge — Santourou (Lobo de Três Cabeças) |
 | 15 | +1 AGI; limite de AGI +9 |

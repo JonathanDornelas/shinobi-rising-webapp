@@ -4,7 +4,7 @@
 /** Componente 1 · compras com Pontos de Bônus. `max`: quantas vezes dá para comprar; `alvo`: o que o jogador escolhe. */
 export const COMPRAS_PB = [
 	{ id: 'atributo', nome: '+1 em um atributo', nota: 'Limite de criação +5 nesse atributo', pb: 2, max: 1, alvo: 'atributo' },
-	{ id: 'pericia', nome: '+1 em uma perícia', pb: 1, max: 15, alvo: 'pericia' },
+	{ id: 'pericia', nome: 'Treina uma perícia', pb: 1, max: 15, alvo: 'pericia' },
 	{ id: 'pv', nome: '+5 PV iniciais', pb: 1, max: 4 },
 	{ id: 'pc', nome: '+5 PC iniciais', pb: 1, max: 4 },
 	{ id: 'pt', nome: '+2 PT iniciais', pb: 1, max: 4 },

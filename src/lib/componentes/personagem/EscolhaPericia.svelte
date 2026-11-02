@@ -1,5 +1,5 @@
 <script lang="ts">
-	// Escolha da perícia de um bônus "+1 em uma perícia à escolha" (vila, clã ou background).
+	// Escolha da perícia de um bônus "treina uma perícia à escolha" (vila, clã ou background).
 	import { PERICIAS, type Pericia } from '#lib/personagem/dados.ts';
 
 	interface Props {

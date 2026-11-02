@@ -18,7 +18,7 @@ Observação sem julgamento. Os Aburame falam pouco e calculam muito. Para eles,
 #### Bônus Hereditário {#bonus-hereditario}
 
 - +1 INT (limite de criação +5).
-- +1 em Furtividade.
+- Treina Furtividade.
 - Colônia de kikaichū hereditária (ver Companheiros e Kikaichū no Jutsu).
 
 #### Kekkei Genkai {#kekkei-genkai}
@@ -40,7 +40,7 @@ Nenhum (hiden): a simbiose com os insetos é uma técnica secreta hereditária, 
 | 9 | +1 INT |
 | 10 | +3 PIC; Mushi Jamingu no Jutsu (Técnica de Encravamento de Inseto) |
 | 11 | Kidaichū: Mushikui (Inseto Parasita Gigante — Mordida de Inseto) |
-| 12 | +1 em Furtividade |
+| 12 | Treina Furtividade |
 | 13 | Kairyō Shu (Subespécie Personalizada) |
 | 14 | Hijutsu: Mushitatsumaki (Tornado de Insetos) |
 | 15 | +1 INT; limite de INT +9 |

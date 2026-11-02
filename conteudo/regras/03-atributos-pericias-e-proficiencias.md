@@ -39,7 +39,7 @@ Todo personagem tem seis atributos. Eles começam modestos e sobem com o tempo, 
 
 ## Perícias {#pericias}
 
-Se os atributos são o talento, as perícias são o treino: aquilo que o ninja aprendeu a fazer. Cada perícia tem um bônus, positivo ou negativo, e está ligada a um atributo principal.
+Se os atributos são o talento, as perícias são o treino: aquilo que o ninja aprendeu a fazer. Cada perícia está ligada a um atributo principal, e o ninja que a treinou soma +2 a ela.
 
 | Perícia | Atributo | Função Principal |
 | - | - | - |
@@ -59,13 +59,16 @@ Se os atributos são o talento, as perícias são o treino: aquilo que o ninja a
 | Sobrevivência | VIG | Caçar, encontrar abrigo, suportar o clima |
 | Taijutsu | FOR | Combate corpo a corpo desarmado |
 
-O valor total de uma perícia junta as duas coisas: o bônus da própria perícia, que mede o treino, e o bônus do atributo ligado a ela, que mede a aptidão natural. Um personagem com Força +2 e +3 de treino em Taijutsu tem Taijutsu +5. Outro, com Vigor -1 e +1 em Sobrevivência, fica com Sobrevivência 0.
+O valor total de uma perícia junta duas coisas: o atributo ligado a ela, que mede a aptidão natural, e o treino. Uma perícia treinada soma +2; sem treino, conta só o atributo. Um personagem com Força +2 e treinado em Taijutsu tem Taijutsu +4. Outro, com Vigor -1 e sem treino em Sobrevivência, fica com Sobrevivência -1.
+
+Na criação, você escolhe quatro perícias para treinar. A vila, o clã e o background treinam outras, e cada marco que fala de uma perícia também a treina. Quando um desses bônus cai numa perícia que você já treinou, ele não soma de novo: você escolhe outra perícia para treinar no lugar. Ao subir de nível, o ninja treina uma perícia nova nos níveis 5, 9, 13 e 17. Daí em diante, quem cresce no ataque é quem se especializa: as especializações de combate somam +1, +2 e +3 na perícia delas (cap. 19).
 
 :::na-mesa{titulo="Perícias"}
-- **Valor total:** bônus da perícia + bônus do atributo ligado
-- **Treino na criação:** até +3
-- **Treino máximo:** +5
-- **Clã, vila e background:** podem passar do limite em até +2
+- **Valor total:** bônus do atributo ligado, +2 se treinada
+- **Na criação:** 4 perícias treinadas (5 sem clã)
+- **Vila, clã, background e marcos:** treinam as perícias deles; se já era treinada, escolha outra
+- **Ao subir de nível:** uma perícia treinada nova nos níveis 5, 9, 13 e 17
+- **Especializações de combate:** +1, +2 e +3 na perícia (cap. 19)
 :::
 
 ## Sistema de Proficiência {#sistema-de-proficiencia}
@@ -135,7 +138,7 @@ Um personagem novo começa com 4 PT na criação (Passo 6, cap. 6). Dá para esp
 :::
 
 :::exemplo{titulo="Sasuke e Tenten"}
-Sasuke tem CTR +4 e treinou Ninjutsu até +3, o que dá Ninjutsu +7. Numa temporada de descanso, gastou 3 PT para ficar Treinado (+2) no Goukakyu, a Grande Bola de Fogo. Como o Goukakyu é um jutsu de área, quem rola são os alvos: Acrobacia contra a DT do Jutsu, que fica em 16 (10 de base, 2 do rank C, 4 do CTR e 2 da proficiência). E o jutsu passa a custar 8 PC em vez de 9, pelo benefício fixo.
+Sasuke tem CTR +4 e é treinado em Ninjutsu, o que dá Ninjutsu +6. Numa temporada de descanso, gastou 3 PT para ficar Treinado (+2) no Goukakyu, a Grande Bola de Fogo. Como o Goukakyu é um jutsu de área, quem rola são os alvos: Acrobacia contra a DT do Jutsu, que fica em 16 (10 de base, 2 do rank C, 4 do CTR e 2 da proficiência). E o jutsu passa a custar 8 PC em vez de 9, pelo benefício fixo.
 
 Tenten investiu 10 PT, em anos de treino, para virar Mestre em Kunai (+4). Ao atacar com kunai, ela rola 1d20 + Bukijutsu + 4, e cada kunai causa +1 de dano. Se perder as kunai e tiver de usar shuriken, perde tudo isso até voltar a empunhar uma kunai. Das cinco vagas de proficiência, Tenten ocupou uma; ainda pode treinar mais quatro.
 :::

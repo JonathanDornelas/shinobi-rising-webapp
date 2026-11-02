@@ -59,7 +59,7 @@ Todo nível novo traz alguma coisa, e alguns trazem bem mais que outros.
 | - | - |
 | Recursos | +5 PV, +3 PC e +3 PE |
 | Atributos | +1 ponto de atributo nos níveis 3, 6, 9, 12, 15 e 18 (limite +8; o atributo do clã pode chegar a +10 pelos marcos) |
-| Perícias | +1 ponto de perícia nos níveis 4, 7, 10, 13, 16 e 19 (limite de treino +5) |
+| Perícias | Uma perícia treinada nova nos níveis 5, 9, 13 e 17 (+2 nela) |
 | Treino | +3 PT (Pontos de Treino) |
 | Especializações | Nos níveis 4, 7, 10, 13, 16 e 19, 1 Especialização nova (até 7 no total) |
 | Marcos do Clã | Liberados nos níveis definidos pela ficha do clã (cap. 8.3) |

@@ -39,14 +39,16 @@ export const CRIACAO = {
 	atributoMax: 4,
 	atributoMin: -2,
 	reducoesMax: 2,
-	pontosPericia: 12,
-	periciaTreinoMax: 3,
-	/** Clã, vila e background podem passar o treino em até +2 (cap. 3). */
-	periciaBonusMax: 5,
+	/** Perícias treinadas na criação (cap. 3): cada uma dá +2. Clã, vila e background treinam outras. */
+	periciasTreinadas: 4,
 	ptIniciais: 4,
 	proficienciasMax: 5,
-	semCla: { pericia: 2, pt: 5 }
+	/** Sem clã: mais 1 perícia treinada e +5 PT (cap. 8.4). */
+	semCla: { pericia: 1, pt: 5 }
 } as const;
+
+/** O bônus de uma perícia treinada (cap. 3), o mesmo do nível 1 ao 20; as especializações somam por cima. */
+export const BONUS_TREINADA = 2;
 
 /** Cap. 8.4: quem não tem clã ganha +2 perícia e +5 PT; cap. 6 Passo 8: recursos por soma. */
 export const RECURSOS = { pvBase: 20, peBase: 20, pcBase: 30, porVig: 5, porChakra: 4, cargaBase: 10, cargaPorFor: 2 } as const;
@@ -55,15 +57,15 @@ export type Ganho = { atributo?: Atributo; pericias?: Pericia[]; escolhaPericia?
 
 /** Cap. 7 · Vilas Ocultas. */
 export const VILAS: { id: string; nome: string; elemento: string; foco: string; bonus: string; ganho: Ganho; traco?: string }[] = [
-	{ id: 'konoha', nome: 'Konohagakure', elemento: 'País do Fogo', foco: 'Trabalho em equipe e versatilidade', bonus: '+1 Persuasão · +1 em uma perícia à escolha', ganho: { pericias: ['persuasao'], escolhaPericia: 'qualquer' } },
-	{ id: 'suna', nome: 'Sunagakure', elemento: 'País do Vento', foco: 'Marionetes e venenos', bonus: '+1 Sobrevivência · vantagem contra veneno', ganho: { pericias: ['sobrevivencia'] }, traco: 'Vantagem em Resistências contra veneno' },
-	{ id: 'kiri', nome: 'Kirigakure', elemento: 'País da Água', foco: 'Assassinato e Bukijutsu silencioso', bonus: '+1 Furtividade · +1 Bukijutsu', ganho: { pericias: ['furtividade', 'bukijutsu'] } },
-	{ id: 'kumo', nome: 'Kumogakure', elemento: 'País do Raio', foco: 'Velocidade e Bukijutsu pesado', bonus: '+1 Atletismo · +5 PV', ganho: { pericias: ['atletismo'], pv: 5 } },
-	{ id: 'iwa', nome: 'Iwagakure', elemento: 'País da Terra', foco: 'Defesa e jutsus de longo alcance', bonus: '+1 Ninjutsu · +5 PV', ganho: { pericias: ['ninjutsu'], pv: 5 } },
-	{ id: 'ame', nome: 'Amegakure', elemento: '—', foco: 'Espionagem e jutsus de água', bonus: '+1 Investigação · +1 Furtividade', ganho: { pericias: ['investigacao', 'furtividade'] } },
-	{ id: 'taki', nome: 'Takigakure', elemento: '—', foco: 'Emboscadas e infiltração', bonus: '+1 Percepção · +1 Rastreamento', ganho: { pericias: ['percepcao', 'rastreamento'] } },
-	{ id: 'oto', nome: 'Otogakure', elemento: 'País do Arroz', foco: 'Pesquisa proibida e experimentação', bonus: '+1 Medicina · +1 Investigação', ganho: { pericias: ['medicina', 'investigacao'] } },
-	{ id: 'sem', nome: 'Sem vila', elemento: 'Errante / Renegado', foco: 'Liberdade e adaptação', bonus: '+1 Sobrevivência · +1 em uma perícia à escolha', ganho: { pericias: ['sobrevivencia'], escolhaPericia: 'qualquer' } }
+	{ id: 'konoha', nome: 'Konohagakure', elemento: 'País do Fogo', foco: 'Trabalho em equipe e versatilidade', bonus: 'Treina Persuasão e uma perícia à escolha', ganho: { pericias: ['persuasao'], escolhaPericia: 'qualquer' } },
+	{ id: 'suna', nome: 'Sunagakure', elemento: 'País do Vento', foco: 'Marionetes e venenos', bonus: 'Treina Sobrevivência; vantagem contra veneno', ganho: { pericias: ['sobrevivencia'] }, traco: 'Vantagem em Resistências contra veneno' },
+	{ id: 'kiri', nome: 'Kirigakure', elemento: 'País da Água', foco: 'Assassinato e Bukijutsu silencioso', bonus: 'Treina Furtividade e Bukijutsu', ganho: { pericias: ['furtividade', 'bukijutsu'] } },
+	{ id: 'kumo', nome: 'Kumogakure', elemento: 'País do Raio', foco: 'Velocidade e Bukijutsu pesado', bonus: 'Treina Atletismo; +5 PV', ganho: { pericias: ['atletismo'], pv: 5 } },
+	{ id: 'iwa', nome: 'Iwagakure', elemento: 'País da Terra', foco: 'Defesa e jutsus de longo alcance', bonus: 'Treina Ninjutsu; +5 PV', ganho: { pericias: ['ninjutsu'], pv: 5 } },
+	{ id: 'ame', nome: 'Amegakure', elemento: '—', foco: 'Espionagem e jutsus de água', bonus: 'Treina Investigação e Furtividade', ganho: { pericias: ['investigacao', 'furtividade'] } },
+	{ id: 'taki', nome: 'Takigakure', elemento: '—', foco: 'Emboscadas e infiltração', bonus: 'Treina Percepção e Rastreamento', ganho: { pericias: ['percepcao', 'rastreamento'] } },
+	{ id: 'oto', nome: 'Otogakure', elemento: 'País do Arroz', foco: 'Pesquisa proibida e experimentação', bonus: 'Treina Medicina e Investigação', ganho: { pericias: ['medicina', 'investigacao'] } },
+	{ id: 'sem', nome: 'Sem vila', elemento: 'Errante / Renegado', foco: 'Liberdade e adaptação', bonus: 'Treina Sobrevivência e uma perícia à escolha', ganho: { pericias: ['sobrevivencia'], escolhaPericia: 'qualquer' } }
 ];
 
 /** Cap. 8.3 · bônus de criação e marco do nível 1 de cada clã do catálogo. */
@@ -86,20 +88,20 @@ export const CLAS: Record<string, { ganho: Ganho; jutsus: string[]; marco: strin
 
 /** Cap. 6 · Passo 11. */
 export const BACKGROUNDS: { id: string; nome: string; bonus: string; traco: string; ganho: Ganho }[] = [
-	{ id: 'prodigio', nome: 'Prodígio', bonus: '+1 em uma perícia à escolha', traco: 'Recebeu elogios precoces; luta com expectativas pesadas.', ganho: { escolhaPericia: 'qualquer' } },
+	{ id: 'prodigio', nome: 'Prodígio', bonus: 'Treina uma perícia à escolha', traco: 'Recebeu elogios precoces; luta com expectativas pesadas.', ganho: { escolhaPericia: 'qualquer' } },
 	{ id: 'perdedor', nome: 'Perdedor (Underdog)', bonus: '+2 PT extras na criação', traco: 'Foi o último da turma; surpreende sob pressão.', ganho: { pt: 2 } },
 	{ id: 'determinado', nome: 'Determinado', bonus: '+1 em Resistências de VIG e em Saves de Morte', traco: 'Não desiste, mesmo quando deveria.', ganho: {} },
-	{ id: 'misterioso', nome: 'Misterioso', bonus: '+1 em Furtividade', traco: 'Pouco se sabe sobre seu passado.', ganho: { pericias: ['furtividade'] } },
+	{ id: 'misterioso', nome: 'Misterioso', bonus: 'Treina Furtividade', traco: 'Pouco se sabe sobre seu passado.', ganho: { pericias: ['furtividade'] } },
 	{ id: 'herdeiro', nome: 'Herdeiro', bonus: '+1 PIC por arco', traco: 'Sobrenome importante; responsabilidades familiares.', ganho: {} },
-	{ id: 'orfao', nome: 'Órfão da Guerra', bonus: '+1 em Taijutsu, Bukijutsu ou Ninjutsu', traco: 'Perdeu a família em conflito; maduro para a idade.', ganho: { escolhaPericia: ['taijutsu', 'bukijutsu', 'ninjutsu'] } },
-	{ id: 'veterano', nome: 'Veterano de Missão Trágica', bonus: '+1 em Percepção', traco: 'Sobreviveu a uma missão em que aliados morreram.', ganho: { pericias: ['percepcao'] } },
-	{ id: 'estudioso', nome: 'Estudioso', bonus: '+1 em Investigação', traco: 'Devorou pergaminhos antigos e técnicas raras.', ganho: { pericias: ['investigacao'] } },
-	{ id: 'carismatico', nome: 'Carismático', bonus: '+1 em Persuasão', traco: 'Líder informal; facilidade com palavras.', ganho: { pericias: ['persuasao'] } },
-	{ id: 'renegado', nome: 'Renegado em Reabilitação', bonus: '+1 em perícia de combate e +1 Furtividade; -1 PIC por arco', traco: 'Já foi renegado; carrega o estigma.', ganho: { pericias: ['furtividade'], escolhaPericia: ['taijutsu', 'bukijutsu', 'ninjutsu'] } },
-	{ id: 'fronteira', nome: 'Filho da Fronteira', bonus: '+1 em Sobrevivência', traco: 'Cresceu em vilarejo distante; rede de favores.', ganho: { pericias: ['sobrevivencia'] } },
-	{ id: 'atleta', nome: 'Atleta Marcial', bonus: '+1 em Atletismo', traco: 'Competidor nato; aceita desafios quase sempre.', ganho: { pericias: ['atletismo'] } },
-	{ id: 'tardio', nome: 'Aprendiz Tardio', bonus: '+1 em Investigação ou Medicina', traco: 'Entrou mais velho na Academia; maduro, subestimado.', ganho: { escolhaPericia: ['investigacao', 'medicina'] } },
-	{ id: 'medico', nome: 'Médico de Vilarejo', bonus: '+1 em Medicina', traco: 'Cura gente desde criança; evita matar.', ganho: { pericias: ['medicina'] } }
+	{ id: 'orfao', nome: 'Órfão da Guerra', bonus: 'Treina Taijutsu, Bukijutsu ou Ninjutsu', traco: 'Perdeu a família em conflito; maduro para a idade.', ganho: { escolhaPericia: ['taijutsu', 'bukijutsu', 'ninjutsu'] } },
+	{ id: 'veterano', nome: 'Veterano de Missão Trágica', bonus: 'Treina Percepção', traco: 'Sobreviveu a uma missão em que aliados morreram.', ganho: { pericias: ['percepcao'] } },
+	{ id: 'estudioso', nome: 'Estudioso', bonus: 'Treina Investigação', traco: 'Devorou pergaminhos antigos e técnicas raras.', ganho: { pericias: ['investigacao'] } },
+	{ id: 'carismatico', nome: 'Carismático', bonus: 'Treina Persuasão', traco: 'Líder informal; facilidade com palavras.', ganho: { pericias: ['persuasao'] } },
+	{ id: 'renegado', nome: 'Renegado em Reabilitação', bonus: 'Treina uma perícia de combate e Furtividade; -1 PIC por arco', traco: 'Já foi renegado; carrega o estigma.', ganho: { pericias: ['furtividade'], escolhaPericia: ['taijutsu', 'bukijutsu', 'ninjutsu'] } },
+	{ id: 'fronteira', nome: 'Filho da Fronteira', bonus: 'Treina Sobrevivência', traco: 'Cresceu em vilarejo distante; rede de favores.', ganho: { pericias: ['sobrevivencia'] } },
+	{ id: 'atleta', nome: 'Atleta Marcial', bonus: 'Treina Atletismo', traco: 'Competidor nato; aceita desafios quase sempre.', ganho: { pericias: ['atletismo'] } },
+	{ id: 'tardio', nome: 'Aprendiz Tardio', bonus: 'Treina Investigação ou Medicina', traco: 'Entrou mais velho na Academia; maduro, subestimado.', ganho: { escolhaPericia: ['investigacao', 'medicina'] } },
+	{ id: 'medico', nome: 'Médico de Vilarejo', bonus: 'Treina Medicina', traco: 'Cura gente desde criança; evita matar.', ganho: { pericias: ['medicina'] } }
 ];
 
 /** Valor por nível da especialização (índice 0 = nível 1); os totais do livro já substituem os anteriores. */
@@ -123,13 +125,13 @@ export const ESPECIALIZACOES: Record<string, EfeitoEspecializacao> = {
 	elemento: { slug: 'especializacao-elemento-especifico-katon-suiton-etc', reducao: { valores: [2, 2, 3], alvo: 'elemento' }, escolheElemento: true },
 	velocidade: { slug: 'especializacao-velocidade', recursos: { iniciativa: [2, 2, 4] }, pericias: { acrobacia: [0, 2, 2], atletismo: [0, 2, 2] } },
 	resistencia: { slug: 'especializacao-resistencia-fisica', recursos: { pv: [10, 20, 30], rd: [1, 3, 5] } },
-	genjutsu: { slug: 'especializacao-genjutsu', reducao: { valores: [1, 2, 2], alvo: 'Genjutsu' } },
-	ninjutsu: { slug: 'especializacao-ninjutsu', reducao: { valores: [1, 2, 2], alvo: 'Ninjutsu' } },
-	bukijutsu: { slug: 'especializacao-bukijutsu' },
+	genjutsu: { slug: 'especializacao-genjutsu', reducao: { valores: [1, 2, 2], alvo: 'Genjutsu' }, pericias: { genjutsu: [1, 2, 3] } },
+	ninjutsu: { slug: 'especializacao-ninjutsu', reducao: { valores: [1, 2, 2], alvo: 'Ninjutsu' }, pericias: { ninjutsu: [1, 2, 3] } },
+	bukijutsu: { slug: 'especializacao-bukijutsu', pericias: { bukijutsu: [1, 2, 3] } },
 	selamento: { slug: 'especializacao-selamento-fuuinjutsu', reducao: { valores: [2, 3, 5], alvo: 'Fuuinjutsu' }, pericias: { selamento: [1, 2, 3] } },
 	furtividade: { slug: 'especializacao-furtividade-e-assassinato', pericias: { furtividade: [1, 2, 3] } },
-	taijutsu: { slug: 'especializacao-taijutsu', recursos: { pe: [10, 20, 20] } },
-	marionete: { slug: 'especializacao-marionete-kugutsu', pacoteMarionete: true },
+	taijutsu: { slug: 'especializacao-taijutsu', recursos: { pe: [10, 20, 20] }, pericias: { taijutsu: [1, 2, 3] } },
+	marionete: { slug: 'especializacao-marionete-kugutsu', pacoteMarionete: true, pericias: { kugutsu: [1, 2, 3] } },
 	invocacao: { slug: 'especializacao-invocacao-kuchiyose' },
 	sensor: { slug: 'especializacao-sensor-de-chakra' },
 	medico: { slug: 'especializacao-ninjutsu-medico', pericias: { medicina: [1, 1, 1] } },
@@ -140,10 +142,10 @@ export const ESPECIALIZACOES: Record<string, EfeitoEspecializacao> = {
 export const PROGRESSAO = {
 	porNivel: { pv: 5, pc: 3, pe: 3, pt: 3 },
 	niveisAtributo: [3, 6, 9, 12, 15, 18],
-	niveisPericia: [4, 7, 10, 13, 16, 19],
+	/** Uma perícia treinada nova a cada 4 níveis (cap. 17). */
+	niveisPericia: [5, 9, 13, 17],
 	niveisEspecializacao: [4, 7, 10, 13, 16, 19],
 	atributoMax: 8,
-	periciaTreinoMax: 5,
 	rankPorNivel: { B: 6, A: 11, S: 15 } as Record<string, number>,
 	xp: [0, 200, 500, 1000, 1800, 3000, 5000, 8000, 12000, 18000, 26000, 36000, 48000, 62000, 78000, 96000, 116000, 138000, 162000, 188000]
 } as const;

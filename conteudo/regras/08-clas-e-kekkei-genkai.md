@@ -182,7 +182,7 @@ O clã tem 3 Pontos de Bônus (PB) para gastar em vantagens do sangue.
 | Bônus | Custo (PB) |
 | - | - |
 | +1 em um atributo (limite de criação +5) | 2 |
-| +1 em uma perícia | 1 |
+| Treina uma perícia | 1 |
 | +5 PV iniciais | 1 |
 | +5 PC iniciais | 1 |
 | +2 PT iniciais | 1 |
@@ -320,7 +320,7 @@ A conta é simples: você tem 5 PKG, mais o que as limitações devolvem, e o qu
 :::exemplo{titulo="Dois clãs criados"}
 **Kasai Joushou, com KKG elemental.** Um clã pequeno de Iwagakure que combina Fogo e Vento em brasas voadoras. É temido, visto como um bando de pirômanos. O Bônus Hereditário (3 PB) vai em +1 CTR (2 PB) e +1 em Sobrevivência (1 PB). A KKG gasta 11 PKG: a combinação de Fogo e Vento (5), um jutsu exclusivo de rank B (4) e resistência a fogo (2). As limitações devolvem 6: custo de 10 PC por turno (2), cegueira temporária (2) e vulnerabilidade à água (2). Com os 5 PKG de base, a conta fecha em equilíbrio: 11 gastos, 5 + 6 disponíveis.
 
-**Tsuki no Mai, sem KKG.** Dançarinos-assassinos com leques de guerra. Sem KKG, o Bônus Hereditário sobe para 4 PB: +1 AGI (2), +1 em Acrobacia (1) e +1 em Furtividade (1). O jutsu assinatura é o Tsukikage no Mai, seguido de quatro jutsus de vento e furtividade. Nos marcos, no nível 4, ganham +5 em Furtividade automaticamente nas noites de lua cheia; no nível 7, podem dançar até entrar num transe que recupera PC. É um clã estabelecido (3 PIC) da Vila da Cachoeira.
+**Tsuki no Mai, sem KKG.** Dançarinos-assassinos com leques de guerra. Sem KKG, o Bônus Hereditário sobe para 4 PB: +1 AGI (2), treina Acrobacia (1) e treina Furtividade (1). O jutsu assinatura é o Tsukikage no Mai, seguido de quatro jutsus de vento e furtividade. Nos marcos, no nível 4, ganham +5 em Furtividade automaticamente nas noites de lua cheia; no nível 7, podem dançar até entrar num transe que recupera PC. É um clã estabelecido (3 PIC) da Vila da Cachoeira.
 :::
 
 ### Sistema de Dōjutsu (Olhos Especiais) {#sistema-de-dojutsu-olhos-especiais}

@@ -71,11 +71,11 @@ export function lerMarco(texto: string, jutsusDoCla: JutsuNome[]): GanhoMarco & 
 		else if ((m = /limite de (FOR|AGI|VIG|INT|CTR|ESP) \+(\d+)/.exec(parte))) g.limites = { ...g.limites, [m[1]]: Number(m[2]) };
 		else if ((m = /^\+(\d+) PT$/.exec(parte))) g.pt = (g.pt ?? 0) + Number(m[1]);
 		else if ((m = /^\+(\d+) PIC$/.exec(parte))) g.pic = (g.pic ?? 0) + Number(m[1]);
-		else if ((m = /^\+1 em ([^;]+?) ou ([^;]+)$/.exec(parte))) {
+		else if ((m = /^(?:\+1 em|Treina) ([^;]+?) ou ([^;]+)$/.exec(parte))) {
 			const a = porNome(m[1]);
 			const b = porNome(m[2]);
 			if (a && b) g.escolhaPericia = [a, b];
-		} else if ((m = /^\+1 em ([^;]+)$/.exec(parte))) {
+		} else if ((m = /^(?:\+1 em|Treina) ([^;]+)$/.exec(parte))) {
 			const p = porNome(m[1]);
 			if (p) g.pericias = [...(g.pericias ?? []), p];
 		}
@@ -129,10 +129,12 @@ export function atributosLivres(f: FichaDados): Atributo[] {
 }
 
 /** Perícias com treino abaixo de +5. */
-export const periciasLivres = (f: FichaDados): Pericia[] => PERICIAS.map((p) => p.id).filter((p) => treinoPericia(f, p) < PROGRESSAO.periciaTreinoMax);
+/** As perícias que um nível pode treinar: as que ainda não são treinadas. */
+export const periciasLivres = (f: FichaDados): Pericia[] => PERICIAS.map((p) => p.id).filter((p) => !treinoPericia(f, p));
 
 export function aplicarNivel(f: FichaDados, escolha: EscolhaNivel, treinoElemento?: string | null): FichaDados {
-	const nova: FichaDados = structuredClone(f);
+	// cópia por JSON: os dados da ficha em jogo são reativos (proxy do Svelte), que o structuredClone não copia
+	const nova: FichaDados = JSON.parse(JSON.stringify(f));
 	nova.progresso.niveis.push(escolha);
 	if (treinoElemento) nova.progresso.treinos.push({ tipo: 'elemento', id: treinoElemento, pt: CUSTO_ELEMENTO[elementos(f).length + 1]?.pt ?? 10 });
 	return nova;
@@ -300,7 +302,8 @@ export function opcoesTreino(f: FichaDados, jutsus: JutsuFicha[], nomeEsp: (id: 
 
 /** Aplica os treinos do carrinho; dois do mesmo alvo no carrinho não fazem sentido e são ignorados. */
 export function aplicarTreinos(f: FichaDados, treinos: Treino[]): FichaDados {
-	const nova: FichaDados = structuredClone(f);
+	// cópia por JSON: os dados da ficha em jogo são reativos (proxy do Svelte), que o structuredClone não copia
+	const nova: FichaDados = JSON.parse(JSON.stringify(f));
 	nova.progresso.treinos.push(...treinos);
 	return nova;
 }

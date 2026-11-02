@@ -22,7 +22,7 @@
 	<div class="painel flex flex-col items-center gap-2 p-8 text-center">
 		<Icone id="vila/ic-vila-sem" tamanho={64} />
 		<span class="text-[15px] font-semibold">{f.dados.cla.tipo === 'sem' ? 'Sem clã' : 'Clã personalizado'}</span>
-		<span class="text-sm text-mut">{f.dados.cla.tipo === 'sem' ? 'Quem não tem clã ganhou +2 pontos de perícia e +5 PT na criação.' : 'O clã criado desta ficha não está disponível para você.'}</span>
+		<span class="text-sm text-mut">{f.dados.cla.tipo === 'sem' ? 'Quem não tem clã treinou mais uma perícia e ganhou +5 PT na criação.' : 'O clã criado desta ficha não está disponível para você.'}</span>
 	</div>
 {:else}
 	<div class="grid items-start gap-5 lg:grid-cols-2">

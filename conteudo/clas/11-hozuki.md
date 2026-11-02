@@ -18,7 +18,7 @@ Fluidez antes de tudo. Os Hozuki creem que rigidez — moral, física, mental �
 #### Bônus Hereditário {#bonus-hereditario}
 
 - +1 AGI (limite de criação +5).
-- +1 em Sobrevivência (precisa beber muita água, mas não desidrata facilmente).
+- Treina Sobrevivência (precisa beber muita água, mas não desidrata facilmente).
 
 #### Kekkei Genkai — Suika no Jutsu (Hidratação) {#kekkei-genkai-suika-no-jutsu-hidratacao}
 
@@ -43,7 +43,7 @@ O usuário pode liquefazer parte ou todo o próprio corpo, virando água viva te
 | 9 | +1 AGI |
 | 10 | +3 PIC; Suiton: Tate Eboshi |
 | 11 | Suiton: Bolha Afogadora |
-| 12 | +1 em Sobrevivência |
+| 12 | Treina Sobrevivência |
 | 13 | Maestria da Hidratação |
 | 14 | Jōki Bōi (Tirania Fumegante Perigosa) |
 | 15 | +1 AGI; limite de AGI +9 |

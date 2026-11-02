@@ -34,7 +34,7 @@ Os seis atributos começam em 0, e você distribui um punhado de pontos entre el
 
 ### Passo 3 · Escolher Vila {#passo-3-escolher-vila}
 
-A vila em que o ninja cresceu molda o que ele sabe. Ela concede dois bônus iniciais, em perícias ou num traço cultural (cap. 7).
+A vila em que o ninja cresceu molda o que ele sabe. Ela concede dois bônus iniciais: perícias que ela treina ou um traço cultural (cap. 7).
 
 ### Passo 4 · Escolher (ou Criar) o Clã {#passo-4-escolher-ou-criar-o-cla}
 
@@ -43,15 +43,15 @@ O clã é o sangue e a herança do personagem (cap. 8). Há quatro caminhos:
 - Escolher um clã canônico do catálogo (cap. 8.3).
 - Criar um clã original sem Kekkei Genkai, a KKG (cap. 8.4).
 - Criar um clã original com Kekkei Genkai (cap. 8.4), com a aprovação do Mestre.
-- Não pertencer a clã nenhum e receber, como compensação, +2 pontos de perícia e +5 PT iniciais.
+- Não pertencer a clã nenhum e receber, como compensação, mais uma perícia treinada e +5 PT iniciais.
 
 :::atencao{titulo="A KKG nasce com o personagem"}
 A criação de Kekkei Genkai (cap. 8.4) foi pensada para ser usada quase só na criação do personagem, no momento em que você define o clã. Despertar uma KKG no meio da campanha é raro e fruto de um arco narrativo importante, conduzido pelo Mestre.
 :::
 
-### Passo 5 · Distribuir Perícias {#passo-5-distribuir-pericias}
+### Passo 5 · Perícias Treinadas {#passo-5-distribuir-pericias}
 
-Você tem 12 pontos para as perícias, e nenhuma pode passar de +3 na criação. Vale ter pelo menos uma perícia de combate em +2: cedo ou tarde, a missão vai exigir.
+Escolha quatro perícias para treinar (cinco, sem clã); cada uma soma +2 ao valor dela (cap. 3). As que a vila, o clã e o background já treinam não contam nessa escolha. Vale treinar pelo menos uma perícia de combate: cedo ou tarde, a missão vai exigir.
 
 ### Passo 6 · Proficiências Iniciais {#passo-6-proficiencias-iniciais}
 
@@ -155,24 +155,24 @@ Marionetistas têm uma terceira saída. Quem começa com a Especialização Mari
 
 O background é a marca que o personagem carrega antes de a campanha começar: como era visto na infância, na Academia, nas primeiras missões. É, ao mesmo tempo, narrativa e regra.
 
-Escolha um dos backgrounds abaixo ou crie outro com o Mestre, seguindo o mesmo padrão: uma perícia ou um bônus pequeno, mais um traço de interpretação.
+Escolha um dos backgrounds abaixo ou crie outro com o Mestre, seguindo o mesmo padrão: uma perícia treinada ou um bônus pequeno, mais um traço de interpretação.
 
 | Background | Bônus mecânico | Traço de interpretação |
 | - | - | - |
-| Prodígio | +1 em uma perícia à escolha (o talento natural) | Recebeu elogios cedo e luta com expectativas pesadas. NPCs vivem comparando com “a antiga geração” ou com rivais. |
+| Prodígio | Treina uma perícia à escolha (o talento natural) | Recebeu elogios cedo e luta com expectativas pesadas. NPCs vivem comparando com “a antiga geração” ou com rivais. |
 | Perdedor (Underdog) | +2 PT extras na criação (treinou dobrado para compensar) | Foi o último da turma na Academia. Se subestima em público, mas surpreende sob pressão. Ganha a simpatia natural de outros excluídos. |
 | Determinado | +1 em Resistências de VIG e em Saves de Morte | Não desiste, mesmo quando deveria. Insiste num plano depois que ele claramente falhou e precisa dos aliados para recuar. Inspira nos momentos críticos. |
-| Misterioso | +1 em Furtividade | Pouco se sabe do seu passado. Os outros personagens ficam curiosos, e jogador e Mestre podem revelar detalhes aos poucos. NPCs desconfiam por princípio. |
+| Misterioso | Treina Furtividade | Pouco se sabe do seu passado. Os outros personagens ficam curiosos, e jogador e Mestre podem revelar detalhes aos poucos. NPCs desconfiam por princípio. |
 | Herdeiro | +1 PIC por arco (recursos da família) | Tem um sobrenome importante, ainda que de um clã pequeno ou de uma linhagem militar. As pessoas reagem ao nome antes de conhecê-lo, e as responsabilidades da família cobram nos momentos mais inconvenientes. |
-| Órfão da Guerra | +1 em uma perícia de combate à escolha (Taijutsu, Bukijutsu ou Ninjutsu) | Perdeu a família num conflito e conhece o peso real do combate. Sofre com perdas próximas, mas é mais maduro que os colegas. Pode guardar rancor de uma vila ou de uma pessoa. |
-| Veterano de Missão Trágica | +1 em Percepção (aprendeu a ler problemas) | Sobreviveu a uma missão em que aliados ou civis morreram. Cuidadoso, às vezes hesitante. A memória pode virar um gatilho narrativo, que o Mestre pode usar. |
-| Estudioso | +1 em Investigação | Devorou pergaminhos antigos, técnicas raras e biografias. Conhece jutsus obscuros, mestres históricos e tradições. NPCs eruditos respeitam; ninjas práticos zombam (“você lê demais”). |
-| Carismático | +1 em Persuasão | Tem facilidade com as palavras. É o líder informal do grupo ou o aliado social favorito; nas conversas delicadas, é o porta-voz natural. |
-| Renegado em Reabilitação | +1 em uma perícia de combate à escolha e +1 em Furtividade; -1 PIC por arco | Foi marcado como renegado (o motivo se define com o Mestre) e aceito de volta. Carrega o estigma: alguns shinobi não confiam nele, e velhos vilões podem reaparecer. |
-| Filho da Fronteira | +1 em Sobrevivência | Cresceu num vilarejo distante, fora da estrutura central da vila. Conhece o terreno selvagem, os costumes locais e contatos não oficiais. O sotaque pode virar piada. Tem uma rede informal de favores nos vilarejos. |
-| Atleta Marcial | +1 em Atletismo | Disputou torneios antes de entrar na Academia. Boa forma física, instinto competitivo. Aceita desafios quase por compulsão, e inimigos espertos podem provocá-lo para um duelo. |
-| Aprendiz Tardio | +1 em Investigação ou Medicina (estudou muito para alcançar os outros) | Entrou na Academia mais velho que o normal (com 15 a 18 anos, e não com 11 ou 12). Tem maturidade emocional acima da média, mas não tem os laços de infância com os colegas. Costuma ser subestimado pela idade. |
-| Médico de Vilarejo | +1 em Medicina | Ajuda a curar gente desde criança (um parente médico, uma aldeia sem hospital). Tem instinto de cuidador e evita matar quando há alternativa. Reconhece doenças e ferimentos rapidamente. |
+| Órfão da Guerra | Treina uma perícia de combate à escolha (Taijutsu, Bukijutsu ou Ninjutsu) | Perdeu a família num conflito e conhece o peso real do combate. Sofre com perdas próximas, mas é mais maduro que os colegas. Pode guardar rancor de uma vila ou de uma pessoa. |
+| Veterano de Missão Trágica | Treina Percepção (aprendeu a ler problemas) | Sobreviveu a uma missão em que aliados ou civis morreram. Cuidadoso, às vezes hesitante. A memória pode virar um gatilho narrativo, que o Mestre pode usar. |
+| Estudioso | Treina Investigação | Devorou pergaminhos antigos, técnicas raras e biografias. Conhece jutsus obscuros, mestres históricos e tradições. NPCs eruditos respeitam; ninjas práticos zombam (“você lê demais”). |
+| Carismático | Treina Persuasão | Tem facilidade com as palavras. É o líder informal do grupo ou o aliado social favorito; nas conversas delicadas, é o porta-voz natural. |
+| Renegado em Reabilitação | Treina uma perícia de combate à escolha e treina Furtividade; -1 PIC por arco | Foi marcado como renegado (o motivo se define com o Mestre) e aceito de volta. Carrega o estigma: alguns shinobi não confiam nele, e velhos vilões podem reaparecer. |
+| Filho da Fronteira | Treina Sobrevivência | Cresceu num vilarejo distante, fora da estrutura central da vila. Conhece o terreno selvagem, os costumes locais e contatos não oficiais. O sotaque pode virar piada. Tem uma rede informal de favores nos vilarejos. |
+| Atleta Marcial | Treina Atletismo | Disputou torneios antes de entrar na Academia. Boa forma física, instinto competitivo. Aceita desafios quase por compulsão, e inimigos espertos podem provocá-lo para um duelo. |
+| Aprendiz Tardio | Treina Investigação ou Medicina (estudou muito para alcançar os outros) | Entrou na Academia mais velho que o normal (com 15 a 18 anos, e não com 11 ou 12). Tem maturidade emocional acima da média, mas não tem os laços de infância com os colegas. Costuma ser subestimado pela idade. |
+| Médico de Vilarejo | Treina Medicina | Ajuda a curar gente desde criança (um parente médico, uma aldeia sem hospital). Tem instinto de cuidador e evita matar quando há alternativa. Reconhece doenças e ferimentos rapidamente. |
 
 Background, vila e clã se combinam em arcos pessoais únicos. Um Hyuuga Prodígio carrega expectativas em dobro (clã nobre e fama de talento); um Uchiha Misterioso depois do massacre já traz motivações de campanha; um Senju Aprendiz Tardio descobriu o sangue raro tarde demais para o treino tradicional.
 

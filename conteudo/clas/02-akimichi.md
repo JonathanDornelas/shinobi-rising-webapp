@@ -39,7 +39,7 @@ Nenhum.
 | 9 | +1 VIG |
 | 10 | +3 PIC; Criar Jutsu do Clã (até Rank B) |
 | 11 | Hari Jizou: Akimichi Hen (Agulhas Jizou: Variante Akimichi) |
-| 12 | +1 em Atletismo |
+| 12 | Treina Atletismo |
 | 13 | Nikuryoku (Poder da Carne) |
 | 14 | Choudan Bakugeki (Bombardeio da Borboleta) |
 | 15 | +1 VIG; limite de VIG +9 |

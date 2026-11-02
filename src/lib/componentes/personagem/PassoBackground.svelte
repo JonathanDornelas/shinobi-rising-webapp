@@ -38,7 +38,7 @@
 			<input id="bg-nome" class="campo" maxlength="60" placeholder="Pescador do Porto" disabled={!c.editavel} bind:value={c.ficha.background.proprio.nome} />
 		</Campo>
 		<div class="flex flex-col gap-1.5">
-			<label for="bg-pericia" class="text-sm leading-5 font-semibold">Bônus: +1 em</label>
+			<label for="bg-pericia" class="text-sm leading-5 font-semibold">Bônus: treina</label>
 			<select
 				id="bg-pericia"
 				class="campo"

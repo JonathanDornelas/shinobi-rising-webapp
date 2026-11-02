@@ -82,7 +82,7 @@ describe('subir de nível', () => {
 	it('passos dinâmicos: nível 5 tem 2º elemento e marco; nível 6 tem atributo e Rank B', () => {
 		const f = hana();
 		for (let n = 2; n <= 4; n++) f.progresso.niveis.push({ nivel: n, ...(n === 3 ? { atributo: 'AGI' as const } : {}), ...(n === 4 ? { pericia: 'taijutsu' as const, especializacao: { id: 'velocidade' } } : {}) });
-		expect(planoNivel(f, 5, MARCOS, NARA).passos).toEqual(['recursos', 'elemento', 'marco', 'resumo']);
+		expect(planoNivel(f, 5, MARCOS, NARA).passos).toEqual(['recursos', 'pericia', 'elemento', 'marco', 'resumo']);
 		expect(planoNivel(f, 6, MARCOS, NARA).passos).toEqual(['recursos', 'atributo', 'rank', 'resumo']);
 	});
 	it('aplica as escolhas e os ganhos de recursos', () => {
@@ -92,9 +92,10 @@ describe('subir de nível', () => {
 		expect(nivelDe(g)).toBe(2);
 		const depois = recursos(g);
 		expect([depois.pv - antes.pv, depois.pc - antes.pc, depois.pe - antes.pe]).toEqual([5, 3, 3]);
-		const h = aplicarNivel(aplicarNivel(g, { nivel: 3, atributo: 'VIG' }), { nivel: 4, pericia: 'taijutsu' });
+		const h = aplicarNivel(aplicarNivel(aplicarNivel(g, { nivel: 3, atributo: 'VIG' }), { nivel: 4 }), { nivel: 5, pericia: 'taijutsu' });
 		expect(atributosTotais(h).VIG).toBe(2);
-		expect(linhasPericia(h).find((p) => p.id === 'taijutsu')!.treino).toBe(1);
+		// o nível 5 treina uma perícia nova (+2)
+		expect(linhasPericia(h).find((p) => p.id === 'taijutsu')!.treino).toBe(2);
 	});
 	it('o atributo do clã só passa de +8 com o marco de limite', () => {
 		const f = hana();

@@ -18,7 +18,7 @@ A mente é o campo de batalha real. Para um Yamanaka, ler pessoas é tão natura
 #### Bônus Hereditário {#bonus-hereditario}
 
 - +1 ESP (limite de criação +5).
-- +1 em Percepção.
+- Treina Percepção.
 - +5 PC iniciais (a mente é sustentada por chakra).
 
 #### Kekkei Genkai {#kekkei-genkai}
@@ -40,7 +40,7 @@ Nenhum.
 | 9 | +1 ESP |
 | 10 | +3 PIC; Shinranshin no Jutsu (Técnica de Destruição de Mente) |
 | 11 | Saiko Denshin (Transmissão da Mente Psicótica) |
-| 12 | +1 em Percepção |
+| 12 | Treina Percepção |
 | 13 | Ishin Toitsu (Mente Unificada) |
 | 14 | Kanchi Kekkai (Barreira Sensorial) |
 | 15 | +1 ESP; limite de ESP +9 |

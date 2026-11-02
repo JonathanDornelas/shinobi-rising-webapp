@@ -209,7 +209,7 @@
 							{@const livre = periciasOk.includes(pr.id)}
 							{@const on = pericia === pr.id}
 							<button type="button" role="radio" aria-checked={on} disabled={!livre} class="flex min-h-12 items-center gap-2 border-2 bg-b2 py-1 pr-3 pl-1 text-left disabled:opacity-50 {on ? 'border-vermelhao bg-grena text-papel' : 'border-frame hover:border-mut'}" onclick={() => (pericia = pr.id)}>
-								<Icone id="pericia/ic-pericia-{pr.id}" /><span class="flex-1 text-sm font-semibold">{pr.nome}</span><span class="t-num text-sm">+{treinoPericia(antes, pr.id)} → +{treinoPericia(antes, pr.id) + 1}</span>
+								<Icone id="pericia/ic-pericia-{pr.id}" /><span class="flex-1 text-sm font-semibold">{pr.nome}</span><span class="t-num text-sm">{livre ? 'treinar (+2)' : 'já treinada'}</span>
 							</button>
 						{/each}
 					</div>
@@ -265,7 +265,7 @@
 						<ul class="m-0 flex list-none flex-col gap-1 px-3.5 py-3 text-sm">
 							{#each Object.entries(plano.marco.atributos ?? {}) as [a, v] (a)}<li>+{v} {a}</li>{/each}
 							{#each Object.entries(plano.marco.limites ?? {}) as [a, v] (a)}<li>Limite de {a} passa a +{v}</li>{/each}
-							{#each plano.marco.pericias ?? [] as pr (pr)}<li>+1 em {PERICIAS.find((x) => x.id === pr)?.nome}</li>{/each}
+							{#each plano.marco.pericias ?? [] as pr (pr)}<li>Treina {PERICIAS.find((x) => x.id === pr)?.nome}</li>{/each}
 							{#if plano.marco.pt}<li>+{plano.marco.pt} PT</li>{/if}
 							{#if plano.marco.pic}<li>+{plano.marco.pic} PIC por arco</li>{/if}
 							{#each plano.marco.jutsus ?? [] as j (j)}{@const jj = cat.jutsus.find((x) => x.slug === j)}<li>Aprende {jj?.nome ?? j} <Glosa texto={jj?.traducao} emLinha /></li>{/each}
@@ -273,7 +273,7 @@
 						{#if plano.marco.escolhaPericia}
 							<div class="flex flex-wrap gap-2 border-t-2 border-b3 px-3.5 py-3" role="radiogroup" aria-label="Perícia do marco">
 								{#each plano.marco.escolhaPericia as pr (pr)}
-									<button type="button" role="radio" aria-checked={escolhaMarco === pr} class="min-h-11 border-2 px-3 text-sm font-semibold {escolhaMarco === pr ? 'border-vermelhao bg-grena text-papel' : 'border-b3'}" onclick={() => (escolhaMarco = pr)}>+1 em {PERICIAS.find((x) => x.id === pr)?.nome}</button>
+									<button type="button" role="radio" aria-checked={escolhaMarco === pr} class="min-h-11 border-2 px-3 text-sm font-semibold {escolhaMarco === pr ? 'border-vermelhao bg-grena text-papel' : 'border-b3'}" onclick={() => (escolhaMarco = pr)}>Treina {PERICIAS.find((x) => x.id === pr)?.nome}</button>
 								{/each}
 							</div>
 						{/if}
@@ -289,7 +289,7 @@
 					</div>
 				{:else if passoAtual === 'resumo'}
 					<dl class="painel m-0 flex flex-col">
-						{#each [['Nível', `${p.nivel} → ${novo} · ${rankSugerido(novo)}`], ['PV / PC / PE', `${fDepois.recursos.pv} / ${fDepois.recursos.pc} / ${fDepois.recursos.pe}`], ['PT', `${ptDepois}${elemento ? ` − ${plano.elemento?.pt} = ${ptDepois - (plano.elemento?.pt ?? 0)}` : ''}`], ...(atributo ? [['Atributo', `+1 ${atributo}`]] : []), ...(pericia ? [['Perícia', `+1 de treino em ${PERICIAS.find((x) => x.id === pericia)?.nome}`]] : []), ...(especializacao ? [['Especialização', cat.especializacoes.find((e) => e.id === especializacao)?.nome ?? '']] : []), ...(plano.elemento ? [['Elemento', elemento ? nomeElemento(elemento) : 'escolher depois no treino']] : []), ...(plano.marco ? [['Marco', plano.marco.texto]] : [])] as [k, v] (k)}
+						{#each [['Nível', `${p.nivel} → ${novo} · ${rankSugerido(novo)}`], ['PV / PC / PE', `${fDepois.recursos.pv} / ${fDepois.recursos.pc} / ${fDepois.recursos.pe}`], ['PT', `${ptDepois}${elemento ? ` − ${plano.elemento?.pt} = ${ptDepois - (plano.elemento?.pt ?? 0)}` : ''}`], ...(atributo ? [['Atributo', `+1 ${atributo}`]] : []), ...(pericia ? [['Perícia', `Treina ${PERICIAS.find((x) => x.id === pericia)?.nome} (+2)`]] : []), ...(especializacao ? [['Especialização', cat.especializacoes.find((e) => e.id === especializacao)?.nome ?? '']] : []), ...(plano.elemento ? [['Elemento', elemento ? nomeElemento(elemento) : 'escolher depois no treino']] : []), ...(plano.marco ? [['Marco', plano.marco.texto]] : [])] as [k, v] (k)}
 							<div class="flex gap-3 border-b-2 border-b3 px-3.5 py-2.5 text-[15px] leading-[22px] last:border-b-0">
 								<dt class="flex-1 font-medium">{k}</dt><dd class="t-num m-0 text-right text-base">{v}</dd>
 							</div>

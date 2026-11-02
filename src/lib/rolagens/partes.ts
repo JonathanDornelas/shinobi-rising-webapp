@@ -16,7 +16,7 @@ export function partesPericia(p: LinhaPericia, distancia = false): Parte[] {
 	const at = distancia && p.distancia ? p.distancia : { atributo: p.atributo, valor: p.valorAtributo };
 	const total = distancia && p.distancia ? p.distancia.total : p.total;
 	const partes: Parte[] = [[`${at.atributo} (atributo)`, s(at.valor)]];
-	if (p.treino) partes.push(['Treino', s(p.treino)]);
+	if (p.treino) partes.push(['Treinada', s(p.treino)]);
 	for (const b of p.bonus) partes.push([b.fonte, s(b.valor)]);
 	return fechar(partes, total, 'Limite da perícia');
 }

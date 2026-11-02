@@ -19,7 +19,7 @@ Amor que vira poder. A genética emocional dos Uchiha é intensa — quando amam
 
 - +1 CTR (limite de criação +5).
 - Katon é o elemento inicial obrigatório (ocupa o passo de elemento da criação).
-- +1 em Percepção.
+- Treina Percepção.
 
 #### Kekkei Genkai — Sharingan (Olho Copiador) {#kekkei-genkai-sharingan-olho-copiador}
 
@@ -61,7 +61,7 @@ Pré-requisito: estar com Sharingan no estágio 3 tomoe. O Uchiha precisa ver o 
 | 9 | +1 CTR |
 | 10 | +3 PIC; Katon: Ryūka no Jutsu (Dragão de Fogo) |
 | 11 | Uchiha Kaenjin (Formação da Chama Uchiha) |
-| 12 | +1 em Percepção |
+| 12 | Treina Percepção |
 | 13 | Olhos que Leem o Combate |
 | 14 | Genjutsu: Sharingan |
 | 15 | +1 CTR; limite de CTR +9 |

@@ -162,7 +162,7 @@ export function textosBonus(d: ClaDados): string[] {
 	const out: string[] = [];
 	const g = ganhoDoCla(d);
 	if (g.atributo) out.push(`+1 ${g.atributo} (limite de criação +5)`);
-	for (const p of g.pericias ?? []) out.push(`+1 em ${nomePericia(p)}`);
+	for (const p of g.pericias ?? []) out.push(`Treina ${nomePericia(p)}`);
 	if (g.pv) out.push(`+${g.pv} PV iniciais`);
 	if (g.pc) out.push(`+${g.pc} PC iniciais`);
 	if (g.pt) out.push(`+${g.pt} PT iniciais`);
@@ -244,7 +244,7 @@ export function linhasMarcos(d: ClaDados): LinhaMarco[] {
 				texto = at ? `+1 ${at}${lim ? `; limite de ${at} +${lim}` : ''}` : `+1 no atributo do clã${lim ? `; limite +${lim}` : ''}`;
 				if (!at) problema = 'Defina o atributo do clã';
 			} else if (e.fixo === 'pericia') {
-				texto = per ? `+1 em ${nomePericia(per)}` : '+1 na perícia do clã';
+				texto = per ? `Treina ${nomePericia(per)}` : 'Treina a perícia do clã';
 				if (!per) problema = 'Defina a perícia do clã';
 			}
 			return { nivel: e.nivel, regra: e.texto, texto, tipo: 'fixo', completo: !problema, problema };

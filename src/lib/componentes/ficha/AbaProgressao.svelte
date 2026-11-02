@@ -20,7 +20,8 @@
 	const ganhos = (n: number) => {
 		const g = ['+5 PV, +3 PC, +3 PE, +3 PT'];
 		if ((PROGRESSAO.niveisAtributo as readonly number[]).includes(n)) g.push('+1 atributo');
-		if ((PROGRESSAO.niveisPericia as readonly number[]).includes(n)) g.push('+1 perícia · nova especialização');
+		if ((PROGRESSAO.niveisPericia as readonly number[]).includes(n)) g.push('uma perícia treinada nova');
+		if ((PROGRESSAO.niveisEspecializacao as readonly number[]).includes(n)) g.push('nova especialização');
 		if (n === 5) g.push('2º elemento liberado (10 PT)');
 		if (n === 8) g.push('3º elemento liberado (20 PT)');
 		for (const [r, min] of Object.entries(PROGRESSAO.rankPorNivel)) if (min === n) g.push(`Rank ${r} liberado`);

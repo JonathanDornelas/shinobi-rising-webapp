@@ -18,7 +18,7 @@ Para um Nara, qualquer ação desnecessária é desperdício. A guerra é jogo d
 #### Bônus Hereditário {#bonus-hereditario}
 
 - +1 INT (limite de criação +5).
-- +1 em Investigação.
+- Treina Investigação.
 - +5 PC iniciais (as sombras exigem reservas de chakra).
 
 #### Kekkei Genkai {#kekkei-genkai}
@@ -40,7 +40,7 @@ Nenhum.
 | 9 | +1 INT |
 | 10 | +3 PIC; Criar Jutsu do Clã (até Rank B) |
 | 11 | Kage Nui no Jutsu (Técnica da Costura pelas Sombras) |
-| 12 | +1 em Investigação |
+| 12 | Treina Investigação |
 | 13 | Kage Yogen (Profecia das Sombras) |
 | 14 | Kagemane Shuriken no Jutsu (Técnica de Imitação de Shuriken pela Sombra) |
 | 15 | +1 INT; limite de INT +9 |

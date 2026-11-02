@@ -16,14 +16,14 @@ Cada Vila Oculta tem uma cultura militar e uma especialidade, e quem nasceu nela
 
 | Vila | País | Características | Bônus |
 | - | - | - | - |
-| Konohagakure (Vila Oculta da Folha) | Fogo | Trabalho em equipe e versatilidade | +1 em Persuasão e +1 em uma perícia à escolha |
-| Sunagakure (Vila Oculta da Areia) | Vento | Marionetes e venenos | +1 em Sobrevivência e vantagem em Resistências contra veneno |
-| Kirigakure (Vila Oculta da Névoa) | Água | Assassinato e Bukijutsu silencioso | +1 em Furtividade e +1 em Bukijutsu |
-| Kumogakure (Vila Oculta da Nuvem) | Raio | Velocidade e Bukijutsu pesado | +1 em Atletismo e +5 PV iniciais |
-| Iwagakure (Vila Oculta da Pedra) | Terra | Defesa e jutsus de longo alcance | +1 em Ninjutsu e +5 PV iniciais |
-| Amegakure (Vila Oculta da Chuva) | — | Espionagem e jutsus de água | +1 em Investigação e +1 em Furtividade |
-| Takigakure (Vila Oculta da Cachoeira) | — | Emboscadas e infiltração | +1 em Percepção e +1 em Rastreamento |
-| Otogakure (Vila Oculta do Som) | Arroz | Pesquisa proibida e experimentação | +1 em Medicina e +1 em Investigação |
-| Sem Vila (Errante ou Renegado) | — | Liberdade e adaptação | +1 em Sobrevivência e +1 em uma perícia à escolha |
+| Konohagakure (Vila Oculta da Folha) | Fogo | Trabalho em equipe e versatilidade | Treina Persuasão e uma perícia à escolha |
+| Sunagakure (Vila Oculta da Areia) | Vento | Marionetes e venenos | Treina Sobrevivência; vantagem em Resistências contra veneno |
+| Kirigakure (Vila Oculta da Névoa) | Água | Assassinato e Bukijutsu silencioso | Treina Furtividade e Bukijutsu |
+| Kumogakure (Vila Oculta da Nuvem) | Raio | Velocidade e Bukijutsu pesado | Treina Atletismo; +5 PV iniciais |
+| Iwagakure (Vila Oculta da Pedra) | Terra | Defesa e jutsus de longo alcance | Treina Ninjutsu; +5 PV iniciais |
+| Amegakure (Vila Oculta da Chuva) | — | Espionagem e jutsus de água | Treina Investigação e Furtividade |
+| Takigakure (Vila Oculta da Cachoeira) | — | Emboscadas e infiltração | Treina Percepção e Rastreamento |
+| Otogakure (Vila Oculta do Som) | Arroz | Pesquisa proibida e experimentação | Treina Medicina e Investigação |
+| Sem Vila (Errante ou Renegado) | — | Liberdade e adaptação | Treina Sobrevivência e uma perícia à escolha |
 
 Em campanhas de uma época específica, o Mestre pode ajustar a situação política, com guerras e alianças, e acrescentar as vilas importantes daquele período.
