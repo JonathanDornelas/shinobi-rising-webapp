@@ -2,8 +2,11 @@ import { defineConfig } from 'vitest/config';
 import tailwindcss from '@tailwindcss/vite';
 import adapter from '@sveltejs/adapter-vercel';
 import { sveltekit } from '@sveltejs/kit/vite';
+import { hashIcones } from './scripts/hash-icones.js';
 
 export default defineConfig({
+	// a URL dos ícones muda quando algum ícone muda (scripts/hash-icones.js)
+	define: { __ICONES_V__: JSON.stringify(hashIcones()) },
 	plugins: [
 		tailwindcss(),
 		sveltekit({

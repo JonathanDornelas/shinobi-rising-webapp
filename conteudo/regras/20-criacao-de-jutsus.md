@@ -234,7 +234,7 @@ Com as compras de PJ, preencha os seis atributos da linha de informação. A mai
 | Duração | Instantâneo, se você não comprou efeito contínuo; “X PC por turno”, se o efeito é mantido |
 | Área | Vem da compra na tabela de Área |
 | Ataque | 1d20 + a perícia do tipo (Ninjutsu, Taijutsu…), que já inclui o atributo. Jutsus de área não rolam ataque: os alvos fazem Resistência. “Automático”, se você comprou “Persegue o alvo” ou se o jutsu não tem como falhar |
-| Resistência | DT do Jutsu: 10 + bônus de rank (E +0, D +1, C +2, B +3, A +4, S +5) + atributo-chave do lançador, mais a proficiência dele no jutsu, se tiver. O atributo do teste depende do efeito: Acrobacia contra área, FOR contra prisão e empurrão, VIG contra veneno e atordoamento, ESP contra Genjutsu |
+| Resistência | DT do Jutsu: 11 + bônus de rank (E +0, D +1, C +2, B +3, A +4, S +5) + atributo-chave do lançador, mais a proficiência dele no jutsu, se tiver. O atributo do teste depende do efeito: Acrobacia contra área, FOR contra prisão e empurrão, VIG contra veneno e atordoamento, ESP contra Genjutsu |
 | Ação | Primária por padrão. Secundária custa +2 PJ; Reação, +3 PJ; Completa tira 1 PJ (-1) |
 
 ## 20.5 Exemplos de Criação {#exemplos-de-criacao}

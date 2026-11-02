@@ -1,4 +1,4 @@
-// DT do Jutsu (cap. 2, "Na mesa: DT do Jutsu"): 10 + bônus de rank + atributo-chave do lançador, mais a proficiência no
+// DT do Jutsu (cap. 2, "Na mesa: DT do Jutsu"): 11 + bônus de rank + atributo-chave do lançador, mais a proficiência no
 // jutsu, se houver. Atributo-chave: CTR em Ninjutsu, Genjutsu e Fuuinjutsu; FOR em Taijutsu; FOR ou AGI em Bukijutsu,
 // conforme a arma (aqui, o maior dos dois); AGI em Kugutsu. NPC de ficha rápida e criatura do bestiário têm a DT fixa
 // no bloco. A conta vai junto, em partes, para o selo mostrar de onde vem o número.

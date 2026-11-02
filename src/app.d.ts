@@ -4,6 +4,8 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '#lib/supabase/banco.ts';
 
 declare global {
+	/** Hash do conteúdo dos ícones (vite.config.ts): muda a URL quando um ícone muda. */
+	const __ICONES_V__: string;
 	namespace App {
 		interface Error {
 			/** O erro técnico ("TypeError: ..."), mostrado pequeno na página de erro para quem joga mandar. */

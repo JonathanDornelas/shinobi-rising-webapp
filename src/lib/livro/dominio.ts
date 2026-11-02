@@ -3,8 +3,8 @@ import type { Rank, TipoJutsu, VarianteDestaque } from './tipos';
 
 /** URL de um ícone PixelLab (32px nativo) ou de uma ilustração (96px). */
 export function iconeUrl(id: string): string {
-	if (id.startsWith('illustrations/')) return `/${id}-96.png`;
-	return `/icons/${id}-32.png`;
+	if (id.startsWith('illustrations/')) return `/${id}-96.png?v=${__ICONES_V__}`;
+	return `/icons/${id}-32.png?v=${__ICONES_V__}`;
 }
 
 export const TIPO_JUTSU: Record<TipoJutsu, { cor: string; texto: string; icone: string; recurso: string; pericia: string }> = {
