@@ -391,14 +391,20 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		return { L, A, paredes, ambiente, luzes: luzesAcesas(luzesCena, true), observadores: meus.map((t) => observadorDe(t)) };
 	});
 	const visao = $derived(entradaVisao ? calcularVisao(entradaVisao, cacheVisao) : null);
+	/** Memória do explorado (padrão: ligada). Sem ela, o grupo só vê o que vê agora: o resto é breu, e nada se grava. */
+	const memoria = $derived(cena?.luz_memoria !== false);
+	/** A névoa aparece com ela ligada, ou com a luz dinâmica sem memória (o que não está à vista fica coberto). */
+	const nevoaVisivel = $derived(nevoaLigada || (!!visao && !memoria));
 	/** A névoa de quem olha: o que o grupo já explorou mais o que eu vejo agora (some na hora, sem esperar a gravação). */
 	const runsExibidas = $derived.by(() => {
-		if (!entradaVisao || !nevoaLigada) return runsNevoa;
-		const g = gradeNevoa(runsNevoa, L, A);
-		return explorar(entradaVisao, g, cacheVisao) ? emRuns(g, L, A) : runsNevoa;
+		if (!entradaVisao || !nevoaVisivel) return runsNevoa;
+		// sem memória, parte do nada: só o que se vê agora fica descoberto
+		const g = memoria ? gradeNevoa(runsNevoa, L, A) : new Uint8Array(L * A);
+		const mudou = explorar(entradaVisao, g, cacheVisao);
+		return memoria && !mudou ? runsNevoa : emRuns(g, L, A);
 	});
 	const revelado = $derived(indiceNevoa(runsExibidas));
-	const caminhoDaNevoa = $derived(nevoaLigada ? caminhoNevoa(runsExibidas, L, A) : '');
+	const caminhoDaNevoa = $derived(nevoaVisivel ? caminhoNevoa(runsExibidas, L, A) : '');
 	const visiveis = $derived.by(() => {
 		// luz dinâmica: os do grupo e os aliados sempre; os outros, só se algum olho do grupo os vê agora
 		if (visao) return mesa.tokens.filter((t) => doGrupo(t) || t.dono_id === mesa.eu || t.aliado || visao.visivel(t.x + t.tamanho / 2, t.y + t.tamanho / 2));
@@ -407,7 +413,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	// o navegador do Mestre grava o que o grupo já viu (os jogadores não gravam a cena): espera os tokens pararem
 	const cacheExploracao = new CacheVisao();
 	const entradaDoGrupo = $derived.by((): EntradaVisao | null => {
-		if (!luzLigada || !mesa.mestre || mesa.somenteLeitura) return null;
+		if (!luzLigada || !memoria || !mesa.mestre || mesa.somenteLeitura) return null;
 		const grupo = mesa.tokens.filter((t) => doGrupo(t) && t.visivel);
 		if (!grupo.length) return null;
 		return { L, A, paredes: mesa.paredes, ambiente, luzes: luzesAcesas(mesa.luzes, false), observadores: grupo.map((t) => observadorDe(t, false)) };
@@ -419,7 +425,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 			() =>
 				untrack(() => {
 					const c = mesa.cena;
-					if (!c?.luz_dinamica || c.largura !== e.L || c.altura !== e.A) return;
+					if (!c?.luz_dinamica || c.luz_memoria === false || c.largura !== e.L || c.altura !== e.A) return;
 					const g = gradeNevoa(c.reveladas ?? [], e.L, e.A);
 					if (explorar(e, g, cacheExploracao) || !c.nevoa) void mesa.patchCena({ nevoa: true, reveladas: emRuns(g, e.L, e.A) });
 				}),
@@ -1623,6 +1629,8 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 					{clipCena}
 					{visao}
 					{ambiente}
+					opacidade={memoria ? 0.86 : 1}
+					nevoa={visao && memoria && nevoaLigada ? caminhoDaNevoa : ''}
 					{paredes}
 					verParedes={mesa.mestre && !ui.verComoGrupo ? (ui.ferramenta === 'paredes' ? 'forte' : luzLigada ? 'fraco' : null) : null}
 					paredeNova={paredeNova}
@@ -1680,7 +1688,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				{#if infoArrasto.parede}{@render rotulo(arrasto.x + (arrastado?.tamanho ?? 1) / 2, arrasto.y + (arrastado?.tamanho ?? 1) + 0.6, infoArrasto.parede, 'var(--mesa-vermelhao)', 'meio')}{/if}
 			{/if}
 
-			{#if nevoaLigada}
+			{#if nevoaVisivel && !visao}
 				<!-- a névoa: o grupo não vê o que está coberto; o Mestre vê esmaecido, com hachura. Com a luz dinâmica (e no "ver como o
 				     grupo vê"), o que ninguém explorou é breu de verdade, em qualquer tema; o explorado fica sob o véu da memória -->
 				{@const breu = !!visao}

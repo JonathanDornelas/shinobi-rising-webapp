@@ -14,6 +14,8 @@
 		clipCena,
 		visao,
 		ambiente,
+		opacidade = 0.86,
+		nevoa = '',
 		paredes,
 		verParedes,
 		paredeNova,
@@ -32,6 +34,10 @@
 		/** o que se vê (null: sem escuridão, como o Mestre vê) */
 		visao: Visao | null;
 		ambiente: Ambiente;
+		/** o breu de onde não se vê agora: 0,86 com a memória (o explorado aparece por baixo), 1 sem ela */
+		opacidade?: number;
+		/** o que o grupo nunca viu (quadrados da névoa): breu, menos o que se vê agora, com a mesma borda da visão */
+		nevoa?: string;
 		paredes: readonly Parede[];
 		/** 'forte' com a ferramenta Paredes; 'fraco' para o Mestre lembrar onde estão; null não mostra */
 		verParedes: 'forte' | 'fraco' | null;
@@ -78,7 +84,8 @@
 			</g>
 		</mask>
 	</defs>
-	<rect x="0" y="0" width={L} height={A} fill="#0a0807" fill-opacity="0.86" mask="url(#escuro-{uid})" pointer-events="none" clip-path={clipCena} />
+	<rect x="0" y="0" width={L} height={A} fill="#0a0807" fill-opacity={opacidade} mask="url(#escuro-{uid})" pointer-events="none" clip-path={clipCena} />
+	{#if nevoa}<path d={nevoa} fill-rule="evenodd" fill="#0a0807" mask="url(#escuro-{uid})" pointer-events="none" clip-path={clipCena} />{/if}
 	<!-- uma moldura de breu em volta da cena: na isométrica, o alto das paredes da borda passa do losango -->
 	<path d="M-4 -4H{L + 4}V{A + 4}H-4Z M0 0V{A}H{L}V0Z" fill-rule="evenodd" fill="#0a0807" pointer-events="none" />
 {/if}

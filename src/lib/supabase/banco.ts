@@ -451,6 +451,8 @@ export type MesaCena = {
 	/** Luz dinâmica (ver mesa/luz.ts): ligada, paredes cortam a visão e o grupo vê o que os tokens enxergam. Ausentes enquanto a migração não roda. */
 	luz_dinamica?: boolean;
 	luz_ambiente?: 'claro' | 'penumbra' | 'escuro';
+	/** A memória do explorado: ligada (o padrão), o que o grupo já viu fica esmaecido; desligada, fora da vista é breu. */
+	luz_memoria?: boolean;
 	/** [[x1, y1, x2, y2, tipo], ...] em metros: 0 parede, 1 porta fechada, 2 porta aberta, 3 porta trancada, 4 janela. */
 	paredes?: [number, number, number, number, number][];
 	/** Fontes de luz postas pelo Mestre. */

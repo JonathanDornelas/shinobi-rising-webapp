@@ -19,6 +19,7 @@
 	/** Liga a luz dinâmica com a névoa junto: o que ninguém viu ainda fica coberto. */
 	const alternarLuz = () => mesa.patchCena(cena?.luz_dinamica ? { luz_dinamica: false } : { luz_dinamica: true, nevoa: true });
 	const ambienteAtual = $derived(cena?.luz_ambiente ?? 'claro');
+	const memoria = $derived(cena?.luz_memoria !== false);
 </script>
 
 {#snippet cores(atual: string, mudar: (c: string) => void, nome: string)}
@@ -80,6 +81,12 @@
 	<button type="button" role="switch" aria-checked={!!cena?.luz_dinamica} class="flex min-h-10 items-center gap-2.5 border-2 px-2.5 text-left text-sm font-semibold {cena?.luz_dinamica ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={alternarLuz}>
 		<span class="font-pixel text-sm font-bold">{cena?.luz_dinamica ? '☒' : '☐'}</span>{cena?.luz_dinamica ? 'Luz dinâmica ligada' : 'Ligar a luz dinâmica'}
 	</button>
+	{#if cena?.luz_dinamica && cena.luz_memoria !== undefined}
+		<button type="button" role="switch" aria-checked={memoria} class="flex min-h-10 items-center gap-2.5 border-2 px-2.5 text-left text-sm font-semibold {memoria ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={() => mesa.patchCena({ luz_memoria: !memoria })}>
+			<span class="font-pixel text-sm font-bold">{memoria ? '☒' : '☐'}</span>Memória do explorado
+		</button>
+		<span class="text-xs leading-4 text-mut">{memoria ? 'O que o grupo já viu fica esmaecido, como lembrança, sem os inimigos.' : 'Sem memória: fora do que o grupo vê agora, tudo fica no breu. O que já foi explorado volta se religar.'}</span>
+	{/if}
 	{#if ui.pop === 'paredes'}
 		<span class="text-xs leading-4 text-mut">Arraste para traçar: a ponta encaixa nos cantos da grade e nas pontas que já existem (Shift solta). Parede e porta fechada cortam a visão, a luz e o passo; a janela deixa ver, mas não passar.</span>
 		<div role="radiogroup" aria-label="O que o arrasto faz" class="grid grid-cols-3 gap-1">
@@ -122,7 +129,7 @@
 		<button type="button" role="switch" aria-checked={ui.verComoGrupo} class="flex min-h-10 items-center gap-2.5 border-2 px-2.5 text-left text-sm font-semibold {ui.verComoGrupo ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={() => (ui.verComoGrupo = !ui.verComoGrupo)}>
 			<span class="font-pixel text-sm font-bold">{ui.verComoGrupo ? '☒' : '☐'}</span>Ver como o grupo vê
 		</button>
-		<button type="button" class="min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" title="Cobre de novo o mapa inteiro: o grupo volta a explorar do zero" onclick={() => mesa.patchCena({ nevoa: true, reveladas: [] })}>ESQUECER O QUE O GRUPO EXPLOROU</button>
+		<button type="button" class="min-h-9 border-2 border-b3 font-pixel text-[11px] font-bold" hidden={!memoria} title="Cobre de novo o mapa inteiro: o grupo volta a explorar do zero" onclick={() => mesa.patchCena({ nevoa: true, reveladas: [] })}>ESQUECER O QUE O GRUPO EXPLOROU</button>
 	{/if}
 {:else if ui.pop === 'objeto'}
 	<span class={rotulo}>IMAGENS NO QUADRO</span>
