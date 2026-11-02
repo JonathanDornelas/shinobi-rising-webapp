@@ -24,7 +24,7 @@ Combate como religião. Para um Kaguya, lutar é a única forma legítima de exi
 
 Manipulação dos próprios ossos como armas. O Kaguya pode crescer ossos do corpo, lançá-los como projéteis ou fortalecê-los como armadura interna.
 
-- Custo: 5 PC por turno de combate com o Shikotsumyaku ligado; fora de combate, ligar custa um turno (necessário para as Danças do clã).
+- Sempre ativo, sem custo: os ossos são a arma do Kaguya, não um buff (necessário para as Danças do clã).
 - Enquanto ativo, seu dano desarmado passa a 1d8 (lâminas e pontas de osso) e ignora 2 de RD.
 - Pode produzir armas naturais de osso (lâminas, lanças, projéteis) — equivalentes a armas brancas comuns sem precisar carregá-las.
 

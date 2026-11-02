@@ -15,7 +15,9 @@ describe('Kekkei Genkai na ficha', () => {
 		expect(custoKkg(sharingan, 15, 3)).toEqual({ custo: 4, reducao: 'Sharingan Desenvolvido e Olhos que Leem o Combate' });
 		expect(custoKkg(sharingan, 15, 1).custo).toBe(1);
 		expect(custoKkg(defKkg('hozuki')!, 13).custo).toBe(9);
-		expect(custoKkg(defKkg('kaguya')!, 5).custo).toBe(5);
+		// a KKG de ataque fica sempre ativa, sem custo
+		expect(defKkg('kaguya')!.sempre).toBe(true);
+		expect(custoKkg(defKkg('yuki')!, 5).custo).toBe(0);
 		expect(defKkg('nara')).toBeNull();
 	});
 
@@ -49,8 +51,13 @@ describe('Kekkei Genkai na ficha', () => {
 		const c = claVazio(true);
 		c.kekkei.nome = 'Kasai';
 		c.kekkei.tipo = 'combinacao';
+		c.kekkei.beneficios = [{ id: 'resistencia', detalhe: 'fogo' }];
 		c.kekkei.limitacoes = [{ id: 'custo-10', detalhe: '' }];
 		expect(defKkg(null, c)).toMatchObject({ nome: 'Kasai', custo: 10, sempre: false });
+		// só de ataque (elemento combinado): sempre ativa, mesmo com a limitação de custo
+		c.kekkei.beneficios = [{ id: 'combinacao', detalhe: '' }];
+		expect(defKkg(null, c)).toMatchObject({ custo: 0, sempre: true });
+		c.kekkei.beneficios = [{ id: 'resistencia', detalhe: 'fogo' }];
 		c.kekkei.limitacoes = [];
 		expect(defKkg(null, c)).toMatchObject({ custo: 0, sempre: true });
 		expect(kkgLigada(defKkg(null, c), undefined)).toBe(true);

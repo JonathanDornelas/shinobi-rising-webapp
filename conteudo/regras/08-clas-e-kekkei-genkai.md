@@ -137,9 +137,10 @@ Quem aprende antes um jutsu que receberia automaticamente num certo nível não 
 
 ### Ativar e Manter uma Kekkei Genkai {#ativar-e-manter-uma-kekkei-genkai}
 
-Os olhos que mudam de cor, os ossos que viram lâmina, o corpo que vira água: a maioria das linhagens não fica ligada o tempo todo, porque cada instante com ela acesa queima chakra. A Kekkei Genkai custa PC por turno, no valor do clã. Em combate, você paga esse valor no começo de cada turno seu, sem gastar ação, enquanto ela estiver ligada. Fora de combate, onde não há turnos, ligá-la custa o valor de um turno, uma vez. O Sharingan pesa mais a cada estágio: 3 PC por turno com um tomoe, 5 com dois e 6 com três. Os marcos do clã aliviam o peso, e cada um tira 1 PC por turno, sem nunca descer de 1. Sem PC para pagar, ela se apaga, e cair Inconsciente também apaga (cap. 4).
+Os olhos que mudam de cor, os ossos que viram lâmina, o corpo que vira água: nem toda linhagem custa chakra para ficar acesa. A que é uma arma (os ossos dos Kaguya, a areia dos Sabaku, o gelo dos Yuki) fica sempre ativa, sem custo, e o preço está nos jutsus dela. A que dá um buff enquanto ligada (o Byakugan, o Sharingan, a forma líquida dos Hozuki) queima chakra a cada instante e custa PC por turno, no valor do clã. Em combate, você paga esse valor no começo de cada turno seu, sem gastar ação, enquanto ela estiver ligada. Fora de combate, onde não há turnos, ligá-la custa o valor de um turno, uma vez. O Sharingan pesa mais a cada estágio: 3 PC por turno com um tomoe, 5 com dois e 6 com três. Os marcos do clã aliviam o peso, e cada um tira 1 PC por turno, sem nunca descer de 1. Sem PC para pagar, ela se apaga, e cair Inconsciente também apaga (cap. 4).
 
 :::na-mesa{titulo="Kekkei Genkai ativa"}
+- **Quem paga:** só a KKG que dá buff enquanto ligada; a de ataque fica sempre ativa, sem custo
 - **Custo:** o valor do clã, em PC por turno (Sharingan: 3, 5 ou 6, pelo tomoe)
 - **Em combate:** paga no começo de cada turno seu, sem ação
 - **Fora de combate:** ligar custa um turno, uma vez
@@ -294,8 +295,8 @@ Se o seu clã tem Kekkei Genkai, ela é construída com Pontos de KKG. Você com
 
 | Limitação | Devolve PKG | Detalhes |
 | - | - | - |
-| Custo de chakra (5 PC por turno) | 1 | Não fica ativa o tempo todo |
-| Custo alto (10 PC por turno) | 2 | Reservada para momentos críticos |
+| Custo de chakra (5 PC por turno; só KKG com buff) | 1 | Não fica ativa o tempo todo |
+| Custo alto (10 PC por turno; só KKG com buff) | 2 | Reservada para momentos críticos |
 | Cega temporariamente após o uso | 2 | Como o uso prolongado do Sharingan |
 | Cega permanentemente após N usos | 4 | Como o Mangekyou; drama narrativo |
 | Reduz a expectativa de vida | 3 | Cada uso longo encurta a vida |

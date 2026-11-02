@@ -51,8 +51,8 @@ export type BeneficioKkg = (typeof BENEFICIOS_KKG)[number]['id'];
 
 /** Custos e limitações (devolvem PKG). */
 export const LIMITACOES_KKG = [
-	{ id: 'custo-5', nome: 'Custo de chakra (5 PC por turno)', pkg: 1, nota: 'Não fica ativo o tempo todo', exclui: 'custo-10' },
-	{ id: 'custo-10', nome: 'Custo alto (10 PC por turno)', pkg: 2, nota: 'Reservado para momentos críticos', exclui: 'custo-5' },
+	{ id: 'custo-5', nome: 'Custo de chakra (5 PC por turno; só KKG com buff)', pkg: 1, nota: 'Não fica ativo o tempo todo', exclui: 'custo-10' },
+	{ id: 'custo-10', nome: 'Custo alto (10 PC por turno; só KKG com buff)', pkg: 2, nota: 'Reservado para momentos críticos', exclui: 'custo-5' },
 	{ id: 'cega-temporaria', nome: 'Cega temporariamente após o uso', pkg: 2, nota: 'Como o uso prolongado do Sharingan' },
 	{ id: 'cega-permanente', nome: 'Cega permanentemente após N usos', pkg: 4, nota: 'Como o Mangekyou: drama narrativo', detalhe: 'Quantos usos?' },
 	{ id: 'vida', nome: 'Reduz a expectativa de vida', pkg: 3, nota: 'Cada uso longo encurta a vida' },

@@ -24,7 +24,7 @@ Solidão e dever. A linhagem Sabaku produz líderes — e líderes são solitár
 
 Manipulação inata de areia (raríssimo, exige aprovação narrativa do Mestre). A areia é magnetizada pelo chakra do usuário e responde como extensão do corpo.
 
-- Custo: 3 PC por turno de combate para manter a areia ao redor (ou a da cabaça) magnetizada; fora de combate, magnetizá-la custa um turno. Enquanto ativa, a areia é uma arma natural (1d8 de dano, alcance 10 m, rolagem de Ninjutsu) e libera as técnicas do clã. A defesa automática vem do Suna no Tate (marco do nível 1).
+- Sempre ativa, sem custo: a areia ao redor (ou a da cabaça) fica magnetizada enquanto o usuário quiser. Enquanto ativa, a areia é uma arma natural (1d8 de dano, alcance 10 m, rolagem de Ninjutsu) e libera as técnicas do clã. A defesa automática vem do Suna no Tate (marco do nível 1).
 - Carregar uma cabaça de areia é necessário em ambientes sem areia natural.
 
 #### Marcos por Nível {#marcos-por-nivel}

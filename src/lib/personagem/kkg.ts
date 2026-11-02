@@ -1,4 +1,6 @@
-// Kekkei Genkai em jogo (cap. 8, Ativar e Manter uma Kekkei Genkai, e os verbetes dos clãs): a KKG custa PC só por turno.
+// Kekkei Genkai em jogo (cap. 8, Ativar e Manter uma Kekkei Genkai, e os verbetes dos clãs): só a KKG que dá um buff
+// enquanto ligada (Byakugan, Sharingan, a forma líquida do Hozuki) custa PC, e só por turno; a de ataque (os ossos dos
+// Kaguya, a areia dos Sabaku, o gelo dos Yuki) fica sempre ativa, sem custo.
 // Em combate, cada turno do personagem com ela ligada custa o valor dela (a Mesa cobra na vez dele); fora de combate,
 // ativar cobra o custo de um turno, uma vez. O Sharingan custa mais a cada estágio de tomoe (3, 5 e 6 PC por turno),
 // escolhido na ficha (o despertar é narrativo). Cada marco alcançado tira 1 PC por turno, com mínimo de 1 (Tenketsu no
@@ -91,7 +93,8 @@ const OFICIAIS: Record<string, DefKkg> = {
 		tipo: 'Corporal',
 		icone: 'kkg/ic-kkg-corporal',
 		cor: '#E6D2BF',
-		custo: 5,
+		custo: 0,
+		sempre: true,
 		reducoes: [],
 		efeitos: ['Dano desarmado 1d8 (lâminas e pontas de osso), ignorando 2 de RD', 'Armas naturais de osso, sem precisar carregá-las', 'Libera as Danças do clã'],
 		extras: [{ nivel: 8, texto: 'RD 3 contra dano físico (Hone no Yoroi)' }],
@@ -115,7 +118,8 @@ const OFICIAIS: Record<string, DefKkg> = {
 		tipo: 'Combinação',
 		icone: 'kkg/ic-kkg-combinacao',
 		cor: '#C9A35E',
-		custo: 3,
+		custo: 0,
+		sempre: true,
 		reducoes: [],
 		efeitos: ['A areia é uma arma natural: 1d8 de dano, alcance 10 m, rolagem de Ninjutsu', 'Libera as técnicas do clã'],
 		extras: [{ nivel: 8, texto: 'RD 3 (Suna no Yoroi)' }],
@@ -127,7 +131,8 @@ const OFICIAIS: Record<string, DefKkg> = {
 		tipo: 'Combinação',
 		icone: 'kkg/ic-kkg-combinacao',
 		cor: '#8FD8EA',
-		custo: 6,
+		custo: 0,
+		sempre: true,
 		reducoes: [],
 		efeitos: ['Libera os jutsus de gelo; depois de ativo, eles têm o custo normal'],
 		extras: [],
@@ -142,7 +147,10 @@ export function defKkg(claSlug: string | null | undefined, criado?: ClaDados | n
 		if (!criado.kkg) return null;
 		const k = criado.kekkei;
 		const lim = k.limitacoes.map((l) => l.id);
-		const custo = lim.includes('custo-10') ? 10 : lim.includes('custo-5') ? 5 : 0;
+		// só a KKG que dá um buff enquanto ligada cobra por turno; a só de ataque (jutsus, elemento combinado, armas do corpo)
+		// fica sempre ativa, mesmo com a limitação de custo
+		const buff = k.beneficios.some((b) => !['jutsu-c', 'jutsu-b', 'jutsu-a', 'combinacao', 'manipulacao'].includes(b.id));
+		const custo = !buff ? 0 : lim.includes('custo-10') ? 10 : lim.includes('custo-5') ? 5 : 0;
 		const tipo = TIPOS_KKG.find((t) => t.id === k.tipo);
 		return {
 			nome: k.nome.trim() || 'Kekkei Genkai',
