@@ -19,6 +19,9 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	import { caixaDaCena, cfgIso, desfazerProjecao, emPe as emPeIso, inverter, matrizIso, ordemDePintura, projetar } from '#lib/mesa/projecao.ts';
 	import { camadaEmPe, camadaPadrao, camadasDaCena, indiceDaCamada, indiceDosTokens } from '#lib/mesa/camadas.ts';
 	import { semKkg } from '#lib/mesa/kkg-npc.ts';
+	import { CacheVisao, FONTES_DE_LUZ, bloqueiaPasso, calcularVisao, ehPorta, encaixar, explorar, luzDoToken, meioDaParede, paredeEm, type Ambiente, type EntradaVisao, type Luz, type Observador, type Parede, type TipoParede } from '#lib/mesa/luz.ts';
+	import type { Ponto } from '#lib/mesa/visao.ts';
+	import LuzMesa from './LuzMesa.svelte';
 
 	let {
 		mesa,
@@ -353,9 +356,127 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	const escondeDeMim = $derived(nevoaLigada && !mesa.mestre);
 	let nevoaTemp = $state<Run[] | null>(null);
 	const runsNevoa = $derived(nevoaTemp ?? cena?.reveladas ?? []);
-	const revelado = $derived(indiceNevoa(runsNevoa));
-	const caminhoDaNevoa = $derived(nevoaLigada ? caminhoNevoa(runsNevoa, L, A) : '');
-	const visiveis = $derived(escondeDeMim ? mesa.tokens.filter((t) => revelado(t.x + t.tamanho / 2, t.y + t.tamanho / 2)) : mesa.tokens);
+
+	// ------------------------------------------------------------------ luz dinâmica (luz.ts; o desenho em LuzMesa)
+	const luzLigada = $derived(!!cena?.luz_dinamica && mesa.temLuzDinamica);
+	const ambiente = $derived<Ambiente>(cena?.luz_ambiente ?? 'claro');
+	/** Prévia das paredes e das luzes enquanto o Mestre arrasta (ao soltar, grava). */
+	let paredesTemp = $state<Parede[] | null>(null);
+	let luzesTemp = $state<Luz[] | null>(null);
+	const paredes = $derived(paredesTemp ?? mesa.paredes);
+	const luzesCena = $derived(luzesTemp ?? mesa.luzes);
+	/** Token de jogador (não do Mestre): o grupo enxerga por eles e a exploração anda com eles. */
+	const doGrupo = (t: MesaToken) => !!t.dono_id && mesa.membros.find((m) => m.id === t.dono_id)?.papel !== 'mestre';
+	/** Quem joga vê pela escuridão; o Mestre, só com "ver como o grupo". */
+	const pelosOlhosDoGrupo = $derived(luzLigada && (!mesa.mestre || ui.verComoGrupo));
+	const observadorDe = (t: MesaToken, comArrasto = true): Observador => {
+		const [x, y] = comArrasto && arrasto?.id === t.id ? [arrasto.x, arrasto.y] : [t.x, t.y];
+		return { x: x + t.tamanho / 2, y: y + t.tamanho / 2, corpo: t.tamanho / 2 + 0.5 };
+	};
+	/** As luzes acesas: as do Mestre e as que os tokens à vista carregam (tocha, lampião). */
+	const luzesAcesas = (luzes: readonly Luz[], comArrasto: boolean) => [
+		...luzes.filter((l) => l.acesa),
+		...mesa.tokens.flatMap((t) => {
+			const l = luzDoToken(t.luz);
+			if (!l || !t.visivel) return [];
+			const o = observadorDe(t, comArrasto);
+			return [{ x: o.x, y: o.y, plena: l.plena, penumbra: l.penumbra }];
+		})
+	];
+	const cacheVisao = new CacheVisao();
+	/** O que entra na conta da visão de quem olha agora: os meus tokens (o Mestre, os do grupo). */
+	const entradaVisao = $derived.by((): EntradaVisao | null => {
+		if (!pelosOlhosDoGrupo) return null;
+		const meus = mesa.tokens.filter((t) => (mesa.mestre ? doGrupo(t) && t.visivel : t.dono_id === mesa.eu));
+		return { L, A, paredes, ambiente, luzes: luzesAcesas(luzesCena, true), observadores: meus.map((t) => observadorDe(t)) };
+	});
+	const visao = $derived(entradaVisao ? calcularVisao(entradaVisao, cacheVisao) : null);
+	/** A névoa de quem olha: o que o grupo já explorou mais o que eu vejo agora (some na hora, sem esperar a gravação). */
+	const runsExibidas = $derived.by(() => {
+		if (!entradaVisao || !nevoaLigada) return runsNevoa;
+		const g = gradeNevoa(runsNevoa, L, A);
+		return explorar(entradaVisao, g, cacheVisao) ? emRuns(g, L, A) : runsNevoa;
+	});
+	const revelado = $derived(indiceNevoa(runsExibidas));
+	const caminhoDaNevoa = $derived(nevoaLigada ? caminhoNevoa(runsExibidas, L, A) : '');
+	const visiveis = $derived.by(() => {
+		// luz dinâmica: os do grupo e os aliados sempre; os outros, só se algum olho do grupo os vê agora
+		if (visao) return mesa.tokens.filter((t) => doGrupo(t) || t.dono_id === mesa.eu || t.aliado || visao.visivel(t.x + t.tamanho / 2, t.y + t.tamanho / 2));
+		return escondeDeMim ? mesa.tokens.filter((t) => revelado(t.x + t.tamanho / 2, t.y + t.tamanho / 2)) : mesa.tokens;
+	});
+	// o navegador do Mestre grava o que o grupo já viu (os jogadores não gravam a cena): espera os tokens pararem
+	const cacheExploracao = new CacheVisao();
+	const entradaDoGrupo = $derived.by((): EntradaVisao | null => {
+		if (!luzLigada || !mesa.mestre || mesa.somenteLeitura) return null;
+		const grupo = mesa.tokens.filter((t) => doGrupo(t) && t.visivel);
+		if (!grupo.length) return null;
+		return { L, A, paredes: mesa.paredes, ambiente, luzes: luzesAcesas(mesa.luzes, false), observadores: grupo.map((t) => observadorDe(t, false)) };
+	});
+	$effect(() => {
+		const e = entradaDoGrupo;
+		if (!e) return;
+		const timer = setTimeout(
+			() =>
+				untrack(() => {
+					const c = mesa.cena;
+					if (!c?.luz_dinamica || c.largura !== e.L || c.altura !== e.A) return;
+					const g = gradeNevoa(c.reveladas ?? [], e.L, e.A);
+					if (explorar(e, g, cacheExploracao) || !c.nevoa) void mesa.patchCena({ nevoa: true, reveladas: emRuns(g, e.L, e.A) });
+				}),
+			700
+		);
+		return () => clearTimeout(timer);
+	});
+	/** Os marcadores de porta: o Mestre vê todos; o grupo, os que estão à vista (de um lado ou do outro da porta). */
+	const portas = $derived.by(() => {
+		if (!luzLigada && ui.ferramenta !== 'paredes') return [];
+		return paredes.flatMap((p, i) => {
+			if (!ehPorta(p[4])) return [];
+			const [x, y] = meioDaParede(p);
+			if (visao && !mesa.mestre) {
+				const n = Math.hypot(p[2] - p[0], p[3] - p[1]) || 1;
+				const [nx, ny] = [(-(p[3] - p[1]) / n) * 0.3, ((p[2] - p[0]) / n) * 0.3];
+				if (!visao.visivel(x + nx, y + ny) && !visao.visivel(x - nx, y - ny)) return [];
+			}
+			return [{ i, x, y, tipo: p[4] }];
+		});
+	});
+	/** Mapa grande: de perto, os ladrilhos em tamanho cheio que aparecem na tela (de longe, a prévia basta). */
+	const ladrilhosVisiveis = $derived.by(() => {
+		const lad = cena?.fundo_ladrilhos;
+		if (!lad || !fundo || !W || !H) return [];
+		const c = caixaFundo;
+		const k = c.w / lad.w;
+		const previa = Math.min(1, 2048 / Math.max(lad.w, lad.h)) * lad.w;
+		if ((s * c.w) / previa <= 1.25) return [];
+		// os cantos da tela, na imagem (sem o giro dela), em pixels da imagem
+		const rot = cena?.fundo_rotacao ?? 0;
+		const [mx, my] = [c.x + c.w / 2, c.y + c.h / 2];
+		const cantos = [[0, 0], [W, 0], [0, H], [W, H]].map(([sx, sy]) => {
+			const [tx, ty] = daVista(sx / s + ui.vx, sy / s + ui.vy);
+			const [rx, ry] = girarVetor(tx - mx, ty - my, -rot);
+			return [(mx + rx - c.x) / k, (my + ry - c.y) / k];
+		});
+		const xs = cantos.map((q) => q[0]);
+		const ys = cantos.map((q) => q[1]);
+		const c0 = Math.max(0, Math.floor(Math.min(...xs) / lad.lado));
+		const c1 = Math.min(lad.colunas - 1, Math.floor(Math.max(...xs) / lad.lado));
+		const l0 = Math.max(0, Math.floor(Math.min(...ys) / lad.lado));
+		const l1 = Math.min(lad.linhas - 1, Math.floor(Math.max(...ys) / lad.lado));
+		const lista: { url: string; x: number; y: number; w: number; h: number }[] = [];
+		// meio pixel de sobra em cada ladrilho: sem frestas entre eles
+		for (let col = c0; col <= c1; col++)
+			for (let lin = l0; lin <= l1; lin++)
+				lista.push({
+					url: urlImagemMesa(`${lad.pasta}/${col}-${lin}.webp`)!,
+					x: c.x + col * lad.lado * k,
+					y: c.y + lin * lad.lado * k,
+					w: (Math.min(lad.lado, lad.w - col * lad.lado) + 0.5) * k,
+					h: (Math.min(lad.lado, lad.h - lin * lad.lado) + 0.5) * k
+				});
+		return lista.slice(0, 64);
+	});
+	const rotacaoFundo = $derived(cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined);
 	const objetosVisiveis = $derived(escondeDeMim ? mesa.objetos.filter((o) => o.tipo === 'imagem' || revelado(o.x, o.y)) : mesa.objetos);
 	/** As imagens ficam sob os tokens; os alfinetes e os textos, por cima. Cada grupo na ordem de empilhamento. */
 	const porOrdem = (a: MesaObjeto, b: MesaObjeto) => a.ordem - b.ordem || a.criado_em.localeCompare(b.criado_em);
@@ -609,8 +730,29 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 			clearTimeout(segurar);
 			segurar = setTimeout(() => (ui.hover = { token: t.id, x: p.sx, y: p.sy }), 550);
 		}
+		if (portaNoClique(p)) return;
 		if (objetosNoClique(e, p)) return;
 		switch (ui.ferramenta) {
+			case 'paredes': {
+				if (!mesa.mestre || mesa.somenteLeitura) break;
+				const raio = Math.max(0.25, F(10));
+				const modo = ui.paredeModo;
+				if (modo === 'apagar') {
+					apagando = true;
+					paredesTemp = [...mesa.paredes];
+					apagarParedeEm(p.mx, p.my, raio);
+				} else if (modo === 'mover') {
+					const ponta = pontaEm(p.mx, p.my, raio);
+					if (ponta) pontaArrasto = { de: ponta, para: ponta };
+				} else {
+					const a = encaixar(p.mx, p.my, mesa.paredes, raio, e.shiftKey);
+					paredeNova = { a, b: a, tipo: modo === 'porta' ? 1 : modo === 'janela' ? 4 : 0, clique: [p.mx, p.my] };
+				}
+				break;
+			}
+			case 'luz':
+				if (mesa.mestre && !mesa.somenteLeitura) comecarLuz(p, e.shiftKey);
+				break;
 			case 'nevoa': {
 				if (!mesa.mestre || mesa.somenteLeitura) break;
 				const grade = gradeNevoa(cena?.reveladas ?? [], L, A);
@@ -654,6 +796,76 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 				pintar(g);
 				break;
 		}
+	}
+
+	// ------------------------------------------------------------------ paredes, portas e luzes (só o Mestre edita)
+	let paredeNova = $state<{ a: Ponto; b: Ponto; tipo: TipoParede; clique: Ponto } | null>(null);
+	let pontaArrasto = $state<{ de: Ponto; para: Ponto } | null>(null);
+	let apagando = false;
+	let luzArrasto: { id: string; modo: 'mover' | 'plena' | 'penumbra'; dx: number; dy: number } | null = null;
+	const mesmoPonto = (x: number, y: number, p: Ponto) => Math.abs(x - p[0]) < 1e-6 && Math.abs(y - p[1]) < 1e-6;
+	/** Um clique num marcador de porta (ferramenta Mover): abre ou fecha. */
+	function portaNoClique(p: { tx: number; ty: number }): boolean {
+		if (ui.ferramenta !== 'mover' || !luzLigada || !portas.length || mesa.somenteLeitura) return false;
+		const raio = Math.max(0.3, F(12));
+		const d = portas.find((q) => {
+			const [x, y] = paraTela(q.x, q.y);
+			return Math.hypot(p.tx - x, p.ty - y) <= raio;
+		});
+		if (!d) return false;
+		void mesa.alternarPorta(d.i);
+		return true;
+	}
+	function apagarParedeEm(x: number, y: number, raio: number) {
+		const lista = paredesTemp ?? [...mesa.paredes];
+		const i = paredeEm(lista, x, y, raio);
+		if (i >= 0) paredesTemp = lista.filter((_, k) => k !== i);
+	}
+	/** A ponta de parede mais perto (a até `raio`). */
+	function pontaEm(x: number, y: number, raio: number): Ponto | null {
+		let melhor: Ponto | null = null;
+		let d = raio;
+		for (const q of mesa.paredes)
+			for (let k = 0; k < 4; k += 2) {
+				const dd = Math.hypot(q[k] - x, q[k + 1] - y);
+				if (dd <= d) [d, melhor] = [dd, [q[k], q[k + 1]]];
+			}
+		return melhor;
+	}
+	/** Todas as pontas que estavam em `de` vão para `para` (as paredes emendadas andam juntas). */
+	const moverPonta = (lista: readonly Parede[], de: Ponto, para: Ponto): Parede[] =>
+		lista.map((q) => [mesmoPonto(q[0], q[1], de) ? para[0] : q[0], mesmoPonto(q[0], q[1], de) ? para[1] : q[1], mesmoPonto(q[2], q[3], de) ? para[0] : q[2], mesmoPonto(q[2], q[3], de) ? para[1] : q[3], q[4]]);
+	/** Ferramenta Luz: as alças da selecionada mudam os raios; a luz se pega e arrasta; no vazio, põe uma nova. */
+	function comecarLuz(p: { mx: number; my: number; tx: number; ty: number }, livre: boolean) {
+		const raio = Math.max(0.3, F(12));
+		const perto = (gx: number, gy: number) => {
+			const [x, y] = paraTela(gx, gy);
+			return Math.hypot(p.tx - x, p.ty - y) <= raio;
+		};
+		const sel = mesa.luzes.find((l) => l.id === ui.luzSel);
+		if (sel && perto(sel.x + sel.plena + sel.penumbra, sel.y)) return void (luzArrasto = { id: sel.id, modo: 'penumbra', dx: 0, dy: 0 });
+		if (sel && perto(sel.x + sel.plena, sel.y)) return void (luzArrasto = { id: sel.id, modo: 'plena', dx: 0, dy: 0 });
+		const alvo = [...mesa.luzes].reverse().find((l) => perto(l.x, l.y));
+		if (alvo) {
+			ui.luzSel = alvo.id;
+			luzArrasto = { id: alvo.id, modo: 'mover', dx: p.mx - alvo.x, dy: p.my - alvo.y };
+			return;
+		}
+		const f = FONTES_DE_LUZ.find((x) => x.id === ui.luzFonte) ?? FONTES_DE_LUZ[1];
+		const ponto = (v: number, max: number) => Math.min(max, Math.max(0, livre ? arred(v) : Math.round(v * 2) / 2));
+		const nova: Luz = { id: crypto.randomUUID().slice(0, 8), x: ponto(p.mx, L), y: ponto(p.my, A), plena: f.plena, penumbra: f.penumbra, acesa: true };
+		ui.luzSel = nova.id;
+		void mesa.definirLuzes([...mesa.luzes, nova]);
+	}
+	function arrastarLuz(p: { mx: number; my: number }, livre: boolean) {
+		const a = luzArrasto!;
+		const meio = (v: number) => (livre ? arred(v, 1) : Math.round(v * 2) / 2);
+		luzesTemp = mesa.luzes.map((l) => {
+			if (l.id !== a.id) return l;
+			if (a.modo === 'mover') return { ...l, x: Math.min(L, Math.max(0, meio(p.mx - a.dx))), y: Math.min(A, Math.max(0, meio(p.my - a.dy))) };
+			const r = meio(Math.hypot(p.mx - l.x, p.my - l.y));
+			return a.modo === 'plena' ? { ...l, plena: Math.min(60, Math.max(0, r)) } : { ...l, penumbra: Math.min(60, Math.max(0, r - l.plena)) };
+		});
 	}
 
 	// ------------------------------------------------------------------ objetos e névoa: clique, arrasto e soltura
@@ -787,6 +999,17 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			return;
 		}
 		if (pintura) return pintar(g);
+		if (paredeNova) return void (paredeNova = { ...paredeNova, b: encaixar(p.mx, p.my, mesa.paredes, Math.max(0.25, F(10)), e.shiftKey) });
+		if (pontaArrasto) {
+			const de = pontaArrasto.de;
+			const outras = mesa.paredes.filter((q) => !mesmoPonto(q[0], q[1], de) && !mesmoPonto(q[2], q[3], de));
+			const para = encaixar(p.mx, p.my, outras, Math.max(0.25, F(10)), e.shiftKey);
+			pontaArrasto = { de, para };
+			paredesTemp = moverPonta(mesa.paredes, de, para);
+			return;
+		}
+		if (apagando) return apagarParedeEm(p.mx, p.my, Math.max(0.25, F(10)));
+		if (luzArrasto) return arrastarLuz(p, e.shiftKey);
 		if (objArrasto) return arrastarObjeto(p, e.shiftKey);
 		if (nevoaPintura) {
 			const n = nevoaPintura;
@@ -835,6 +1058,30 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			return;
 		}
 		pan = null;
+		if (paredeNova) {
+			const n = paredeNova;
+			paredeNova = null;
+			if (Math.hypot(n.b[0] - n.a[0], n.b[1] - n.a[1]) >= 0.1) return void mesa.definirParedes([...mesa.paredes, [n.a[0], n.a[1], n.b[0], n.b[1], n.tipo]]);
+			// um clique com a Porta numa porta: fechada → aberta → trancada → fechada
+			const i = n.tipo === 1 ? paredeEm(mesa.paredes, n.clique[0], n.clique[1], Math.max(0.25, F(10)), (q) => ehPorta(q[4])) : -1;
+			if (i >= 0) void mesa.definirParedes(mesa.paredes.map((q, k) => (k === i ? ([q[0], q[1], q[2], q[3], q[4] === 1 ? 2 : q[4] === 2 ? 3 : 1] as Parede) : q)));
+			return;
+		}
+		if (pontaArrasto || apagando) {
+			const lista = paredesTemp;
+			pontaArrasto = null;
+			apagando = false;
+			paredesTemp = null;
+			if (lista && JSON.stringify(lista) !== JSON.stringify(mesa.paredes)) void mesa.definirParedes(lista);
+			return;
+		}
+		if (luzArrasto) {
+			const lista = luzesTemp;
+			luzArrasto = null;
+			luzesTemp = null;
+			if (lista && JSON.stringify(lista) !== JSON.stringify(mesa.luzes)) void mesa.definirLuzes(lista);
+			return;
+		}
 		if (objArrasto) {
 			const a = objArrasto;
 			objArrasto = null;
@@ -869,6 +1116,8 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			arrasto = null;
 			mesa.enviar('fantasma', null, true);
 			if (t && (a.x !== t.x || a.y !== t.y)) {
+				// a parede (ou a porta fechada, ou a janela) segura o jogador; o Mestre passa por onde quiser
+				if (!mesa.mestre && paredes.length && bloqueiaPasso(paredes, t.x + t.tamanho / 2, t.y + t.tamanho / 2, a.x + t.tamanho / 2, a.y + t.tamanho / 2)) return void ui.avisar('Uma parede (ou porta fechada) está no caminho.');
 				// o turno conta o deslocamento gasto: no terreno difícil, cada metro custa 2
 				const { custo } = custoCaminho(t, a, mesa.terreno);
 				const D = deslocamentoDe(t);
@@ -940,7 +1189,9 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		const inimigos = visiveis.filter((e) => e.id !== arrastado.id && e.visivel && (pc ? !!e.npc_id && !e.aliado : !!e.personagem_id || (!e.npc_id && !!e.dono_id)));
 		const reacao = provocaReacao(arrastado, destino, inimigos).map((e) => nomeCurto(e.nome));
 		const cor = info.faixa === 'normal' ? corCss(mesa.corDe(mesa.donoDe(arrastado))) : info.faixa === 'sprint' ? 'var(--acc)' : 'var(--mesa-vermelhao)';
-		return { ...info, cor, reacao: reacao.length ? `provoca reação de ${reacao.join(', ')}` : '', terreno: custo > metros ? `terreno difícil: ${metros} m custam ${custo} m` : '' };
+		const n = arrastado.tamanho / 2;
+		const parede = paredes.length && bloqueiaPasso(paredes, arrastado.x + n, arrastado.y + n, arrasto.x + n, arrasto.y + n) ? (mesa.mestre ? 'atravessa uma parede (só o Mestre passa)' : 'uma parede está no caminho') : '';
+		return { ...info, cor, reacao: reacao.length ? `provoca reação de ${reacao.join(', ')}` : '', terreno: custo > metros ? `terreno difícil: ${metros} m custam ${custo} m` : '', parede };
 	});
 	const aneis = $derived.by(() => {
 		const a = ui.aneis;
@@ -1196,11 +1447,12 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				{#if fundo && iso}
 					<g transform={desfazer}>
 						<image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} />
+						{#each ladrilhosVisiveis as l (l.url)}<image href={l.url} x={l.x} y={l.y} width={l.w} height={l.h} transform={rotacaoFundo} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" />{/each}
 						{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
 					</g>
 				{:else if fundo}
 					<clipPath id="recorte-cena"><rect x="0" y="0" width={L} height={A} /></clipPath>
-				<g clip-path={ui.bordas ? undefined : 'url(#recorte-cena)'}><image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} /></g>
+				<g clip-path={ui.bordas ? undefined : 'url(#recorte-cena)'}><image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} />{#each ladrilhosVisiveis as l (l.url)}<image href={l.url} x={l.x} y={l.y} width={l.w} height={l.h} transform={rotacaoFundo} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" />{/each}</g>
 				{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
 			{/if}
 			<!-- a grade: cada um esconde só na própria tela; ajustando a grade ao mapa, ela aparece -->
@@ -1361,6 +1613,27 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				{/if}
 			{/each}
 
+			<!-- luz dinâmica: a escuridão fica sob os tokens (quem joga só recebe os que estão à vista; de pé, na isométrica, o token não
+			     afunda no escuro da casa de trás) -->
+			{#if luzLigada || ui.ferramenta === 'paredes' || ui.ferramenta === 'luz'}
+				<LuzMesa
+					{L}
+					{A}
+					{F}
+					{clipCena}
+					{visao}
+					{ambiente}
+					{paredes}
+					verParedes={mesa.mestre && !ui.verComoGrupo ? (ui.ferramenta === 'paredes' ? 'forte' : luzLigada ? 'fraco' : null) : null}
+					paredeNova={paredeNova}
+					{portas}
+					luzes={luzesCena}
+					verLuzes={mesa.mestre && !ui.verComoGrupo ? (ui.ferramenta === 'luz' ? 'forte' : luzLigada && ambiente !== 'claro' ? 'fraco' : null) : null}
+					luzSel={ui.luzSel}
+					tela={paraTela}
+					{desfazer}
+				/>
+			{/if}
 				{#if iso}
 				{#each pePintura as it (it.id)}
 					{#if it.k === 'token'}{@render tokenSvg(it.t)}{:else}{@render imagemSvg(it.o)}{/if}
@@ -1404,6 +1677,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				{@render rotulo(arrasto.x + (arrastado?.tamanho ?? 1) / 2, arrasto.y - 0.3 - sobe, infoArrasto.texto, infoArrasto.cor, 'meio')}
 				{#if infoArrasto.terreno}{@render rotulo(arrasto.x + (arrastado?.tamanho ?? 1) / 2, arrasto.y - 0.3, infoArrasto.terreno, 'var(--mesa-siena)', 'meio')}{/if}
 				{#if infoArrasto.reacao}{@render rotulo(arrasto.x + (arrastado?.tamanho ?? 1) / 2, arrasto.y - 0.3 - sobe - F(26), infoArrasto.reacao, 'var(--mesa-vermelhao)', 'meio')}{/if}
+				{#if infoArrasto.parede}{@render rotulo(arrasto.x + (arrastado?.tamanho ?? 1) / 2, arrasto.y + (arrastado?.tamanho ?? 1) + 0.6, infoArrasto.parede, 'var(--mesa-vermelhao)', 'meio')}{/if}
 			{/if}
 
 			{#if nevoaLigada}

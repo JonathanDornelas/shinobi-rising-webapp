@@ -98,7 +98,7 @@ export function limpar(runs: unknown, L: number, A: number): Run[] {
 		if (y < 0 || y >= A || x1 < x0) continue;
 		saida.push([y, Math.max(0, x0), Math.min(L - 1, x1)]);
 	}
-	return saida.slice(0, 4000);
+	return saida.slice(0, 15000);
 }
 
 /** Os quadrados de uma reta de (x0, y0) a (x1, y1), incluindo as pontas (Bresenham): o pincel não deixa buracos ao arrastar rápido. */

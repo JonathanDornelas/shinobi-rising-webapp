@@ -9,6 +9,9 @@
 	import { MAX_CAMADAS, adicionar, alternarEmPe, camadasDaCena, indiceDaCamada, mover, remover, renomear, type Camada } from '#lib/mesa/camadas.ts';
 	import type { UiMesa } from '#lib/mesa/ui.svelte.ts';
 	import type { MesaCena, MesaObjeto } from '#lib/supabase/banco.ts';
+	import { enviarArte, nomeDoArquivo } from '#lib/mesa/artes.ts';
+	import { arquivoDaImagem, lerUvtt } from '#lib/mesa/uvtt.ts';
+	import { toasts } from '#lib/estado/toasts.svelte.ts';
 
 	let {
 		mesa,
@@ -214,6 +217,50 @@
 	const secao = 'flex flex-col gap-2 border-t-2 border-b3 px-3 pt-3 pb-3.5 first:border-t-0';
 	const titulo = 'm-0 font-mincho text-[15px] leading-5 font-bold text-title';
 	const dica = 'm-0 text-[11px] leading-[15px] text-mut';
+
+	// mapa Universal VTT (.dd2vtt, .uvtt): a imagem vai para a biblioteca (em ladrilhos, se for grande) e a cena fica do
+	// tamanho do mapa, com as paredes, as portas, as luzes e a luz dinâmica já ligada
+	let importando = $state<string | null>(null);
+	async function importarUvtt(e: Event) {
+		const entrada = e.currentTarget as HTMLInputElement;
+		const arquivo = entrada.files?.[0];
+		entrada.value = '';
+		if (!arquivo) return;
+		try {
+			importando = 'Lendo o mapa…';
+			const m = lerUvtt(await arquivo.text());
+			const nome = nomeDoArquivo(arquivo.name);
+			importando = 'Enviando a imagem…';
+			const arte = await enviarArte(mesa.campanha, arquivoDaImagem(m, nome), 'mapa', nome, (feitos, total) => (importando = `Mapa grande: ${feitos}/${total} pedaços…`));
+			mesa.artes = [arte, ...mesa.artes];
+			// os tokens que ficariam fora da cena nova voltam para dentro dela
+			for (const t of mesa.tokens)
+				if (t.x + t.tamanho > m.largura || t.y + t.tamanho > m.altura) await mesa.atualizarToken(t.id, { x: Math.max(0, Math.min(t.x, m.largura - t.tamanho)), y: Math.max(0, Math.min(t.y, m.altura - t.tamanho)) });
+			await mesa.patchCena({
+				largura: m.largura,
+				altura: m.altura,
+				visao: 'topo',
+				fundo: arte.caminho,
+				fundo_ladrilhos: arte.ladrilhos ?? null,
+				fundo_escala: m.largura,
+				fundo_x: 0,
+				fundo_y: 0,
+				...(cena.fundo_rotacao !== undefined ? { fundo_rotacao: 0 } : {}),
+				terreno: [],
+				paredes: m.paredes,
+				luzes: m.luzes.map((l, i) => ({ id: `u${i}-${Date.now().toString(36)}`, ...l, acesa: true })),
+				luz_ambiente: m.ambiente,
+				luz_dinamica: true,
+				nevoa: true,
+				reveladas: []
+			});
+			ui.avisar(`Mapa importado: ${m.largura} × ${m.altura} quadrados, ${m.paredes.length} paredes e ${m.luzes.length} luzes.`);
+		} catch (erro) {
+			toasts.mostrar(erro instanceof Error && /Universal|200|tamanho|grande/.test(erro.message) ? erro.message : 'Não foi possível importar o mapa.', 'erro');
+		} finally {
+			importando = null;
+		}
+	}
 	const nomeLinha = 'text-[13px] leading-4 font-semibold';
 </script>
 
@@ -454,6 +501,16 @@
 				{@render imagemDaCena('Narrativa', 'Aparece no modo Narrativa.', cena.imagem, cena.imagem ? 'Trocar' : 'Escolher', () => (ui.modal = { tipo: 'imagem', alvo: 'imagem' }))}
 				{@render imagemDaCena('Fundo do quadro', 'O mapa sob a grade.', cena.fundo, cena.fundo ? 'Trocar' : 'Escolher', () => (ui.modal = { tipo: 'imagem', alvo: 'fundo' }))}
 			</section>
+			{#if cena.paredes !== undefined}
+				<section class={secao}>
+					<h3 class={titulo}>Mapa pronto (.uvtt)</h3>
+					<p class={dica}>Mapas do Dungeondraft (.dd2vtt), Dungeon Alchemist ou DungeonFog (.uvtt) entram com a imagem, o tamanho, as paredes, as portas e as luzes. Substitui o fundo e as paredes desta cena.</p>
+					<label class="{botao} flex cursor-pointer items-center justify-center" aria-busy={!!importando}>
+						{importando ?? 'Importar mapa'}
+						<input type="file" accept=".dd2vtt,.uvtt,.df2vtt,application/json" class="sr-only" disabled={!!importando} onchange={importarUvtt} />
+					</label>
+				</section>
+			{/if}
 			{#if cena.clima !== undefined}
 				<!-- o clima sobre o mapa inteiro (ladrilhos animados da vfx_workbench), para todos -->
 				<section class={secao}>

@@ -66,6 +66,7 @@
 	import { corElemento } from '#lib/mesa/hud.ts';
 	import { estiloFoco, type FocoArte } from '#lib/bestiario/foco.ts';
 	import { kkgLigadaNoToken, semKkg } from '#lib/mesa/kkg-npc.ts';
+	import { FONTES_DE_LUZ, luzDoToken } from '#lib/mesa/luz.ts';
 
 	let {
 		mesa,
@@ -133,6 +134,10 @@
 	const deslNpc = $derived(dados.tipo === 'npc' ? (dados.extras?.deslocamento ?? 10) : 10);
 	const ehNpcTropa = $derived(dados.tipo === 'npc' && dados.npc.membros > 1);
 	const editavel = $derived(!mesa.somenteLeitura && ((dados.tipo === 'pc' && dados.editavel) || dados.tipo === 'npc' || (dados.tipo === 'livre' && dados.editavel)));
+	// luz dinâmica: a luz que o token carrega (a fogueira fica no chão, pela ferramenta Luz)
+	const luzesDeMao = FONTES_DE_LUZ.filter((f) => f.id !== 'fogueira');
+	const luzAtual = $derived(luzDoToken(token.luz));
+	const fonteAtual = $derived(luzAtual ? (luzesDeMao.find((f) => f.plena === luzAtual.plena && f.penumbra === luzAtual.penumbra)?.id ?? 'outra') : null);
 	let alta = $state(false);
 
 	// ------------------------------------------------------------------ números
@@ -607,6 +612,19 @@
 						{:else}
 							<button type="button" class="{btn} {celular ? 'min-h-11 px-2.5' : ''}" disabled={(!!kkg.def.estagios && kkg.estagio < 1) || atual.pc < kkg.custo} title={kkg.def.estagios && kkg.estagio < 1 ? 'O Sharingan ainda não despertou (escolha o estágio na ficha completa)' : undefined} onclick={ativarKkg}>ATIVAR{kkg.custo ? ` · −${kkg.custo} PC` : ''}</button>
 						{/if}
+					{/if}
+				</div>
+			{/if}
+			{#if mesa.cena?.luz_dinamica && token.luz !== undefined && (editavel || luzAtual)}
+				<div class="mx-3 mb-2.5 flex items-center gap-1.5" role="group" aria-label="Luz que o token carrega">
+					<span class="font-pixel text-[11px] font-bold tracking-[0.08em] text-mut">LUZ</span>
+					{#if editavel}
+						{#each [[null, 'Nenhuma'], ...luzesDeMao.map((f) => [f.id, f.nome])] as [id, nome] (nome)}
+							{@const f = luzesDeMao.find((x) => x.id === id)}
+							<button type="button" aria-pressed={fonteAtual === id} title={f ? `${f.plena} m de luz plena e ${f.penumbra} m de penumbra` : 'Sem luz própria'} class="min-h-8 flex-1 border-2 px-1 text-xs font-semibold {fonteAtual === id ? 'border-[var(--acc)] bg-[color-mix(in_srgb,var(--acc)_18%,transparent)]' : 'border-b3'} {celular ? 'min-h-11' : ''}" onclick={() => acoes.token(token, { luz: f ? { plena: f.plena, penumbra: f.penumbra } : null })}>{nome}</button>
+						{/each}
+					{:else if luzAtual}
+						<span class="text-xs">{luzesDeMao.find((f) => f.id === fonteAtual)?.nome ?? 'Luz'}: {luzAtual.plena} m + {luzAtual.penumbra} m</span>
 					{/if}
 				</div>
 			{/if}

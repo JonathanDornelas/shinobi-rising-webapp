@@ -31,7 +31,7 @@ export interface FichaAberta {
 	dano: string;
 }
 
-export type Pop = null | 'medir' | 'jutsu' | 'lapis' | 'cor' | 'cena' | 'gear' | 'alfinete' | 'texto' | 'objeto' | 'nevoa' | 'musica';
+export type Pop = null | 'medir' | 'jutsu' | 'lapis' | 'cor' | 'cena' | 'gear' | 'alfinete' | 'texto' | 'objeto' | 'nevoa' | 'musica' | 'paredes' | 'luz';
 export type Modal = null | { tipo: 'nova' } | { tipo: 'excluir'; cena: string } | { tipo: 'renomear'; cena: string } | { tipo: 'participantes' } | { tipo: 'bestiario' } | { tipo: 'jutsu'; j: JutsuMesa } | { tipo: 'imagem'; alvo: 'imagem' | 'fundo' } | { tipo: 'artes' } | { tipo: 'pasta'; id: string | null; pai: string | null }| { tipo: 'mover-cena'; cena: string } | { tipo: 'config' };
 
 /** Uma arte pronta para pôr no quadro: da biblioteca ou do livro. */
@@ -67,6 +67,12 @@ export class UiMesa {
 	/** Névoa: revelar ou cobrir, e o lado do pincel em quadrados. */
 	nevoaModo = $state<'revelar' | 'cobrir'>('revelar');
 	nevoaPincel = $state(3);
+	/** Paredes: o que o arrasto desenha, ou mover pontas e apagar. Luz: a fonte que o clique põe e a selecionada. */
+	paredeModo = $state<'parede' | 'porta' | 'janela' | 'mover' | 'apagar'>('parede');
+	luzFonte = $state('tocha');
+	luzSel = $state<string | null>(null);
+	/** O Mestre vê o quadro como o grupo vê (a escuridão e o que os tokens dos jogadores enxergam). */
+	verComoGrupo = $state(false);
 	mira = $state<Mira | null>(null);
 	aneis = $state<{ token: string; corpo: number; lista: { r: number; rotulo: string }[]; titulo: string } | null>(null);
 	hover = $state<{ token: string; x: number; y: number } | null>(null);
@@ -117,13 +123,16 @@ export class UiMesa {
 
 	escolher(f: Ferramenta) {
 		this.ferramenta = f;
-		this.pop = f === 'medir' ? 'medir' : f === 'lapis' || f === 'apontar' ? 'lapis' : f === 'alfinete' || f === 'texto' || f === 'nevoa' || f === 'objeto' ? f : null;
+		this.pop = f === 'medir' ? 'medir' : f === 'lapis' || f === 'apontar' ? 'lapis' : f === 'alfinete' || f === 'texto' || f === 'nevoa' || f === 'objeto' || f === 'paredes' || f === 'luz' ? f : null;
 		if (f !== 'mover' && f !== 'alfinete' && f !== 'texto' && f !== 'objeto') this.objSel = null;
 		if (f !== 'objeto') this.armada = null;
 		if (f === 'apontar') this.modoLapis = 'apontar';
 		if (f === 'lapis') this.modoLapis = 'lapis';
 		if (f === 'terreno') this.avisar('Arraste para marcar terreno difícil; comece num quadrado marcado para apagar.');
 		if (f === 'nevoa') this.avisar('Arraste para revelar o mapa; Shift inverte (cobre). Só o Mestre vê tudo; o grupo vê só o revelado.');
+		if (f === 'paredes') this.avisar('Arraste para traçar uma parede (encaixa nos cantos; Shift solta). Comece numa ponta para emendar.');
+		if (f === 'luz') this.avisar('Clique para pôr uma luz; arraste para mover; as alças mudam a luz plena e a penumbra.');
+		if (f !== 'luz') this.luzSel = null;
 	}
 
 	abrirFicha(token: string, aba: string | null = null) {

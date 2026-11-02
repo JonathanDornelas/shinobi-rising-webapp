@@ -16,6 +16,7 @@
 	import { supabase } from '#lib/supabase/cliente.ts';
 	import type { Json, MesaCena, MesaToken, Npc, Rolagem } from '#lib/supabase/banco.ts';
 	import { IMAGENS_DO_LIVRO, urlImagemMesa } from '#lib/mesa/imagens.ts';
+	import { camposDaDemo, carregarDemos, type DemoCena } from '#lib/mesa/demos.ts';
 	import { estiloDoJutsu } from '#lib/mesa/efeitos.ts';
 	import type { ArteArmada } from '#lib/mesa/ui.svelte.ts';
 	import ArtesMesa from '#lib/componentes/mesa/ArtesMesa.svelte';
@@ -763,13 +764,23 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	// ------------------------------------------------------------------ cenas (Mestre)
 	// começar vazia, com o grupo todo ou só com quem o Mestre escolher (vira a lista de quem joga nesta cena)
 	type Comeco = 'vazia' | 'grupo' | 'escolher';
-	const cenaNova = () => ({ nome: 'Nova cena', largura: 40, altura: 30, comeco: 'vazia' as Comeco, escolhidos: data.personagens.map((p) => p.id) });
+	const cenaNova = () => ({ nome: 'Nova cena', largura: 40, altura: 30, comeco: 'vazia' as Comeco, escolhidos: data.personagens.map((p) => p.id), demo: null as DemoCena | null });
+	// as demonstrações da luz dinâmica (mapa, paredes, portas e luzes prontos): a lista só carrega ao abrir "Nova cena"
+	let demos = $state<DemoCena[] | null>(null);
+	$effect(() => {
+		if (ui.modal?.tipo === 'nova' && !demos && data.mestre) void carregarDemos().then((d) => (demos = d));
+	});
+	function escolherDemo(d: DemoCena | null) {
+		novaCena.demo = d;
+		novaCena.nome = d ? `${d.nome}${d.visao === 'isometrica' ? ' (isométrica)' : ''}` : 'Nova cena';
+		[novaCena.largura, novaCena.altura] = d ? [d.largura, d.altura] : [40, 30];
+	}
 	let novaCena = $state(cenaNova());
 	let textoModal = $state('');
 	async function criarCena() {
 		const { data: c, error } = await supabase()
 			.from('mesa_cenas')
-			.insert({ campanha_id: campanha, nome: novaCena.nome.trim().slice(0, 60) || 'Nova cena', largura: Math.max(5, Math.min(200, novaCena.largura)), altura: Math.max(5, Math.min(200, novaCena.altura)), ativa: !data.cenas.length, participantes: novaCena.comeco === 'escolher' ? novaCena.escolhidos : null })
+			.insert({ campanha_id: campanha, nome: novaCena.nome.trim().slice(0, 60) || 'Nova cena', largura: Math.max(5, Math.min(200, novaCena.largura)), altura: Math.max(5, Math.min(200, novaCena.altura)), ativa: !data.cenas.length, participantes: novaCena.comeco === 'escolher' ? novaCena.escolhidos : null, ...(novaCena.demo ? camposDaDemo(novaCena.demo) : {}) })
 			.select('*')
 			.single();
 		if (error || !c) return void toasts.mostrar('Não foi possível criar a cena.', 'erro');
@@ -817,7 +828,9 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	}
 	const tirarDeCena = (chave: string) => void mesa.patchCena({ em_cena: emCena.filter((e) => e.chave !== chave) });
 	const alternarNomeEmCena = (chave: string) => void mesa.patchCena({ em_cena: emCena.map((e) => (e.chave === chave ? { ...e, nome: e.nome ? null : nomeEmCena(chave) } : e)) });
-	const escolherImagem = (alvo: 'imagem' | 'fundo', caminho: string | null) => mesa.patchCena({ [alvo]: caminho } as Partial<MesaCena>);
+	// o fundo leva junto os ladrilhos do mapa grande (os jogadores não leem a biblioteca, então a cena guarda)
+	const escolherImagem = (alvo: 'imagem' | 'fundo', caminho: string | null) =>
+		mesa.patchCena({ [alvo]: caminho, ...(alvo === 'fundo' && cena?.fundo_ladrilhos !== undefined ? { fundo_ladrilhos: mesa.artes.find((a) => a.caminho === caminho)?.ladrilhos ?? null } : {}) } as Partial<MesaCena>);
 	/** Da biblioteca (ou do livro): vira o fundo, a imagem da narrativa, ou nada. */
 	function escolherDaBiblioteca(alvo: 'imagem' | 'fundo', caminho: string | null) {
 		void escolherImagem(alvo, caminho);
@@ -875,7 +888,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		if (!cena) return;
 		const { data: c, error } = await supabase()
 			.from('mesa_cenas')
-			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [], camadas: cena.camadas, modo: cena.modo, imagem: cena.imagem, fundo: cena.fundo, fundo_opacidade: cena.fundo_opacidade, fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, ...(cena.fundo_rotacao !== undefined ? { fundo_rotacao: cena.fundo_rotacao } : {}), ...(cena.fundo_recorte !== undefined ? { fundo_recorte: cena.fundo_recorte } : {}), grade: cena.grade, pasta_id: cena.pasta_id, nome_publico: cena.nome_publico, nevoa: cena.nevoa, reveladas: cena.reveladas ?? [] })
+			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [], camadas: cena.camadas, modo: cena.modo, imagem: cena.imagem, fundo: cena.fundo, fundo_opacidade: cena.fundo_opacidade, fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, ...(cena.fundo_rotacao !== undefined ? { fundo_rotacao: cena.fundo_rotacao } : {}), ...(cena.fundo_recorte !== undefined ? { fundo_recorte: cena.fundo_recorte } : {}), grade: cena.grade, pasta_id: cena.pasta_id, nome_publico: cena.nome_publico, nevoa: cena.nevoa, reveladas: cena.reveladas ?? [], ...(cena.paredes !== undefined ? { paredes: cena.paredes, luzes: cena.luzes ?? [], luz_dinamica: cena.luz_dinamica ?? false, luz_ambiente: cena.luz_ambiente ?? 'claro', fundo_ladrilhos: cena.fundo_ladrilhos ?? null } : {}) })
 			.select('*')
 			.single();
 		if (error || !c) return void toasts.mostrar('Não foi possível duplicar a cena.', 'erro');
@@ -1075,16 +1088,18 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 		borracha: { id: 'borracha', nome: 'Borracha', tecla: 'E', d: 'M9 20h12 M3 15l9-9 6 6-8 8H8z M8 10l6 6' },
 		terreno: { id: 'terreno', nome: 'Terreno difícil', tecla: 'T', d: 'M2 20h20 M4 20l5-9 3 4 3-6 5 11 M7 16h2 M14 17h2' },
 		nevoa: { id: 'nevoa', nome: 'Névoa: esconder o mapa e revelar aos poucos', tecla: 'F', d: 'M7 18h10a4 4 0 0 0 .5-8A5.5 5.5 0 0 0 7 9a4.5 4.5 0 0 0 0 9z' },
-		objeto: { id: 'objeto', nome: 'Imagens: pôr PNGs, SVGs e artes da biblioteca no quadro', tecla: 'O', d: 'M4 5h16v14H4z M4 16l5-5 4 4 3-3 4 4 M15 9a1 1 0 1 0 .01 0' }
+		objeto: { id: 'objeto', nome: 'Imagens: pôr PNGs, SVGs e artes da biblioteca no quadro', tecla: 'O', d: 'M4 5h16v14H4z M4 16l5-5 4 4 3-3 4 4 M15 9a1 1 0 1 0 .01 0' },
+		paredes: { id: 'paredes', nome: 'Paredes e portas: o que corta a visão e o passo (luz dinâmica)', tecla: 'R', d: 'M3 4h18v16H3z M3 10h8 M15 10h6 M9 10v10 M11 10h4' },
+		luz: { id: 'luz', nome: 'Luz: fontes de luz e a luz do ambiente (luz dinâmica)', tecla: 'U', d: 'M12 3c3 3.5 5 6 5 9a5 5 0 0 1-10 0c0-3 2-5.5 5-9z M12 14a1.6 1.6 0 1 0 .01 0 M9 21h6' }
 	};
 	// o trilho em grupos: ver, marcar (todos) e preparar a cena (Mestre). Os três primeiros também vão para o celular.
 	const GRUPOS = $derived<{ nome: string; itens: Ferr[] }[]>([
 		{ nome: 'VER', itens: [FERR.mover, FERR.medir] },
 		{ nome: 'MARCAR', itens: [FERR.lapis, FERR.apontar, FERR.alfinete, FERR.texto, FERR.borracha] },
-		...(data.mestre ? [{ nome: 'CENA', itens: [FERR.terreno, FERR.nevoa, FERR.objeto] }] : [])
+		...(data.mestre ? [{ nome: 'CENA', itens: [FERR.terreno, FERR.nevoa, FERR.paredes, FERR.luz, FERR.objeto] }] : [])
 	]);
 	const FERRAMENTAS = $derived(GRUPOS.flatMap((g) => g.itens));
-	const OPCOES_PROPRIAS = ['alfinete', 'texto', 'nevoa', 'objeto'];
+	const OPCOES_PROPRIAS = ['alfinete', 'texto', 'nevoa', 'objeto', 'paredes', 'luz'];
 	const temMusica = $derived(data.mestre || !!mesa.jukebox);
 	const musicaVisivel = $derived(!ui.musicaOculta && (ui.pop === 'musica' || !!mesa.jukebox));
 	// o ícone esconde o cartão (a música segue tocando) e mostra de novo, já aberto
@@ -1652,7 +1667,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 					{/each}
 				</div>
 			{/if}
-			{#if ui.pop === 'alfinete' || ui.pop === 'texto' || ui.pop === 'nevoa' || ui.pop === 'objeto'}
+			{#if ui.pop === 'alfinete' || ui.pop === 'texto' || ui.pop === 'nevoa' || ui.pop === 'objeto' || ui.pop === 'paredes' || ui.pop === 'luz'}
 				<div role="dialog" aria-label="Opções da ferramenta" class="{pop} top-24 max-h-[calc(100%-120px)] w-[290px] gap-2 overflow-y-auto p-3" style="left: {(ui.elencoAberto ? 280 : 40) + 52}px">
 					<OpcoesFerramenta {mesa} {ui} abrirBiblioteca={() => ((ui.pop = null), (ui.modal = { tipo: 'artes' }))} />
 				</div>
@@ -1735,7 +1750,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 
 {#if ui.modal}
 	<div class="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(10,8,7,.72)] p-4" role="presentation" onclick={(e) => e.target === e.currentTarget && (ui.modal = null)}>
-		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'config' ? 'h-[min(660px,calc(100dvh-2rem))] w-[min(400px,100%)] overflow-hidden' : (ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]') + ' overflow-y-auto'} max-h-full max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_var(--sombra)]">
+		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'config' ? 'h-[min(660px,calc(100dvh-2rem))] w-[min(400px,100%)] overflow-hidden' : (ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' || ui.modal.tipo === 'nova' ? 'w-[560px]' : 'w-[440px]') + ' overflow-y-auto'} max-h-full max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_var(--sombra)]">
 			{#if ui.modal.tipo === 'imagem' && cena}
 				{@const alvo = ui.modal.alvo}
 				<ArtesMesa {mesa} {campanha} {alvo} atual={cena[alvo]} aoEscolher={escolherDaBiblioteca} aoArmar={armarArte} aoFechar={() => (ui.modal = null)} />
@@ -1782,10 +1797,26 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			{:else if ui.modal.tipo === 'nova'}
 				<div class="border-b-2 border-[var(--vermelhao-lo)] bg-b0 px-3.5 py-2.5 font-pixel text-[13px] leading-none font-bold tracking-[0.1em] text-title">NOVA CENA</div>
 				<div class="flex flex-col gap-3 p-4">
+					{#if demos?.length && mesa.temLuzDinamica}
+						<div class="flex flex-col gap-1.5">
+							<span class="font-pixel text-xs font-bold tracking-[0.08em] text-mut">MODELO</span>
+							<div role="radiogroup" aria-label="Modelo da cena" class="grid grid-cols-3 gap-1.5">
+								<button type="button" role="radio" aria-checked={!novaCena.demo} class="flex min-h-[72px] flex-col items-center justify-center gap-1 border-2 text-xs font-semibold {!novaCena.demo ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={() => escolherDemo(null)}><span class="font-pixel text-lg">＋</span>Em branco</button>
+								{#each demos as d (d.id)}
+									<button type="button" role="radio" aria-checked={novaCena.demo?.id === d.id} title={d.dica} class="flex flex-col border-2 text-left {novaCena.demo?.id === d.id ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={() => escolherDemo(d)}>
+										<img src={d.miniatura} alt="" loading="lazy" class="aspect-[4/3] w-full bg-b0 object-contain [image-rendering:pixelated]" />
+										<span class="px-1 pt-0.5 text-[11px] leading-[14px] font-semibold">{d.nome}</span>
+										<span class="px-1 pb-0.5 text-[10px] leading-[13px] opacity-75">{d.visao === 'topo' ? 'Vista de cima' : 'Isométrica'}</span>
+									</button>
+								{/each}
+							</div>
+							{#if novaCena.demo}<span class="text-xs leading-4 text-mut">{novaCena.demo.dica} Paredes, portas e luzes já postas; a luz dinâmica começa ligada e nada foi explorado.</span>{/if}
+						</div>
+					{/if}
 					<label class="flex flex-col gap-1.5"><span class="font-pixel text-xs font-bold tracking-[0.08em] text-mut">NOME</span><input bind:value={novaCena.nome} class="h-11 border-2 border-b3 bg-b1 px-2.5 text-[15px] font-semibold text-fg" /></label>
 					<div class="flex gap-2.5">
-						<label class="flex flex-1 flex-col gap-1.5"><span class="font-pixel text-xs font-bold tracking-[0.08em] text-mut">LARGURA (M)</span><input type="number" min="5" max="200" bind:value={novaCena.largura} class="h-11 border-2 border-b3 bg-b1 px-2.5 font-pixel text-base font-bold text-fg" /></label>
-						<label class="flex flex-1 flex-col gap-1.5"><span class="font-pixel text-xs font-bold tracking-[0.08em] text-mut">ALTURA (M)</span><input type="number" min="5" max="200" bind:value={novaCena.altura} class="h-11 border-2 border-b3 bg-b1 px-2.5 font-pixel text-base font-bold text-fg" /></label>
+						<label class="flex flex-1 flex-col gap-1.5"><span class="font-pixel text-xs font-bold tracking-[0.08em] text-mut">LARGURA (M)</span><input type="number" min="5" max="200" bind:value={novaCena.largura} disabled={!!novaCena.demo} class="disabled:opacity-60 h-11 border-2 border-b3 bg-b1 px-2.5 font-pixel text-base font-bold text-fg" /></label>
+						<label class="flex flex-1 flex-col gap-1.5"><span class="font-pixel text-xs font-bold tracking-[0.08em] text-mut">ALTURA (M)</span><input type="number" min="5" max="200" bind:value={novaCena.altura} disabled={!!novaCena.demo} class="disabled:opacity-60 h-11 border-2 border-b3 bg-b1 px-2.5 font-pixel text-base font-bold text-fg" /></label>
 					</div>
 					<span class="text-xs leading-4 text-mut">Até 200 × 200 m. {data.cenas.length ? 'A cena nova fica preparada, sem que o grupo veja, até você ativar.' : 'É a primeira cena: ela já abre para o grupo.'}</span>
 					<div class="flex flex-col gap-1.5">

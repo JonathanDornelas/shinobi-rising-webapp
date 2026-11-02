@@ -35,6 +35,8 @@
 	// svelte-ignore state_referenced_locally
 	let tipoEnvio = $state<MesaArte['tipo']>(alvo ? 'mapa' : 'mapa');
 	let andamento = $state<{ feitos: number; total: number } | null>(null);
+	/** Mapa grande: os ladrilhos enviados do arquivo atual. */
+	let ladrilhos = $state<{ feitos: number; total: number } | null>(null);
 	let sobre = $state(false);
 	let selecionada = $state<string | null>(null);
 	let confirmarExclusao = $state(false);
@@ -51,11 +53,12 @@
 		let ultima: MesaArte | null = null;
 		for (const f of validos) {
 			try {
-				ultima = await enviarArte(campanha, f, tipoEnvio);
+				ultima = await enviarArte(campanha, f, tipoEnvio, undefined, (feitos, total) => (ladrilhos = { feitos, total }));
 				mesa.artes = [ultima, ...mesa.artes];
 			} catch (e) {
 				toasts.mostrar(e instanceof Error && /grande|abrir|300|guardar/i.test(e.message) ? `${f.name}: ${e.message}` : `Não foi possível enviar ${f.name}.`, 'erro');
 			}
+			ladrilhos = null;
 			andamento = { feitos: andamento.feitos + 1, total: andamento.total };
 		}
 		andamento = null;
@@ -200,7 +203,7 @@
 			</span>
 		</div>
 		<label class="btn-jogo min-h-10 cursor-pointer" aria-busy={!!andamento}>
-			{andamento ? `ENVIANDO ${andamento.feitos + 1}/${andamento.total}…` : 'ENVIAR ARTES'}
+			{andamento ? (ladrilhos ? `MAPA GRANDE: ${ladrilhos.feitos}/${ladrilhos.total} PEDAÇOS…` : `ENVIANDO ${andamento.feitos + 1}/${andamento.total}…`) : 'ENVIAR ARTES'}
 			<input type="file" multiple accept={TIPOS_ACEITOS} class="sr-only" disabled={!!andamento} onchange={aoEscolherArquivos} />
 		</label>
 		<span class="flex-1"></span>

@@ -12,12 +12,13 @@ import { limitarPosicao } from './musica.ts';
 import { limpar as limparRuns } from './nevoa.ts';
 import { coresDosMembros } from './cores.ts';
 import { deslocarQuadrados, deslocarRuns, deslocarToken } from './reenquadrar.ts';
+import { deslocarLuzes, deslocarParedes, ehPorta, limparLuzes, limparParedes, type Luz, type Parede } from './luz.ts';
 import { avancarRodada, relogiosDaCena, type Relogio } from './relogios.ts';
 import type { Quadrado } from './geometria.ts';
 import { molduraDoToken, molduraPorId } from './molduras.ts';
 import { nomeReal, siglaDoNome } from './nomes.ts';
 
-export type Ferramenta = 'mover' | 'medir' | 'lapis' | 'apontar' | 'borracha' | 'terreno' | 'fundo' | 'alfinete' | 'texto' | 'objeto' | 'nevoa';
+export type Ferramenta = 'mover' | 'medir' | 'lapis' | 'apontar' | 'borracha' | 'terreno' | 'fundo' | 'alfinete' | 'texto' | 'objeto' | 'nevoa' | 'paredes' | 'luz';
 
 export interface MembroMesa {
 	id: string;
@@ -121,6 +122,9 @@ export class Mesa {
 	private enviadosAqui = new Map<string, { valores: string[]; quando: number }>();
 
 	cena = $derived(this.cenas.find((c) => c.id === this.cenaId) ?? null);
+	/** As paredes e as fontes de luz da cena, já limpas (vazias enquanto a migração não roda; ver luz.ts). */
+	paredes = $derived<Parede[]>(this.cena ? limparParedes(this.cena.paredes, this.cena.largura, this.cena.altura) : []);
+	luzes = $derived<Luz[]>(limparLuzes(this.cena?.luzes));
 	cores = $derived(coresDosMembros(this.membros));
 	// a iniciativa e o terreno vêm do banco e do Realtime: qualquer formato inesperado vira vazio, nunca uma exceção
 	iniciativa = $derived<IniciativaCena>(this.cena?.iniciativa && typeof this.cena.iniciativa === 'object' && !Array.isArray(this.cena.iniciativa) ? this.cena.iniciativa : {});
@@ -984,7 +988,7 @@ export class Mesa {
 
 	/**
 	 * Reenquadrar a cena (só o Mestre): `dx` colunas entram à esquerda e `dy` linhas em cima (negativo: saem) e a cena
-	 * passa a ter `largura` × `altura`. Tokens, objetos, terreno, névoa e efeitos andam junto e ficam no mesmo lugar do mapa
+	 * passa a ter `largura` × `altura`. Tokens, objetos, terreno, névoa, paredes, luzes e efeitos andam junto e ficam no mesmo lugar do mapa
 	 * (os traços do lápis ficam onde estão). `fundo` é onde a imagem fica na cena nova, pela conta do quadro.
 	 */
 	async reenquadrarCena(dx: number, dy: number, largura: number, altura: number, fundo: Partial<MesaCena>) {
@@ -994,7 +998,8 @@ export class Mesa {
 		const A = Math.min(200, Math.max(5, Math.round(altura)));
 		const terreno = deslocarQuadrados(Array.isArray(c.terreno) ? c.terreno : [], dx, dy, L, A);
 		const reveladas = deslocarRuns(Array.isArray(c.reveladas) ? c.reveladas : [], dx, dy, L, A);
-		if (!(await this.patchCena({ largura: L, altura: A, terreno, reveladas, ...fundo }))) return false;
+		const luz = c.paredes !== undefined ? { paredes: limparParedes(deslocarParedes(this.paredes, dx, dy), L, A), luzes: deslocarLuzes(this.luzes, dx, dy) } : {};
+		if (!(await this.patchCena({ largura: L, altura: A, terreno, reveladas, ...luz, ...fundo }))) return false;
 		const tokens = this.tokens.map((t) => [t, deslocarToken(t, dx, dy, L, A)] as const).filter(([t, [x, y]]) => x !== t.x || y !== t.y);
 		await Promise.all(tokens.map(([t, [x, y]]) => this.atualizarToken(t.id, { x, y })));
 		if (dx || dy) {
@@ -1004,6 +1009,35 @@ export class Mesa {
 				this.efeitos = this.efeitos.map((k) => (k.id === e.id ? { ...k, ...patch } : k));
 				await sb().from('mesa_efeitos').update(patch).eq('id', e.id);
 			}
+		}
+		return true;
+	}
+
+	// ------------------------------------------------------------------ luz dinâmica (ver luz.ts)
+	/** A cena tem as colunas da luz dinâmica (a migração já rodou)? */
+	get temLuzDinamica() {
+		return this.cena?.paredes !== undefined;
+	}
+	definirParedes(paredes: Parede[]) {
+		const c = this.cena;
+		return c ? this.patchCena({ paredes: limparParedes(paredes, c.largura, c.altura) }) : Promise.resolve(false);
+	}
+	definirLuzes(luzes: Luz[]) {
+		return this.patchCena({ luzes: limparLuzes(luzes) });
+	}
+	/** Abre ou fecha a porta `i` (o jogador, só com um token dele ao lado; a trancada, só o Mestre). */
+	async alternarPorta(i: number) {
+		const c = this.cena;
+		const p = c?.paredes?.[i];
+		if (!c || !p || !ehPorta(p[4]) || this.somenteLeitura) return false;
+		const antes = this.cenas;
+		const nova = c.paredes!.map((q, k) => (k === i ? ([q[0], q[1], q[2], q[3], q[4] === 2 ? 1 : 2] as Parede) : q));
+		this.cenas = this.cenas.map((x) => (x.id === c.id ? { ...x, paredes: nova } : x));
+		const { error } = await sb().rpc('mesa_porta', { cena: c.id, indice: i, x1: p[0], y1: p[1] });
+		if (error) {
+			this.cenas = antes;
+			toasts.mostrar(/trancada|perto|mudou|travada/i.test(error.message) ? error.message : 'Não foi possível abrir a porta.', 'aviso');
+			return false;
 		}
 		return true;
 	}

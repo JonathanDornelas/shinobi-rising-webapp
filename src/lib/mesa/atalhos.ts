@@ -13,7 +13,9 @@ export const TECLAS_FERRAMENTA: { tecla: string; ferramenta: Ferramenta; nome: s
 	{ tecla: 'x', ferramenta: 'texto', nome: 'Texto' },
 	{ tecla: 't', ferramenta: 'terreno', nome: 'Terreno difícil', mestre: true },
 	{ tecla: 'o', ferramenta: 'objeto', nome: 'Objeto', mestre: true },
-	{ tecla: 'f', ferramenta: 'nevoa', nome: 'Névoa', mestre: true }
+	{ tecla: 'f', ferramenta: 'nevoa', nome: 'Névoa', mestre: true },
+	{ tecla: 'r', ferramenta: 'paredes', nome: 'Paredes e portas', mestre: true },
+	{ tecla: 'u', ferramenta: 'luz', nome: 'Luz', mestre: true }
 ];
 
 export interface Atalho {

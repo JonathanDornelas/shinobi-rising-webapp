@@ -448,6 +448,15 @@ export type MesaCena = {
 	clima?: ClimaCena | null;
 	/** Narrativa: os retratos que o Mestre trouxe para cima da imagem (ver mesa/narrativa.ts). */
 	em_cena?: unknown;
+	/** Luz dinâmica (ver mesa/luz.ts): ligada, paredes cortam a visão e o grupo vê o que os tokens enxergam. Ausentes enquanto a migração não roda. */
+	luz_dinamica?: boolean;
+	luz_ambiente?: 'claro' | 'penumbra' | 'escuro';
+	/** [[x1, y1, x2, y2, tipo], ...] em metros: 0 parede, 1 porta fechada, 2 porta aberta, 3 porta trancada, 4 janela. */
+	paredes?: [number, number, number, number, number][];
+	/** Fontes de luz postas pelo Mestre. */
+	luzes?: { id: string; x: number; y: number; plena: number; penumbra: number; acesa: boolean }[];
+	/** O fundo em ladrilhos (mapa grande): a pasta no bucket, o tamanho da imagem e a grade de pedaços. */
+	fundo_ladrilhos?: Ladrilhos | null;
 	grade: boolean;
 	/** Vista de cima (o quadro de sempre) ou isométrica: só muda o desenho, os dados seguem na grade. */
 	visao: 'topo' | 'isometrica';
@@ -493,6 +502,9 @@ export type MesaObjeto = {
 };
 
 /** Arte da biblioteca da campanha: mapa (fundo e narrativa) ou objeto (imagem solta, com transparência). */
+/** Os ladrilhos de um mapa grande: pedaços de `lado` px em mesa/<pasta>/<coluna>-<linha>.webp, de uma imagem de w × h px. */
+export type Ladrilhos = { pasta: string; w: number; h: number; lado: number; colunas: number; linhas: number };
+
 export type MesaArte = {
 	id: string;
 	campanha_id: string;
@@ -504,6 +516,8 @@ export type MesaArte = {
 	largura: number;
 	altura: number;
 	bytes: number;
+	/** Mapa grande: os ladrilhos em tamanho cheio, além da prévia em `caminho` (ausente enquanto a migração não roda). */
+	ladrilhos?: Ladrilhos | null;
 	criada_em: string;
 };
 
@@ -541,6 +555,8 @@ export type MesaToken = {
 	id: string;
 	/** Já gastou a Reação nesta rodada; ausente enquanto a migração não roda. */
 	reagiu?: boolean;
+	/** A luz que o token carrega (tocha, lampião), em metros; null = nenhuma (ausente enquanto a migração não roda). */
+	luz?: { plena: number; penumbra: number } | null;
 	cena_id: string;
 	campanha_id: string;
 	personagem_id: string | null;
@@ -686,6 +702,7 @@ export type Database = {
 			receber_equipamentos: { Args: { ficha: string; inventario: Json; equipamentos: string[] }; Returns: undefined };
 			registrar_excecao: { Args: { tipo: string; alvo: string; justificativa: string }; Returns: undefined };
 			definir_nome_oculto: { Args: { alvo: 'npc' | 'ficha'; id: string; oculto: boolean }; Returns: undefined };
+			mesa_porta: { Args: { cena: string; indice: number; x1: number; y1: number }; Returns: undefined };
 			npcs_revelados: { Args: { campanha: string }; Returns: NpcRevelado[] };
 			assumir_pre_gerado: { Args: { ficha: string }; Returns: undefined };
 			conceder_jutsu: { Args: { ficha: string; slug: string; nome: string; custo_pt?: number }; Returns: undefined };
