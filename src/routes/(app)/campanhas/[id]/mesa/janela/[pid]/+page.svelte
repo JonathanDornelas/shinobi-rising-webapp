@@ -28,13 +28,15 @@
 		rolador.modo = 'normal';
 		rolador.critico = null;
 		ponte.postMessage({ tipo: 'acao', id, pid, aba, acao, alvo, parte, modo, critico } satisfies MsgPonte);
+		// sem resposta: a Mesa pode ter feito (ela responde antes de rolar); a ficha não rola sozinha, para não rolar duas vezes
 		return new Promise((ok) => {
 			esperando.set(id, ok);
 			setTimeout(() => {
 				if (!esperando.delete(id)) return;
 				ligada = false;
-				ok(false);
-			}, 4000);
+				toasts.mostrar('A Mesa não respondeu. Confira lá se a ação aconteceu antes de repetir.', 'aviso');
+				ok(true);
+			}, 6000);
 		});
 	}
 	const semMesa = (ok: boolean) => ok || toasts.mostrar('A Mesa não respondeu. Abra a Mesa desta campanha neste navegador.', 'aviso');

@@ -654,6 +654,8 @@ export class Mesa {
 	quemDe(r: { quem?: string; nome?: string; npc_id?: string | null; personagem_id?: string | null }): string {
 		return (this.mestre && this.nomesReais[r.npc_id ?? r.personagem_id ?? '']) || (r.quem ?? r.nome ?? '');
 	}
+	/** O "???" deste NPC (ou ficha de NPC) está ligado? */
+	nomeOculto = (id: string) => !!this.ocultos[id];
 	/** Liga ou desliga o "???" de um NPC ou ficha de NPC para o grupo (só o Mestre). */
 	async definirNomeOculto(tipo: 'npc' | 'ficha', id: string, oculto: boolean) {
 		if (!this.mestre || this.somenteLeitura) return false;
@@ -943,16 +945,21 @@ export class Mesa {
 	}
 
 	// ------------------------------------------------------------------ cena (Mestre) e cor
+	/** As gravações da cena, uma de cada vez: duas seguidas (tirar e pôr na narrativa) chegavam ao banco fora de ordem. */
+	private filaCena: Promise<unknown> = Promise.resolve();
 	async patchCena(patch: Partial<MesaCena>): Promise<boolean> {
-		if (!this.cenaId) return false;
+		const cenaId = this.cenaId;
+		if (!cenaId) return false;
 		const antes = this.cenas;
-		this.cenas = this.cenas.map((c) => (c.id === this.cenaId ? { ...c, ...patch } : c));
+		this.cenas = this.cenas.map((c) => (c.id === cenaId ? { ...c, ...patch } : c));
 		for (const [campo, valor] of Object.entries(patch)) {
 			const e = this.enviadosAqui.get(campo);
 			const valores = [...(e && Date.now() - e.quando < 10000 ? e.valores : []), JSON.stringify(valor)].slice(-8);
 			this.enviadosAqui.set(campo, { valores, quando: Date.now() });
 		}
-		const { error } = await sb().from('mesa_cenas').update(patch).eq('id', this.cenaId);
+		const gravar = this.filaCena.then(() => sb().from('mesa_cenas').update(patch).eq('id', cenaId));
+		this.filaCena = gravar.catch(() => null);
+		const { error } = await gravar;
 		if (error) {
 			this.cenas = antes;
 			toasts.mostrar('Não foi possível salvar a cena.', 'erro');

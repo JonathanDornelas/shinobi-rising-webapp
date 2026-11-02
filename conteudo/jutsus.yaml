@@ -7812,9 +7812,9 @@
     - k: Duração
       v: 1 cena
     - k: Área
-      v: Alvo único
+      v: 1 clone a até 5m
     - k: Ataque
-      v: 1d20 + Ninjutsu
+      v: —
     - k: Resistência
       v: —
     - k: Ação
@@ -7871,9 +7871,9 @@
     - k: Duração
       v: 1 cena
     - k: Área
-      v: Alvo único
+      v: 1 clone a até 5m
     - k: Ataque
-      v: 1d20 + Ninjutsu
+      v: —
     - k: Resistência
       v: —
     - k: Ação
@@ -7990,9 +7990,9 @@
     - k: Duração
       v: 1 cena
     - k: Área
-      v: Alvo único
+      v: 1 clone a até 30m
     - k: Ataque
-      v: 1d20 + Ninjutsu
+      v: —
     - k: Resistência
       v: —
     - k: Ação
@@ -9254,9 +9254,9 @@
     - k: Duração
       v: 1 cena
     - k: Área
-      v: Alvo único
+      v: 1 clone a até 5m
     - k: Ataque
-      v: 1d20 + Ninjutsu
+      v: —
     - k: Resistência
       v: —
     - k: Ação
@@ -9753,9 +9753,9 @@
     - k: Duração
       v: 1 cena
     - k: Área
-      v: Alvo único
+      v: 1 clone a até 5m
     - k: Ataque
-      v: 1d20 + Ninjutsu
+      v: —
     - k: Resistência
       v: —
     - k: Ação

@@ -19,6 +19,7 @@
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
 	import MenuVantagem from '../rolagens/MenuVantagem.svelte';
 	import MenuCritico from '../rolagens/MenuCritico.svelte';
+	import { ehVersatil, modosDaArma, nomeDoModo } from '#lib/mesa/armas.ts';
 	import Modal from '../ui/Modal.svelte';
 	import CartaoItem from '../equipamento/CartaoItem.svelte';
 
@@ -161,11 +162,21 @@
 									{#if f.editavel && g.id === 'Armas'}
 										{@const dano = danoArma(i)}
 										{#if mesa}
+											<!-- uma linha por modo de uso, com os nomes que a Mesa usa: a Kunai (Versátil) golpeia e é arremessada -->
 											{@const btn = 'btn-jogo min-h-8 border-2 border-b3 px-1.5 text-[11px]'}
-											<span class="mr-1 flex gap-1">
-												<button type="button" class={btn} title="O alcance de {i.nome} no quadro" onclick={() => mesa.medir(i.nome)}>MEDIR</button>
-												<span class="flex"><button type="button" class={btn} onclick={() => mesa.atacar(i.nome, 'ataque')}>ATAQUE</button><MenuVantagem aoAtacar={() => mesa.atacar(i.nome, 'ataque')} rotulo="Ataque com {i.nome}" class="{btn} border-l-0" /></span>
-												{#if dano}<span class="flex"><button type="button" class={btn} title="Crítico sozinho se o último ataque foi 20 natural; na setinha, escolha" onclick={() => mesa.atacar(i.nome, 'dano')}>DANO</button><MenuCritico aoRolar={() => mesa.atacar(i.nome, 'dano')} rotulo="Dano de {i.nome}" class="{btn} border-l-0" /></span>{/if}
+											{@const info = f.catalogo.infoItens[i.id]}
+											{@const props = info?.propriedades.map((p) => p.nome) ?? []}
+											{@const modos = modosDaArma(info?.alcance ?? 'Corpo a corpo', props)}
+											<span class="mr-1 flex flex-col items-end gap-1">
+												{#each modos as md, n (md.m)}
+													{@const nome = nomeDoModo(i.nome, md, modos, ehVersatil(props))}
+													{@const rotulo = modos.length > 1 ? (md.distancia ? (ehVersatil(props) ? 'ARREMESSO' : 'À DISTÂNCIA') : 'GOLPE') : 'ATAQUE'}
+													<span class="flex gap-1">
+														{#if n === modos.length - 1}<button type="button" class={btn} title="O alcance de {i.nome} no quadro" onclick={() => mesa.medir(nome)}>MEDIR</button>{/if}
+														<span class="flex"><button type="button" class={btn} title="{md.rotulo}" onclick={() => mesa.atacar(nome, 'ataque')}>{rotulo}</button><MenuVantagem aoAtacar={() => mesa.atacar(nome, 'ataque')} rotulo="{rotulo} com {i.nome}" class="{btn} border-l-0" /></span>
+														{#if dano}<span class="flex"><button type="button" class={btn} title="{md.distancia ? 'Soma AGI' : 'Soma FOR'}; crítico sozinho se o último ataque foi 20 natural, ou escolha na setinha" onclick={() => mesa.atacar(nome, 'dano')}>DANO</button><MenuCritico aoRolar={() => mesa.atacar(nome, 'dano')} rotulo="Dano de {nome}" class="{btn} border-l-0" /></span>{/if}
+													</span>
+												{/each}
 											</span>
 										{:else if dano}<BotaoRolar class="mr-1 w-9" expressao={dano} rotulo="Dano · {i.nome}" personagem={f.id} tipo="dano" origem="Ficha · Equipamento" partes={f.calc.proficiencias.some((p) => p.tipo === 'arma' && p.alvo === i.nome) ? [['Proficiência', '+1']] : []} />{/if}
 									{/if}

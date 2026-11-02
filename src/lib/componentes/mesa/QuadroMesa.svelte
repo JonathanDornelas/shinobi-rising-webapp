@@ -1053,8 +1053,11 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 						{#if mol}
 							<image href="/molduras/{mol.id}.png" x={cx - rm} y={cy - rm} width={2 * rm} height={2 * rm} pointer-events="none" style="image-rendering: pixelated; filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" />
 						{/if}
-						<rect x={cx - 0.38 * n} y={y + n - 0.12} width={0.76 * n} height={F(5)} style="fill: var(--b0)" />
-						<rect x={cx - 0.38 * n} y={y + n - 0.12} width={0.76 * n * fr} height={F(5)} style="fill: {fr > 0.5 ? 'var(--ok)' : fr > 0.25 ? 'var(--warn)' : 'var(--err)'}" />
+						<!-- a barra de vida: o Mestre vê todas; o jogador, a dos tokens dele (e as outras com "PV à vista") -->
+						{#if pv || mesa.mestre}
+							<rect x={cx - 0.38 * n} y={y + n - 0.12} width={0.76 * n} height={F(5)} style="fill: var(--b0)" />
+							<rect x={cx - 0.38 * n} y={y + n - 0.12} width={0.76 * n * fr} height={F(5)} style="fill: {fr > 0.5 ? 'var(--ok)' : fr > 0.25 ? 'var(--warn)' : 'var(--err)'}" />
+						{/if}
 						<text x={cx} y={y + n + F(12)} text-anchor="middle" font-size={F(11)} font-family="'Noto Sans'" font-weight="600" style="fill: var(--fg); stroke: var(--b1)" stroke-width={F(3)} paint-order="stroke">{nomeCurto(t.nome).split(' ')[0]}{t.membro ? ` ${t.membro}` : ''}</text>
 						{#if t.condicoes.length}
 							<!-- estados: ícones em volta do token, do alto para a direita -->

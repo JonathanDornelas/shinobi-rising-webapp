@@ -177,9 +177,11 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	const npcDe = (t: MesaToken) => (t.npc_id ? (npcs.find((n) => n.id === t.npc_id) ?? null) : null);
 	const ehMeu = (t: MesaToken) => t.dono_id === data.eu;
 
+	/** A vida que esta pessoa pode ver: o Mestre, tudo; o jogador, a dos próprios tokens (a dos outros só com "PV à vista"). */
 	function pvDe(t: MesaToken) {
 		const f = fichaDe(t);
-		if (f) return { pv: f.estado.pv ?? f.max.pv, max: f.max.pv };
+		// a Mesa do jogador recebe as fichas do grupo inteiro: o PV dos outros personagens não aparece sem "PV à vista"
+		if (f && (data.mestre || f.jogadorId === data.eu || cena?.mostrar_pv)) return { pv: f.estado.pv ?? f.max.pv, max: f.max.pv };
 		const n = npcDe(t);
 		if (n) return { pv: pvDosMembros(n)[(t.membro ?? 1) - 1] ?? n.pv, max: n.pv };
 		if (!t.personagem_id && !t.npc_id && t.pv != null && (data.mestre || ehMeu(t))) return { pv: t.pv, max: t.pv_max ?? t.pv };
@@ -221,7 +223,8 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	}
 	function dadosDe(t: MesaToken): DadosFicha {
 		const f = fichaDe(t);
-		if (f) return { tipo: 'pc', ficha: f, editavel: data.mestre || f.jogadorId === data.eu };
+		// a ficha de outro jogador mostra o PV: sem "PV à vista", ela abre só no cartão público
+		if (f && (data.mestre || f.jogadorId === data.eu || cena?.mostrar_pv)) return { tipo: 'pc', ficha: f, editavel: data.mestre || f.jogadorId === data.eu };
 		if (t.personagem_id) return { tipo: 'publico', sub: subDe(t) };
 		const n = npcDe(t);
 		if (n) return { tipo: 'npc', npc: n, jutsus: data.jutsusNpc[n.id] ?? [], extras: data.extrasNpc[n.id] ?? null };
@@ -430,8 +433,12 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 			if (m.critico !== null) rolador.critico = m.critico;
 			const a = acoesDaFicha(m.pid);
 			const responder = (ok: boolean) => ponte?.postMessage({ tipo: 'feito', id: m.id, ok } satisfies MsgPonte);
-			if (m.acao === 'usar') void a.usar(m.alvo, m.parte ?? 'ataque').then(responder);
-			else {
+			// responde na hora (os dados 3D levam segundos para parar): sem o personagem na cena ou o jutsu, a ficha usa sozinha
+			if (m.acao === 'usar') {
+				const ok = !!tokenDaFicha(m.pid) && !!jutsuDaFicha(m.pid, m.alvo);
+				responder(ok);
+				if (ok) void a.usar(m.alvo, m.parte ?? 'ataque');
+			} else {
 				if (m.acao === 'medir') a.medir(m.alvo);
 				else if (m.acao === 'medirArma') a.medirArma(m.alvo);
 				else a.atacar(m.alvo, m.parte ?? 'ataque');
@@ -666,16 +673,19 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 			const ja = new Set(mesa.tokens.filter((t) => t.npc_id === n.id).map((t) => t.membro ?? 1));
 			const faltam = Array.from({ length: n.membros }, (_, i) => i + 1).filter((i) => !ja.has(i));
 			if (!faltam.length) return void ui.avisar(`${n.nome} já está na cena.`);
+			// o NPC entra sempre com o nome escondido do grupo ("???"); o Mestre revela quando quiser
+			if (!mesa.nomeOculto(n.id)) await mesa.definirNomeOculto('npc', n.id, true);
 			// o tamanho vem da ficha do bestiário (cap. 4); NPC feito à mão entra Médio e o Mestre ajusta na ficha rápida
 			const tamanho = (d.tamanho ?? data.extrasNpc[n.id]?.tamanho ?? 1) as 1 | 3 | 6 | 10;
 			for (const membro of faltam) {
 				const [px, py] = lugarLivre(bx - Math.floor(tamanho / 2), by - Math.floor(tamanho / 2), tamanho);
 				await mesa.colocar({ npc_id: n.id, membro: n.membros > 1 ? membro : null, nome: n.nome, sigla: n.membros > 1 ? `${sigla(n.nome)[0]}${membro}` : sigla(n.nome), retrato: n.retrato ?? n.arte, tamanho, x: px, y: py, visivel: false });
 			}
-			ui.avisar(`${n.nome} entrou escondido. Use o olho para revelar.`);
+			ui.avisar(`${n.nome} entrou escondido e com o nome oculto (???). Use o olho para revelar o token e o botão ??? (no Elenco ou na ficha rápida) para mostrar o nome.`);
 		} else if (d.tipo === 'ficha') {
 			const f = data.npcFichas.find((k) => k.id === d.id);
 			if (!f || mesa.tokens.some((t) => t.personagem_id === f.id)) return;
+			if (!mesa.nomeOculto(f.id)) await mesa.definirNomeOculto('ficha', f.id, true);
 			const [px, py] = lugarLivre(bx, by);
 			await mesa.colocar({ personagem_id: f.id, nome: f.nome, sigla: sigla(f.nome), retrato: f.retrato, x: px, y: py, visivel: false });
 		} else if (d.tipo === 'pasta') {
