@@ -1,7 +1,7 @@
 // Sortear na criação (cap. 6): cada passo pode deixar o dado escolher, sempre dentro das regras (os pontos de atributo
 // distribuídos, as perícias que ninguém treinou, os jutsus da afinidade, os clãs e pacotes que a campanha permite). É
 // puro: recebe a ficha e o sorteio (o Math.random, ou um com semente nos testes) e devolve a ficha nova.
-import { BACKGROUNDS, CLAS, CRIACAO, ELEMENTOS, ESPECIALIZACOES, PERICIAS, PERICIAS_COMBATE, VILAS, custoProficiencia, type Atributo, type Pericia } from './dados.ts';
+import { BACKGROUNDS, CLAS, CRIACAO, ELEMENTOS, ESPECIALIZACOES, ESCALA_ATRIBUTOS, PERICIAS, PERICIAS_COMBATE, VILAS, custoAtributo, custoProficiencia, type Atributo, type Pericia } from './dados.ts';
 import { elementos, jutsusConhecidos, periciasTreinadas, pontosPericia, regrasCla, type ContextoCampanha, type FichaDados } from './regras.ts';
 
 export type Sorteio = () => number;
@@ -49,24 +49,29 @@ export function sortearConceito(f: FichaDados, r: Sorteio): FichaDados {
 	return n;
 }
 
-/** Os pontos da criação espalhados pelos atributos: de −2 a +4, no máximo dois reduzidos (cada redução devolve pontos). */
+/**
+ * Os pontos da criação comprados com custo crescente (+1 custa 1, +2 custa 3, +3 custa 6), sem passar do teto +3 (com o
+ * bônus do clã); às vezes o ninja aceita uma fraqueza, e os pontos que ela devolve vão para os outros.
+ */
 export function sortearAtributos(f: FichaDados, r: Sorteio): FichaDados {
 	const n = copia(f);
-	const ids = Object.keys(n.atributos).length >= 7 ? (Object.keys(n.atributos) as Atributo[]) : (['FOR', 'AGI', 'VIG', 'INT', 'CTR', 'ESP', 'CAR'] as Atributo[]);
+	n.escala = ESCALA_ATRIBUTOS;
+	const ids = ['FOR', 'AGI', 'VIG', 'INT', 'CTR', 'ESP', 'CAR'] as Atributo[];
 	const v = Object.fromEntries(ids.map((a) => [a, 0])) as Record<Atributo, number>;
+	const doCla = regrasCla(n)?.ganho.atributo ?? null;
 	let pontos = CRIACAO.pontosAtributo;
-	// às vezes o ninja aceita uma fraqueza (ou duas): o ponto volta para gastar nos outros
-	const fracos = embaralhar(r, ids).slice(0, r() < 0.35 ? (r() < 0.3 ? 2 : 1) : 0);
+	const fracos = embaralhar(r, ids.filter((a) => a !== doCla)).slice(0, r() < 0.35 ? (r() < 0.3 ? 2 : 1) : 0);
 	for (const a of fracos) {
-		const d = r() < 0.7 ? 1 : 2;
+		const d = r() < 0.75 ? 1 : 2;
 		v[a] = -d;
 		pontos += d;
 	}
-	while (pontos > 0) {
-		const livres = ids.filter((a) => !fracos.includes(a) && v[a] < CRIACAO.atributoMax);
-		if (!livres.length) break;
-		v[um(r, livres)]++;
-		pontos--;
+	for (;;) {
+		const podem = ids.filter((a) => !fracos.includes(a) && v[a] + (a === doCla ? 1 : 0) < CRIACAO.atributoMax && custoAtributo(v[a] + 1) - custoAtributo(v[a]) <= pontos);
+		if (!podem.length) break;
+		const a = um(r, podem);
+		pontos -= custoAtributo(v[a] + 1) - custoAtributo(v[a]);
+		v[a]++;
 	}
 	n.atributos = v;
 	return n;

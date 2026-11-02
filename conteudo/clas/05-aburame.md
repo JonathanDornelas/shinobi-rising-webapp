@@ -17,7 +17,7 @@ Observação sem julgamento. Os Aburame falam pouco e calculam muito. Para eles,
 
 #### Bônus Hereditário {#bonus-hereditario}
 
-- +1 INT (limite de criação +5).
+- +1 INT.
 - Treina Furtividade.
 - Colônia de kikaichū hereditária (ver Companheiros e Kikaichū no Jutsu).
 
@@ -43,10 +43,10 @@ Nenhum (hiden): a simbiose com os insetos é uma técnica secreta hereditária, 
 | 12 | Treina Furtividade |
 | 13 | Kairyō Shu (Subespécie Personalizada) |
 | 14 | Hijutsu: Mushitatsumaki (Tornado de Insetos) |
-| 15 | +1 INT; limite de INT +9 |
+| 15 | +1 INT |
 | 16 | +3 PT |
 | 17 | Criar Jutsu do Clã (até Rank A) |
-| 18 | +1 INT; limite de INT +10 |
+| 18 | +1 INT |
 | 19 | +5 PIC |
 | 20 | Criar Jutsu do Clã Rank S |
 

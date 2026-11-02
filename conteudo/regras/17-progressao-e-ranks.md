@@ -58,7 +58,7 @@ Todo nível novo traz alguma coisa, e alguns trazem bem mais que outros.
 | A cada nível | Ganho |
 | - | - |
 | Recursos | +5 PV, +3 PC e +3 PE |
-| Atributos | +1 ponto de atributo nos níveis 3, 6, 9, 12, 15 e 18 (limite +8; o atributo do clã pode chegar a +10 pelos marcos) |
+| Atributos | Aprimoramento nos níveis 4, 8, 12, 16 e 20: +1 num atributo abaixo do teto +3 |
 | Perícias | Uma perícia treinada nova nos níveis 5, 9, 13 e 17 (+2 nela) |
 | Treino | +3 PT (Pontos de Treino) |
 | Especializações | Nos níveis 4, 7, 10, 13, 16 e 19, 1 Especialização nova (até 7 no total) |

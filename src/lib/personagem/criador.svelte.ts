@@ -2,7 +2,7 @@
 import type { CatalogoCriacao } from './catalogo.server.ts';
 import { normalizarCla, regrasParaFicha, type ClaDados } from '../clas/regras.ts';
 import type { StatusCla } from '../supabase/banco.ts';
-import { ATRIBUTOS, type Atributo } from './dados.ts';
+import { ATRIBUTOS, ESCALA_ATRIBUTOS, type Atributo } from './dados.ts';
 import { sortearPasso, sortearTudo } from './sorteio.ts';
 import {
 	analisar,
@@ -49,7 +49,11 @@ export class Criador {
 		this.passo = passo;
 		this.clasCriados = clasCriados;
 		// quem cria ou edita aqui já distribui o Carisma: a correção das fichas antigas não vale para ela
-		if (editavel) this.ficha.carismaDecidido = true;
+		// e já está na escala com teto +3
+		if (editavel) {
+			this.ficha.carismaDecidido = true;
+			this.ficha.escala = ESCALA_ATRIBUTOS;
+		}
 	}
 
 	/** Status do clã criado escolhido (a revisão bloqueia enquanto ele não foi enviado). */

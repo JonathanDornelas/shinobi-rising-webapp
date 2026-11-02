@@ -22,7 +22,7 @@
 </script>
 
 <Orcamento rotulo="Pontos de atributo" usados={c.atributos.usados} limite={c.atributos.limite} extra="Reduzidos {c.atributos.reducoes}/2" />
-<p class="m-0 text-sm leading-5 text-mut">Todos começam em 0. Reduzir um atributo a −1 ou −2 devolve 1 ou 2 pontos (no máximo dois atributos).</p>
+<p class="m-0 text-sm leading-5 text-mut">Todos começam em 0, e o teto é +3. Subir fica mais caro a cada passo: +1 custa 1 ponto, +2 custa 3 e +3 custa 6. Baixar um atributo a −1 ou −2 devolve 1 ou 2 pontos (no máximo dois atributos).</p>
 <div class="grid gap-3 md:grid-cols-2">
 	{#each ATRIBUTOS as a (a.id)}
 		{@const valor = (c.ficha.atributos[a.id] ?? 0) + (doCla === a.id ? 1 : 0)}

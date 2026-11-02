@@ -17,7 +17,7 @@ Solidão e dever. A linhagem Sabaku produz líderes — e líderes são solitár
 
 #### Bônus Hereditário {#bonus-hereditario}
 
-- +1 CTR (limite de criação +5).
+- +1 CTR.
 - +5 PC iniciais.
 
 #### Kekkei Genkai — Areia Magnética (Jiton) {#kekkei-genkai-areia-magnetica-jiton}
@@ -45,10 +45,10 @@ Manipulação inata de areia (raríssimo, exige aprovação narrativa do Mestre)
 | 12 | Treina Sobrevivência |
 | 13 | Areia Autônoma |
 | 14 | Sabaku Taisō (Enterro de Areia Gigante) |
-| 15 | +1 CTR; limite de CTR +9 |
+| 15 | +1 CTR |
 | 16 | +3 PT |
 | 17 | Criar Jutsu do Clã (até Rank A) |
-| 18 | +1 CTR; limite de CTR +10 |
+| 18 | +1 CTR |
 | 19 | +5 PIC |
 | 20 | Criar Jutsu do Clã Rank S |
 

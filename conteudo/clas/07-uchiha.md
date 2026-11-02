@@ -17,7 +17,7 @@ Amor que vira poder. A genética emocional dos Uchiha é intensa — quando amam
 
 #### Bônus Hereditário {#bonus-hereditario}
 
-- +1 CTR (limite de criação +5).
+- +1 CTR.
 - Katon é o elemento inicial obrigatório (ocupa o passo de elemento da criação).
 - Treina Percepção.
 
@@ -64,10 +64,10 @@ Pré-requisito: estar com Sharingan no estágio 3 tomoe. O Uchiha precisa ver o 
 | 12 | Treina Percepção |
 | 13 | Olhos que Leem o Combate |
 | 14 | Genjutsu: Sharingan |
-| 15 | +1 CTR; limite de CTR +9 |
+| 15 | +1 CTR |
 | 16 | +3 PT |
 | 17 | Criar Jutsu do Clã (até Rank A) |
-| 18 | +1 CTR; limite de CTR +10 |
+| 18 | +1 CTR |
 | 19 | +5 PIC |
 | 20 | Criar Jutsu do Clã Rank S |
 

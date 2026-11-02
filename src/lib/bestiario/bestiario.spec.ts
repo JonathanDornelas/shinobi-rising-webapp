@@ -47,9 +47,9 @@ describe('bestiário', () => {
 		expect(e.combate.pv).toBe(Math.round(l.pv * fatorPv * perfil.pv));
 		// sem chakra (pc 0 ou null) só quem não tem treino ninja: bandidos e feras
 		if (e.combate.pc) expect(e.combate.pc).toBe(Math.round(l.pc * perfil.pc));
-		// PE pela conta do cap. 6: 20 + 5 por ponto de VIG + 3 por nível depois do 1º (a ameaça faz o papel do nível)
+		// PE pela conta do cap. 6: 20 + 8 por ponto de VIG + 3 por nível depois do 1º (a ameaça faz o papel do nível)
 		const vig = e.combate.ficha.atributos.vig;
-		expect(e.combate.pe).toBe(20 + 5 * Math.max(0, vig) + 3 * Math.max(0, Math.floor(e.ameaca) - 1));
+		expect(e.combate.pe).toBe(20 + 8 * Math.max(0, vig) + 3 * Math.max(0, Math.floor(e.ameaca) - 1));
 		// as setas do quadro comparam com um adversário comum da mesma ameaça: a linha da tabela e o PE do VIG comum
 		expect(e.combate.referencia).toEqual({ pv: l.pv, pc: l.pc, pe: peDe(e.ameaca, atributoComum(e.ameaca)), defesa: l.defesa, iniciativa: l.iniciativa, dt: l.dt });
 		const estilo = e.estilo ? ESTILOS[e.estilo] : { defesa: 0, iniciativa: 0, dt: 0 };
@@ -76,10 +76,10 @@ describe('bestiário', () => {
 	it('as invocações partem da ficha do tamanho (cap. 14), ajustada pelo papel e pelo estilo da espécie', () => {
 		// a ficha de cada tamanho do cap. 14, na ameaça que o Como usar dá a ele
 		const base: Record<number, { pv: number; defesa: number; iniciativa: number; acerto: number; dano: string; dt: number }> = {
-			2: { pv: 20, defesa: 13, iniciativa: 2, acerto: 4, dano: '1d6+2', dt: 13 },
-			5: { pv: 50, defesa: 16, iniciativa: 3, acerto: 6, dano: '2d6+3', dt: 15 },
-			10: { pv: 100, defesa: 18, iniciativa: 2, acerto: 8, dano: '3d8+4', dt: 17 },
-			16: { pv: 200, defesa: 22, iniciativa: 4, acerto: 12, dano: '5d10+6', dt: 21 }
+			2: { pv: 20, defesa: 13, iniciativa: 1, acerto: 4, dano: '1d6+2', dt: 13 },
+			5: { pv: 50, defesa: 16, iniciativa: 2, acerto: 6, dano: '2d6+3', dt: 15 },
+			10: { pv: 100, defesa: 17, iniciativa: -1, acerto: 7, dano: '3d8+4', dt: 16 },
+			16: { pv: 200, defesa: 20, iniciativa: 0, acerto: 10, dano: '5d10+6', dt: 19 }
 		};
 		for (const [c, e] of estagios.filter(([c]) => c.tipo === 'invocação' && c.slug !== 'cao-ninja-do-inuzuka')) {
 			const nome = `${c.slug} · ${e.nome}`;
@@ -107,10 +107,10 @@ describe('bestiário', () => {
 		expect(cao.estagios.map((e) => [e.nome, e.combate.pv, e.combate.defesa, e.combate.ataques[0].acerto, e.combate.ataques[0].dano])).toEqual([
 			['Filhote', 20, 13, 4, '1d6+1'],
 			['Adulto Jovem', 40, 15, 6, '1d8+2'],
-			['Adulto', 60, 16, 7, '2d6+3'],
-			['Veterano', 80, 17, 9, '2d8+3'],
-			['Alfa', 100, 19, 11, '2d10+4'],
-			['Lendário', 125, 21, 13, '3d8+5']
+			['Adulto', 60, 15, 6, '2d6+3'],
+			['Veterano', 80, 15, 7, '2d8+3'],
+			['Alfa', 100, 17, 9, '2d10+4'],
+			['Lendário', 125, 19, 11, '3d8+5']
 		]);
 	});
 
@@ -169,9 +169,9 @@ describe('bestiário', () => {
 			const k = e.combate;
 			const f = k.ficha;
 			const nome = `${c.slug} · ${e.nome}`;
-			// atributos de -2 a +10 (o teto do atributo de clã); AGI é a Iniciativa
-			for (const v of Object.values(f.atributos)) expect(v, nome).toBeGreaterThanOrEqual(-2), expect(v, nome).toBeLessThanOrEqual(10);
-			expect(f.atributos.agi, nome).toBe(k.iniciativa);
+			// atributos de -2 a +3 (o teto); AGI é a Iniciativa, até o teto
+			for (const v of Object.values(f.atributos)) expect(v, nome).toBeGreaterThanOrEqual(-2), expect(v, nome).toBeLessThanOrEqual(3);
+			expect(f.atributos.agi, nome).toBe(Math.min(3, Math.max(-2, k.iniciativa)));
 			// a perícia do ataque principal + a proficiência na arma = o acerto
 			const arma = f.proficiencias.find((p) => !p.jutsu)?.bonus ?? 0;
 			expect(f.pericias[0].total + arma, nome).toBe(k.ataques[0].acerto);

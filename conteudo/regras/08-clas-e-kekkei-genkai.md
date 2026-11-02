@@ -182,7 +182,7 @@ O clã tem 3 Pontos de Bônus (PB) para gastar em vantagens do sangue.
 
 | Bônus | Custo (PB) |
 | - | - |
-| +1 em um atributo (limite de criação +5) | 2 |
+| +1 em um atributo (sem passar do teto +3) | 2 |
 | Treina uma perícia | 1 |
 | +5 PV iniciais | 1 |
 | +5 PC iniciais | 1 |
@@ -201,7 +201,7 @@ Escolha o jutsu que todo membro aprende no nível 1, em geral o mais icônico do
 
 #### Componente 4 · Marcos por Nível {#componente-4-marcos-por-nivel}
 
-Preencha os 20 níveis seguindo o Esqueleto Padrão abaixo. Os níveis marcados como “Jutsu” recebem técnicas do clã, respeitando o nível mínimo de cada rank (B no 6, A no 11, S no 15).
+Preencha os 20 níveis seguindo o Esqueleto Padrão abaixo. O atributo nunca passa de +3: o marco de atributo que cairia acima do teto vira uma perícia treinada, à escolha do jogador. Os níveis marcados como “Jutsu” recebem técnicas do clã, respeitando o nível mínimo de cada rank (B no 6, A no 11, S no 15).
 
 Nos níveis de Habilidade, algumas ideias: aprender automaticamente um jutsu específico do clã, ganhar +1 numa perícia, ganhar redução de dano contra um tipo específico, aguçar um sentido num certo contexto, receber um item ritual (arma, pergaminho, animal companheiro) ou se ligar a um espírito ou totem da família.
 
@@ -221,10 +221,10 @@ Nos níveis de Habilidade, algumas ideias: aprender automaticamente um jutsu esp
 | 12 | +1 na perícia do clã |
 | 13 | Habilidade |
 | 14 | Jutsu (até Rank A) |
-| 15 | +1 no atributo do clã; limite desse atributo +9 |
+| 15 | +1 no atributo do clã |
 | 16 | +3 PT |
 | 17 | Jutsu ou Criar Jutsu do Clã (até Rank A) |
-| 18 | +1 no atributo do clã; limite desse atributo +10 |
+| 18 | +1 no atributo do clã |
 | 19 | +5 PIC |
 | 20 | Criar Jutsu do Clã Rank S |
 
@@ -275,7 +275,7 @@ Se o seu clã tem Kekkei Genkai, ela é construída com Pontos de KKG. Você com
 
 | Benefício | PKG | Detalhes |
 | - | - | - |
-| Bônus em atributo (+1) | 1 | O limite de criação também sobe +1 |
+| Bônus em atributo (+1) | 1 | Soma por cima da compra, sem passar do teto +3 |
 | Bônus em perícia (+2) | 1 | Bônus passivo enquanto a KKG estiver ativa |
 | Sentido aprimorado | 1 | +5 numa perícia específica |
 | Resistência a um tipo de dano | 2 | Reduz esse dano em 50% |

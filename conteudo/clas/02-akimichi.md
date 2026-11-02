@@ -17,7 +17,7 @@ Comida é vida. Gentileza é força. Os Akimichi são notavelmente afetuosos par
 
 #### Bônus Hereditário {#bonus-hereditario}
 
-- +1 VIG (limite de criação +5).
+- +1 VIG.
 - +10 PV iniciais.
 
 #### Kekkei Genkai {#kekkei-genkai}
@@ -42,10 +42,10 @@ Nenhum.
 | 12 | Treina Atletismo |
 | 13 | Nikuryoku (Poder da Carne) |
 | 14 | Choudan Bakugeki (Bombardeio da Borboleta) |
-| 15 | +1 VIG; limite de VIG +9 |
+| 15 | +1 VIG |
 | 16 | +3 PT |
 | 17 | Criar Jutsu do Clã (até Rank A) |
-| 18 | +1 VIG; limite de VIG +10 |
+| 18 | +1 VIG |
 | 19 | +5 PIC |
 | 20 | Criar Jutsu do Clã Rank S |
 

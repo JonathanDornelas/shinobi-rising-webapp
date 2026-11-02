@@ -24,11 +24,12 @@ Defina nome, idade, aparência e origem. Ajuda pensar num conceito curto, uma fr
 
 ### Passo 2 · Distribuir Atributos {#passo-2-distribuir-atributos}
 
-Os sete atributos começam em 0, e você distribui um punhado de pontos entre eles. Quem quiser mais pontos pode aceitar uma fraqueza: baixar um ou dois atributos para menos de zero devolve pontos para gastar nos outros.
+Os sete atributos começam em 0, e você distribui 5 pontos entre eles. Subir fica mais caro a cada passo: +1 custa 1 ponto, +2 custa 3 e +3 custa 6. Quem quiser mais pontos pode aceitar uma fraqueza: baixar um ou dois atributos para menos de zero devolve pontos para gastar nos outros. Por isso, um +3 na criação quase sempre vem com um ponto fraco.
 
 :::na-mesa{titulo="Atributos na criação"}
-- **Pontos:** 9, com todos os atributos começando em 0
-- **Máximo:** +4 (+5 se o clã der bônus naquele atributo)
+- **Pontos:** 5, com todos os atributos começando em 0
+- **Custo:** +1 custa 1 ponto; +2 custa 3; +3 custa 6
+- **Teto:** +3, já contando o bônus do clã
 - **Reduzir (até dois atributos):** -1 dá +1 ponto; -2 dá +2 pontos
 :::
 
@@ -72,16 +73,11 @@ Os Pontos de Vida medem a vitalidade do personagem; os Pontos de Estamina, a sua
 | Vigor (VIG) | Bônus de PV e de PE |
 | - | - |
 | -2 a 0 | +0 |
-| +1 | +5 |
-| +2 | +10 |
-| +3 | +15 |
-| +4 | +20 |
-| +5 | +25 |
-| +6 | +30 |
-| +7 | +35 |
-| +8 | +40 |
+| +1 | +8 |
+| +2 | +16 |
+| +3 | +24 |
 
-Com VIG +3, o bônus é +15: o personagem começa com 35 PV (20 + 15) e 35 PE (20 + 15).
+Com VIG +3, o bônus é +24: o personagem começa com 44 PV (20 + 24) e 44 PE (20 + 24).
 
 A cada nível depois do 1º, o personagem ganha +5 PV e +3 PE (cap. 17). Se o VIG mudar, recalcule pela tabela.
 
@@ -92,16 +88,11 @@ Os Pontos de Chakra são a reserva de energia espiritual, gasta em jutsus e habi
 | Atributo (ESP ou CTR) | Bônus de PC por atributo |
 | - | - |
 | -2 a 0 | +0 |
-| +1 | +4 |
-| +2 | +8 |
-| +3 | +12 |
-| +4 | +16 |
-| +5 | +20 |
-| +6 | +24 |
-| +7 | +28 |
-| +8 | +32 |
+| +1 | +6 |
+| +2 | +12 |
+| +3 | +18 |
 
-Com ESP +2 (+8) e CTR +3 (+12), o personagem começa com 50 PC: 30 + 8 + 12.
+Com ESP +2 (+12) e CTR +3 (+18), o personagem começa com 60 PC: 30 + 12 + 18.
 
 A cada nível depois do 1º, ganha +3 PC. Se ESP ou CTR mudarem, recalcule pela tabela.
 

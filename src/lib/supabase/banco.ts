@@ -695,6 +695,7 @@ export type Database = {
 			salvar_historia: { Args: { ficha: string; texto: string }; Returns: undefined };
 			corrigir_pericias: { Args: { ficha: string; escolhas: string[] }; Returns: undefined };
 			corrigir_carisma: { Args: { ficha: string; de: string | null }; Returns: undefined };
+			regularizar_ficha: { Args: { ficha: string; atributos: Record<string, number>; aprimoramentos: string[]; pericias: string[] }; Returns: undefined };
 			usar_pd: { Args: { rolagem: string; acao: 'rerrolar' | 'mais5' }; Returns: Rolagem };
 			rolagens_ocultas_do_mestre: { Args: { desde?: string | null }; Returns: { id: string; campanha_id: string; criada_em: string; mestre: string }[] };
 			definir_capa_ficha: { Args: { ficha: string; capa: string | null }; Returns: undefined };

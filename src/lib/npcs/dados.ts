@@ -4,9 +4,9 @@ import type { Npc } from '#lib/supabase/banco.ts';
 export const RANKS_NPC = [
 	{ id: 'genin', nome: 'Genin', pv: 25, pc: 25, defesa: 12 },
 	{ id: 'chunin', nome: 'Chunin', pv: 45, pc: 40, defesa: 14 },
-	{ id: 'jounin', nome: 'Jounin', pv: 75, pc: 70, defesa: 16 },
-	{ id: 'anbu', nome: 'Anbu', pv: 100, pc: 90, defesa: 17 },
-	{ id: 'lendario', nome: 'Lendário', pv: 150, pc: 130, defesa: 19 }
+	{ id: 'jounin', nome: 'Jounin', pv: 75, pc: 70, defesa: 15 },
+	{ id: 'anbu', nome: 'Anbu', pv: 100, pc: 90, defesa: 16 },
+	{ id: 'lendario', nome: 'Lendário', pv: 150, pc: 130, defesa: 17 }
 ] as const satisfies readonly { id: Npc['rank']; nome: string; pv: number; pc: number; defesa: number }[];
 
 export const TAGS_NPC = [

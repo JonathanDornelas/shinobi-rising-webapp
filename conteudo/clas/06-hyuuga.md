@@ -17,7 +17,7 @@ Tradição acima de tudo. Os Hyuuga acreditam que o destino é fixo, e que a fun
 
 #### Bônus Hereditário {#bonus-hereditario}
 
-- +1 CTR (limite de criação +5).
+- +1 CTR.
 - Treina Percepção.
 
 #### Kekkei Genkai — Byakugan (Olho Branco) {#kekkei-genkai-byakugan-olho-branco}
@@ -46,10 +46,10 @@ Visão de quase 360° (apenas pequeno ponto cego atrás do pescoço), capacidade
 | 12 | Treina Percepção |
 | 13 | Byakugan Kanzen (Byakugan Aperfeiçoado) |
 | 14 | Jūho Sōshiken (Passo Suave: Punhos dos Leões Gêmeos) |
-| 15 | +1 CTR; limite de CTR +9 |
+| 15 | +1 CTR |
 | 16 | +3 PT |
 | 17 | Hakke Kūhekishō (Oito Trigramas: Palma da Parede de Vácuo) |
-| 18 | +1 CTR; limite de CTR +10 |
+| 18 | +1 CTR |
 | 19 | +5 PIC |
 | 20 | Criar Jutsu do Clã Rank S |
 

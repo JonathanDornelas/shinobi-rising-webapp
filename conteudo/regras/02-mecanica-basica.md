@@ -74,7 +74,7 @@ Os testes deste livro foram revisados para sempre dizer o que rolar. Se ainda as
 **DT do Jutsu.** Quando um efeito pede uma Resistência contra um jutsu, a dificuldade cresce com o rank da técnica, com o talento de quem a lança e com o domínio que ele tem daquele jutsu: se o lançador tiver proficiência no jutsu, o bônus dela também soma. Quem passa no teste evita a condição; contra dano em área, sofre só metade do dano.
 
 :::na-mesa{titulo="DT do Jutsu" ref="dt-jutsu"}
-- **DT:** 10 + bônus de rank + atributo-chave do lançador
+- **DT:** 11 + bônus de rank + atributo-chave do lançador
 - **Proficiência no jutsu:** se o lançador tiver, o bônus dela também soma
 - **Bônus de rank:** E +0, D +1, C +2, B +3, A +4, S +5
 - **Atributo-chave:** CTR em Ninjutsu, Genjutsu e Fuuinjutsu; FOR em Taijutsu; FOR ou AGI em Bukijutsu, conforme a arma; AGI em Kugutsu

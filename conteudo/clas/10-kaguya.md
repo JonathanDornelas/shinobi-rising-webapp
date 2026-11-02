@@ -17,7 +17,7 @@ Combate como religião. Para um Kaguya, lutar é a única forma legítima de exi
 
 #### Bônus Hereditário {#bonus-hereditario}
 
-- +1 FOR (limite de criação +5).
+- +1 FOR.
 - +5 PV (constituição óssea reforçada).
 
 #### Kekkei Genkai — Shikotsumyaku (Pulso de Osso Mortal) {#kekkei-genkai-shikotsumyaku-pulso-de-osso-mortal}
@@ -46,10 +46,10 @@ Manipulação dos próprios ossos como armas. O Kaguya pode crescer ossos do cor
 | 12 | Treina Atletismo |
 | 13 | Maldição Contida |
 | 14 | Sawarabi no Mai (Dança do Broto de Samambaia) |
-| 15 | +1 FOR; limite de FOR +9 |
+| 15 | +1 FOR |
 | 16 | +3 PT |
 | 17 | Criar Jutsu do Clã (até Rank A) |
-| 18 | +1 FOR; limite de FOR +10 |
+| 18 | +1 FOR |
 | 19 | +5 PIC |
 | 20 | Criar Jutsu do Clã Rank S |
 

@@ -17,7 +17,7 @@ Gentileza dolorosa. Os Yuki tendem ao pacifismo — odeiam matar, mas o KKG os m
 
 #### Bônus Hereditário {#bonus-hereditario}
 
-- +1 CTR (limite de criação +5).
+- +1 CTR.
 - Resistência a frio: -2 dano de gelo/frio.
 
 #### Kekkei Genkai — Hyōton (Liberação de Gelo) {#kekkei-genkai-hyoton-liberacao-de-gelo}
@@ -45,10 +45,10 @@ Combinação Vento + Água gerando gelo manipulável.
 | 12 | Treina Sobrevivência |
 | 13 | Espelho da Alma |
 | 14 | Makyō Hakuhyō (Espelho Demoníaco de Gelo Fino) |
-| 15 | +1 CTR; limite de CTR +9 |
+| 15 | +1 CTR |
 | 16 | +3 PT |
 | 17 | Criar Jutsu do Clã (até Rank A) |
-| 18 | +1 CTR; limite de CTR +10 |
+| 18 | +1 CTR |
 | 19 | +5 PIC |
 | 20 | Criar Jutsu do Clã Rank S |
 

@@ -13,6 +13,7 @@ export const hrefFicha = (campanha: string, ficha: string) => `/campanhas/${camp
 /** Criador (rascunho, ajustes) e revisão do Mestre. */
 export const hrefEditar = (campanha: string, ficha: string) => `${hrefFicha(campanha, ficha)}/editar`;
 export const hrefNivel = (campanha: string, ficha: string) => `${hrefFicha(campanha, ficha)}/nivel`;
+export const hrefRegularizar = (campanha: string, ficha: string) => `${hrefFicha(campanha, ficha)}/regularizar`;
 
 export const SITUACAO_FICHA = {
 	ativo: { rotulo: 'Ativo', icone: 'status/ic-status-aprovado' },

@@ -121,7 +121,7 @@ export function planoNivel(f: FichaDados, novo: number, marcosCla: MarcoLivro[],
 	};
 }
 
-/** Atributos que podem receber o ponto do nível (limite +8; o do clã sobe com os marcos). */
+/** Atributos que podem receber o aprimoramento (abaixo do teto +3). */
 export function atributosLivres(f: FichaDados): Atributo[] {
 	const t = atributosTotais(f);
 	const lim = limitesAtributo(f);

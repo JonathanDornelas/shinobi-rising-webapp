@@ -17,7 +17,7 @@ Lealdade absoluta. O cão e o ninja são um — feri-lo é ferir o outro. Os Inu
 
 #### Bônus Hereditário {#bonus-hereditario}
 
-- +1 AGI (limite de criação +5).
+- +1 AGI.
 - Treina Rastreamento ou Percepção.
 - Cão ninja hereditário (ver Companheiros).
 
@@ -43,10 +43,10 @@ Nenhum, mas o vínculo simbiótico com o cão é hereditário e sobrenatural.
 | 12 | Treina Rastreamento ou Percepção |
 | 13 | Inuzuka Ryu no Kizuna (Vínculo da Matilha) |
 | 14 | Jinjuu Kongou Henge — Santourou (Lobo de Três Cabeças) |
-| 15 | +1 AGI; limite de AGI +9 |
+| 15 | +1 AGI |
 | 16 | +3 PT |
 | 17 | Ooiga Gatenga (Cauda Perseguidora de Presa da Presa Giratória de Presa) |
-| 18 | +1 AGI; limite de AGI +10 |
+| 18 | +1 AGI |
 | 19 | +5 PIC |
 | 20 | Criar Jutsu do Clã Rank S |
 
@@ -58,10 +58,10 @@ O cão ninja Inuzuka é o companheiro central — recebido no nível 1 e crescen
 | - | - | - | - | - |
 | Filhote | 1–3 | 20 | 13 | +4 · 1d6 + 1 |
 | Adulto Jovem | 4–6 | 40 | 15 | +6 · 1d8 + 2 |
-| Adulto | 7–9 | 60 | 16 | +7 · 2d6 + 3 |
-| Veterano | 10–13 | 80 | 17 | +9 · 2d8 + 3 |
-| Alfa | 14–17 | 100 | 19 | +11 · 2d10 + 4 |
-| Lendário | 18–20 | 125 | 21 | +13 · 3d8 + 5 |
+| Adulto | 7–9 | 60 | 15 | +6 · 2d6 + 3 |
+| Veterano | 10–13 | 80 | 15 | +7 · 2d8 + 3 |
+| Alfa | 14–17 | 100 | 17 | +9 · 2d10 + 4 |
+| Lendário | 18–20 | 125 | 19 | +11 · 3d8 + 5 |
 
 #### Jutsus e Habilidades do Clã {#jutsus-e-habilidades-do-cla}
 

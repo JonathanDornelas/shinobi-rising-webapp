@@ -85,12 +85,12 @@ Para que ninguém carregue dezenas de armas sem consequência, o Shinobi no Mich
 
 ### Capacidade Máxima {#capacidade-maxima}
 
-Cada personagem carrega até 10 unidades de carga, mais 2 por ponto positivo de FOR; atributos negativos não reduzem o limite. Com FOR +3, o limite é 16; com FOR -1, continua em 10, o mínimo.
+Cada personagem carrega até 10 unidades de carga, mais 3 por ponto positivo de FOR; atributos negativos não reduzem o limite. Com FOR +3, o limite é 19; com FOR -1, continua em 10, o mínimo.
 
 Passar do limite deixa o personagem sobrecarregado, e quanto mais ele passa, pior fica.
 
 :::na-mesa{titulo="Carga"}
-- **Limite:** 10 + 2 por ponto positivo de FOR
+- **Limite:** 10 + 3 por ponto positivo de FOR
 - **Mais de 1 unidade acima:** -1 em todos os testes físicos (Atletismo, Acrobacia, Iniciativa, Esquiva)
 - **Mais de 5 unidades acima:** -3 em todos os testes físicos; velocidade reduzida, não pode correr
 - **Mais de 10 acima:** imobilizado
@@ -112,7 +112,7 @@ As tabelas de armas e equipamento (neste capítulo e no cap. 12) já trazem o pe
 Itens consumíveis pequenos, como pílulas, antídotos, bombas de fumaça e pergaminhos explosivos avulsos, contam em conjuntos: cada 5 deles pesam 0,5. Kunai, shuriken e senbon também: um conjunto de 10 pesa 0,5.
 
 :::exemplo{titulo="A mochila de um genin"}
-Um genin com FOR +1 tem limite de 12 unidades. Ele leva:
+Um genin com FOR +1 tem limite de 13 unidades. Ele leva:
 
 - Tanto (Leve, 0,5)
 - Conjunto de 10 kunai (0,5)

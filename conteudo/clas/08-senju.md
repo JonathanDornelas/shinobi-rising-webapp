@@ -17,7 +17,7 @@ Vontade de Fogo (Hi no Ishi) — proteger a próxima geração mesmo ao custo da
 
 #### Bônus Hereditário {#bonus-hereditario}
 
-- +1 VIG (limite de criação +5).
+- +1 VIG.
 - +10 PC iniciais (poço de chakra naturalmente vasto).
 
 #### Kekkei Genkai {#kekkei-genkai}
@@ -42,10 +42,10 @@ Nenhum padrão. Mokuton (Liberação de Madeira) aparece em descendentes raríss
 | 12 | Treina Sobrevivência |
 | 13 | Regeneração Senju |
 | 14 | Pode combinar 2 elementos que domina em jutsus combinados (cap. 20, +5 PJ) |
-| 15 | +1 VIG; limite de VIG +9 |
+| 15 | +1 VIG |
 | 16 | +3 PT |
 | 17 | Aprende 1 jutsu de Rank A, sem custo de PT |
-| 18 | +1 VIG; limite de VIG +10 |
+| 18 | +1 VIG |
 | 19 | +5 PIC |
 | 20 | Criar Jutsu do Clã Rank S (Mokuton, se desperto, ou elemento combinado) |
 

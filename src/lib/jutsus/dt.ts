@@ -30,7 +30,7 @@ export function dtDoLancador(rank: string, tipo: string | null | undefined, atri
 	const opcoes = CHAVE[tipo ?? ''] ?? ['CTR'];
 	const atributo = opcoes.reduce((m, a) => ((atributos[a] ?? 0) > (atributos[m] ?? 0) ? a : m), opcoes[0]);
 	const partes: ParteDt[] = [
-		{ rotulo: 'Base', valor: 10 },
+		{ rotulo: 'Base', valor: 11 },
 		{ rotulo: `Rank ${rank}`, valor: RANK[rank as Rank]?.dt ?? 0 },
 		{ rotulo: opcoes.length > 1 ? `${atributo} (o maior entre FOR e AGI)` : atributo, valor: atributos[atributo] ?? 0 }
 	];

@@ -8,7 +8,7 @@
 	import Icone from '../ui/Icone.svelte';
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
 	import CartaoKkg from './CartaoKkg.svelte';
-	import CorrecaoCarisma from './CorrecaoCarisma.svelte';
+	import AvisoRegularizar from './AvisoRegularizar.svelte';
 	import { descPericia } from '#lib/personagem/dados.ts';
 	import { passivas } from '#lib/personagem/regras.ts';
 
@@ -25,13 +25,13 @@
 	const profArma = $derived(emMaos ? f.calc.proficiencias.find((p) => p.tipo === 'arma' && p.alvo === emMaos.nome) : undefined);
 </script>
 
-<CorrecaoCarisma {f} />
+<AvisoRegularizar {f} />
 <div class="grid items-start gap-5 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
 	<div class="flex min-w-0 flex-col gap-5">
 		<div class="grid grid-cols-4 gap-2.5 md:grid-cols-7">
 			{#each ATRIBUTOS as a (a.id)}
 				{@const doCla = f.calc.atributoDoCla === a.id}
-				<div class="relative flex flex-col gap-1.5 border-2 bg-b2 p-2.5 sombra-painel {doCla ? 'border-[var(--vermelhao-lo)]' : 'border-frame'}" title="{a.nome}: {a.uso} · limite atual {doCla ? '+8 (o marco do clã leva a +10)' : `+${PROGRESSAO.atributoMax}`}">
+				<div class="relative flex flex-col gap-1.5 border-2 bg-b2 p-2.5 sombra-painel {doCla ? 'border-[var(--vermelhao-lo)]' : 'border-frame'}" title="{a.nome}: {a.uso} · teto +3">
 					<Icone id="atributo/ic-atributo-{a.id.toLowerCase()}" />
 					{#if f.editavel}<BotaoRolar class="absolute top-1.5 right-1.5 w-9" expressao={teste(f.calc.atributos[a.id])} rotulo="Atributo · {a.nome}" personagem={f.id} d20 tipo="teste" origem="Ficha · Visão geral" partes={partesAtributo(a.id, f.calc.atributos[a.id])} />{/if}
 					<span class="font-pixel text-xs leading-none font-bold tracking-[0.08em] text-mut">{a.id}</span>

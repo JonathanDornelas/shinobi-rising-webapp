@@ -17,7 +17,7 @@ Para um Nara, qualquer ação desnecessária é desperdício. A guerra é jogo d
 
 #### Bônus Hereditário {#bonus-hereditario}
 
-- +1 INT (limite de criação +5).
+- +1 INT.
 - Treina Investigação.
 - +5 PC iniciais (as sombras exigem reservas de chakra).
 
@@ -43,10 +43,10 @@ Nenhum.
 | 12 | Treina Investigação |
 | 13 | Kage Yogen (Profecia das Sombras) |
 | 14 | Kagemane Shuriken no Jutsu (Técnica de Imitação de Shuriken pela Sombra) |
-| 15 | +1 INT; limite de INT +9 |
+| 15 | +1 INT |
 | 16 | +3 PT |
 | 17 | Kagetsukami no Jutsu (Técnica da Captura pela Sombra) |
-| 18 | +1 INT; limite de INT +10 |
+| 18 | +1 INT |
 | 19 | +5 PIC |
 | 20 | Criar Jutsu do Clã Rank S |
 

@@ -6,6 +6,8 @@ import {
 	BACKGROUNDS,
 	CLAS,
 	CRIACAO,
+	custoAtributo,
+	ESCALA_ATRIBUTOS,
 	custoProficiencia,
 	ESPECIALIZACOES,
 	JUTSUS_ACADEMIA,
@@ -87,6 +89,11 @@ export interface FichaDados {
 	correcaoPericias?: Pericia[];
 	/** Ficha de antes do Carisma: já decidiu se move 1 ponto para CAR (corrigir_carisma). */
 	carismaDecidido?: boolean;
+	/** 2 = escala com teto +3; sem ela, a ficha é da escala antiga (converte pela proporção até regularizar). */
+	escala?: number;
+	/** Regularizada: os aprimoramentos já ganhos, escolhidos de novo, e o nível em que ela foi regularizada. */
+	aprimoramentos?: Atributo[];
+	regularizadaNoNivel?: number;
 }
 
 export function fichaVazia(): FichaDados {
@@ -258,23 +265,50 @@ function ganhos(f: FichaDados) {
 }
 
 /** Valor do atributo com o bônus do clã (o limite de criação sobe para +5 nesse atributo). */
-export function atributosTotais(f: FichaDados): Record<Atributo, number> {
+/** A ficha já está na escala com teto +3 (criada depois dela ou regularizada). */
+export const escalaNova = (f: FichaDados) => f.escala === ESCALA_ATRIBUTOS;
+
+/** A conversão da escala antiga (até +8, +10 no clã) para a nova (até +3), pela proporção (cap. 3). */
+export const converterAtributoAntigo = (v: number) => (v <= -2 ? -2 : v === -1 ? -1 : v === 0 ? 0 : v <= 2 ? 1 : v <= 4 ? 2 : 3);
+
+/**
+ * Os atributos da ficha e quantos pontos o teto +3 comeu. Escala nova: a criação, o +1 do clã, os aprimoramentos
+ * (níveis 4, 8, 12, 16 e 20) e os marcos, sem passar de +3. Escala antiga: a conta antiga, convertida pela proporção.
+ */
+export function atributosComExcesso(f: FichaDados): { totais: Record<Atributo, number>; excessoMarcos: number } {
 	// fichas de antes do Carisma não têm CAR: vale 0
 	const t = { ...f.atributos, CAR: f.atributos.CAR ?? 0 };
 	const cla = regrasCla(f);
-	if (cla?.ganho.atributo) t[cla.ganho.atributo] += 1;
-	for (const n of f.progresso.niveis) {
-		if (n.atributo) t[n.atributo] += 1;
-		for (const [a, v] of Object.entries(n.marco?.atributos ?? {})) t[a as Atributo] += v ?? 0;
+	if (!escalaNova(f)) {
+		if (cla?.ganho.atributo) t[cla.ganho.atributo] += 1;
+		for (const n of f.progresso.niveis) {
+			if (n.atributo) t[n.atributo] += 1;
+			for (const [a, v] of Object.entries(n.marco?.atributos ?? {})) t[a as Atributo] += v ?? 0;
+		}
+		for (const a of ATRIBUTOS) t[a.id] = converterAtributoAntigo(t[a.id] ?? 0);
+		return { totais: t, excessoMarcos: 0 };
 	}
-	return t;
+	const teto = PROGRESSAO.atributoMax;
+	const somar = (a: Atributo, v: number) => {
+		const antes = t[a];
+		t[a] = Math.min(teto, t[a] + v);
+		return v - (t[a] - antes);
+	};
+	if (cla?.ganho.atributo) somar(cla.ganho.atributo, 1);
+	// os aprimoramentos: os escolhidos ao regularizar, mais os dos níveis ganhos depois
+	for (const a of f.aprimoramentos ?? []) somar(a, 1);
+	const desde = f.regularizadaNoNivel ?? 0;
+	for (const n of f.progresso.niveis) if (n.atributo && n.nivel > desde && (PROGRESSAO.niveisAtributo as readonly number[]).includes(n.nivel)) somar(n.atributo, 1);
+	// o marco do clã que cai num atributo já em +3 vira uma perícia para escolher (periciasTreinadas)
+	let excessoMarcos = 0;
+	for (const n of f.progresso.niveis) for (const [a, v] of Object.entries(n.marco?.atributos ?? {})) excessoMarcos += somar(a as Atributo, v ?? 0);
+	return { totais: t, excessoMarcos };
 }
+export const atributosTotais = (f: FichaDados): Record<Atributo, number> => atributosComExcesso(f).totais;
 
-/** Limite atual de cada atributo depois da criação: +8, e o do clã sobe com os marcos (até +10). */
-export function limitesAtributo(f: FichaDados): Record<Atributo, number> {
-	const l = Object.fromEntries(ATRIBUTOS.map((a) => [a.id, PROGRESSAO.atributoMax])) as Record<Atributo, number>;
-	for (const n of f.progresso.niveis) for (const [a, v] of Object.entries(n.marco?.limites ?? {})) l[a as Atributo] = Math.max(l[a as Atributo], v ?? 0);
-	return l;
+/** O teto de cada atributo: +3 em qualquer nível (cap. 3). */
+export function limitesAtributo(_f: FichaDados): Record<Atributo, number> {
+	return Object.fromEntries(ATRIBUTOS.map((a) => [a.id, PROGRESSAO.atributoMax])) as Record<Atributo, number>;
 }
 
 export function atributoDoCla(f: FichaDados): Atributo | null {
@@ -283,7 +317,8 @@ export function atributoDoCla(f: FichaDados): Atributo | null {
 
 export function orcamentoAtributos(f: FichaDados) {
 	const valores = ATRIBUTOS.map((a) => f.atributos[a.id] ?? 0);
-	const usados = valores.reduce((s, v) => s + v, 0);
+	// custo crescente: +1 custa 1, +2 custa 3, +3 custa 6; os negativos devolvem
+	const usados = valores.reduce((s, v) => s + custoAtributo(v), 0);
 	return { usados, limite: CRIACAO.pontosAtributo, restantes: CRIACAO.pontosAtributo - usados, reducoes: valores.filter((v) => v < 0).length };
 }
 
@@ -292,8 +327,10 @@ export function limiteAtributo(f: FichaDados, a: Atributo, delta: 1 | -1): strin
 	const v = f.atributos[a] ?? 0;
 	const o = orcamentoAtributos(f);
 	if (delta > 0) {
-		if (v >= CRIACAO.atributoMax) return atributoDoCla(f) === a ? 'Limite +5 com o bônus de clã · cap. 6, Passo 2' : 'Atributos não passam de +4 na criação · cap. 6, Passo 2';
-		if (o.restantes <= 0) return 'Sem pontos de atributo restantes';
+		const doCla = atributoDoCla(f) === a ? 1 : 0;
+		if (v + doCla >= CRIACAO.atributoMax) return doCla ? 'Teto +3, já com o bônus do clã · cap. 6, Passo 2' : 'O teto é +3 · cap. 6, Passo 2';
+		const custo = custoAtributo(v + 1) - custoAtributo(v);
+		if (custo > o.restantes) return `Subir para ${sinal(v + 1)} custa ${custo} ${custo === 1 ? 'ponto' : 'pontos'} · cap. 6, Passo 2`;
 		return '';
 	}
 	if (v <= CRIACAO.atributoMin) return 'O mínimo na criação é −2 · cap. 6, Passo 2';
@@ -344,6 +381,7 @@ export function periciasTreinadas(f: FichaDados): { fontes: Map<Pericia, string[
 	const vagas = (PROGRESSAO.niveisPericia as readonly number[]).filter((n) => n <= nivel);
 	const escolhas = f.progresso.niveis.flatMap((n) => (n.pericia ? [n.pericia] : []));
 	vagas.forEach((nv, i) => (escolhas[i] ? treinar(escolhas[i], `NV ${nv}`) : repetidas.push({ fonte: `NV ${nv}`, pericia: escolhas[i] })));
+	for (let i = 0; i < atributosComExcesso(f).excessoMarcos; i++) repetidas.push({ fonte: `Marco do ${nomeCla} (atributo já em +3)`, pericia: undefined as unknown as Pericia });
 	let faltam = repetidas.length;
 	for (const p of f.correcaoPericias ?? []) {
 		if (faltam <= 0 || fontes.has(p)) continue;
@@ -354,7 +392,7 @@ export function periciasTreinadas(f: FichaDados): { fontes: Map<Pericia, string[
 }
 
 /** Ficha de antes do Carisma (CAR 0 e ainda sem decidir): pode mover 1 ponto de outro atributo para CAR, uma vez. */
-export const carismaPendente = (f: FichaDados) => !f.carismaDecidido && !(f.atributos.CAR ?? 0);
+export const carismaPendente = (f: FichaDados) => !escalaNova(f) && !f.carismaDecidido && !(f.atributos.CAR ?? 0);
 /** As passivas (10 + o total da perícia): Percepção, Investigação e Intuição. */
 export function passivas(f: FichaDados): { id: Pericia; nome: string; valor: number }[] {
 	const linhas = linhasPericia(f);
@@ -518,7 +556,7 @@ export function analisar(f: FichaDados, ctx: ContextoCampanha, opcoes: { jutsusD
 
 	// 2 · Atributos
 	const oa = orcamentoAtributos(f);
-	const foraDoLimite = ATRIBUTOS.some((a) => (f.atributos[a.id] ?? 0) > CRIACAO.atributoMax || (f.atributos[a.id] ?? 0) < CRIACAO.atributoMin);
+	const foraDoLimite = ATRIBUTOS.some((a) => (f.atributos[a.id] ?? 0) + (atributoDoCla(f) === a.id ? 1 : 0) > CRIACAO.atributoMax || (f.atributos[a.id] ?? 0) < CRIACAO.atributoMin);
 	if (foraDoLimite || oa.reducoes > CRIACAO.reducoesMax) add('bloqueio', 'Atributos fora dos limites da criação', 2);
 	else if (oa.restantes < 0) add('bloqueio', `${-oa.restantes} pontos de atributo acima do limite`, 2);
 	else if (oa.restantes > 0) add('aviso', `${oa.restantes} ${oa.restantes === 1 ? 'ponto' : 'pontos'} de atributo não ${oa.restantes === 1 ? 'gasto' : 'gastos'}`, 2);

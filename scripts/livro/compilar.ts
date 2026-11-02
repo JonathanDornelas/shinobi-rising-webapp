@@ -331,7 +331,8 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 				ameaca,
 				pv: +v.PV,
 				defesa: +v.Defesa,
-				iniciativa: +v.Iniciativa.replace(/^1d20\s*\+\s*/, ''),
+				// "1d20 + 2" ou "1d20 − 1" (a invocação Grande é lenta)
+				iniciativa: (([, sinal, n]) => (sinal === '+' ? +n : -n))(/^1d20\s*([+−-])\s*(\d+)/.exec(v.Iniciativa) ?? ['', '+', '0']),
 				acerto: +atq[1],
 				dano: atq[2].replace(/\s+/g, ''),
 				dt: +(v.Jutsus.match(/DT (\d+)/)?.[1] ?? 0),

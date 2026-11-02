@@ -80,7 +80,7 @@ As fichas abaixo são a base de cada tamanho. Cada espécie ajusta essa base com
 | - | - |
 | PV | 20 |
 | Defesa | 13 |
-| Iniciativa | 1d20 + 2 |
+| Iniciativa | 1d20 + 1 |
 | Ataque básico | +4 para acertar · 1d6 + 2 |
 | Jutsus | 2 usos de jutsu Rank C por invocação (ataque +4, DT 13) |
 
@@ -90,7 +90,7 @@ As fichas abaixo são a base de cada tamanho. Cada espécie ajusta essa base com
 | - | - |
 | PV | 50 |
 | Defesa | 16 |
-| Iniciativa | 1d20 + 3 |
+| Iniciativa | 1d20 + 2 |
 | Ataque básico | +6 para acertar · 2d6 + 3 |
 | Jutsus | 2 usos de Rank C e 1 de Rank B (ataque +6, DT 15) |
 
@@ -99,20 +99,20 @@ As fichas abaixo são a base de cada tamanho. Cada espécie ajusta essa base com
 | Atributo | Valor |
 | - | - |
 | PV | 100 |
-| Defesa | 18 |
-| Iniciativa | 1d20 + 2 |
-| Ataque básico | +8 para acertar · 3d8 + 4 |
-| Jutsus | 2 usos de Rank B e 1 de Rank A (ataque +8, DT 17) |
+| Defesa | 17 |
+| Iniciativa | 1d20 − 1 |
+| Ataque básico | +7 para acertar · 3d8 + 4 |
+| Jutsus | 2 usos de Rank B e 1 de Rank A (ataque +7, DT 16) |
 
 #### Chefe da Espécie (Especialização nível 3 e aprovação do chefe) {#chefe-da-especie-especializacao-nivel-3-aprovacao-do-chefe}
 
 | Atributo | Valor |
 | - | - |
 | PV | 200 |
-| Defesa | 22 |
-| Iniciativa | 1d20 + 4 |
-| Ataque básico | +12 para acertar · 5d10 + 6 |
-| Jutsus | 2 usos de Rank A e 1 de Rank S (ataque +12, DT 21) |
+| Defesa | 20 |
+| Iniciativa | 1d20 + 0 |
+| Ataque básico | +10 para acertar · 5d10 + 6 |
+| Jutsus | 2 usos de Rank A e 1 de Rank S (ataque +10, DT 19) |
 | Restrição | 1 invocação por sessão. Exige consentimento (os chefes têm personalidade própria) |
 
 ### Espécies de Contrato Famosas {#especies-de-contrato-famosas}

@@ -189,12 +189,12 @@
 					</div>
 					<p class="m-0 text-sm leading-[21px] text-mut">Automático. Nada para escolher neste passo{ptMarco ? ` (os PT incluem +${ptMarco} do marco do clã)` : ''}.</p>
 				{:else if passoAtual === 'atributo'}
-					<p class="m-0 text-sm leading-[21px] text-mut">Nível {novo}: +1 ponto de atributo. Limite +8; o atributo do clã sobe com os marcos (cap. 17).</p>
+					<p class="m-0 text-sm leading-[21px] text-mut">Nível {novo}: aprimoramento, +1 num atributo abaixo do teto +3 (cap. 17).</p>
 					<div role="radiogroup" aria-label="Atributo" class="grid grid-cols-2 gap-3 md:grid-cols-3">
 						{#each ATRIBUTOS as a (a.id)}
 							{@const livre = atributosOk.includes(a.id)}
 							{@const on = atributo === a.id}
-							<button type="button" role="radio" aria-checked={on} disabled={!livre} title={livre ? undefined : 'No limite atual'} class="relative flex flex-col gap-1.5 border-2 bg-b2 p-3 text-left disabled:opacity-50 {on ? 'border-vermelhao shadow-[4px_4px_0_var(--vermelhao-lo)]' : 'border-frame hover:border-mut'}" onclick={() => (atributo = a.id)}>
+							<button type="button" role="radio" aria-checked={on} disabled={!livre} title={livre ? undefined : 'Já está no teto +3'} class="relative flex flex-col gap-1.5 border-2 bg-b2 p-3 text-left disabled:opacity-50 {on ? 'border-vermelhao shadow-[4px_4px_0_var(--vermelhao-lo)]' : 'border-frame hover:border-mut'}" onclick={() => (atributo = a.id)}>
 								<Icone id="atributo/ic-atributo-{a.id.toLowerCase()}" />
 								<span class="font-pixel text-sm font-bold">{a.id} <span class="font-sans text-xs font-normal text-mut">{a.nome}</span></span>
 								<span class="t-num text-xl">{sinal(fAntes.atributos[a.id])} → <span class="text-ok">{sinal(fAntes.atributos[a.id] + 1)}</span></span>

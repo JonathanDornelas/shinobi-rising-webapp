@@ -18,12 +18,13 @@ Três camadas descrevem o que um ninja sabe fazer: os atributos (o talento natur
 
 Os atributos são as capacidades naturais do personagem: o corpo, a mente e o espírito com que ele nasceu. Eles crescem ao longo da campanha, à medida que o ninja enfrenta desafios e acumula experiência.
 
-Todo personagem tem sete atributos. Eles começam modestos e sobem com o tempo, e o atributo ligado ao clã pode ir mais longe que os outros.
+Todo personagem tem sete atributos. Eles vão de −2 a +3: um +1 já é um talento claro, e um +3 é o melhor que existe, o tipo de dom que define um ninja. Sobem devagar, com os aprimoramentos de nível e os marcos do clã, mas nunca passam de +3.
 
 :::na-mesa{titulo="Limites dos atributos"}
-- **Na criação:** de -2 a +4 (+5 com o bônus de clã)
-- **Em alto nível:** até +8
-- **Atributo do clã:** até +10, pelos marcos de nível
+- **Faixa:** de −2 a +3, em qualquer nível
+- **Na criação:** +3 custa caro; em geral, só baixando outro atributo (cap. 6)
+- **Aprimoramentos:** +1 num atributo abaixo de +3 nos níveis 4, 8, 12, 16 e 20 (cap. 17)
+- **Marco do clã num atributo já em +3:** vira uma perícia treinada à escolha
 :::
 
 :::tabela{titulo="Os sete atributos"}
@@ -153,7 +154,7 @@ Um personagem novo começa com 4 PT na criação (Passo 6, cap. 6). Dá para esp
 :::
 
 :::exemplo{titulo="Sasuke e Tenten"}
-Sasuke tem CTR +4 e é treinado em Ninjutsu, o que dá Ninjutsu +6. Numa temporada de descanso, gastou 3 PT para ficar Treinado (+2) no Goukakyu, a Grande Bola de Fogo. Como o Goukakyu é um jutsu de área, quem rola são os alvos: Acrobacia contra a DT do Jutsu, que fica em 16 (10 de base, 2 do rank C, 4 do CTR e 2 da proficiência). E o jutsu passa a custar 8 PC em vez de 9, pelo benefício fixo.
+Sasuke tem CTR +3 e é treinado em Ninjutsu, o que dá Ninjutsu +5. Numa temporada de descanso, gastou 3 PT para ficar Treinado (+2) no Goukakyu, a Grande Bola de Fogo. Como o Goukakyu é um jutsu de área, quem rola são os alvos: Acrobacia contra a DT do Jutsu, que fica em 18 (11 de base, 2 do rank C, 3 do CTR e 2 da proficiência). E o jutsu passa a custar 8 PC em vez de 9, pelo benefício fixo.
 
 Tenten investiu 10 PT, em anos de treino, para virar Mestre em Kunai (+4). Ao atacar com kunai, ela rola 1d20 + Bukijutsu + 4, e cada kunai causa +1 de dano. Se perder as kunai e tiver de usar shuriken, perde tudo isso até voltar a empunhar uma kunai. Das cinco vagas de proficiência, Tenten ocupou uma; ainda pode treinar mais quatro.
 :::

@@ -17,7 +17,7 @@ Vínculos eternos. Os Uzumaki acreditam que selar algo — em pergaminhos, corpo
 
 #### Bônus Hereditário {#bonus-hereditario}
 
-- +1 ESP (limite de criação +5).
+- +1 ESP.
 - +5 PC iniciais (longevidade de chakra; os marcos aumentam a reserva).
 - Treina Selamento.
 
@@ -43,10 +43,10 @@ Nenhum padrão. A longevidade hereditária e a vasta reserva de chakra são vant
 | 12 | Treina Selamento |
 | 13 | Longevidade Uzumaki |
 | 14 | Hakke no Fūin Shiki (Fórmula do Selo de Oito Trigramas) |
-| 15 | +1 ESP; limite de ESP +9 |
+| 15 | +1 ESP |
 | 16 | +3 PT |
 | 17 | Criar Jutsu do Clã (até Rank A) |
-| 18 | +1 ESP; limite de ESP +10 |
+| 18 | +1 ESP |
 | 19 | +5 PIC |
 | 20 | Criar Jutsu do Clã Rank S |
 

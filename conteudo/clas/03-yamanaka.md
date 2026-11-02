@@ -17,7 +17,7 @@ A mente é o campo de batalha real. Para um Yamanaka, ler pessoas é tão natura
 
 #### Bônus Hereditário {#bonus-hereditario}
 
-- +1 ESP (limite de criação +5).
+- +1 ESP.
 - Treina Percepção.
 - +5 PC iniciais (a mente é sustentada por chakra).
 
@@ -43,10 +43,10 @@ Nenhum.
 | 12 | Treina Percepção |
 | 13 | Ishin Toitsu (Mente Unificada) |
 | 14 | Kanchi Kekkai (Barreira Sensorial) |
-| 15 | +1 ESP; limite de ESP +9 |
+| 15 | +1 ESP |
 | 16 | +3 PT |
 | 17 | Criar Jutsu do Clã (até Rank A) |
-| 18 | +1 ESP; limite de ESP +10 |
+| 18 | +1 ESP |
 | 19 | +5 PIC |
 | 20 | Criar Jutsu do Clã Rank S |
 

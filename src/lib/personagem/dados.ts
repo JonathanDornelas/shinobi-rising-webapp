@@ -44,9 +44,9 @@ export const nomePericia = (id: string) => PERICIAS.find((p) => p.id === id)?.no
 
 /** Cap. 6 · Passos 2, 5 e 6. */
 export const CRIACAO = {
-	/** Sete atributos (com o Carisma): 9 pontos. */
-	pontosAtributo: 9,
-	atributoMax: 4,
+	/** Sete atributos, compra com custo crescente (custoAtributo): 5 pontos; o teto é +3 (cap. 6, Passo 2). */
+	pontosAtributo: 5,
+	atributoMax: 3,
 	atributoMin: -2,
 	reducoesMax: 2,
 	/** Perícias treinadas na criação (cap. 3): cada uma dá +2. Clã, vila e background treinam outras. */
@@ -61,7 +61,12 @@ export const CRIACAO = {
 export const BONUS_TREINADA = 2;
 
 /** Cap. 8.4: quem não tem clã ganha +2 perícia e +5 PT; cap. 6 Passo 8: recursos por soma. */
-export const RECURSOS = { pvBase: 20, peBase: 20, pcBase: 30, porVig: 5, porChakra: 4, cargaBase: 10, cargaPorFor: 2 } as const;
+export const RECURSOS = { pvBase: 20, peBase: 20, pcBase: 30, porVig: 8, porChakra: 6, cargaBase: 10, cargaPorFor: 3 } as const;
+
+/** Custo total de um atributo na criação (cap. 6, Passo 2): +1 custa 1, +2 custa 3, +3 custa 6; −1 e −2 devolvem 1 e 2. */
+export const custoAtributo = (v: number) => (v <= 0 ? v : (v * (v + 1)) / 2);
+/** A escala dos atributos com teto +3 (2026-11). Fichas sem ela são da escala antiga e convertem pela proporção. */
+export const ESCALA_ATRIBUTOS = 2;
 
 export type Ganho = { atributo?: Atributo; pericias?: Pericia[]; escolhaPericia?: Pericia[] | 'qualquer'; pv?: number; pc?: number; pe?: number; pt?: number };
 
@@ -151,11 +156,13 @@ export const ESPECIALIZACOES: Record<string, EfeitoEspecializacao> = {
 /** Cap. 17 · ganhos por nível. */
 export const PROGRESSAO = {
 	porNivel: { pv: 5, pc: 3, pe: 3, pt: 3 },
-	niveisAtributo: [3, 6, 9, 12, 15, 18],
+	/** Aprimoramento: +1 num atributo abaixo de +3 (cap. 17). */
+	niveisAtributo: [4, 8, 12, 16, 20],
 	/** Uma perícia treinada nova a cada 4 níveis (cap. 17). */
 	niveisPericia: [5, 9, 13, 17],
 	niveisEspecializacao: [4, 7, 10, 13, 16, 19],
-	atributoMax: 8,
+	/** O teto dos atributos em qualquer nível, inclusive o do clã. */
+	atributoMax: 3,
 	rankPorNivel: { B: 6, A: 11, S: 15 } as Record<string, number>,
 	xp: [0, 200, 500, 1000, 1800, 3000, 5000, 8000, 12000, 18000, 26000, 36000, 48000, 62000, 78000, 96000, 116000, 138000, 162000, 188000]
 } as const;

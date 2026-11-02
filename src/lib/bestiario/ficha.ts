@@ -109,17 +109,17 @@ export const ESTILOS: Record<EstiloCriatura, { nome: string; defesa: number; ini
 };
 
 const limitar = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
-/** Atributo principal do papel: +2 na ameaça 2, +6 na 10, +10 na 20. */
-export const principal = (ameaca: number) => limitar(Math.round(1 + ameaca * 0.45), 1, 10);
+/** Atributo principal do papel, na escala com teto +3: +1 até a ameaça 3, +2 da 4 à 10, +3 da 11 em diante. */
+export const principal = (ameaca: number) => (ameaca <= 3 ? 1 : ameaca <= 10 ? 2 : 3);
 /** Atributo comum, o que não é o forte do papel: -1 até a ameaça 2, +1 na 8, +2 na 12. */
-export const atributoComum = (ameaca: number) => Math.max(-1, Math.round(principal(ameaca) / 3) - 1);
+export const atributoComum = (ameaca: number) => (ameaca < 6 ? 0 : 1);
 /** Treino das perícias secundárias e nível das proficiências pela ameaça (1 a 5). */
 const treino = (ameaca: number) => limitar(Math.round(ameaca / 4) + 1, 1, 5);
 /**
  * PE pela conta dos personagens (cap. 6): 20, mais 5 por ponto de VIG acima de 0, mais 3 por nível depois do 1º.
  * A ameaça faz o papel do nível (as frações contam como nível 1).
  */
-export const peDe = (ameaca: number, vig: number) => 20 + 5 * Math.max(0, vig) + 3 * Math.max(0, Math.floor(ameaca) - 1);
+export const peDe = (ameaca: number, vig: number) => 20 + 8 * Math.max(0, vig) + 3 * Math.max(0, Math.floor(ameaca) - 1);
 
 // os nomes são comparados sem acento ("Tantō" → "tanto")
 const semAcento = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -159,8 +159,8 @@ function atributosDe(e: EntradaFicha): Record<Atributo, number> {
 		a.vig += PERFIS[e.perfil].vig;
 		a.esp += PERFIS[e.perfil].esp;
 	}
-	for (const k of ATRIBUTOS) a[k] = limitar(a[k], -2, 10);
-	a.agi = e.iniciativa;
+	for (const k of ATRIBUTOS) a[k] = limitar(a[k], -2, 3);
+	a.agi = limitar(e.iniciativa, -2, 3);
 	return a;
 }
 
@@ -257,18 +257,19 @@ export function fichaCompleta(e: EntradaFicha): FichaCompleta {
 	const t = treino(e.ameaca);
 
 	// perícia do ataque + proficiência na arma = acerto. A proficiência cobre parte do que falta além do atributo; o resto
-	// é o treino da perícia, que pode ser negativo (cap. 3) e não passa de +5 (se passar, o atributo sobe)
+	// é o treino da perícia com a especialização (+2 e até +3, cap. 3 e 19): passando de +5, o atributo sobe, até o teto +3
 	let falta = e.acerto - atributos[atq.atributo];
 	const prof = atq.arma ? limitar(Math.max(t - 1, falta - 5), 0, limitar(falta, 0, 5)) : 0;
 	falta -= prof;
-	if (falta > 5) atributos[atq.atributo] = limitar(e.acerto - prof - 5, -2, 10);
+	if (falta > 5) atributos[atq.atributo] = limitar(e.acerto - prof - 5, -2, 3);
 	const pericias: PericiaFicha[] = [{ id: atq.pericia, nome: PERICIAS[atq.pericia].nome, total: e.acerto - prof }];
-	// Acrobacia = Defesa − 10; nas feras de couraça, em que a Defesa passa disso, o treino para no teto (+5, +2 de bônus)
-	pericias.push({ id: 'acrobacia', nome: 'Acrobacia', total: Math.min(e.defesa - 10, atributos.agi + 7) });
+	// Acrobacia = Defesa − 10; nas feras de couraça, em que a Defesa passa disso, para no treinado com a Velocidade (+2, +2)
+	pericias.push({ id: 'acrobacia', nome: 'Acrobacia', total: Math.min(e.defesa - 10, atributos.agi + 4) });
 	for (const p of secundarias(e)) {
 		if (pericias.length >= 4) break;
 		if (pericias.some((x) => x.id === p)) continue;
-		pericias.push({ id: p, nome: PERICIAS[p].nome, total: atributos[PERICIAS[p].atributo] + t });
+		// as secundárias são treinadas (+2, cap. 3)
+		pericias.push({ id: p, nome: PERICIAS[p].nome, total: atributos[PERICIAS[p].atributo] + 2 });
 	}
 
 	const proficiencias: ProficienciaFicha[] = [];

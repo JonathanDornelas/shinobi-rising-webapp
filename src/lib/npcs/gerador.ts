@@ -17,15 +17,16 @@ export function ataqueNpc(texto: string): { acerto: string | null; dano: string 
 }
 
 /**
- * Combate sugerido por rank para o gerador: PV, PC e Defesa são os do livro (cap. 23.2); iniciativa e ataque
+ * Combate sugerido por rank para o gerador, na tabela de ameaça com teto +3 (Genin = ameaça 1, Chunin = 4, Jounin = 7,
+ * Anbu = 9, Lendário = 13): PV, PC e Defesa são os do livro (cap. 23.2); iniciativa e ataque
  * escalam a partir dos exemplos do capítulo (bandido 1d20 + 3 → 1d6 + 1; Jounin 1d20 + 4 → 1d6 + 2 no corpo a corpo fraco).
  */
 export const COMBATE_GERADO: Record<Npc['rank'], { iniciativa: number; ataque: string }> = {
-	genin: { iniciativa: 2, ataque: '1d20 + 3 → 1d6 + 1' },
-	chunin: { iniciativa: 3, ataque: '1d20 + 5 → 1d8 + 2' },
-	jounin: { iniciativa: 4, ataque: '1d20 + 7 → 2d6 + 3' },
-	anbu: { iniciativa: 5, ataque: '1d20 + 8 → 2d8 + 3' },
-	lendario: { iniciativa: 6, ataque: '1d20 + 10 → 3d8 + 4' }
+	genin: { iniciativa: 1, ataque: '1d20 + 3 → 1d6 + 1' },
+	chunin: { iniciativa: 2, ataque: '1d20 + 5 → 1d8 + 2' },
+	jounin: { iniciativa: 2, ataque: '1d20 + 6 → 2d6 + 3' },
+	anbu: { iniciativa: 2, ataque: '1d20 + 7 → 2d8 + 3' },
+	lendario: { iniciativa: 3, ataque: '1d20 + 8 → 3d8 + 4' }
 };
 
 const NOMES = ['Akira', 'Daisuke', 'Emi', 'Fumiko', 'Goro', 'Haruka', 'Hayato', 'Isamu', 'Jiro', 'Kaede', 'Kenta', 'Kiyoshi', 'Kohaku', 'Madoka', 'Masaru', 'Michiru', 'Natsume', 'Nobu', 'Raiden', 'Reiko', 'Ryota', 'Sachiko', 'Satsuki', 'Shinji', 'Sora', 'Takumi', 'Tetsuo', 'Tomoe', 'Yasuo', 'Yuki'];

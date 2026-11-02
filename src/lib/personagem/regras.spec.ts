@@ -41,7 +41,9 @@ const loja: ItemLoja[] = [
 function hana(): FichaDados {
 	const f = fichaVazia();
 	f.conceito.nome = 'Hana Nara';
-	f.atributos = { FOR: 0, AGI: 2, VIG: 1, INT: 2, CTR: 2, ESP: 1, CAR: 1 };
+	// escala com teto +3: AGI +2 (3 pontos), VIG +1 e CTR +1 (1 cada) = 5; o INT vem do clã
+	f.escala = 2;
+	f.atributos = { FOR: 0, AGI: 2, VIG: 1, INT: 0, CTR: 1, ESP: 0, CAR: 0 };
 	f.vila = { id: 'konoha', escolha: 'acrobacia' };
 	f.cla = { tipo: 'catalogo', slug: 'nara', escolha: null };
 	f.pericias = { ninjutsu: 1, percepcao: 1, furtividade: 1, bukijutsu: 1 };
@@ -58,32 +60,44 @@ function hana(): FichaDados {
 }
 
 describe('atributos (cap. 6, Passo 2)', () => {
-	it('9 pontos (com o Carisma), com o +1 do clã por cima', () => {
+	it('5 pontos com custo crescente, com o +1 do clã por cima', () => {
 		const f = hana();
-		expect(orcamentoAtributos(f)).toMatchObject({ usados: 9, restantes: 0, reducoes: 0 });
-		expect(atributosTotais(f).INT).toBe(3);
+		expect(orcamentoAtributos(f)).toMatchObject({ usados: 5, restantes: 0, reducoes: 0 });
+		expect(atributosTotais(f).INT).toBe(1);
 	});
-	it('reduzir até dois atributos dá pontos extras', () => {
+	it('o +3 custa 6: só baixando algo; reduzir devolve pontos (até dois atributos)', () => {
 		const f = fichaVazia();
-		f.atributos = { FOR: -2, AGI: -1, VIG: 4, INT: 4, CTR: 3, ESP: 0, CAR: 1 };
+		f.escala = 2;
+		f.atributos = { FOR: -1, AGI: 3, VIG: 0, INT: 0, CTR: 0, ESP: 0, CAR: 0 };
+		expect(orcamentoAtributos(f).restantes).toBe(0);
+		f.atributos = { FOR: -2, AGI: -1, VIG: 3, INT: 1, CTR: 1, ESP: 0, CAR: 0 };
 		expect(orcamentoAtributos(f).restantes).toBe(0);
 		expect(limiteAtributo(f, 'ESP', -1)).toMatch(/Só 2 atributos/);
 		expect(limiteAtributo(f, 'FOR', -1)).toMatch(/mínimo/);
-		expect(limiteAtributo(f, 'VIG', 1)).toMatch(/\+4/);
+		expect(limiteAtributo(f, 'VIG', 1)).toMatch(/teto é \+3/);
+		expect(limiteAtributo(f, 'CTR', 1)).toMatch(/custa 2 pontos/);
 	});
-	it('o atributo do clã mostra o limite +5', () => {
+	it('o atributo do clã para no teto +3, já com o bônus', () => {
 		const f = hana();
-		f.atributos.INT = 4;
-		expect(limiteAtributo(f, 'INT', 1)).toMatch(/\+5/);
+		f.atributos.INT = 2;
+		expect(limiteAtributo(f, 'INT', 1)).toMatch(/bônus do clã/);
+	});
+	it('ficha da escala antiga: os totais convertem pela proporção', () => {
+		const f = hana();
+		delete f.escala;
+		f.atributos = { FOR: 0, AGI: 4, VIG: 1, INT: 4, CTR: 2, ESP: -1, CAR: 0 };
+		const t = atributosTotais(f);
+		expect([t.AGI, t.VIG, t.INT, t.CTR, t.ESP]).toEqual([2, 1, 3, 1, -1]);
 	});
 });
 
 describe('recursos (cap. 6, Passo 8)', () => {
-	it('segue os exemplos do livro: VIG +3 → 35 PV e 35 PE; ESP +2 e CTR +3 → 50 PC', () => {
+	it('segue os exemplos do livro: VIG +3 → 44 PV e 44 PE; ESP +2 e CTR +3 → 60 PC', () => {
 		const f = fichaVazia();
+		f.escala = 2;
 		f.atributos = { FOR: 0, AGI: 0, VIG: 3, INT: 0, CTR: 3, ESP: 2, CAR: 0 };
 		const r = recursos(f);
-		expect([r.pv, r.pe, r.pc]).toEqual([35, 35, 50]);
+		expect([r.pv, r.pe, r.pc]).toEqual([44, 44, 60]);
 	});
 	it('atributos negativos não reduzem; somam clã, vila e especialização', () => {
 		const f = hana();
@@ -92,7 +106,7 @@ describe('recursos (cap. 6, Passo 8)', () => {
 		f.especializacao = 'reservatorio';
 		const r = recursos(f);
 		expect(r.pv).toBe(20 + 0 + 5);
-		expect(r.pc).toBe(30 + 4 * 1 + 4 * 2 + 5 + 10);
+		expect(r.pc).toBe(30 + 6 * 0 + 6 * 1 + 5 + 10);
 		expect(r.cargaMax).toBe(10);
 	});
 	it('defesa usa a Acrobacia total; carga e ryo do Pacote B', () => {
@@ -117,7 +131,7 @@ describe('perícias e proficiências (cap. 3 e 6)', () => {
 	it('treinada vale +2; vila, clã e background treinam as perícias deles', () => {
 		const f = hana();
 		const l = (id: string) => linhasPericia(f).find((p) => p.id === id)!;
-		expect(l('ninjutsu')).toMatchObject({ treino: 2, valor: 2, total: 2 + 2, fontes: ['Criação'] });
+		expect(l('ninjutsu')).toMatchObject({ treino: 2, valor: 2, total: 2 + 1, fontes: ['Criação'] });
 		expect(l('investigacao')).toMatchObject({ treino: 2, fontes: ['Nara'] });
 		expect(l('persuasao').fontes).toEqual(['Konohagakure'.replace(/gakure$/, '')]);
 		expect(l('medicina')).toMatchObject({ treino: 0, valor: 0 });

@@ -17,7 +17,7 @@ Fluidez antes de tudo. Os Hozuki creem que rigidez — moral, física, mental �
 
 #### Bônus Hereditário {#bonus-hereditario}
 
-- +1 AGI (limite de criação +5).
+- +1 AGI.
 - Treina Sobrevivência (precisa beber muita água, mas não desidrata facilmente).
 
 #### Kekkei Genkai — Suika no Jutsu (Hidratação) {#kekkei-genkai-suika-no-jutsu-hidratacao}
@@ -46,10 +46,10 @@ O usuário pode liquefazer parte ou todo o próprio corpo, virando água viva te
 | 12 | Treina Sobrevivência |
 | 13 | Maestria da Hidratação |
 | 14 | Jōki Bōi (Tirania Fumegante Perigosa) |
-| 15 | +1 AGI; limite de AGI +9 |
+| 15 | +1 AGI |
 | 16 | +3 PT |
 | 17 | Criar Jutsu do Clã (até Rank A) |
-| 18 | +1 AGI; limite de AGI +10 |
+| 18 | +1 AGI |
 | 19 | +5 PIC |
 | 20 | Criar Jutsu do Clã Rank S |
 

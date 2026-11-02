@@ -39,7 +39,7 @@
 			<div class="flex flex-col gap-1">
 				<h3 id="correcao-titulo" class="m-0 text-[15px] leading-5 font-semibold">{t.faltam === 1 ? 'Falta 1 perícia treinada' : `Faltam ${t.faltam} perícias treinadas`}</h3>
 				<p class="m-0 text-[13px] leading-[18px] text-mut">
-					Com a regra nova das perícias, {t.repetidas.map((r) => (r.pericia ? `${r.fonte} treinaria ${nomePericia(r.pericia)}, que já era treinada` : `o ${r.fonte} ainda não escolheu a perícia`)).join('; ')}.
+					Com a regra nova das perícias, {t.repetidas.map((r) => (r.pericia ? `${r.fonte} treinaria ${nomePericia(r.pericia)}, que já era treinada` : /^NV/.test(r.fonte) ? `o ${r.fonte} ainda não escolheu a perícia` : `o ${r.fonte} dá uma perícia para escolher`)).join('; ')}.
 					{f.editavel ? `Escolha ${t.faltam === 1 ? 'a perícia' : `as ${t.faltam} perícias`} no lugar. Depois de confirmar, não dá para mudar.` : 'O dono da ficha escolhe no lugar.'}
 				</p>
 			</div>
