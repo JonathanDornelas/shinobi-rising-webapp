@@ -149,6 +149,8 @@ export type Acao = (typeof ACOES)[number]['id'];
 
 /** Criar com um Sensei: −2 PJ (cap. 20.6). */
 export const SENSEI_PJ = -2;
+/** Paralisar custa 3 PJ em Genjutsu (2 nos outros tipos): a ilusão prende sem tocar e quase não deixa reagir. */
+export const PARALISA_GENJUTSU_PJ = 3;
 
 /** Rank pelo total de PJ e PT para aprender (cap. 18). */
 export const RANKS: { rank: Rank; de: number; ate: number; pt: number; dt: number }[] = [

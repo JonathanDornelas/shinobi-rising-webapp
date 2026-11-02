@@ -153,7 +153,7 @@ A esfera conta o raio a partir de um ponto dentro do alcance (ou do próprio usu
 | - | - |
 | Atordoa por 1 turno | 1 |
 | Empurra (3 m, se o jutsu não disser) ou derruba | 1 |
-| Paralisa por 1 turno | 2 |
+| Paralisa por 1 turno (3 em Genjutsu) | 2 |
 | Imobiliza (preso até vencer a Resistência) | 3 |
 | Controla as ações do alvo (Resistência ao fim de cada turno) | 6 |
 | Cega, ensurdece ou amedronta por 1 turno | 2 |

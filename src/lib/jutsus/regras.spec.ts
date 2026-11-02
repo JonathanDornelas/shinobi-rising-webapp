@@ -82,6 +82,12 @@ describe('regras de ouro e verificações', () => {
 		expect(calcularJutsu(jutsu({ tipo: 'Kugutsu', dano: { modo: 'dano', qtd: 2, dado: 6, bonus: 0 }, alcance: 'curto' })).custo.texto).toBe('2 PC + 2 PE');
 	});
 
+	it('paralisar custa 3 PJ em Genjutsu e 2 nos outros tipos (Utakata: 5 PJ)', () => {
+		const utakata = { alcance: 'toque' as const, componentes: { paralisa: 1, turnos: 2 } };
+		expect(calcularJutsu(jutsu({ tipo: 'Genjutsu', ...utakata })).pj).toBe(5);
+		expect(calcularJutsu(jutsu({ tipo: 'Ninjutsu', ...utakata })).pj).toBe(4);
+	});
+
 	it('linha de info automática', () => {
 		const d = jutsu({ tipo: 'Ninjutsu', dano: { modo: 'dano', qtd: 2, dado: 6, bonus: 0 }, alcance: 'medio', area: 'esfera3', componentes: { continuo: 1, sustentado: 1 } });
 		expect(infoAutomatica(d)).toEqual({ alcance: 'Médio (30m)', duracao: 'Sustentado (3 PC/turno)', area: 'Esfera 3m', ataque: '— (área)', resistencia: 'Acrobacia (DT do Jutsu)', acao: 'Primária' });

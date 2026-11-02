@@ -14,6 +14,7 @@ import {
 	MODIFICADORES,
 	ROTULO_ALCANCE,
 	SENSEI_PJ,
+	PARALISA_GENJUTSU_PJ,
 	TIPOS_FISICOS,
 	mediaDoDado,
 	pjDoDano,
@@ -140,6 +141,11 @@ export function calcularJutsu(d: JutsuDados) {
 	for (const c of TODOS) {
 		const v = d.componentes[c.id] ?? 0;
 		if (!v) continue;
+		// paralisar em Genjutsu custa mais (cap. 20)
+		if (c.id === 'paralisa' && d.tipo === 'Genjutsu') {
+			linhas.push({ rotulo: `${c.nome} (Genjutsu)`, pj: PARALISA_GENJUTSU_PJ });
+			continue;
+		}
 		const pj = pjDoComponente(c, v);
 		linhas.push({ rotulo: c.tipo === 'qtd' ? `${c.nome} ×${v}` : c.nome, pj });
 	}

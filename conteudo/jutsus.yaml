@@ -3482,7 +3482,7 @@
   origem: Genjutsu
   tipo: Genjutsu
   rank: C
-  custo: 7 PC
+  custo: 8 PC
   info:
     - k: Alcance
       v: Médio (30m)
@@ -3500,7 +3500,7 @@
     - O alvo vê o seu pior medo tomar forma diante dele, real em cada detalhe.
   efeito: O alvo fica Paralisado por 1 turno e Amedrontado por 2. Vítimas com traumas profundos podem ficar assim por mais tempo (o Mestre decide).
   notas: []
-  pj: "paralisa (2) + amedronta 2 turnos (3) + Médio (2): 7 PJ, rank C."
+  pj: "paralisa em genjutsu (3) + amedronta 2 turnos (3) + Médio (2): 8 PJ, rank C."
   capitulo: 10
   ancora: genjutsu-comuns
   cla: null
@@ -6337,7 +6337,7 @@
   origem: Genjutsu
   tipo: Genjutsu
   rank: B
-  custo: 11 PC
+  custo: 12 PC
   info:
     - k: Alcance
       v: Médio (30m)
@@ -6356,7 +6356,7 @@
   efeito: Até 3 alvos que falharem na Resistência ficam Paralisados por até 3 turnos, enquanto o usuário continuar tocando.
   notas:
     - Exige uma flauta em mãos.
-  pj: "Médio (2) + 2 alvos extras (4) + paralisa (2) + turnos extras ×2 (2) + sustentado (2) − foco em mãos (−1): 11 PJ, rank B."
+  pj: "Médio (2) + 2 alvos extras (4) + paralisa em genjutsu (3) + turnos extras ×2 (2) + sustentado (2) − foco em mãos (−1): 12 PJ, rank B."
   capitulo: 10
   ancora: genjutsu-comuns
   cla: null
@@ -6396,7 +6396,7 @@
   origem: Genjutsu
   tipo: Genjutsu
   rank: A
-  custo: 19 PC
+  custo: 20 PC
   info:
     - k: Alcance
       v: Longo (60m)
@@ -6414,7 +6414,7 @@
     - Penas brancas caem do céu sobre uma área enorme, e quem olha para elas cai num sono profundo e tranquilo.
   efeito: "Quem estiver na área e falhar na Resistência adormece: fica Paralisado por até 4 turnos. Qualquer dano acorda a vítima."
   notas: []
-  pj: "Longo (4) + esfera 15m (8) + paralisa (2) + turnos extras ×3 (3) + sustentado (2): 19 PJ, rank A."
+  pj: "Longo (4) + esfera 15m (8) + paralisa em genjutsu (3) + turnos extras ×3 (3) + sustentado (2): 20 PJ, rank A."
   capitulo: 10
   ancora: genjutsu-comuns
   cla: null
@@ -11286,7 +11286,7 @@
   origem: Genjutsu
   tipo: Genjutsu
   rank: D
-  custo: 4 PC
+  custo: 5 PC
   info:
     - k: Alcance
       v: Toque
@@ -11304,7 +11304,7 @@
     - Com um toque do dedo, o ninja prende o alvo numa ilusão em que corvos voam em volta dele e viram shuriken.
   efeito: Se falhar na Resistência, o alvo tocado fica Paralisado por até 3 turnos, preso na ilusão.
   notas: []
-  pj: "paralisa (2) + turnos extras ×2 (2): 4 PJ, rank D."
+  pj: "paralisa em genjutsu (3) + turnos extras ×2 (2): 5 PJ, rank D."
   capitulo: 10
   ancora: genjutsu-comuns
   cla: null
