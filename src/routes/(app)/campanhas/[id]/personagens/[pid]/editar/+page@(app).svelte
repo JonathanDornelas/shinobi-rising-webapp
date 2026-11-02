@@ -26,6 +26,7 @@
 	import Modal from '#lib/componentes/ui/Modal.svelte';
 	import { Criador } from '#lib/personagem/criador.svelte.ts';
 	import { normalizarFicha, PASSOS, sinal, type FichaDados } from '#lib/personagem/regras.ts';
+	import { PASSOS_SORTEAVEIS } from '#lib/personagem/sorteio.ts';
 	import { APROVACAO_PADRAO } from '#lib/campanhas/dominio.ts';
 	import { hrefFicha, STATUS_FICHA } from '#lib/personagem/status.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
@@ -87,6 +88,12 @@
 	let primeira = true;
 	let pendente: Promise<void> | null = null;
 
+	/** O d20 do botão gira um instante antes de o dado escolher (quem pede menos movimento não vê o giro). */
+	function girar(e: MouseEvent, fazer: () => void) {
+		const img = (e.currentTarget as HTMLElement).querySelector('img');
+		img?.animate([{ transform: 'rotate(0)' }, { transform: 'rotate(720deg)' }], { duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 450, easing: 'ease-out' });
+		setTimeout(fazer, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 300);
+	}
 	async function salvar() {
 		clearTimeout(temporizador);
 		temporizador = undefined;
@@ -301,6 +308,13 @@
 						<h2 class="m-0 font-mincho text-[30px] leading-[38px] font-bold max-md:text-2xl">{PASSOS[c.passo - 1]}</h2>
 					</div>
 					<a href="/regras/criacao-de-personagem" target="_blank" rel="noopener" class="link text-[13px] font-semibold">Regra: cap. 6{c.passo < 12 ? `, Passo ${c.passo}` : ''}</a>
+					{#if c.editavel}
+						<!-- o dado escolhe por você, sempre dentro das regras: este passo, ou a ficha inteira -->
+						<div class="flex gap-1.5">
+							{#if PASSOS_SORTEAVEIS.includes(c.passo)}<button type="button" class="dado-sorteio flex min-h-10 items-center gap-1.5 border-2 border-b3 pr-2.5 pl-1 font-pixel text-xs font-bold hover:border-mut" title="O dado escolhe este passo, dentro das regras" onclick={(e) => girar(e, () => c.sortear(c.passo))}><img src="/icons/dado/ic-dado-d20-32.png" width="28" height="28" alt="" class="[image-rendering:pixelated]" />SORTEAR</button>{/if}
+							<button type="button" class="dado-sorteio flex min-h-10 items-center gap-1.5 border-2 border-b3 pr-2.5 pl-1 font-pixel text-xs font-bold hover:border-mut" title="O dado monta a ficha inteira (troca o que já está escolhido)" onclick={(e) => confirm('Sortear a ficha inteira? O que já está escolhido será trocado.') && girar(e, () => c.sortear('tudo'))}><img src="/icons/dado/ic-dado-d20-32.png" width="28" height="28" alt="" class="[image-rendering:pixelated]" />SORTEAR TUDO</button>
+						</div>
+					{/if}
 				</div>
 
 				{#if status === 'ajustes' && data.personagem.comentario_mestre}

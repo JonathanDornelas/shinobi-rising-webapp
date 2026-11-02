@@ -3,6 +3,7 @@ import type { CatalogoCriacao } from './catalogo.server.ts';
 import { normalizarCla, regrasParaFicha, type ClaDados } from '../clas/regras.ts';
 import type { StatusCla } from '../supabase/banco.ts';
 import { ATRIBUTOS, type Atributo } from './dados.ts';
+import { sortearPasso, sortearTudo } from './sorteio.ts';
 import {
 	analisar,
 	limiteAtributo,
@@ -76,6 +77,13 @@ export class Criador {
 	irPara(p: number) {
 		this.passo = Math.min(12, Math.max(1, p));
 		this.aviso = '';
+	}
+
+	/** O dado escolhe o passo (dentro das regras); `tudo` sorteia a ficha inteira. */
+	sortear(passo: number | 'tudo') {
+		if (!this.editavel) return;
+		this.ficha = passo === 'tudo' ? sortearTudo(this.ficha, this.ctx, this.catalogo) : sortearPasso(passo, this.ficha, this.ctx, this.catalogo);
+		this.aviso = passo === 'tudo' ? 'O dado montou a ficha inteira. Confira cada passo e troque o que quiser.' : 'O dado escolheu este passo. Troque o que quiser.';
 	}
 
 	/** Muda um atributo e avisa quando PV, PE ou PC mudam por causa disso. */
