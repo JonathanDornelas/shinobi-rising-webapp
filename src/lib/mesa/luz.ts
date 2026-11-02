@@ -6,7 +6,7 @@
 // também, mas esmaecido fora das luzes; no escuro, só o que uma luz ilumina (e o próprio corpo, de perto).
 import { dentro, poligonoVisao, rasterizar, type Caixa, type Ponto, type Segmento } from './visao.ts';
 
-/** 0 parede, 1 porta fechada, 2 porta aberta, 3 porta trancada (só o Mestre abre), 4 janela (vê, mas não passa). */
+/** 0 parede, 1 porta fechada, 2 porta aberta, 3 porta trancada (só o Mestre abre), 4 janela (vê e passa). */
 export type TipoParede = 0 | 1 | 2 | 3 | 4;
 export type Parede = [number, number, number, number, TipoParede];
 export interface Luz {
@@ -40,7 +40,8 @@ export const FONTES_DE_LUZ: { id: string; nome: string; plena: number; penumbra:
 
 export const ehPorta = (t: number) => t === 1 || t === 2 || t === 3;
 export const cortaVisao = (t: number) => t === 0 || t === 1 || t === 3;
-export const cortaPasso = (t: number) => t !== 2;
+/** O que barra o passo: parede e porta fechada ou trancada (a aberta e a janela deixam passar). */
+export const cortaPasso = (t: number) => t === 0 || t === 1 || t === 3;
 
 const r2 = (v: number) => Math.round(v * 100) / 100;
 const numero = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
@@ -92,7 +93,7 @@ function cruzam(ax: number, ay: number, bx: number, by: number, cx: number, cy: 
 	return (o1 === 0 && noTrecho(ax, ay, bx, by, cx, cy)) || (o2 === 0 && noTrecho(ax, ay, bx, by, dx, dy)) || (o3 === 0 && noTrecho(cx, cy, dx, dy, ax, ay)) || (o4 === 0 && noTrecho(cx, cy, dx, dy, bx, by));
 }
 
-/** O passo de (x0, y0) a (x1, y1) atravessa uma parede, uma porta fechada ou uma janela? */
+/** O passo de (x0, y0) a (x1, y1) atravessa uma parede ou uma porta fechada? */
 export const bloqueiaPasso = (paredes: readonly Parede[], x0: number, y0: number, x1: number, y1: number) =>
 	paredes.some((p) => cortaPasso(p[4]) && cruzam(x0, y0, x1, y1, p[0], p[1], p[2], p[3]));
 

@@ -88,12 +88,19 @@
 		<span class="text-xs leading-4 text-mut">{memoria ? 'O que o grupo já viu fica esmaecido, como lembrança, sem os inimigos.' : 'Sem memória: fora do que o grupo vê agora, tudo fica no breu. O que já foi explorado volta se religar.'}</span>
 	{/if}
 	{#if ui.pop === 'paredes'}
-		<span class="text-xs leading-4 text-mut">Arraste para traçar: a ponta encaixa nos cantos da grade e nas pontas que já existem (Shift solta). Parede e porta fechada cortam a visão, a luz e o passo; a janela deixa ver, mas não passar.</span>
+		<span class="text-xs leading-4 text-mut">Arraste para traçar: a ponta encaixa nos cantos da grade e nas pontas que já existem (Shift solta). Parede e porta fechada cortam a visão e a luz; a janela deixa ver.</span>
 		<div role="radiogroup" aria-label="O que o arrasto faz" class="grid grid-cols-3 gap-1">
 			{#each [['parede', 'PAREDE'], ['porta', 'PORTA'], ['janela', 'JANELA'], ['mover', 'PONTAS'], ['apagar', 'APAGAR']] as const as [m, n] (m)}
 				<button type="button" role="radio" aria-checked={ui.paredeModo === m} title={m === 'mover' ? 'Arraste uma ponta: as paredes emendadas nela vão junto' : m === 'apagar' ? 'Clique ou passe por cima das paredes para apagar' : m === 'porta' ? 'Arraste para pôr uma porta; um clique numa porta alterna fechada, aberta e trancada' : undefined} class="min-h-9 border-2 font-pixel text-[11px] font-bold {ui.paredeModo === m ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={() => (ui.paredeModo = m)}>{n}</button>
 			{/each}
 		</div>
+		{#if cena && cena.paredes_bloqueiam !== undefined}
+			{@const barra = cena.paredes_bloqueiam !== false}
+			<button type="button" role="switch" aria-checked={barra} class="flex min-h-10 items-center gap-2.5 border-2 px-2.5 text-left text-sm font-semibold {barra ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={() => mesa.patchCena({ paredes_bloqueiam: !barra })}>
+				<span class="font-pixel text-sm font-bold">{barra ? '☒' : '☐'}</span>Paredes barram os jogadores
+			</button>
+			<span class="text-xs leading-4 text-mut">{barra ? 'O jogador só passa por porta aberta e por janela; você arrasta por onde quiser.' : 'As paredes só cortam a visão: o jogador anda por onde quiser.'}</span>
+		{/if}
 		<span class="text-xs leading-4 text-mut">{mesa.paredes.length} {mesa.paredes.length === 1 ? 'trecho' : 'trechos'}, {portas} {portas === 1 ? 'porta' : 'portas'}. Com a ferramenta Mover, um clique no marcador abre e fecha a porta (o jogador, com o token ao lado; a trancada, só você).</span>
 		{#if mesa.paredes.length}
 			<button type="button" class="min-h-9 border-2 font-pixel text-[11px] font-bold {confirmarLimpar ? 'border-[var(--vermelhao)] text-[var(--vermelhao)]' : 'border-b3'}" onclick={() => (confirmarLimpar ? (mesa.definirParedes([]), (confirmarLimpar = false)) : (confirmarLimpar = true))} onblur={() => (confirmarLimpar = false)}>{confirmarLimpar ? 'CLIQUE DE NOVO PARA APAGAR TODAS' : 'APAGAR TODAS AS PAREDES'}</button>

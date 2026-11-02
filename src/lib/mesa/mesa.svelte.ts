@@ -12,7 +12,7 @@ import { limitarPosicao } from './musica.ts';
 import { limpar as limparRuns } from './nevoa.ts';
 import { coresDosMembros } from './cores.ts';
 import { deslocarQuadrados, deslocarRuns, deslocarToken } from './reenquadrar.ts';
-import { deslocarLuzes, deslocarParedes, ehPorta, limparLuzes, limparParedes, type Luz, type Parede } from './luz.ts';
+import { bloqueiaPasso, deslocarLuzes, deslocarParedes, ehPorta, limparLuzes, limparParedes, type Luz, type Parede } from './luz.ts';
 import { avancarRodada, relogiosDaCena, type Relogio } from './relogios.ts';
 import type { Quadrado } from './geometria.ts';
 import { molduraDoToken, molduraPorId } from './molduras.ts';
@@ -1014,6 +1014,15 @@ export class Mesa {
 	}
 
 	// ------------------------------------------------------------------ luz dinâmica (ver luz.ts)
+	/**
+	 * As paredes seguram o token de jogador que iria de onde está até (x, y)? Só com a opção ligada na cena (o padrão); o
+	 * Mestre passa por onde quiser. A porta aberta e a janela deixam passar.
+	 */
+	passoBarrado(t: MesaToken, x: number, y: number) {
+		if (this.mestre || this.cena?.paredes_bloqueiam === false || !this.paredes.length) return false;
+		const n = t.tamanho / 2;
+		return bloqueiaPasso(this.paredes, t.x + n, t.y + n, x + n, y + n);
+	}
 	/** A cena tem as colunas da luz dinâmica (a migração já rodou)? */
 	get temLuzDinamica() {
 		return this.cena?.paredes !== undefined;

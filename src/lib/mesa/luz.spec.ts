@@ -58,9 +58,10 @@ describe('exploração', () => {
 });
 
 describe('paredes', () => {
-	it('o passo não atravessa parede, porta fechada nem janela; a porta aberta deixa passar', () => {
+	it('o passo não atravessa parede nem porta fechada; a porta aberta e a janela deixam passar', () => {
 		expect(bloqueiaPasso(sala(1), 2.5, 5, 7.5, 5)).toBe(true);
-		expect(bloqueiaPasso(sala(4), 2.5, 5, 7.5, 5)).toBe(true);
+		expect(bloqueiaPasso(sala(0), 2.5, 5, 7.5, 5)).toBe(true);
+		expect(bloqueiaPasso(sala(4), 2.5, 5, 7.5, 5)).toBe(false);
 		expect(bloqueiaPasso(sala(2), 2.5, 5, 7.5, 5)).toBe(false);
 		expect(bloqueiaPasso(sala(1), 2.5, 2.5, 3.5, 8.5)).toBe(false);
 	});

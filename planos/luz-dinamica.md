@@ -63,7 +63,9 @@ podem gravar a cena. Até a gravação chegar, cada jogador já vê a própria �
 - Luz (U): ambiente, fonte que o clique põe, alças dos raios, acender e apagar, "ver como o grupo", esquecer a exploração.
 - Portas: um clique no marcador, com a ferramenta Mover.
 
-**Passo:** o jogador não atravessa parede, porta fechada nem janela. O Mestre passa por onde quiser.
+**Passo:** com "Paredes barram os jogadores" ligado (o padrão, `paredes_bloqueiam`), o jogador não atravessa
+parede nem porta fechada ou trancada: passa só por porta aberta e por janela. O Mestre arrasta por onde quiser. Vale
+para o arrasto e para as setas do teclado; o arrasto é medido em linha reta, de onde o token estava até onde caiu.
 
 ## Demos
 

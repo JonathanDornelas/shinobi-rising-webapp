@@ -888,7 +888,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		if (!cena) return;
 		const { data: c, error } = await supabase()
 			.from('mesa_cenas')
-			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [], camadas: cena.camadas, modo: cena.modo, imagem: cena.imagem, fundo: cena.fundo, fundo_opacidade: cena.fundo_opacidade, fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, ...(cena.fundo_rotacao !== undefined ? { fundo_rotacao: cena.fundo_rotacao } : {}), ...(cena.fundo_recorte !== undefined ? { fundo_recorte: cena.fundo_recorte } : {}), grade: cena.grade, pasta_id: cena.pasta_id, nome_publico: cena.nome_publico, nevoa: cena.nevoa, reveladas: cena.reveladas ?? [], ...(cena.paredes !== undefined ? { paredes: cena.paredes, luzes: cena.luzes ?? [], luz_dinamica: cena.luz_dinamica ?? false, luz_ambiente: cena.luz_ambiente ?? 'claro', fundo_ladrilhos: cena.fundo_ladrilhos ?? null, ...(cena.luz_memoria !== undefined ? { luz_memoria: cena.luz_memoria } : {}) } : {}) })
+			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [], camadas: cena.camadas, modo: cena.modo, imagem: cena.imagem, fundo: cena.fundo, fundo_opacidade: cena.fundo_opacidade, fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, ...(cena.fundo_rotacao !== undefined ? { fundo_rotacao: cena.fundo_rotacao } : {}), ...(cena.fundo_recorte !== undefined ? { fundo_recorte: cena.fundo_recorte } : {}), grade: cena.grade, pasta_id: cena.pasta_id, nome_publico: cena.nome_publico, nevoa: cena.nevoa, reveladas: cena.reveladas ?? [], ...(cena.paredes !== undefined ? { paredes: cena.paredes, luzes: cena.luzes ?? [], luz_dinamica: cena.luz_dinamica ?? false, luz_ambiente: cena.luz_ambiente ?? 'claro', fundo_ladrilhos: cena.fundo_ladrilhos ?? null, ...(cena.luz_memoria !== undefined ? { luz_memoria: cena.luz_memoria } : {}), ...(cena.paredes_bloqueiam !== undefined ? { paredes_bloqueiam: cena.paredes_bloqueiam } : {}) } : {}) })
 			.select('*')
 			.single();
 		if (error || !c) return void toasts.mostrar('Não foi possível duplicar a cena.', 'erro');
@@ -1037,6 +1037,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			e.preventDefault();
 			const x = Math.max(0, Math.min(cena.largura - sel.tamanho, sel.x + dir[0]));
 			const y = Math.max(0, Math.min(cena.altura - sel.tamanho, sel.y + dir[1]));
+			if (mesa.passoBarrado(sel, x, y)) return void ui.avisar('Uma parede (ou porta fechada) está no caminho.');
 			mesa.mover(sel.id, x, y, 1);
 			ui.anuncio = `${sel.nome} movido 1 m`;
 		}

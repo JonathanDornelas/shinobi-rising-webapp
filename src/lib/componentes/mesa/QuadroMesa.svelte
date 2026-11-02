@@ -1122,8 +1122,8 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			arrasto = null;
 			mesa.enviar('fantasma', null, true);
 			if (t && (a.x !== t.x || a.y !== t.y)) {
-				// a parede (ou a porta fechada, ou a janela) segura o jogador; o Mestre passa por onde quiser
-				if (!mesa.mestre && paredes.length && bloqueiaPasso(paredes, t.x + t.tamanho / 2, t.y + t.tamanho / 2, a.x + t.tamanho / 2, a.y + t.tamanho / 2)) return void ui.avisar('Uma parede (ou porta fechada) está no caminho.');
+				// a parede (ou a porta fechada) segura o jogador; o Mestre passa por onde quiser
+				if (mesa.passoBarrado(t, a.x, a.y)) return void ui.avisar('Uma parede (ou porta fechada) está no caminho: passe pela porta aberta ou pela janela.');
 				// o turno conta o deslocamento gasto: no terreno difícil, cada metro custa 2
 				const { custo } = custoCaminho(t, a, mesa.terreno);
 				const D = deslocamentoDe(t);
@@ -1196,7 +1196,8 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		const reacao = provocaReacao(arrastado, destino, inimigos).map((e) => nomeCurto(e.nome));
 		const cor = info.faixa === 'normal' ? corCss(mesa.corDe(mesa.donoDe(arrastado))) : info.faixa === 'sprint' ? 'var(--acc)' : 'var(--mesa-vermelhao)';
 		const n = arrastado.tamanho / 2;
-		const parede = paredes.length && bloqueiaPasso(paredes, arrastado.x + n, arrastado.y + n, arrasto.x + n, arrasto.y + n) ? (mesa.mestre ? 'atravessa uma parede (só o Mestre passa)' : 'uma parede está no caminho') : '';
+		const barra = cena?.paredes_bloqueiam !== false && paredes.length && bloqueiaPasso(paredes, arrastado.x + n, arrastado.y + n, arrasto.x + n, arrasto.y + n);
+		const parede = barra ? (mesa.mestre ? 'atravessa uma parede (só o Mestre passa)' : 'uma parede está no caminho') : '';
 		return { ...info, cor, reacao: reacao.length ? `provoca reação de ${reacao.join(', ')}` : '', terreno: custo > metros ? `terreno difícil: ${metros} m custam ${custo} m` : '', parede };
 	});
 	const aneis = $derived.by(() => {
