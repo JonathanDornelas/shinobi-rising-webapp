@@ -1241,6 +1241,79 @@
           "prioridade": "P2"
         }
       ]
+    },
+    {
+      "id": "D",
+      "nome": "Carisma e perícias novas (candidatos)",
+      "parametros": {
+        "size": 32,
+        "view": "sidescroller",
+        "description": "pixel art RPG UI icon set, ninja fantasy theme inspired by feudal Japan, each icon a single centered object, crisp 1px black outline, medium shading, light from top-left, transparent background",
+        "palette": "paleta",
+        "style_images": "sementes"
+      },
+      "itens": [
+        {
+          "id": "atributo-car-a",
+          "categoria": "atributo",
+          "prompt": "golden radiant sun medallion crest with a red silk ribbon",
+          "alt": "Carisma (CAR)"
+        },
+        {
+          "id": "atributo-car-b",
+          "categoria": "atributo",
+          "prompt": "red war banner on a pole with a golden emblem",
+          "alt": "Carisma (CAR)"
+        },
+        {
+          "id": "pericia-atuacao-a",
+          "categoria": "pericia",
+          "prompt": "white kabuki theater mask with red markings",
+          "alt": "Atuação"
+        },
+        {
+          "id": "pericia-atuacao-b",
+          "categoria": "pericia",
+          "prompt": "pair of comedy and tragedy theater masks",
+          "alt": "Atuação"
+        },
+        {
+          "id": "pericia-enganacao-a",
+          "categoria": "pericia",
+          "prompt": "white fox mask with red markings and a sly grin",
+          "alt": "Enganação"
+        },
+        {
+          "id": "pericia-enganacao-b",
+          "categoria": "pericia",
+          "prompt": "paper mask split in half, one side light and one side dark",
+          "alt": "Enganação"
+        },
+        {
+          "id": "pericia-intimidacao-a",
+          "categoria": "pericia",
+          "prompt": "red oni demon mask with horns and fangs",
+          "alt": "Intimidação"
+        },
+        {
+          "id": "pericia-intimidacao-b",
+          "categoria": "pericia",
+          "prompt": "clenched fist surrounded by dark menacing aura lines",
+          "alt": "Intimidação"
+        },
+        {
+          "id": "pericia-intuicao-a",
+          "categoria": "pericia",
+          "prompt": "glowing purple third eye with soft light rays",
+          "alt": "Intuição"
+        },
+        {
+          "id": "pericia-intuicao-b",
+          "categoria": "pericia",
+          "prompt": "paper lantern glowing softly with a small blue spirit spark",
+          "alt": "Intuição"
+        }
+      ]
     }
   ],
   "desenho_em_codigo": {
