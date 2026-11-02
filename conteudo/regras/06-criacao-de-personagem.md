@@ -24,10 +24,10 @@ Defina nome, idade, aparência e origem. Ajuda pensar num conceito curto, uma fr
 
 ### Passo 2 · Distribuir Atributos {#passo-2-distribuir-atributos}
 
-Os seis atributos começam em 0, e você distribui um punhado de pontos entre eles. Quem quiser mais pontos pode aceitar uma fraqueza: baixar um ou dois atributos para menos de zero devolve pontos para gastar nos outros.
+Os sete atributos começam em 0, e você distribui um punhado de pontos entre eles. Quem quiser mais pontos pode aceitar uma fraqueza: baixar um ou dois atributos para menos de zero devolve pontos para gastar nos outros.
 
 :::na-mesa{titulo="Atributos na criação"}
-- **Pontos:** 8, com todos os atributos começando em 0
+- **Pontos:** 9, com todos os atributos começando em 0
 - **Máximo:** +4 (+5 se o clã der bônus naquele atributo)
 - **Reduzir (até dois atributos):** -1 dá +1 ponto; -2 dá +2 pontos
 :::

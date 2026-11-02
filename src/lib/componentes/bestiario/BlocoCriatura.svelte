@@ -93,7 +93,7 @@
 		{/each}
 	</dl>
 
-	<dl class="m-0 grid grid-cols-6 border-b-2 border-b3" aria-label="Atributos">
+	<dl class="m-0 grid grid-cols-7 border-b-2 border-b3" aria-label="Atributos">
 		{#each ATRIBUTOS as a (a)}
 			<div class="flex flex-col items-center gap-1 px-0.5 py-1.5">
 				<dt class="text-[13px] leading-4"><Termo id="atributo:{a}" texto={a.toUpperCase()} href="{CAP3}#atributos" /></dt>

@@ -2,40 +2,50 @@
 // Os textos dos clãs, jutsus e especializações vêm de src/lib/livro/gerado; aqui ficam só os números que o criador calcula.
 
 export const ATRIBUTOS = [
-	{ id: 'FOR', nome: 'Força', uso: 'Taijutsu, armas corpo a corpo, escalar, carga' },
+	{ id: 'FOR', nome: 'Força', uso: 'Taijutsu, armas corpo a corpo, Atletismo, carga' },
 	{ id: 'AGI', nome: 'Agilidade', uso: 'Defesa (Acrobacia), Iniciativa, armas à distância, Kugutsu, Furtividade' },
 	{ id: 'VIG', nome: 'Vigor', uso: 'Pontos de Vida e de Estamina, resistir a venenos e fadiga' },
 	{ id: 'INT', nome: 'Inteligência', uso: 'Investigação, Medicina, Rastreamento, Selamento' },
 	{ id: 'CTR', nome: 'Controle', uso: 'Ninjutsu, Genjutsu, PC, DT dos jutsus' },
-	{ id: 'ESP', nome: 'Espírito', uso: 'PC, Percepção e Defesa Mental, resistir a Genjutsu, Persuasão' }
+	{ id: 'ESP', nome: 'Espírito', uso: 'PC, Percepção, Intuição e Defesa Mental, resistir a Genjutsu' },
+	{ id: 'CAR', nome: 'Carisma', uso: 'Persuasão, Enganação, Intimidação e Atuação; presença e liderança' }
 ] as const;
 export type Atributo = (typeof ATRIBUTOS)[number]['id'];
 
 /** Cap. 3 · Perícias. Bukijutsu usa FOR corpo a corpo e AGI à distância. */
 export const PERICIAS = [
-	{ id: 'acrobacia', nome: 'Acrobacia', atributo: 'AGI' },
-	{ id: 'atletismo', nome: 'Atletismo', atributo: 'FOR' },
-	{ id: 'bukijutsu', nome: 'Bukijutsu', atributo: 'FOR', distancia: 'AGI', combate: true },
-	{ id: 'furtividade', nome: 'Furtividade', atributo: 'AGI' },
-	{ id: 'genjutsu', nome: 'Genjutsu', atributo: 'CTR' },
-	{ id: 'investigacao', nome: 'Investigação', atributo: 'INT' },
-	{ id: 'kugutsu', nome: 'Kugutsu', atributo: 'AGI' },
-	{ id: 'medicina', nome: 'Medicina', atributo: 'INT' },
-	{ id: 'ninjutsu', nome: 'Ninjutsu', atributo: 'CTR', combate: true },
-	{ id: 'percepcao', nome: 'Percepção', atributo: 'ESP' },
-	{ id: 'persuasao', nome: 'Persuasão', atributo: 'ESP' },
-	{ id: 'rastreamento', nome: 'Rastreamento', atributo: 'INT' },
-	{ id: 'selamento', nome: 'Selamento', atributo: 'INT' },
-	{ id: 'sobrevivencia', nome: 'Sobrevivência', atributo: 'VIG' },
-	{ id: 'taijutsu', nome: 'Taijutsu', atributo: 'FOR', combate: true }
-] as const satisfies readonly { id: string; nome: string; atributo: Atributo; distancia?: Atributo; combate?: boolean }[];
+	{ id: 'acrobacia', nome: 'Acrobacia', atributo: 'AGI', desc: 'Saltos, piruetas e equilíbrio; é a base da sua Defesa.' },
+	{ id: 'atletismo', nome: 'Atletismo', atributo: 'FOR', desc: 'Correr, escalar, nadar e agarrar.' },
+	{ id: 'atuacao', nome: 'Atuação', atributo: 'CAR', desc: 'Viver um papel, entreter e prender a atenção de uma plateia.' },
+	{ id: 'bukijutsu', nome: 'Bukijutsu', atributo: 'FOR', distancia: 'AGI', combate: true, desc: 'Ataques com armas: FOR corpo a corpo, AGI à distância.' },
+	{ id: 'enganacao', nome: 'Enganação', atributo: 'CAR', desc: 'Mentir, blefar e esconder as próprias intenções.' },
+	{ id: 'furtividade', nome: 'Furtividade', atributo: 'AGI', desc: 'Mover-se e esconder-se sem ser notado.' },
+	{ id: 'genjutsu', nome: 'Genjutsu', atributo: 'CTR', desc: 'Lançar e manter ilusões; o ataque dos Genjutsus.' },
+	{ id: 'intimidacao', nome: 'Intimidação', atributo: 'CAR', desc: 'Impor medo pela ameaça, pela presença ou pela força.' },
+	{ id: 'intuicao', nome: 'Intuição', atributo: 'ESP', desc: 'Ler intenções, perceber mentiras e pressentir o perigo.' },
+	{ id: 'investigacao', nome: 'Investigação', atributo: 'INT', desc: 'Achar pistas, ler uma cena e decifrar enigmas.' },
+	{ id: 'kugutsu', nome: 'Kugutsu', atributo: 'AGI', desc: 'Manipular marionetes com fios de chakra.' },
+	{ id: 'medicina', nome: 'Medicina', atributo: 'INT', desc: 'Tratar ferimentos, preparar antídotos e ninjutsu médico.' },
+	{ id: 'ninjutsu', nome: 'Ninjutsu', atributo: 'CTR', combate: true, desc: 'Lançar jutsus elementais e técnicas de chakra.' },
+	{ id: 'percepcao', nome: 'Percepção', atributo: 'ESP', desc: 'Notar emboscadas, sentir presenças e chakra; é a base da Defesa Mental.' },
+	{ id: 'persuasao', nome: 'Persuasão', atributo: 'CAR', desc: 'Convencer com argumentos, negociar e inspirar.' },
+	{ id: 'rastreamento', nome: 'Rastreamento', atributo: 'INT', desc: 'Seguir trilhas e identificar pegadas.' },
+	{ id: 'selamento', nome: 'Selamento', atributo: 'INT', desc: 'Criar e desfazer selos (Fuuinjutsu).' },
+	{ id: 'sobrevivencia', nome: 'Sobrevivência', atributo: 'VIG', desc: 'Caçar, achar abrigo e suportar o clima.' },
+	{ id: 'taijutsu', nome: 'Taijutsu', atributo: 'FOR', combate: true, desc: 'Combate corpo a corpo desarmado.' }
+] as const satisfies readonly { id: string; nome: string; atributo: Atributo; distancia?: Atributo; combate?: boolean; desc: string }[];
+/** O que a perícia cobre, em uma frase (o title na ficha e na criação). */
+export const descPericia = (id: string) => PERICIAS.find((p) => p.id === id)?.desc ?? '';
+/** As perícias que valem como passivas (10 + o total): quem nota, quem acha e quem desconfia sem rolar. */
+export const PASSIVAS = ['percepcao', 'investigacao', 'intuicao'] as const;
 export type Pericia = (typeof PERICIAS)[number]['id'];
 export const PERICIAS_COMBATE: Pericia[] = ['taijutsu', 'bukijutsu', 'ninjutsu'];
 export const nomePericia = (id: string) => PERICIAS.find((p) => p.id === id)?.nome ?? id;
 
 /** Cap. 6 · Passos 2, 5 e 6. */
 export const CRIACAO = {
-	pontosAtributo: 8,
+	/** Sete atributos (com o Carisma): 9 pontos. */
+	pontosAtributo: 9,
 	atributoMax: 4,
 	atributoMin: -2,
 	reducoesMax: 2,

@@ -47,6 +47,8 @@ export class Criador {
 		this.editavel = editavel;
 		this.passo = passo;
 		this.clasCriados = clasCriados;
+		// quem cria ou edita aqui já distribui o Carisma: a correção das fichas antigas não vale para ela
+		if (editavel) this.ficha.carismaDecidido = true;
 	}
 
 	/** Status do clã criado escolhido (a revisão bloqueia enquanto ele não foi enviado). */

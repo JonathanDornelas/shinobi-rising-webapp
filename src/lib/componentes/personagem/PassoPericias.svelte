@@ -1,7 +1,7 @@
 <script lang="ts">
 	// Passo 5 · Perícias: o personagem treina 4 perícias (5 sem clã), cada uma com +2 (cap. 3); vila, clã e background
 	// treinam outras. Uma perícia já treinada por eles não se escolhe de novo.
-	import { BONUS_TREINADA, type Pericia } from '#lib/personagem/dados.ts';
+	import { BONUS_TREINADA, descPericia, type Pericia } from '#lib/personagem/dados.ts';
 	import type { Criador } from '#lib/personagem/criador.svelte.ts';
 	import { periciasDaCriacao, sinal } from '#lib/personagem/regras.ts';
 	import Icone from '../ui/Icone.svelte';
@@ -44,7 +44,7 @@
 			<span role="cell" class="flex min-w-0 items-center gap-1.5 text-sm leading-5 font-medium">
 				<Icone id="pericia/ic-pericia-{p.id}" />
 				<span class="flex min-w-0 flex-col">
-					<span>{p.nome}{#if p.combate}<span class="ml-1 font-pixel text-xs text-mut" title="Perícia de combate">⚔</span>{/if}</span>
+					<span class="cursor-help" title={descPericia(p.id)}>{p.nome}{#if p.combate}<span class="ml-1 font-pixel text-xs text-mut" title="Perícia de combate">⚔</span>{/if}</span>
 					<span class="text-xs leading-4 text-mut md:hidden">{p.atributo} {sinal(p.valorAtributo)}{p.distancia ? ` · ${p.distancia.atributo} ${sinal(p.distancia.valor)}` : ''}{p.fontes.filter((x) => x !== 'Criação').length ? ` · ${p.fontes.filter((x) => x !== 'Criação').join(', ')}` : ''}</span>
 				</span>
 			</span>

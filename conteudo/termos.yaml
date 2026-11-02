@@ -122,9 +122,16 @@
   rotulo: ESP
   nome: Espírito
   padroes: [ESP]
-  resumo: Vontade e percepção. Pontos de Chakra, Percepção (e a Defesa Mental), Persuasão e resistir a Genjutsu.
+  resumo: Vontade e percepção. Pontos de Chakra, Percepção e Intuição (e a Defesa Mental) e resistir a Genjutsu.
   href: /regras/atributos-pericias-e-proficiencias#atributos
   icone: atributo/ic-atributo-esp
+- id: atributo:car
+  rotulo: CAR
+  nome: Carisma
+  padroes: [CAR]
+  resumo: Presença e lábia. Persuasão, Enganação, Intimidação e Atuação, e o peso do ninja diante dos outros.
+  href: /regras/atributos-pericias-e-proficiencias#atributos
+  icone: atributo/ic-atributo-car
 
 - id: regra:vantagem
   rotulo: Vantagem

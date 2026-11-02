@@ -12,6 +12,7 @@ import {
 	JUTSUS_INICIAIS,
 	PACOTES,
 	PERICIAS,
+	PASSIVAS,
 	BONUS_TREINADA,
 	PERICIAS_COMBATE,
 	PROGRESSAO,
@@ -84,13 +85,15 @@ export interface FichaDados {
 	progresso: { niveis: EscolhaNivel[]; treinos: Treino[] };
 	/** Perícias escolhidas no lugar das que um bônus repetiu (a ficha corrige uma vez; não se desfaz). */
 	correcaoPericias?: Pericia[];
+	/** Ficha de antes do Carisma: já decidiu se move 1 ponto para CAR (corrigir_carisma). */
+	carismaDecidido?: boolean;
 }
 
 export function fichaVazia(): FichaDados {
 	return {
 		versao: 1,
 		conceito: { nome: '', idade: null, origem: '', conceito: '', aparencia: '' },
-		atributos: { FOR: 0, AGI: 0, VIG: 0, INT: 0, CTR: 0, ESP: 0 },
+		atributos: { FOR: 0, AGI: 0, VIG: 0, INT: 0, CTR: 0, ESP: 0, CAR: 0 },
 		vila: { id: null, escolha: null },
 		cla: { tipo: null, slug: null, escolha: null, id: null, criado: null },
 		pericias: {},
@@ -256,7 +259,8 @@ function ganhos(f: FichaDados) {
 
 /** Valor do atributo com o bônus do clã (o limite de criação sobe para +5 nesse atributo). */
 export function atributosTotais(f: FichaDados): Record<Atributo, number> {
-	const t = { ...f.atributos };
+	// fichas de antes do Carisma não têm CAR: vale 0
+	const t = { ...f.atributos, CAR: f.atributos.CAR ?? 0 };
 	const cla = regrasCla(f);
 	if (cla?.ganho.atributo) t[cla.ganho.atributo] += 1;
 	for (const n of f.progresso.niveis) {
@@ -278,14 +282,14 @@ export function atributoDoCla(f: FichaDados): Atributo | null {
 }
 
 export function orcamentoAtributos(f: FichaDados) {
-	const valores = ATRIBUTOS.map((a) => f.atributos[a.id]);
+	const valores = ATRIBUTOS.map((a) => f.atributos[a.id] ?? 0);
 	const usados = valores.reduce((s, v) => s + v, 0);
 	return { usados, limite: CRIACAO.pontosAtributo, restantes: CRIACAO.pontosAtributo - usados, reducoes: valores.filter((v) => v < 0).length };
 }
 
 /** Por que um atributo não pode subir/descer agora (texto para o title do botão), ou ''. */
 export function limiteAtributo(f: FichaDados, a: Atributo, delta: 1 | -1): string {
-	const v = f.atributos[a];
+	const v = f.atributos[a] ?? 0;
 	const o = orcamentoAtributos(f);
 	if (delta > 0) {
 		if (v >= CRIACAO.atributoMax) return atributoDoCla(f) === a ? 'Limite +5 com o bônus de clã · cap. 6, Passo 2' : 'Atributos não passam de +4 na criação · cap. 6, Passo 2';
@@ -347,6 +351,17 @@ export function periciasTreinadas(f: FichaDados): { fontes: Map<Pericia, string[
 		faltam--;
 	}
 	return { fontes, faltam, repetidas };
+}
+
+/** Ficha de antes do Carisma (CAR 0 e ainda sem decidir): pode mover 1 ponto de outro atributo para CAR, uma vez. */
+export const carismaPendente = (f: FichaDados) => !f.carismaDecidido && !(f.atributos.CAR ?? 0);
+/** As passivas (10 + o total da perícia): Percepção, Investigação e Intuição. */
+export function passivas(f: FichaDados): { id: Pericia; nome: string; valor: number }[] {
+	const linhas = linhasPericia(f);
+	return PASSIVAS.map((id) => {
+		const l = linhas.find((x) => x.id === id)!;
+		return { id, nome: l.nome, valor: 10 + l.total };
+	});
 }
 
 /** O treino de uma perícia: +2 se treinada, 0 se não. */
@@ -503,7 +518,7 @@ export function analisar(f: FichaDados, ctx: ContextoCampanha, opcoes: { jutsusD
 
 	// 2 · Atributos
 	const oa = orcamentoAtributos(f);
-	const foraDoLimite = ATRIBUTOS.some((a) => f.atributos[a.id] > CRIACAO.atributoMax || f.atributos[a.id] < CRIACAO.atributoMin);
+	const foraDoLimite = ATRIBUTOS.some((a) => (f.atributos[a.id] ?? 0) > CRIACAO.atributoMax || (f.atributos[a.id] ?? 0) < CRIACAO.atributoMin);
 	if (foraDoLimite || oa.reducoes > CRIACAO.reducoesMax) add('bloqueio', 'Atributos fora dos limites da criação', 2);
 	else if (oa.restantes < 0) add('bloqueio', `${-oa.restantes} pontos de atributo acima do limite`, 2);
 	else if (oa.restantes > 0) add('aviso', `${oa.restantes} ${oa.restantes === 1 ? 'ponto' : 'pontos'} de atributo não ${oa.restantes === 1 ? 'gasto' : 'gastos'}`, 2);

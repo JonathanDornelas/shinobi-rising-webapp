@@ -8,6 +8,9 @@
 	import Icone from '../ui/Icone.svelte';
 	import BotaoRolar from '../rolagens/BotaoRolar.svelte';
 	import CartaoKkg from './CartaoKkg.svelte';
+	import CorrecaoCarisma from './CorrecaoCarisma.svelte';
+	import { descPericia } from '#lib/personagem/dados.ts';
+	import { passivas } from '#lib/personagem/regras.ts';
 
 	let { f, aoAbrirJutsus }: { f: FichaJogo; aoAbrirJutsus: () => void } = $props();
 	const r0 = $derived(f.calc.recursos);
@@ -22,12 +25,13 @@
 	const profArma = $derived(emMaos ? f.calc.proficiencias.find((p) => p.tipo === 'arma' && p.alvo === emMaos.nome) : undefined);
 </script>
 
+<CorrecaoCarisma {f} />
 <div class="grid items-start gap-5 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
 	<div class="flex min-w-0 flex-col gap-5">
-		<div class="grid grid-cols-3 gap-2.5 md:grid-cols-6">
+		<div class="grid grid-cols-4 gap-2.5 md:grid-cols-7">
 			{#each ATRIBUTOS as a (a.id)}
 				{@const doCla = f.calc.atributoDoCla === a.id}
-				<div class="relative flex flex-col gap-1.5 border-2 bg-b2 p-2.5 sombra-painel {doCla ? 'border-[var(--vermelhao-lo)]' : 'border-frame'}" title="{a.nome} · limite atual {doCla ? '+8 (o marco do clã leva a +10)' : `+${PROGRESSAO.atributoMax}`}">
+				<div class="relative flex flex-col gap-1.5 border-2 bg-b2 p-2.5 sombra-painel {doCla ? 'border-[var(--vermelhao-lo)]' : 'border-frame'}" title="{a.nome}: {a.uso} · limite atual {doCla ? '+8 (o marco do clã leva a +10)' : `+${PROGRESSAO.atributoMax}`}">
 					<Icone id="atributo/ic-atributo-{a.id.toLowerCase()}" />
 					{#if f.editavel}<BotaoRolar class="absolute top-1.5 right-1.5 w-9" expressao={teste(f.calc.atributos[a.id])} rotulo="Atributo · {a.nome}" personagem={f.id} d20 tipo="teste" origem="Ficha · Visão geral" partes={partesAtributo(a.id, f.calc.atributos[a.id])} />{/if}
 					<span class="font-pixel text-xs leading-none font-bold tracking-[0.08em] text-mut">{a.id}</span>
@@ -51,6 +55,18 @@
 					</div>
 					<span class="t-num text-[26px] leading-none">{valor}{#if rotulo === 'CARGA'}<span class="text-sm text-mut">/{r.cargaMax}</span>{/if}</span>
 					{#if rotulo === 'INICIATIVA' && f.editavel}<BotaoRolar class="w-9" expressao={teste(r.iniciativa)} rotulo="Iniciativa" personagem={f.id} d20 tipo="iniciativa" origem="Ficha · Visão geral" partes={partesIniciativa(f.calc.atributos.AGI, r.iniciativa)} />{/if}
+				</div>
+			{/each}
+		</div>
+		<div class="grid grid-cols-3 gap-2.5" role="group" aria-label="Passivas">
+			{#each passivas(f.dados) as p (p.id)}
+				<div class="flex items-center gap-2 border-2 border-frame bg-b2 px-3 py-2" title="{p.nome} passiva: 10 + {p.nome}. O Mestre compara com a DT sem você rolar. {descPericia(p.id)}">
+					<Icone id="pericia/ic-pericia-{p.id}" />
+					<div class="flex min-w-0 flex-1 flex-col gap-0.5">
+						<span class="font-pixel text-[11px] leading-none font-bold tracking-[0.06em] text-mut">PASSIVA</span>
+						<span class="truncate text-xs leading-4 font-semibold">{p.nome}</span>
+					</div>
+					<span class="t-num text-[24px] leading-none">{p.valor}</span>
 				</div>
 			{/each}
 		</div>

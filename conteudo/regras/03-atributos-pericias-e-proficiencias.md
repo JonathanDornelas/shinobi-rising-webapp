@@ -18,7 +18,7 @@ Três camadas descrevem o que um ninja sabe fazer: os atributos (o talento natur
 
 Os atributos são as capacidades naturais do personagem: o corpo, a mente e o espírito com que ele nasceu. Eles crescem ao longo da campanha, à medida que o ninja enfrenta desafios e acumula experiência.
 
-Todo personagem tem seis atributos. Eles começam modestos e sobem com o tempo, e o atributo ligado ao clã pode ir mais longe que os outros.
+Todo personagem tem sete atributos. Eles começam modestos e sobem com o tempo, e o atributo ligado ao clã pode ir mais longe que os outros.
 
 :::na-mesa{titulo="Limites dos atributos"}
 - **Na criação:** de -2 a +4 (+5 com o bônus de clã)
@@ -26,15 +26,16 @@ Todo personagem tem seis atributos. Eles começam modestos e sobem com o tempo, 
 - **Atributo do clã:** até +10, pelos marcos de nível
 :::
 
-:::tabela{titulo="Os seis atributos"}
+:::tabela{titulo="Os sete atributos"}
 | Atributo | Representa | Usado para |
 | - | - | - |
-| FOR (Força) | Potência física | Taijutsu, armas corpo a corpo, escalar, carga |
+| FOR (Força) | Potência física | Taijutsu, armas corpo a corpo, Atletismo, carga |
 | AGI (Agilidade) | Velocidade e reflexos | Defesa (Acrobacia), Iniciativa, armas à distância, Kugutsu, furtividade |
 | VIG (Vigor) | :sem[Resistência] corporal | Pontos de Vida e de Estamina, resistir a venenos e à fadiga |
 | INT (Inteligência) | Raciocínio e estudo | Investigação, Medicina, Rastreamento, Selamento |
 | CTR (Controle) | Precisão de chakra | Ninjutsu, Genjutsu, PC, DT dos jutsus |
-| ESP (Espírito) | Vontade e percepção | PC, Percepção e Defesa Mental, resistir a Genjutsu, Persuasão |
+| ESP (Espírito) | Vontade e percepção | PC, Percepção, Intuição e Defesa Mental, resistir a Genjutsu |
+| CAR (Carisma) | Presença e lábia | Persuasão, Enganação, Intimidação e Atuação; liderança |
 :::
 
 ## Perícias {#pericias}
@@ -45,15 +46,19 @@ Se os atributos são o talento, as perícias são o treino: aquilo que o ninja a
 | - | - | - |
 | Acrobacia | AGI | Saltos, piruetas e equilíbrio; define a sua Defesa |
 | Atletismo | FOR | Correr, escalar, nadar, agarrar |
+| Atuação | CAR | Viver um papel, entreter, prender a atenção de uma plateia |
 | Bukijutsu | FOR (corpo a corpo) ou AGI (distância) | Ataques com armas corpo a corpo e à distância |
+| Enganação | CAR | Mentir, blefar, esconder as próprias intenções |
 | Furtividade | AGI | Mover-se sem ser detectado |
 | Genjutsu | CTR | Lançar e manter ilusões |
+| Intimidação | CAR | Impor medo pela ameaça, pela presença ou pela força |
+| Intuição | ESP | Ler intenções, perceber mentiras, pressentir o perigo |
 | Investigação | INT | Achar pistas, ler cenas, decifrar |
 | Kugutsu | AGI | Manipular marionetes com fios de chakra |
 | Medicina | INT | Tratar ferimentos, preparar antídotos, ninjutsu médico |
 | Ninjutsu | CTR | Lançar jutsus elementais e técnicas de chakra |
 | Percepção | ESP | Notar emboscadas, sentir presenças e chakra; define a sua Defesa Mental |
-| Persuasão | ESP | Convencer, intimidar, enganar, ter lábia |
+| Persuasão | CAR | Convencer com argumentos, negociar, inspirar |
 | Rastreamento | INT | Seguir trilhas, identificar pegadas |
 | Selamento (Fuuinjutsu) | INT | Criar e desfazer selos |
 | Sobrevivência | VIG | Caçar, encontrar abrigo, suportar o clima |
@@ -69,6 +74,16 @@ Na criação, você escolhe quatro perícias para treinar. A vila, o clã e o ba
 - **Vila, clã, background e marcos:** treinam as perícias deles; se já era treinada, escolha outra
 - **Ao subir de nível:** uma perícia treinada nova nos níveis 5, 9, 13 e 17
 - **Especializações de combate:** +1, +2 e +3 na perícia (cap. 19)
+:::
+
+### Passivas {#passivas}
+
+Nem todo teste precisa de dado. Quando o ninja não está procurando nada, mas pode notar uma presença, achar uma pista à vista ou desconfiar de uma conversa, o Mestre usa a passiva: 10 mais o total da perícia. Ela vale para três perícias. A Percepção passiva nota a emboscada e o chakra escondido; a Investigação passiva acha o detalhe fora do lugar; a Intuição passiva sente que alguém mente ou que algo vai dar errado. Se a passiva alcança a DT, o ninja percebe sem rolar; quem procura de propósito rola o teste normalmente.
+
+:::na-mesa{titulo="Passivas"}
+- **Valor:** 10 + o total da perícia
+- **Perícias:** Percepção, Investigação e Intuição
+- **Uso:** o Mestre compara com a DT, sem o jogador rolar
 :::
 
 ## Sistema de Proficiência {#sistema-de-proficiencia}

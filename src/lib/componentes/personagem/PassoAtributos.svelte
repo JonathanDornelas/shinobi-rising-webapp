@@ -25,7 +25,7 @@
 <p class="m-0 text-sm leading-5 text-mut">Todos começam em 0. Reduzir um atributo a −1 ou −2 devolve 1 ou 2 pontos (no máximo dois atributos).</p>
 <div class="grid gap-3 md:grid-cols-2">
 	{#each ATRIBUTOS as a (a.id)}
-		{@const valor = c.ficha.atributos[a.id] + (doCla === a.id ? 1 : 0)}
+		{@const valor = (c.ficha.atributos[a.id] ?? 0) + (doCla === a.id ? 1 : 0)}
 		{@const naoDesce = c.limite(a.id, -1)}
 		{@const naoSobe = c.limite(a.id, 1)}
 		<div class="painel-sombra flex flex-col gap-2 px-3 py-2.5">

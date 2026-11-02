@@ -7,8 +7,8 @@
 // Poucas perícias (até 4), uma ou duas especializações (só quem tem treino ninja) e até duas proficiências.
 import type { EstiloCriatura, PapelCriatura, PerfilCriatura, TipoCriatura } from '../livro/tipos.ts';
 
-export type Atributo = 'for' | 'agi' | 'vig' | 'int' | 'ctr' | 'esp';
-export const ATRIBUTOS: Atributo[] = ['for', 'agi', 'vig', 'int', 'ctr', 'esp'];
+export type Atributo = 'for' | 'agi' | 'vig' | 'int' | 'ctr' | 'esp' | 'car';
+export const ATRIBUTOS: Atributo[] = ['for', 'agi', 'vig', 'int', 'ctr', 'esp', 'car'];
 
 export type Pericia =
 	| 'acrobacia'
@@ -37,7 +37,7 @@ export const PERICIAS: Record<Pericia, { nome: string; atributo: Atributo }> = {
 	medicina: { nome: 'Medicina', atributo: 'int' },
 	ninjutsu: { nome: 'Ninjutsu', atributo: 'ctr' },
 	percepcao: { nome: 'Percepção', atributo: 'esp' },
-	persuasao: { nome: 'Persuasão', atributo: 'esp' },
+	persuasao: { nome: 'Persuasão', atributo: 'car' },
 	rastreamento: { nome: 'Rastreamento', atributo: 'int' },
 	selamento: { nome: 'Selamento', atributo: 'int' },
 	sobrevivencia: { nome: 'Sobrevivência', atributo: 'vig' },
@@ -146,15 +146,15 @@ function periciaDoAtaque(e: EntradaFicha): { pericia: Pericia; atributo: Atribut
 function atributosDe(e: EntradaFicha): Record<Atributo, number> {
 	const p = principal(e.ameaca);
 	const base = atributoComum(e.ameaca);
-	const a: Record<Atributo, number> = { for: base, agi: e.iniciativa, vig: base, int: base, ctr: base, esp: base };
+	const a: Record<Atributo, number> = { for: base, agi: e.iniciativa, vig: base, int: base, ctr: base, esp: base, car: base - 1 };
 	const fera = !NINJA.includes(e.tipo);
-	if (fera) Object.assign(a, { for: p, vig: p - 1, esp: Math.max(0, p - 3), int: -2, ctr: e.jutsus.length ? Math.max(0, p - 3) : -1 });
+	if (fera) Object.assign(a, { for: p, vig: p - 1, esp: Math.max(0, p - 3), int: -2, ctr: e.jutsus.length ? Math.max(0, p - 3) : -1, car: -1 });
 	else if (e.papel === 'lutador' || e.papel === 'bando') Object.assign(a, { for: p, vig: p - 1 });
 	else if (e.papel === 'assassino') Object.assign(a, { for: p - 1, esp: p - 2 });
 	else if (e.papel === 'atirador') Object.assign(a, { esp: p - 1, ctr: p - 2 });
 	else if (e.papel === 'controlador') Object.assign(a, { ctr: p, esp: p - 1, int: p - 2 });
 	else if (e.papel === 'suporte') Object.assign(a, { int: p, ctr: p - 1, esp: p - 2 });
-	else if (e.papel === 'chefe') Object.assign(a, { ctr: p, vig: p - 1, for: p - 1, esp: p - 2 });
+	else if (e.papel === 'chefe') Object.assign(a, { ctr: p, vig: p - 1, for: p - 1, esp: p - 2, car: p - 2 });
 	if (e.perfil) {
 		a.vig += PERFIS[e.perfil].vig;
 		a.esp += PERFIS[e.perfil].esp;

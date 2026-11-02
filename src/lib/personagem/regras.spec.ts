@@ -41,7 +41,7 @@ const loja: ItemLoja[] = [
 function hana(): FichaDados {
 	const f = fichaVazia();
 	f.conceito.nome = 'Hana Nara';
-	f.atributos = { FOR: 0, AGI: 2, VIG: 1, INT: 2, CTR: 2, ESP: 1 };
+	f.atributos = { FOR: 0, AGI: 2, VIG: 1, INT: 2, CTR: 2, ESP: 1, CAR: 1 };
 	f.vila = { id: 'konoha', escolha: 'acrobacia' };
 	f.cla = { tipo: 'catalogo', slug: 'nara', escolha: null };
 	f.pericias = { ninjutsu: 1, percepcao: 1, furtividade: 1, bukijutsu: 1 };
@@ -58,14 +58,14 @@ function hana(): FichaDados {
 }
 
 describe('atributos (cap. 6, Passo 2)', () => {
-	it('8 pontos, com o +1 do clã por cima', () => {
+	it('9 pontos (com o Carisma), com o +1 do clã por cima', () => {
 		const f = hana();
-		expect(orcamentoAtributos(f)).toMatchObject({ usados: 8, restantes: 0, reducoes: 0 });
+		expect(orcamentoAtributos(f)).toMatchObject({ usados: 9, restantes: 0, reducoes: 0 });
 		expect(atributosTotais(f).INT).toBe(3);
 	});
 	it('reduzir até dois atributos dá pontos extras', () => {
 		const f = fichaVazia();
-		f.atributos = { FOR: -2, AGI: -1, VIG: 4, INT: 4, CTR: 3, ESP: 0 };
+		f.atributos = { FOR: -2, AGI: -1, VIG: 4, INT: 4, CTR: 3, ESP: 0, CAR: 1 };
 		expect(orcamentoAtributos(f).restantes).toBe(0);
 		expect(limiteAtributo(f, 'ESP', -1)).toMatch(/Só 2 atributos/);
 		expect(limiteAtributo(f, 'FOR', -1)).toMatch(/mínimo/);
@@ -81,7 +81,7 @@ describe('atributos (cap. 6, Passo 2)', () => {
 describe('recursos (cap. 6, Passo 8)', () => {
 	it('segue os exemplos do livro: VIG +3 → 35 PV e 35 PE; ESP +2 e CTR +3 → 50 PC', () => {
 		const f = fichaVazia();
-		f.atributos = { FOR: 0, AGI: 0, VIG: 3, INT: 0, CTR: 3, ESP: 2 };
+		f.atributos = { FOR: 0, AGI: 0, VIG: 3, INT: 0, CTR: 3, ESP: 2, CAR: 0 };
 		const r = recursos(f);
 		expect([r.pv, r.pe, r.pc]).toEqual([35, 35, 50]);
 	});

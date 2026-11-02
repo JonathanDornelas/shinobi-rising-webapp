@@ -1,5 +1,5 @@
 // Atributos e perícias na ficha rápida da Mesa. Jogador e NPC de ficha completa vêm da ficha (fichas.server.ts); o NPC do
-// bestiário vem da ficha da criatura, que só lista as perícias treinadas: aqui entram todas as 15, com as treinadas
+// bestiário vem da ficha da criatura, que só lista as perícias treinadas: aqui entram todas as 19, com as treinadas
 // marcadas, para o Mestre rolar qualquer teste sem sair da Mesa (uma perícia sem treino vale só o atributo).
 import type { FichaCompleta } from '#lib/bestiario/ficha.ts';
 import { ATRIBUTOS, PERICIAS } from '#lib/personagem/dados.ts';
@@ -9,13 +9,13 @@ import type { AtributoMesa, PericiaMesa } from './tipos.ts';
 
 const sinal = (n: number) => (n >= 0 ? `+${n}` : `${n}`);
 
-/** Os seis atributos de uma criatura do bestiário. */
+/** Os sete atributos de uma criatura do bestiário (CAR, que a ficha dela não tem, vale o que ela diz ou 0). */
 export function atributosDaCriatura(fc: Pick<FichaCompleta, 'atributos'>): AtributoMesa[] {
 	const v = fc.atributos as Record<string, number>;
 	return ATRIBUTOS.map((a) => ({ sigla: a.id, nome: a.nome, valor: v[a.id.toLowerCase()] ?? 0 }));
 }
 
-/** As 15 perícias de uma criatura: a treinada vale o total da ficha; as outras, o atributo dela. */
+/** As 19 perícias de uma criatura: a treinada vale o total da ficha; as outras, o atributo dela. */
 export function periciasDaCriatura(fc: Pick<FichaCompleta, 'atributos' | 'pericias'>): PericiaMesa[] {
 	const v = fc.atributos as Record<string, number>;
 	return PERICIAS.map((p) => {

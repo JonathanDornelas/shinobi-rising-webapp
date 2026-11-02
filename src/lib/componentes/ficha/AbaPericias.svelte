@@ -1,7 +1,7 @@
 <script lang="ts">
 	// P3 · Perícias (treinada: +2; mudam ao subir de nível) e proficiências com os pips de nível (CMP-15). Na ficha da
 	// regra antiga, o aviso de correção deixa escolher as perícias que um bônus repetido deixou de treinar.
-	import { NIVEIS_PROFICIENCIA, TIPOS_PROFICIENCIA, custoProficiencia } from '#lib/personagem/dados.ts';
+	import { NIVEIS_PROFICIENCIA, TIPOS_PROFICIENCIA, custoProficiencia, descPericia } from '#lib/personagem/dados.ts';
 	import type { FichaJogo } from '#lib/personagem/ficha.svelte.ts';
 	import { rotuloAlvo } from '#lib/personagem/progressao.ts';
 	import { periciasComKkg } from '#lib/personagem/kkg.ts';
@@ -27,7 +27,7 @@
 		{#each linhas as p, i (p.id)}
 			<div role="row" class="grid {f.editavel ? 'grid-cols-[minmax(0,1fr)_44px_104px]' : 'grid-cols-[minmax(0,1fr)_44px_64px]'} items-center gap-2 px-3.5 py-0.5 md:gap-3 {f.editavel ? 'md:grid-cols-[minmax(0,1fr)_88px_64px_minmax(0,1.1fr)_112px]' : 'md:grid-cols-[minmax(0,1fr)_88px_64px_minmax(0,1.1fr)_64px]'}" style:background={i % 2 ? 'var(--b1)' : 'var(--b2)'}>
 				<span role="cell" class="flex min-w-0 items-center gap-2 text-[15px] leading-5 font-medium">
-					<Icone id="pericia/ic-pericia-{p.id}" /><span class="truncate">{p.nome}</span>{#if p.combate}<span title="Perícia de combate" class="border-2 border-b3 px-1 py-0.5 font-pixel text-xs text-mut">⚔</span>{/if}
+					<Icone id="pericia/ic-pericia-{p.id}" /><span class="truncate cursor-help underline decoration-field decoration-dotted underline-offset-[3px]" title={descPericia(p.id)}>{p.nome}</span>{#if p.combate}<span title="Perícia de combate" class="border-2 border-b3 px-1 py-0.5 font-pixel text-xs text-mut">⚔</span>{/if}
 				</span>
 				<span role="cell" class="justify-self-start border-2 border-b3 px-1.5 py-1 font-pixel text-xs leading-none font-semibold max-md:hidden">{p.atributo} {sinal(p.valorAtributo)}{#if p.distancia}<br /><span class="text-mut">{p.distancia.atributo} {sinal(p.distancia.valor)}</span>{/if}</span>
 				<span role="cell" class="t-num text-base text-mut">+{p.treino}</span>

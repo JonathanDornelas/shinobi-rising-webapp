@@ -49,7 +49,7 @@
 	import SavesMorte from '../ficha/SavesMorte.svelte';
 	import { aplicarSave, descansar } from '#lib/personagem/progressao.ts';
 	import SeloDt from '../regras/SeloDt.svelte';
-	import { CONDICOES } from '#lib/personagem/dados.ts';
+	import { CONDICOES, descPericia } from '#lib/personagem/dados.ts';
 	import { curar } from '#lib/personagem/progressao.ts';
 	import { teste } from '#lib/rolagens/expressoes.ts';
 	import { partesAtributo } from '#lib/rolagens/partes.ts';
@@ -661,7 +661,7 @@
 					{/each}
 				{:else if aba === 'pericias'}
 					{#if atributos.length}
-						<div role="group" aria-label="Atributos" class="mx-3 my-2.5 grid grid-cols-6 gap-1">
+						<div role="group" aria-label="Atributos" class="mx-3 my-2.5 grid grid-cols-7 gap-1">
 							{#each atributos as a (a.sigla)}
 								<button type="button" class="flex flex-col items-center gap-0.5 border-2 border-b3 bg-b1 py-1 enabled:hover:border-mut disabled:cursor-default {celular ? 'min-h-11' : ''}" title="{a.nome} {a.valor}: rolar um teste ({teste(a.valor)})" aria-label="{a.nome} {a.valor}, rolar um teste" disabled={!editavel} onclick={() => acoes.rolar(token, { expr: teste(a.valor), rotulo: `Teste de ${a.nome}`, partes: partesAtributo(a.sigla, a.valor) }, 'teste', true)}>
 									<span class="font-pixel text-[10px] leading-none font-bold text-mut">{a.sigla}</span>
@@ -679,7 +679,7 @@
 							<div role="row" class="grid grid-cols-[minmax(0,1fr)_64px_44px_76px] items-center gap-2 px-3 py-1" style:background={i % 2 ? 'var(--b1)' : 'var(--b2)'}>
 								<span role="cell" class="flex min-w-0 flex-col gap-1">
 									<span class="flex min-w-0 items-center gap-1.5 text-sm leading-[18px] font-medium">
-										<Icone id="pericia/ic-pericia-{p.id}" class="h-6 w-6 flex-none" /><span class="truncate">{p.nome}</span>{#if p.combate}<span title="Perícia de combate" class="border-2 border-b3 px-1 py-0.5 font-pixel text-[10px] leading-none text-mut">⚔</span>{/if}
+										<Icone id="pericia/ic-pericia-{p.id}" class="h-6 w-6 flex-none" /><span class="truncate" title={descPericia(p.id)}>{p.nome}</span>{#if p.combate}<span title="Perícia de combate" class="border-2 border-b3 px-1 py-0.5 font-pixel text-[10px] leading-none text-mut">⚔</span>{/if}
 									</span>
 									{#if p.bonus.length}<span class="flex flex-wrap gap-1">{#each p.bonus as b, j (j)}<span class="border-2 border-[rgba(217,168,43,.5)] bg-[rgba(217,168,43,.14)] px-1 py-0.5 text-[11px] leading-none font-semibold">{b.fonte} +{b.valor}</span>{/each}</span>{/if}
 								</span>

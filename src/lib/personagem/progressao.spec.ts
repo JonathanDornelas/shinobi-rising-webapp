@@ -24,7 +24,7 @@ import { atributosTotais, fichaVazia, linhasPericia, nivelDe, recursos, type Fic
 function hana(): FichaDados {
 	const f = fichaVazia();
 	f.conceito.nome = 'Hana Nara';
-	f.atributos = { FOR: 0, AGI: 2, VIG: 1, INT: 2, CTR: 2, ESP: 1 };
+	f.atributos = { FOR: 0, AGI: 2, VIG: 1, INT: 2, CTR: 2, ESP: 1, CAR: 0 };
 	f.vila = { id: 'konoha', escolha: 'acrobacia' };
 	f.cla = { tipo: 'catalogo', slug: 'nara', escolha: null };
 	f.pericias = { ninjutsu: 3, investigacao: 2, acrobacia: 2, percepcao: 1, furtividade: 2, bukijutsu: 2 };

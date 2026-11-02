@@ -14,17 +14,17 @@ const ficha = {
 } as never;
 
 describe('atributos e perícias da criatura na ficha rápida', () => {
-	it('lista os seis atributos, na ordem do livro, com sigla e nome', () => {
+	it('lista os sete atributos, na ordem do livro, com sigla e nome', () => {
 		const a = atributosDaCriatura(ficha);
-		expect(a.map((x) => x.sigla)).toEqual(['FOR', 'AGI', 'VIG', 'INT', 'CTR', 'ESP']);
-		expect(a.map((x) => x.valor)).toEqual([3, 4, 2, 1, 5, 0]);
+		expect(a.map((x) => x.sigla)).toEqual(['FOR', 'AGI', 'VIG', 'INT', 'CTR', 'ESP', 'CAR']);
+		expect(a.map((x) => x.valor)).toEqual([3, 4, 2, 1, 5, 0, 0]);
 		expect(a[0].nome).toBe('Força');
 	});
 
-	it('lista as 15 perícias: as treinadas com o total da ficha, as outras só com o atributo', () => {
+	it('lista as 19 perícias: as treinadas com o total da ficha, as outras só com o atributo', () => {
 		const p = periciasDaCriatura(ficha);
 		expect(p).toHaveLength(PERICIAS.length);
-		expect(p).toHaveLength(15);
+		expect(p).toHaveLength(19);
 		const ninjutsu = p.find((x) => x.nome === 'Ninjutsu')!;
 		expect(ninjutsu).toMatchObject({ treinada: true, atributo: 'CTR', expr: '1d20+8' });
 		expect(ninjutsu.partes).toEqual([['CTR (atributo)', '+5'], ['Treino e bônus', '+3']]);
@@ -42,7 +42,7 @@ describe('atributos e perícias da criatura na ficha rápida', () => {
 		expect(a.partes[1]).toEqual(['Treino e bônus', '-2']);
 	});
 
-	it('funciona com as criaturas reais do bestiário: sempre 15 perícias e as treinadas são as da ficha', () => {
+	it('funciona com as criaturas reais do bestiário: sempre 19 perícias e as treinadas são as da ficha', () => {
 		const criaturas = (bestiario as unknown as { criaturas: Criatura[] }).criaturas;
 		let vistas = 0;
 		for (const c of criaturas)
@@ -51,9 +51,9 @@ describe('atributos e perícias da criatura na ficha rápida', () => {
 				if (!fc) continue;
 				vistas++;
 				const p = periciasDaCriatura(fc);
-				expect(p).toHaveLength(15);
+				expect(p).toHaveLength(19);
 				expect(p.filter((x) => x.treinada).map((x) => x.nome).sort()).toEqual(fc.pericias.map((x) => x.nome).sort());
-				expect(atributosDaCriatura(fc)).toHaveLength(6);
+				expect(atributosDaCriatura(fc)).toHaveLength(7);
 			}
 		expect(vistas).toBeGreaterThan(10);
 	});

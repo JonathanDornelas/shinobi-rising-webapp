@@ -16,7 +16,7 @@ Todas as abreviações, os termos em japonês e o jargão das regras, num lugar 
 
 ## Atributos {#atributos}
 
-Os seis atributos do sistema.
+Os sete atributos do sistema.
 
 | Abreviação | Nome | Significado |
 | - | - | - |
@@ -25,7 +25,8 @@ Os seis atributos do sistema.
 | VIG | Vigor | Resistência corporal: PV, PE, resistir a venenos e à fadiga |
 | INT | Inteligência | Raciocínio e estudo: investigação, medicina, selos |
 | CTR | Controle | Precisão de chakra: Ninjutsu, Genjutsu, DT dos jutsus |
-| ESP | Espírito | Vontade e percepção: PC, Percepção, Defesa Mental, resistir a Genjutsu |
+| ESP | Espírito | Vontade e percepção: PC, Percepção, Intuição, Defesa Mental, resistir a Genjutsu |
+| CAR | Carisma | Presença e lábia: Persuasão, Enganação, Intimidação, Atuação |
 
 ## Recursos {#recursos}
 
