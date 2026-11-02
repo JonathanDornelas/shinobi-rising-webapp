@@ -18,6 +18,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	import { SPRITES_FX } from '#lib/mesa/fx-sprites.ts';
 	import { caixaDaCena, cfgIso, desfazerProjecao, emPe as emPeIso, inverter, matrizIso, ordemDePintura, projetar } from '#lib/mesa/projecao.ts';
 	import { camadaEmPe, camadaPadrao, camadasDaCena, indiceDaCamada, indiceDosTokens } from '#lib/mesa/camadas.ts';
+	import { semKkg } from '#lib/mesa/kkg-npc.ts';
 
 	let {
 		mesa,
@@ -1059,11 +1060,11 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 							<rect x={cx - 0.38 * n} y={y + n - 0.12} width={0.76 * n * fr} height={F(5)} style="fill: {fr > 0.5 ? 'var(--ok)' : fr > 0.25 ? 'var(--warn)' : 'var(--err)'}" />
 						{/if}
 						<text x={cx} y={y + n + F(12)} text-anchor="middle" font-size={F(11)} font-family="'Noto Sans'" font-weight="600" style="fill: var(--fg); stroke: var(--b1)" stroke-width={F(3)} paint-order="stroke">{nomeCurto(t.nome).split(' ')[0]}{t.membro ? ` ${t.membro}` : ''}</text>
-						{#if t.condicoes.length}
+						{#if semKkg(t.condicoes).length}
 							<!-- estados: ícones em volta do token, do alto para a direita -->
 							{@const lado = Math.min(0.6, 0.44 + 0.03 * n)}
 							{@const raio = r + 0.2}
-							{#each [...new Set(t.condicoes)].slice(0, 8) as cond, i (cond)}
+							{#each [...new Set(semKkg(t.condicoes))].slice(0, 8) as cond, i (cond)}
 								{@const a = -Math.PI / 2 + i * ((50 * Math.PI) / 180)}
 								<g>
 									<title>{ESTADO_NOME[cond] ?? cond}</title>
@@ -1071,7 +1072,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 									<image href="/icons/estado/ic-estado-{cond}-32.png" x={cx + raio * Math.cos(a) - lado / 2} y={cy + raio * Math.sin(a) - lado / 2} width={lado} height={lado} style="image-rendering: pixelated" />
 								</g>
 							{/each}
-							{#if t.condicoes.length > 8}
+							{#if semKkg(t.condicoes).length > 8}
 								<text x={cx + raio} y={cy + raio} font-size={F(10)} font-family="'Pixelify Sans'" font-weight="700" style="fill: var(--warn); stroke: var(--b1)" stroke-width={F(3)} paint-order="stroke">+{t.condicoes.length - 8}</text>
 							{/if}
 						{/if}

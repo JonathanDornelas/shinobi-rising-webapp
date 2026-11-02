@@ -16,6 +16,7 @@ import { partesAtaqueJutsu, partesDanoAtributo, partesPericia, type Parte } from
 import { atributosDaCriatura, periciasDaCriatura } from './atributos.ts';
 import { ehVersatil, modosDaArma, nomeDoModo, type ModoArma } from './armas.ts';
 import { deslocamentoPorAgi } from './geometria.ts';
+import { kkgDoVerbete } from './kkg-npc.ts';
 import { clonesDoJutsu, duracaoEmTurnos, reguaDoCard, tamanhoDoEfeito } from './regua.ts';
 import { rotuloDano, tipoDanoDaArma, tipoDanoDoJutsu } from '#lib/jutsus/tipos-dano.ts';
 import type { ArmaMesa, ExtrasNpc, FichaMesa, JutsuMesa } from './tipos.ts';
@@ -111,7 +112,8 @@ export function extrasDoNpc(n: { bestiario: string | null }): ExtrasNpc | null {
 		}),
 		habilidades: k.tracos.map((t) => habilidadeDoTraco(t.nome, textoTrechos(t.efeito), k.dt, k.ataques[0]?.dano ?? null)),
 		atributos: k.ficha ? atributosDaCriatura(k.ficha) : null,
-		pericias: k.ficha ? periciasDaCriatura(k.ficha) : []
+		pericias: k.ficha ? periciasDaCriatura(k.ficha) : [],
+		kkg: kkgDoVerbete(n.bestiario.split('#')[0], e.ameaca)
 	};
 }
 

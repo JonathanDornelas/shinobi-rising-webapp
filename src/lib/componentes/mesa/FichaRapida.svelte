@@ -65,6 +65,7 @@
 	import CartaoItem from '../equipamento/CartaoItem.svelte';
 	import { corElemento } from '#lib/mesa/hud.ts';
 	import { estiloFoco, type FocoArte } from '#lib/bestiario/foco.ts';
+	import { kkgLigadaNoToken, semKkg } from '#lib/mesa/kkg-npc.ts';
 
 	let {
 		mesa,
@@ -251,8 +252,15 @@
 
 	/** Atributos e perícias de quem tem ficha: o jogador, o NPC de ficha completa e o NPC do bestiário (com as 15 perícias). */
 	const atributos = $derived(dados.tipo === 'pc' ? dados.ficha.atributos : dados.tipo === 'npc' ? (dados.extras?.atributos ?? []) : []);
-	// ------------------------------------------------------------------ Kekkei Genkai (só ficha de personagem)
+	// ------------------------------------------------------------------ Kekkei Genkai (ficha de personagem e NPC do bestiário)
 	const kkg = $derived.by(() => {
+		// NPC do bestiário: o estágio e o nível vêm da ameaça; ligada, fica nos estados do token
+		if (dados.tipo === 'npc') {
+			const k = dados.extras?.kkg;
+			if (!k) return null;
+			const ativa = kkgLigadaNoToken(token.condicoes);
+			return { def: k.def, ...custoKkg(k.def, k.nivel, k.estagio), estagio: k.estagio, ativa, ligada: !!k.def.sempre || ativa, efeito: efeitoKkg(k.def, k.nivel, k.estagio) };
+		}
 		if (dados.tipo !== 'pc' || !dados.ficha.kkg) return null;
 		const k = dados.ficha.kkg;
 		const e = dados.ficha.estado.kkg ?? {};
@@ -261,13 +269,21 @@
 	});
 	const cenaDoGrupo = $derived(mesa.cenas.find((c) => c.ativa)?.id ?? null);
 	function ativarKkg() {
-		if (dados.tipo !== 'pc' || !kkg || kkg.ativa) return;
+		if (!kkg || kkg.ativa) return;
 		if (atual.pc < kkg.custo) return void ui.avisar(`Faltam ${kkg.custo - atual.pc} PC para ativar o ${kkg.def.nome}.`);
 		const pc = atual.pc - kkg.custo;
+		if (dados.tipo === 'npc') {
+			acoes.recursoNpc(dados.npc, token.membro ?? 1, 'pc', pc);
+			acoes.token(token, { condicoes: [...token.condicoes, 'kkg'] });
+			return void ui.avisar(`${kkg.def.nome} ativado: −${kkg.custo} PC`);
+		}
+		if (dados.tipo !== 'pc') return;
 		acoes.estadoPc(dados.ficha, { pc, kkg: { ...dados.ficha.estado.kkg, ativa: true, cena: cenaDoGrupo } }, `Ativou o ${kkg.def.nome} na Mesa${kkg.custo ? `: −${kkg.custo} PC. PC ${pc}/${atual.max.pc}` : ''}`);
 	}
 	function desativarKkg() {
-		if (dados.tipo !== 'pc' || !kkg?.ativa) return;
+		if (!kkg?.ativa) return;
+		if (dados.tipo === 'npc') return void acoes.token(token, { condicoes: semKkg(token.condicoes) });
+		if (dados.tipo !== 'pc') return;
 		acoes.estadoPc(dados.ficha, { kkg: { ...dados.ficha.estado.kkg, ativa: false, cena: null } }, `Desativou o ${kkg.def.nome}`);
 	}
 	const periciasBase = $derived(dados.tipo === 'pc' ? dados.ficha.pericias : dados.tipo === 'npc' ? (dados.extras?.pericias ?? []) : []);
@@ -510,7 +526,7 @@
 			{#if dados.tipo === 'pc' || dados.tipo === 'npc'}
 				{@const est = dados.tipo === 'pc'
 					? [['Defesa', String(dados.ficha.defesa + (kkg?.ligada ? kkg.efeito.defesa : 0)), 'recurso/ic-recurso-defesa'], ['Def. mental', String(dados.ficha.defesaMental + (kkg?.ligada ? (kkg.efeito.pericias.percepcao ?? 0) : 0)), 'recurso/ic-recurso-defesa-mental'], ['Iniciativa', `+${dados.ficha.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', `${dados.ficha.deslocamento} m`, 'esp/ic-esp-velocidade']]
-					: [['Defesa', String(dados.npc.defesa), 'recurso/ic-recurso-defesa'], ...(defMentalNpc != null ? [['Def. mental', String(defMentalNpc), 'recurso/ic-recurso-defesa-mental']] : []), ['Iniciativa', `${dados.npc.iniciativa >= 0 ? '+' : ''}${dados.npc.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', `${dados.extras?.deslocamento ?? 10} m`, 'esp/ic-esp-velocidade']]}
+					: [['Defesa', String(dados.npc.defesa + (kkg?.ligada ? kkg.efeito.defesa : 0)), 'recurso/ic-recurso-defesa'], ...(defMentalNpc != null ? [['Def. mental', String(defMentalNpc), 'recurso/ic-recurso-defesa-mental']] : []), ['Iniciativa', `${dados.npc.iniciativa >= 0 ? '+' : ''}${dados.npc.iniciativa}`, 'recurso/ic-recurso-iniciativa'], ['Deslocamento', `${dados.extras?.deslocamento ?? 10} m`, 'esp/ic-esp-velocidade']]}
 				<div class="mx-3 mb-2.5 grid grid-cols-4 gap-1" role="group" aria-label="Defesas, iniciativa e deslocamento">
 					{#snippet numero(k: string, v: string, ic: string, rolar: boolean)}
 						<span class="flex items-center gap-1"><Icone id={ic} class="h-5 w-5" /><b class="font-pixel text-base leading-none whitespace-nowrap">{v}</b>{#if rolar}<Icone id="dado/ic-dado-d20" class="h-4 w-4" />{/if}</span>
@@ -568,7 +584,7 @@
 						{/each}
 					</div>
 					<div class="flex min-h-6 items-center gap-2">
-						<span class="min-w-0 flex-1 truncate text-xs leading-4 {atual.condicoes.length ? 'font-semibold' : 'text-mut'}">{atual.condicoes.length ? atual.condicoes.map((c) => estadosVisiveis.find((x) => x.id === c)?.nome ?? c).join(', ') : 'Sem estados'}</span>
+						<span class="min-w-0 flex-1 truncate text-xs leading-4 {semKkg(atual.condicoes).length ? 'font-semibold' : 'text-mut'}">{semKkg(atual.condicoes).length ? semKkg(atual.condicoes).map((c) => estadosVisiveis.find((x) => x.id === c)?.nome ?? c).join(', ') : 'Sem estados'}</span>
 						{#if dados.tipo === 'pc'}
 							<span class="flex items-center gap-1" role="group" aria-label="Fadiga {atual.fadiga} de 5" title="Fadiga (cap. 4): cada nível pesa mais">
 								<Icone id="recurso/ic-recurso-fadiga" class="h-5 w-5" />

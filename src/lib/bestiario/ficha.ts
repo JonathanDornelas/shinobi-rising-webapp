@@ -111,12 +111,12 @@ export const ESTILOS: Record<EstiloCriatura, { nome: string; defesa: number; ini
 const limitar = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
 /** Atributo principal do papel, na escala com teto +3: +1 até a ameaça 3, +2 da 4 à 10, +3 da 11 em diante. */
 export const principal = (ameaca: number) => (ameaca <= 3 ? 1 : ameaca <= 10 ? 2 : 3);
-/** Atributo comum, o que não é o forte do papel: -1 até a ameaça 2, +1 na 8, +2 na 12. */
+/** Atributo comum, o que não é o forte do papel: 0 até a ameaça 5, +1 da 6 em diante. */
 export const atributoComum = (ameaca: number) => (ameaca < 6 ? 0 : 1);
 /** Treino das perícias secundárias e nível das proficiências pela ameaça (1 a 5). */
 const treino = (ameaca: number) => limitar(Math.round(ameaca / 4) + 1, 1, 5);
 /**
- * PE pela conta dos personagens (cap. 6): 20, mais 5 por ponto de VIG acima de 0, mais 3 por nível depois do 1º.
+ * PE pela conta dos personagens (cap. 6): 20, mais 8 por ponto de VIG acima de 0, mais 3 por nível depois do 1º.
  * A ameaça faz o papel do nível (as frações contam como nível 1).
  */
 export const peDe = (ameaca: number, vig: number) => 20 + 8 * Math.max(0, vig) + 3 * Math.max(0, Math.floor(ameaca) - 1);

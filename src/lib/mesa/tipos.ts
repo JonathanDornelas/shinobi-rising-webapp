@@ -1,6 +1,7 @@
 import type { DtJutsu } from '#lib/jutsus/dt.ts';
 import type { InfoItem } from '#lib/equipamentos/info.server.ts';
 import type { DefKkg } from '#lib/personagem/kkg.ts';
+import type { KkgNpc } from './kkg-npc.ts';
 // L11 · Mesa: a ficha rápida já calculada (fichas.server.ts monta; a tela só lê).
 import type { EstadoJogo } from '#lib/personagem/progressao.ts';
 import type { Parte } from '#lib/rolagens/partes.ts';
@@ -84,6 +85,8 @@ export interface ExtrasNpc {
 	atributos: AtributoMesa[] | null;
 	/** As 15 perícias: as treinadas da ficha e as outras só com o atributo (vazio sem ficha). */
 	pericias: PericiaMesa[];
+	/** Kekkei Genkai do clã do verbete (kkg-npc.ts); ligada, fica nos estados do token. */
+	kkg: KkgNpc | null;
 }
 
 export interface ArmaMesa {

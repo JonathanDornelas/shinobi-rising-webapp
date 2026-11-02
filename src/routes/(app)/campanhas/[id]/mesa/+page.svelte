@@ -36,6 +36,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	const carregarFicha = () => (moduloFicha ??= import('#lib/componentes/mesa/FichaCompleta.svelte'));
 	import { mesclarEstado, type EstadoJogo } from '#lib/personagem/progressao.ts';
 	import { apagarAoCair, custoKkg } from '#lib/personagem/kkg.ts';
+	import { kkgLigadaNoToken, semKkg } from '#lib/mesa/kkg-npc.ts';
 	import PainelMesa from '#lib/componentes/mesa/PainelMesa.svelte';
 	import BuscaBestiario from '#lib/componentes/npc/BuscaBestiario.svelte';
 	import { npcDoVerbete } from '#lib/bestiario/npc.ts';
@@ -301,6 +302,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		const antes = n[campo];
 		n[campo] = lista;
 		if (k === 'pv') mesa.tokens = mesa.tokens.map((t) => (t.npc_id === n.id && (t.membro ?? 1) === membro ? { ...t, ferimento: faixa(valor, n.pv) } : t));
+		if (k === 'pv' && valor <= 0) for (const t of mesa.tokens.filter((x) => x.npc_id === n.id && (x.membro ?? 1) === membro && kkgLigadaNoToken(x.condicoes))) void mesa.atualizarToken(t.id, { condicoes: semKkg(t.condicoes) });
 		const { error } = await supabase().from('npcs').update({ [campo]: lista } as Partial<Npc>).eq('id', n.id);
 		if (error) {
 			n[campo] = antes;
@@ -919,8 +921,9 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		const primeira = !vezCobrada;
 		vezCobrada = chave;
 		const entrada = i.ordem[Math.abs(Math.trunc(i.vez ?? 0)) % i.ordem.length];
-		if (primeira || !entrada?.personagem_id) return;
-		untrack(() => manterKkg(entrada.personagem_id!));
+		if (primeira) return;
+		if (entrada?.personagem_id) untrack(() => manterKkg(entrada.personagem_id!));
+		else if (entrada?.npc_id) untrack(() => manterKkgNpc(entrada.npc_id!));
 	});
 	function manterKkg(pid: string) {
 		const f = fichas.find((x) => x.id === pid);
@@ -930,6 +933,22 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		const custo = custoKkg(f.kkg.def, f.nivel, e.estagio ?? 1).custo;
 		if (pc >= custo) void estadoPc(f, { pc: pc - custo }, `Turno com o ${f.kkg.def.nome} ativo: −${custo} PC`);
 		else void estadoPc(f, { kkg: { ...e, ativa: false, cena: null } }, `${f.kkg.def.nome} apagou: sem PC para manter no turno`);
+	}
+	/** NPC do bestiário: cada membro com a KKG ligada paga o turno, ou ela apaga. */
+	function manterKkgNpc(nid: string) {
+		const n = npcs.find((x) => x.id === nid);
+		const k = n ? data.extrasNpc[n.id]?.kkg : null;
+		if (!n || !k || k.def.sempre) return;
+		const custo = custoKkg(k.def, k.nivel, k.estagio).custo;
+		for (const t of mesa.tokens.filter((x) => x.npc_id === nid && kkgLigadaNoToken(x.condicoes))) {
+			const m = t.membro ?? 1;
+			const pc = n.pc_atual?.[m - 1] ?? n.pc;
+			if (pc >= custo) void recursoNpc(n, m, 'pc', pc - custo);
+			else {
+				void mesa.atualizarToken(t.id, { condicoes: semKkg(t.condicoes) });
+				ui.avisar(`${nomeCurto(n.nome)}: o ${k.def.nome} apagou, sem PC para manter no turno`);
+			}
+		}
 	}
 
 	// ------------------------------------------------------------------ régua de jutsu: barra
@@ -1225,9 +1244,9 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 				<span>{pv ? `${pv.pv}/${pv.max} PV` : FAIXAS[hoverToken.ferimento]}</span>
 				{#if fichaDe(hoverToken)}<span class="text-mut">Defesa {fichaDe(hoverToken)!.defesa}</span>{:else if npcDe(hoverToken)}<span class="text-mut">Defesa {npcDe(hoverToken)!.defesa}</span>{/if}
 			</div>
-			{#if hoverToken.condicoes.length}
+			{#if semKkg(hoverToken.condicoes).length}
 				<div class="flex flex-col gap-0.5">
-					{#each [...new Set(hoverToken.condicoes)] as c (c)}<span class="flex items-center gap-1.5 text-xs leading-none font-semibold"><Icone id="estado/ic-estado-{c}" />{c.replace('-', ' ')}</span>{/each}
+					{#each [...new Set(semKkg(hoverToken.condicoes))] as c (c)}<span class="flex items-center gap-1.5 text-xs leading-none font-semibold"><Icone id="estado/ic-estado-{c}" />{c.replace('-', ' ')}</span>{/each}
 				</div>
 			{/if}
 			{#if !hoverToken.visivel}<span class="text-xs leading-4 font-semibold text-warn">Escondido: só o Mestre vê.</span>{/if}
