@@ -1750,7 +1750,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 
 {#if ui.modal}
 	<div class="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(10,8,7,.72)] p-4" role="presentation" onclick={(e) => e.target === e.currentTarget && (ui.modal = null)}>
-		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'config' ? 'h-[min(660px,calc(100dvh-2rem))] w-[min(400px,100%)] overflow-hidden' : (ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' || ui.modal.tipo === 'nova' ? 'w-[560px]' : 'w-[440px]') + ' overflow-y-auto'} max-h-full max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_var(--sombra)]">
+		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'config' ? 'h-[min(660px,calc(100dvh-2rem))] w-[min(400px,100%)] overflow-hidden' : (ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]') + ' overflow-y-auto'} max-h-full max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_var(--sombra)]">
 			{#if ui.modal.tipo === 'imagem' && cena}
 				{@const alvo = ui.modal.alvo}
 				<ArtesMesa {mesa} {campanha} {alvo} atual={cena[alvo]} aoEscolher={escolherDaBiblioteca} aoArmar={armarArte} aoFechar={() => (ui.modal = null)} />
@@ -1800,10 +1800,11 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 					{#if demos?.length && mesa.temLuzDinamica}
 						<div class="flex flex-col gap-1.5">
 							<span class="font-pixel text-xs font-bold tracking-[0.08em] text-mut">MODELO</span>
-							<div role="radiogroup" aria-label="Modelo da cena" class="grid grid-cols-3 gap-1.5">
-								<button type="button" role="radio" aria-checked={!novaCena.demo} class="flex min-h-[72px] flex-col items-center justify-center gap-1 border-2 text-xs font-semibold {!novaCena.demo ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={() => escolherDemo(null)}><span class="font-pixel text-lg">＋</span>Em branco</button>
+							<!-- uma fileira só, que rola de lado: a janela não cresce com os modelos -->
+							<div role="radiogroup" aria-label="Modelo da cena" class="flex snap-x gap-1.5 overflow-x-auto pb-1.5">
+								<button type="button" role="radio" aria-checked={!novaCena.demo} class="flex w-[104px] flex-none snap-start flex-col items-center justify-center gap-1 border-2 text-xs font-semibold {!novaCena.demo ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={() => escolherDemo(null)}><span class="font-pixel text-lg">＋</span>Em branco</button>
 								{#each demos as d (d.id)}
-									<button type="button" role="radio" aria-checked={novaCena.demo?.id === d.id} title={d.dica} class="flex flex-col border-2 text-left {novaCena.demo?.id === d.id ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={() => escolherDemo(d)}>
+									<button type="button" role="radio" aria-checked={novaCena.demo?.id === d.id} title={d.dica} class="flex w-[132px] flex-none snap-start flex-col border-2 text-left {novaCena.demo?.id === d.id ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={() => escolherDemo(d)}>
 										<img src={d.miniatura} alt="" loading="lazy" class="aspect-[4/3] w-full bg-b0 object-contain [image-rendering:pixelated]" />
 										<span class="px-1 pt-0.5 text-[11px] leading-[14px] font-semibold">{d.nome}</span>
 										<span class="px-1 pb-0.5 text-[10px] leading-[13px] opacity-75">{d.visao === 'topo' ? 'Vista de cima' : 'Isométrica'}</span>
