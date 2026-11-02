@@ -1681,9 +1681,11 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			{/if}
 
 			{#if nevoaLigada}
-				<!-- a névoa: o grupo não vê o que está coberto; o Mestre vê esmaecido, com hachura -->
-				<path d={caminhoDaNevoa} fill-rule="evenodd" style="fill: var(--b0)" fill-opacity={mesa.mestre ? 0.55 : 1} pointer-events="none" clip-path={clipCena} />
-				{#if mesa.mestre}<path d={caminhoDaNevoa} fill-rule="evenodd" fill="url(#nevoa-hachura)" pointer-events="none" clip-path={clipCena} />{/if}
+				<!-- a névoa: o grupo não vê o que está coberto; o Mestre vê esmaecido, com hachura. Com a luz dinâmica (e no "ver como o
+				     grupo vê"), o que ninguém explorou é breu de verdade, em qualquer tema; o explorado fica sob o véu da memória -->
+				{@const breu = !!visao}
+				<path d={caminhoDaNevoa} fill-rule="evenodd" style="fill: {breu ? '#0a0807' : 'var(--b0)'}" fill-opacity={mesa.mestre && !breu ? 0.55 : 1} pointer-events="none" clip-path={clipCena} />
+				{#if mesa.mestre && !breu}<path d={caminhoDaNevoa} fill-rule="evenodd" fill="url(#nevoa-hachura)" pointer-events="none" clip-path={clipCena} />{/if}
 			{/if}
 
 			{#if iso}
