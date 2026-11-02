@@ -93,6 +93,8 @@ export interface Jutsu {
 	cartaNoCapitulo: boolean;
 	cla: string | null;
 	elemento: string | null;
+	/** O tipo de dano (cap. 4, Tipos de Dano), quando o jutsu causa dano; ver jutsus/tipos-dano.ts. */
+	tipoDano?: string | null;
 }
 
 export interface Habilidade {

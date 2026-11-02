@@ -20,7 +20,7 @@ Para criar armas próprias, veja a Forja (cap. 21). As marionetes, mais complexa
 
 ## Catálogo de Armas {#catalogo-de-armas}
 
-As armas estão divididas em quatro grupos. No ataque, o dano soma FOR quando o golpe é corpo a corpo e AGI quando é à distância (cap. 4). Corpo a corpo alcança os quadrados adjacentes; as armas de haste, como a Naginata e o Manriki, alcançam até 2 m, e continuam sendo corpo a corpo. Curto, Médio e Longo são os mesmos 10 m, 30 m e 60 m dos jutsus.
+As armas estão divididas em quatro grupos. No ataque, o dano soma FOR quando o golpe é corpo a corpo e AGI quando é à distância (cap. 4). O tipo do dano segue a arma: as lâminas cortam (espadas, foices, machados), as pontas perfuram (kunai, shuriken, senbon, lanças e flechas) e as armas de impacto causam concussão (bastões, tonfas, nunchaku, martelos e leques de ferro), como diz o cap. 4, Tipos de Dano. Corpo a corpo alcança os quadrados adjacentes; as armas de haste, como a Naginata e o Manriki, alcançam até 2 m, e continuam sendo corpo a corpo. Curto, Médio e Longo são os mesmos 10 m, 30 m e 60 m dos jutsus.
 
 ### Armas de Distância {#armas-de-distancia}
 

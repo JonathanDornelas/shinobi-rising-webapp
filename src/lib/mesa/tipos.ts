@@ -36,6 +36,8 @@ export interface JutsuMesa {
 	/** Para o tooltip de ação (HUD): tipo, elemento, ação, duração, tradução e o texto do efeito. */
 	tipo?: string;
 	elemento?: string | null;
+	/** O tipo de dano (cap. 4, Tipos de Dano). */
+	tipoDano?: string | null;
 	acao?: string;
 	duracao?: string;
 	traducao?: string;

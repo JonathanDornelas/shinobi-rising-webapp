@@ -10,6 +10,7 @@ import { infoItens } from '#lib/equipamentos/info.server.ts';
 import { CLAS, ESPECIALIZACOES, JUTSUS_ACADEMIA, PESOS } from './dados.ts';
 import { defKkg, type DefKkg } from './kkg.ts';
 import { acaoDe } from '#lib/livro/filtros-jutsu.ts';
+import { tipoDanoDoJutsu } from '#lib/jutsus/tipos-dano.ts';
 import type { JutsuFicha } from './progressao.ts';
 import type { ItemLoja, JutsuOpcao } from './regras.ts';
 
@@ -130,7 +131,7 @@ export function catalogoCriacao(clasPermitidos: string[]) {
 }
 export type CatalogoCriacao = ReturnType<typeof catalogoCriacao>;
 
-export function jutsuFicha(j: Pick<(typeof jutsus)[number], 'slug' | 'nome' | 'traducao' | 'rank' | 'tipo' | 'custo' | 'custoNum' | 'elemento' | 'cla' | 'origem' | 'efeito' | 'info'>): JutsuFicha {
+export function jutsuFicha(j: Pick<(typeof jutsus)[number], 'slug' | 'nome' | 'traducao' | 'rank' | 'tipo' | 'custo' | 'custoNum' | 'elemento' | 'cla' | 'origem' | 'efeito' | 'info'> & { tipoDano?: string | null }): JutsuFicha {
 	return {
 		slug: j.slug,
 		nome: j.nome,
@@ -143,7 +144,8 @@ export function jutsuFicha(j: Pick<(typeof jutsus)[number], 'slug' | 'nome' | 't
 		cla: j.cla,
 		origem: j.origem,
 		efeito: texto(j.efeito),
-		info: j.info
+		info: j.info,
+		tipoDano: j.tipoDano ?? tipoDanoDoJutsu({ elemento: j.elemento, tipo: j.tipo, efeito: texto(j.efeito) })
 	};
 }
 

@@ -87,6 +87,7 @@
   ancora: jutsus-e-habilidades-do-cla
   cla: nara
   elemento: null
+  tipo_dano: concussao
 - slug: kage-nui-no-jutsu
   nome: Kage Nui no Jutsu
   traducao: Técnica da Costura pelas Sombras
@@ -116,6 +117,7 @@
   ancora: jutsus-e-habilidades-do-cla
   cla: nara
   elemento: null
+  tipo_dano: perfurante
 - slug: kagemane-shuriken-no-jutsu
   nome: Kagemane Shuriken no Jutsu
   traducao: Técnica de Imitação de Shuriken pela Sombra
@@ -233,6 +235,7 @@
   ancora: jutsus-e-habilidades-do-cla-2
   cla: akimichi
   elemento: null
+  tipo_dano: concussao
 - slug: karori-kontororu
   nome: Karori Kontororu
   traducao: Controle de Calorias
@@ -349,6 +352,7 @@
   ancora: jutsus-e-habilidades-do-cla-2
   cla: akimichi
   elemento: null
+  tipo_dano: perfurante
 - slug: choudan-bakugeki
   nome: Choudan Bakugeki
   traducao: Bombardeio da Borboleta
@@ -378,6 +382,7 @@
   ancora: jutsus-e-habilidades-do-cla-2
   cla: akimichi
   elemento: null
+  tipo_dano: concussao
 - slug: shintenshin-no-jutsu
   nome: Shintenshin no Jutsu
   traducao: Técnica de Transferência de Mente
@@ -616,6 +621,7 @@
   ancora: jutsus-e-habilidades-do-cla-4
   cla: inuzuka
   elemento: null
+  tipo_dano: cortante
 - slug: tsuuga
   nome: Tsuuga
   traducao: Sobre Presa
@@ -645,6 +651,7 @@
   ancora: jutsus-e-habilidades-do-cla-4
   cla: inuzuka
   elemento: null
+  tipo_dano: cortante
 - slug: juujin-bunshin
   nome: Juujin Bunshin
   traducao: Clone da Besta Humana
@@ -704,6 +711,7 @@
   ancora: jutsus-e-habilidades-do-cla-4
   cla: inuzuka
   elemento: null
+  tipo_dano: concussao
 - slug: jinjuu-konbi-henge-soutourou
   nome: "Jinjuu Konbi Henge: Soutourou"
   traducao: "Transformação Combinada da Besta Humana: Lobo de Duas Cabeças"
@@ -763,6 +771,7 @@
   ancora: jutsus-e-habilidades-do-cla-4
   cla: inuzuka
   elemento: null
+  tipo_dano: cortante
 - slug: gatenga
   nome: Gatenga
   traducao: Presas Rotativas
@@ -792,6 +801,7 @@
   ancora: jutsus-e-habilidades-do-cla-4
   cla: inuzuka
   elemento: null
+  tipo_dano: perfurante
 - slug: jinjuu-kongou-henge-santourou
   nome: "Jinjuu Kongou Henge: Santourou"
   traducao: "Transformação Misturada da Besta Humana: Lobo de Três Cabeças"
@@ -851,6 +861,7 @@
   ancora: jutsus-e-habilidades-do-cla-4
   cla: inuzuka
   elemento: null
+  tipo_dano: concussao
 - slug: dainamikku-makingu
   nome: Dainamikku Mākingu
   traducao: Marcação Dinâmica
@@ -910,6 +921,7 @@
   ancora: jutsus-e-habilidades-do-cla-5
   cla: aburame
   elemento: null
+  tipo_dano: chakra
 - slug: hijutsu-mushiyose
   nome: "Hijutsu: Mushiyose"
   traducao: "Hijutsu: Invocação de Insetos"
@@ -968,6 +980,7 @@
   ancora: jutsus-e-habilidades-do-cla-5
   cla: aburame
   elemento: null
+  tipo_dano: chakra
 - slug: hijutsu-mushidama
   nome: "Hijutsu: Mushidama"
   traducao: "Hijutsu: Esfera de Insetos"
@@ -997,6 +1010,7 @@
   ancora: jutsus-e-habilidades-do-cla-5
   cla: aburame
   elemento: null
+  tipo_dano: chakra
 - slug: mushi-jamingu-no-jutsu
   nome: Mushi Jamingu no Jutsu
   traducao: Técnica de Encravamento de Inseto
@@ -1055,6 +1069,7 @@
   ancora: jutsus-e-habilidades-do-cla-5
   cla: aburame
   elemento: null
+  tipo_dano: chakra
 - slug: hijutsu-mushitatsumaki
   nome: "Hijutsu: Mushitatsumaki"
   traducao: "Hijutsu: Tornado de Insetos"
@@ -1084,6 +1099,7 @@
   ancora: jutsus-e-habilidades-do-cla-5
   cla: aburame
   elemento: null
+  tipo_dano: chakra
 - slug: hijutsu-mushiheki
   nome: "Hijutsu: Mushiheki"
   traducao: Parede de Insetos
@@ -1142,6 +1158,7 @@
   ancora: jutsus-e-habilidades-do-cla-6
   cla: hyuuga
   elemento: null
+  tipo_dano: chakra
 - slug: shotei
   nome: Shōtei
   traducao: Palma Inferior
@@ -1171,6 +1188,7 @@
   ancora: jutsus-e-habilidades-do-cla-6
   cla: hyuuga
   elemento: null
+  tipo_dano: concussao
 - slug: hakkesho-kaiten
   nome: Hakkeshō Kaiten
   traducao: "Oito Trigramas: Palma Rotativa"
@@ -1200,6 +1218,7 @@
   ancora: jutsus-e-habilidades-do-cla-6
   cla: hyuuga
   elemento: null
+  tipo_dano: concussao
 - slug: hakke-rokujuyon-sho
   nome: Hakke Rokujūyon Shō
   traducao: "Oito Trigramas: Sessenta e Quatro Palmas"
@@ -1229,6 +1248,7 @@
   ancora: jutsus-e-habilidades-do-cla-6
   cla: hyuuga
   elemento: null
+  tipo_dano: chakra
 - slug: hakke-kusho
   nome: Hakke Kūshō
   traducao: "Oito Trigramas: Palma de Vácuo"
@@ -1258,6 +1278,7 @@
   ancora: jutsus-e-habilidades-do-cla-6
   cla: hyuuga
   elemento: null
+  tipo_dano: concussao
 - slug: hakke-hyaku-nijuhassho
   nome: Hakke Hyaku Nijūhasshō
   traducao: "Oito Trigramas: Cento e Vinte e Oito Palmas"
@@ -1287,6 +1308,7 @@
   ancora: jutsus-e-habilidades-do-cla-6
   cla: hyuuga
   elemento: null
+  tipo_dano: chakra
 - slug: juho-soshiken
   nome: Jūho Sōshiken
   traducao: "Passo Suave: Punhos dos Leões Gêmeos"
@@ -1316,6 +1338,7 @@
   ancora: jutsus-e-habilidades-do-cla-6
   cla: hyuuga
   elemento: null
+  tipo_dano: concussao
 - slug: hakke-kuhekisho
   nome: Hakke Kūhekishō
   traducao: "Oito Trigramas: Palma da Parede de Vácuo"
@@ -1345,6 +1368,7 @@
   ancora: jutsus-e-habilidades-do-cla-6
   cla: hyuuga
   elemento: null
+  tipo_dano: concussao
 - slug: katon-goukakyu-no-jutsu
   nome: "Katon: Goukakyu no Jutsu"
   traducao: "Estilo Fogo: Técnica da Grande Bola de Fogo"
@@ -1374,6 +1398,7 @@
   ancora: jutsus-e-habilidades-do-cla-7
   cla: uchiha
   elemento: katon
+  tipo_dano: fogo
 - slug: katon-hosenka-no-jutsu
   nome: "Katon: Hōsenka no Jutsu"
   traducao: "Estilo Fogo: Técnica Flor de Fênix"
@@ -1403,6 +1428,7 @@
   ancora: jutsus-e-habilidades-do-cla-7
   cla: uchiha
   elemento: katon
+  tipo_dano: fogo
 - slug: sofushasan-no-tachi
   nome: Sōfūshasan no Tachi
   traducao: Manipulação do Moinho de Vento de Lâminas Triplas
@@ -1432,6 +1458,7 @@
   ancora: jutsus-e-habilidades-do-cla-7
   cla: uchiha
   elemento: null
+  tipo_dano: cortante
 - slug: uchihagaeshi
   nome: Uchihagaeshi
   traducao: Retorno Uchiha
@@ -1490,6 +1517,7 @@
   ancora: jutsus-e-habilidades-do-cla-7
   cla: uchiha
   elemento: katon
+  tipo_dano: fogo
 - slug: uchiha-kaenjin
   nome: Uchiha Kaenjin
   traducao: Formação da Chama Uchiha
@@ -1519,6 +1547,7 @@
   ancora: jutsus-e-habilidades-do-cla-7
   cla: uchiha
   elemento: null
+  tipo_dano: fogo
 - slug: genjutsu-sharingan
   nome: "Genjutsu: Sharingan"
   traducao: Genjutsu do Sharingan
@@ -1635,6 +1664,7 @@
   ancora: jutsus-e-habilidades-do-cla-8
   cla: senju
   elemento: mokuton
+  tipo_dano: madeira
 - slug: uzumaki-fuin-kaiso
   nome: "Uzumaki Fūin: Kaisō"
   traducao: Selo Espiral de Contenção
@@ -1867,6 +1897,7 @@
   ancora: jutsus-e-habilidades-do-cla-10
   cla: kaguya
   elemento: null
+  tipo_dano: perfurante
 - slug: yanagi-no-mai
   nome: Yanagi no Mai
   traducao: Dança do Salgueiro
@@ -1896,6 +1927,7 @@
   ancora: jutsus-e-habilidades-do-cla-10
   cla: kaguya
   elemento: null
+  tipo_dano: cortante
 - slug: karamatsu-no-mai
   nome: Karamatsu no Mai
   traducao: Dança do Lariço
@@ -1925,6 +1957,7 @@
   ancora: jutsus-e-habilidades-do-cla-10
   cla: kaguya
   elemento: null
+  tipo_dano: cortante
 - slug: tsubaki-no-mai
   nome: Tsubaki no Mai
   traducao: Dança das Camélias
@@ -1954,6 +1987,7 @@
   ancora: jutsus-e-habilidades-do-cla-10
   cla: kaguya
   elemento: null
+  tipo_dano: cortante
 - slug: tessenka-no-mai-tsuru
   nome: "Tessenka no Mai: Tsuru"
   traducao: "Dança da Clematis: Vinha"
@@ -1983,6 +2017,7 @@
   ancora: jutsus-e-habilidades-do-cla-10
   cla: kaguya
   elemento: null
+  tipo_dano: perfurante
 - slug: tessenka-no-mai-hana
   nome: "Tessenka no Mai: Hana"
   traducao: "Dança da Clematis: Flor"
@@ -2012,6 +2047,7 @@
   ancora: jutsus-e-habilidades-do-cla-10
   cla: kaguya
   elemento: null
+  tipo_dano: perfurante
 - slug: sawarabi-no-mai
   nome: Sawarabi no Mai
   traducao: Dança do Broto de Samambaia
@@ -2041,6 +2077,7 @@
   ancora: jutsus-e-habilidades-do-cla-10
   cla: kaguya
   elemento: null
+  tipo_dano: perfurante
 - slug: suika-no-jutsu
   nome: Suika no Jutsu
   traducao: Técnica de Hidratação
@@ -2100,6 +2137,7 @@
   ancora: jutsus-e-habilidades-do-cla-11
   cla: hozuki
   elemento: null
+  tipo_dano: agua
 - slug: suiton-mizu-bunshin
   nome: "Suiton: Mizu Bunshin"
   traducao: Clone de Água
@@ -2158,6 +2196,7 @@
   ancora: jutsus-e-habilidades-do-cla-11
   cla: hozuki
   elemento: suiton
+  tipo_dano: agua
 - slug: suiton-tate-eboshi
   nome: "Suiton: Tate Eboshi"
   traducao: "Estilo Água: Enterro das Crianças do Chapéu de Corvo"
@@ -2187,6 +2226,7 @@
   ancora: jutsus-e-habilidades-do-cla-11
   cla: hozuki
   elemento: suiton
+  tipo_dano: agua
 - slug: suiton-bolha-afogadora
   nome: "Suiton: Bolha Afogadora"
   traducao: "Liberação de Água: Bolha Afogadora"
@@ -2216,6 +2256,7 @@
   ancora: jutsus-e-habilidades-do-cla-11
   cla: hozuki
   elemento: suiton
+  tipo_dano: agua
 - slug: joki-boi
   nome: Jōki Bōi
   traducao: Tirania Fumegante Perigosa
@@ -2245,6 +2286,7 @@
   ancora: jutsus-e-habilidades-do-cla-11
   cla: hozuki
   elemento: null
+  tipo_dano: fogo
 - slug: suna-no-tate
   nome: Suna no Tate
   traducao: Escudo de Areia
@@ -2303,6 +2345,7 @@
   ancora: jutsus-e-habilidades-do-cla-12
   cla: sabaku
   elemento: null
+  tipo_dano: concussao
 - slug: sabaku-kyu
   nome: Sabaku Kyū
   traducao: Caixão de Areia
@@ -2361,6 +2404,7 @@
   ancora: jutsus-e-habilidades-do-cla-12
   cla: sabaku
   elemento: null
+  tipo_dano: concussao
 - slug: sabaku-ro
   nome: Sabaku Rō
   traducao: Prisão de Areia
@@ -2419,6 +2463,7 @@
   ancora: jutsus-e-habilidades-do-cla-12
   cla: sabaku
   elemento: null
+  tipo_dano: concussao
 - slug: sabaku-taiso
   nome: Sabaku Taisō
   traducao: Enterro de Areia Gigante
@@ -2448,6 +2493,7 @@
   ancora: jutsus-e-habilidades-do-cla-12
   cla: sabaku
   elemento: null
+  tipo_dano: concussao
 - slug: sensatsu-suisho
   nome: Sensatsu Suishō
   traducao: Mil Agulhas Voadoras de Água da Morte
@@ -2477,6 +2523,7 @@
   ancora: jutsus-e-habilidades-do-cla-13
   cla: yuki
   elemento: null
+  tipo_dano: agua
 - slug: hyoton-suishoheki
   nome: "Hyōton: Suishōheki"
   traducao: "Estilo Gelo: Parede de Cristal"
@@ -2535,6 +2582,7 @@
   ancora: jutsus-e-habilidades-do-cla-13
   cla: yuki
   elemento: hyoton
+  tipo_dano: gelo
 - slug: hyoton-makyo-hyosho
   nome: "Hyōton: Makyō Hyōshō"
   traducao: "Liberação de Gelo: Espelhos Demoníacos de Cristais de Gelo"
@@ -2564,6 +2612,7 @@
   ancora: jutsus-e-habilidades-do-cla-13
   cla: yuki
   elemento: hyoton
+  tipo_dano: gelo
 - slug: hyoton-hyogan-domu
   nome: "Hyōton: Hyōgan Dōmu"
   traducao: "Estilo Gelo: Domo de Iceberg"
@@ -2622,6 +2671,7 @@
   ancora: jutsus-e-habilidades-do-cla-13
   cla: yuki
   elemento: hyoton
+  tipo_dano: gelo
 - slug: makyo-hakuhyo
   nome: Makyō Hakuhyō
   traducao: Espelho Demoníaco de Gelo Fino
@@ -2827,6 +2877,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: chakra
 - slug: hi-no-tama
   nome: Hi no Tama
   traducao: Bola de Fogo Pequena
@@ -2856,6 +2907,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: goukakyu-no-jutsu
   nome: Goukakyu no Jutsu
   traducao: Grande Bola de Fogo
@@ -2885,6 +2937,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: karyuu-endan
   nome: Karyuu Endan
   traducao: Míssil de Dragão Flamejante
@@ -2914,6 +2967,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: mizu-teppou
   nome: Mizu Teppou
   traducao: Bala de Água
@@ -2943,6 +2997,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: suijinheki
   nome: Suijinheki
   traducao: Muralha de Água
@@ -3001,6 +3056,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: kirigakure-no-jutsu
   nome: Kirigakure no Jutsu
   traducao: Técnica de Ocultação na Névoa
@@ -3089,6 +3145,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: iwa-yado-kuzushi
   nome: Iwa Yado Kuzushi
   traducao: Demolição da Pousada de Pedra
@@ -3118,6 +3175,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: jibashi
   nome: Jibashi
   traducao: Choque Elétrico
@@ -3147,6 +3205,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: chidori
   nome: Chidori
   traducao: Mil Pássaros
@@ -3176,6 +3235,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: raikiri
   nome: Raikiri
   traducao: Cortador de Relâmpago
@@ -3205,6 +3265,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: kirin
   nome: Kirin
   traducao: Cervo do Trovão
@@ -3235,6 +3296,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: daitoppa
   nome: Daitoppa
   traducao: Grande Avanço
@@ -3264,6 +3326,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: kazekiri-no-jutsu
   nome: Kazekiri no Jutsu
   traducao: Lâmina de Vento
@@ -3293,6 +3356,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: rasenshuriken
   nome: Rasenshuriken
   traducao: Shuriken Espiral
@@ -3323,6 +3387,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: shosen-jutsu
   nome: Shōsen Jutsu
   traducao: Técnica da Palma Mística
@@ -3381,6 +3446,7 @@
   ancora: ninjutsu-medico
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: kai
   nome: Kai
   traducao: Liberação
@@ -3584,6 +3650,7 @@
   ancora: genjutsu-comuns
   cla: null
   elemento: null
+  tipo_dano: mental
 - slug: konoha-reppuu
   nome: Konoha Reppuu
   traducao: Vendaval da Folha
@@ -3613,6 +3680,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: konoha-senpuu
   nome: Konoha Senpuu
   traducao: Furacão da Folha
@@ -3642,6 +3710,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: dynamic-entry
   nome: Dynamic Entry
   traducao: Entrada Dinâmica
@@ -3671,6 +3740,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: konoha-daisenpuu
   nome: Konoha Daisenpuu
   traducao: Grande Furacão da Folha
@@ -3700,6 +3770,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: omote-renge
   nome: Omote Renge
   traducao: Lótus Frontal
@@ -3729,6 +3800,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: goukakyu-no-jutsu-2
   nome: Goukakyu no Jutsu
   traducao: Grande Bola de Fogo
@@ -3758,6 +3830,7 @@
   ancora: exemplo-de-ficha-pronta
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: hyousenkou-no-mai
   nome: Hyousenkou no Mai
   traducao: Dança das Mil Agulhas Geladas
@@ -3787,6 +3860,7 @@
   ancora: exemplo-1-hyousenkou-no-mai-yuki-rank-c
   cla: null
   elemento: null
+  tipo_dano: gelo
 - slug: konoha-daikaiten
   nome: Konoha Daikaiten
   traducao: Grande Giro da Folha
@@ -3816,6 +3890,7 @@
   ancora: exemplo-2-konoha-daikaiten-taijutsu-rank-d
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: yami-no-rasengan
   nome: Yami no Rasengan
   traducao: Rasengan Sombrio
@@ -3845,6 +3920,7 @@
   ancora: exemplo-3-rasengan-sombrio-ninjutsu-rank-a
   cla: null
   elemento: null
+  tipo_dano: chakra
 - slug: suiton-mizurappa
   nome: "Suiton: Mizurappa"
   traducao: "Estilo Água: Ondas Furiosas"
@@ -3874,6 +3950,7 @@
   ancora: exemplo-4-suiton-mizurappa-ninjutsu-rank-d
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: shosen-jutsu-2
   nome: Shōsen Jutsu
   traducao: Técnica da Palma Mística
@@ -3933,6 +4010,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: katon-goryuka-no-jutsu
   nome: "Katon: Gōryūka no Jutsu"
   traducao: "Estilo Fogo: Técnica do Grande Dragão de Fogo"
@@ -3962,6 +4040,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: katon-endan
   nome: "Katon: Endan"
   traducao: "Estilo Fogo: Bomba de Chamas"
@@ -3991,6 +4070,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: katon-dai-endan
   nome: "Katon: Dai Endan"
   traducao: "Estilo Fogo: Grande Bala de Chama"
@@ -4021,6 +4101,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: katon-goka-mekkyaku
   nome: "Katon: Gōka Mekkyaku"
   traducao: "Estilo Fogo: Grande Aniquilação por Fogo"
@@ -4050,6 +4131,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: katon-bakufu-ranbu
   nome: "Katon: Bakufū Ranbu"
   traducao: "Estilo Fogo: Dança Selvagem da Onda Explosiva"
@@ -4079,6 +4161,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: katon-zukokku
   nome: "Katon: Zukokku"
   traducao: "Estilo Fogo: Dor de Cabeça"
@@ -4108,6 +4191,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: katon-gamayu-endan
   nome: "Katon: Gamayu Endan"
   traducao: "Estilo Fogo: Bomba de Chamas do Óleo de Sapo"
@@ -4138,6 +4222,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: katon-hosenka-tsumabeni
   nome: "Katon: Hōsenka Tsumabeni"
   traducao: "Estilo Fogo: Técnica Flor de Fênix: Garra Escarlate"
@@ -4167,6 +4252,7 @@
   ancora: jutsus-e-habilidades-do-cla-7
   cla: uchiha
   elemento: katon
+  tipo_dano: fogo
 - slug: kaze-no-yaiba
   nome: Kaze no Yaiba
   traducao: Lâmina de Vento
@@ -4196,6 +4282,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: daikamaitachi-no-jutsu
   nome: Daikamaitachi no Jutsu
   traducao: Técnica da Grande Foice da Doninha
@@ -4226,6 +4313,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: kamaitachi-no-jutsu
   nome: Kamaitachi no Jutsu
   traducao: Técnica da Foice da Doninha
@@ -4256,6 +4344,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: futon-reppusho
   nome: "Fūton: Reppūshō"
   traducao: "Estilo Vento: Palma Vendaval"
@@ -4285,6 +4374,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: futon-atsugai
   nome: "Fūton: Atsugai"
   traducao: "Estilo Vento: Pressão Nociva"
@@ -4314,6 +4404,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: futon-shinkugyoku
   nome: "Fūton: Shinkūgyoku"
   traducao: "Estilo Vento: Esfera de Vácuo"
@@ -4343,6 +4434,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: futon-shinku-taigyoku
   nome: "Fūton: Shinkū Taigyoku"
   traducao: Grande Esfera de Vácuo
@@ -4372,6 +4464,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: futon-shinku-renpa
   nome: "Fūton: Shinkū Renpa"
   traducao: Ondas de Vácuo em Série
@@ -4401,6 +4494,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: suiro-no-jutsu
   nome: Suirō no Jutsu
   traducao: Técnica da Prisão de Água
@@ -4462,6 +4556,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: suiton-bakusui-shoha
   nome: "Suiton: Bakusui Shōha"
   traducao: "Estilo Água: Onda de Choque Explosiva de Água"
@@ -4491,6 +4586,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: suiton-daibakufu-no-jutsu
   nome: "Suiton: Daibakufu no Jutsu"
   traducao: "Estilo Água: Técnica da Grande Cachoeira"
@@ -4521,6 +4617,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: suiton-goshokuzame
   nome: "Suiton: Goshokuzame"
   traducao: "Estilo Água: Cinco Tubarões Famintos"
@@ -4551,6 +4648,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: suiton-teppodama
   nome: "Suiton: Teppōdama"
   traducao: "Estilo Água: Tiro da Arma"
@@ -4580,6 +4678,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: suiton-suigadan
   nome: "Suiton: Suigadan"
   traducao: "Estilo Água: Bomba da Presa de Água"
@@ -4609,6 +4708,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: suiton-mizuame-nabara
   nome: "Suiton: Mizuame Nabara"
   traducao: "Estilo Água: Captura do Campo de Xarope de Amido"
@@ -4667,6 +4767,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: suiton-takitsubo-no-jutsu
   nome: "Suiton: Takitsubo no Jutsu"
   traducao: "Estilo Água: Técnica da Bacia da Cachoeira"
@@ -4696,6 +4797,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: kanchi-suikyu
   nome: Kanchi Suikyū
   traducao: Esfera de Água Sensorial
@@ -4755,6 +4857,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: suiton-daikodan-no-jutsu
   nome: "Suiton: Daikōdan no Jutsu"
   traducao: "Estilo Água: Técnica da Grande Bomba do Tubarão"
@@ -4784,6 +4887,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: doton-kengan-no-jutsu
   nome: "Doton: Kengan no Jutsu"
   traducao: "Estilo Terra: Técnica do Punho Rochoso"
@@ -4813,6 +4917,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: doton-sando-no-jutsu
   nome: "Doton: Sando no Jutsu"
   traducao: "Estilo Terra: Técnica Sanduíche"
@@ -4842,6 +4947,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: doton-shinju-zanshu-no-jutsu
   nome: "Doton: Shinjū Zanshu no Jutsu"
   traducao: "Estilo Terra: Técnica da Decapitação Suicida"
@@ -4930,6 +5036,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: doton-doryukatsu
   nome: "Doton: Doryūkatsu"
   traducao: "Estilo Terra: Divisão do Fluxo de Terra"
@@ -4959,6 +5066,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: doton-kajugan-no-jutsu
   nome: "Doton: Kajūgan no Jutsu"
   traducao: "Estilo Terra: Técnica da Rocha Ponderada"
@@ -5075,6 +5183,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: doton-keijugan-no-jutsu
   nome: "Doton: Keijūgan no Jutsu"
   traducao: "Estilo Terra: Técnica da Rocha Leve"
@@ -5133,6 +5242,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: doton-yomi-numa
   nome: "Doton: Yomi Numa"
   traducao: "Estilo Terra: Pântano Infernal"
@@ -5162,6 +5272,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: doton-dochu-eigyo-no-jutsu
   nome: "Doton: Dochū Eigyo no Jutsu"
   traducao: "Estilo Terra: Técnica da Projeção do Peixe Subterrâneo"
@@ -5220,6 +5331,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: doton-kekkai-doro-domu
   nome: "Doton Kekkai: Dorō Dōmu"
   traducao: "Barreira Estilo Terra: Prisão Cúpula de Terra"
@@ -5279,6 +5391,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: chidori-eiso
   nome: Chidori Eisō
   traducao: Lança de Chidori
@@ -5309,6 +5422,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: chidori-nagashi
   nome: Chidori Nagashi
   traducao: Corrente de Chidori
@@ -5339,6 +5453,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: kusanagi-no-tsurugi-chidorigatana
   nome: "Kusanagi no Tsurugi: Chidorigatana"
   traducao: "Espada de Kusanagi: Lâmina de Chidori"
@@ -5369,6 +5484,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: raiton-chakura-modo
   nome: Raiton Chakura Mōdo
   traducao: Modo de Chakra de Liberação de Relâmpago
@@ -5427,6 +5543,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: raiton-raiju-tsuiga
   nome: "Raiton: Raijū Tsuiga"
   traducao: "Estilo Relâmpago: Perseguição de Garras da Besta Relâmpago"
@@ -5456,6 +5573,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: raiton-kuropansa
   nome: "Raiton: Kuropansa"
   traducao: "Estilo Relâmpago: Pantera Negra"
@@ -5485,6 +5603,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: kuroi-kaminari
   nome: Kuroi Kaminari
   traducao: Relâmpago Negro
@@ -5514,6 +5633,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: jigokuzuki
   nome: Jigokuzuki
   traducao: Facada Infernal
@@ -5544,6 +5664,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: raiga-bomu
   nome: Raigā Bomu
   traducao: Bomba Ligre
@@ -5574,6 +5695,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: raigyaku-suihei-choppu
   nome: Raigyaku Suihei Choppu
   traducao: Corte Horizontal de Relâmpago Violento
@@ -5604,6 +5726,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: raitoningu-sutoreto
   nome: Raitoningu Sutorēto
   traducao: Relâmpago Reto
@@ -5634,6 +5757,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: raiton-rariatto
   nome: "Raiton: Rariatto"
   traducao: Lariat de Raio
@@ -5664,6 +5788,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: raiton-daburu-rariatto
   nome: "Raiton: Daburu Rariatto"
   traducao: Lariat Duplo de Raio
@@ -5694,6 +5819,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: okasho
   nome: Ōkashō
   traducao: Impacto da Flor de Cerejeira
@@ -5723,6 +5849,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: tsutenkyaku
   nome: Tsūtenkyaku
   traducao: Pé da Dor Celestial
@@ -5752,6 +5879,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: konoha-goriki-senpu
   nome: Konoha Gōriki Senpū
   traducao: Poderoso Furacão da Folha
@@ -5781,6 +5909,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: konoha-shofu
   nome: Konoha Shōfū
   traducao: Vento Ascendente da Folha
@@ -5810,6 +5939,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: shishi-rendan
   nome: Shishi Rendan
   traducao: Rajada de Leões
@@ -5840,6 +5970,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: sennen-goroshi
   nome: Sennen Goroshi
   traducao: Mil Anos de Morte
@@ -5869,6 +6000,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: ninpo-shinken-shirahadori
   nome: "Ninpō: Shinken Shirahadori"
   traducao: "Arte Ninja: Verdadeira Captura de Espada com as Mãos Nuas"
@@ -5958,6 +6090,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: choharite
   nome: Chōharite
   traducao: Super Bofetada
@@ -5987,6 +6120,7 @@
   ancora: jutsus-e-habilidades-do-cla-2
   cla: akimichi
   elemento: null
+  tipo_dano: concussao
 - slug: konoha-tsumuji-senpu
   nome: Konoha Tsumuji Senpū
   traducao: Choque do Furacão da Folha
@@ -6017,6 +6151,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: rakanken
   nome: Rakanken
   traducao: Punho Arhat
@@ -6135,6 +6270,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: kawazu-kumite
   nome: Kawazu Kumite
   traducao: Kumite do Sapo
@@ -6165,6 +6301,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: kasumi-jusha-no-jutsu
   nome: Kasumi Jūsha no Jutsu
   traducao: Técnica dos Servos de Neblina
@@ -6371,6 +6508,7 @@
   ancora: ninjutsu-medico
   cla: null
   elemento: null
+  tipo_dano: veneno
 - slug: saikan-chushutsu-no-jutsu
   nome: Saikan Chūshutsu no Jutsu
   traducao: Técnica de Extração Delicada de Doença
@@ -6429,6 +6567,7 @@
   ancora: ninjutsu-medico
   cla: null
   elemento: null
+  tipo_dano: chakra
 - slug: shikon-no-jutsu
   nome: Shikon no Jutsu
   traducao: Técnica da Alma Morta
@@ -6667,6 +6806,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: ura-shisho-fuin
   nome: Ura Shishō Fūin
   traducao: Técnica do Selo de Quatro Símbolos Reverso
@@ -6697,6 +6837,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: chakra
 - slug: fuka-hoin
   nome: Fūka Hōin
   traducao: Método de Selamento de Fogo
@@ -6757,6 +6898,7 @@
   ancora: como-funciona-o-combate-com-marionetes-visao-geral
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: kurohigi-kiki-sanpatsu
   nome: "Kurohigi: Kiki Sanpatsu"
   traducao: "Técnica Preta Secreta: Maquinário de Tiro Triplo"
@@ -6787,6 +6929,7 @@
   ancora: como-funciona-o-combate-com-marionetes-visao-geral
   cla: null
   elemento: null
+  tipo_dano: veneno
 - slug: kiko-junbu
   nome: Kikō Junbū
   traducao: Escudo da Luz Mecânica
@@ -6847,6 +6990,7 @@
   ancora: como-funciona-o-combate-com-marionetes-visao-geral
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: soshujin
   nome: Sōshūjin
   traducao: Lâminas de Ataque Manipuladas
@@ -6876,6 +7020,7 @@
   ancora: como-funciona-o-combate-com-marionetes-visao-geral
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: akahigi-hyakki-no-soen
   nome: "Akahigi: Hyakki no Sōen"
   traducao: "Técnica Vermelha Secreta: Performance das Cem Marionetes"
@@ -6906,6 +7051,7 @@
   ancora: como-funciona-o-combate-com-marionetes-visao-geral
   cla: null
   elemento: null
+  tipo_dano: veneno
 - slug: shirohigi-jikki-chikamatsu-no-shu
   nome: "Shirohigi: Jikki Chikamatsu no Shū"
   traducao: "Técnica Branca Secreta: A Coleção de Dez Marionetes de Chikamatsu"
@@ -6936,6 +7082,7 @@
   ancora: como-funciona-o-combate-com-marionetes-visao-geral
   cla: null
   elemento: null
+  tipo_dano: perfurante
 - slug: soen-hitomi-goku
   nome: "Sōen: Hitomi Gokū"
   traducao: "Performance da Marionete: Conquista Habilidosa com um Corpo Humano"
@@ -6996,6 +7143,7 @@
   ancora: como-funciona-o-combate-com-marionetes-visao-geral
   cla: null
   elemento: null
+  tipo_dano: perfurante
 - slug: sogazan
   nome: Sōgazan
   traducao: Corte das Presas Gêmeas
@@ -7026,6 +7174,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: kusari-sogazan
   nome: "Kusari: Sōgazan"
   traducao: "Corrente: Corte das Presas Gêmeas"
@@ -7056,6 +7205,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: perfurante
 - slug: issen
   nome: Issen
   traducao: Flash
@@ -7086,6 +7236,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: ansatsu-jutsu
   nome: Ansatsu Jutsu
   traducao: Técnica de Assassinato
@@ -7116,6 +7267,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: iaido
   nome: Iaidō
   traducao: Iaidō
@@ -7146,6 +7298,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: mikazuki-no-mai
   nome: Mikazuki no Mai
   traducao: Dança da Lua Crescente
@@ -7176,6 +7329,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: kumo-ryu-uragiri
   nome: Kumo-Ryū Uragiri
   traducao: Corte Pelo Verso ao Estilo da Nuvem
@@ -7205,6 +7359,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: kage-shuriken-no-jutsu
   nome: Kage Shuriken no Jutsu
   traducao: Técnica da Shuriken das Sombras
@@ -7234,6 +7389,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: perfurante
 - slug: shikomishindan
   nome: Shikomishindan
   traducao: Tiro Preparado de Agulhas
@@ -7264,6 +7420,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: veneno
 - slug: joro-senbon
   nome: Jōro Senbon
   traducao: Chuveiro de Agulhas
@@ -7294,6 +7451,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: perfurante
 - slug: shuriken-kage-bunshin-no-jutsu
   nome: Shuriken Kage Bunshin no Jutsu
   traducao: Técnica do Clone da Sombra de Shuriken
@@ -7323,6 +7481,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: perfurante
 - slug: hari-jizo
   nome: Hari Jizō
   traducao: Agulhas Jizou
@@ -7352,6 +7511,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: perfurante
 - slug: jagei-jubaku
   nome: Jagei Jubaku
   traducao: Maldição do Olhar da Serpente
@@ -7410,6 +7570,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: perfurante
 - slug: senei-tajashu
   nome: Sen'ei Tajashu
   traducao: Mãos de Múltiplas Serpentes Ocultas na Sombra
@@ -7439,6 +7600,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: perfurante
 - slug: kuchiyose-rashomon
   nome: "Kuchiyose: Rashōmon"
   traducao: "Invocação: Rashōmon"
@@ -7559,6 +7721,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: hiraijin-no-jutsu
   nome: Hiraijin no Jutsu
   traducao: Técnica da Formação do Trovão Voador
@@ -7619,6 +7782,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: kuchiyose-kirikiri-mai
   nome: "Kuchiyose: Kirikiri Mai"
   traducao: "Invocação: Dança da Decapitação Rápida"
@@ -7649,6 +7813,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: zankuha
   nome: Zankūha
   traducao: Ondas Sonoras Decapitadoras
@@ -7679,6 +7844,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: zankukyokuha
   nome: Zankūkyokuha
   traducao: Extremas Ondas Sonoras Decapitadoras
@@ -7709,6 +7875,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: kyomeisen
   nome: Kyōmeisen
   traducao: Eco da Broca Ressonante
@@ -7739,6 +7906,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: taju-kage-bunshin-no-jutsu
   nome: Tajū Kage Bunshin no Jutsu
   traducao: Técnica dos Múltiplos Clones da Sombra
@@ -7769,6 +7937,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: bunshin-daibakuha
   nome: Bunshin Daibakuha
   traducao: Grande Explosão do Clone
@@ -7799,6 +7968,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: karasu-bunshin-no-jutsu
   nome: Karasu Bunshin no Jutsu
   traducao: Técnica do Clone de Corvo
@@ -7919,6 +8089,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: sanzengarasu-no-jutsu
   nome: Sanzengarasu no Jutsu
   traducao: Técnica dos Mil Corvos Dispersos
@@ -7977,6 +8148,7 @@
   ancora: jutsus-e-habilidades-do-cla-8
   cla: senju
   elemento: mokuton
+  tipo_dano: madeira
 - slug: moku-bunshin-no-jutsu
   nome: Moku Bunshin no Jutsu
   traducao: Técnica do Clone de Madeira
@@ -8036,6 +8208,7 @@
   ancora: jutsus-e-habilidades-do-cla-8
   cla: senju
   elemento: mokuton
+  tipo_dano: madeira
 - slug: hokage-shiki-jijun-jutsu-kakuan-nitten-suishu
   nome: "Hokage-Shiki Jijun Jutsu: Kakuan Nitten Suishu"
   traducao: "Técnica Sexagenária do Estilo Hokage: Kakuan Entrando na Sociedade com Mãos Trazendo Felicidade"
@@ -8094,6 +8267,7 @@
   ancora: jutsus-e-habilidades-do-cla-8
   cla: senju
   elemento: mokuton
+  tipo_dano: madeira
 - slug: mokuton-mokujin-no-jutsu
   nome: "Mokuton: Mokujin no Jutsu"
   traducao: "Estilo Madeira: Técnica do Homem de Madeira"
@@ -8153,6 +8327,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: jiton
+  tipo_dano: concussao
 - slug: satetsu-kesshu
   nome: Satetsu Kesshū
   traducao: Assalto da Areia de Ferro
@@ -8183,6 +8358,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: jiton
+  tipo_dano: concussao
 - slug: satetsu-shigure
   nome: Satetsu Shigure
   traducao: Chuva de Areia de Ferro
@@ -8213,6 +8389,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: jiton
+  tipo_dano: concussao
 - slug: odama-rasengan
   nome: Ōdama Rasengan
   traducao: Rasengan Gigante
@@ -8243,6 +8420,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: chakra
 - slug: rasenrengan
   nome: Rasenrengan
   traducao: Rajada Rasengan
@@ -8273,6 +8451,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: chakra
 - slug: choju-giga
   nome: Chōjū Giga
   traducao: Caricatura da Super Besta
@@ -8303,6 +8482,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: sumigasumi-no-jutsu
   nome: Sumigasumi no Jutsu
   traducao: Técnica da Névoa de Tinta
@@ -8480,6 +8660,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: chakra
 # ---- Jutsus da wiki de Naruto: onda 2 (gerado por scripts/livro/importar-jutsus.ts a partir da especificação da onda)
 - slug: katon-goka-messhitsu
   nome: "Katon: Gōka Messhitsu"
@@ -8510,6 +8691,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: katon-ryuen-hoka-no-jutsu
   nome: "Katon: Ryūen Hōka no Jutsu"
   traducao: "Estilo Fogo: Técnica da Canção do Dragão de Chamas"
@@ -8539,6 +8721,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: katon-haijingakure-no-jutsu
   nome: "Katon: Haijingakure no Jutsu"
   traducao: "Estilo Fogo: Técnica de Ocultação nas Cinzas"
@@ -8568,6 +8751,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: katon-goen-no-jutsu
   nome: "Katon: Gōen no Jutsu"
   traducao: "Estilo Fogo: Técnica da Grande Chama"
@@ -8597,6 +8781,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: katon-kibaku-enjin
   nome: "Katon: Kibaku Enjin"
   traducao: "Estilo Fogo: Formação de Chama Explosiva"
@@ -8627,6 +8812,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: kazanami
   nome: Kazanami
   traducao: Ondas de Vento
@@ -8656,6 +8842,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: futon-shinkuha
   nome: "Fūton: Shinkūha"
   traducao: "Estilo Vento: Onda de Vácuo"
@@ -8685,6 +8872,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: futon-shinkujin
   nome: "Fūton: Shinkūjin"
   traducao: "Estilo Vento: Lâmina de Vácuo"
@@ -8715,6 +8903,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: futon-fujin-no-jutsu
   nome: "Fūton: Fūjin no Jutsu"
   traducao: "Estilo Vento: Técnica da Nuvem de Poeira"
@@ -8744,6 +8933,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: futon-kakeami
   nome: "Fūton: Kakeami"
   traducao: "Estilo Vento: Lançamento da Rede"
@@ -8774,6 +8964,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: futon-okakeami
   nome: "Fūton: Ōkakeami"
   traducao: "Estilo Vento: Rede de Arremesso Grande"
@@ -8804,6 +8995,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: tenkyu
   nome: Tenkyū
   traducao: Choro Celestial
@@ -8833,6 +9025,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: ukojizai-no-jutsu
   nome: Ukojizai no Jutsu
   traducao: Técnica do Tigre à Vontade na Chuva
@@ -8921,6 +9114,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: suiton-suishoha
   nome: "Suiton: Suishōha"
   traducao: "Estilo Água: Colisão da Onda de Água"
@@ -8950,6 +9144,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: suiton-suijinchu
   nome: "Suiton: Suijinchū"
   traducao: "Estilo Água: Formação do Pilar de Água"
@@ -9008,6 +9203,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: suiton-homatsu-no-jutsu
   nome: "Suiton: Hōmatsu no Jutsu"
   traducao: "Estilo Água: Técnica de Bolhas"
@@ -9037,6 +9233,7 @@
   ancora: suiton-liberacao-de-agua
   cla: null
   elemento: suiton
+  tipo_dano: agua
 - slug: doton-daichidokaku
   nome: "Doton: Daichidōkaku"
   traducao: "Estilo Terra: Grande Movimentação do Núcleo da Terra"
@@ -9066,6 +9263,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: doton-renga-no-jutsu
   nome: "Doton: Renga no Jutsu"
   traducao: "Estilo Terra: Técnica da Prática do Tijolo"
@@ -9153,6 +9351,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: doton-ressenga
   nome: "Doton: Ressenga"
   traducao: Presa da Broca que Rasga
@@ -9183,6 +9382,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: doton-chokajugan-no-jutsu
   nome: "Doton: Chōkajūgan no Jutsu"
   traducao: "Estilo Terra: Técnica da Rocha Super Pesada"
@@ -9212,6 +9412,7 @@
   ancora: doton-liberacao-de-terra
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: doton-chokeijugan-no-jutsu
   nome: "Doton: Chōkeijūgan no Jutsu"
   traducao: "Estilo Terra: Técnica da Rocha Super Leve"
@@ -9330,6 +9531,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: raiton-shiden
   nome: "Raiton: Shiden"
   traducao: "Estilo Relâmpago: Eletricidade Roxa"
@@ -9359,6 +9561,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: yoton-yokai-no-jutsu
   nome: "Yōton: Yōkai no Jutsu"
   traducao: "Estilo Dissolução: Técnica da Solução Misteriosa"
@@ -9389,6 +9592,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: yoton
+  tipo_dano: fogo
 - slug: yoton-sekkaigyo-no-jutsu
   nome: "Yōton: Sekkaigyō no Jutsu"
   traducao: "Estilo Fusão: Técnica da Calcificação"
@@ -9419,6 +9623,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: yoton
+  tipo_dano: fogo
 - slug: yoton-kaisekifu-no-jutsu
   nome: "Yōton: Kaisekifū no Jutsu"
   traducao: "Estilo Fusão: Técnica do Selo da Pedra de Cinzas"
@@ -9479,6 +9684,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: ranton
+  tipo_dano: raio
 - slug: kusa-boheki
   nome: Kūsa Bōheki
   traducao: Muro Defensivo de Areia Aérea
@@ -9595,6 +9801,7 @@
   ancora: jutsus-e-habilidades-do-cla-12
   cla: sabaku
   elemento: null
+  tipo_dano: concussao
 - slug: sabakuha
   nome: Sabakuha
   traducao: Onda do Deserto
@@ -9653,6 +9860,7 @@
   ancora: jutsus-e-habilidades-do-cla-12
   cla: sabaku
   elemento: null
+  tipo_dano: concussao
 - slug: gokusa-maiso
   nome: Gokusa Maisō
   traducao: Enterro da Prisão de Areia
@@ -9682,6 +9890,7 @@
   ancora: jutsus-e-habilidades-do-cla-12
   cla: sabaku
   elemento: null
+  tipo_dano: concussao
 - slug: suna-shigure
   nome: Suna Shigure
   traducao: Garoa de Areia
@@ -9711,6 +9920,7 @@
   ancora: jutsus-e-habilidades-do-cla-12
   cla: sabaku
   elemento: null
+  tipo_dano: concussao
 - slug: suna-arare
   nome: Suna Arare
   traducao: Granizo de Areia
@@ -9740,6 +9950,7 @@
   ancora: jutsus-e-habilidades-do-cla-12
   cla: sabaku
   elemento: null
+  tipo_dano: concussao
 - slug: suna-bunshin
   nome: Suna Bunshin
   traducao: Clone de Areia
@@ -9856,6 +10067,7 @@
   ancora: jutsus-e-habilidades-do-cla-6
   cla: hyuuga
   elemento: null
+  tipo_dano: concussao
 - slug: mizudeppo-nicho
   nome: "Mizudeppō: Nichō"
   traducao: "Pistola de Água: Duas Pistolas"
@@ -9886,6 +10098,7 @@
   ancora: jutsus-e-habilidades-do-cla-11
   cla: hozuki
   elemento: suiton
+  tipo_dano: agua
 - slug: kagura-shingan
   nome: Kagura Shingan
   traducao: Olho da Mente de Kagura
@@ -9944,6 +10157,7 @@
   ancora: jutsus-e-habilidades-do-cla-9
   cla: uzumaki
   elemento: null
+  tipo_dano: concussao
 - slug: shinten-kugutsu-juin-no-jutsu
   nome: Shinten Kugutsu Juin no Jutsu
   traducao: Técnica de Transferência da Mente por um Boneco Amaldiçoado
@@ -10004,6 +10218,7 @@
   ancora: jutsus-e-habilidades-do-cla-2
   cla: akimichi
   elemento: null
+  tipo_dano: concussao
 - slug: soshuga
   nome: Sōshūga
   traducao: Presas Gêmeas Atacando
@@ -10063,6 +10278,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: kakuran-taijutsu
   nome: Kakuran Taijutsu
   traducao: Taijutsu de Agitação
@@ -10121,6 +10337,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: konoha-otoshi
   nome: Konoha Otoshi
   traducao: Queda da Folha
@@ -10150,6 +10367,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: konoha-kaigansho
   nome: Konoha Kaiganshō
   traducao: Ascensão Destruidora de Rocha da Folha
@@ -10179,6 +10397,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: sotenkyaku
   nome: Sōtenkyaku
   traducao: Pé da Lança Celestial
@@ -10208,6 +10427,7 @@
   ancora: tecnicas-de-taijutsu-combate-corporal
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: erubo
   nome: Erubō
   traducao: Cotovelada
@@ -10238,6 +10458,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: girochin-doroppu
   nome: Girochin Doroppu
   traducao: Queda da Guilhotina
@@ -10268,6 +10489,7 @@
   ancora: raiton-liberacao-de-raio
   cla: null
   elemento: raiton
+  tipo_dano: raio
 - slug: zanko
   nome: Zankō
   traducao: Brilho Restante
@@ -10298,6 +10520,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: tsukikage
   nome: Tsukikage
   traducao: Luar
@@ -10328,6 +10551,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: yojinbo
   nome: Yōjinbō
   traducao: Risco da Dança da Lâmina
@@ -10358,6 +10582,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: iaigiri
   nome: Iaigiri
   traducao: Decapitação de Iai
@@ -10388,6 +10613,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: kumogakure-taijutsu-okami-ringu
   nome: "Kumogakure Taijutsu: Ōkami Ringu"
   traducao: "Taijutsu de Kumogakure: Anel do Lobo"
@@ -10418,6 +10644,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: hisenken
   nome: Hisenken
   traducao: Espada Rotativa Voadora
@@ -10448,6 +10675,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: chigiri-toho-honenuki
   nome: "Chigiri Tōhō: Honenuki"
   traducao: "Arte da Espada da Névoa Sangrenta: Mutilação de Ossos"
@@ -10478,6 +10706,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: perfurante
 - slug: chakura-to-maichimonji
   nome: "Chakura-tō: Maichimonji"
   traducao: "Lâmina de Chakra: Linha Reta"
@@ -10508,6 +10737,7 @@
   ancora: fuuton-liberacao-de-vento
   cla: null
   elemento: fuuton
+  tipo_dano: vento
 - slug: hagama-no-mai-rakuko-no-yaiba
   nome: "Hagama no Mai: Rakukō no Yaiba"
   traducao: "Dança da Lâmina de Foice: Queda Descendente da Lâmina"
@@ -10538,6 +10768,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: kumo-ryu-omotegiri
   nome: Kumo-Ryū Omotegiri
   traducao: Corte Frontal ao Estilo da Nuvem
@@ -10568,6 +10799,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: kumo-ryu-mikazukigiri
   nome: Kumo-Ryū Mikazukigiri
   traducao: Corte da Lua Crescente ao Estilo da Nuvem
@@ -10598,6 +10830,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: kumo-ryu-kaengiri
   nome: Kumo-Ryū Kaengiri
   traducao: Corta-Chamas ao Estilo da Nuvem
@@ -10628,6 +10861,7 @@
   ancora: katon-liberacao-de-fogo
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: cho-biburato-raitonto
   nome: Chō Biburāto Raitontō
   traducao: Espadas do Estilo Raio Super Vibrantes
@@ -10688,6 +10922,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: tenchu
   nome: Tenchū
   traducao: Punição Celestial
@@ -10718,6 +10953,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: kage-senbon
   nome: Kage Senbon
   traducao: Agulhas das Sombras
@@ -10747,6 +10983,7 @@
   ancora: os-seis-tipos-de-jutsu
   cla: null
   elemento: null
+  tipo_dano: perfurante
 - slug: chakura-kontororu-baku
   nome: "Chakura Kontorōru: Baku"
   traducao: "Controle de Chakra: Amarrar"
@@ -11013,6 +11250,7 @@
   ancora: ninjutsu-medico
   cla: null
   elemento: doton
+  tipo_dano: terra
 - slug: raiton-raigen-raikochu
   nome: "Raiton: Raigen Raikōchū"
   traducao: "Estilo Relâmpago: Alicerce de Relâmpago Ilusório"
@@ -11131,6 +11369,7 @@
   ancora: como-funciona-o-combate-com-marionetes-visao-geral
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: shikomi-kugutsu-shinshin-happa
   nome: "Shikomi Kugutsu: Shinshin Happa"
   traducao: "Marionete Preparada: Oito Ondas de Agulhas"
@@ -11161,6 +11400,7 @@
   ancora: como-funciona-o-combate-com-marionetes-visao-geral
   cla: null
   elemento: null
+  tipo_dano: veneno
 - slug: kugutsu-no-jutsu-gishu-senbon
   nome: "Kugutsu no Jutsu: Gishu Senbon"
   traducao: "Técnica de Marionetes: Agulhas do Braço Protético"
@@ -11191,6 +11431,7 @@
   ancora: como-funciona-o-combate-com-marionetes-visao-geral
   cla: null
   elemento: null
+  tipo_dano: veneno
 - slug: akahigi-kiki-sankaku
   nome: "Akahigi: Kiki Sankaku"
   traducao: "Técnica Vermelha Secreta: Maquinário Triangular"
@@ -11221,6 +11462,7 @@
   ancora: como-funciona-o-combate-com-marionetes-visao-geral
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: kugutsu-haruchugeki
   nome: "Kugutsu: Haruchūgeki"
   traducao: "Marionete: Ataque de Punição da Primavera"
@@ -11251,6 +11493,7 @@
   ancora: como-funciona-o-combate-com-marionetes-visao-geral
   cla: null
   elemento: null
+  tipo_dano: cortante
 - slug: gamayudan
   nome: Gamayudan
   traducao: Bomba do Óleo de Sapo
@@ -11428,6 +11671,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: veneno
 - slug: kuchiyose-yatai-kuzushi-no-jutsu
   nome: "Kuchiyose: Yatai Kuzushi no Jutsu"
   traducao: "Invocação: Técnica da Casa Caiu"
@@ -11458,6 +11702,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: kuchiyose-goju-rashomon
   nome: "Kuchiyose: Gojū Rashōmon"
   traducao: "Invocação: Portão Rashōmon Quíntuplo"
@@ -11518,6 +11763,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: perfurante
 - slug: kebari-senbon
   nome: Kebari Senbon
   traducao: Mil Agulhas de Cabelo
@@ -11547,6 +11793,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: perfurante
 - slug: ranjishigami-no-jutsu
   nome: Ranjishigami no Jutsu
   traducao: Técnica da Juba do Leão Selvagem
@@ -11606,6 +11853,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: bunretsu-no-jutsu
   nome: Bunretsu no Jutsu
   traducao: Técnica de Divisão
@@ -11724,6 +11972,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: katon
+  tipo_dano: fogo
 - slug: senpo-futon-sunabokori
   nome: "Senpō: Fūton Sunabokori"
   traducao: "Arte Sábia: Nuvem de Poeira da Liberação de Vento"
@@ -11784,6 +12033,7 @@
   ancora: ninjutsu-geral-sem-elemento
   cla: null
   elemento: null
+  tipo_dano: concussao
 - slug: mokuton-henge
   nome: "Mokuton: Henge"
   traducao: "Estilo Madeira: Transformação"
@@ -11960,6 +12210,7 @@
   ancora: jutsus-e-habilidades-do-cla-8
   cla: senju
   elemento: mokuton
+  tipo_dano: madeira
 # ---- Jutsus da wiki de Naruto: onda 3 (gerado por scripts/livro/importar-jutsus.ts a partir da especificação da onda)
 - slug: futton-komu-no-jutsu
   nome: "Futton: Kōmu no Jutsu"
@@ -11991,6 +12242,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: futton
+  tipo_dano: fogo
 - slug: futton-kairiki-muso
   nome: "Futton: Kairiki Musō"
   traducao: "Liberação de Fervura: Força Inigualável"
@@ -12051,6 +12303,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: futton
+  tipo_dano: fogo
 - slug: fungokyaku
   nome: Fungōkyaku
   traducao: Erupção do Pé Forte
@@ -12081,6 +12334,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: futton
+  tipo_dano: fogo
 - slug: shakuton-kajosatsu
   nome: "Shakuton: Kajōsatsu"
   traducao: "Estilo Calor: Assassinato de Vapor Extremo"
@@ -12111,6 +12365,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: shakuton
+  tipo_dano: fogo
 - slug: shakuton-daijohappa
   nome: "Shakuton: Daijōhappa"
   traducao: Grande Explosão de Vapor
@@ -12141,6 +12396,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: shakuton
+  tipo_dano: fogo
 - slug: bakuton-jiraiken
   nome: "Bakuton: Jiraiken"
   traducao: "Estilo Explosão: Punho de Mina Terrestre"
@@ -12171,6 +12427,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: bakuton
+  tipo_dano: concussao
 - slug: bakuton-shogeki
   nome: "Bakuton: Shōgeki"
   traducao: "Estilo Explosão: Impacto"
@@ -12201,6 +12458,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: bakuton
+  tipo_dano: concussao
 - slug: bakuton-bogyojutsu
   nome: "Bakuton: Bōgyojutsu"
   traducao: Técnica de Defesa Explosiva
@@ -12262,6 +12520,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: bakuton
+  tipo_dano: concussao
 - slug: kibaku-jirai
   nome: Kibaku Jirai
   traducao: Minas Terrestres Explosivas
@@ -12293,6 +12552,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: bakuton
+  tipo_dano: concussao
 - slug: ranton-burakku-hantingu
   nome: "Ranton: Burakku Hantingu"
   traducao: "Estilo Tempestade: Caçada Negra"
@@ -12323,6 +12583,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: ranton
+  tipo_dano: raio
 - slug: ranton-seishujin
   nome: "Ranton: Seishūjin"
   traducao: Lâmina da Águia Azul
@@ -12354,6 +12615,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: ranton
+  tipo_dano: raio
 - slug: ranton-raiunkuha
   nome: "Ranton: Raiunkūha"
   traducao: "Estilo Tempestade: Onda Interna da Nuvem Tempestuosa"
@@ -12384,6 +12646,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: ranton
+  tipo_dano: raio
 - slug: jinton-genkai-hakuri-no-jutsu
   nome: "Jinton: Genkai Hakuri no Jutsu"
   traducao: "Estilo Pó: Técnica do Desprendimento do Mundo Primitivo"
@@ -12414,6 +12677,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: jinton
+  tipo_dano: chakra
 - slug: jinton-bunretsu-genkai-hakuri-no-jutsu
   nome: "Jinton: Bunretsu Genkai Hakuri no Jutsu"
   traducao: "Estilo Pó: Técnica de Divisão do Desprendimento do Mundo Primitivo"
@@ -12445,6 +12709,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: jinton
+  tipo_dano: chakra
 - slug: yoton-shakugaryugan-no-jutsu
   nome: "Yōton: Shakugaryūgan no Jutsu"
   traducao: "Estilo Fusão: Técnica do Rio de Rochas Flamejantes"
@@ -12475,6 +12740,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: yoton
+  tipo_dano: fogo
 - slug: yoton-chakura-modo
   nome: Yōton Chakura Mōdo
   traducao: Modo de Chakra de Liberação de Lava
@@ -12535,6 +12801,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: yoton
+  tipo_dano: fogo
 - slug: yoton-kagandan
   nome: "Yōton: Kagandan"
   traducao: Projétil de Rocha de Fogo
@@ -12565,6 +12832,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: yoton
+  tipo_dano: fogo
 - slug: satetsu-kurogane-no-tsubasa
   nome: "Satetsu: Kurogane no Tsubasa"
   traducao: "Areia de Ferro: Asas de Ferro Negro"
@@ -12595,6 +12863,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: jiton
+  tipo_dano: concussao
 - slug: jiton-sakin-taiso
   nome: "Jiton: Sakin Taisō"
   traducao: "Liberação de Magnetismo: Funeral Imperial de Pó de Ouro"
@@ -12625,6 +12894,7 @@
   ancora: elementos-combinados
   cla: null
   elemento: jiton
+  tipo_dano: concussao
 - slug: sakin-shigure
   nome: Sakin Shigure
   traducao: Chuva de Pó de Ouro
@@ -12655,3 +12925,4 @@
   ancora: elementos-combinados
   cla: null
   elemento: jiton
+  tipo_dano: concussao

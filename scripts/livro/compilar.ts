@@ -210,7 +210,7 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 		}
 	};
 	capitulos.forEach((c) => coletarCartas(c.blocos));
-	const jutsus: Jutsu[] = (lerYaml(readFileSync(join(CONTEUDO, 'jutsus.yaml'), 'utf8')) as (CardYaml & { tipo: TipoJutsu; rank: Rank; custo: string; info: InfoJutsu[]; pj: string | null; elemento: string | null })[]).map((j) => ({
+	const jutsus: Jutsu[] = (lerYaml(readFileSync(join(CONTEUDO, 'jutsus.yaml'), 'utf8')) as (CardYaml & { tipo: TipoJutsu; rank: Rank; custo: string; info: InfoJutsu[]; pj: string | null; elemento: string | null; tipo_dano?: string | null })[]).map((j) => ({
 		slug: j.slug,
 		...base(j),
 		tipo: j.tipo,
@@ -220,7 +220,8 @@ export function compilar(raiz = RAIZ): { saida: Saida; avisos: string[] } {
 		info: j.info ?? [],
 		pj: j.pj,
 		cartaNoCapitulo: cartasNoTexto.has(j.slug),
-		elemento: j.elemento
+		elemento: j.elemento,
+		tipoDano: j.tipo_dano ?? null
 	}));
 	const habilidades: Habilidade[] = (lerYaml(readFileSync(join(CONTEUDO, 'habilidades.yaml'), 'utf8')) as CardYaml[]).map((h) => ({ slug: h.slug, ...base(h) }));
 

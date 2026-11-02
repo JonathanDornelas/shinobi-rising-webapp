@@ -17,6 +17,7 @@ import { atributosDaCriatura, periciasDaCriatura } from './atributos.ts';
 import { ehVersatil, modosDaArma, nomeDoModo, type ModoArma } from './armas.ts';
 import { deslocamentoPorAgi } from './geometria.ts';
 import { clonesDoJutsu, duracaoEmTurnos, reguaDoCard, tamanhoDoEfeito } from './regua.ts';
+import { rotuloDano, tipoDanoDaArma, tipoDanoDoJutsu } from '#lib/jutsus/tipos-dano.ts';
 import type { ArmaMesa, ExtrasNpc, FichaMesa, JutsuMesa } from './tipos.ts';
 import bestiario from '#lib/livro/gerado/bestiario.json';
 import { TAMANHOS } from '#lib/bestiario/npc.ts';
@@ -55,6 +56,7 @@ export function jutsusDoNpc(n: { jutsus: string[] | null; acerto: number | null;
 				clones: clonesDoJutsu(v('Área'), efeito),
 				tipo: j.tipo,
 				elemento: j.elemento ?? null,
+				tipoDano: dano ? (j.tipoDano ?? tipoDanoDoJutsu({ elemento: j.elemento ?? null, tipo: j.tipo, efeito })) : null,
 				acao: v('Ação'),
 				duracao: v('Duração'),
 				traducao: j.traducao,
@@ -62,7 +64,7 @@ export function jutsusDoNpc(n: { jutsus: string[] | null; acerto: number | null;
 				resistencia: res && res !== '—' ? comDt(res, dt) : null,
 				dt,
 				ataque: /^1d20/.test(v('Ataque')) && n.acerto != null ? { expr: teste(n.acerto), rotulo: `Ataque · ${j.nome}`, partes: [] } : null,
-				dano: dano ? { expr: dano.dados, rotulo: `Dano · ${j.nome}`, partes: [] } : null,
+				dano: dano ? { expr: dano.dados, rotulo: rotuloDano(j.nome, j.tipoDano ?? tipoDanoDoJutsu({ elemento: j.elemento ?? null, tipo: j.tipo, efeito })), partes: [] } : null,
 				cura: curaDoEfeito(efeito)
 			} satisfies JutsuMesa;
 		});
@@ -103,7 +105,7 @@ export function extrasDoNpc(n: { bestiario: string | null }): ExtrasNpc | null {
 					rotuloAlcance: md.rotulo,
 					propriedades: arma?.propriedades,
 					ataque: { expr: teste(a.acerto), rotulo: `Ataque · ${nome}`, partes: [] },
-					dano: { expr: a.dano.replace(/\s+/g, ''), rotulo: `Dano · ${nome}`, partes: [] }
+					dano: { expr: a.dano.replace(/\s+/g, ''), rotulo: rotuloDano(nome, tipoDanoDaArma(a.nome)), partes: [] }
 				};
 			});
 		}),
@@ -185,6 +187,7 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 				clones: clonesDoJutsu(v('Área'), j.efeito),
 				tipo: j.tipo,
 				elemento: j.elemento ?? null,
+				tipoDano: dano ? (j.tipoDano ?? null) : null,
 				acao: v('Ação'),
 				duracao: v('Duração'),
 				traducao: j.traducao,
@@ -192,7 +195,7 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 				resistencia: v('Resistência') && v('Resistência') !== '—' ? comDt(v('Resistência'), dt) : null,
 				dt,
 				ataque: atq === null ? null : { expr: teste(atq.base + bonus), rotulo: `Ataque · ${j.nome}`, partes: partesAtaqueJutsu(atq.rotulo, atq.base, bonus) },
-				dano: dano ? { expr: somar(dano.dados, valorAtr), rotulo: `Dano · ${j.nome}`, partes: partesDanoAtributo(atributo, valorAtr) } : null,
+				dano: dano ? { expr: somar(dano.dados, valorAtr), rotulo: rotuloDano(j.nome, j.tipoDano), partes: partesDanoAtributo(atributo, valorAtr) } : null,
 				cura: j.rolagem ? (j.rolagem.modo === 'cura' ? j.rolagem.dados : null) : curaDoEfeito(j.efeito)
 			};
 		});
@@ -219,14 +222,14 @@ export async function fichaMesa(sb: App.Locals['supabase'], p: LinhaPersonagem):
 				rotuloAlcance: md.rotulo,
 				propriedades: arma?.propriedades,
 				ataque: { expr: teste(base + bonus), rotulo: `Ataque · ${nome}`, partes: buki ? [...partesPericia(buki, !!distancia), ...(bonus ? ([['Proficiência', `+${bonus}`]] as Parte[]) : [])] : [] },
-				dano: danoBase ? { expr: somar(danoBase, calc.atributos[atr] + (bonus ? 1 : 0)), rotulo: `Dano · ${nome}`, partes: [...partesDanoAtributo(atr, calc.atributos[atr]), ...(bonus ? ([['Proficiência', '+1']] as Parte[]) : [])] } : null
+				dano: danoBase ? { expr: somar(danoBase, calc.atributos[atr] + (bonus ? 1 : 0)), rotulo: rotuloDano(nome, tipoDanoDaArma(i.nome)), partes: [...partesDanoAtributo(atr, calc.atributos[atr]), ...(bonus ? ([['Proficiência', '+1']] as Parte[]) : [])] } : null
 			};
 		});
 	});
 	if (!armas.length) {
 		const fr = calc.atributos.FOR;
 		const tai = linhas.find((l) => l.id === 'taijutsu');
-		armas.push({ nome: 'Desarmado', alcance: 1, rotuloAlcance: 'Corpo a corpo', ataque: { expr: teste(tai?.total ?? 0), rotulo: 'Ataque desarmado', partes: tai ? partesPericia(tai) : [] }, dano: { expr: somar('1d6', fr), rotulo: 'Dano desarmado', partes: partesDanoAtributo('FOR', fr) } });
+		armas.push({ nome: 'Desarmado', alcance: 1, rotuloAlcance: 'Corpo a corpo', ataque: { expr: teste(tai?.total ?? 0), rotulo: 'Ataque desarmado', partes: tai ? partesPericia(tai) : [] }, dano: { expr: somar('1d6', fr), rotulo: 'Dano desarmado (concussão)', partes: partesDanoAtributo('FOR', fr) } });
 	}
 
 	const esp = (id: string) => calc.especializacoes.find((e) => e.id === id)?.nivel ?? 0;

@@ -153,6 +153,25 @@ Algumas técnicas e especializações dão Redução de Dano (RD), que é subtra
 - **RD:** subtrai de cada dano; fontes diferentes não se somam, vale a maior
 :::
 
+### Tipos de Dano {#tipos-de-dano}
+
+Uma kunai não fere como uma bola de fogo, e um corpo de pedra não teme a lâmina como teme a água. Todo dano tem um tipo. Os físicos são três: cortante, das lâminas, garras e fios; perfurante, das pontas e projéteis, como kunai, shuriken e senbon; e concussão, dos socos, bastões, quedas e explosões. Os elementais são os cinco do cap. 10: fogo, água, vento, terra e raio. E há os especiais: gelo, madeira, veneno, chakra (o chakra puro, sem elemento, como o do Rasengan) e mental (o das ilusões). Os jutsus trazem o tipo no card. As armas seguem a lâmina, a ponta ou o impacto delas, e o golpe desarmado é concussão.
+
+Os elementos combinados causam o dano do elemento que dá a forma ao golpe: a Lava, o Calor e o Vapor queimam com fogo, a Tempestade fere com raio, o Gelo e a Madeira têm o tipo próprio, a Explosão e o Magnetismo batem com concussão e a Poeira desfaz com chakra.
+
+O tipo importa contra quem está acostumado a ele. Uma criatura, uma técnica ou um traço de clã pode dar resistência a um tipo, e o dano dele cai pela metade, arredondado para baixo. A vulnerabilidade dobra o dano daquele tipo, e a imunidade zera. A RD contra dano físico vale para cortante, perfurante e concussão.
+
+E os elementos têm o ciclo do cap. 10. O jutsu de um elemento forte causa +50% de dano contra o que é do elemento fraco: uma criatura elemental, quem está numa forma elemental (como a forma líquida do Hozuki, que conta como água) ou uma barreira, um clone ou um jutsu defensivo daquele elemento. A Madeira, que o Fogo vence, e o Gelo, que conta como Água e Vento, entram no ciclo pelos elementos que os formam.
+
+:::na-mesa{titulo="Tipos de dano"}
+- **Físicos:** cortante, perfurante e concussão (a RD contra dano físico vale para eles)
+- **Elementais:** fogo, água, vento, terra e raio
+- **Especiais:** gelo, madeira, veneno, chakra e mental
+- **Resistência:** metade do dano (para baixo); **vulnerabilidade:** o dobro; **imunidade:** zero
+- **Elemento forte contra o fraco:** +50% de dano (o ciclo do cap. 10)
+- **Ordem:** some o dano, aplique o ciclo, depois a vulnerabilidade ou a resistência, e por fim a RD
+:::
+
 ## Manobras de Combate {#manobras-de-combate}
 
 Além de atacar, todo ninja conhece algumas manobras que mudam o rumo de uma luta.

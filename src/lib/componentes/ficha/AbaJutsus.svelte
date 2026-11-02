@@ -36,6 +36,7 @@
 	import DadoHud from '../mesa/DadoHud.svelte';
 	import { corElemento } from '#lib/mesa/hud.ts';
 	import { clonesDoJutsu, reguaDoCard, temRegua } from '#lib/mesa/regua.ts';
+	import { rotuloDano } from '#lib/jutsus/tipos-dano.ts';
 
 	/**
 	 * Dentro da Mesa (ou numa aba ligada a ela): MEDIR liga a régua do jutsu, ATAQUE paga o custo e rola o ataque, e DANO
@@ -195,7 +196,7 @@
 		const atributo = dano?.atributo as keyof typeof f.calc.atributos | null | undefined;
 		return {
 			ataque: atq === null ? null : { expr: teste(atq.base + bonusProf), rotulo: `Ataque · ${j.nome}`, partes: partesAtaqueJutsu(atq.rotulo, atq.base, bonusProf) as Parte[] },
-			dano: dano ? { expr: somar(dano.dados, atributo ? f.calc.atributos[atributo] : 0), rotulo: `Dano · ${j.nome}`, partes: partesDanoAtributo(atributo, atributo ? f.calc.atributos[atributo] : 0) } : null,
+			dano: dano ? { expr: somar(dano.dados, atributo ? f.calc.atributos[atributo] : 0), rotulo: rotuloDano(j.nome, j.tipoDano), partes: partesDanoAtributo(atributo, atributo ? f.calc.atributos[atributo] : 0) } : null,
 			cura: j.rolagem ? (j.rolagem.modo === 'cura' ? j.rolagem.dados : null) : curaDoEfeito(j.efeito)
 		};
 	}

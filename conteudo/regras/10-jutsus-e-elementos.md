@@ -26,9 +26,12 @@ Todo ninja nasce com afinidade por um elemento. Os avançados podem aprender um 
 
 Quando dois jutsus se chocam, como um jutsu defensivo usado como Reação contra um ofensivo, os lançadores fazem um teste oposto. Cada um rola a perícia do jutsu e soma o bônus de rank, e quem tem vantagem elemental ganha um reforço.
 
+A vantagem também vale no dano. O jutsu do elemento forte causa +50% de dano contra o que é do elemento fraco: uma criatura elemental, quem está numa forma elemental, ou uma barreira, um clone ou um jutsu defensivo daquele elemento (cap. 4, Tipos de Dano).
+
 :::na-mesa{titulo="Choque de jutsus"}
 - **Teste oposto:** 1d20 + perícia do jutsu + bônus de rank (de E +0 a S +5)
 - **Vantagem elemental:** +5 para o lado mais forte
+- **Dano contra o elemento fraco:** +50%
 :::
 
 ## Elementos combinados {#elementos-combinados}

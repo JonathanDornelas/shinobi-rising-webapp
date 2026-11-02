@@ -156,6 +156,8 @@ export interface JutsuFicha {
 	origem: string;
 	efeito: string;
 	info: { k: string; v: string }[];
+	/** O tipo de dano do card (cap. 4); os criados, pela leitura de jutsus/tipos-dano.ts. */
+	tipoDano?: string | null;
 	/** Jutsu criado: dano ou cura em dados vindos do criador (os do livro são lidos do texto do efeito). */
 	rolagem?: { modo: 'dano' | 'cura'; dados: string; atributo: string | null } | null;
 }

@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Tooltip de ação da Mesa (inspirado no Baldur's Gate 3): nome e tipo, a faixa de dano com o dado na cor do
 	// elemento, o efeito, alcance/área/duração/resistência com ícones e, embaixo, a ação e o custo.
+	import { nomeTipoDano, tipoDanoDaArma } from '#lib/jutsus/tipos-dano.ts';
 	import SeloDt from '../regras/SeloDt.svelte';
 	import { ELEMENTO } from '#lib/livro/dominio.ts';
 	import { corElemento, lerDados } from '#lib/mesa/hud.ts';
@@ -17,8 +18,8 @@
 	const cura = $derived(jutsu?.cura ? lerDados(jutsu.cura) : null);
 	const subtitulo = $derived(
 		jutsu
-			? [jutsu.tipo, jutsu.rank ? `Rank ${jutsu.rank}` : 'Habilidade', jutsu.elemento && ELEMENTO[jutsu.elemento] ? ELEMENTO[jutsu.elemento].nome : null].filter(Boolean).join(' · ')
-			: `Arma · ${arma!.rotuloAlcance}`
+			? [jutsu.tipo, jutsu.rank ? `Rank ${jutsu.rank}` : 'Habilidade', jutsu.elemento && ELEMENTO[jutsu.elemento] ? ELEMENTO[jutsu.elemento].nome : null, jutsu.tipoDano && nomeTipoDano(jutsu.tipoDano) ? `dano ${nomeTipoDano(jutsu.tipoDano)!.toLowerCase()}` : null].filter(Boolean).join(' · ')
+			: `Arma · ${arma!.rotuloAlcance} · dano ${nomeTipoDano(tipoDanoDaArma(arma!.nome.replace(/ \(.*\)$/, '')))!.toLowerCase()}`
 	);
 	const acaoTxt = $derived(jutsu?.acao || (jutsu?.porCena ? 'Uma vez por cena' : 'Primária'));
 

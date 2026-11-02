@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { TIPOS_DANO, nomeTipoDano } from '#lib/jutsus/tipos-dano.ts';
 	// Card de jutsu (CMP-01): faixa grená, borda na cor do tipo, linha de info 3×2, Efeito e conta de PJ.
 	// Idêntico em todas as telas.
 	import type { Snippet } from 'svelte';
@@ -54,6 +55,7 @@
 						<span class="flex flex-wrap items-center gap-2">
 							<b class="font-mincho text-[17px] leading-6" style:color={cura ? '#7FB069' : undefined}>{faixa.min}~{faixa.max}{dano?.atributo ? ` + ${dano.atributo}` : ''} de {cura ? 'cura' : 'dano'}</b>
 							<DadoHud expr={dano?.dados ?? cura ?? ''} cor={cura ? '#7FB069' : el?.cor} tipo={cura ? null : (el?.nome ?? null)} />
+							{#if !cura && jutsu.tipoDano && nomeTipoDano(jutsu.tipoDano)}<span class="cursor-help border-2 border-b3 px-1.5 py-0.5 font-pixel text-[11px] leading-none font-bold uppercase" title="Dano {nomeTipoDano(jutsu.tipoDano)?.toLowerCase()}: {TIPOS_DANO.find((t) => t.id === jutsu.tipoDano)?.desc} (cap. 4, Tipos de Dano)">{nomeTipoDano(jutsu.tipoDano)}</span>{/if}
 						</span>
 					{/if}
 				</div>
