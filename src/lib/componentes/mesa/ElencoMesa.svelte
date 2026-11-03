@@ -36,6 +36,7 @@
 		onColocar,
 		onMoverNpc,
 		onBestiario,
+		onMiniaturas,
 		onFechar
 	}: {
 		mesa: Mesa;
@@ -53,6 +54,8 @@
 		onMoverNpc: (n: ItemNpc, pasta: string | null) => void;
 		/** Abre a busca no bestiário (importar e pôr na cena). */
 		onBestiario: () => void;
+		/** a caixa de miniaturas (só aparece com alguma no catálogo) */
+		onMiniaturas?: () => void;
 		onFechar?: () => void;
 	} = $props();
 
@@ -217,7 +220,10 @@
 
 		{#if mesa.mestre}
 			<div class="mt-2 flex flex-col gap-2 border-t-2 border-b3 px-3 pt-2.5 pb-2">
-				<span class="font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">NPCS</span>
+				<div class="flex items-center gap-2">
+					<span class="flex-1 font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">NPCS</span>
+					{#if onMiniaturas}<button type="button" class="text-xs font-semibold text-mut underline decoration-dotted underline-offset-2 hover:text-fg" onclick={onMiniaturas}>Miniaturas</button>{/if}
+				</div>
 				<div class="flex gap-1.5">
 					<input bind:value={busca} placeholder="Buscar NPC" aria-label="Buscar NPC" class="h-9 min-w-0 flex-1 border-2 border-b3 bg-b1 px-2 text-[13px] font-medium text-fg" />
 					<button type="button" aria-pressed={soNaCena} class="min-h-9 border-2 px-2 font-pixel text-[11px] font-bold {soNaCena ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={() => (soNaCena = !soNaCena)}>NA CENA</button>

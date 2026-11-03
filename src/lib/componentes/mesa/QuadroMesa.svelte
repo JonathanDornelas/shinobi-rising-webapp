@@ -22,6 +22,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	import { CacheVisao, FONTES_DE_LUZ, bloqueiaPasso, calcularVisao, ehPorta, encaixar, explorar, luzDoToken, meioDaParede, paredeEm, type Ambiente, type EntradaVisao, type Luz, type Observador, type Parede, type TipoParede } from '#lib/mesa/luz.ts';
 	import type { Ponto } from '#lib/mesa/visao.ts';
 	import LuzMesa from './LuzMesa.svelte';
+	import { ALTURA_DA_FIGURA, miniaturaPorId, quadroNaTela, rumoDoPasso, urlMiniatura, type Miniatura } from '#lib/mesa/miniaturas.ts';
 
 	let {
 		mesa,
@@ -71,6 +72,19 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	const emPe = (ax: number, ay: number, sobe = 0) => (iso ? emPeIso(ax, ay, sobe, cfgI) : undefined);
 	/** O quanto o sprite do token sobe: a base redonda toca o ponto de apoio, e a elevação soma. */
 	const sobeToken = (t: MesaToken) => 0.4 * t.tamanho + (t.elevacao ?? 0) * 0.25;
+	/** Onde ficam os pés da miniatura: na isométrica, no meio do espaço; de cima, mais para baixo (a figura sobe pelo quadrado). */
+	const pesDaMiniatura = (x: number, y: number, n: number): [number, number] => (iso ? [x + n / 2, y + n / 2] : [x + n / 2, y + 0.78 * n]);
+	/** O clique pega a figura de pé da miniatura (a cabeça passa do quadrado do token). */
+	function naMiniatura(t: MesaToken, mx: number, my: number): boolean {
+		const mini = miniaturaPorId(t.miniatura);
+		if (!mini) return false;
+		const n = t.tamanho;
+		const H = (mini.base ? 1.95 : ALTURA_DA_FIGURA) * n;
+		const [px, py] = pesDaMiniatura(t.x, t.y, n);
+		const [fx, fy] = paraTela(px, py);
+		const [tx, ty] = paraTela(mx, my);
+		return Math.abs(tx - fx) <= 0.32 * n && ty <= fy + 0.1 && ty >= fy - H - (iso ? (t.elevacao ?? 0) * 0.25 : 0);
+	}
 // o fundo com escala: a proporção vem da própria imagem; MOVER O FUNDO arrasta (só o Mestre) e grava ao soltar
 	let proporcaoFundo = $state(1);
 	$effect(() => {
@@ -536,6 +550,8 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	/** Na vista isométrica, tokens e imagens de pé juntos, de trás para a frente (um token atrás de uma árvore fica atrás dela). */
 	type ItemPe = { id: string; x: number; y: number; tamanho: number; z: number } & ({ k: 'token'; t: MesaToken } | { k: 'imagem'; o: MesaObjeto });
 	const tokensPe = $derived(iso ? ordemDePintura(visiveis, cfgI) : visiveis);
+	/** De cima, com miniaturas de pé, quem está mais embaixo fica na frente (a cabeça de quem está atrás passa por trás). */
+	const visiveisDeCima = $derived(visiveis.some((t) => t.miniatura) ? [...visiveis].sort((a, b) => a.y + a.tamanho - (b.y + b.tamanho)) : visiveis);
 	const pePintura = $derived.by((): ItemPe[] => {
 		if (!iso) return [];
 		const itens: ItemPe[] = [
@@ -545,13 +561,13 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		return ordemDePintura(itens, cfgI);
 	});
 	function tokenEm(mx: number, my: number): MesaToken | null {
-		if (!iso) return [...visiveis].reverse().find((t) => (t.visivel || mesa.mestre) && mx >= t.x && mx < t.x + t.tamanho && my >= t.y && my < t.y + t.tamanho) ?? null;
+		if (!iso) return [...visiveisDeCima].reverse().find((t) => (t.visivel || mesa.mestre) && ((mx >= t.x && mx < t.x + t.tamanho && my >= t.y && my < t.y + t.tamanho) || naMiniatura(t, mx, my))) ?? null;
 		// isométrica: acerta a base (o losango do token) ou o sprite de pé; o da frente ganha
 		const [tx, ty] = paraTela(mx, my);
 		for (const t of [...tokensPe].reverse()) {
 			if (!(t.visivel || mesa.mestre)) continue;
 			const n = t.tamanho;
-			if (mx >= t.x && mx < t.x + n && my >= t.y && my < t.y + n) return t;
+			if ((mx >= t.x && mx < t.x + n && my >= t.y && my < t.y + n) || naMiniatura(t, mx, my)) return t;
 			const [cx, cy] = paraTela(t.x + n / 2, t.y + n / 2);
 			if (Math.hypot(tx - cx, ty - (cy - sobeToken(t))) <= 0.5 * n) return t;
 		}
@@ -1299,6 +1315,10 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 					{@const mol = mesa.molduraDe(t)}
 					{@const rm = 0.56 * n}
 					{@const rf = mol ? rm * mol.interno : r}
+					{@const mini = miniaturaPorId(t.miniatura)}
+					{#if mini}
+						{@render miniaturaSvg(t, mini, ar, x, y, c, caido, pv, fr)}
+					{:else}
 						{#if iso}<circle {cx} {cy} r={0.42 * n} fill="#000" fill-opacity="0.3" pointer-events="none" />{/if}
 						<g opacity={t.visivel ? 1 : 0.5} transform={emPe(cx, cy, sobeToken(t))}>
 							{#if mesa.daVez.has(t.id)}<circle {cx} {cy} r={(mol ? rm : r) + 0.12} fill="none" style="stroke: var(--acc)" stroke-width={0.1} />{/if}
@@ -1352,7 +1372,74 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 							<g style="stroke: var(--fg)" stroke-width={F(2)} fill="none"><path d="M{x + 0.04} {y + 0.2}q.18 -.16 .36 0q-.18 .16 -.36 0" /><line x1={x + 0.06} y1={y + 0.38} x2={x + 0.38} y2={y + 0.02} /></g>
 						{/if}
 					</g>
+					{/if}
 				{/if}
+{/snippet}
+
+<!-- a miniatura: a peça de pé sobre a base, virada para onde andou (no arrasto, para onde vai). A base fica no chão (na
+     isométrica, o círculo deitado vira elipse); a figura, a vida, o nome e os estados ficam de pé. -->
+{#snippet miniaturaSvg(t: MesaToken, mini: Miniatura, ar: { x: number; y: number } | null, x: number, y: number, c: string, caido: boolean, pv: { pv: number; max: number } | null, fr: number)}
+	{@const n = t.tamanho}
+	{@const cx = x + n / 2}
+	{@const cy = y + n / 2}
+	{@const pe = pesDaMiniatura(x, y, n)}
+	{@const H = (mini.base ? 1.95 : ALTURA_DA_FIGURA) * n}
+	{@const k = H / mini.altura}
+	{@const rumo = (ar ? rumoDoPasso(ar.x - t.x, ar.y - t.y) : null) ?? t.rumo ?? 0}
+	{@const q = quadroNaTela(rumo, cx, cy, paraTela)}
+	{@const estados = [...new Set(semKkg(t.condicoes))]}
+	{@const lado = Math.min(0.5, 0.3 + 0.03 * n)}
+	{@const yb = pe[1] + (iso ? 0.3 : 0.24) * n}
+	<g opacity={t.visivel ? 1 : 0.5}>
+		{#if iso}
+			{#if mesa.daVez.has(t.id)}<circle {cx} {cy} r={0.5 * n + 0.08} fill="none" style="stroke: var(--acc)" stroke-width={0.09} />{/if}
+			{#if ui.sel === t.id}<circle {cx} {cy} r={0.5 * n + 0.22} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
+			<circle {cx} {cy} r={(mini.base ? 0.46 : 0.4) * n} style="fill: var(--b0); stroke: {caido ? 'var(--field)' : c}" fill-opacity={mini.base ? 0 : 0.5} stroke-width={0.07} />
+		{:else}
+			{#if mesa.daVez.has(t.id)}<ellipse cx={pe[0]} cy={pe[1]} rx={0.5 * n + 0.08} ry={0.25 * n + 0.06} fill="none" style="stroke: var(--acc)" stroke-width={0.09} />{/if}
+			{#if ui.sel === t.id}<ellipse cx={pe[0]} cy={pe[1]} rx={0.5 * n + 0.22} ry={0.25 * n + 0.16} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
+			<ellipse cx={pe[0]} cy={pe[1]} rx={(mini.base ? 0.46 : 0.4) * n} ry={(mini.base ? 0.23 : 0.2) * n} style="fill: var(--b0); stroke: {caido ? 'var(--field)' : c}" fill-opacity={mini.base ? 0 : 0.5} stroke-width={0.07} />
+		{/if}
+		<g transform={emPe(pe[0], pe[1], (t.elevacao ?? 0) * 0.25)}>
+			<svg x={pe[0] - mini.pe[0] * k} y={pe[1] - mini.pe[1] * k} width={mini.w * k} height={mini.h * k} viewBox="{q * mini.w} 0 {mini.w} {mini.h}" preserveAspectRatio="none" overflow="hidden">
+				<image href={urlMiniatura(mini)} width={mini.w * 8} height={mini.h} style="image-rendering: pixelated; filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" />
+			</svg>
+			{#if t.reagiu && mesa.iniciativa.ativa}
+				<!-- Reação gasta nesta rodada: o R riscado ao lado da cabeça -->
+				{@const rq = Math.max(0.3, 0.28 * n)}
+				<g pointer-events="none">
+					<title>Reação gasta nesta rodada</title>
+					<rect x={pe[0] - 0.45 * n - rq} y={pe[1] - H} width={rq} height={rq} style="fill: var(--b0); stroke: var(--mut)" stroke-width={0.04} />
+					<text x={pe[0] - 0.45 * n - rq / 2} y={pe[1] - H + rq * 0.74} text-anchor="middle" font-size={rq * 0.72} font-family="'Pixelify Sans'" font-weight="700" style="fill: var(--mut)">R</text>
+					<line x1={pe[0] - 0.45 * n - rq + 0.04} y1={pe[1] - H + rq - 0.04} x2={pe[0] - 0.45 * n - 0.04} y2={pe[1] - H + 0.04} style="stroke: var(--mesa-vermelhao)" stroke-width={0.05} />
+				</g>
+			{/if}
+			{#if estados.length}
+				<!-- estados: uma fileira em cima da cabeça -->
+				{@const m = Math.min(5, estados.length)}
+				{@const x0 = pe[0] - (m * lado + (m - 1) * 0.05) / 2}
+				{#each estados.slice(0, 5) as cond, i (cond)}
+					<g>
+						<title>{ESTADO_NOME[cond] ?? cond}</title>
+						<rect x={x0 + i * (lado + 0.05)} y={pe[1] - H - lado - 0.06} width={lado} height={lado} style="fill: var(--b0); stroke: var(--warn)" stroke-width={F(1.5)} />
+						<image href="/icons/estado/ic-estado-{cond}-32.png" x={x0 + i * (lado + 0.05)} y={pe[1] - H - lado - 0.06} width={lado} height={lado} style="image-rendering: pixelated" />
+					</g>
+				{/each}
+				{#if estados.length > 5}
+					<text x={x0 + m * (lado + 0.05)} y={pe[1] - H - 0.12} font-size={F(10)} font-family="'Pixelify Sans'" font-weight="700" style="fill: var(--warn); stroke: var(--b1)" stroke-width={F(3)} paint-order="stroke">+{estados.length - 5}</text>
+				{/if}
+			{/if}
+			<!-- a barra de vida e o nome, debaixo dos pés -->
+			{#if pv || mesa.mestre}
+				<rect x={pe[0] - 0.38 * n} y={yb} width={0.76 * n} height={F(5)} style="fill: var(--b0)" />
+				<rect x={pe[0] - 0.38 * n} y={yb} width={0.76 * n * fr} height={F(5)} style="fill: {fr > 0.5 ? 'var(--ok)' : fr > 0.25 ? 'var(--warn)' : 'var(--err)'}" />
+			{/if}
+			<text x={pe[0]} y={yb + F(17)} text-anchor="middle" font-size={F(11)} font-family="'Noto Sans'" font-weight="600" style="fill: var(--fg); stroke: var(--b1)" stroke-width={F(3)} paint-order="stroke">{nomeCurto(t.nome).split(' ')[0]}{t.membro ? ` ${t.membro}` : ''}</text>
+			{#if !t.visivel}
+				<g style="stroke: var(--fg)" stroke-width={F(2)} fill="none" transform="translate({pe[0] - 0.45 * n - 0.2} {pe[1] - 0.4})"><path d="M0 .18q.18 -.16 .36 0q-.18 .16 -.36 0" /><line x1=".02" y1=".36" x2=".34" y2="0" /></g>
+			{/if}
+		</g>
+	</g>
 {/snippet}
 
 {#snippet imagemSvg(o0: MesaObjeto)}
@@ -1662,7 +1749,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 					{#if it.k === 'token'}{@render tokenSvg(it.t)}{:else}{@render imagemSvg(it.o)}{/if}
 				{/each}
 			{:else}
-{#each visiveis as t (t.id)}{@render tokenSvg(t)}{/each}
+{#each visiveisDeCima as t (t.id)}{@render tokenSvg(t)}{/each}
 {/if}
 
 			<!-- as imagens das camadas acima da dos tokens ficam sobre eles -->

@@ -1,0 +1,8 @@
+[
+	{ "id": "uchiha-chunin-fiel", "verbete": "cla-uchiha#chunin", "nome": "Uchiha, Chunin", "estilo": "Fiel à arte" },
+	{ "id": "uchiha-chunin-pintada", "verbete": "cla-uchiha#chunin", "nome": "Uchiha, Chunin", "estilo": "Miniatura pintada", "base": true },
+	{ "id": "uchiha-chunin-heroico", "verbete": "cla-uchiha#chunin", "nome": "Uchiha, Chunin", "estilo": "Anime heroico" },
+	{ "id": "uchiha-chunin-chibi", "verbete": "cla-uchiha#chunin", "nome": "Uchiha, Chunin", "estilo": "Chibi tático" },
+	{ "id": "uchiha-chunin-sumi", "verbete": "cla-uchiha#chunin", "nome": "Uchiha, Chunin", "estilo": "Tinta sumi" },
+	{ "id": "uchiha-chunin-retro", "verbete": "cla-uchiha#chunin", "nome": "Uchiha, Chunin", "estilo": "Retrô 16 bits" }
+]

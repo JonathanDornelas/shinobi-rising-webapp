@@ -1,0 +1,81 @@
+[
+	{
+		"id": "uchiha-chunin-fiel",
+		"verbete": "cla-uchiha#chunin",
+		"nome": "Uchiha, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 52,
+		"h": 65,
+		"pe": [
+			26.5,
+			61
+		],
+		"altura": 58
+	},
+	{
+		"id": "uchiha-chunin-pintada",
+		"verbete": "cla-uchiha#chunin",
+		"nome": "Uchiha, Chunin",
+		"estilo": "Miniatura pintada",
+		"base": true,
+		"w": 69,
+		"h": 94,
+		"pe": [
+			33.5,
+			93
+		],
+		"altura": 91
+	},
+	{
+		"id": "uchiha-chunin-heroico",
+		"verbete": "cla-uchiha#chunin",
+		"nome": "Uchiha, Chunin",
+		"estilo": "Anime heroico",
+		"w": 84,
+		"h": 88,
+		"pe": [
+			41.5,
+			87
+		],
+		"altura": 86
+	},
+	{
+		"id": "uchiha-chunin-chibi",
+		"verbete": "cla-uchiha#chunin",
+		"nome": "Uchiha, Chunin",
+		"estilo": "Chibi tático",
+		"w": 52,
+		"h": 62,
+		"pe": [
+			25.5,
+			61
+		],
+		"altura": 60
+	},
+	{
+		"id": "uchiha-chunin-sumi",
+		"verbete": "cla-uchiha#chunin",
+		"nome": "Uchiha, Chunin",
+		"estilo": "Tinta sumi",
+		"w": 53,
+		"h": 60,
+		"pe": [
+			26.5,
+			58
+		],
+		"altura": 56
+	},
+	{
+		"id": "uchiha-chunin-retro",
+		"verbete": "cla-uchiha#chunin",
+		"nome": "Uchiha, Chunin",
+		"estilo": "Retrô 16 bits",
+		"w": 18,
+		"h": 39,
+		"pe": [
+			9,
+			36
+		],
+		"altura": 35
+	}
+]

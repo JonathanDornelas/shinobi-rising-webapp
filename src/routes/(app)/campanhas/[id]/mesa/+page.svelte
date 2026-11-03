@@ -41,6 +41,8 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	import PainelMesa from '#lib/componentes/mesa/PainelMesa.svelte';
 	import BuscaBestiario from '#lib/componentes/npc/BuscaBestiario.svelte';
 	import { npcDoVerbete } from '#lib/bestiario/npc.ts';
+	import { MINIATURAS } from '#lib/mesa/miniaturas.ts';
+	import MiniaturasMesa from '#lib/componentes/mesa/MiniaturasMesa.svelte';
 	import type { Criatura, Jutsu } from '#lib/livro/tipos.ts';
 	import CardJutsu from '#lib/componentes/regras/CardJutsu.svelte';
 	import SeloDt from '#lib/componentes/regras/SeloDt.svelte';
@@ -223,6 +225,8 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		if (t.ligado_a) return `Ligado a ${nomeCurto(mesa.tokens.find((k) => k.id === t.ligado_a)?.nome ?? '')}`;
 		return mesa.membro(mesa.donoDe(t))?.nome ?? 'NPC';
 	}
+	/** O clone sai com a mesma peça do original (a miniatura e para onde ela olha). */
+	const pecaDe = (t: MesaToken) => (t.miniatura ? { miniatura: t.miniatura, rumo: t.rumo ?? 0 } : {});
 	function dadosDe(t: MesaToken): DadosFicha {
 		const f = fichaDe(t);
 		// a ficha de outro jogador mostra o PV: sem "PV à vista", ela abre só no cartão público
@@ -598,7 +602,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		for (let i = 0; i < Math.min(n, 10); i++) {
 			const [x, y] = lugarLivre(t.x + 1, t.y);
 			// a duração do jutsu vai no clone: turnos (Mizu Bunshin, 3) somem na rodada certa; a cena some no fim do combate
-			if (await mesa.colocar({ nome: `Clone de ${primeiro}`.slice(0, 60), sigla: 'CL', ligado_a: t.id, dono_id: t.dono_id, x, y, pv, pv_max: pv, visivel: true, crescido_turnos: j.turnos ?? null })) feitos++;
+			if (await mesa.colocar({ nome: `Clone de ${primeiro}`.slice(0, 60), sigla: 'CL', ligado_a: t.id, dono_id: t.dono_id, x, y, pv, pv_max: pv, visivel: true, crescido_turnos: j.turnos ?? null, ...pecaDe(t) })) feitos++;
 		}
 		const dura = j.turnos ? `${j.turnos} turnos` : 'o fim do combate';
 		if (feitos) ui.avisar(`${feitos} clone${feitos > 1 ? 's' : ''} de ${primeiro} com ${pv} PV, até ${dura}${pv === 1 ? ' ou até sofrer dano' : ''}. Apague os que não quiser.`);
@@ -644,7 +648,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		},
 		clone: async (t) => {
 			const [x, y] = lugarLivre(t.x + 1, t.y);
-			const c = await mesa.colocar({ nome: `Clone de ${nomeCurto(t.nome).split(' ')[0]}`.slice(0, 60), sigla: 'CL', ligado_a: t.id, dono_id: t.dono_id, x, y, pv: 1, pv_max: 1, visivel: true });
+			const c = await mesa.colocar({ nome: `Clone de ${nomeCurto(t.nome).split(' ')[0]}`.slice(0, 60), sigla: 'CL', ligado_a: t.id, dono_id: t.dono_id, x, y, pv: 1, pv_max: 1, visivel: true, ...pecaDe(t) });
 			if (c) ui.avisar('Clone criado com 1 PV. Ele some ao sofrer qualquer dano.');
 		},
 		notasNpc: async (n, notas) => {
@@ -1426,7 +1430,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 		{/if}
 		{#if mobil === 'elenco'}
 			<div class="absolute top-12 bottom-16 left-0 z-20 w-[300px] max-w-[85%] shadow-[4px_0_0_var(--b0)]">
-				<ElencoMesa {mesa} {ui} personagens={participantes} npcs={itensNpc} bind:pastas {subDe} celular onAbrir={abrirDoElenco} onColocar={colocar} onMoverNpc={moverNpc} onBestiario={() => (ui.modal = { tipo: 'bestiario' })} onFechar={() => (mobil = null)} />
+				<ElencoMesa {mesa} {ui} personagens={participantes} npcs={itensNpc} bind:pastas {subDe} celular onAbrir={abrirDoElenco} onColocar={colocar} onMoverNpc={moverNpc} onBestiario={() => (ui.modal = { tipo: 'bestiario' })} onMiniaturas={MINIATURAS.length ? () => (ui.modal = { tipo: 'miniaturas', token: null }) : undefined} onFechar={() => (mobil = null)} />
 			</div>
 		{/if}
 	</div>
@@ -1547,11 +1551,11 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 					{#if ui.ladoEsquerdo === 'cena'}
 						<ConfigCena lateral {mesa} {ui} {cena} quemJoga={cena.participantes ? `${participantes.length} de ${data.personagens.length}` : 'todos'} podeColocarGrupo={participantes.length > 0} aoParticipantes={abrirParticipantes} aoColocarGrupo={colocarOGrupo} />
 					{:else}
-						<ElencoMesa embutido {mesa} {ui} personagens={participantes} npcs={itensNpc} bind:pastas {subDe} onAbrir={abrirDoElenco} onColocar={colocar} onMoverNpc={moverNpc} onBestiario={() => (ui.modal = { tipo: 'bestiario' })} />
+						<ElencoMesa embutido {mesa} {ui} personagens={participantes} npcs={itensNpc} bind:pastas {subDe} onAbrir={abrirDoElenco} onColocar={colocar} onMoverNpc={moverNpc} onBestiario={() => (ui.modal = { tipo: 'bestiario' })} onMiniaturas={MINIATURAS.length ? () => (ui.modal = { tipo: 'miniaturas', token: null }) : undefined} />
 					{/if}
 				</div>
 			{:else if ui.elencoAberto}
-				<ElencoMesa {mesa} {ui} personagens={participantes} npcs={itensNpc} bind:pastas {subDe} onAbrir={abrirDoElenco} onColocar={colocar} onMoverNpc={moverNpc} onBestiario={() => (ui.modal = { tipo: 'bestiario' })} />
+				<ElencoMesa {mesa} {ui} personagens={participantes} npcs={itensNpc} bind:pastas {subDe} onAbrir={abrirDoElenco} onColocar={colocar} onMoverNpc={moverNpc} onBestiario={() => (ui.modal = { tipo: 'bestiario' })} onMiniaturas={MINIATURAS.length ? () => (ui.modal = { tipo: 'miniaturas', token: null }) : undefined} />
 			{:else}
 				<div class="flex w-10 flex-none flex-col items-center border-r-2 border-b3 bg-b2 pt-1.5"><button type="button" class="h-8 w-8 border-2 border-b3 font-pixel text-sm" aria-label="Abrir Elenco" title="Abrir Elenco" onclick={() => (ui.elencoAberto = true)}>»</button></div>
 			{/if}
@@ -1751,7 +1755,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 
 {#if ui.modal}
 	<div class="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(10,8,7,.72)] p-4" role="presentation" onclick={(e) => e.target === e.currentTarget && (ui.modal = null)}>
-		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'config' ? 'h-[min(660px,calc(100dvh-2rem))] w-[min(400px,100%)] overflow-hidden' : (ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]') + ' overflow-y-auto'} max-h-full max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_var(--sombra)]">
+		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'config' ? 'h-[min(660px,calc(100dvh-2rem))] w-[min(400px,100%)] overflow-hidden' : (ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' || ui.modal.tipo === 'miniaturas' ? 'w-[560px]' : 'w-[440px]') + ' overflow-y-auto'} max-h-full max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_var(--sombra)]">
 			{#if ui.modal.tipo === 'imagem' && cena}
 				{@const alvo = ui.modal.alvo}
 				<ArtesMesa {mesa} {campanha} {alvo} atual={cena[alvo]} aoEscolher={escolherDaBiblioteca} aoArmar={armarArte} aoFechar={() => (ui.modal = null)} />
@@ -1886,6 +1890,8 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 					<button type="button" class="btn-jogo min-h-11" onclick={() => (ui.modal = null)}>CANCELAR</button>
 					<button type="button" class="btn-jogo btn-primario min-h-11" onclick={salvarParticipantes}>SALVAR</button>
 				</div>
+			{:else if ui.modal.tipo === 'miniaturas'}
+				<MiniaturasMesa {mesa} verbeteDe={(t) => npcDe(t)?.bestiario ?? null} foco={ui.modal.token} aoFechar={() => (ui.modal = null)} />
 			{:else if ui.modal.tipo === 'bestiario'}
 				<div class="border-b-2 border-[var(--vermelhao-lo)] bg-b0 px-3.5 py-2.5 font-pixel text-[13px] leading-none font-bold tracking-[0.1em] text-title">IMPORTAR DO BESTIÁRIO</div>
 				<div class="flex flex-col gap-2 p-4">

@@ -12,6 +12,7 @@ import { limitarPosicao } from './musica.ts';
 import { limpar as limparRuns } from './nevoa.ts';
 import { coresDosMembros } from './cores.ts';
 import { deslocarQuadrados, deslocarRuns, deslocarToken } from './reenquadrar.ts';
+import { rumoDoPasso } from './miniaturas.ts';
 import { bloqueiaPasso, deslocarLuzes, deslocarParedes, ehPorta, limparLuzes, limparParedes, type Luz, type Parede } from './luz.ts';
 import { avancarRodada, relogiosDaCena, type Relogio } from './relogios.ts';
 import type { Quadrado } from './geometria.ts';
@@ -362,12 +363,12 @@ export class Mesa {
 
 	/** O andar de um token que outra tela já gravou: aparece aqui sem esperar o aviso do banco (meio segundo mais tarde). */
 	private andados = new Map<string, { posicoes: string[]; quando: number }>();
-	private receberAndou(p: { id: string; x: number; y: number; movido: number }) {
+	private receberAndou(p: { id: string; x: number; y: number; movido: number; rumo?: number }) {
 		if (!p || typeof p.x !== 'number' || typeof p.y !== 'number' || !this.tokens.some((t) => t.id === p.id)) return;
 		const a = this.andados.get(p.id);
 		const posicoes = [...(a && Date.now() - a.quando < 4000 ? a.posicoes : []), `${p.x},${p.y}`].slice(-8);
 		this.andados.set(p.id, { posicoes, quando: Date.now() });
-		this.trocar(p.id, { x: p.x, y: p.y, movido: p.movido });
+		this.trocar(p.id, { x: p.x, y: p.y, movido: p.movido, ...(Number.isInteger(p.rumo) && p.rumo! >= 0 && p.rumo! < 8 ? { rumo: p.rumo } : {}) });
 	}
 
 	/**
@@ -699,7 +700,10 @@ export class Mesa {
 		if (!t || (t.x === x && t.y === y)) return;
 		this.desfazer.push({ tipo: 'mover', id, x: t.x, y: t.y, movido: t.movido });
 		const movido = this.daVez.has(id) ? t.movido + metros : 0;
-		if ((await this.atualizarToken(id, { x, y, movido })) && t.visivel && this.conectado) this.canal?.send({ type: 'broadcast', event: 'andou', payload: { id, x, y, movido } });
+		// a peça vira para onde andou (só com a coluna do rumo: a migração das miniaturas)
+		const rumo = t.rumo !== undefined ? (rumoDoPasso(x - t.x, y - t.y) ?? t.rumo) : undefined;
+		const patch = rumo !== undefined ? { x, y, movido, rumo } : { x, y, movido };
+		if ((await this.atualizarToken(id, patch)) && t.visivel && this.conectado) this.canal?.send({ type: 'broadcast', event: 'andou', payload: { id, ...patch } });
 	}
 
 	async colocar(novo: Partial<MesaToken> & { nome: string }) {
@@ -1022,6 +1026,23 @@ export class Mesa {
 		if (this.mestre || this.cena?.paredes_bloqueiam === false || !this.paredes.length) return false;
 		const n = t.tamanho / 2;
 		return bloqueiaPasso(this.paredes, t.x + n, t.y + n, x + n, y + n);
+	}
+	/** Os tokens têm as colunas das miniaturas (a migração já rodou)? */
+	get temMiniaturas() {
+		return this.tokens.length ? this.tokens[0].miniatura !== undefined : true;
+	}
+	/** Troca a peça de vários tokens de uma vez: a miniatura `id` ou, com null, o token redondo. */
+	async trocarMiniatura(tokens: readonly MesaToken[], id: string | null) {
+		const alvos = tokens.filter((t) => t.miniatura !== undefined && t.miniatura !== id);
+		if (!alvos.length) return true;
+		for (const t of alvos) this.trocar(t.id, { miniatura: id });
+		const { error } = await sb().from('mesa_tokens').update({ miniatura: id }).in('id', alvos.map((t) => t.id));
+		if (error) {
+			for (const t of alvos) this.trocar(t.id, { miniatura: t.miniatura });
+			toasts.mostrar(/travada/i.test(error.message) ? 'Mesa travada pelo Mestre.' : 'Não foi possível trocar a peça.', 'erro');
+			return false;
+		}
+		return true;
 	}
 	/** A cena tem as colunas da luz dinâmica (a migração já rodou)? */
 	get temLuzDinamica() {

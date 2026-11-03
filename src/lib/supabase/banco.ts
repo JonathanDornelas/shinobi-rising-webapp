@@ -561,6 +561,10 @@ export type MesaToken = {
 	reagiu?: boolean;
 	/** A luz que o token carrega (tocha, lampião), em metros; null = nenhuma (ausente enquanto a migração não roda). */
 	luz?: { plena: number; penumbra: number } | null;
+	/** A miniatura de pé no lugar do retrato (id do catálogo, miniaturas.json); null = o token redondo. Ausente sem a migração. */
+	miniatura?: string | null;
+	/** Para onde a peça olha, na grade: 0 sul, 1 sudeste, 2 leste ... 7 sudoeste (muda a cada passo). */
+	rumo?: number;
 	cena_id: string;
 	campanha_id: string;
 	personagem_id: string | null;

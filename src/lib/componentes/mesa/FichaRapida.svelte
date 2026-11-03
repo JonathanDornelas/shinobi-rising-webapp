@@ -67,6 +67,8 @@
 	import { estiloFoco, type FocoArte } from '#lib/bestiario/foco.ts';
 	import { kkgLigadaNoToken, semKkg } from '#lib/mesa/kkg-npc.ts';
 	import { FONTES_DE_LUZ, luzDoToken } from '#lib/mesa/luz.ts';
+	import { miniaturasDoVerbete } from '#lib/mesa/miniaturas.ts';
+	import FiguraMiniatura from './FiguraMiniatura.svelte';
 
 	let {
 		mesa,
@@ -81,6 +83,8 @@
 	}: { mesa: Mesa; ui: UiMesa; token: MesaToken; janela: FichaAberta; dados: DadosFicha; acoes: AcoesFicha; foto?: string | null; foco?: FocoArte | null; celular?: boolean } = $props();
 
 	let ampliada = $state(false);
+	/** As miniaturas do NPC (do estágio do bestiário de onde ele veio). */
+	const minis = $derived(dados.tipo === 'npc' ? miniaturasDoVerbete(dados.npc.bestiario) : []);
 	/** O uso de um jutsu em botões: ATAQUE (ou USAR, sem rolagem de ataque) paga o custo; DANO ou CURA rola o efeito. */
 	function botoesUso(j: JutsuMesa, falta = false) {
 		const custo = j.custo ? `Gasta ${j.custo} ${j.unidade}` : '';
@@ -547,6 +551,36 @@
 				</div>
 			{/if}
 
+
+			{#if mesa.mestre && !mesa.somenteLeitura && minis.length && token.miniatura !== undefined}
+				<!-- a peça no quadro: o token redondo ou a miniatura de pé (e qual direção de arte) -->
+				{@const atual = minis.find((m) => m.id === token.miniatura) ?? null}
+				<div class="mx-3 mb-2.5 flex flex-col gap-1">
+					<div class="flex items-center gap-2">
+						<span class="flex-1 text-xs font-semibold text-mut">Peça no quadro</span>
+						<button type="button" class="text-xs font-semibold text-mut underline decoration-dotted underline-offset-2 hover:text-fg" onclick={() => (ui.modal = { tipo: 'miniaturas', token: token.id })}>Caixa de miniaturas</button>
+					</div>
+					<div class="flex items-stretch gap-1.5">
+						<div role="radiogroup" aria-label="Peça no quadro" class="flex shrink-0 border-2 border-b3">
+							<button type="button" role="radio" aria-checked={!atual} class="flex items-center gap-1.5 px-2 text-xs font-semibold {celular ? 'min-h-11' : 'min-h-10'} {!atual ? 'bg-grena text-papel' : 'text-mut hover:text-fg'}" onclick={() => acoes.token(token, { miniatura: null })}>
+								<span class="h-6 w-6 shrink-0 overflow-hidden rounded-full border-2 border-current bg-b2">{#if foto}<img src={foto} alt="" class="h-full w-full object-cover" />{/if}</span>Token
+							</button>
+							<button type="button" role="radio" aria-checked={!!atual} class="flex items-end gap-1 px-2 pb-1 text-xs font-semibold {celular ? 'min-h-11' : 'min-h-10'} {atual ? 'bg-grena text-papel' : 'text-mut hover:text-fg'}" onclick={() => acoes.token(token, { miniatura: (atual ?? minis[0]).id })}>
+								<FiguraMiniatura mini={atual ?? minis[0]} altura={30} />Miniatura
+							</button>
+						</div>
+						{#if atual && minis.length > 1}
+							<div role="radiogroup" aria-label="Direção de arte" class="flex min-w-0 flex-1 items-end gap-0.5 overflow-x-auto">
+								{#each minis as m (m.id)}
+									<button type="button" role="radio" aria-checked={m.id === atual.id} aria-label={m.estilo} title={m.estilo} class="flex shrink-0 items-end border-2 px-0.5 pb-0.5 {m.id === atual.id ? 'border-[var(--vermelhao)]' : 'border-transparent hover:border-b3'} {celular ? 'min-h-11' : 'min-h-10'}" onclick={() => acoes.token(token, { miniatura: m.id })}>
+										<FiguraMiniatura mini={m} altura={28} />
+									</button>
+								{/each}
+							</div>
+						{/if}
+					</div>
+				</div>
+			{/if}
 
 			{#if mesa.mestre && !mesa.somenteLeitura}
 				<!-- ferramentas do Mestre, recolhidas: devolver o NPC inteiro e o tamanho no quadro (cap. 4) -->
