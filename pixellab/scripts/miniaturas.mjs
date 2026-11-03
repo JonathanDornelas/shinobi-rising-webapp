@@ -6,7 +6,7 @@
 // Cada miniatura tem a sua pose, escrita à mão em pixellab/miniaturas/poses.json (o jeito do personagem e a técnica do clã):
 // estágio sem pose fica fora da fila, nunca numa pose genérica.
 //
-//   PIXELLAB_TOKEN=... PIXELLAB_CONTAS=contas.json node pixellab/scripts/miniaturas.mjs [--max N] [--clas] [--so slug#estagio ...] [--ver]
+//   PIXELLAB_TOKEN=... PIXELLAB_CONTAS=contas.json node pixellab/scripts/miniaturas.mjs [--max N] [--clas | --grupo prefixo] [--so slug#estagio ...] [--ver]
 //   contas.json: [{ "token": "...", "paralelo": 3 }]. --clas: só os clãs. --ver: só lista a fila e o saldo, sem gerar.
 //   --estilo <id do personagem>: a referência de estilo e de proporções (o Chunin Uchiha escolhido, importado na conta).
 //   --refazer: refaz também as que já existem (as cabeçudas, antes da referência). --teste: não mexe no catálogo.
@@ -28,6 +28,8 @@ const max = Number(opc('--max') ?? Infinity);
 const so = args.flatMap((a, i) => (args[i - 1] === '--so' ? [a] : []));
 const soVer = args.includes('--ver');
 const soClas = args.includes('--clas');
+/** --grupo <prefixo>: só os verbetes que começam assim (ex.: especialista-), em lotes por grupo do bestiário. */
+const grupo = opc('--grupo');
 const TAMANHO = Number(opc('--tamanho') ?? 80);
 /** --estilo <id>: um personagem da conta (8 direções) que guia o estilo e as proporções de todas (o Chunin Uchiha escolhido). */
 const ESTILO = opc('--estilo');
@@ -87,7 +89,7 @@ const ordem = [...bestiario].sort((a, b) => Number(!a.slug.startsWith('cla-')) -
 const fila = ordem.flatMap((c) =>
 	c.estagios
 		.map((e) => ({ c, e, verbete: `${c.slug}#${e.slug}`, id: `${c.slug}--${e.slug}`.slice(0, 60), pedido: pedidos.find((p) => p.slug === `${c.slug}--${e.slug}`) ?? pedidos.find((p) => p.slug === c.slug) }))
-		.filter((x) => (soTeste || (refazer ? x.verbete !== 'cla-uchiha#chunin' : !feitos.has(x.verbete))) && x.pedido && (!so.length || so.includes(x.verbete)) && (!soClas || x.c.slug.startsWith('cla-')))
+		.filter((x) => (soTeste || (refazer ? x.verbete !== 'cla-uchiha#chunin' : !feitos.has(x.verbete))) && x.pedido && (!so.length || so.includes(x.verbete)) && (!soClas || x.c.slug.startsWith('cla-')) && (!grupo || x.c.slug.startsWith(grupo)))
 		.filter((x) => soTeste || refazer || !fs.existsSync(path.join(RAIZ, 'pixellab', 'miniaturas', x.id, 'south-west.png')))
 );
 const semPose = fila.filter((x) => !poses[x.id]);

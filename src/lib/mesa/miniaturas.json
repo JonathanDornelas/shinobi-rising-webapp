@@ -130,6 +130,643 @@
 		"altura": 75
 	},
 	{
+		"id": "especialista-bakuton--genin",
+		"verbete": "especialista-bakuton#genin",
+		"nome": "Especialista em Bakuton, Genin",
+		"estilo": "Fiel à arte",
+		"w": 48,
+		"h": 68,
+		"pe": [
+			24,
+			67
+		],
+		"altura": 64
+	},
+	{
+		"id": "especialista-bakuton--chunin",
+		"verbete": "especialista-bakuton#chunin",
+		"nome": "Especialista em Bakuton, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 36,
+		"h": 67,
+		"pe": [
+			18,
+			65
+		],
+		"altura": 63
+	},
+	{
+		"id": "especialista-bakuton--jounin",
+		"verbete": "especialista-bakuton#jounin",
+		"nome": "Especialista em Bakuton, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 61,
+		"h": 69,
+		"pe": [
+			30,
+			68
+		],
+		"altura": 67
+	},
+	{
+		"id": "especialista-bakuton--nivel-anbu",
+		"verbete": "especialista-bakuton#nivel-anbu",
+		"nome": "Especialista em Bakuton, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 64,
+		"h": 65,
+		"pe": [
+			31,
+			64
+		],
+		"altura": 63
+	},
+	{
+		"id": "especialista-bakuton--nivel-kage",
+		"verbete": "especialista-bakuton#nivel-kage",
+		"nome": "Especialista em Bakuton, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 68,
+		"h": 67,
+		"pe": [
+			34,
+			66
+		],
+		"altura": 64
+	},
+	{
+		"id": "especialista-doton--genin",
+		"verbete": "especialista-doton#genin",
+		"nome": "Especialista em Doton, Genin",
+		"estilo": "Fiel à arte",
+		"w": 74,
+		"h": 68,
+		"pe": [
+			36,
+			65
+		],
+		"altura": 62
+	},
+	{
+		"id": "especialista-doton--chunin",
+		"verbete": "especialista-doton#chunin",
+		"nome": "Especialista em Doton, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 72,
+		"h": 77,
+		"pe": [
+			35,
+			69
+		],
+		"altura": 68
+	},
+	{
+		"id": "especialista-doton--jounin",
+		"verbete": "especialista-doton#jounin",
+		"nome": "Especialista em Doton, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 53,
+		"h": 75,
+		"pe": [
+			26,
+			74
+		],
+		"altura": 73
+	},
+	{
+		"id": "especialista-doton--nivel-anbu",
+		"verbete": "especialista-doton#nivel-anbu",
+		"nome": "Especialista em Doton, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 58,
+		"h": 65,
+		"pe": [
+			29,
+			64
+		],
+		"altura": 62
+	},
+	{
+		"id": "especialista-doton--nivel-kage",
+		"verbete": "especialista-doton#nivel-kage",
+		"nome": "Especialista em Doton, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 51,
+		"h": 68,
+		"pe": [
+			24,
+			66
+		],
+		"altura": 64
+	},
+	{
+		"id": "especialista-futton--genin",
+		"verbete": "especialista-futton#genin",
+		"nome": "Especialista em Futton, Genin",
+		"estilo": "Fiel à arte",
+		"w": 36,
+		"h": 65,
+		"pe": [
+			18,
+			63
+		],
+		"altura": 62
+	},
+	{
+		"id": "especialista-futton--chunin",
+		"verbete": "especialista-futton#chunin",
+		"nome": "Especialista em Futton, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 36,
+		"h": 69,
+		"pe": [
+			18,
+			68
+		],
+		"altura": 67
+	},
+	{
+		"id": "especialista-futton--jounin",
+		"verbete": "especialista-futton#jounin",
+		"nome": "Especialista em Futton, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 65,
+		"h": 67,
+		"pe": [
+			32,
+			65
+		],
+		"altura": 60
+	},
+	{
+		"id": "especialista-futton--nivel-anbu",
+		"verbete": "especialista-futton#nivel-anbu",
+		"nome": "Especialista em Futton, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 80,
+		"h": 72,
+		"pe": [
+			40,
+			67
+		],
+		"altura": 66
+	},
+	{
+		"id": "especialista-futton--nivel-kage",
+		"verbete": "especialista-futton#nivel-kage",
+		"nome": "Especialista em Futton, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 60,
+		"h": 70,
+		"pe": [
+			29,
+			68
+		],
+		"altura": 65
+	},
+	{
+		"id": "especialista-fuuton--genin",
+		"verbete": "especialista-fuuton#genin",
+		"nome": "Especialista em Fuuton, Genin",
+		"estilo": "Fiel à arte",
+		"w": 60,
+		"h": 63,
+		"pe": [
+			30,
+			62
+		],
+		"altura": 61
+	},
+	{
+		"id": "especialista-fuuton--chunin",
+		"verbete": "especialista-fuuton#chunin",
+		"nome": "Especialista em Fuuton, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 61,
+		"h": 73,
+		"pe": [
+			29,
+			72
+		],
+		"altura": 68
+	},
+	{
+		"id": "especialista-fuuton--jounin",
+		"verbete": "especialista-fuuton#jounin",
+		"nome": "Especialista em Fuuton, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 56,
+		"h": 64,
+		"pe": [
+			29,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "especialista-fuuton--nivel-anbu",
+		"verbete": "especialista-fuuton#nivel-anbu",
+		"nome": "Especialista em Fuuton, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 71,
+		"h": 67,
+		"pe": [
+			35,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "especialista-fuuton--nivel-kage",
+		"verbete": "especialista-fuuton#nivel-kage",
+		"nome": "Especialista em Fuuton, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 60,
+		"h": 71,
+		"pe": [
+			30,
+			70
+		],
+		"altura": 69
+	},
+	{
+		"id": "especialista-hyoton--genin",
+		"verbete": "especialista-hyoton#genin",
+		"nome": "Especialista em Hyōton, Genin",
+		"estilo": "Fiel à arte",
+		"w": 38,
+		"h": 67,
+		"pe": [
+			18,
+			66
+		],
+		"altura": 64
+	},
+	{
+		"id": "especialista-hyoton--chunin",
+		"verbete": "especialista-hyoton#chunin",
+		"nome": "Especialista em Hyōton, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 47,
+		"h": 64,
+		"pe": [
+			22,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "especialista-hyoton--jounin",
+		"verbete": "especialista-hyoton#jounin",
+		"nome": "Especialista em Hyōton, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 51,
+		"h": 66,
+		"pe": [
+			25,
+			65
+		],
+		"altura": 63
+	},
+	{
+		"id": "especialista-hyoton--nivel-anbu",
+		"verbete": "especialista-hyoton#nivel-anbu",
+		"nome": "Especialista em Hyōton, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 58,
+		"h": 67,
+		"pe": [
+			29,
+			64
+		],
+		"altura": 63
+	},
+	{
+		"id": "especialista-hyoton--nivel-kage",
+		"verbete": "especialista-hyoton#nivel-kage",
+		"nome": "Especialista em Hyōton, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 48,
+		"h": 66,
+		"pe": [
+			23,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "especialista-jinton--genin",
+		"verbete": "especialista-jinton#genin",
+		"nome": "Especialista em Jinton, Genin",
+		"estilo": "Fiel à arte",
+		"w": 37,
+		"h": 67,
+		"pe": [
+			18,
+			65
+		],
+		"altura": 63
+	},
+	{
+		"id": "especialista-jinton--chunin",
+		"verbete": "especialista-jinton#chunin",
+		"nome": "Especialista em Jinton, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 66,
+		"h": 64,
+		"pe": [
+			40,
+			63
+		],
+		"altura": 62
+	},
+	{
+		"id": "especialista-jinton--jounin",
+		"verbete": "especialista-jinton#jounin",
+		"nome": "Especialista em Jinton, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 59,
+		"h": 66,
+		"pe": [
+			28,
+			64
+		],
+		"altura": 61
+	},
+	{
+		"id": "especialista-jinton--nivel-anbu",
+		"verbete": "especialista-jinton#nivel-anbu",
+		"nome": "Especialista em Jinton, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 44,
+		"h": 65,
+		"pe": [
+			22,
+			64
+		],
+		"altura": 62
+	},
+	{
+		"id": "especialista-jinton--nivel-kage",
+		"verbete": "especialista-jinton#nivel-kage",
+		"nome": "Especialista em Jinton, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 47,
+		"h": 67,
+		"pe": [
+			23,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "especialista-jiton--genin",
+		"verbete": "especialista-jiton#genin",
+		"nome": "Especialista em Jiton, Genin",
+		"estilo": "Fiel à arte",
+		"w": 48,
+		"h": 68,
+		"pe": [
+			23,
+			66
+		],
+		"altura": 64
+	},
+	{
+		"id": "especialista-jiton--chunin",
+		"verbete": "especialista-jiton#chunin",
+		"nome": "Especialista em Jiton, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 62,
+		"h": 76,
+		"pe": [
+			30,
+			74
+		],
+		"altura": 72
+	},
+	{
+		"id": "especialista-jiton--jounin",
+		"verbete": "especialista-jiton#jounin",
+		"nome": "Especialista em Jiton, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 78,
+		"h": 74,
+		"pe": [
+			39,
+			71
+		],
+		"altura": 60
+	},
+	{
+		"id": "especialista-jiton--nivel-anbu",
+		"verbete": "especialista-jiton#nivel-anbu",
+		"nome": "Especialista em Jiton, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 59,
+		"h": 65,
+		"pe": [
+			29,
+			64
+		],
+		"altura": 62
+	},
+	{
+		"id": "especialista-jiton--nivel-kage",
+		"verbete": "especialista-jiton#nivel-kage",
+		"nome": "Especialista em Jiton, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 68,
+		"h": 70,
+		"pe": [
+			34,
+			68
+		],
+		"altura": 67
+	},
+	{
+		"id": "especialista-katon--genin",
+		"verbete": "especialista-katon#genin",
+		"nome": "Especialista em Katon, Genin",
+		"estilo": "Fiel à arte",
+		"w": 51,
+		"h": 68,
+		"pe": [
+			25,
+			67
+		],
+		"altura": 61
+	},
+	{
+		"id": "especialista-katon--chunin",
+		"verbete": "especialista-katon#chunin",
+		"nome": "Especialista em Katon, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 52,
+		"h": 65,
+		"pe": [
+			25,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "especialista-katon--jounin",
+		"verbete": "especialista-katon#jounin",
+		"nome": "Especialista em Katon, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 50,
+		"h": 72,
+		"pe": [
+			25,
+			70
+		],
+		"altura": 68
+	},
+	{
+		"id": "especialista-katon--nivel-anbu",
+		"verbete": "especialista-katon#nivel-anbu",
+		"nome": "Especialista em Katon, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 60,
+		"h": 65,
+		"pe": [
+			30,
+			64
+		],
+		"altura": 61
+	},
+	{
+		"id": "especialista-katon--nivel-kage",
+		"verbete": "especialista-katon#nivel-kage",
+		"nome": "Especialista em Katon, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 48,
+		"h": 70,
+		"pe": [
+			24,
+			68
+		],
+		"altura": 67
+	},
+	{
+		"id": "especialista-mokuton--genin",
+		"verbete": "especialista-mokuton#genin",
+		"nome": "Especialista em Mokuton, Genin",
+		"estilo": "Fiel à arte",
+		"w": 47,
+		"h": 66,
+		"pe": [
+			23,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "especialista-mokuton--chunin",
+		"verbete": "especialista-mokuton#chunin",
+		"nome": "Especialista em Mokuton, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 45,
+		"h": 68,
+		"pe": [
+			21,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "especialista-mokuton--jounin",
+		"verbete": "especialista-mokuton#jounin",
+		"nome": "Especialista em Mokuton, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 71,
+		"h": 65,
+		"pe": [
+			37,
+			64
+		],
+		"altura": 61
+	},
+	{
+		"id": "especialista-mokuton--nivel-anbu",
+		"verbete": "especialista-mokuton#nivel-anbu",
+		"nome": "Especialista em Mokuton, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 45,
+		"h": 65,
+		"pe": [
+			21,
+			64
+		],
+		"altura": 63
+	},
+	{
+		"id": "especialista-mokuton--nivel-kage",
+		"verbete": "especialista-mokuton#nivel-kage",
+		"nome": "Especialista em Mokuton, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 52,
+		"h": 64,
+		"pe": [
+			26,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "especialista-raiton--genin",
+		"verbete": "especialista-raiton#genin",
+		"nome": "Especialista em Raiton, Genin",
+		"estilo": "Fiel à arte",
+		"w": 49,
+		"h": 67,
+		"pe": [
+			24,
+			66
+		],
+		"altura": 63
+	},
+	{
+		"id": "especialista-raiton--chunin",
+		"verbete": "especialista-raiton#chunin",
+		"nome": "Especialista em Raiton, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 78,
+		"h": 74,
+		"pe": [
+			39,
+			70
+		],
+		"altura": 62
+	},
+	{
+		"id": "especialista-raiton--jounin",
+		"verbete": "especialista-raiton#jounin",
+		"nome": "Especialista em Raiton, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 74,
+		"h": 71,
+		"pe": [
+			37,
+			67
+		],
+		"altura": 66
+	},
+	{
+		"id": "especialista-raiton--nivel-anbu",
+		"verbete": "especialista-raiton#nivel-anbu",
+		"nome": "Especialista em Raiton, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 67,
+		"h": 65,
+		"pe": [
+			33,
+			63
+		],
+		"altura": 60
+	},
+	{
 		"id": "cla-hozuki--genin",
 		"verbete": "cla-hozuki#genin",
 		"nome": "Hozuki, Genin",
