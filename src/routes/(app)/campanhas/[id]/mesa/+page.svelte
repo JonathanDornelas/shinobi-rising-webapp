@@ -68,7 +68,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 
 	// ------------------------------------------------------------------ estado
 	const criar = () =>
-		new Mesa({ campanha: data.campanha.id, eu: data.eu, mestre: data.mestre, arquivada: data.arquivada, cenas: data.cenas, cena: data.cena, tokens: data.tokens, tracos: data.tracos, efeitos: data.efeitos, objetos: data.objetos, jukebox: data.jukebox, pastasCenas: data.pastasCenas, artes: data.artes, membros: data.membros, molduraMesa: { id: molduraPorId(data.campanha.moldura)?.id ?? null, universal: !!data.campanha.moldura_universal } });
+		new Mesa({ campanha: data.campanha.id, eu: data.eu, mestre: data.mestre, arquivada: data.arquivada, cenas: data.cenas, cena: data.cena, tokens: data.tokens, tracos: data.tracos, efeitos: data.efeitos, objetos: data.objetos, jukebox: data.jukebox, pastasCenas: data.pastasCenas, artes: data.artes, membros: data.membros, molduraMesa: { id: molduraPorId(data.campanha.moldura)?.id ?? null, universal: !!data.campanha.moldura_universal }, miniaturas: data.campanha.miniaturas });
 	// svelte-ignore state_referenced_locally
 	let mesa = $state(criar());
 	const ui = new UiMesa();
@@ -1755,7 +1755,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 
 {#if ui.modal}
 	<div class="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(10,8,7,.72)] p-4" role="presentation" onclick={(e) => e.target === e.currentTarget && (ui.modal = null)}>
-		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'config' ? 'h-[min(660px,calc(100dvh-2rem))] w-[min(400px,100%)] overflow-hidden' : (ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' || ui.modal.tipo === 'miniaturas' ? 'w-[560px]' : 'w-[440px]') + ' overflow-y-auto'} max-h-full max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_var(--sombra)]">
+		<div role="dialog" aria-modal="true" class="flex {ui.modal.tipo === 'config' ? 'h-[min(660px,calc(100dvh-2rem))] w-[min(400px,100%)] overflow-hidden' : (ui.modal.tipo === 'imagem' || ui.modal.tipo === 'artes' ? 'w-[720px]' : ui.modal.tipo === 'miniaturas' ? 'w-[840px]' : ui.modal.tipo === 'jutsu' || ui.modal.tipo === 'bestiario' ? 'w-[560px]' : 'w-[440px]') + ' overflow-y-auto'} max-h-full max-w-full flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 shadow-[8px_8px_0_var(--sombra)]">
 			{#if ui.modal.tipo === 'imagem' && cena}
 				{@const alvo = ui.modal.alvo}
 				<ArtesMesa {mesa} {campanha} {alvo} atual={cena[alvo]} aoEscolher={escolherDaBiblioteca} aoArmar={armarArte} aoFechar={() => (ui.modal = null)} />

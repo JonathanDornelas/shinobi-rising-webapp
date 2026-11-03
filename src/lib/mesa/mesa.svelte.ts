@@ -12,7 +12,7 @@ import { limitarPosicao } from './musica.ts';
 import { limpar as limparRuns } from './nevoa.ts';
 import { coresDosMembros } from './cores.ts';
 import { deslocarQuadrados, deslocarRuns, deslocarToken } from './reenquadrar.ts';
-import { rumoDoPasso } from './miniaturas.ts';
+import { escalaDe, lerAjustes, rumoDoPasso, type AjusteMiniaturas } from './miniaturas.ts';
 import { bloqueiaPasso, deslocarLuzes, deslocarParedes, ehPorta, limparLuzes, limparParedes, type Luz, type Parede } from './luz.ts';
 import { avancarRodada, relogiosDaCena, type Relogio } from './relogios.ts';
 import type { Quadrado } from './geometria.ts';
@@ -94,6 +94,8 @@ export class Mesa {
 	membros = $state<MembroMesa[]>([]);
 	/** a moldura que o Mestre escolheu para a campanha; universal = vale em todos os tokens */
 	molduraMesa = $state<{ id: string | null; universal: boolean }>({ id: null, universal: false });
+	/** O tamanho das miniaturas na campanha (todas e cada uma); null enquanto a migração não roda. */
+	miniaturasAjuste = $state<AjusteMiniaturas | null>(null);
 	online = $state<string[]>([]);
 	fantasmas = $state<Record<string, Fantasma>>({});
 	reguas = $state<Record<string, ReguaViva>>({});
@@ -156,6 +158,8 @@ export class Mesa {
 		artes?: MesaArte[];
 		membros: MembroMesa[];
 		molduraMesa: { id: string | null; universal: boolean };
+		/** campanhas.miniaturas (undefined sem a migração) */
+		miniaturas?: unknown;
 	}) {
 		this.campanha = d.campanha;
 		this.eu = d.eu;
@@ -172,6 +176,7 @@ export class Mesa {
 		this.artes = d.artes ?? [];
 		this.membros = d.membros;
 		this.molduraMesa = d.molduraMesa;
+		this.miniaturasAjuste = d.miniaturas === undefined ? null : lerAjustes(d.miniaturas);
 	}
 
 	corDe = (usuario: string | null | undefined): CorMesa | null => (usuario ? (this.cores.get(usuario) ?? null) : null);
@@ -316,6 +321,11 @@ export class Mesa {
 				if (this.membro(usuario)?.papel !== 'mestre' || !Number.isFinite(dados?.x) || !Number.isFinite(dados?.y)) return;
 				this.olhar = { x: dados.x, y: dados.y, t: Date.now() };
 				this.receberPing({ id: crypto.randomUUID(), usuario, x: dados.x, y: dados.y });
+			})
+			// o tamanho das miniaturas: só o Mestre muda, e chega na hora a quem está na mesa
+			.on('broadcast', { event: 'miniaturas' }, ({ payload }) => {
+				const { usuario, dados } = payload as { usuario: string; dados: unknown };
+				if (this.membro(usuario)?.papel === 'mestre' && this.miniaturasAjuste) this.miniaturasAjuste = lerAjustes(dados);
 			})
 			.on('broadcast', { event: 'moldura-mesa' }, ({ payload }) => {
 				const { dados } = payload as { dados: { id: string | null; universal: boolean } };
@@ -521,7 +531,7 @@ export class Mesa {
 	 * Manda o que é passageiro, no máximo 12 vezes por segundo (o último estado sempre sai: null limpa). É a maior parte do
 	 * tráfego do tempo real: com vários arrastando juntos, 20 por segundo estourava o limite e o servidor fechava o canal.
 	 */
-	enviar(evento: 'fantasma' | 'regua' | 'molde' | 'apontar' | 'pulso' | 'ping' | 'moldura' | 'moldura-mesa' | 'olhar', dados: unknown, forcar = false) {
+	enviar(evento: 'fantasma' | 'regua' | 'molde' | 'apontar' | 'pulso' | 'ping' | 'moldura' | 'moldura-mesa' | 'olhar' | 'miniaturas', dados: unknown, forcar = false) {
 		if (!this.canal || !this.conectado) return;
 		const agora = Date.now();
 		// o molde pode ter mais de mil quadrados: vai no máximo 6 vezes por segundo; o resto, 12
@@ -1030,6 +1040,40 @@ export class Mesa {
 	/** Os tokens têm as colunas das miniaturas (a migração já rodou)? */
 	get temMiniaturas() {
 		return this.tokens.length ? this.tokens[0].miniatura !== undefined : true;
+	}
+	/** Quanto a miniatura `id` cresce no quadro (o tamanho de todas vezes o dela). */
+	escalaMiniatura(id: string) {
+		return this.miniaturasAjuste ? escalaDe(this.miniaturasAjuste, id) : 1;
+	}
+	/** O Mestre muda o tamanho das miniaturas: grava na campanha e manda a quem está na mesa. */
+	async definirAjusteMiniaturas(a: AjusteMiniaturas) {
+		const antes = this.miniaturasAjuste;
+		if (!antes) return false;
+		const novo = lerAjustes(a);
+		this.miniaturasAjuste = novo;
+		const { error } = await sb().from('campanhas').update({ miniaturas: novo }).eq('id', this.campanha);
+		if (error) {
+			this.miniaturasAjuste = antes;
+			toasts.mostrar('Não foi possível guardar o tamanho das miniaturas.', 'erro');
+			return false;
+		}
+		this.enviar('miniaturas', novo, true);
+		return true;
+	}
+	/**
+	 * Escolhe a miniatura de um personagem ou NPC (null = o token redondo): fica salva nele, os tokens dele nas cenas
+	 * trocam junto e os próximos já nascem com ela.
+	 */
+	async escolherMiniatura(tipo: 'personagem' | 'npc', alvo: string, id: string | null) {
+		const deles = this.tokens.filter((t) => (tipo === 'personagem' ? t.personagem_id : t.npc_id) === alvo);
+		for (const t of deles) this.trocar(t.id, { miniatura: id });
+		const { error } = await sb().rpc('definir_miniatura', { tipo, alvo, miniatura: id });
+		if (error) {
+			for (const t of deles) this.trocar(t.id, { miniatura: t.miniatura });
+			toasts.mostrar('Não foi possível trocar a miniatura.', 'erro');
+			return false;
+		}
+		return true;
 	}
 	/** Troca a peça de vários tokens de uma vez: a miniatura `id` ou, com null, o token redondo. */
 	async trocarMiniatura(tokens: readonly MesaToken[], id: string | null) {

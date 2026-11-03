@@ -67,6 +67,8 @@ export type Campanha = {
 	/** Moldura dos tokens na Mesa escolhida pelo Mestre: NPCs e quem não escolheu; universal = todos os tokens. */
 	moldura: string | null;
 	moldura_universal: boolean;
+	/** O tamanho das miniaturas na Mesa: { escala, ajustes: { id: escala } } (src/lib/mesa/miniaturas.ts). Ausente sem a migração. */
+	miniaturas?: unknown;
 	mestre_id: string | null;
 	arquivada_em: string | null;
 	criada_em: string;
@@ -108,6 +110,8 @@ export type Personagem = {
 	jogador_id: string;
 	nome: string;
 	status: StatusFicha;
+	/** A miniatura escolhida para os tokens dele na Mesa (id do catálogo); ausente sem a migração. */
+	miniatura?: string | null;
 	nivel: number;
 	xp: number;
 	dados: Json;
@@ -230,6 +234,8 @@ export type Npc = {
 	dt: number | null;
 	arte: string | null;
 	bestiario: string | null;
+	/** A miniatura escolhida para os tokens dele (id do catálogo); ausente sem a migração. */
+	miniatura?: string | null;
 	/** Ajuste do Mestre no enquadramento da arte no token (ponto em frações da imagem e zoom); null = o padrão da arte. */
 	enquadramento?: { x: number; y: number; zoom: number } | null;
 	criado_em: string;
@@ -711,6 +717,7 @@ export type Database = {
 			registrar_excecao: { Args: { tipo: string; alvo: string; justificativa: string }; Returns: undefined };
 			definir_nome_oculto: { Args: { alvo: 'npc' | 'ficha'; id: string; oculto: boolean }; Returns: undefined };
 			mesa_porta: { Args: { cena: string; indice: number; x1: number; y1: number }; Returns: undefined };
+			definir_miniatura: { Args: { tipo: 'personagem' | 'npc'; alvo: string; miniatura: string | null }; Returns: undefined };
 			npcs_revelados: { Args: { campanha: string }; Returns: NpcRevelado[] };
 			assumir_pre_gerado: { Args: { ficha: string }; Returns: undefined };
 			conceder_jutsu: { Args: { ficha: string; slug: string; nome: string; custo_pt?: number }; Returns: undefined };

@@ -55,5 +55,42 @@ export function quadroNaTela(rumo: number, cx: number, cy: number, tela: (x: num
 	return rumoDoPasso(bx - ax, by - ay) ?? 0;
 }
 
-/** A figura de pé mede isto (em metros) por quadrado do token: a de 1 × 1 passa um pouco do quadrado de cima. */
+/**
+ * A figura de pé mede isto (em metros) por quadrado do token, do pé (ou da base esculpida) ao alto da cabeça: todas as
+ * miniaturas têm a mesma altura, e a campanha ajusta o tamanho de todas e de cada uma.
+ */
 export const ALTURA_DA_FIGURA = 1.7;
+
+/** O tamanho das miniaturas na campanha: `escala` vale para todas; `ajustes`, para cada uma (multiplica). */
+export interface AjusteMiniaturas {
+	escala: number;
+	ajustes: Record<string, number>;
+}
+export const LIMITE_ESCALA = { min: 0.5, max: 2, passo: 0.05 } as const;
+const limitar = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? Math.round(Math.min(LIMITE_ESCALA.max, Math.max(LIMITE_ESCALA.min, v)) * 100) / 100 : 1);
+/** Lê o que veio do banco (ou de quem mandou pela mesa), sem confiar: números fora do limite voltam para dentro. */
+export function lerAjustes(v: unknown): AjusteMiniaturas {
+	const o = v && typeof v === 'object' ? (v as { escala?: unknown; ajustes?: unknown }) : {};
+	const ajustes: Record<string, number> = {};
+	if (o.ajustes && typeof o.ajustes === 'object')
+		for (const [id, k] of Object.entries(o.ajustes as Record<string, unknown>)) if (/^[a-z0-9-]{1,60}$/.test(id) && limitar(k) !== 1) ajustes[id] = limitar(k);
+	return { escala: o.escala === undefined ? 1 : limitar(o.escala), ajustes };
+}
+/** Quanto a miniatura cresce (ou encolhe) no quadro: o ajuste de todas vezes o dela. */
+export const escalaDe = (a: AjusteMiniaturas, id: string) => Math.round(a.escala * (a.ajustes[id] ?? 1) * 1000) / 1000;
+
+/** As prateleiras da caixa: uma por verbete do bestiário (o clã, a criatura), na ordem do catálogo. */
+export interface Prateleira {
+	chave: string;
+	nome: string;
+	minis: Miniatura[];
+}
+export const PRATELEIRAS: Prateleira[] = Object.values(
+	MINIATURAS.reduce<Record<string, Prateleira>>((acc, m) => {
+		const chave = m.verbete.split('#')[0];
+		(acc[chave] ??= { chave, nome: m.nome.split(',')[0], minis: [] }).minis.push(m);
+		return acc;
+	}, {})
+);
+/** O nome curto do estágio (o que vem depois da vírgula), para a etiqueta na prateleira. */
+export const estagioDe = (m: Miniatura) => m.nome.split(',').slice(1).join(',').trim() || m.nome;

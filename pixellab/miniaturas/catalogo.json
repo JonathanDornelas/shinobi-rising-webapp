@@ -1,8 +1,88 @@
 [
-	{ "id": "uchiha-chunin-fiel", "verbete": "cla-uchiha#chunin", "nome": "Uchiha, Chunin", "estilo": "Fiel à arte" },
-	{ "id": "uchiha-chunin-pintada", "verbete": "cla-uchiha#chunin", "nome": "Uchiha, Chunin", "estilo": "Miniatura pintada", "base": true },
-	{ "id": "uchiha-chunin-heroico", "verbete": "cla-uchiha#chunin", "nome": "Uchiha, Chunin", "estilo": "Anime heroico" },
-	{ "id": "uchiha-chunin-chibi", "verbete": "cla-uchiha#chunin", "nome": "Uchiha, Chunin", "estilo": "Chibi tático" },
-	{ "id": "uchiha-chunin-sumi", "verbete": "cla-uchiha#chunin", "nome": "Uchiha, Chunin", "estilo": "Tinta sumi" },
-	{ "id": "uchiha-chunin-retro", "verbete": "cla-uchiha#chunin", "nome": "Uchiha, Chunin", "estilo": "Retrô 16 bits" }
+	{
+		"id": "uchiha-chunin-fiel",
+		"verbete": "cla-uchiha#chunin",
+		"nome": "Uchiha, Chunin",
+		"estilo": "Fiel à arte"
+	},
+	{
+		"id": "uchiha-chunin-pintada",
+		"verbete": "cla-uchiha#chunin",
+		"nome": "Uchiha, Chunin",
+		"estilo": "Miniatura pintada",
+		"base": true
+	},
+	{
+		"id": "uchiha-chunin-heroico",
+		"verbete": "cla-uchiha#chunin",
+		"nome": "Uchiha, Chunin",
+		"estilo": "Anime heroico"
+	},
+	{
+		"id": "uchiha-chunin-chibi",
+		"verbete": "cla-uchiha#chunin",
+		"nome": "Uchiha, Chunin",
+		"estilo": "Chibi tático"
+	},
+	{
+		"id": "uchiha-chunin-sumi",
+		"verbete": "cla-uchiha#chunin",
+		"nome": "Uchiha, Chunin",
+		"estilo": "Tinta sumi"
+	},
+	{
+		"id": "uchiha-chunin-retro",
+		"verbete": "cla-uchiha#chunin",
+		"nome": "Uchiha, Chunin",
+		"estilo": "Retrô 16 bits"
+	},
+	{
+		"id": "cla-aburame--nivel-anbu",
+		"verbete": "cla-aburame#nivel-anbu",
+		"nome": "Aburame, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "4e335fd2-7b8d-4521-a959-eb65dfdcefca"
+	},
+	{
+		"id": "cla-aburame--jounin",
+		"verbete": "cla-aburame#jounin",
+		"nome": "Aburame, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "1bae73dd-2cba-42f8-b350-fc21dce070b7"
+	},
+	{
+		"id": "cla-aburame--chunin",
+		"verbete": "cla-aburame#chunin",
+		"nome": "Aburame, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "9a24785f-8a21-4f69-8a2f-ffc777f1a2cb"
+	},
+	{
+		"id": "cla-aburame--genin",
+		"verbete": "cla-aburame#genin",
+		"nome": "Aburame, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "4c8bebc0-7d4e-44b4-bb07-e1f16aa76b0b"
+	},
+	{
+		"id": "cla-akimichi--jounin",
+		"verbete": "cla-akimichi#jounin",
+		"nome": "Akimichi, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "cd939b7a-a195-4e5b-8472-3a931529df66"
+	},
+	{
+		"id": "cla-akimichi--genin",
+		"verbete": "cla-akimichi#genin",
+		"nome": "Akimichi, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "fd0d78e9-f9eb-44d6-9741-e3fdc793ade9"
+	},
+	{
+		"id": "cla-aburame--lider-do-cla",
+		"verbete": "cla-aburame#lider-do-cla",
+		"nome": "Aburame, Líder do clã",
+		"estilo": "Fiel à arte",
+		"personagem": "334a64e2-c890-4fb9-86e6-ca5085ca48dc"
+	}
 ]

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MINIATURAS, miniaturaPorId, miniaturasDoVerbete, quadroNaTela, rumoDoPasso, vetorDoRumo } from './miniaturas.ts';
+import { MINIATURAS, PRATELEIRAS, escalaDe, lerAjustes, miniaturaPorId, miniaturasDoVerbete, quadroNaTela, rumoDoPasso, vetorDoRumo } from './miniaturas.ts';
 
 describe('miniaturas', () => {
 	it('o passo dá o rumo: sul de frente, leste, norte, oeste e as diagonais', () => {
@@ -20,6 +20,18 @@ describe('miniaturas', () => {
 		const iso = (x: number, y: number): [number, number] => [x - y, (x + y) / 2];
 		expect(quadroNaTela(2, 5, 5, iso)).toBe(1);
 		expect(quadroNaTela(1, 5, 5, iso)).toBe(0);
+	});
+
+	it('o tamanho: o de todas vezes o de cada uma, sempre dentro do limite', () => {
+		expect(lerAjustes(null)).toEqual({ escala: 1, ajustes: {} });
+		expect(lerAjustes({ escala: 9, ajustes: { 'cla-uchiha--genin': 0.1, 'x y': 2, igual: 1 } })).toEqual({ escala: 2, ajustes: { 'cla-uchiha--genin': 0.5 } });
+		expect(escalaDe({ escala: 1.2, ajustes: { a: 1.5 } }, 'a')).toBe(1.8);
+		expect(escalaDe({ escala: 1.2, ajustes: {} }, 'b')).toBe(1.2);
+	});
+
+	it('as prateleiras juntam as miniaturas por verbete, sem perder nenhuma', () => {
+		expect(PRATELEIRAS.reduce((n, p) => n + p.minis.length, 0)).toBe(MINIATURAS.length);
+		for (const p of PRATELEIRAS) expect(p.minis.every((m) => m.verbete.startsWith(p.chave + '#'))).toBe(true);
 	});
 
 	it('o catálogo liga cada miniatura a um estágio do bestiário, com tira e pés coerentes', () => {

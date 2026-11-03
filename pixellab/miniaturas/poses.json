@@ -1,0 +1,79 @@
+{
+	"_sobre": "Uma pose por miniatura, escrita à mão: a técnica do clã e o jeito do personagem na arte dele (o bestiário), sem repetir pose dentro do clã. `quem` substitui a descrição tirada do pedido da arte quando ele não segue o padrão (Nível Anbu, alguns Jounin e Líderes).",
+	"cla-aburame--genin": { "pose": "standing quietly with one hand in his coat pocket, the other hand raised at chest height with a single beetle resting on his outstretched index finger, looking at it calmly" },
+	"cla-aburame--chunin": { "pose": "standing straight like a scholar, holding an open glass insect jar in one hand and its lid in the other, a thin stream of tiny black insects rising out of the jar" },
+	"cla-aburame--jounin": { "pose": "a wide confident grin, both arms stretched out to the sides with open palms, dark swarms of tiny insects pouring out of his sleeves" },
+	"cla-aburame--nivel-anbu": { "quem": "an original Aburame clan ANBU of Konoha, a tall man in a dark high-collared hooded coat over the Konoha ANBU gear (grey armored vest, long black arm guards), round dark sunglasses under the hood", "pose": "standing still with his arms crossed over his chest, a thin cloud of tiny black beetles drifting out from under his hood" },
+	"cla-aburame--lider-do-cla": { "pose": "standing calmly with both hands clasped behind his back, a small column of insects spiraling around his feet, stern and patient" },
+
+	"cla-akimichi--genin": { "pose": "standing proudly with one hand on her hip and the other holding up a skewer of three dumplings, cheeks puffed while chewing" },
+	"cla-akimichi--chunin": { "pose": "yawning with one arm stretched up over his head, the other hand patting his big round belly, relaxed and drowsy" },
+	"cla-akimichi--jounin": { "pose": "a wide low sumo-like stance, one arm expanded into a giant oversized fist raised beside his head, the other fist at his hip, stern frown" },
+	"cla-akimichi--nivel-anbu": { "quem": "an original Akimichi clan ANBU of Konoha, a big heavyset man with long spiky brown hair and red swirl marks on his cheeks, a white ANBU mask with red butterfly-wing markings pushed up on his head, grey armored vest over a black sleeveless shirt, long black arm guards", "pose": "cracking his knuckles with both fists pressed together in front of his chest, heavy and steady stance" },
+	"cla-akimichi--lider-do-cla": { "pose": "standing tall and huge with both fists clenched at his sides, faint butterfly-shaped chakra wings glowing on his back, calm and powerful" },
+
+	"cla-hozuki--genin": { "pose": "standing lazily with one hand in her pocket, the other hand melting into water that drips to the ground, a sly fox-like smile" },
+	"cla-hozuki--chunin": { "pose": "grinning with sharp teeth, balancing on one foot in a playful pose, one hand making a water gun with two fingers pointed forward" },
+	"cla-hozuki--jounin": { "pose": "a huge executioner's sword resting on his shoulder in one hand, drinking from a water bottle with the other hand" },
+	"cla-hozuki--nivel-anbu": { "quem": "an original Hozuki clan hunter-nin of Kirigakure, a young man with pale blue-white hair and sharp pointed teeth, a smooth white hunter-nin mask with the Mist village symbol, dark high-collared clothes", "pose": "crouched low and ready to spring, a short blade in a reverse grip, his legs half turned into liquid water" },
+	"cla-hozuki--lider-do-cla": { "quem": "the head of the Hozuki clan, a strong man in his late thirties with short pale silvery blue hair and sharp teeth, a dark grey-green high-collared robe and a big water gourd at his hip", "pose": "both hands resting on the pommel of a broad greatsword planted point-down in front of him, a sharp-toothed grin" },
+
+	"cla-hyuuga--genin": { "pose": "standing stiffly at attention, hands balled into fists at his sides, chin up, trying hard to look proud" },
+	"cla-hyuuga--chunin": { "pose": "Byakugan veins bulging around her eyes, two fingers raised in front of her face in a concentration seal, scanning into the distance" },
+	"cla-hyuuga--jounin": { "pose": "the Gentle Fist stance: legs wide and low, one open palm thrust forward and the other drawn back, fingertips glowing with blue chakra" },
+	"cla-hyuuga--nivel-anbu": { "quem": "an original Hyuuga clan ANBU of Konoha, a young man with long straight dark brown hair and pale pupilless eyes, a white owl ANBU mask on the side of his head, grey armored vest over a black sleeveless shirt, long black arm guards", "pose": "one open palm raised in front of him, the other hand holding a tanto low behind his back, Byakugan veins around his eyes" },
+	"cla-hyuuga--lider-do-cla": { "pose": "an old clan head in a formal robe standing with his hands tucked inside his wide sleeves, chin raised, cold and judging stare" },
+
+	"cla-inuzuka--genin": { "pose": "a small white puppy poking its head out of the front of her jacket, both fists raised in a scrappy fighting stance, wide grin with fangs" },
+	"cla-inuzuka--chunin": { "pose": "laughing, a wet towel over one shoulder, pointing at himself with his thumb, relaxed and cheerful" },
+	"cla-inuzuka--jounin": { "pose": "crouched low on all fours like a beast, clawed fingers dug into the ground, glowing slit pupils, ready to pounce" },
+	"cla-inuzuka--nivel-anbu": { "quem": "an original Inuzuka clan ANBU of Konoha, a wiry young woman with short wild brown hair and red fang marks on her cheeks, a white wolf ANBU mask hanging at her neck, grey armored vest over a black sleeveless shirt, long black arm guards", "pose": "a tanto drawn in one hand, the other hand's fingers curled like claws, head tilted up sniffing the air" },
+	"cla-inuzuka--lider-do-cla": { "pose": "holding up a big bone treat in one hand and whistling with two fingers of the other hand in his mouth, calling his dogs" },
+
+	"cla-kaguya--genin": { "pose": "head tilted with an unsettling smile, a sharp bone spike growing out of one raised fingertip" },
+	"cla-kaguya--chunin": { "pose": "a graceful dancer's pose on the toes of one foot, arms spread wide, curved bone blades growing from both elbows, eyes closed" },
+	"cla-kaguya--jounin": { "quem": "a young adult jounin of the Kaguya clan with long white hair and two red dots on the forehead, torn battle-worn clothes", "pose": "crouched like a wild animal on one knee, bone blades growing from both forearms, fierce hungry eyes" },
+	"cla-kaguya--nivel-anbu": { "quem": "an original Kaguya clan hunter-nin of Kirigakure, a pale man with long white hair, a smooth white hunter-nin mask with the Mist village symbol, dark high-collared clothes", "pose": "slowly pulling a long white bone sword out of the palm of one hand, sharp bone spikes jutting from his shoulders" },
+	"cla-kaguya--lider-do-cla": { "quem": "the elderly head of the Kaguya clan with long white hair, two red dots on the forehead and a beauty mark under one eye", "pose": "leaning on a tall walking staff made of bone, small bone spikes jutting from his shoulders, cold patient stare" },
+
+	"cla-nara--genin": { "pose": "standing lazily with both hands behind her head, half-closed sleepy eyes, bored expression" },
+	"cla-nara--chunin": { "pose": "crouched down with his fingertips pressed together in a circle in front of his face, eyes closed, deep in thought" },
+	"cla-nara--jounin": { "pose": "forming the Rat hand seal in front of his chest, his shadow stretching long and thin across the ground in front of him" },
+	"cla-nara--nivel-anbu": { "quem": "an original Nara clan ANBU of Konoha, a lean man with black hair tied in a high spiky ponytail, a white deer ANBU mask with red markings, grey armored vest over a black sleeveless shirt, long black arm guards", "pose": "one hand in his pocket, the other loosely holding a short knuckle-guard trench knife, unimpressed" },
+	"cla-nara--lider-do-cla": { "pose": "rolling up a bandage in his hands, a medicine pouch at his hip, a calm and wise half-smile" },
+
+	"cla-sabaku--genin": { "pose": "arms crossed over her chest, a big sand gourd strapped on her back, a thin ribbon of sand floating around her" },
+	"cla-sabaku--chunin": { "pose": "grinning while riding a small floating board of sand, arms out for balance, knees bent" },
+	"cla-sabaku--jounin": { "pose": "reading a mission scroll held open in both hands, sand drifting upward around her feet, unbothered" },
+	"cla-sabaku--nivel-anbu": { "quem": "an original Sabaku clan ANBU of Sunagakure, a small figure in a beige hooded cloak and a white mask with red markings, a big sand gourd on his back", "pose": "one arm raised with the palm open while a stream of sand coils around the arm like a snake" },
+	"cla-sabaku--lider-do-cla": { "pose": "standing firm with both arms raised and palms forward, holding back a wall of sand, jaw clenched" },
+
+	"cla-senju--genin": { "pose": "kneeling on one knee with both hands held out in front of her, glowing with green healing chakra" },
+	"cla-senju--chunin": { "pose": "leaning back casually with arms crossed, a small leafy sapling sprouting from her shoulder, sleepy smile" },
+	"cla-senju--jounin": { "pose": "palms pressed together in a hand seal, young wooden branches growing out of the ground around his feet" },
+	"cla-senju--nivel-anbu": { "quem": "an original Senju clan ANBU of Konoha, a woman with long dark brown hair in a low ponytail, a white tortoise ANBU mask with red markings, grey armored vest over a black sleeveless shirt, long black arm guards", "pose": "a ninjato drawn and held in a two-handed guard in front of her" },
+	"cla-senju--lider-do-cla": { "pose": "standing tall with eyes closed and hands folded inside his sleeves, small roots curling around his sandals, serene" },
+
+	"cla-uchiha--genin": { "pose": "one eye glowing red, three kunai fanned between the fingers of one raised hand ready to throw, the other hand stretched forward to aim" },
+	"cla-uchiha--jounin": { "quem": "a young adult jounin of the Uchiha clan with messy dark hair, a high collared navy shirt with the red and white Uchiha fan crest and red Sharingan eyes with three tomoe", "pose": "one hand in his pocket, the other raised in front of his face with two fingers up in a one-handed seal, a piercing Sharingan stare" },
+	"cla-uchiha--nivel-anbu": { "quem": "Izo Uchiha, a young Konoha ANBU of the Uchiha clan, an original character from the user's campaign: messy black hair with long bangs over one eye, pale skin, a red Sharingan eye with three tomoe, a white porcelain crow ANBU mask with a short beak and red markings, grey armored vest over a black sleeveless high-necked shirt, the red ANBU spiral tattoo on the upper arm, long black arm guards, the hilt of a tanto over his shoulder", "pose": "lifting his white crow mask away from his face with one gloved hand, the other hand resting on the hilt of the tanto over his shoulder, cold and calm" },
+	"cla-uchiha--lider-do-cla": { "quem": "the elderly head of the Uchiha clan with a short low ponytail and a scar on the chin, a dark formal robe with the red and white Uchiha fan crest", "pose": "arms crossed, chin raised, glaring with red Sharingan eyes, proud and imposing" },
+
+	"cla-uzumaki--genin": { "pose": "holding a big calligraphy brush in one hand and a paper sealing tag between two fingers of the other, ink stains on her face, eager" },
+	"cla-uzumaki--chunin": { "pose": "an open sealing scroll unrolled from one hand down to the ground, the other hand pressed flat on the scroll" },
+	"cla-uzumaki--jounin": { "quem": "a jounin of the Uzumaki clan with bright red hair in a long braid and a short goatee, battle-worn clothes with small cuts", "pose": "hands locked together in a sealing hand sign in front of his chest, golden chakra chains coiling out from his back" },
+	"cla-uzumaki--nivel-anbu": { "quem": "an original Uzumaki clan ANBU of Konoha, a young woman with short messy bright red hair, a white ANBU mask with red whirlpool markings, grey armored vest over a black sleeveless shirt, long black arm guards", "pose": "down on one knee slamming one palm on the ground, a small glowing sealing formula spreading in a circle around her hand" },
+	"cla-uzumaki--lider-do-cla": { "pose": "a closed sealing scroll held under one arm, the other hand raised in a one-handed seal, long red hair, wise and fierce" },
+
+	"cla-yamanaka--genin": { "pose": "holding a small flower bouquet behind his back with one hand and scratching his head sheepishly with the other" },
+	"cla-yamanaka--chunin": { "pose": "forming the Mind Transfer hand sign: thumbs and index fingers joined in a diamond shape aimed forward, focused eyes" },
+	"cla-yamanaka--jounin": { "pose": "two fingers pressed to her temple with eyes closed and a faint glow around her head, the other hand open toward the front, sensing" },
+	"cla-yamanaka--nivel-anbu": { "quem": "an original Yamanaka clan ANBU of Konoha, a woman with pale blond hair in a long braid over her shoulder, a white boar ANBU mask tied at the side of her head, grey armored vest over a black sleeveless shirt, long black arm guards", "pose": "crouched and stealthy, a tanto held in a reverse grip close to her chest" },
+	"cla-yamanaka--lider-do-cla": { "quem": "the head of the Yamanaka clan, a man in his forties with platinum blond hair in a short low ponytail, the long dark coat of Konoha's Intelligence Division", "pose": "one hand raised with fingers spread and a faint blue glow of mind chakra in the palm, the other hand behind his back, intimidating stare" },
+
+	"cla-yuki--genin": { "pose": "holding a single delicate ice flower in her cupped hands, a gentle smile" },
+	"cla-yuki--chunin": { "pose": "gliding on one foot as if skating, arms spread, ice crystals trailing from his fingertips" },
+	"cla-yuki--jounin": { "pose": "forming a one-handed seal in front of her face, the other arm stretched to the side while sharp ice crystals grow along it, tired but cold eyes" },
+	"cla-yuki--nivel-anbu": { "quem": "an original Yuki clan hunter-nin, a woman with short black hair and pale skin, a thick grey fur-lined coat, a smooth white hunter-nin mask with the Mist village symbol", "pose": "three thin ice needles held between the fingers of one raised hand, the other hand tucked in her fur-lined coat, frost breath" },
+	"cla-yuki--lider-do-cla": { "pose": "holding up a paper lantern in one hand, frost spreading from the fingertips of the other hand, walking forward slowly" }
+}

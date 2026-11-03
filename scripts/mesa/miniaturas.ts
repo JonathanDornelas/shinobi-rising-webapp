@@ -43,6 +43,11 @@ function png(largura: number, altura: number, rgba: Buffer): Buffer {
 }
 
 const catalogo: Origem[] = JSON.parse(readFileSync(join(RAIZ, 'pixellab', 'miniaturas', 'catalogo.json'), 'utf8'));
+// na ordem do bestiário (as prateleiras da caixa saem por criatura, e os estágios em ordem); variações do mesmo estágio
+// ficam na ordem do catálogo
+const criaturas: { slug: string; estagios: { slug: string }[] }[] = JSON.parse(readFileSync(join(RAIZ, 'src', 'lib', 'livro', 'gerado', 'bestiario.json'), 'utf8')).criaturas;
+const posicao = new Map(criaturas.flatMap((c) => c.estagios.map((e) => `${c.slug}#${e.slug}`)).map((v, i) => [v, i]));
+catalogo.sort((a, b) => (posicao.get(a.verbete) ?? 1e9) - (posicao.get(b.verbete) ?? 1e9));
 const saida = [];
 mkdirSync(join(RAIZ, 'static', 'mesa', 'miniaturas'), { recursive: true });
 for (const m of catalogo) {

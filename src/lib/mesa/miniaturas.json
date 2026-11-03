@@ -1,5 +1,83 @@
 [
 	{
+		"id": "cla-aburame--genin",
+		"verbete": "cla-aburame#genin",
+		"nome": "Aburame, Genin",
+		"estilo": "Fiel à arte",
+		"w": 38,
+		"h": 58,
+		"pe": [
+			19,
+			56
+		],
+		"altura": 54
+	},
+	{
+		"id": "cla-aburame--chunin",
+		"verbete": "cla-aburame#chunin",
+		"nome": "Aburame, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 47,
+		"h": 57,
+		"pe": [
+			24,
+			55
+		],
+		"altura": 54
+	},
+	{
+		"id": "cla-aburame--jounin",
+		"verbete": "cla-aburame#jounin",
+		"nome": "Aburame, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 62,
+		"h": 61,
+		"pe": [
+			31,
+			58
+		],
+		"altura": 57
+	},
+	{
+		"id": "cla-aburame--nivel-anbu",
+		"verbete": "cla-aburame#nivel-anbu",
+		"nome": "Aburame, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 43,
+		"h": 55,
+		"pe": [
+			20.5,
+			53
+		],
+		"altura": 52
+	},
+	{
+		"id": "cla-akimichi--genin",
+		"verbete": "cla-akimichi#genin",
+		"nome": "Akimichi, Genin",
+		"estilo": "Fiel à arte",
+		"w": 48,
+		"h": 67,
+		"pe": [
+			23,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "cla-akimichi--jounin",
+		"verbete": "cla-akimichi#jounin",
+		"nome": "Akimichi, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 78,
+		"h": 74,
+		"pe": [
+			39.5,
+			71
+		],
+		"altura": 70
+	},
+	{
 		"id": "uchiha-chunin-fiel",
 		"verbete": "cla-uchiha#chunin",
 		"nome": "Uchiha, Chunin",

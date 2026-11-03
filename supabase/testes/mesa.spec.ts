@@ -438,3 +438,32 @@ describe('camadas livres', () => {
 		await banco.como(kaito, `delete from mesa_objetos where id = $1`, [id]);
 	});
 });
+
+describe('miniaturas', () => {
+	it('o jogador escolhe a do próprio personagem; o Mestre, a de qualquer um; os tokens trocam junto', async () => {
+		await banco.como(bruno, `select definir_miniatura('personagem', $1, 'cla-uchiha--genin')`, [ren]);
+		expect(await um(banco.como(kaito, `select miniatura from personagens where id = $1`, [ren]))).toEqual({ miniatura: 'cla-uchiha--genin' });
+		expect((await banco.como(kaito, `select distinct miniatura from mesa_tokens where personagem_id = $1`, [ren])).map((t) => t.miniatura)).toEqual(['cla-uchiha--genin']);
+		await expect(banco.como(aiko, `select definir_miniatura('personagem', $1, 'cla-uchiha--genin')`, [ren])).rejects.toThrow(/Sem permissão/);
+		await expect(banco.como(bruno, `select definir_miniatura('npc', $1, 'cla-uchiha--genin')`, [hideo])).rejects.toThrow(/Sem permissão/);
+		await expect(banco.como(kaito, `select definir_miniatura('npc', $1, 'Nome Ruim')`, [hideo])).rejects.toThrow(/inválida/);
+		await banco.como(kaito, `select definir_miniatura('npc', $1, 'cla-hyuuga--jounin')`, [hideo]);
+		expect(await um(banco.como(kaito, `select miniatura from mesa_tokens where npc_id = $1`, [hideo]))).toEqual({ miniatura: 'cla-hyuuga--jounin' });
+	});
+
+	it('o token novo nasce com a miniatura do personagem, do NPC ou do original (clone)', async () => {
+		const [t] = await banco.como<{ id: string; miniatura: string }>(kaito, `insert into mesa_tokens (cena_id, campanha_id, npc_id, nome, x, y) values ($1, $2, $3, 'Hideo 2', 3, 3) returning id, miniatura`, [ponte, campanha, hideo]);
+		expect(t.miniatura).toBe('cla-hyuuga--jounin');
+		const [c] = await banco.como<{ miniatura: string }>(kaito, `insert into mesa_tokens (cena_id, campanha_id, ligado_a, nome, x, y) values ($1, $2, $3, 'Clone', 4, 3) returning miniatura`, [ponte, campanha, t.id]);
+		expect(c.miniatura).toBe('cla-hyuuga--jounin');
+		await banco.como(kaito, `select definir_miniatura('npc', $1, null)`, [hideo]);
+		expect(await um(banco.como(kaito, `select miniatura from npcs where id = $1`, [hideo]))).toEqual({ miniatura: null });
+	});
+
+	it('o tamanho das miniaturas fica na campanha, e só o Mestre muda', async () => {
+		await banco.como(kaito, `update campanhas set miniaturas = '{"escala": 1.2, "ajustes": {"cla-uchiha--genin": 0.9}}' where id = $1`, [campanha]);
+		expect(await um(banco.como(bruno, `select miniaturas from campanhas where id = $1`, [campanha]))).toEqual({ miniaturas: { escala: 1.2, ajustes: { 'cla-uchiha--genin': 0.9 } } });
+		expect(await banco.como(bruno, `update campanhas set miniaturas = '{}' where id = $1 returning id`, [campanha])).toEqual([]);
+		await expect(banco.como(kaito, `update campanhas set miniaturas = '[1]' where id = $1`, [campanha])).rejects.toThrow(/check/);
+	});
+});

@@ -79,7 +79,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		const mini = miniaturaPorId(t.miniatura);
 		if (!mini) return false;
 		const n = t.tamanho;
-		const H = (mini.base ? 1.95 : ALTURA_DA_FIGURA) * n;
+		const H = ALTURA_DA_FIGURA * n * mesa.escalaMiniatura(mini.id);
 		const [px, py] = pesDaMiniatura(t.x, t.y, n);
 		const [fx, fy] = paraTela(px, py);
 		const [tx, ty] = paraTela(mx, my);
@@ -1383,7 +1383,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 	{@const cx = x + n / 2}
 	{@const cy = y + n / 2}
 	{@const pe = pesDaMiniatura(x, y, n)}
-	{@const H = (mini.base ? 1.95 : ALTURA_DA_FIGURA) * n}
+	{@const H = ALTURA_DA_FIGURA * n * mesa.escalaMiniatura(mini.id)}
 	{@const k = H / mini.altura}
 	{@const rumo = (ar ? rumoDoPasso(ar.x - t.x, ar.y - t.y) : null) ?? t.rumo ?? 0}
 	{@const q = quadroNaTela(rumo, cx, cy, paraTela)}
