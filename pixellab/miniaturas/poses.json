@@ -36,13 +36,13 @@
 	"cla-kaguya--nivel-anbu": { "quem": "an original Kaguya clan hunter-nin of Kirigakure, a pale man with long white hair, a smooth white hunter-nin mask with the Mist village symbol, dark high-collared clothes", "pose": "slowly pulling a long white bone sword out of the palm of one hand, sharp bone spikes jutting from his shoulders" },
 	"cla-kaguya--lider-do-cla": { "quem": "the elderly head of the Kaguya clan with long white hair, two red dots on the forehead and a beauty mark under one eye", "pose": "leaning on a tall walking staff made of bone, small bone spikes jutting from his shoulders, cold patient stare" },
 
-	"cla-nara--genin": { "pose": "standing lazily with both hands behind her head, half-closed sleepy eyes, bored expression" },
-	"cla-nara--chunin": { "pose": "crouched down with his fingertips pressed together in a circle in front of his face, eyes closed, deep in thought" },
+	"cla-nara--genin": { "quem": "a teenage kunoichi of the Nara clan, an original girl: long dark hair in a loose high ponytail that falls past her shoulders, long eyelashes, a soft feminine face with tired dark circles under the eyes, a slim girl's figure, a fitted green jacket and dark shorts, a different person from any famous clan member", "pose": "yawning with one hand covering her mouth, the other hand in her jacket pocket, weight on one leg, sleepy half-closed eyes" },
+	"cla-nara--chunin": { "pose": "down on one knee, studying a shogi piece held between two fingers, a calm knowing smirk" },
 	"cla-nara--jounin": { "pose": "forming the Rat hand seal in front of his chest, his shadow stretching long and thin across the ground in front of him" },
 	"cla-nara--nivel-anbu": { "quem": "an original Nara clan ANBU of Konoha, a lean man with black hair tied in a high spiky ponytail, a white deer ANBU mask with red markings, grey armored vest over a black sleeveless shirt, long black arm guards", "pose": "one hand in his pocket, the other loosely holding a short knuckle-guard trench knife, unimpressed" },
 	"cla-nara--lider-do-cla": { "pose": "rolling up a bandage in his hands, a medicine pouch at his hip, a calm and wise half-smile" },
 
-	"cla-sabaku--genin": { "pose": "arms crossed over her chest, a big sand gourd strapped on her back, a thin ribbon of sand floating around her" },
+	"cla-sabaku--genin": { "quem": "a teenage kunoichi of the Sabaku clan of Sunagakure, an original girl: messy dark brown bowl-cut hair, heavy thick eyebrows, a soft feminine face, a slim girl figure, a beige desert outfit with a sash, a big sand gourd, a different person from any famous clan member", "pose": "hugging her big sand gourd in front of her with both arms, peeking over it with a shy smile, a thin ribbon of sand drifting around her feet" },
 	"cla-sabaku--chunin": { "pose": "grinning while riding a small floating board of sand, arms out for balance, knees bent" },
 	"cla-sabaku--jounin": { "pose": "reading a mission scroll held open in both hands, sand drifting upward around her feet, unbothered" },
 	"cla-sabaku--nivel-anbu": { "quem": "an original Sabaku clan ANBU of Sunagakure, a small figure in a beige hooded cloak and a white mask with red markings, a big sand gourd on his back", "pose": "one arm raised with the palm open while a stream of sand coils around the arm like a snake" },
@@ -66,7 +66,7 @@
 	"cla-uzumaki--nivel-anbu": { "quem": "an original Uzumaki clan ANBU of Konoha, a young woman with short messy bright red hair, a white ANBU mask with red whirlpool markings, grey armored vest over a black sleeveless shirt, long black arm guards", "pose": "down on one knee slamming one palm on the ground, a small glowing sealing formula spreading in a circle around her hand" },
 	"cla-uzumaki--lider-do-cla": { "pose": "a closed sealing scroll held under one arm, the other hand raised in a one-handed seal, long red hair, wise and fierce" },
 
-	"cla-yamanaka--genin": { "pose": "holding a small flower bouquet behind his back with one hand and scratching his head sheepishly with the other" },
+	"cla-yamanaka--genin": { "quem": "a teenage boy of the Yamanaka clan, an original boy with a boyish face and a crooked broken nose, platinum blond hair tied in a low ponytail, broad shoulders, the clan purple and grey outfit, a different person from any famous clan member", "pose": "holding a small flower bouquet behind his back with one hand and scratching his head sheepishly with the other" },
 	"cla-yamanaka--chunin": { "pose": "forming the Mind Transfer hand sign: thumbs and index fingers joined in a diamond shape aimed forward, focused eyes" },
 	"cla-yamanaka--jounin": { "pose": "two fingers pressed to her temple with eyes closed and a faint glow around her head, the other hand open toward the front, sensing" },
 	"cla-yamanaka--nivel-anbu": { "quem": "an original Yamanaka clan ANBU of Konoha, a woman with pale blond hair in a long braid over her shoulder, a white boar ANBU mask tied at the side of her head, grey armored vest over a black sleeveless shirt, long black arm guards", "pose": "crouched and stealthy, a tanto held in a reverse grip close to her chest" },

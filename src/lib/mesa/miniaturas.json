@@ -4,73 +4,60 @@
 		"verbete": "cla-aburame#genin",
 		"nome": "Aburame, Genin",
 		"estilo": "Fiel à arte",
-		"w": 38,
-		"h": 58,
+		"w": 40,
+		"h": 65,
 		"pe": [
-			19,
-			56
+			20,
+			62
 		],
-		"altura": 54
+		"altura": 61
 	},
 	{
 		"id": "cla-aburame--chunin",
 		"verbete": "cla-aburame#chunin",
 		"nome": "Aburame, Chunin",
 		"estilo": "Fiel à arte",
-		"w": 47,
-		"h": 57,
+		"w": 51,
+		"h": 72,
 		"pe": [
-			24,
-			55
+			25,
+			70
 		],
-		"altura": 54
+		"altura": 69
 	},
 	{
 		"id": "cla-aburame--jounin",
 		"verbete": "cla-aburame#jounin",
 		"nome": "Aburame, Jounin",
 		"estilo": "Fiel à arte",
-		"w": 62,
-		"h": 61,
+		"w": 76,
+		"h": 67,
 		"pe": [
-			31,
-			58
+			38,
+			63
 		],
-		"altura": 57
+		"altura": 61
 	},
 	{
 		"id": "cla-aburame--nivel-anbu",
 		"verbete": "cla-aburame#nivel-anbu",
 		"nome": "Aburame, Nível Anbu",
 		"estilo": "Fiel à arte",
-		"w": 43,
-		"h": 55,
+		"w": 56,
+		"h": 67,
 		"pe": [
-			20.5,
-			53
+			29,
+			63
 		],
-		"altura": 52
+		"altura": 62
 	},
 	{
 		"id": "cla-aburame--lider-do-cla",
 		"verbete": "cla-aburame#lider-do-cla",
 		"nome": "Aburame, Líder do clã",
 		"estilo": "Fiel à arte",
-		"w": 35,
-		"h": 59,
-		"pe": [
-			16,
-			53
-		],
-		"altura": 52
-	},
-	{
-		"id": "cla-akimichi--genin",
-		"verbete": "cla-akimichi#genin",
-		"nome": "Akimichi, Genin",
-		"estilo": "Fiel à arte",
-		"w": 48,
-		"h": 67,
+		"w": 47,
+		"h": 68,
 		"pe": [
 			23,
 			65
@@ -78,17 +65,30 @@
 		"altura": 64
 	},
 	{
+		"id": "cla-akimichi--genin",
+		"verbete": "cla-akimichi#genin",
+		"nome": "Akimichi, Genin",
+		"estilo": "Fiel à arte",
+		"w": 48,
+		"h": 70,
+		"pe": [
+			24,
+			67
+		],
+		"altura": 65
+	},
+	{
 		"id": "cla-akimichi--chunin",
 		"verbete": "cla-akimichi#chunin",
 		"nome": "Akimichi, Chunin",
 		"estilo": "Fiel à arte",
-		"w": 51,
-		"h": 77,
+		"w": 49,
+		"h": 75,
 		"pe": [
-			25,
-			75
+			24.5,
+			72
 		],
-		"altura": 74
+		"altura": 69
 	},
 	{
 		"id": "cla-akimichi--jounin",
@@ -96,12 +96,12 @@
 		"nome": "Akimichi, Jounin",
 		"estilo": "Fiel à arte",
 		"w": 78,
-		"h": 74,
+		"h": 73,
 		"pe": [
-			39.5,
-			71
+			39,
+			70
 		],
-		"altura": 70
+		"altura": 69
 	},
 	{
 		"id": "cla-akimichi--nivel-anbu",
@@ -109,7 +109,7 @@
 		"nome": "Akimichi, Nível Anbu",
 		"estilo": "Fiel à arte",
 		"w": 52,
-		"h": 72,
+		"h": 75,
 		"pe": [
 			26,
 			71
@@ -122,12 +122,12 @@
 		"nome": "Akimichi, Líder do clã",
 		"estilo": "Fiel à arte",
 		"w": 72,
-		"h": 74,
+		"h": 78,
 		"pe": [
 			36,
-			71
+			76
 		],
-		"altura": 69
+		"altura": 74
 	},
 	{
 		"id": "cla-hozuki--genin",
@@ -135,259 +135,467 @@
 		"nome": "Hozuki, Genin",
 		"estilo": "Fiel à arte",
 		"w": 49,
-		"h": 66,
+		"h": 68,
 		"pe": [
-			29.5,
-			65
+			20.5,
+			63
 		],
-		"altura": 64
+		"altura": 62
 	},
 	{
 		"id": "cla-hozuki--chunin",
 		"verbete": "cla-hozuki#chunin",
 		"nome": "Hozuki, Chunin",
 		"estilo": "Fiel à arte",
-		"w": 60,
-		"h": 73,
+		"w": 44,
+		"h": 65,
 		"pe": [
-			28,
-			72
+			26,
+			64
 		],
-		"altura": 71
+		"altura": 63
 	},
 	{
 		"id": "cla-hozuki--jounin",
 		"verbete": "cla-hozuki#jounin",
 		"nome": "Hozuki, Jounin",
 		"estilo": "Fiel à arte",
-		"w": 76,
-		"h": 73,
+		"w": 72,
+		"h": 78,
 		"pe": [
-			38,
-			71
+			36.5,
+			76
 		],
-		"altura": 70
+		"altura": 75
 	},
 	{
 		"id": "cla-hozuki--nivel-anbu",
 		"verbete": "cla-hozuki#nivel-anbu",
 		"nome": "Hozuki, Nível Anbu",
 		"estilo": "Fiel à arte",
-		"w": 70,
-		"h": 65,
+		"w": 52,
+		"h": 66,
 		"pe": [
-			20.5,
-			61
+			27,
+			64
 		],
-		"altura": 58
+		"altura": 61
 	},
 	{
 		"id": "cla-hozuki--lider-do-cla",
 		"verbete": "cla-hozuki#lider-do-cla",
 		"nome": "Hozuki, Líder do clã",
 		"estilo": "Fiel à arte",
-		"w": 41,
-		"h": 69,
+		"w": 49,
+		"h": 73,
 		"pe": [
-			20.5,
-			66
+			24.5,
+			72
 		],
-		"altura": 65
+		"altura": 71
 	},
 	{
 		"id": "cla-hyuuga--genin",
 		"verbete": "cla-hyuuga#genin",
 		"nome": "Hyuuga, Genin",
 		"estilo": "Fiel à arte",
-		"w": 30,
-		"h": 54,
+		"w": 37,
+		"h": 70,
 		"pe": [
-			14.5,
-			52
+			18,
+			66
 		],
-		"altura": 51
+		"altura": 65
 	},
 	{
 		"id": "cla-hyuuga--chunin",
 		"verbete": "cla-hyuuga#chunin",
 		"nome": "Hyuuga, Chunin",
 		"estilo": "Fiel à arte",
-		"w": 51,
-		"h": 65,
+		"w": 40,
+		"h": 64,
 		"pe": [
-			13,
-			64
+			20.5,
+			60
 		],
-		"altura": 62
+		"altura": 58
 	},
 	{
 		"id": "cla-hyuuga--jounin",
 		"verbete": "cla-hyuuga#jounin",
 		"nome": "Hyuuga, Jounin",
 		"estilo": "Fiel à arte",
-		"w": 66,
-		"h": 69,
+		"w": 50,
+		"h": 64,
 		"pe": [
-			33,
-			67
+			25.5,
+			60
 		],
-		"altura": 66
+		"altura": 59
 	},
 	{
 		"id": "cla-hyuuga--nivel-anbu",
 		"verbete": "cla-hyuuga#nivel-anbu",
 		"nome": "Hyuuga, Nível Anbu",
 		"estilo": "Fiel à arte",
-		"w": 55,
-		"h": 56,
+		"w": 52,
+		"h": 66,
 		"pe": [
-			28,
-			54
+			26.5,
+			62
 		],
-		"altura": 52
+		"altura": 59
 	},
 	{
 		"id": "cla-hyuuga--lider-do-cla",
 		"verbete": "cla-hyuuga#lider-do-cla",
 		"nome": "Hyuuga, Líder do clã",
 		"estilo": "Fiel à arte",
-		"w": 36,
-		"h": 56,
+		"w": 44,
+		"h": 65,
 		"pe": [
-			18,
-			55
+			22,
+			62
 		],
-		"altura": 54
+		"altura": 61
 	},
 	{
 		"id": "cla-inuzuka--genin",
 		"verbete": "cla-inuzuka#genin",
 		"nome": "Inuzuka, Genin",
 		"estilo": "Fiel à arte",
-		"w": 42,
-		"h": 67,
+		"w": 44,
+		"h": 73,
 		"pe": [
-			21,
-			65
+			22.5,
+			71
 		],
-		"altura": 63
+		"altura": 70
 	},
 	{
 		"id": "cla-inuzuka--chunin",
 		"verbete": "cla-inuzuka#chunin",
 		"nome": "Inuzuka, Chunin",
 		"estilo": "Fiel à arte",
-		"w": 42,
-		"h": 65,
+		"w": 46,
+		"h": 70,
 		"pe": [
-			21,
-			63
+			23,
+			69
 		],
-		"altura": 62
+		"altura": 67
 	},
 	{
 		"id": "cla-inuzuka--jounin",
 		"verbete": "cla-inuzuka#jounin",
 		"nome": "Inuzuka, Jounin",
 		"estilo": "Fiel à arte",
-		"w": 68,
-		"h": 63,
+		"w": 58,
+		"h": 65,
 		"pe": [
 			17.5,
-			60
+			62
 		],
-		"altura": 55
+		"altura": 59
 	},
 	{
 		"id": "cla-inuzuka--nivel-anbu",
 		"verbete": "cla-inuzuka#nivel-anbu",
 		"nome": "Inuzuka, Nível Anbu",
 		"estilo": "Fiel à arte",
-		"w": 51,
-		"h": 58,
+		"w": 62,
+		"h": 65,
 		"pe": [
-			25,
-			56
+			31.5,
+			61
 		],
-		"altura": 55
+		"altura": 60
 	},
 	{
 		"id": "cla-inuzuka--lider-do-cla",
 		"verbete": "cla-inuzuka#lider-do-cla",
 		"nome": "Inuzuka, Líder do clã",
 		"estilo": "Fiel à arte",
-		"w": 54,
-		"h": 65,
+		"w": 64,
+		"h": 72,
 		"pe": [
-			27.5,
-			61
+			31,
+			68
 		],
-		"altura": 60
+		"altura": 66
 	},
 	{
 		"id": "cla-kaguya--genin",
 		"verbete": "cla-kaguya#genin",
 		"nome": "Kaguya, Genin",
 		"estilo": "Fiel à arte",
-		"w": 49,
+		"w": 43,
 		"h": 64,
 		"pe": [
-			25,
-			61
+			21,
+			60
 		],
-		"altura": 58
+		"altura": 59
 	},
 	{
 		"id": "cla-kaguya--chunin",
 		"verbete": "cla-kaguya#chunin",
 		"nome": "Kaguya, Chunin",
 		"estilo": "Fiel à arte",
-		"w": 70,
-		"h": 70,
+		"w": 66,
+		"h": 72,
 		"pe": [
-			36.5,
-			68
+			34,
+			71
 		],
-		"altura": 66
+		"altura": 70
 	},
 	{
 		"id": "cla-kaguya--jounin",
 		"verbete": "cla-kaguya#jounin",
 		"nome": "Kaguya, Jounin",
 		"estilo": "Fiel à arte",
-		"w": 72,
-		"h": 69,
+		"w": 59,
+		"h": 66,
 		"pe": [
-			32.5,
-			66
+			20,
+			65
 		],
-		"altura": 65
+		"altura": 61
 	},
 	{
 		"id": "cla-kaguya--nivel-anbu",
 		"verbete": "cla-kaguya#nivel-anbu",
 		"nome": "Kaguya, Nível Anbu",
 		"estilo": "Fiel à arte",
-		"w": 59,
-		"h": 57,
+		"w": 60,
+		"h": 64,
 		"pe": [
-			29.5,
-			55
+			30.5,
+			60
 		],
-		"altura": 54
+		"altura": 59
 	},
 	{
 		"id": "cla-kaguya--lider-do-cla",
 		"verbete": "cla-kaguya#lider-do-cla",
 		"nome": "Kaguya, Líder do clã",
 		"estilo": "Fiel à arte",
-		"w": 50,
-		"h": 58,
+		"w": 54,
+		"h": 69,
 		"pe": [
-			22,
-			55
+			25,
+			66
 		],
-		"altura": 54
+		"altura": 65
+	},
+	{
+		"id": "cla-nara--genin",
+		"verbete": "cla-nara#genin",
+		"nome": "Nara, Genin",
+		"estilo": "Fiel à arte",
+		"w": 50,
+		"h": 68,
+		"pe": [
+			25,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "cla-nara--chunin",
+		"verbete": "cla-nara#chunin",
+		"nome": "Nara, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 45,
+		"h": 76,
+		"pe": [
+			34.5,
+			75
+		],
+		"altura": 74
+	},
+	{
+		"id": "cla-nara--jounin",
+		"verbete": "cla-nara#jounin",
+		"nome": "Nara, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 59,
+		"h": 69,
+		"pe": [
+			40.5,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "cla-nara--nivel-anbu",
+		"verbete": "cla-nara#nivel-anbu",
+		"nome": "Nara, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 49,
+		"h": 71,
+		"pe": [
+			23,
+			67
+		],
+		"altura": 66
+	},
+	{
+		"id": "cla-nara--lider-do-cla",
+		"verbete": "cla-nara#lider-do-cla",
+		"nome": "Nara, Líder do clã",
+		"estilo": "Fiel à arte",
+		"w": 43,
+		"h": 75,
+		"pe": [
+			21,
+			74
+		],
+		"altura": 73
+	},
+	{
+		"id": "cla-sabaku--genin",
+		"verbete": "cla-sabaku#genin",
+		"nome": "Sabaku, Genin",
+		"estilo": "Fiel à arte",
+		"w": 61,
+		"h": 68,
+		"pe": [
+			17.5,
+			66
+		],
+		"altura": 64
+	},
+	{
+		"id": "cla-sabaku--chunin",
+		"verbete": "cla-sabaku#chunin",
+		"nome": "Sabaku, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 66,
+		"h": 67,
+		"pe": [
+			33,
+			62
+		],
+		"altura": 59
+	},
+	{
+		"id": "cla-sabaku--jounin",
+		"verbete": "cla-sabaku#jounin",
+		"nome": "Sabaku, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 65,
+		"h": 76,
+		"pe": [
+			31,
+			75
+		],
+		"altura": 74
+	},
+	{
+		"id": "cla-sabaku--nivel-anbu",
+		"verbete": "cla-sabaku#nivel-anbu",
+		"nome": "Sabaku, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 63,
+		"h": 64,
+		"pe": [
+			31.5,
+			60
+		],
+		"altura": 58
+	},
+	{
+		"id": "cla-sabaku--lider-do-cla",
+		"verbete": "cla-sabaku#lider-do-cla",
+		"nome": "Sabaku, Líder do clã",
+		"estilo": "Fiel à arte",
+		"w": 71,
+		"h": 68,
+		"pe": [
+			37,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "cla-senju--genin",
+		"verbete": "cla-senju#genin",
+		"nome": "Senju, Genin",
+		"estilo": "Fiel à arte",
+		"w": 57,
+		"h": 69,
+		"pe": [
+			28,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "cla-senju--chunin",
+		"verbete": "cla-senju#chunin",
+		"nome": "Senju, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 37,
+		"h": 64,
+		"pe": [
+			18.5,
+			60
+		],
+		"altura": 59
+	},
+	{
+		"id": "cla-senju--jounin",
+		"verbete": "cla-senju#jounin",
+		"nome": "Senju, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 63,
+		"h": 71,
+		"pe": [
+			33,
+			69
+		],
+		"altura": 68
+	},
+	{
+		"id": "cla-senju--nivel-anbu",
+		"verbete": "cla-senju#nivel-anbu",
+		"nome": "Senju, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 59,
+		"h": 64,
+		"pe": [
+			24.5,
+			60
+		],
+		"altura": 58
+	},
+	{
+		"id": "cla-senju--lider-do-cla",
+		"verbete": "cla-senju#lider-do-cla",
+		"nome": "Senju, Líder do clã",
+		"estilo": "Fiel à arte",
+		"w": 40,
+		"h": 75,
+		"pe": [
+			20,
+			71
+		],
+		"altura": 70
+	},
+	{
+		"id": "cla-uchiha--genin",
+		"verbete": "cla-uchiha#genin",
+		"nome": "Uchiha, Genin",
+		"estilo": "Fiel à arte",
+		"w": 56,
+		"h": 64,
+		"pe": [
+			28.5,
+			60
+		],
+		"altura": 58
 	},
 	{
 		"id": "uchiha-chunin-fiel",
@@ -401,5 +609,239 @@
 			61
 		],
 		"altura": 58
+	},
+	{
+		"id": "cla-uchiha--jounin",
+		"verbete": "cla-uchiha#jounin",
+		"nome": "Uchiha, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 37,
+		"h": 65,
+		"pe": [
+			18.5,
+			61
+		],
+		"altura": 58
+	},
+	{
+		"id": "cla-uchiha--nivel-anbu",
+		"verbete": "cla-uchiha#nivel-anbu",
+		"nome": "Uchiha, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 40,
+		"h": 65,
+		"pe": [
+			20.5,
+			61
+		],
+		"altura": 59
+	},
+	{
+		"id": "cla-uchiha--lider-do-cla",
+		"verbete": "cla-uchiha#lider-do-cla",
+		"nome": "Uchiha, Líder do clã",
+		"estilo": "Fiel à arte",
+		"w": 33,
+		"h": 71,
+		"pe": [
+			16,
+			69
+		],
+		"altura": 67
+	},
+	{
+		"id": "cla-uzumaki--genin",
+		"verbete": "cla-uzumaki#genin",
+		"nome": "Uzumaki, Genin",
+		"estilo": "Fiel à arte",
+		"w": 58,
+		"h": 70,
+		"pe": [
+			28.5,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "cla-uzumaki--chunin",
+		"verbete": "cla-uzumaki#chunin",
+		"nome": "Uzumaki, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 70,
+		"h": 69,
+		"pe": [
+			29.5,
+			67
+		],
+		"altura": 65
+	},
+	{
+		"id": "cla-uzumaki--jounin",
+		"verbete": "cla-uzumaki#jounin",
+		"nome": "Uzumaki, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 65,
+		"h": 68,
+		"pe": [
+			33.5,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "cla-uzumaki--nivel-anbu",
+		"verbete": "cla-uzumaki#nivel-anbu",
+		"nome": "Uzumaki, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 56,
+		"h": 72,
+		"pe": [
+			27,
+			71
+		],
+		"altura": 67
+	},
+	{
+		"id": "cla-uzumaki--lider-do-cla",
+		"verbete": "cla-uzumaki#lider-do-cla",
+		"nome": "Uzumaki, Líder do clã",
+		"estilo": "Fiel à arte",
+		"w": 56,
+		"h": 65,
+		"pe": [
+			28.5,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "cla-yamanaka--genin",
+		"verbete": "cla-yamanaka#genin",
+		"nome": "Yamanaka, Genin",
+		"estilo": "Fiel à arte",
+		"w": 47,
+		"h": 65,
+		"pe": [
+			23.5,
+			62
+		],
+		"altura": 61
+	},
+	{
+		"id": "cla-yamanaka--chunin",
+		"verbete": "cla-yamanaka#chunin",
+		"nome": "Yamanaka, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 41,
+		"h": 66,
+		"pe": [
+			20.5,
+			62
+		],
+		"altura": 61
+	},
+	{
+		"id": "cla-yamanaka--jounin",
+		"verbete": "cla-yamanaka#jounin",
+		"nome": "Yamanaka, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 61,
+		"h": 73,
+		"pe": [
+			31,
+			71
+		],
+		"altura": 70
+	},
+	{
+		"id": "cla-yamanaka--nivel-anbu",
+		"verbete": "cla-yamanaka#nivel-anbu",
+		"nome": "Yamanaka, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 50,
+		"h": 64,
+		"pe": [
+			36,
+			61
+		],
+		"altura": 59
+	},
+	{
+		"id": "cla-yamanaka--lider-do-cla",
+		"verbete": "cla-yamanaka#lider-do-cla",
+		"nome": "Yamanaka, Líder do clã",
+		"estilo": "Fiel à arte",
+		"w": 42,
+		"h": 66,
+		"pe": [
+			20,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "cla-yuki--genin",
+		"verbete": "cla-yuki#genin",
+		"nome": "Yuki, Genin",
+		"estilo": "Fiel à arte",
+		"w": 40,
+		"h": 66,
+		"pe": [
+			20,
+			65
+		],
+		"altura": 63
+	},
+	{
+		"id": "cla-yuki--chunin",
+		"verbete": "cla-yuki#chunin",
+		"nome": "Yuki, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 62,
+		"h": 69,
+		"pe": [
+			32,
+			65
+		],
+		"altura": 63
+	},
+	{
+		"id": "cla-yuki--jounin",
+		"verbete": "cla-yuki#jounin",
+		"nome": "Yuki, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 74,
+		"h": 64,
+		"pe": [
+			38.5,
+			60
+		],
+		"altura": 58
+	},
+	{
+		"id": "cla-yuki--nivel-anbu",
+		"verbete": "cla-yuki#nivel-anbu",
+		"nome": "Yuki, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 56,
+		"h": 64,
+		"pe": [
+			27.5,
+			60
+		],
+		"altura": 58
+	},
+	{
+		"id": "cla-yuki--lider-do-cla",
+		"verbete": "cla-yuki#lider-do-cla",
+		"nome": "Yuki, Líder do clã",
+		"estilo": "Fiel à arte",
+		"w": 72,
+		"h": 71,
+		"pe": [
+			32.5,
+			70
+		],
+		"altura": 69
 	}
 ]
