@@ -795,5 +795,152 @@
 		"nome": "Especialista em Raiton, Nível Anbu",
 		"estilo": "Fiel à arte",
 		"personagem": "ef7492c2-a5b8-41d4-9a57-da57fa6d6234"
+	},
+	{
+		"id": "especialista-ranton--chunin",
+		"verbete": "especialista-ranton#chunin",
+		"nome": "Especialista em Ranton, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "62af69d6-daca-4ef9-bb09-396d64292e4c"
+	},
+	{
+		"id": "especialista-ranton--genin",
+		"verbete": "especialista-ranton#genin",
+		"nome": "Especialista em Ranton, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "680ea534-450e-4f54-a686-d872de148a03"
+	},
+	{
+		"id": "especialista-ranton--jounin",
+		"verbete": "especialista-ranton#jounin",
+		"nome": "Especialista em Ranton, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "db8a7819-e1d9-416e-8832-5934fab76751"
+	},
+	{
+		"id": "especialista-raiton--nivel-kage",
+		"verbete": "especialista-raiton#nivel-kage",
+		"nome": "Especialista em Raiton, Nível Kage",
+		"estilo": "Fiel à arte",
+		"personagem": "172ccf25-4780-4e84-a588-ab8f389c81c9"
+	},
+	{
+		"id": "especialista-ranton--nivel-anbu",
+		"verbete": "especialista-ranton#nivel-anbu",
+		"nome": "Especialista em Ranton, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "435caf17-e832-46d6-b6a5-f5d0c4fde934"
+	},
+	{
+		"id": "especialista-shakuton--genin",
+		"verbete": "especialista-shakuton#genin",
+		"nome": "Especialista em Shakuton, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "8f1d896f-317c-46b1-8b12-281f02041c09"
+	},
+	{
+		"id": "especialista-shakuton--chunin",
+		"verbete": "especialista-shakuton#chunin",
+		"nome": "Especialista em Shakuton, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "98010ff3-eeaf-4b4c-b98c-b0f4d0e2a75d"
+	},
+	{
+		"id": "especialista-ranton--nivel-kage",
+		"verbete": "especialista-ranton#nivel-kage",
+		"nome": "Especialista em Ranton, Nível Kage",
+		"estilo": "Fiel à arte",
+		"personagem": "810f96c7-58db-40cc-89bb-f32d7b44a0d8"
+	},
+	{
+		"id": "especialista-shakuton--jounin",
+		"verbete": "especialista-shakuton#jounin",
+		"nome": "Especialista em Shakuton, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "04c40bcf-e9db-42c1-9868-b67481e5b145"
+	},
+	{
+		"id": "especialista-shakuton--nivel-anbu",
+		"verbete": "especialista-shakuton#nivel-anbu",
+		"nome": "Especialista em Shakuton, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "4c3022ac-fdf9-477b-a635-c930fe7d0508"
+	},
+	{
+		"id": "especialista-suiton--genin",
+		"verbete": "especialista-suiton#genin",
+		"nome": "Especialista em Suiton, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "35f2c921-25c5-4608-af7e-111ff28a951b"
+	},
+	{
+		"id": "especialista-shakuton--nivel-kage",
+		"verbete": "especialista-shakuton#nivel-kage",
+		"nome": "Especialista em Shakuton, Nível Kage",
+		"estilo": "Fiel à arte",
+		"personagem": "8e1a8627-1100-49e5-b737-034fe4c54b97"
+	},
+	{
+		"id": "especialista-suiton--jounin",
+		"verbete": "especialista-suiton#jounin",
+		"nome": "Especialista em Suiton, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "12385dfc-cd44-444b-b4cb-6035fb90c44b"
+	},
+	{
+		"id": "especialista-suiton--nivel-anbu",
+		"verbete": "especialista-suiton#nivel-anbu",
+		"nome": "Especialista em Suiton, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "06dcfe7a-f26f-400f-8bba-677e3562a482"
+	},
+	{
+		"id": "especialista-suiton--nivel-kage",
+		"verbete": "especialista-suiton#nivel-kage",
+		"nome": "Especialista em Suiton, Nível Kage",
+		"estilo": "Fiel à arte",
+		"personagem": "e1c07ca6-4945-4619-8d1f-21b080ed84d1"
+	},
+	{
+		"id": "especialista-suiton--chunin",
+		"verbete": "especialista-suiton#chunin",
+		"nome": "Especialista em Suiton, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "d5bffb0b-9374-4792-a8be-7946b746bcd8"
+	},
+	{
+		"id": "especialista-yoton--chunin",
+		"verbete": "especialista-yoton#chunin",
+		"nome": "Especialista em Yōton, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "90d63aff-5f75-4a91-bf02-4e61851e1b2f"
+	},
+	{
+		"id": "especialista-yoton--genin",
+		"verbete": "especialista-yoton#genin",
+		"nome": "Especialista em Yōton, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "6b6e6659-8946-4bda-ac35-e5227527d798"
+	},
+	{
+		"id": "especialista-yoton--jounin",
+		"verbete": "especialista-yoton#jounin",
+		"nome": "Especialista em Yōton, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "a2a487bf-42db-45fd-a7b2-da6b0b6368be"
+	},
+	{
+		"id": "especialista-yoton--nivel-anbu",
+		"verbete": "especialista-yoton#nivel-anbu",
+		"nome": "Especialista em Yōton, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "d8eda4c7-a1cf-4941-b77f-d07e2a3912bc"
+	},
+	{
+		"id": "especialista-yoton--nivel-kage",
+		"verbete": "especialista-yoton#nivel-kage",
+		"nome": "Especialista em Yōton, Nível Kage",
+		"estilo": "Fiel à arte",
+		"personagem": "faddb91a-ab04-4641-8a79-e514cf96fa48"
 	}
 ]
