@@ -86,7 +86,7 @@
 	}
 
 	// pixels de tela por metro no pedestal: a régua e a figura na mesma conta do quadro (cabe até o dobro do tamanho)
-	const METRO = 64;
+	const METRO = 128;
 	const CHAO = 92;
 	const k = $derived(mini ? (METRO * ALTURA_DA_FIGURA * escalaAqui) / mini.altura : 1);
 

@@ -23,7 +23,6 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	import type { Ponto } from '#lib/mesa/visao.ts';
 	import LuzMesa from './LuzMesa.svelte';
 	import { ALTURA_DA_FIGURA, miniaturaPorId, quadroNaTela, rumoDoPasso, sombraDaMiniatura, urlMiniatura, type Miniatura } from '#lib/mesa/miniaturas.ts';
-	import { silhueta } from '#lib/mesa/sombras.svelte.ts';
 
 	let {
 		mesa,
@@ -73,8 +72,12 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	const emPe = (ax: number, ay: number, sobe = 0) => (iso ? emPeIso(ax, ay, sobe, cfgI) : undefined);
 	/** O quanto o sprite do token sobe: a base redonda toca o ponto de apoio, e a elevação soma. */
 	const sobeToken = (t: MesaToken) => 0.4 * t.tamanho + (t.elevacao ?? 0) * 0.25;
-	/** Onde ficam os pés da miniatura: bem no meio do espaço do token, nas duas vistas (a base no centro do quadrado). */
-	const pesDaMiniatura = (x: number, y: number, n: number): [number, number] => [x + n / 2, y + n / 2];
+	/**
+	 * Onde ficam os pés da miniatura, para a figura ficar inteira dentro do espaço do token e no meio dele: de cima, perto da
+	 * borda de baixo do quadrado (a figura sobe até perto da borda de cima); na isométrica, no centro do losango, como o
+	 * token redondo.
+	 */
+	const pesDaMiniatura = (x: number, y: number, n: number): [number, number] => [x + n / 2, iso ? y + n / 2 : y + 0.95 * n];
 	/** O clique pega a figura de pé da miniatura (a cabeça passa do quadrado do token). */
 	function naMiniatura(t: MesaToken, mx: number, my: number): boolean {
 		const mini = miniaturaPorId(t.miniatura);
@@ -409,14 +412,14 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	/** As luzes acesas que fazem sombra nas miniaturas (com a luz dinâmica): o alcance é a luz plena mais a penumbra. */
 	const luzesDaSombra = $derived(luzLigada ? luzesAcesas(luzesCena, true).map((l) => ({ x: l.x, y: l.y, alcance: l.plena + l.penumbra })) : []);
 	/**
-	 * A sombra da miniatura no chão da grade: foge da luz acesa mais perto (menos a que ela mesma carrega), senão cai para trás.
-	 * Na isométrica, o chão encurta a silhueta: ela fica quase o dobro mais comprida e, sem luz, cai para a frente e à direita
-	 * (o leste da grade; para trás, a própria figura a cobriria na tela).
+	 * Para onde a sombra da miniatura puxa no chão da grade: foge da luz acesa mais perto (menos a que ela mesma carrega).
+	 * Sem luz, de cima, um pouco para trás e à direita; na isométrica, para a frente e à direita (o leste da grade), onde a
+	 * própria figura não a cobre.
 	 */
 	function sombraNoChao(t: MesaToken, pe: [number, number], cx: number, cy: number) {
 		const s = sombraDaMiniatura(pe, luzesDaSombra.filter((l) => Math.hypot(l.x - cx, l.y - cy) > 0.5 * t.tamanho));
-		if (!iso) return s;
-		return s.luz ? { ...s, k: Math.min(1.6, s.k * 1.7) } : { dx: 0.954, dy: 0.3, k: 1.1, luz: false };
+		if (s.luz) return s;
+		return iso ? { dx: 0.954, dy: 0.3, k: 0.5, luz: false } : { dx: 0.857, dy: -0.514, k: 0.5, luz: false };
 	}
 	/** Memória do explorado (padrão: ligada). Sem ela, o grupo só vê o que vê agora: o resto é breu, e nada se grava. */
 	const memoria = $derived(cena?.luz_memoria !== false);
@@ -1402,29 +1405,28 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 	{@const q = quadroNaTela(rumo, cx, cy, paraTela)}
 	{@const estados = [...new Set(semKkg(t.condicoes))]}
 	{@const lado = Math.min(0.5, 0.3 + 0.03 * n)}
-	{@const yb = pe[1] + (iso ? 0.3 : 0.24) * n}
+	{@const yb = pe[1] + (iso ? 0.3 : 0.1) * n}
 	{@const sb = mesa.miniaturasCena.sombra ? sombraNoChao(t, pe, cx, cy) : null}
-	{@const sil = sb ? silhueta(mini, q) : null}
 	<g opacity={t.visivel ? 1 : 0.5}>
-		{#if iso}
-			{#if mesa.daVez.has(t.id)}<circle {cx} {cy} r={0.5 * n + 0.08} fill="none" style="stroke: var(--acc)" stroke-width={0.09} />{/if}
-			{#if ui.sel === t.id}<circle {cx} {cy} r={0.5 * n + 0.22} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
-			<circle {cx} {cy} r={(mini.base ? 0.46 : 0.4) * n} style="fill: var(--b0); stroke: {caido ? 'var(--field)' : c}" fill-opacity={mini.base ? 0 : 0.5} stroke-width={0.07} />
-		{:else}
-			{#if mesa.daVez.has(t.id)}<ellipse cx={pe[0]} cy={pe[1]} rx={0.5 * n + 0.08} ry={0.25 * n + 0.06} fill="none" style="stroke: var(--acc)" stroke-width={0.09} />{/if}
-			{#if ui.sel === t.id}<ellipse cx={pe[0]} cy={pe[1]} rx={0.5 * n + 0.22} ry={0.25 * n + 0.16} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
-			<ellipse cx={pe[0]} cy={pe[1]} rx={(mini.base ? 0.46 : 0.4) * n} ry={(mini.base ? 0.23 : 0.2) * n} style="fill: var(--b0); stroke: {caido ? 'var(--field)' : c}" fill-opacity={mini.base ? 0 : 0.5} stroke-width={0.07} />
-		{/if}
-		{#if sil && sb}
-			<!-- a sombra: a silhueta da figura deitada no chão da grade a partir dos pés; na isométrica, a própria projeção do chão
-			     a achata no piso (e ela não sobe com a elevação). Imagem inteira, sem recorte (ver sombras.svelte.ts). -->
-			<g transform="matrix({-sb.dy} {sb.dx} {-sb.k * sb.dx} {-sb.k * sb.dy} {pe[0]} {pe[1]})" opacity="0.45" pointer-events="none">
-				<image href={sil} x={-mini.pe[0] * k} y={-mini.pe[1] * k} width={mini.w * k} height={mini.h * k} preserveAspectRatio="none" style="image-rendering: pixelated" />
+		{#if sb}
+			<!-- a sombra: uma mancha suave no chão, sob os pés, um pouco puxada e alongada para o lado contrário da luz (de cima,
+			     achatada como a base; na isométrica, deitada na grade, a projeção dá a perspectiva) -->
+			<g transform="translate({pe[0] + sb.dx * 0.12 * n} {pe[1] + sb.dy * 0.12 * n}){iso ? '' : ' scale(1 0.5)'} rotate({(Math.atan2(sb.dy, sb.dx) * 180) / Math.PI})" pointer-events="none">
+				<ellipse rx={0.38 * n * (1 + 0.5 * sb.k)} ry={0.3 * n} fill="url(#sombra-miniatura)" />
 			</g>
+		{/if}
+		{#if iso}
+			{#if mesa.daVez.has(t.id)}<circle {cx} {cy} r={0.42 * n + 0.06} fill="none" style="stroke: var(--acc)" stroke-width={0.09} />{/if}
+			{#if ui.sel === t.id}<circle {cx} {cy} r={0.42 * n + 0.18} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
+			<circle {cx} {cy} r={(mini.base ? 0.4 : 0.36) * n} style="fill: var(--b0); stroke: {caido ? 'var(--field)' : c}" fill-opacity={mini.base || sb ? 0 : 0.5} stroke-width={0.07} />
+		{:else}
+			{#if mesa.daVez.has(t.id)}<ellipse cx={pe[0]} cy={pe[1]} rx={0.4 * n + 0.06} ry={0.15 * n + 0.04} fill="none" style="stroke: var(--acc)" stroke-width={0.09} />{/if}
+			{#if ui.sel === t.id}<ellipse cx={pe[0]} cy={pe[1]} rx={0.4 * n + 0.16} ry={0.15 * n + 0.1} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
+			<ellipse cx={pe[0]} cy={pe[1]} rx={(mini.base ? 0.38 : 0.34) * n} ry={(mini.base ? 0.13 : 0.11) * n} style="fill: var(--b0); stroke: {caido ? 'var(--field)' : c}" fill-opacity={mini.base || sb ? 0 : 0.5} stroke-width={0.07} />
 		{/if}
 		<g transform={emPe(pe[0], pe[1], (t.elevacao ?? 0) * 0.25)}>
 			<svg x={pe[0] - mini.pe[0] * k} y={pe[1] - mini.pe[1] * k} width={mini.w * k} height={mini.h * k} viewBox="{q * mini.w} 0 {mini.w} {mini.h}" preserveAspectRatio="none" overflow="hidden">
-				<image href={urlMiniatura(mini)} width={mini.w * 8} height={mini.h * 2} style="image-rendering: pixelated; filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" />
+				<image href={urlMiniatura(mini)} width={mini.w * 8} height={mini.h} style="image-rendering: pixelated; filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" />
 			</svg>
 			{#if t.reagiu && mesa.iniciativa.ativa}
 				<!-- Reação gasta nesta rodada: o R riscado ao lado da cabeça -->
@@ -1551,6 +1553,12 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		oncontextmenu={(e) => e.preventDefault()}
 	>
 		<defs>
+			<!-- a sombra das miniaturas: escura no meio, sumindo na borda -->
+			<radialGradient id="sombra-miniatura">
+				<stop offset="0" stop-color="#000" stop-opacity="0.6" />
+				<stop offset="0.55" stop-color="#000" stop-opacity="0.38" />
+				<stop offset="1" stop-color="#000" stop-opacity="0" />
+			</radialGradient>
 			<!-- névoa vista pelo Mestre: hachura fina por cima do esmaecido -->
 			<pattern id="nevoa-hachura" width="0.5" height="0.5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
 				<line x1="0" y1="0" x2="0" y2="0.5" style="stroke: var(--fg)" stroke-width="0.05" stroke-opacity="0.18" />

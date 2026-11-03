@@ -62,17 +62,9 @@ for (const m of catalogo) {
 				if (q.rgba[(y * W + x) * 4 + 3] > 0) [x0, y0, x1, y1] = [Math.min(x0, x), Math.min(y0, y), Math.max(x1, x), Math.max(y1, y)];
 	[x0, y0, x1, y1] = [Math.max(0, x0 - 1), Math.max(0, y0 - 1), Math.min(W - 1, x1 + 1), Math.min(H - 1, y1 + 1)];
 	const [w, h] = [x1 - x0 + 1, y1 - y0 + 1];
-	// duas fileiras: em cima as 8 direções; embaixo, a silhueta preta de cada uma (a sombra no chão, sem filtro no navegador,
-	// que falha com a transformação da vista isométrica)
-	const tira = Buffer.alloc(w * 8 * h * 2 * 4);
+	const tira = Buffer.alloc(w * 8 * h * 4);
 	quadros.forEach((q, k) => {
-		for (let y = 0; y < h; y++) {
-			q.rgba.copy(tira, (y * w * 8 + k * w) * 4, ((y0 + y) * W + x0) * 4, ((y0 + y) * W + x1 + 1) * 4);
-			for (let x = 0; x < w; x++) {
-				const a = q.rgba[((y0 + y) * W + x0 + x) * 4 + 3];
-				if (a) tira.writeUInt32BE(a, ((h + y) * w * 8 + k * w + x) * 4);
-			}
-		}
+		for (let y = 0; y < h; y++) q.rgba.copy(tira, (y * w * 8 + k * w) * 4, ((y0 + y) * W + x0) * 4, ((y0 + y) * W + x1 + 1) * 4);
 	});
 	// os pés: no meio do quadro do PixelLab (o eixo do corpo nas 8 direções; espada, cajado, areia ou água no chão não
 	// puxam para o lado) e, na altura, o mais baixo da faixa do meio do corpo (a mediana das 8 direções)
@@ -89,7 +81,7 @@ for (const m of catalogo) {
 	const topo = faixa(quadros[0], 0.12).topo;
 	const pe = [Math.round((meio - x0) * 10) / 10, chao + 1 - y0];
 	const arq = join(RAIZ, 'static', 'mesa', 'miniaturas', `${m.id}.png`);
-	writeFileSync(arq, indexar({ largura: w * 8, altura: h * 2, rgba: tira }) ?? png(w * 8, h * 2, tira));
+	writeFileSync(arq, indexar({ largura: w * 8, altura: h, rgba: tira }) ?? png(w * 8, h, tira));
 	saida.push({ id: m.id, verbete: m.verbete, nome: m.nome, estilo: m.estilo, ...(m.base ? { base: true } : {}), w, h, pe, altura: chao - topo + 1 });
 	console.log(`${m.id}: ${w}×${h} por direção, pés em ${pe.join(', ')}, figura de ${chao - topo + 1} px`);
 }

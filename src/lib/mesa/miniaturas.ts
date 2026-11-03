@@ -56,10 +56,11 @@ export function quadroNaTela(rumo: number, cx: number, cy: number, tela: (x: num
 }
 
 /**
- * A figura de pé mede isto (em metros) por quadrado do token, do pé (ou da base esculpida) ao alto da cabeça: todas as
- * miniaturas têm a mesma altura, e a campanha ajusta o tamanho de todas e de cada uma.
+ * A figura de pé mede isto por quadrado do token, do pé (ou da base esculpida) ao alto da cabeça: cabe inteira no quadrado,
+ * do porte do token redondo. Todas as miniaturas têm a mesma altura; a cena e a campanha ajustam o tamanho de todas e de
+ * cada uma.
  */
-export const ALTURA_DA_FIGURA = 1.7;
+export const ALTURA_DA_FIGURA = 0.9;
 
 /** O tamanho das miniaturas na campanha: `escala` vale para todas; `ajustes`, para cada uma (multiplica). */
 export interface AjusteMiniaturas {
@@ -90,9 +91,8 @@ export function lerCenaMiniaturas(v: unknown): CenaMiniaturas {
 }
 
 /**
- * A sombra que a miniatura projeta no chão, na tela: a direção (unitária) e o comprimento (vezes a altura da figura).
- * Perto de uma luz acesa, a sombra foge dela e cresce com a distância; sem luz, cai para trás e à direita. A direção é na
- * grade (a sombra fica deitada no chão; na isométrica, a projeção a achata no piso).
+ * A sombra da miniatura no chão: para onde ela puxa (unitária, na grade) e o quanto se alonga (k). Perto de uma luz
+ * acesa, foge dela e se alonga com a distância; sem luz (`luz` falso), quem desenha escolhe o lado.
  */
 export function sombraDaMiniatura(pe: [number, number], luzes: readonly { x: number; y: number; alcance: number }[]): { dx: number; dy: number; k: number; luz: boolean } {
 	let melhor: { d: number; x: number; y: number; alcance: number } | null = null;

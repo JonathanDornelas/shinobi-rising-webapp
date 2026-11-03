@@ -16,18 +16,18 @@ entre todas as que já existem.
   - o tamanho vai de 50% a 200%: o de todas fica em cada cena (`mesa_cenas.miniaturas`, `{ escala, sombra }`, porque cada
     mapa tem a sua escala); o de cada miniatura fica na campanha (`campanhas.miniaturas.ajustes`).
 - **No quadro:**
-  - todas as miniaturas têm a mesma altura (1,7 m num token 1 × 1, do pé ou da base esculpida ao alto da cabeça), vezes o
-    tamanho de todas e o de cada uma;
+  - todas as miniaturas têm a mesma altura: a figura cabe inteira no quadrado do token (0,9 do lado, do pé ou da base
+    esculpida ao alto da cabeça, do porte do token redondo), vezes o tamanho de todas e o de cada uma;
   - a figura fica de pé sobre uma base oval na cor do dono, com a vida e o nome debaixo dos pés e os estados numa fileira
     em cima da cabeça;
   - a direção mostrada segue a vista (na isométrica, o sul da grade aponta para baixo à esquerda); de cima, quem está mais
     embaixo na tela fica na frente;
-  - os pés ficam bem no meio do espaço do token, nas duas vistas (o eixo do corpo é o centro do quadro do PixelLab);
-  - a sombra (ligada por cena) é a silhueta da figura deitada no chão da grade, a partir dos pés; na isométrica, a
-    projeção do chão a achata no piso. Com a luz dinâmica, ela foge da luz acesa mais perto e cresce com a distância; sem
-    luz, cai para trás e à direita (de cima) ou para a frente e à direita (na isométrica, onde para trás a figura a
-    cobriria). A silhueta é a segunda fileira da tira, copiada para uma imagem própria (`sombras.svelte.ts`): recortar o
-    quadro na hora de desenhar (`<svg>` aninhado, padrão ou clip-path) some na isométrica, e o filtro de cor também;
+  - a figura fica dentro do quadrado e no meio dele: de cima, os pés perto da borda de baixo; na isométrica, no centro do
+    losango (o eixo do corpo é o centro do quadro do PixelLab);
+  - a sombra (ligada por cena) é uma mancha suave no chão, sob os pés, um pouco puxada e alongada para o lado contrário da
+    luz acesa mais perto (com a luz dinâmica); sem luz, puxa para trás e à direita (de cima) ou para a frente e à direita
+    (na isométrica, onde para trás a figura a cobriria). Uma silhueta da figura deitada no chão foi tentada e saiu mal
+    posicionada (e recortar um quadro da tira some na isométrica: o navegador erra o recorte sob a projeção);
   - Ctrl + seta vira a peça selecionada para aquele lado, sem andar.
 - **Na Mesa:**
   - no painel do token, "Peça no quadro" troca entre Token e Miniatura (o Mestre em qualquer token; o jogador no do
@@ -48,8 +48,7 @@ O lote usa `pixellab/scripts/miniaturas.mjs` (`--clas` só os clãs; `--ver` mos
    como `concept_image_url` e o Chunin Uchiha escolhido como `style_character_id` (`--estilo`), que dá as proporções:
    perto das reais, nada de chibi (só o texto pedindo "7 cabeças" não bastava). Custa 10 gerações.
 3. As 8 direções vão para `pixellab/miniaturas/<id>/`, e a miniatura entra em `pixellab/miniaturas/catalogo.json`.
-4. `npx tsx scripts/mesa/miniaturas.ts` monta as tiras em `static/mesa/miniaturas/` (duas fileiras: as 8 direções e, embaixo,
-   as silhuetas) e o catálogo do app (`src/lib/mesa/miniaturas.json`), na ordem do bestiário. Os pés ficam no centro do
+4. `npx tsx scripts/mesa/miniaturas.ts` monta as tiras em `static/mesa/miniaturas/` e o catálogo do app (`src/lib/mesa/miniaturas.json`), na ordem do bestiário. Os pés ficam no centro do
    quadro do PixelLab; a altura da figura e o chão são medidos na faixa do meio do corpo (espada, areia ou água no chão
    não puxam para o lado).
 
