@@ -38,4 +38,6 @@ O teste começou com um NPC só, o Uchiha Chunin do bestiário, em seis direçõ
 | Tinta sumi | `pro` com a arte como conceito e a paleta do site | 10 |
 | Retrô 16 bits | `standard`, 32 px (ignora a pose) | 1 |
 
-Escolhida a direção, as outras saem do catálogo e as próximas miniaturas seguem a escolhida.
+**Escolha (2026-11-03): Fiel à arte.** As próximas miniaturas seguem a mesma receita: `create_character` no modo `pro`,
+`size` 80, `concept_image_url` com a arte do estágio no site (`/bestiario/<verbete>--<estágio>.png`) e a descrição do
+personagem em postura de combate, de frente. As outras cinco ficam no catálogo enquanto o teste durar.
