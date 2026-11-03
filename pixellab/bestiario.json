@@ -5388,6 +5388,678 @@
 				}
 			],
 			"escolhida": "cla-yuki--nivel-anbu-12401.png"
+		},
+		{
+			"slug": "cao-ninja-do-inuzuka--filhote",
+			"nome": "Cão ninja do Inuzuka: Filhote",
+			"tipo": "invocação",
+			"formato": "quadro",
+			"plano": ["chao"],
+			"fiel": ["filhote de cão ninja, pelo marrom com manchas brancas, orelhas caídas", "late para o vento, rabo para cima"],
+			"prompt": "a small brown puppy with white patches and floppy ears barking at the wind with its tail up on a dirt road at sunrise, leaves blowing past, the sandals and shins of a running Inuzuka kid just entering the frame, the wooden gate of the ninja Academy far behind, playful and loud",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/akamaru.png",
+					"pagina": "Akamaru",
+					"uso": "style guide for the Inuzuka clan ninja dogs as drawn in the Naruto anime: real dog anatomy, ninja gear on the dog, the clan's red fang marks on the partner's cheeks. Draw a DIFFERENT dog, not this one, and a different person. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kuromaru.png",
+					"pagina": "Kuromaru",
+					"uso": "style guide for the Inuzuka clan ninja dogs as drawn in the Naruto anime: real dog anatomy, ninja gear on the dog, the clan's red fang marks on the partner's cheeks. Draw a DIFFERENT dog, not this one, and a different person. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "cao-ninja-do-inuzuka--filhote-11001.png"
+		},
+		{
+			"slug": "cao-ninja-do-inuzuka--adulto-jovem",
+			"nome": "Cão ninja do Inuzuka: Adulto Jovem",
+			"tipo": "invocação",
+			"formato": "retrato",
+			"plano": ["holandes"],
+			"fiel": ["cão jovem e magro, pelo cinza-claro", "gira no Gatsūga junto com o dono"],
+			"prompt": "a lean young grey ninja dog spinning in mid-air in a tight drill-like tornado of fur next to its partner, a teenage Inuzuka girl with a long braid and red fang marks on her cheeks spinning the same way, dust and torn grass flying, a training ground with wooden posts cut in half",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/akamaru.png",
+					"pagina": "Akamaru",
+					"uso": "style guide for the Inuzuka clan ninja dogs as drawn in the Naruto anime: real dog anatomy, ninja gear on the dog, the clan's red fang marks on the partner's cheeks. Draw a DIFFERENT dog, not this one, and a different person. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kuromaru.png",
+					"pagina": "Kuromaru",
+					"uso": "style guide for the Inuzuka clan ninja dogs as drawn in the Naruto anime: real dog anatomy, ninja gear on the dog, the clan's red fang marks on the partner's cheeks. Draw a DIFFERENT dog, not this one, and a different person. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "cao-ninja-do-inuzuka--adulto-jovem-11001.png"
+		},
+		{
+			"slug": "cao-ninja-do-inuzuka--adulto",
+			"nome": "Cão ninja do Inuzuka: Adulto",
+			"tipo": "invocação",
+			"formato": "faixa",
+			"plano": ["perfil"],
+			"fiel": ["cão do tamanho de um lobo grande, pelo preto e castanho", "corre lado a lado com o dono"],
+			"prompt": "a black-and-tan ninja dog the size of a big wolf, its whole body clearly visible from the side with its head forward and ears flat, a forehead protector tied around its neck, running side by side with its kunoichi partner at full speed through a pine forest, both leaning forward, motion lines in the trees",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/akamaru.png",
+					"pagina": "Akamaru",
+					"uso": "style guide for the Inuzuka clan ninja dogs as drawn in the Naruto anime: real dog anatomy, ninja gear on the dog, the clan's red fang marks on the partner's cheeks. Draw a DIFFERENT dog, not this one, and a different person. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kuromaru.png",
+					"pagina": "Kuromaru",
+					"uso": "style guide for the Inuzuka clan ninja dogs as drawn in the Naruto anime: real dog anatomy, ninja gear on the dog, the clan's red fang marks on the partner's cheeks. Draw a DIFFERENT dog, not this one, and a different person. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "cao-ninja-do-inuzuka--adulto-11002.png"
+		},
+		{
+			"slug": "cao-ninja-do-inuzuka--veterano",
+			"nome": "Cão ninja do Inuzuka: Veterano",
+			"tipo": "invocação",
+			"formato": "quadro",
+			"plano": ["close"],
+			"fiel": ["cão velho de focinho cheio de cicatrizes, uma orelha rasgada", "deitado, sem pressa"],
+			"prompt": "an old ninja dog with a grey muzzle full of scars and one torn ear lying on the wooden porch of the Inuzuka compound in the afternoon sun, one eye half open watching the street, an old forehead protector with a scratched plate around its neck, calm and patient",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/akamaru.png",
+					"pagina": "Akamaru",
+					"uso": "style guide for the Inuzuka clan ninja dogs as drawn in the Naruto anime: real dog anatomy, ninja gear on the dog, the clan's red fang marks on the partner's cheeks. Draw a DIFFERENT dog, not this one, and a different person. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kuromaru.png",
+					"pagina": "Kuromaru",
+					"uso": "style guide for the Inuzuka clan ninja dogs as drawn in the Naruto anime: real dog anatomy, ninja gear on the dog, the clan's red fang marks on the partner's cheeks. Draw a DIFFERENT dog, not this one, and a different person. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "cao-ninja-do-inuzuka--veterano-11001.png"
+		},
+		{
+			"slug": "cao-ninja-do-inuzuka--alfa",
+			"nome": "Cão ninja do Inuzuka: Alfa",
+			"tipo": "invocação",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"fiel": ["cão enorme de pelo preto e juba grossa, cicatriz num olho", "os outros cães baixam a cabeça"],
+			"prompt": "a huge black ninja dog with a thick mane and a scar over one eye standing on a big rock in the Inuzuka kennels while a dozen ninja dogs of every size lower their heads around it, the alpha's breath steaming, a red clan banner behind, evening light",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/akamaru.png",
+					"pagina": "Akamaru",
+					"uso": "style guide for the Inuzuka clan ninja dogs as drawn in the Naruto anime: real dog anatomy, ninja gear on the dog, the clan's red fang marks on the partner's cheeks. Draw a DIFFERENT dog, not this one, and a different person. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kuromaru.png",
+					"pagina": "Kuromaru",
+					"uso": "style guide for the Inuzuka clan ninja dogs as drawn in the Naruto anime: real dog anatomy, ninja gear on the dog, the clan's red fang marks on the partner's cheeks. Draw a DIFFERENT dog, not this one, and a different person. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "cao-ninja-do-inuzuka--alfa-11001.png"
+		},
+		{
+			"slug": "cao-ninja-do-inuzuka--lendario",
+			"nome": "Cão ninja do Inuzuka: Lendário",
+			"tipo": "invocação",
+			"formato": "pagina",
+			"plano": ["silhueta"],
+			"fiel": ["cão do tamanho de um cavalo, pelo branco-acinzentado comprido", "uivando no alto de um penhasco"],
+			"prompt": "a legendary ninja dog as big as a horse with long silver-white fur howling on top of a cliff against a huge full moon, its long fur and an old red scarf blowing in the wind, a tiny village with lit windows far below in the valley",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/akamaru.png",
+					"pagina": "Akamaru",
+					"uso": "style guide for the Inuzuka clan ninja dogs as drawn in the Naruto anime: real dog anatomy, ninja gear on the dog, the clan's red fang marks on the partner's cheeks. Draw a DIFFERENT dog, not this one, and a different person. Change the pose, the camera angle and the scene"
+				},
+				{
+					"arquivo": "referencias/bestiario/paginas/kuromaru.png",
+					"pagina": "Kuromaru",
+					"uso": "style guide for the Inuzuka clan ninja dogs as drawn in the Naruto anime: real dog anatomy, ninja gear on the dog, the clan's red fang marks on the partner's cheeks. Draw a DIFFERENT dog, not this one, and a different person. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "cao-ninja-do-inuzuka--lendario-11001.png"
+		},
+		{
+			"slug": "corvos--corvo-mensageiro",
+			"nome": "Corvos mensageiros: Corvo mensageiro",
+			"tipo": "invocação",
+			"formato": "retrato",
+			"plano": ["close"],
+			"fiel": ["corvo preto com um pergaminho pequeno amarrado na perna", "pousado na mão enluvada de um ninja"],
+			"prompt": "a black crow with a tiny sealed scroll tied to its leg perched on the gloved hand of a ninja, its sharp black eye reflecting the ninja's face, rain dripping from a roof edge behind, quiet night",
+			"modelo": "pro",
+			"referencias": [],
+			"escolhida": "corvos--corvo-mensageiro-11001.png"
+		},
+		{
+			"slug": "corvos--bando-de-corvos",
+			"nome": "Corvos mensageiros: Bando de corvos",
+			"tipo": "invocação",
+			"formato": "faixa",
+			"plano": ["aberto"],
+			"fiel": ["nuvem preta de corvos", "um ninja se desfaz em corvos"],
+			"prompt": "a ninja in a dark cloak dissolving into a huge black cloud of crows in the courtyard of a ruined temple at dusk, hundreds of crows bursting outward and blotting out the red sky, feathers falling, an enemy ninja below shielding his eyes",
+			"modelo": "pro",
+			"referencias": [],
+			"escolhida": "corvos--bando-de-corvos-11001.png"
+		},
+		{
+			"slug": "corvos--corvo-anciao",
+			"nome": "Corvos mensageiros: Corvo ancião",
+			"tipo": "invocação",
+			"formato": "retrato",
+			"plano": ["moldura"],
+			"fiel": ["corvo do tamanho de um homem, penas foscas e grisalhas", "olhos que veem através de ilusões"],
+			"prompt": "an old crow as big as a man sitting on the rafters of an abandoned shrine, dull grey-black feathers, pale glowing eyes that see through any illusion, seen through the broken lattice window of the shrine, dust in a beam of moonlight",
+			"modelo": "pro",
+			"referencias": [],
+			"escolhida": "corvos--corvo-anciao-11001.png"
+		},
+		{
+			"slug": "corvos--corvo-patriarca",
+			"nome": "Corvos mensageiros: Corvo patriarca",
+			"tipo": "invocação",
+			"formato": "pagina",
+			"plano": ["silhueta"],
+			"fiel": ["o maior e mais velho dos corvos, numa árvore morta", "bandanas ninja antigas penduradas nos galhos"],
+			"prompt": "the oldest crow, enormous, perched on top of a dead tree against a huge red moon, many smaller crows on the branches below it, old ninja forehead protectors of past summoners hanging from the branches on rotting ropes, a misty graveyard",
+			"modelo": "pro",
+			"referencias": [],
+			"escolhida": "corvos--corvo-patriarca-11001.png"
+		},
+		{
+			"slug": "corujas--corujinha",
+			"nome": "Corujas da noite: Corujinha",
+			"tipo": "invocação",
+			"formato": "quadro",
+			"plano": ["olhos"],
+			"fiel": ["coruja pequena de olhos amarelos enormes", "espiando de um buraco no tronco à noite"],
+			"prompt": "a small brown owl with enormous round yellow eyes peeking out of a hollow in a tree trunk at night, unblinking, the bark and moss huge and close, a faint light of a camp fire reflected in its eyes",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/owl.png",
+					"pagina": "Owl",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "corujas--corujinha-11001.png"
+		},
+		{
+			"slug": "corujas--coruja-cacadora",
+			"nome": "Corujas da noite: Coruja caçadora",
+			"tipo": "invocação",
+			"formato": "faixa",
+			"plano": ["perfil"],
+			"fiel": ["coruja de asas largas, em silêncio", "rasante sobre um rio ao luar"],
+			"prompt": "a hunting owl with wide brown and cream wings gliding silently in profile low over a moonlit river, talons forward about to snatch a message scroll from a fleeing ninja on the bank, mist on the water",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/owl.png",
+					"pagina": "Owl",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "corujas--coruja-cacadora-11001.png"
+		},
+		{
+			"slug": "corujas--coruja-gigante",
+			"nome": "Corujas da noite: Coruja gigante",
+			"tipo": "invocação",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"fiel": ["coruja gigante marrom e creme, olhos laranja", "asas abertas que escurecem o acampamento"],
+			"prompt": "a giant brown and cream owl summon with round orange eyes and a short beak opening its huge wings over a ninja camp at night, the tents and the campfire in its shadow, two ninjas below looking up in awe",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/owl.png",
+					"pagina": "Owl",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "corujas--coruja-gigante-11001.png"
+		},
+		{
+			"slug": "corujas--grande-coruja",
+			"nome": "Corujas da noite: Grande coruja",
+			"tipo": "invocação",
+			"formato": "quadro",
+			"plano": ["reflexo"],
+			"fiel": ["coruja velha e enorme, penas brancas no rosto", "vira a cabeça quase de costas"],
+			"prompt": "the old great owl of the forest with white feathers around its face sitting on a low branch over a still black lake, turning its head almost all the way back, its reflection in the water showing a hidden ninja behind the tree, fog and fireflies",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/owl.png",
+					"pagina": "Owl",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "corujas--grande-coruja-11001.png"
+		},
+		{
+			"slug": "doninhas--doninha-pequena",
+			"nome": "Doninhas do vento: Doninha pequena",
+			"tipo": "invocação",
+			"formato": "quadro",
+			"plano": ["chao"],
+			"fiel": ["doninha pequena com uma foice nas costas", "come um bolinho de arroz roubado"],
+			"prompt": "a tiny weasel with a small sickle strapped on its back sitting on the ground eating a stolen rice ball, a freshly cut rope and a fallen bag beside it, the feet of a confused ninja looking around in the background, cheeky",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kamatari.png",
+					"pagina": "Kamatari",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "doninhas--doninha-pequena-11001.png"
+		},
+		{
+			"slug": "doninhas--doninha-da-foice",
+			"nome": "Doninhas do vento: Doninha da foice",
+			"tipo": "invocação",
+			"formato": "retrato",
+			"plano": ["holandes"],
+			"fiel": ["doninha montada numa rajada de vento", "foice erguida, folhas cortadas ao meio em volta"],
+			"prompt": "a weasel riding a gust of wind between tall bamboo, its big sickle raised, bamboo leaves cut cleanly in half swirling around it, a white stripe of wind trailing behind",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kamatari.png",
+					"pagina": "Kamatari",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "doninhas--doninha-da-foice-11001.png"
+		},
+		{
+			"slug": "doninhas--doninha-da-tempestade",
+			"nome": "Doninhas do vento: Doninha da tempestade",
+			"tipo": "invocação",
+			"formato": "faixa",
+			"plano": ["aberto"],
+			"fiel": ["doninha no meio de um furacão de lâminas de vento", "uma fila de árvores cortada na altura do peito"],
+			"prompt": "a weasel with a big sickle in the middle of a huge tornado of wind blades sweeping across a forest edge, a whole row of trees cut at chest height and falling, a small hooded summoner far in the distance, dust and leaves",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kamatari.png",
+					"pagina": "Kamatari",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "doninhas--doninha-da-tempestade-11001.png"
+		},
+		{
+			"slug": "doninhas--senhora-dos-ventos",
+			"nome": "Doninhas do vento: Senhora dos ventos",
+			"tipo": "invocação",
+			"formato": "pagina",
+			"plano": ["escorco"],
+			"fiel": ["doninha velha com um olho cicatrizado", "foice enorme vindo na direção da câmera"],
+			"prompt": "an old weasel lady with a scarred closed eye and grey fur swinging a huge sickle right at the camera, a canyon split in two behind her by her last strike, wind streaks and flying rocks",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/kamatari.png",
+					"pagina": "Kamatari",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "doninhas--senhora-dos-ventos-11001.png"
+		},
+		{
+			"slug": "salamandras--salamandra-pequena",
+			"nome": "Salamandras do pântano: Salamandra pequena",
+			"tipo": "invocação",
+			"formato": "quadro",
+			"plano": ["chao"],
+			"fiel": ["salamandra pequena e preta, meio na lama", "morde o tornozelo de um ninja"],
+			"prompt": "a small black salamander half buried in swamp mud biting the ankle of a ninja, only the ninja's leg and sandal visible, mud splashing, reeds and murky water huge in the foreground",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/ibuse.png",
+					"pagina": "Ibuse",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "salamandras--salamandra-pequena-11001.png"
+		},
+		{
+			"slug": "salamandras--salamandra-da-nevoa",
+			"nome": "Salamandras do pântano: Salamandra da névoa",
+			"tipo": "invocação",
+			"formato": "faixa",
+			"plano": ["por-tras"],
+			"fiel": ["salamandra preta de bolsa de veneno", "solta névoa roxa sobre a água parada"],
+			"prompt": "a black salamander with a swollen poison sac on its back lying in still swamp water exhaling a slow purple poison mist toward a ninja in the foreground who faces it and starts to cough, bubbles rising, dead trees",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/ibuse.png",
+					"pagina": "Ibuse",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "salamandras--salamandra-da-nevoa-11001.png"
+		},
+		{
+			"slug": "salamandras--salamandra-gigante",
+			"nome": "Salamandras do pântano: Salamandra gigante",
+			"tipo": "invocação",
+			"formato": "pagina",
+			"plano": ["de-cima"],
+			"fiel": ["salamandra gigante preta num vale", "o vale inteiro cheio de névoa roxa"],
+			"prompt": "a giant black salamander with a poison sac lying across a narrow valley that is filling with thick purple poison mist, tiny ninjas running and covering their mouths on the slopes, a summoner in a cloth respirator mask and goggles standing on its head",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/ibuse.png",
+					"pagina": "Ibuse",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "salamandras--salamandra-gigante-11001.png"
+		},
+		{
+			"slug": "salamandras--salamandra-ancia",
+			"nome": "Salamandras do pântano: Salamandra anciã",
+			"tipo": "invocação",
+			"formato": "faixa",
+			"plano": ["reflexo"],
+			"fiel": ["salamandra antiga dormindo no fundo de um rio limpo", "um invocador mascarado ajoelhado na margem"],
+			"prompt": "an ancient black salamander asleep at the bottom of a clear slow river, seen through the water, moss on its back, a summoner in a cloth respirator mask and goggles kneeling on the bank and leaving an offering of fish, the reflection of the summoner in the water, autumn leaves floating",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/ibuse.png",
+					"pagina": "Ibuse",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "salamandras--salamandra-ancia-11001.png"
+		},
+		{
+			"slug": "bakus--baku-pequeno",
+			"nome": "Bakus devoradores: Baku pequeno",
+			"tipo": "invocação",
+			"formato": "quadro",
+			"plano": ["moldura"],
+			"fiel": ["baku pequeno de tromba de anta e corpo de urso, laranja com listras", "suga um pesadelo de quem dorme"],
+			"prompt": "a small orange baku with a tapir trunk, a bear body and striped legs curled at the foot of a sleeping child's futon, gently sucking a dark wisp of nightmare out of the air with its trunk, seen through a half-open sliding paper door, moonlight",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/baku.png",
+					"pagina": "Baku",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "bakus--baku-pequeno-11001.png"
+		},
+		{
+			"slug": "bakus--baku-jovem",
+			"nome": "Bakus devoradores: Baku jovem",
+			"tipo": "invocação",
+			"formato": "retrato",
+			"plano": ["holandes"],
+			"fiel": ["baku jovem de cabeça enfaixada", "boceja, e o vento muda de lado"],
+			"prompt": "a young orange baku with a bandaged head and tapir trunk yawning so wide that leaves, a straw hat and a startled genin's scarf are pulled toward its mouth, the genin holding on to a wooden post, a village courtyard",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/baku.png",
+					"pagina": "Baku",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "bakus--baku-jovem-11001.png"
+		},
+		{
+			"slug": "bakus--baku-gigante",
+			"nome": "Bakus devoradores: Baku gigante",
+			"tipo": "invocação",
+			"formato": "quadro",
+			"plano": ["de-baixo"],
+			"fiel": ["baku gigante de cabeça e tromba enfaixadas, focinheira de metal", "suga telhas, muro e quem estiver atrás"],
+			"prompt": "a giant orange baku with bandages on its head, a metal muzzle and tiger stripes on its legs inhaling with a roaring wind, roof tiles, planks and a whole wall flying into its trunk, ninjas clinging to the ground, low angle",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/baku.png",
+					"pagina": "Baku",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "bakus--baku-gigante-11001.png"
+		},
+		{
+			"slug": "bakus--baku-anciao",
+			"nome": "Bakus devoradores: Baku ancião",
+			"tipo": "invocação",
+			"formato": "pagina",
+			"plano": ["aberto"],
+			"fiel": ["baku ancião enorme dormindo numa caverna debaixo de um templo", "monges descendo com lanternas para alimentá-lo"],
+			"prompt": "an ancient enormous baku asleep curled in a cave right under a mountain temple, its trunk wrapped around a pillar, monks with lanterns walking down long stone stairs carrying bowls of food to feed it, the temple roofs above on the cliff, mist",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/baku.png",
+					"pagina": "Baku",
+					"uso": "style guide for this kind of creature as drawn in the Naruto anime: species, body shape, proportions, colors and markings. Draw a DIFFERENT individual of the species, not this exact one, and ignore any person in the image. Change the pose, the camera angle and the scene"
+				}
+			],
+			"escolhida": "bakus--baku-anciao-11001.png"
+		},
+		{
+			"slug": "invocacoes-do-rinnegan--camaleao-de-cauda-de-cobra",
+			"nome": "Invocações do Rinnegan: Camaleão de cauda de cobra",
+			"tipo": "invocação",
+			"formato": "quadro",
+			"plano": ["moldura"],
+			"fiel": ["camaleão gigante de cauda de cobra", "hastes pretas cravadas no corpo, olhos roxos de anéis", "sumindo na paisagem"],
+			"prompt": "a giant chameleon with a long snake-like tail half invisible against a mossy cliff, its skin blending into the rocks, black chakra receiver rods piercing its back, purple ringed eyes, seen through hanging vines and bamboo leaves",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/animal-path.png",
+					"pagina": "Animal Path",
+					"uso": "style guide for the Animal Path summons of the Rinnegan as drawn in the Naruto anime: reanimated beasts pierced by black metal chakra receiver rods, with purple ringed Rinnegan eyes. Draw the beast named in the prompt, not these ones. Ignore any person in the image"
+				}
+			],
+			"escolhida": "invocacoes-do-rinnegan--camaleao-de-cauda-de-cobra-11001.png"
+		},
+		{
+			"slug": "invocacoes-do-rinnegan--rinoceronte-gigante",
+			"nome": "Invocações do Rinnegan: Rinoceronte gigante",
+			"tipo": "invocação",
+			"formato": "faixa",
+			"plano": ["perfil"],
+			"fiel": ["rinoceronte gigante com hastes pretas no focinho e no corpo", "atravessa uma rua derrubando casas"],
+			"prompt": "a giant grey rhinoceros with black chakra receiver rods in its snout and back and purple ringed eyes charging through a village street in profile, wooden houses collapsing as it passes, dust and splinters",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/animal-path.png",
+					"pagina": "Animal Path",
+					"uso": "style guide for the Animal Path summons of the Rinnegan as drawn in the Naruto anime: reanimated beasts pierced by black metal chakra receiver rods, with purple ringed Rinnegan eyes. Draw the beast named in the prompt, not these ones. Ignore any person in the image"
+				}
+			],
+			"escolhida": "invocacoes-do-rinnegan--rinoceronte-gigante-11001.png"
+		},
+		{
+			"slug": "invocacoes-do-rinnegan--boi-gigante",
+			"nome": "Invocações do Rinnegan: Boi gigante",
+			"tipo": "invocação",
+			"formato": "quadro",
+			"plano": ["de-baixo"],
+			"fiel": ["boi gigante de chifres enormes", "hastes pretas, olhos roxos de anéis, pedra rachada"],
+			"prompt": "a giant ox with enormous curved horns, black chakra receiver rods in its neck and purple ringed eyes standing in a stone quarry, the rock face cracked where its horns hit, rubble falling",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/animal-path.png",
+					"pagina": "Animal Path",
+					"uso": "style guide for the Animal Path summons of the Rinnegan as drawn in the Naruto anime: reanimated beasts pierced by black metal chakra receiver rods, with purple ringed Rinnegan eyes. Draw the beast named in the prompt, not these ones. Ignore any person in the image"
+				}
+			],
+			"escolhida": "invocacoes-do-rinnegan--boi-gigante-11001.png"
+		},
+		{
+			"slug": "invocacoes-do-rinnegan--panda-gigante",
+			"nome": "Invocações do Rinnegan: Panda gigante",
+			"tipo": "invocação",
+			"formato": "quadro",
+			"plano": ["chao"],
+			"fiel": ["panda gigante pesado, sentado", "hastes pretas, olhos roxos de anéis, bloqueando a estrada"],
+			"prompt": "a giant panda with black chakra receiver rods in its shoulders and purple ringed eyes sitting heavily in the middle of a mountain road like a boulder, unmoving, a ninja bouncing off its belly, pebbles and grass huge in the foreground",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/animal-path.png",
+					"pagina": "Animal Path",
+					"uso": "style guide for the Animal Path summons of the Rinnegan as drawn in the Naruto anime: reanimated beasts pierced by black metal chakra receiver rods, with purple ringed Rinnegan eyes. Draw the beast named in the prompt, not these ones. Ignore any person in the image"
+				}
+			],
+			"escolhida": "invocacoes-do-rinnegan--panda-gigante-11001.png"
+		},
+		{
+			"slug": "invocacoes-do-rinnegan--crustaceo-gigante",
+			"nome": "Invocações do Rinnegan: Crustáceo gigante",
+			"tipo": "invocação",
+			"formato": "faixa",
+			"plano": ["aberto"],
+			"fiel": ["crustáceo gigante de carapaça grossa e pinças de aço", "hastes pretas, olhos roxos de anéis"],
+			"prompt": "a giant crustacean like a huge lobster crab with a thick armored shell and steel-grey pincers, black chakra receiver rods in its shell and purple ringed eyes, rising from a wide river delta, boats and small ninjas around it",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/animal-path.png",
+					"pagina": "Animal Path",
+					"uso": "style guide for the Animal Path summons of the Rinnegan as drawn in the Naruto anime: reanimated beasts pierced by black metal chakra receiver rods, with purple ringed Rinnegan eyes. Draw the beast named in the prompt, not these ones. Ignore any person in the image"
+				}
+			],
+			"escolhida": "invocacoes-do-rinnegan--crustaceo-gigante-11001.png"
+		},
+		{
+			"slug": "invocacoes-do-rinnegan--passaro-broca-gigante",
+			"nome": "Invocações do Rinnegan: Pássaro-broca gigante",
+			"tipo": "invocação",
+			"formato": "pagina",
+			"plano": ["aereo"],
+			"fiel": ["pássaro gigante de bico amarelo em espiral, como uma broca", "corpo cinza-esverdeado, hastes pretas", "um invocador encapuzado nas costas"],
+			"prompt": "a giant bird with a long yellow spiral drill beak and a grey-green body, black chakra receiver rods in its head, flying high above a sea of clouds with a hooded summoner in a dark cloak standing on its back, the face hidden in the hood",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/animal-path.png",
+					"pagina": "Animal Path",
+					"uso": "style guide for the Animal Path summons of the Rinnegan as drawn in the Naruto anime: reanimated beasts pierced by black metal chakra receiver rods, with purple ringed Rinnegan eyes. Draw the beast named in the prompt, not these ones. Ignore any person in the image"
+				}
+			],
+			"escolhida": "invocacoes-do-rinnegan--passaro-broca-gigante-11001.png"
+		},
+		{
+			"slug": "invocacoes-do-rinnegan--cao-de-varias-cabecas",
+			"nome": "Invocações do Rinnegan: Cão de várias cabeças",
+			"tipo": "invocação",
+			"formato": "quadro",
+			"plano": ["escorco"],
+			"fiel": ["cão marrom enorme de várias cabeças", "hastes pretas nas cabeças, olhos roxos de anéis", "cada golpe vira mais um cão"],
+			"prompt": "an enormous brown many-headed dog with black chakra receiver rods in each head and purple ringed eyes lunging right at the camera with its jaws open, behind it a cut-off head already growing into another dog, sparks of chakra",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/animal-path.png",
+					"pagina": "Animal Path",
+					"uso": "style guide for the Animal Path summons of the Rinnegan as drawn in the Naruto anime: reanimated beasts pierced by black metal chakra receiver rods, with purple ringed Rinnegan eyes. Draw the beast named in the prompt, not these ones. Ignore any person in the image"
+				}
+			],
+			"escolhida": "invocacoes-do-rinnegan--cao-de-varias-cabecas-11001.png"
+		},
+		{
+			"slug": "invocacoes-do-rinnegan--rei-do-inferno",
+			"nome": "Invocações do Rinnegan: Rei do Inferno",
+			"tipo": "invocação",
+			"formato": "pagina",
+			"plano": ["holandes"],
+			"fiel": ["o Rei do Inferno: cabeça gigante com coroa e o kanji 王, boca enorme", "chamas roxas, a língua puxando a alma de um prisioneiro"],
+			"prompt": "the King of Hell exactly as drawn in the Naruto anime: a giant pale grey demonic face with dark purple lips and a huge open mouth full of white teeth, a tall black crown with a golden kanji 王, long white hair, a red disc behind it, rising from the ground in purple flames, its long tongue pulling a glowing soul out of a kneeling prisoner, a hooded figure with hidden face beside it; no metal rods",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/king-of-hell.png",
+					"pagina": "King of Hell",
+					"uso": "this exact being as drawn in the Naruto anime: keep its design, colors and proportions faithful. Ignore any person in the image: no Akatsuki cloak, no orange-haired man, no famous character"
+				}
+			],
+			"escolhida": "invocacoes-do-rinnegan--rei-do-inferno-11002.png"
+		},
+		{
+			"slug": "invocacoes-do-rinnegan--estatua-demoniaca-do-caminho-exterior",
+			"nome": "Invocações do Rinnegan: Estátua Demoníaca do Caminho Exterior",
+			"tipo": "invocação",
+			"formato": "pagina",
+			"plano": ["costas"],
+			"fiel": ["a Estátua Demoníaca do Caminho Exterior, colossal", "olhos vendados, mãos acorrentadas, saindo de um lago escuro"],
+			"prompt": "the Demonic Statue of the Outer Path exactly as drawn in the Naruto anime: a colossal gaunt grey humanoid statue with a bound face and closed eyes, long thin arms with chained wrists, rising out of a dark lake inside a vast cave, a small hooded figure seen from behind standing on a rock in front of it, the face hidden; no metal rods",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/demonic-statue-of-the-outer-path.png",
+					"pagina": "Demonic Statue of the Outer Path",
+					"uso": "this exact being as drawn in the Naruto anime: keep its design, colors and proportions faithful. Ignore any person in the image: no Akatsuki cloak, no orange-haired man, no famous character"
+				}
+			],
+			"escolhida": "invocacoes-do-rinnegan--estatua-demoniaca-do-caminho-exterior-11002.png"
+		},
+		{
+			"slug": "doki",
+			"nome": "Doki",
+			"tipo": "invocação",
+			"formato": "pagina",
+			"plano": ["de-baixo"],
+			"fiel": ["os três Doki: corpos enormes, olhos vendados", "correntes nos braços, espíritos famintos saindo das bocas", "um flautista pequeno à frente"],
+			"prompt": "the three Doki demons from the Naruto anime, huge bodies with blindfolded eyes, ropes and chains wrapped around their arms, hungry ghostly spirits drifting out of their mouths, rising from cracked ground, a small original hooded flute player in front of them playing a note, not the girl from the reference",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/doki.png",
+					"pagina": "Doki",
+					"uso": "this exact being as drawn in the Naruto anime: keep its design, colors and proportions faithful. Ignore any person in the image: no Akatsuki cloak, no orange-haired man, no famous character"
+				}
+			],
+			"escolhida": "doki-11001.png"
+		},
+		{
+			"slug": "molusco-da-miragem",
+			"nome": "Molusco da miragem",
+			"tipo": "invocação",
+			"formato": "faixa",
+			"plano": ["aberto"],
+			"fiel": ["molusco gigante meio enterrado na areia", "a névoa morna forma uma vila de miragem com luzes acesas"],
+			"prompt": "a giant clam half buried in the sand of a foggy beach at dusk, warm mist rising from its slightly open shell and forming a mirage of a whole village with lit windows and lanterns floating in the fog, three ninjas walking toward the false village, the real empty beach around them",
+			"modelo": "pro",
+			"referencias": [
+				{
+					"arquivo": "referencias/bestiario/paginas/giant-clam.png",
+					"pagina": "Giant Clam",
+					"uso": "this exact being as drawn in the Naruto anime: keep its design, colors and proportions faithful. Ignore any person in the image: no Akatsuki cloak, no orange-haired man, no famous character"
+				}
+			],
+			"escolhida": "molusco-da-miragem-11001.png"
 		}
 	],
 	"direcao_nota": "Direção (20/10): referências do anime e do mangá de Naruto, e ângulos ousados como os quadros-chave do anime: câmera inclinada, silhueta contra a lua, close nos olhos, escorço, vista aérea, contra-plongée extremo. O personagem no meio de uma ação, fora do centro, cortado pela moldura. Nunca a pose de ficha (de pé, de frente, no centro, fundo simétrico). Rostos originais; criaturas e símbolos canônicos iguais aos do anime.",

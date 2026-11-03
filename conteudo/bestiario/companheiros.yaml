@@ -25,6 +25,9 @@
       tracos:
         - &faro-inuzuka { nome: Faro, efeito: "Rastreia pelo cheiro: tem vantagem para achar e seguir quem já farejou." }
         - &tecnicas-conjuntas { nome: Técnicas conjuntas, efeito: "Os jutsus do clã que ele faz junto com o dono são pagos pelo dono (cap. 14)." }
+      arte:
+        formato: quadro
+        plano: câmera no chão
     - nome: Adulto Jovem
       papel: lutador
       ficha: cao-adulto-jovem
@@ -36,6 +39,9 @@
       tracos:
         - *faro-inuzuka
         - *tecnicas-conjuntas
+      arte:
+        formato: retrato
+        plano: câmera inclinada
     - nome: Adulto
       papel: lutador
       ficha: cao-adulto
@@ -48,6 +54,9 @@
       tracos:
         - *faro-inuzuka
         - *tecnicas-conjuntas
+      arte:
+        formato: faixa
+        plano: perfil
     - nome: Veterano
       papel: lutador
       ficha: cao-veterano
@@ -60,6 +69,9 @@
       tracos:
         - *faro-inuzuka
         - *tecnicas-conjuntas
+      arte:
+        formato: quadro
+        plano: close
     - nome: Alfa
       papel: lutador
       ficha: cao-alfa
@@ -72,6 +84,10 @@
       tracos:
         - *faro-inuzuka
         - *tecnicas-conjuntas
+      arte:
+        formato: pagina
+        plano: de baixo
+      capa: true
     - nome: Lendário
       papel: lutador
       ficha: cao-lendario
@@ -84,6 +100,9 @@
       tracos:
         - *faro-inuzuka
         - *tecnicas-conjuntas
+      arte:
+        formato: pagina
+        plano: silhueta
   taticas:
     - "Luta colado no dono: ataca quem o ataca, derruba quem foge e guia o dono pelo cheiro quando a fumaça cobre tudo."
   ganchos:

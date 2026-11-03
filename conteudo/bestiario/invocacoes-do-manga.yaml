@@ -27,6 +27,9 @@
         - { slug: kirigakure-no-jutsu-ilusorio }
       tracos:
         - &voo-corvo { nome: Voo, efeito: "Voa, e entrega recados na metade do tempo do seu tamanho (cap. 14)." }
+      arte:
+        formato: retrato
+        plano: close
     - nome: Bando de corvos
       papel: controlador
       estilo: vigilante
@@ -40,6 +43,9 @@
       tracos:
         - *voo-corvo
         - { nome: Nuvem de asas, efeito: "Uma vez por rodada, cobre um aliado a até 6 m: ataques contra ele têm desvantagem até o começo do próximo turno do bando." }
+      arte:
+        formato: faixa
+        plano: plano aberto
     - nome: Corvo ancião
       papel: controlador
       estilo: vigilante
@@ -54,6 +60,9 @@
         - *voo-corvo
         - &revoada { nome: Revoada, efeito: "Uma vez por cena, quando seria atingido, desfaz-se num bando de corvos e volta a se formar a até 10 m: o ataque erra." }
         - { nome: Invocado, efeito: "Ao chegar a 0 PV, é desinvocado. Não pode ser invocado de novo por 24 horas (cap. 14)." }
+      arte:
+        formato: retrato
+        plano: emoldurado
     - nome: Corvo patriarca
       papel: controlador
       estilo: calculista
@@ -68,6 +77,10 @@
         - *voo-corvo
         - *revoada
         - { nome: Olho que desfaz ilusões, efeito: "Aliados a até 10 m dele têm vantagem para resistir a genjutsu." }
+      arte:
+        formato: pagina
+        plano: silhueta
+      capa: true
   taticas:
     - "Os corvos não brigam de frente. Cobrem o invocador, cegam o inimigo com asas e genjutsu e levam embora quem estiver ferido."
   ganchos:
@@ -98,6 +111,9 @@
       tracos:
         - &voo-silencioso { nome: Voo silencioso, efeito: "Voa sem fazer barulho: tem vantagem em Furtividade no ar." }
         - &visao-noturna { nome: Visão noturna, efeito: "Enxerga no escuro como se fosse dia." }
+      arte:
+        formato: quadro
+        plano: olhos
     - nome: Coruja caçadora
       papel: atirador
       estilo: vigilante
@@ -110,6 +126,9 @@
       tracos:
         - *voo-silencioso
         - *visao-noturna
+      arte:
+        formato: faixa
+        plano: perfil
     - nome: Coruja gigante
       papel: controlador
       estilo: calculista
@@ -123,6 +142,10 @@
         - *visao-noturna
         - { nome: Olhar que prende, efeito: "Uma vez por cena, um alvo a até 10 m que a olhe nos olhos resiste com ESP contra a DT 19 ou fica **Paralisado** por 1 turno." }
         - { nome: Invocada, efeito: "Ao chegar a 0 PV, é desinvocada. Não pode ser invocada de novo por 24 horas (cap. 14)." }
+      arte:
+        formato: pagina
+        plano: de baixo
+      capa: true
     - nome: Grande coruja
       papel: controlador
       estilo: calculista
@@ -137,6 +160,9 @@
         - *visao-noturna
         - { nome: Olhar que prende, efeito: "Uma vez por cena, um alvo a até 10 m que a olhe nos olhos resiste com ESP contra a DT 23 ou fica **Paralisado** por 1 turno." }
         - { nome: Presságio, efeito: "Uma vez por cena, depois que um inimigo rola um ataque, ela o obriga a rolar de novo e ficar com o pior resultado." }
+      arte:
+        formato: quadro
+        plano: reflexo
   taticas:
     - "Ficam no alto, longe da luta, vigiando e avisando. A grande coruja prende o inimigo mais perigoso com o olhar e deixa o resto para o invocador."
   ganchos:
@@ -166,6 +192,9 @@
         - { nome: Foice pequena, alcance: Corpo a corpo }
       tracos:
         - &esquiva-vento { nome: Esquiva no vento, efeito: "Tem vantagem para escapar de jutsus de área." }
+      arte:
+        formato: quadro
+        plano: câmera no chão
     - nome: Doninha da foice
       papel: assassino
       estilo: impetuoso
@@ -177,6 +206,9 @@
         - { slug: kazekiri-no-jutsu }
       tracos:
         - *esquiva-vento
+      arte:
+        formato: retrato
+        plano: câmera inclinada
     - nome: Doninha da tempestade
       papel: atirador
       estilo: vigilante
@@ -191,6 +223,10 @@
         - *esquiva-vento
         - &laminas-ventania { nome: Lâminas na ventania, efeito: "Os jutsus de Fūton de um aliado a até 10 m causam um dado de dano a mais." }
         - { nome: Invocada, efeito: "Ao chegar a 0 PV, é desinvocada. Não pode ser invocada de novo por 24 horas (cap. 14)." }
+      arte:
+        formato: faixa
+        plano: plano aberto
+      capa: true
     - nome: Senhora dos ventos
       papel: atirador
       estilo: vigilante
@@ -205,6 +241,9 @@
         - *esquiva-vento
         - *laminas-ventania
         - { nome: Furacão, efeito: "Uma vez por cena, uma linha de 30 m à frente: cada um nela resiste com Acrobacia contra a DT 20 ou sofre o dano do ataque e fica **Caído**." }
+      arte:
+        formato: pagina
+        plano: escorço
   taticas:
     - "Cortam e somem. A pequena incomoda, a grande abre caminho com a ventania para o invocador passar, e nenhuma fica parada para levar um golpe."
   ganchos:
@@ -233,6 +272,9 @@
         - { nome: Mordida, alcance: Corpo a corpo, efeito: "O alvo resiste com VIG contra a DT 13 ou fica **Envenenado** até o fim do próximo turno." }
       tracos:
         - &anfibia { nome: Anfíbia, efeito: "Respira debaixo da água e tem vantagem em Furtividade dentro dela." }
+      arte:
+        formato: quadro
+        plano: câmera no chão
     - nome: Salamandra da névoa
       papel: controlador
       estilo: calculista
@@ -245,6 +287,9 @@
         - { slug: mizu-teppou }
       tracos:
         - *anfibia
+      arte:
+        formato: faixa
+        plano: por trás de alguém
     - nome: Salamandra gigante
       papel: controlador
       estilo: calculista
@@ -259,6 +304,10 @@
         - *anfibia
         - { nome: Névoa venenosa, efeito: "Uma vez por cena, solta a névoa num raio de 20 m em volta, que dura 3 rodadas: quem a respira resiste com VIG contra a DT 19 no começo de cada turno ou fica **Envenenado**." }
         - { nome: Invocada, efeito: "Ao chegar a 0 PV, é desinvocada. Não pode ser invocada de novo por 24 horas (cap. 14)." }
+      arte:
+        formato: pagina
+        plano: de cima
+      capa: true
     - nome: Salamandra anciã
       papel: controlador
       estilo: calculista
@@ -273,6 +322,9 @@
         - *anfibia
         - { nome: Névoa venenosa, efeito: "Uma vez por cena, solta a névoa num raio de 40 m em volta, que dura 3 rodadas: quem a respira resiste com VIG contra a DT 23 no começo de cada turno ou fica **Envenenado**." }
         - { nome: Pele de lodo, efeito: "RD 3 contra golpes corpo a corpo." }
+      arte:
+        formato: faixa
+        plano: reflexo
   taticas:
     - "Nunca começam a luta. Esperam o inimigo entrar na névoa, e o invocador fica longe, ou de máscara, deixando o veneno trabalhar."
   ganchos:
@@ -302,6 +354,9 @@
         - { nome: Tromba, alcance: Corpo a corpo }
       tracos:
         - &comer-sonhos { nome: Comer sonhos, efeito: "Encosta a tromba num aliado preso num genjutsu e encerra o efeito; isso gasta a ação dele." }
+      arte:
+        formato: quadro
+        plano: emoldurado
     - nome: Baku jovem
       papel: controlador
       estilo: defensivo
@@ -312,6 +367,9 @@
       tracos:
         - *comer-sonhos
         - { nome: Sucção, efeito: "Uma vez por rodada, puxa um alvo a até 10 m em linha reta para perto dele; o alvo resiste com FOR contra a DT 16 para ficar onde está." }
+      arte:
+        formato: retrato
+        plano: câmera inclinada
     - nome: Baku gigante
       papel: controlador
       estilo: defensivo
@@ -323,6 +381,10 @@
         - *comer-sonhos
         - { nome: Grande sucção, efeito: "Uma vez por cena, um cone de 30 m à frente: cada um nele resiste com FOR contra a DT 18 ou é puxado até ele e sofre o dano do ataque." }
         - { nome: Invocado, efeito: "Ao chegar a 0 PV, é desinvocado. Não pode ser invocado de novo por 24 horas (cap. 14)." }
+      arte:
+        formato: quadro
+        plano: de baixo
+      capa: true
     - nome: Baku ancião
       papel: controlador
       estilo: defensivo
@@ -334,6 +396,9 @@
         - *comer-sonhos
         - { nome: Grande sucção, efeito: "Uma vez por cena, um cone de 60 m à frente: cada um nele resiste com FOR contra a DT 22 ou é puxado até ele e sofre o dano do ataque." }
         - { nome: Barriga sem fundo, efeito: "O que ele engole não volta: jutsus de projétil lançados contra ele têm desvantagem." }
+      arte:
+        formato: pagina
+        plano: plano aberto
   taticas:
     - "Ficam perto do invocador e abrem a boca quando o inimigo se agrupa. Desfazem os genjutsu dos aliados antes de qualquer outra coisa."
   ganchos:
@@ -422,6 +487,9 @@
       tracos:
         - &olhos-rinnegan { nome: Olhos do Rinnegan, efeito: "Vê o que o invocador e as outras feras veem: nenhuma delas fica **Desprevenida** enquanto outra puder ver o atacante." }
         - { nome: Invisível, efeito: "Parado, fica invisível: ataques contra ele têm desvantagem até ele atacar." }
+      arte:
+        formato: quadro
+        plano: emoldurado
     - nome: Rinoceronte gigante
       papel: lutador
       estilo: impetuoso
@@ -431,6 +499,9 @@
         - { nome: Chifre, alcance: Corpo a corpo, efeito: "Se correu em linha reta até o alvo, ele resiste com FOR contra a DT 17 ou é jogado longe e fica **Caído**." }
       tracos:
         - *olhos-rinnegan
+      arte:
+        formato: faixa
+        plano: perfil
     - nome: Boi gigante
       papel: lutador
       estilo: defensivo
@@ -441,6 +512,9 @@
       tracos:
         - *olhos-rinnegan
         - { nome: Couro grosso, efeito: "RD 2." }
+      arte:
+        formato: quadro
+        plano: de baixo
     - nome: Panda gigante
       papel: lutador
       estilo: defensivo
@@ -451,6 +525,9 @@
       tracos:
         - *olhos-rinnegan
         - { nome: Abraço, efeito: "Quando acerta, o alvo resiste com FOR contra a DT 17 ou fica **Imobilizado** até se soltar." }
+      arte:
+        formato: quadro
+        plano: câmera no chão
     - nome: Crustáceo gigante
       papel: lutador
       estilo: defensivo
@@ -461,6 +538,9 @@
       tracos:
         - *olhos-rinnegan
         - { nome: Carapaça, efeito: "RD 3." }
+      arte:
+        formato: faixa
+        plano: plano aberto
     - nome: Pássaro-broca gigante
       papel: atirador
       estilo: vigilante
@@ -471,6 +551,9 @@
       tracos:
         - *olhos-rinnegan
         - { nome: Voo, efeito: "Voa e carrega o invocador nas costas." }
+      arte:
+        formato: pagina
+        plano: aéreo
     - nome: Cão de várias cabeças
       papel: lutador
       estilo: vigilante
@@ -481,6 +564,9 @@
       tracos:
         - *olhos-rinnegan
         - { nome: Divide-se, efeito: "Uma vez por rodada, quando sofre dano, um cão menor (a ficha de Invocação Média do cap. 14, sem traços) se solta dele e age na iniciativa do invocador." }
+      arte:
+        formato: quadro
+        plano: escorço
     - nome: Rei do Inferno
       papel: suporte
       estilo: defensivo
@@ -491,6 +577,10 @@
       tracos:
         - { nome: Julgamento, efeito: "Prende um alvo **Imobilizado** e faz uma pergunta: se ele mentir, resiste com ESP contra a DT 17 ou tem a alma arrancada e cai a 0 PV." }
         - { nome: Restauração, efeito: "Uma vez por cena, engole um aliado caído a até 10 m e o devolve no fim do turno com todos os PV." }
+      arte:
+        formato: pagina
+        plano: câmera inclinada
+      capa: true
     - nome: Estátua Demoníaca do Caminho Exterior
       papel: lutador
       estilo: defensivo
@@ -502,6 +592,9 @@
         - { nome: Sem vontade, efeito: "Só se mexe pelo Rinnegan: se o invocador cair, ela para." }
         - { nome: Dragões da alma, efeito: "Uma vez por cena, solta dragões de chakra em até três alvos a até 30 m: cada um resiste com VIG contra a DT 21 ou perde metade dos PV atuais." }
         - { nome: Colosso, efeito: "RD 5. Não pode ser empurrada nem derrubada." }
+      arte:
+        formato: pagina
+        plano: de costas
   taticas:
     - "As feras cercam o grupo por todos os lados ao mesmo tempo, porque veem pelos mesmos olhos. O rei fica atrás, devolvendo quem cai. A estátua só aparece quando o invocador quer acabar com tudo."
   ganchos:
