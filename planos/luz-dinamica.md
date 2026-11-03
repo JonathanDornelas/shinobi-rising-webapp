@@ -51,6 +51,8 @@ Depois pediu também 3 demos de cada vista, já configuradas.
 **Desenho:** `LuzMesa.svelte`, dentro do grupo da grade.
 
 - A escuridão é uma máscara: o que se vê vaza, e as luzes somam multiplicando.
+  - A máscara sai desfocada (0,22 m) para a borda da visão e as sombras ficarem suaves. O que o grupo nunca viu desfoca
+    mais (0,45 m), para não aparecer a escada dos quadrados.
 - A escuridão fica sob os tokens: quem joga só recebe os tokens que estão à vista.
 - Uma moldura de breu cobre o alto das paredes da borda na isométrica.
 

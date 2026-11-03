@@ -54,6 +54,10 @@
 	} = $props();
 
 	const uid = Math.random().toString(36).slice(2, 8);
+	// a borda da visão sai desfocada (em metros): pouco, para a luz quase não vazar para trás da parede
+	const BORDA = 0.22;
+	// a borda do que o grupo nunca viu (quadrados da névoa) desfoca mais, para não aparecer a escada dos quadrados
+	const BORDA_NEVOA = 0.45;
 	const COR: Record<number, string> = { 0: 'var(--mesa-vermelhao)', 1: 'var(--acc)', 2: 'var(--ok)', 3: 'var(--mesa-ouro, #d9a82b)', 4: 'var(--mesa-azul, #5aa0d8)' };
 	// no escuro, a parte vista sem luz fica no breu; na penumbra, esmaecida; no claro, inteira
 	const vistaSemLuz = $derived(ambiente === 'claro' ? '#000' : ambiente === 'penumbra' ? '#8a8a8a' : '#fff');
@@ -74,20 +78,37 @@
 				<stop offset="1" stop-color="#fff" />
 			</radialGradient>
 		{/each}
+		<!-- os desfoques: a região passa da cena, para a borda do mapa não clarear -->
+		<filter id="suave-{uid}" filterUnits="userSpaceOnUse" x="-2" y="-2" width={L + 4} height={A + 4} color-interpolation-filters="sRGB">
+			<feGaussianBlur stdDeviation={BORDA} />
+		</filter>
+		<filter id="suave-nevoa-{uid}" filterUnits="userSpaceOnUse" x="-2" y="-2" width={L + 4} height={A + 4} color-interpolation-filters="sRGB">
+			<feGaussianBlur stdDeviation={BORDA_NEVOA} />
+		</filter>
 		<mask id="escuro-{uid}" maskUnits="userSpaceOnUse" x="0" y="0" width={L} height={A}>
-			<rect x="0" y="0" width={L} height={A} fill="#fff" />
-			{#if ambiente !== 'escuro'}
-				{#each visao.vistas as v, i (i)}<path d={caminhoPoligono(v)} fill={vistaSemLuz} style="mix-blend-mode: multiply" />{/each}
-			{/if}
-			<g clip-path="url(#vistas-{uid})">
-				{#each visao.fontes as f, i (i)}<path d={caminhoPoligono(f.poligono)} fill="url(#luz-{uid}-{i})" style="mix-blend-mode: multiply" />{/each}
+			<g filter="url(#suave-{uid})">
+				<rect x="-2" y="-2" width={L + 4} height={A + 4} fill="#fff" />
+				{#if ambiente !== 'escuro'}
+					{#each visao.vistas as v, i (i)}<path d={caminhoPoligono(v)} fill={vistaSemLuz} style="mix-blend-mode: multiply" />{/each}
+				{/if}
+				<g clip-path="url(#vistas-{uid})">
+					{#each visao.fontes as f, i (i)}<path d={caminhoPoligono(f.poligono)} fill="url(#luz-{uid}-{i})" style="mix-blend-mode: multiply" />{/each}
+				</g>
 			</g>
 		</mask>
 	</defs>
 	<rect x="0" y="0" width={L} height={A} fill="#0a0807" fill-opacity={opacidade} mask="url(#escuro-{uid})" pointer-events="none" clip-path={clipCena} />
-	{#if nevoa}<path d={nevoa} fill-rule="evenodd" fill="#0a0807" mask="url(#escuro-{uid})" pointer-events="none" clip-path={clipCena} />{/if}
-	<!-- uma moldura de breu em volta da cena: na isométrica, o alto das paredes da borda passa do losango -->
-	<path d="M-4 -4H{L + 4}V{A + 4}H-4Z M0 0V{A}H{L}V0Z" fill-rule="evenodd" fill="#0a0807" pointer-events="none" />
+	{#if nevoa}
+		<g mask="url(#escuro-{uid})" pointer-events="none" clip-path={clipCena}>
+			<g filter="url(#suave-nevoa-{uid})" fill="#0a0807">
+				<path d={nevoa} fill-rule="evenodd" />
+				<path d="M-2 -2H{L + 2}V{A + 2}H-2Z M0 0V{A}H{L}V0Z" fill-rule="evenodd" />
+			</g>
+		</g>
+	{/if}
+	<!-- uma moldura de breu em volta da cena: na isométrica, o alto das paredes da borda passa do losango (entra 3 cm na cena,
+	     para não ficar a costura clara entre ela e a escuridão) -->
+	<path d="M-4 -4H{L + 4}V{A + 4}H-4Z M0.03 0.03V{A - 0.03}H{L - 0.03}V0.03Z" fill-rule="evenodd" fill="#0a0807" pointer-events="none" />
 {/if}
 
 {#if verParedes}
