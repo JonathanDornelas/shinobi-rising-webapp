@@ -91,8 +91,8 @@ export function lerCenaMiniaturas(v: unknown): CenaMiniaturas {
 
 /**
  * A sombra que a miniatura projeta no chão, na tela: a direção (unitária) e o comprimento (vezes a altura da figura).
- * Perto de uma luz acesa, a sombra foge dela (direção na grade, `luz`) e cresce com a distância; sem luz, cai para trás e
- * à direita (direção já na tela).
+ * Perto de uma luz acesa, a sombra foge dela e cresce com a distância; sem luz, cai para trás e à direita. A direção é na
+ * grade (a sombra fica deitada no chão; na isométrica, a projeção a achata no piso).
  */
 export function sombraDaMiniatura(pe: [number, number], luzes: readonly { x: number; y: number; alcance: number }[]): { dx: number; dy: number; k: number; luz: boolean } {
 	let melhor: { d: number; x: number; y: number; alcance: number } | null = null;

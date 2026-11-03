@@ -62,20 +62,34 @@ for (const m of catalogo) {
 				if (q.rgba[(y * W + x) * 4 + 3] > 0) [x0, y0, x1, y1] = [Math.min(x0, x), Math.min(y0, y), Math.max(x1, x), Math.max(y1, y)];
 	[x0, y0, x1, y1] = [Math.max(0, x0 - 1), Math.max(0, y0 - 1), Math.min(W - 1, x1 + 1), Math.min(H - 1, y1 + 1)];
 	const [w, h] = [x1 - x0 + 1, y1 - y0 + 1];
-	const tira = Buffer.alloc(w * 8 * h * 4);
+	// duas fileiras: em cima as 8 direções; embaixo, a silhueta preta de cada uma (a sombra no chão, sem filtro no navegador,
+	// que falha com a transformação da vista isométrica)
+	const tira = Buffer.alloc(w * 8 * h * 2 * 4);
 	quadros.forEach((q, k) => {
-		for (let y = 0; y < h; y++) q.rgba.copy(tira, (y * w * 8 + k * w) * 4, ((y0 + y) * W + x0) * 4, ((y0 + y) * W + x1 + 1) * 4);
+		for (let y = 0; y < h; y++) {
+			q.rgba.copy(tira, (y * w * 8 + k * w) * 4, ((y0 + y) * W + x0) * 4, ((y0 + y) * W + x1 + 1) * 4);
+			for (let x = 0; x < w; x++) {
+				const a = q.rgba[((y0 + y) * W + x0 + x) * 4 + 3];
+				if (a) tira.writeUInt32BE(a, ((h + y) * w * 8 + k * w + x) * 4);
+			}
+		}
 	});
-	// os pés: a última linha da figura de frente, e o meio do que está nas 3 linhas de baixo
-	const sul = quadros[0];
-	const opaco = (x: number, y: number) => sul.rgba[((y0 + y) * W + x0 + x) * 4 + 3] > 0;
-	let [topo, chao] = [h, -1];
-	for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (opaco(x, y)) [topo, chao] = [Math.min(topo, y), Math.max(chao, y)];
-	const xs: number[] = [];
-	for (let y = Math.max(0, chao - 2); y <= chao; y++) for (let x = 0; x < w; x++) if (opaco(x, y)) xs.push(x);
-	const pe = [Math.round(((Math.min(...xs) + Math.max(...xs) + 1) / 2) * 10) / 10, chao + 1];
+	// os pés: no meio do quadro do PixelLab (o eixo do corpo nas 8 direções; espada, cajado, areia ou água no chão não
+	// puxam para o lado) e, na altura, o mais baixo da faixa do meio do corpo (a mediana das 8 direções)
+	const meio = W / 2;
+	const faixa = (q: (typeof quadros)[number], de: number) => {
+		let [topo, chao] = [H, -1];
+		for (let y = 0; y < H; y++)
+			for (let x = Math.floor(meio - W * de); x < Math.ceil(meio + W * de); x++) if (q.rgba[(y * W + x) * 4 + 3] > 0) [topo, chao] = [Math.min(topo, y), Math.max(chao, y)];
+		return { topo, chao };
+	};
+	const chaos = quadros.map((q) => faixa(q, 0.2).chao).sort((a, b) => a - b);
+	const chao = chaos[Math.floor(chaos.length / 2)];
+	// a altura: do chão ao alto da cabeça na faixa estreita do meio (um punho erguido de lado não encolhe a figura)
+	const topo = faixa(quadros[0], 0.12).topo;
+	const pe = [Math.round((meio - x0) * 10) / 10, chao + 1 - y0];
 	const arq = join(RAIZ, 'static', 'mesa', 'miniaturas', `${m.id}.png`);
-	writeFileSync(arq, indexar({ largura: w * 8, altura: h, rgba: tira }) ?? png(w * 8, h, tira));
+	writeFileSync(arq, indexar({ largura: w * 8, altura: h * 2, rgba: tira }) ?? png(w * 8, h * 2, tira));
 	saida.push({ id: m.id, verbete: m.verbete, nome: m.nome, estilo: m.estilo, ...(m.base ? { base: true } : {}), w, h, pe, altura: chao - topo + 1 });
 	console.log(`${m.id}: ${w}×${h} por direção, pés em ${pe.join(', ')}, figura de ${chao - topo + 1} px`);
 }

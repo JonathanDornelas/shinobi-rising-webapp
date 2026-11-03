@@ -23,6 +23,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	import type { Ponto } from '#lib/mesa/visao.ts';
 	import LuzMesa from './LuzMesa.svelte';
 	import { ALTURA_DA_FIGURA, miniaturaPorId, quadroNaTela, rumoDoPasso, sombraDaMiniatura, urlMiniatura, type Miniatura } from '#lib/mesa/miniaturas.ts';
+	import { silhueta } from '#lib/mesa/sombras.svelte.ts';
 
 	let {
 		mesa,
@@ -72,8 +73,8 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	const emPe = (ax: number, ay: number, sobe = 0) => (iso ? emPeIso(ax, ay, sobe, cfgI) : undefined);
 	/** O quanto o sprite do token sobe: a base redonda toca o ponto de apoio, e a elevação soma. */
 	const sobeToken = (t: MesaToken) => 0.4 * t.tamanho + (t.elevacao ?? 0) * 0.25;
-	/** Onde ficam os pés da miniatura: na isométrica, no meio do espaço; de cima, mais para baixo (a figura sobe pelo quadrado). */
-	const pesDaMiniatura = (x: number, y: number, n: number): [number, number] => (iso ? [x + n / 2, y + n / 2] : [x + n / 2, y + 0.78 * n]);
+	/** Onde ficam os pés da miniatura: bem no meio do espaço do token, nas duas vistas (a base no centro do quadrado). */
+	const pesDaMiniatura = (x: number, y: number, n: number): [number, number] => [x + n / 2, y + n / 2];
 	/** O clique pega a figura de pé da miniatura (a cabeça passa do quadrado do token). */
 	function naMiniatura(t: MesaToken, mx: number, my: number): boolean {
 		const mini = miniaturaPorId(t.miniatura);
@@ -407,14 +408,15 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	const visao = $derived(entradaVisao ? calcularVisao(entradaVisao, cacheVisao) : null);
 	/** As luzes acesas que fazem sombra nas miniaturas (com a luz dinâmica): o alcance é a luz plena mais a penumbra. */
 	const luzesDaSombra = $derived(luzLigada ? luzesAcesas(luzesCena, true).map((l) => ({ x: l.x, y: l.y, alcance: l.plena + l.penumbra })) : []);
-	/** A sombra da miniatura na tela: foge da luz acesa mais perto (menos a que ela mesma carrega), senão cai para trás. */
-	function sombraNaTela(t: MesaToken, pe: [number, number], cx: number, cy: number) {
+	/**
+	 * A sombra da miniatura no chão da grade: foge da luz acesa mais perto (menos a que ela mesma carrega), senão cai para trás.
+	 * Na isométrica, o chão encurta a silhueta: ela fica quase o dobro mais comprida e, sem luz, cai para a frente e à direita
+	 * (o leste da grade; para trás, a própria figura a cobriria na tela).
+	 */
+	function sombraNoChao(t: MesaToken, pe: [number, number], cx: number, cy: number) {
 		const s = sombraDaMiniatura(pe, luzesDaSombra.filter((l) => Math.hypot(l.x - cx, l.y - cy) > 0.5 * t.tamanho));
-		if (!s.luz) return s;
-		const [ax, ay] = paraTela(pe[0], pe[1]);
-		const [bx, by] = paraTela(pe[0] + s.dx, pe[1] + s.dy);
-		const d = Math.hypot(bx - ax, by - ay) || 1;
-		return { ...s, dx: (bx - ax) / d, dy: (by - ay) / d };
+		if (!iso) return s;
+		return s.luz ? { ...s, k: Math.min(1.6, s.k * 1.7) } : { dx: 0.954, dy: 0.3, k: 1.1, luz: false };
 	}
 	/** Memória do explorado (padrão: ligada). Sem ela, o grupo só vê o que vê agora: o resto é breu, e nada se grava. */
 	const memoria = $derived(cena?.luz_memoria !== false);
@@ -1401,7 +1403,8 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 	{@const estados = [...new Set(semKkg(t.condicoes))]}
 	{@const lado = Math.min(0.5, 0.3 + 0.03 * n)}
 	{@const yb = pe[1] + (iso ? 0.3 : 0.24) * n}
-	{@const sb = mesa.miniaturasCena.sombra ? sombraNaTela(t, pe, cx, cy) : null}
+	{@const sb = mesa.miniaturasCena.sombra ? sombraNoChao(t, pe, cx, cy) : null}
+	{@const sil = sb ? silhueta(mini, q) : null}
 	<g opacity={t.visivel ? 1 : 0.5}>
 		{#if iso}
 			{#if mesa.daVez.has(t.id)}<circle {cx} {cy} r={0.5 * n + 0.08} fill="none" style="stroke: var(--acc)" stroke-width={0.09} />{/if}
@@ -1412,19 +1415,16 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			{#if ui.sel === t.id}<ellipse cx={pe[0]} cy={pe[1]} rx={0.5 * n + 0.22} ry={0.25 * n + 0.16} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
 			<ellipse cx={pe[0]} cy={pe[1]} rx={(mini.base ? 0.46 : 0.4) * n} ry={(mini.base ? 0.23 : 0.2) * n} style="fill: var(--b0); stroke: {caido ? 'var(--field)' : c}" fill-opacity={mini.base ? 0 : 0.5} stroke-width={0.07} />
 		{/if}
-		{#if sb}
-			<!-- a sombra: a própria figura, escura, deitada no chão a partir dos pés (não sobe com a elevação) -->
-			<g transform={emPe(pe[0], pe[1], 0)} pointer-events="none">
-				<g transform="matrix({-sb.dy} {sb.dx} {-sb.k * sb.dx} {-sb.k * sb.dy} {pe[0]} {pe[1]})" opacity="0.3">
-					<svg x={-mini.pe[0] * k} y={-mini.pe[1] * k} width={mini.w * k} height={mini.h * k} viewBox="{q * mini.w} 0 {mini.w} {mini.h}" preserveAspectRatio="none" overflow="hidden">
-						<image href={urlMiniatura(mini)} width={mini.w * 8} height={mini.h} style="image-rendering: pixelated; filter: brightness(0)" />
-					</svg>
-				</g>
+		{#if sil && sb}
+			<!-- a sombra: a silhueta da figura deitada no chão da grade a partir dos pés; na isométrica, a própria projeção do chão
+			     a achata no piso (e ela não sobe com a elevação). Imagem inteira, sem recorte (ver sombras.svelte.ts). -->
+			<g transform="matrix({-sb.dy} {sb.dx} {-sb.k * sb.dx} {-sb.k * sb.dy} {pe[0]} {pe[1]})" opacity="0.45" pointer-events="none">
+				<image href={sil} x={-mini.pe[0] * k} y={-mini.pe[1] * k} width={mini.w * k} height={mini.h * k} preserveAspectRatio="none" style="image-rendering: pixelated" />
 			</g>
 		{/if}
 		<g transform={emPe(pe[0], pe[1], (t.elevacao ?? 0) * 0.25)}>
 			<svg x={pe[0] - mini.pe[0] * k} y={pe[1] - mini.pe[1] * k} width={mini.w * k} height={mini.h * k} viewBox="{q * mini.w} 0 {mini.w} {mini.h}" preserveAspectRatio="none" overflow="hidden">
-				<image href={urlMiniatura(mini)} width={mini.w * 8} height={mini.h} style="image-rendering: pixelated; filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" />
+				<image href={urlMiniatura(mini)} width={mini.w * 8} height={mini.h * 2} style="image-rendering: pixelated; filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" />
 			</svg>
 			{#if t.reagiu && mesa.iniciativa.ativa}
 				<!-- Reação gasta nesta rodada: o R riscado ao lado da cabeça -->

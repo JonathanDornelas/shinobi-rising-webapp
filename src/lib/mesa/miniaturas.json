@@ -8,9 +8,9 @@
 		"h": 65,
 		"pe": [
 			20,
-			62
+			64
 		],
-		"altura": 61
+		"altura": 63
 	},
 	{
 		"id": "cla-aburame--chunin",
@@ -34,9 +34,9 @@
 		"h": 67,
 		"pe": [
 			38,
-			63
+			65
 		],
-		"altura": 61
+		"altura": 63
 	},
 	{
 		"id": "cla-aburame--nivel-anbu",
@@ -47,9 +47,9 @@
 		"h": 67,
 		"pe": [
 			29,
-			63
+			66
 		],
-		"altura": 62
+		"altura": 65
 	},
 	{
 		"id": "cla-aburame--lider-do-cla",
@@ -60,9 +60,9 @@
 		"h": 68,
 		"pe": [
 			23,
-			65
+			66
 		],
-		"altura": 64
+		"altura": 65
 	},
 	{
 		"id": "cla-akimichi--genin",
@@ -73,9 +73,9 @@
 		"h": 70,
 		"pe": [
 			24,
-			67
+			69
 		],
-		"altura": 65
+		"altura": 67
 	},
 	{
 		"id": "cla-akimichi--chunin",
@@ -85,10 +85,10 @@
 		"w": 49,
 		"h": 75,
 		"pe": [
-			24.5,
-			72
+			24,
+			74
 		],
-		"altura": 69
+		"altura": 68
 	},
 	{
 		"id": "cla-akimichi--jounin",
@@ -99,9 +99,9 @@
 		"h": 73,
 		"pe": [
 			39,
-			70
+			68
 		],
-		"altura": 69
+		"altura": 67
 	},
 	{
 		"id": "cla-akimichi--nivel-anbu",
@@ -112,9 +112,9 @@
 		"h": 75,
 		"pe": [
 			26,
-			71
+			73
 		],
-		"altura": 69
+		"altura": 71
 	},
 	{
 		"id": "cla-akimichi--lider-do-cla",
@@ -125,9 +125,9 @@
 		"h": 78,
 		"pe": [
 			36,
-			76
+			77
 		],
-		"altura": 74
+		"altura": 75
 	},
 	{
 		"id": "cla-hozuki--genin",
@@ -137,10 +137,10 @@
 		"w": 49,
 		"h": 68,
 		"pe": [
-			20.5,
-			63
+			23,
+			64
 		],
-		"altura": 62
+		"altura": 63
 	},
 	{
 		"id": "cla-hozuki--chunin",
@@ -150,7 +150,7 @@
 		"w": 44,
 		"h": 65,
 		"pe": [
-			26,
+			20,
 			64
 		],
 		"altura": 63
@@ -163,10 +163,10 @@
 		"w": 72,
 		"h": 78,
 		"pe": [
-			36.5,
-			76
+			36,
+			75
 		],
-		"altura": 75
+		"altura": 71
 	},
 	{
 		"id": "cla-hozuki--nivel-anbu",
@@ -176,10 +176,10 @@
 		"w": 52,
 		"h": 66,
 		"pe": [
-			27,
-			64
+			26,
+			65
 		],
-		"altura": 61
+		"altura": 62
 	},
 	{
 		"id": "cla-hozuki--lider-do-cla",
@@ -189,10 +189,10 @@
 		"w": 49,
 		"h": 73,
 		"pe": [
-			24.5,
-			72
+			24,
+			68
 		],
-		"altura": 71
+		"altura": 67
 	},
 	{
 		"id": "cla-hyuuga--genin",
@@ -203,9 +203,9 @@
 		"h": 70,
 		"pe": [
 			18,
-			66
+			68
 		],
-		"altura": 65
+		"altura": 67
 	},
 	{
 		"id": "cla-hyuuga--chunin",
@@ -215,10 +215,10 @@
 		"w": 40,
 		"h": 64,
 		"pe": [
-			20.5,
-			60
+			20,
+			63
 		],
-		"altura": 58
+		"altura": 61
 	},
 	{
 		"id": "cla-hyuuga--jounin",
@@ -228,10 +228,10 @@
 		"w": 50,
 		"h": 64,
 		"pe": [
-			25.5,
-			60
+			25,
+			63
 		],
-		"altura": 59
+		"altura": 62
 	},
 	{
 		"id": "cla-hyuuga--nivel-anbu",
@@ -241,10 +241,10 @@
 		"w": 52,
 		"h": 66,
 		"pe": [
-			26.5,
-			62
+			26,
+			65
 		],
-		"altura": 59
+		"altura": 62
 	},
 	{
 		"id": "cla-hyuuga--lider-do-cla",
@@ -255,9 +255,9 @@
 		"h": 65,
 		"pe": [
 			22,
-			62
+			64
 		],
-		"altura": 61
+		"altura": 63
 	},
 	{
 		"id": "cla-inuzuka--genin",
@@ -267,10 +267,10 @@
 		"w": 44,
 		"h": 73,
 		"pe": [
-			22.5,
-			71
+			22,
+			70
 		],
-		"altura": 70
+		"altura": 69
 	},
 	{
 		"id": "cla-inuzuka--chunin",
@@ -281,9 +281,9 @@
 		"h": 70,
 		"pe": [
 			23,
-			69
+			67
 		],
-		"altura": 67
+		"altura": 65
 	},
 	{
 		"id": "cla-inuzuka--jounin",
@@ -293,10 +293,10 @@
 		"w": 58,
 		"h": 65,
 		"pe": [
-			17.5,
-			62
+			29,
+			63
 		],
-		"altura": 59
+		"altura": 60
 	},
 	{
 		"id": "cla-inuzuka--nivel-anbu",
@@ -306,10 +306,10 @@
 		"w": 62,
 		"h": 65,
 		"pe": [
-			31.5,
-			61
+			31,
+			64
 		],
-		"altura": 60
+		"altura": 63
 	},
 	{
 		"id": "cla-inuzuka--lider-do-cla",
@@ -320,9 +320,9 @@
 		"h": 72,
 		"pe": [
 			31,
-			68
+			70
 		],
-		"altura": 66
+		"altura": 68
 	},
 	{
 		"id": "cla-kaguya--genin",
@@ -333,9 +333,9 @@
 		"h": 64,
 		"pe": [
 			21,
-			60
+			63
 		],
-		"altura": 59
+		"altura": 62
 	},
 	{
 		"id": "cla-kaguya--chunin",
@@ -345,10 +345,10 @@
 		"w": 66,
 		"h": 72,
 		"pe": [
-			34,
-			71
+			33,
+			69
 		],
-		"altura": 70
+		"altura": 68
 	},
 	{
 		"id": "cla-kaguya--jounin",
@@ -358,10 +358,10 @@
 		"w": 59,
 		"h": 66,
 		"pe": [
-			20,
-			65
+			29,
+			63
 		],
-		"altura": 61
+		"altura": 59
 	},
 	{
 		"id": "cla-kaguya--nivel-anbu",
@@ -371,10 +371,10 @@
 		"w": 60,
 		"h": 64,
 		"pe": [
-			30.5,
-			60
+			30,
+			63
 		],
-		"altura": 59
+		"altura": 62
 	},
 	{
 		"id": "cla-kaguya--lider-do-cla",
@@ -384,10 +384,10 @@
 		"w": 54,
 		"h": 69,
 		"pe": [
-			25,
-			66
+			27,
+			68
 		],
-		"altura": 65
+		"altura": 67
 	},
 	{
 		"id": "cla-nara--genin",
@@ -410,10 +410,10 @@
 		"w": 45,
 		"h": 76,
 		"pe": [
-			34.5,
-			75
+			22,
+			74
 		],
-		"altura": 74
+		"altura": 73
 	},
 	{
 		"id": "cla-nara--jounin",
@@ -423,10 +423,10 @@
 		"w": 59,
 		"h": 69,
 		"pe": [
-			40.5,
-			65
+			40,
+			68
 		],
-		"altura": 64
+		"altura": 67
 	},
 	{
 		"id": "cla-nara--nivel-anbu",
@@ -437,9 +437,9 @@
 		"h": 71,
 		"pe": [
 			23,
-			67
+			70
 		],
-		"altura": 66
+		"altura": 69
 	},
 	{
 		"id": "cla-nara--lider-do-cla",
@@ -462,7 +462,7 @@
 		"w": 61,
 		"h": 68,
 		"pe": [
-			17.5,
+			30,
 			66
 		],
 		"altura": 64
@@ -475,10 +475,10 @@
 		"w": 66,
 		"h": 67,
 		"pe": [
-			33,
-			62
+			32,
+			61
 		],
-		"altura": 59
+		"altura": 57
 	},
 	{
 		"id": "cla-sabaku--jounin",
@@ -489,9 +489,9 @@
 		"h": 76,
 		"pe": [
 			31,
-			75
+			73
 		],
-		"altura": 74
+		"altura": 72
 	},
 	{
 		"id": "cla-sabaku--nivel-anbu",
@@ -501,10 +501,10 @@
 		"w": 63,
 		"h": 64,
 		"pe": [
-			31.5,
-			60
+			31,
+			63
 		],
-		"altura": 58
+		"altura": 61
 	},
 	{
 		"id": "cla-sabaku--lider-do-cla",
@@ -515,9 +515,9 @@
 		"h": 68,
 		"pe": [
 			37,
-			65
+			67
 		],
-		"altura": 64
+		"altura": 65
 	},
 	{
 		"id": "cla-senju--genin",
@@ -540,10 +540,10 @@
 		"w": 37,
 		"h": 64,
 		"pe": [
-			18.5,
-			60
+			18,
+			63
 		],
-		"altura": 59
+		"altura": 62
 	},
 	{
 		"id": "cla-senju--jounin",
@@ -553,7 +553,7 @@
 		"w": 63,
 		"h": 71,
 		"pe": [
-			33,
+			31,
 			69
 		],
 		"altura": 68
@@ -566,10 +566,10 @@
 		"w": 59,
 		"h": 64,
 		"pe": [
-			24.5,
-			60
+			24,
+			63
 		],
-		"altura": 58
+		"altura": 61
 	},
 	{
 		"id": "cla-senju--lider-do-cla",
@@ -580,9 +580,9 @@
 		"h": 75,
 		"pe": [
 			20,
-			71
+			73
 		],
-		"altura": 70
+		"altura": 72
 	},
 	{
 		"id": "cla-uchiha--genin",
@@ -592,10 +592,10 @@
 		"w": 56,
 		"h": 64,
 		"pe": [
-			28.5,
-			60
+			28,
+			63
 		],
-		"altura": 58
+		"altura": 61
 	},
 	{
 		"id": "uchiha-chunin-fiel",
@@ -605,10 +605,10 @@
 		"w": 52,
 		"h": 65,
 		"pe": [
-			26.5,
-			61
+			26,
+			64
 		],
-		"altura": 58
+		"altura": 61
 	},
 	{
 		"id": "cla-uchiha--jounin",
@@ -618,10 +618,10 @@
 		"w": 37,
 		"h": 65,
 		"pe": [
-			18.5,
-			61
+			18,
+			64
 		],
-		"altura": 58
+		"altura": 61
 	},
 	{
 		"id": "cla-uchiha--nivel-anbu",
@@ -631,10 +631,10 @@
 		"w": 40,
 		"h": 65,
 		"pe": [
-			20.5,
-			61
+			20,
+			64
 		],
-		"altura": 59
+		"altura": 62
 	},
 	{
 		"id": "cla-uchiha--lider-do-cla",
@@ -657,10 +657,10 @@
 		"w": 58,
 		"h": 70,
 		"pe": [
-			28.5,
-			66
+			28,
+			68
 		],
-		"altura": 65
+		"altura": 67
 	},
 	{
 		"id": "cla-uzumaki--chunin",
@@ -670,10 +670,10 @@
 		"w": 70,
 		"h": 69,
 		"pe": [
-			29.5,
-			67
+			35,
+			66
 		],
-		"altura": 65
+		"altura": 64
 	},
 	{
 		"id": "cla-uzumaki--jounin",
@@ -683,10 +683,10 @@
 		"w": 65,
 		"h": 68,
 		"pe": [
-			33.5,
-			65
+			33,
+			67
 		],
-		"altura": 64
+		"altura": 66
 	},
 	{
 		"id": "cla-uzumaki--nivel-anbu",
@@ -697,9 +697,9 @@
 		"h": 72,
 		"pe": [
 			27,
-			71
+			70
 		],
-		"altura": 67
+		"altura": 66
 	},
 	{
 		"id": "cla-uzumaki--lider-do-cla",
@@ -709,10 +709,10 @@
 		"w": 56,
 		"h": 65,
 		"pe": [
-			28.5,
-			63
+			28,
+			64
 		],
-		"altura": 61
+		"altura": 62
 	},
 	{
 		"id": "cla-yamanaka--genin",
@@ -722,10 +722,10 @@
 		"w": 47,
 		"h": 65,
 		"pe": [
-			23.5,
-			62
+			23,
+			64
 		],
-		"altura": 61
+		"altura": 63
 	},
 	{
 		"id": "cla-yamanaka--chunin",
@@ -735,10 +735,10 @@
 		"w": 41,
 		"h": 66,
 		"pe": [
-			20.5,
-			62
+			20,
+			65
 		],
-		"altura": 61
+		"altura": 64
 	},
 	{
 		"id": "cla-yamanaka--jounin",
@@ -748,7 +748,7 @@
 		"w": 61,
 		"h": 73,
 		"pe": [
-			31,
+			30,
 			71
 		],
 		"altura": 70
@@ -761,10 +761,10 @@
 		"w": 50,
 		"h": 64,
 		"pe": [
-			36,
-			61
+			25,
+			63
 		],
-		"altura": 59
+		"altura": 61
 	},
 	{
 		"id": "cla-yamanaka--lider-do-cla",
@@ -775,9 +775,9 @@
 		"h": 66,
 		"pe": [
 			20,
-			63
+			65
 		],
-		"altura": 61
+		"altura": 63
 	},
 	{
 		"id": "cla-yuki--genin",
@@ -788,9 +788,9 @@
 		"h": 66,
 		"pe": [
 			20,
-			65
+			63
 		],
-		"altura": 63
+		"altura": 61
 	},
 	{
 		"id": "cla-yuki--chunin",
@@ -800,10 +800,10 @@
 		"w": 62,
 		"h": 69,
 		"pe": [
-			32,
+			30,
 			65
 		],
-		"altura": 63
+		"altura": 62
 	},
 	{
 		"id": "cla-yuki--jounin",
@@ -813,10 +813,10 @@
 		"w": 74,
 		"h": 64,
 		"pe": [
-			38.5,
-			60
+			38,
+			63
 		],
-		"altura": 58
+		"altura": 61
 	},
 	{
 		"id": "cla-yuki--nivel-anbu",
@@ -826,10 +826,10 @@
 		"w": 56,
 		"h": 64,
 		"pe": [
-			27.5,
-			60
+			27,
+			63
 		],
-		"altura": 58
+		"altura": 61
 	},
 	{
 		"id": "cla-yuki--lider-do-cla",
@@ -839,9 +839,9 @@
 		"w": 72,
 		"h": 71,
 		"pe": [
-			32.5,
-			70
+			35,
+			67
 		],
-		"altura": 69
+		"altura": 66
 	}
 ]

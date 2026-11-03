@@ -13,7 +13,7 @@
 	style:width="{mini.w * k}px"
 	style:height="{mini.h * k}px"
 	style:background-image="url({urlMiniatura(mini)})"
-	style:background-size="{mini.w * 8 * k}px {mini.h * k}px"
+	style:background-size="{mini.w * 8 * k}px {mini.h * 2 * k}px"
 	style:background-position="{-quadro * mini.w * k}px 0"
 	style:background-repeat="no-repeat"
 	style:image-rendering="pixelated"

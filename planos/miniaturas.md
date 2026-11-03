@@ -22,8 +22,12 @@ entre todas as que já existem.
     em cima da cabeça;
   - a direção mostrada segue a vista (na isométrica, o sul da grade aponta para baixo à esquerda); de cima, quem está mais
     embaixo na tela fica na frente;
-  - a sombra (ligada por cena) é a própria figura, escura, deitada no chão a partir dos pés: com a luz dinâmica, foge da
-    luz acesa mais perto e cresce com a distância; sem luz, cai para trás e à direita;
+  - os pés ficam bem no meio do espaço do token, nas duas vistas (o eixo do corpo é o centro do quadro do PixelLab);
+  - a sombra (ligada por cena) é a silhueta da figura deitada no chão da grade, a partir dos pés; na isométrica, a
+    projeção do chão a achata no piso. Com a luz dinâmica, ela foge da luz acesa mais perto e cresce com a distância; sem
+    luz, cai para trás e à direita (de cima) ou para a frente e à direita (na isométrica, onde para trás a figura a
+    cobriria). A silhueta é a segunda fileira da tira, copiada para uma imagem própria (`sombras.svelte.ts`): recortar o
+    quadro na hora de desenhar (`<svg>` aninhado, padrão ou clip-path) some na isométrica, e o filtro de cor também;
   - Ctrl + seta vira a peça selecionada para aquele lado, sem andar.
 - **Na Mesa:**
   - no painel do token, "Peça no quadro" troca entre Token e Miniatura (o Mestre em qualquer token; o jogador no do
@@ -44,8 +48,10 @@ O lote usa `pixellab/scripts/miniaturas.mjs` (`--clas` só os clãs; `--ver` mos
    como `concept_image_url` e o Chunin Uchiha escolhido como `style_character_id` (`--estilo`), que dá as proporções:
    perto das reais, nada de chibi (só o texto pedindo "7 cabeças" não bastava). Custa 10 gerações.
 3. As 8 direções vão para `pixellab/miniaturas/<id>/`, e a miniatura entra em `pixellab/miniaturas/catalogo.json`.
-4. `npx tsx scripts/mesa/miniaturas.ts` monta as tiras em `static/mesa/miniaturas/` e o catálogo do app
-   (`src/lib/mesa/miniaturas.json`), na ordem do bestiário.
+4. `npx tsx scripts/mesa/miniaturas.ts` monta as tiras em `static/mesa/miniaturas/` (duas fileiras: as 8 direções e, embaixo,
+   as silhuetas) e o catálogo do app (`src/lib/mesa/miniaturas.json`), na ordem do bestiário. Os pés ficam no centro do
+   quadro do PixelLab; a altura da figura e o chão são medidos na faixa do meio do corpo (espada, areia ou água no chão
+   não puxam para o lado).
 
 ## Direções de arte do teste (Uchiha Chunin)
 
