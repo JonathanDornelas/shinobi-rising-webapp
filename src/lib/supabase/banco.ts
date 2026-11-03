@@ -459,6 +459,8 @@ export type MesaCena = {
 	luz_ambiente?: 'claro' | 'penumbra' | 'escuro';
 	/** A memória do explorado: ligada (o padrão), o que o grupo já viu fica esmaecido; desligada, fora da vista é breu. */
 	luz_memoria?: boolean;
+	/** As miniaturas nesta cena: { escala, sombra } (src/lib/mesa/miniaturas.ts). Ausente sem a migração. */
+	miniaturas?: unknown;
 	/** As paredes barram o passo dos jogadores (passam só por porta aberta e janela); o Mestre passa sempre. */
 	paredes_bloqueiam?: boolean;
 	/** [[x1, y1, x2, y2, tipo], ...] em metros: 0 parede, 1 porta fechada, 2 porta aberta, 3 porta trancada, 4 janela. */

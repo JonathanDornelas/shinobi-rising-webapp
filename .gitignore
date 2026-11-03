@@ -39,3 +39,6 @@ backup-imagens/
 
 # cache das consultas à API da wiki de Naruto (só nomes de arquivo)
 pixellab/referencias/api-wiki.json
+
+# testes de receita das miniaturas (não vão para o site)
+pixellab/miniaturas/_teste/

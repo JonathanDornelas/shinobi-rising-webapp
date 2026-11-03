@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MINIATURAS, PRATELEIRAS, escalaDe, lerAjustes, miniaturaPorId, miniaturasDoVerbete, quadroNaTela, rumoDoPasso, vetorDoRumo } from './miniaturas.ts';
+import { MINIATURAS, PRATELEIRAS, escalaDe, lerAjustes, lerCenaMiniaturas, sombraDaMiniatura, miniaturaPorId, miniaturasDoVerbete, quadroNaTela, rumoDoPasso, vetorDoRumo } from './miniaturas.ts';
 
 describe('miniaturas', () => {
 	it('o passo dá o rumo: sul de frente, leste, norte, oeste e as diagonais', () => {
@@ -27,6 +27,17 @@ describe('miniaturas', () => {
 		expect(lerAjustes({ escala: 9, ajustes: { 'cla-uchiha--genin': 0.1, 'x y': 2, igual: 1 } })).toEqual({ escala: 2, ajustes: { 'cla-uchiha--genin': 0.5 } });
 		expect(escalaDe({ escala: 1.2, ajustes: { a: 1.5 } }, 'a')).toBe(1.8);
 		expect(escalaDe({ escala: 1.2, ajustes: {} }, 'b')).toBe(1.2);
+	});
+
+	it('na cena: o tamanho de todas e a sombra (ligada, se não disser); a sombra foge da luz mais perto', () => {
+		expect(lerCenaMiniaturas(undefined)).toEqual({ escala: 1, sombra: true });
+		expect(lerCenaMiniaturas({ escala: 0.2, sombra: false })).toEqual({ escala: 0.5, sombra: false });
+		expect(sombraDaMiniatura([5, 5], [])).toEqual({ dx: 0.6, dy: -0.8, k: 0.5, luz: false });
+		const s = sombraDaMiniatura([5, 5], [{ x: 2, y: 5, alcance: 6 }, { x: 5, y: 9, alcance: 6 }]);
+		expect([s.dx, s.dy]).toEqual([1, 0]);
+		expect(s.k).toBeCloseTo(0.65);
+		// longe demais, ou a própria tocha (no mesmo lugar), não contam
+		expect(sombraDaMiniatura([5, 5], [{ x: 20, y: 5, alcance: 6 }, { x: 5, y: 5, alcance: 6 }]).k).toBe(0.5);
 	});
 
 	it('as prateleiras juntam as miniaturas por verbete, sem perder nenhuma', () => {

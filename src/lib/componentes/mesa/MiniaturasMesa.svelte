@@ -4,7 +4,7 @@
 	// token, escolhe a peça do personagem ou do NPC dele (fica salva nele); o Mestre ainda ajusta o tamanho de todas as
 	// miniaturas da campanha e o de cada uma.
 	import type { Mesa } from '#lib/mesa/mesa.svelte.ts';
-	import { ALTURA_DA_FIGURA, LIMITE_ESCALA, PRATELEIRAS, RUMOS, escalaDe, estagioDe, miniaturaPorId, type AjusteMiniaturas, type Miniatura } from '#lib/mesa/miniaturas.ts';
+	import { ALTURA_DA_FIGURA, LIMITE_ESCALA, PRATELEIRAS, RUMOS, estagioDe, miniaturaPorId, type AjusteMiniaturas } from '#lib/mesa/miniaturas.ts';
 	import type { MesaToken } from '#lib/supabase/banco.ts';
 	import FiguraMiniatura from './FiguraMiniatura.svelte';
 
@@ -63,15 +63,24 @@
 	const girar = (d: number) => (quadro = (quadro + d + 8) % 8);
 
 	// ------------------------------------------------------------------ o tamanho (só o Mestre): rascunho ao arrastar, grava ao soltar
+	// o de todas fica na cena (cada mapa tem a sua escala); o de cada miniatura, na campanha
 	let rascunho = $state<AjusteMiniaturas | null>(null);
+	let rascunhoCena = $state<number | null>(null);
 	const ajuste = $derived(rascunho ?? mesa.miniaturasAjuste);
-	const escalaAqui = $derived(ajuste && mini ? escalaDe(ajuste, mini.id) : 1);
+	const temCena = $derived(mesa.cena?.miniaturas !== undefined);
+	const escalaCena = $derived(rascunhoCena ?? mesa.miniaturasCena.escala);
+	const escalaAqui = $derived(mini ? Math.round(escalaCena * (ajuste?.ajustes[mini.id] ?? 1) * 1000) / 1000 : 1);
 	const pct = (v: number) => `${Math.round(v * 100)}%`;
-	function mexer(qual: 'todas' | 'esta', v: number, gravar: boolean) {
+	function mexer(qual: 'cena' | 'esta', v: number, gravar: boolean) {
+		if (qual === 'cena') {
+			rascunhoCena = v;
+			if (gravar) void mesa.definirMiniaturasCena({ escala: v }).then(() => (rascunhoCena = null));
+			return;
+		}
 		const a = ajuste;
 		if (!a || !mini) return;
-		const novo: AjusteMiniaturas = qual === 'todas' ? { ...a, escala: v } : { ...a, ajustes: { ...a.ajustes, [mini.id]: v } };
-		if (qual === 'esta' && v === 1) delete novo.ajustes[mini.id];
+		const novo: AjusteMiniaturas = { ...a, ajustes: { ...a.ajustes, [mini.id]: v } };
+		if (v === 1) delete novo.ajustes[mini.id];
 		rascunho = novo;
 		if (gravar) void mesa.definirAjusteMiniaturas(novo).then(() => (rascunho = null));
 	}
@@ -154,11 +163,11 @@
 				<p class="border-t-2 border-b3 pt-3 text-xs leading-4 text-mut">Para escolher a peça de um personagem ou NPC, abra o painel do token dele e toque em Caixa de miniaturas.</p>
 			{/if}
 
-			{#if mesa.mestre && !mesa.somenteLeitura && ajuste && mini}
+			{#if mesa.mestre && !mesa.somenteLeitura && (ajuste || temCena) && mini}
 				<!-- o tamanho: o de todas as miniaturas da campanha e o desta; o pedestal mostra na hora, contra a régua -->
 				<fieldset class="flex flex-col gap-2 border-t-2 border-b3 pt-3">
 					<legend class="sr-only">Tamanho no quadro</legend>
-					{#each [['todas', 'Todas as miniaturas', ajuste.escala], ['esta', `Só ${estagioDe(mini) === mini.nome ? 'esta' : `${mini.nome.split(',')[0]}, ${estagioDe(mini)}`}`, ajuste.ajustes[mini.id] ?? 1]] as const as [qual, rotulo, v] (qual)}
+					{#each [...(temCena ? [['cena', 'Todas nesta cena', escalaCena] as const] : []), ...(ajuste ? [['esta', `Só ${estagioDe(mini) === mini.nome ? 'esta' : `${mini.nome.split(',')[0]}, ${estagioDe(mini)}`}`, ajuste.ajustes[mini.id] ?? 1] as const] : [])] as [qual, rotulo, v] (qual)}
 						<div class="flex flex-col gap-0.5">
 							<div class="flex items-baseline gap-2">
 								<label for="tam-{qual}" class="flex-1 truncate text-sm font-semibold">{rotulo}</label>
@@ -178,7 +187,14 @@
 							/>
 						</div>
 					{/each}
-					<span class="text-xs leading-4 text-mut">Vale para a campanha toda; quem está na mesa vê na hora.</span>
+					<span class="text-xs leading-4 text-mut">O tamanho de todas vale para esta cena; o de cada miniatura, para a campanha toda. Quem está na mesa vê na hora.</span>
+					{#if temCena}
+						{@const sombra = mesa.miniaturasCena.sombra}
+						<button type="button" role="switch" aria-checked={sombra} class="flex min-h-10 items-center gap-2.5 border-2 px-2.5 text-left text-sm font-semibold {sombra ? 'border-[var(--vermelhao)] bg-grena text-papel' : 'border-b3'}" onclick={() => mesa.definirMiniaturasCena({ sombra: !sombra })}>
+							<span class="font-pixel text-sm font-bold">{sombra ? '☒' : '☐'}</span>Sombra no chão
+						</button>
+						<span class="text-xs leading-4 text-mut">Com a luz dinâmica, a sombra foge da luz acesa mais perto e cresce com a distância.</span>
+					{/if}
 				</fieldset>
 			{/if}
 		</div>

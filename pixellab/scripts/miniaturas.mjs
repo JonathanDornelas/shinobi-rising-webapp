@@ -8,13 +8,18 @@
 //
 //   PIXELLAB_TOKEN=... PIXELLAB_CONTAS=contas.json node pixellab/scripts/miniaturas.mjs [--max N] [--clas] [--so slug#estagio ...] [--ver]
 //   contas.json: [{ "token": "...", "paralelo": 3 }]. --clas: só os clãs. --ver: só lista a fila e o saldo, sem gerar.
+//   --estilo <id do personagem>: a referência de estilo e de proporções (o Chunin Uchiha escolhido, importado na conta).
+//   --refazer: refaz também as que já existem (as cabeçudas, antes da referência). --teste: não mexe no catálogo.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const RAIZ = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SITE = 'https://shinobi-rising-webapp.vercel.app';
-const CUSTO = 10;
+const CUSTO = Number(process.argv.includes('--tamanho') ? (Number(process.argv[process.argv.indexOf('--tamanho') + 1]) > 85 ? 15 : 10) : 10);
+// o corpo: como o Chunin Uchiha escolhido (a referência de estilo), proporções perto das reais, um pouco estilizadas;
+// nada de chibi (as primeiras saíram cabeçudas)
+const PROPORCAO = 'Body proportions like the style reference: close to real human proportions, slightly stylized anime, a normal-sized head; NOT chibi, NOT super-deformed, no big head';
 const RUMOS = ['south', 'south-east', 'east', 'north-east', 'north', 'north-west', 'west', 'south-west'];
 
 const args = process.argv.slice(2);
@@ -23,6 +28,12 @@ const max = Number(opc('--max') ?? Infinity);
 const so = args.flatMap((a, i) => (args[i - 1] === '--so' ? [a] : []));
 const soVer = args.includes('--ver');
 const soClas = args.includes('--clas');
+const TAMANHO = Number(opc('--tamanho') ?? 80);
+/** --estilo <id>: um personagem da conta (8 direções) que guia o estilo e as proporções de todas (o Chunin Uchiha escolhido). */
+const ESTILO = opc('--estilo');
+/** --teste: grava em pixellab/miniaturas/_teste/<id>-<tamanho>/ e não mexe no catálogo (para comparar receitas). */
+const soTeste = args.includes('--teste');
+const refazer = args.includes('--refazer');
 
 const contas = [
 	...(process.env.PIXELLAB_TOKEN ? [{ nome: 'principal', token: process.env.PIXELLAB_TOKEN }] : []),
@@ -68,15 +79,16 @@ function descricao(pedido, id) {
 	const cabeca = corte ? corte[1] : p.split(',').slice(0, 4).join(',');
 	const cena = corte ? corte[2].slice(0, 80).toLowerCase() : '';
 	const genero = /\b(woman|girl|kunoichi|she|her|lady|mother)\b/.test(cena) ? 'female' : /\b(man|boy|he|his|father|monk)\b/.test(cena) ? 'male' : '';
-	return `${quem ?? `${cabeca}${genero ? `, ${genero}` : ''}`}. Pose: ${pose}. Full body, facing the viewer. Keep the look of the concept art (face, hair, outfit and colors), only the pose changes.`;
+	const sexo = genero === 'female' ? ', she is a girl or woman with a clearly feminine face and figure' : genero === 'male' ? ', he is a boy or man' : '';
+	return `${quem ?? `${cabeca}${sexo}`}. ${PROPORCAO}. Pose: ${pose}. Full body, facing the viewer. Keep the look of the concept art (face, hair, outfit and colors), only the pose changes.`;
 }
 
 const ordem = [...bestiario].sort((a, b) => Number(!a.slug.startsWith('cla-')) - Number(!b.slug.startsWith('cla-')));
 const fila = ordem.flatMap((c) =>
 	c.estagios
 		.map((e) => ({ c, e, verbete: `${c.slug}#${e.slug}`, id: `${c.slug}--${e.slug}`.slice(0, 60), pedido: pedidos.find((p) => p.slug === `${c.slug}--${e.slug}`) ?? pedidos.find((p) => p.slug === c.slug) }))
-		.filter((x) => !feitos.has(x.verbete) && x.pedido && (!so.length || so.includes(x.verbete)) && (!soClas || x.c.slug.startsWith('cla-')))
-		.filter((x) => !fs.existsSync(path.join(RAIZ, 'pixellab', 'miniaturas', x.id, 'south-west.png')))
+		.filter((x) => (soTeste || (refazer ? x.verbete !== 'cla-uchiha#chunin' : !feitos.has(x.verbete))) && x.pedido && (!so.length || so.includes(x.verbete)) && (!soClas || x.c.slug.startsWith('cla-')))
+		.filter((x) => soTeste || refazer || !fs.existsSync(path.join(RAIZ, 'pixellab', 'miniaturas', x.id, 'south-west.png')))
 );
 const semPose = fila.filter((x) => !poses[x.id]);
 if (semPose.length) console.log(`sem pose escrita (ficam fora): ${semPose.length}${semPose.length < 12 ? ` (${semPose.map((x) => x.id).join(', ')})` : ''}`);
@@ -88,7 +100,7 @@ async function fazer(conta, x) {
 	const arte = x.e.arte?.arquivo?.split('?')[0];
 	if (!arte) throw new Error('estágio sem arte');
 	const nome = `${x.c.nome.split(',')[0]}, ${x.e.nome}`;
-	const t = await chamar(conta.token, 'create_character', { mode: 'pro', size: 80, concept_image_url: `${SITE}${arte}`, description: descricao(x.pedido, x.id), name: `Miniatura · ${nome}` });
+	const t = await chamar(conta.token, 'create_character', { mode: 'pro', size: TAMANHO, concept_image_url: `${SITE}${arte}`, ...(ESTILO ? { style_character_id: ESTILO } : {}), description: descricao(x.pedido, x.id), name: `Miniatura · ${nome}` });
 	const id = /character_id[":\s]+([0-9a-f-]{36})/.exec(t)?.[1] ?? /^id: ([0-9a-f-]{36})/m.exec(t)?.[1];
 	if (!id) throw new Error(t.slice(0, 300));
 	const inicio = Date.now();
@@ -103,13 +115,16 @@ async function fazer(conta, x) {
 		}
 		const urls = [...g.matchAll(/(south-east|south-west|north-east|north-west|south|north|east|west)\b[^\n]*?(https:\/\/\S+?\.png)/g)];
 		if (urls.length < 8) throw new Error(`concluído com ${urls.length} direções (${id})`);
-		const dir = path.join(RAIZ, 'pixellab', 'miniaturas', x.id);
+		const dir = soTeste ? path.join(RAIZ, 'pixellab', 'miniaturas', '_teste', `${x.id}-${TAMANHO}`) : path.join(RAIZ, 'pixellab', 'miniaturas', x.id);
 		fs.mkdirSync(dir, { recursive: true });
 		for (const [, rumo, url] of urls) fs.writeFileSync(path.join(dir, `${rumo}.png`), Buffer.from(await (await fetch(url)).arrayBuffer()));
 		if (!RUMOS.every((r) => fs.existsSync(path.join(dir, `${r}.png`)))) throw new Error('faltou direção');
+		if (soTeste) return `${nome} (teste em ${dir})`;
 		// o catálogo é relido e regravado a cada miniatura (as contas trabalham juntas)
 		const cat = JSON.parse(fs.readFileSync(arqCatalogo, 'utf8'));
-		cat.push({ id: x.id, verbete: x.verbete, nome, estilo: 'Fiel à arte', personagem: id });
+		const resto = cat.filter((m) => m.id !== x.id);
+		resto.push({ id: x.id, verbete: x.verbete, nome, estilo: 'Fiel à arte', personagem: id });
+		cat.splice(0, cat.length, ...resto);
 		fs.writeFileSync(arqCatalogo, JSON.stringify(cat, null, '\t') + '\n');
 		return nome;
 	}

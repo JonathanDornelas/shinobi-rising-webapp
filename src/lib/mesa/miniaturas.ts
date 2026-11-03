@@ -79,6 +79,31 @@ export function lerAjustes(v: unknown): AjusteMiniaturas {
 /** Quanto a miniatura cresce (ou encolhe) no quadro: o ajuste de todas vezes o dela. */
 export const escalaDe = (a: AjusteMiniaturas, id: string) => Math.round(a.escala * (a.ajustes[id] ?? 1) * 1000) / 1000;
 
+/** As miniaturas numa cena: o tamanho de todas (cada mapa tem a sua escala) e a sombra. */
+export interface CenaMiniaturas {
+	escala: number;
+	sombra: boolean;
+}
+export function lerCenaMiniaturas(v: unknown): CenaMiniaturas {
+	const o = v && typeof v === 'object' ? (v as { escala?: unknown; sombra?: unknown }) : {};
+	return { escala: o.escala === undefined ? 1 : limitar(o.escala), sombra: o.sombra !== false };
+}
+
+/**
+ * A sombra que a miniatura projeta no chão, na tela: a direção (unitária) e o comprimento (vezes a altura da figura).
+ * Perto de uma luz acesa, a sombra foge dela (direção na grade, `luz`) e cresce com a distância; sem luz, cai para trás e
+ * à direita (direção já na tela).
+ */
+export function sombraDaMiniatura(pe: [number, number], luzes: readonly { x: number; y: number; alcance: number }[]): { dx: number; dy: number; k: number; luz: boolean } {
+	let melhor: { d: number; x: number; y: number; alcance: number } | null = null;
+	for (const l of luzes) {
+		const d = Math.hypot(pe[0] - l.x, pe[1] - l.y);
+		if (d > 0.05 && d <= l.alcance && (!melhor || d < melhor.d)) melhor = { d, ...l };
+	}
+	if (!melhor) return { dx: 0.6, dy: -0.8, k: 0.5, luz: false };
+	return { dx: (pe[0] - melhor.x) / melhor.d, dy: (pe[1] - melhor.y) / melhor.d, k: Math.min(0.95, 0.35 + 0.6 * (melhor.d / melhor.alcance)), luz: true };
+}
+
 /** As prateleiras da caixa: uma por verbete do bestiário (o clã, a criatura), na ordem do catálogo. */
 export interface Prateleira {
 	chave: string;

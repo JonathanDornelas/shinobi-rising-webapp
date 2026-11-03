@@ -13,20 +13,24 @@ entre todas as que já existem.
   - `personagens.miniatura` e `npcs.miniatura` guardam a escolha. `definir_miniatura()` grava (o Mestre para qualquer um;
     o jogador para o próprio personagem), um gatilho leva a escolha aos tokens dele em todas as cenas, e o token novo
     nasce com ela (o clone, com a do original).
-  - `campanhas.miniaturas` guarda o tamanho: `{ escala, ajustes: { id: escala } }`, de 50% a 200%.
+  - o tamanho vai de 50% a 200%: o de todas fica em cada cena (`mesa_cenas.miniaturas`, `{ escala, sombra }`, porque cada
+    mapa tem a sua escala); o de cada miniatura fica na campanha (`campanhas.miniaturas.ajustes`).
 - **No quadro:**
   - todas as miniaturas têm a mesma altura (1,7 m num token 1 × 1, do pé ou da base esculpida ao alto da cabeça), vezes o
     tamanho de todas e o de cada uma;
   - a figura fica de pé sobre uma base oval na cor do dono, com a vida e o nome debaixo dos pés e os estados numa fileira
     em cima da cabeça;
   - a direção mostrada segue a vista (na isométrica, o sul da grade aponta para baixo à esquerda); de cima, quem está mais
-    embaixo na tela fica na frente.
+    embaixo na tela fica na frente;
+  - a sombra (ligada por cena) é a própria figura, escura, deitada no chão a partir dos pés: com a luz dinâmica, foge da
+    luz acesa mais perto e cresce com a distância; sem luz, cai para trás e à direita;
+  - Ctrl + seta vira a peça selecionada para aquele lado, sem andar.
 - **Na Mesa:**
   - no painel do token, "Peça no quadro" troca entre Token e Miniatura (o Mestre em qualquer token; o jogador no do
     próprio personagem);
   - a "Caixa de miniaturas" mostra todas em prateleiras (uma por clã ou criatura, com busca e filtro), a escolhida
     girando num pedestal na escala do quadro, e escolhe a do personagem ou NPC do token;
-  - o Mestre ajusta ali o tamanho de todas as miniaturas da campanha e o de cada uma, e quem está na mesa vê na hora.
+  - o Mestre ajusta ali o tamanho de todas nesta cena, o de cada miniatura e a sombra, e quem está na mesa vê na hora.
 
 ## Como fazer as miniaturas
 
@@ -37,7 +41,8 @@ O lote usa `pixellab/scripts/miniaturas.mjs` (`--clas` só os clãs; `--ver` mos
    se repete dentro do clã e nunca é genérica. Estágio sem pose fica fora do lote. `quem` descreve o personagem quando o
    pedido da arte não segue o padrão (Nível Anbu, alguns Jounin e Líderes).
 2. O PixelLab desenha o personagem em 8 direções: `create_character`, modo `pro`, `size` 80, a arte do estágio no site
-   como `concept_image_url`. Custa 10 gerações.
+   como `concept_image_url` e o Chunin Uchiha escolhido como `style_character_id` (`--estilo`), que dá as proporções:
+   perto das reais, nada de chibi (só o texto pedindo "7 cabeças" não bastava). Custa 10 gerações.
 3. As 8 direções vão para `pixellab/miniaturas/<id>/`, e a miniatura entra em `pixellab/miniaturas/catalogo.json`.
 4. `npx tsx scripts/mesa/miniaturas.ts` monta as tiras em `static/mesa/miniaturas/` e o catálogo do app
    (`src/lib/mesa/miniaturas.json`), na ordem do bestiário.
@@ -53,4 +58,5 @@ O lote usa `pixellab/scripts/miniaturas.mjs` (`--clas` só os clãs; `--ver` mos
 | Tinta sumi | `pro` com a arte como conceito e a paleta do site | 10 |
 | Retrô 16 bits | `standard`, 32 px (ignora a pose) | 1 |
 
-**Escolha (2026-11-03): Fiel à arte.** As outras cinco ficam no catálogo enquanto o teste durar.
+**Escolha (2026-11-03): Fiel à arte.** O Chunin Uchiha escolhido (`uchiha-chunin-fiel`) fica para sempre: é a referência de
+estilo de todas. As outras cinco direções saíram do catálogo.

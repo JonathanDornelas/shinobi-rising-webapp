@@ -1,42 +1,5 @@
 [
 	{
-		"id": "uchiha-chunin-fiel",
-		"verbete": "cla-uchiha#chunin",
-		"nome": "Uchiha, Chunin",
-		"estilo": "Fiel à arte"
-	},
-	{
-		"id": "uchiha-chunin-pintada",
-		"verbete": "cla-uchiha#chunin",
-		"nome": "Uchiha, Chunin",
-		"estilo": "Miniatura pintada",
-		"base": true
-	},
-	{
-		"id": "uchiha-chunin-heroico",
-		"verbete": "cla-uchiha#chunin",
-		"nome": "Uchiha, Chunin",
-		"estilo": "Anime heroico"
-	},
-	{
-		"id": "uchiha-chunin-chibi",
-		"verbete": "cla-uchiha#chunin",
-		"nome": "Uchiha, Chunin",
-		"estilo": "Chibi tático"
-	},
-	{
-		"id": "uchiha-chunin-sumi",
-		"verbete": "cla-uchiha#chunin",
-		"nome": "Uchiha, Chunin",
-		"estilo": "Tinta sumi"
-	},
-	{
-		"id": "uchiha-chunin-retro",
-		"verbete": "cla-uchiha#chunin",
-		"nome": "Uchiha, Chunin",
-		"estilo": "Retrô 16 bits"
-	},
-	{
 		"id": "cla-aburame--nivel-anbu",
 		"verbete": "cla-aburame#nivel-anbu",
 		"nome": "Aburame, Nível Anbu",
@@ -147,5 +110,109 @@
 		"nome": "Hyuuga, Chunin",
 		"estilo": "Fiel à arte",
 		"personagem": "28b64819-3fb2-4d98-a47f-1f78c39e0b8f"
+	},
+	{
+		"id": "cla-hyuuga--genin",
+		"verbete": "cla-hyuuga#genin",
+		"nome": "Hyuuga, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "ecf7bee4-f067-41d7-ad26-5f64aaed0b0a"
+	},
+	{
+		"id": "cla-hyuuga--jounin",
+		"verbete": "cla-hyuuga#jounin",
+		"nome": "Hyuuga, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "c56559f5-8813-432a-ba89-a10fc200be23"
+	},
+	{
+		"id": "cla-hyuuga--nivel-anbu",
+		"verbete": "cla-hyuuga#nivel-anbu",
+		"nome": "Hyuuga, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "b3bf1ca7-3e48-453d-a886-9efe86dd13ef"
+	},
+	{
+		"id": "cla-inuzuka--genin",
+		"verbete": "cla-inuzuka#genin",
+		"nome": "Inuzuka, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "e82f3615-1462-4d4e-851f-5a3381fc245f"
+	},
+	{
+		"id": "cla-inuzuka--chunin",
+		"verbete": "cla-inuzuka#chunin",
+		"nome": "Inuzuka, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "0212a8c4-f7bf-4c25-ba14-7942df3e8520"
+	},
+	{
+		"id": "cla-hyuuga--lider-do-cla",
+		"verbete": "cla-hyuuga#lider-do-cla",
+		"nome": "Hyuuga, Líder do clã",
+		"estilo": "Fiel à arte",
+		"personagem": "1824e9ec-e63f-41f5-be71-c26ce8b4ca00"
+	},
+	{
+		"id": "cla-inuzuka--jounin",
+		"verbete": "cla-inuzuka#jounin",
+		"nome": "Inuzuka, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "6561ac34-3506-4aaf-bb70-79881511f20c"
+	},
+	{
+		"id": "cla-inuzuka--nivel-anbu",
+		"verbete": "cla-inuzuka#nivel-anbu",
+		"nome": "Inuzuka, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "d7694f5b-3dbe-4d4d-bfc8-154fe3fb9949"
+	},
+	{
+		"id": "cla-kaguya--genin",
+		"verbete": "cla-kaguya#genin",
+		"nome": "Kaguya, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "4649d123-254f-434b-9350-ddc5494fd215"
+	},
+	{
+		"id": "cla-inuzuka--lider-do-cla",
+		"verbete": "cla-inuzuka#lider-do-cla",
+		"nome": "Inuzuka, Líder do clã",
+		"estilo": "Fiel à arte",
+		"personagem": "2d4fc7d2-54f7-47da-ab7c-6a01034dd119"
+	},
+	{
+		"id": "cla-kaguya--chunin",
+		"verbete": "cla-kaguya#chunin",
+		"nome": "Kaguya, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "aa39b3ce-5157-48d2-a4af-56a34c012a57"
+	},
+	{
+		"id": "cla-kaguya--nivel-anbu",
+		"verbete": "cla-kaguya#nivel-anbu",
+		"nome": "Kaguya, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "a18b8f9c-5642-49c7-b9f2-f326fbf1839e"
+	},
+	{
+		"id": "cla-kaguya--jounin",
+		"verbete": "cla-kaguya#jounin",
+		"nome": "Kaguya, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "8e2e98f7-86b4-4bb5-b67f-231c0a6ccbbb"
+	},
+	{
+		"id": "cla-kaguya--lider-do-cla",
+		"verbete": "cla-kaguya#lider-do-cla",
+		"nome": "Kaguya, Líder do clã",
+		"estilo": "Fiel à arte",
+		"personagem": "d47bba88-9f70-465e-aadc-e8c143b1a3c9"
+	},
+	{
+		"id": "uchiha-chunin-fiel",
+		"verbete": "cla-uchiha#chunin",
+		"nome": "Uchiha, Chunin",
+		"estilo": "Fiel à arte"
 	}
 ]

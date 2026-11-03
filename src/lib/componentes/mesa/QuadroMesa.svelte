@@ -22,7 +22,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	import { CacheVisao, FONTES_DE_LUZ, bloqueiaPasso, calcularVisao, ehPorta, encaixar, explorar, luzDoToken, meioDaParede, paredeEm, type Ambiente, type EntradaVisao, type Luz, type Observador, type Parede, type TipoParede } from '#lib/mesa/luz.ts';
 	import type { Ponto } from '#lib/mesa/visao.ts';
 	import LuzMesa from './LuzMesa.svelte';
-	import { ALTURA_DA_FIGURA, miniaturaPorId, quadroNaTela, rumoDoPasso, urlMiniatura, type Miniatura } from '#lib/mesa/miniaturas.ts';
+	import { ALTURA_DA_FIGURA, miniaturaPorId, quadroNaTela, rumoDoPasso, sombraDaMiniatura, urlMiniatura, type Miniatura } from '#lib/mesa/miniaturas.ts';
 
 	let {
 		mesa,
@@ -405,6 +405,17 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		return { L, A, paredes, ambiente, luzes: luzesAcesas(luzesCena, true), observadores: meus.map((t) => observadorDe(t)) };
 	});
 	const visao = $derived(entradaVisao ? calcularVisao(entradaVisao, cacheVisao) : null);
+	/** As luzes acesas que fazem sombra nas miniaturas (com a luz dinâmica): o alcance é a luz plena mais a penumbra. */
+	const luzesDaSombra = $derived(luzLigada ? luzesAcesas(luzesCena, true).map((l) => ({ x: l.x, y: l.y, alcance: l.plena + l.penumbra })) : []);
+	/** A sombra da miniatura na tela: foge da luz acesa mais perto (menos a que ela mesma carrega), senão cai para trás. */
+	function sombraNaTela(t: MesaToken, pe: [number, number], cx: number, cy: number) {
+		const s = sombraDaMiniatura(pe, luzesDaSombra.filter((l) => Math.hypot(l.x - cx, l.y - cy) > 0.5 * t.tamanho));
+		if (!s.luz) return s;
+		const [ax, ay] = paraTela(pe[0], pe[1]);
+		const [bx, by] = paraTela(pe[0] + s.dx, pe[1] + s.dy);
+		const d = Math.hypot(bx - ax, by - ay) || 1;
+		return { ...s, dx: (bx - ax) / d, dy: (by - ay) / d };
+	}
 	/** Memória do explorado (padrão: ligada). Sem ela, o grupo só vê o que vê agora: o resto é breu, e nada se grava. */
 	const memoria = $derived(cena?.luz_memoria !== false);
 	/** A névoa aparece com ela ligada, ou com a luz dinâmica sem memória (o que não está à vista fica coberto). */
@@ -1390,6 +1401,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 	{@const estados = [...new Set(semKkg(t.condicoes))]}
 	{@const lado = Math.min(0.5, 0.3 + 0.03 * n)}
 	{@const yb = pe[1] + (iso ? 0.3 : 0.24) * n}
+	{@const sb = mesa.miniaturasCena.sombra ? sombraNaTela(t, pe, cx, cy) : null}
 	<g opacity={t.visivel ? 1 : 0.5}>
 		{#if iso}
 			{#if mesa.daVez.has(t.id)}<circle {cx} {cy} r={0.5 * n + 0.08} fill="none" style="stroke: var(--acc)" stroke-width={0.09} />{/if}
@@ -1399,6 +1411,16 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			{#if mesa.daVez.has(t.id)}<ellipse cx={pe[0]} cy={pe[1]} rx={0.5 * n + 0.08} ry={0.25 * n + 0.06} fill="none" style="stroke: var(--acc)" stroke-width={0.09} />{/if}
 			{#if ui.sel === t.id}<ellipse cx={pe[0]} cy={pe[1]} rx={0.5 * n + 0.22} ry={0.25 * n + 0.16} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
 			<ellipse cx={pe[0]} cy={pe[1]} rx={(mini.base ? 0.46 : 0.4) * n} ry={(mini.base ? 0.23 : 0.2) * n} style="fill: var(--b0); stroke: {caido ? 'var(--field)' : c}" fill-opacity={mini.base ? 0 : 0.5} stroke-width={0.07} />
+		{/if}
+		{#if sb}
+			<!-- a sombra: a própria figura, escura, deitada no chão a partir dos pés (não sobe com a elevação) -->
+			<g transform={emPe(pe[0], pe[1], 0)} pointer-events="none">
+				<g transform="matrix({-sb.dy} {sb.dx} {-sb.k * sb.dx} {-sb.k * sb.dy} {pe[0]} {pe[1]})" opacity="0.3">
+					<svg x={-mini.pe[0] * k} y={-mini.pe[1] * k} width={mini.w * k} height={mini.h * k} viewBox="{q * mini.w} 0 {mini.w} {mini.h}" preserveAspectRatio="none" overflow="hidden">
+						<image href={urlMiniatura(mini)} width={mini.w * 8} height={mini.h} style="image-rendering: pixelated; filter: brightness(0)" />
+					</svg>
+				</g>
+			</g>
 		{/if}
 		<g transform={emPe(pe[0], pe[1], (t.elevacao ?? 0) * 0.25)}>
 			<svg x={pe[0] - mini.pe[0] * k} y={pe[1] - mini.pe[1] * k} width={mini.w * k} height={mini.h * k} viewBox="{q * mini.w} 0 {mini.w} {mini.h}" preserveAspectRatio="none" overflow="hidden">

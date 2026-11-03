@@ -12,7 +12,7 @@ import { limitarPosicao } from './musica.ts';
 import { limpar as limparRuns } from './nevoa.ts';
 import { coresDosMembros } from './cores.ts';
 import { deslocarQuadrados, deslocarRuns, deslocarToken } from './reenquadrar.ts';
-import { escalaDe, lerAjustes, rumoDoPasso, type AjusteMiniaturas } from './miniaturas.ts';
+import { lerAjustes, lerCenaMiniaturas, rumoDoPasso, type AjusteMiniaturas, type CenaMiniaturas } from './miniaturas.ts';
 import { bloqueiaPasso, deslocarLuzes, deslocarParedes, ehPorta, limparLuzes, limparParedes, type Luz, type Parede } from './luz.ts';
 import { avancarRodada, relogiosDaCena, type Relogio } from './relogios.ts';
 import type { Quadrado } from './geometria.ts';
@@ -1043,9 +1043,24 @@ export class Mesa {
 	}
 	/** Quanto a miniatura `id` cresce no quadro (o tamanho de todas vezes o dela). */
 	escalaMiniatura(id: string) {
-		return this.miniaturasAjuste ? escalaDe(this.miniaturasAjuste, id) : 1;
+		return Math.round(this.miniaturasCena.escala * (this.miniaturasAjuste?.ajustes[id] ?? 1) * 1000) / 1000;
 	}
-	/** O Mestre muda o tamanho das miniaturas: grava na campanha e manda a quem está na mesa. */
+	/** As miniaturas nesta cena: o tamanho de todas e a sombra. */
+	get miniaturasCena(): CenaMiniaturas {
+		return lerCenaMiniaturas(this.cena?.miniaturas);
+	}
+	/** O Mestre muda o tamanho de todas as miniaturas desta cena ou liga e desliga a sombra. */
+	definirMiniaturasCena(patch: Partial<CenaMiniaturas>) {
+		if (this.cena?.miniaturas === undefined) return Promise.resolve(false);
+		return this.patchCena({ miniaturas: { ...this.miniaturasCena, ...patch } });
+	}
+	/** A peça vira para `rumo` sem sair do lugar (Ctrl + seta). */
+	virar(id: string, rumo: number) {
+		const t = this.tokens.find((k) => k.id === id);
+		if (!t || t.rumo === undefined || t.rumo === rumo) return Promise.resolve(true);
+		return this.atualizarToken(id, { rumo });
+	}
+	/** O Mestre muda o tamanho de cada miniatura (o ajuste dela): grava na campanha e manda a quem está na mesa. */
 	async definirAjusteMiniaturas(a: AjusteMiniaturas) {
 		const antes = this.miniaturasAjuste;
 		if (!antes) return false;

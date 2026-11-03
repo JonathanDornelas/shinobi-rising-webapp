@@ -41,7 +41,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	import PainelMesa from '#lib/componentes/mesa/PainelMesa.svelte';
 	import BuscaBestiario from '#lib/componentes/npc/BuscaBestiario.svelte';
 	import { npcDoVerbete } from '#lib/bestiario/npc.ts';
-	import { MINIATURAS } from '#lib/mesa/miniaturas.ts';
+	import { MINIATURAS, rumoDoPasso } from '#lib/mesa/miniaturas.ts';
 	import MiniaturasMesa from '#lib/componentes/mesa/MiniaturasMesa.svelte';
 	import type { Criatura, Jutsu } from '#lib/livro/tipos.ts';
 	import CardJutsu from '#lib/componentes/regras/CardJutsu.svelte';
@@ -892,7 +892,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		if (!cena) return;
 		const { data: c, error } = await supabase()
 			.from('mesa_cenas')
-			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [], camadas: cena.camadas, modo: cena.modo, imagem: cena.imagem, fundo: cena.fundo, fundo_opacidade: cena.fundo_opacidade, fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, ...(cena.fundo_rotacao !== undefined ? { fundo_rotacao: cena.fundo_rotacao } : {}), ...(cena.fundo_recorte !== undefined ? { fundo_recorte: cena.fundo_recorte } : {}), grade: cena.grade, pasta_id: cena.pasta_id, nome_publico: cena.nome_publico, nevoa: cena.nevoa, reveladas: cena.reveladas ?? [], ...(cena.paredes !== undefined ? { paredes: cena.paredes, luzes: cena.luzes ?? [], luz_dinamica: cena.luz_dinamica ?? false, luz_ambiente: cena.luz_ambiente ?? 'claro', fundo_ladrilhos: cena.fundo_ladrilhos ?? null, ...(cena.luz_memoria !== undefined ? { luz_memoria: cena.luz_memoria } : {}), ...(cena.paredes_bloqueiam !== undefined ? { paredes_bloqueiam: cena.paredes_bloqueiam } : {}) } : {}) })
+			.insert({ campanha_id: campanha, nome: `${cena.nome} (cópia)`.slice(0, 60), largura: cena.largura, altura: cena.altura, coordenadas: cena.coordenadas, terreno: cena.terreno ?? [], camadas: cena.camadas, modo: cena.modo, imagem: cena.imagem, fundo: cena.fundo, fundo_opacidade: cena.fundo_opacidade, fundo_escala: cena.fundo_escala, fundo_x: cena.fundo_x, fundo_y: cena.fundo_y, ...(cena.fundo_rotacao !== undefined ? { fundo_rotacao: cena.fundo_rotacao } : {}), ...(cena.fundo_recorte !== undefined ? { fundo_recorte: cena.fundo_recorte } : {}), grade: cena.grade, pasta_id: cena.pasta_id, nome_publico: cena.nome_publico, nevoa: cena.nevoa, reveladas: cena.reveladas ?? [], ...(cena.paredes !== undefined ? { paredes: cena.paredes, luzes: cena.luzes ?? [], luz_dinamica: cena.luz_dinamica ?? false, luz_ambiente: cena.luz_ambiente ?? 'claro', fundo_ladrilhos: cena.fundo_ladrilhos ?? null, ...(cena.luz_memoria !== undefined ? { luz_memoria: cena.luz_memoria } : {}), ...(cena.paredes_bloqueiam !== undefined ? { paredes_bloqueiam: cena.paredes_bloqueiam } : {}), ...(cena.miniaturas !== undefined ? { miniaturas: cena.miniaturas } : {}) } : {}) })
 			.select('*')
 			.single();
 		if (error || !c) return void toasts.mostrar('Não foi possível duplicar a cena.', 'erro');
@@ -987,6 +987,16 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
 			e.preventDefault();
 			mesa.desfazerUltimo();
+			return;
+		}
+		// Ctrl + seta: a peça vira para o lado em que a seta andaria, sem sair do lugar
+		const virar = ({ ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] } as Record<string, [number, number]>)[e.key];
+		if (e.ctrlKey && virar) {
+			const sel = mesa.tokens.find((t) => t.id === ui.sel);
+			if (sel && sel.rumo !== undefined && mesa.podeMover(sel)) {
+				e.preventDefault();
+				void mesa.virar(sel.id, rumoDoPasso(virar[0], virar[1]) ?? 0);
+			}
 			return;
 		}
 		if (e.ctrlKey || e.metaKey || e.altKey) return;

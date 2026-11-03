@@ -182,6 +182,214 @@
 		"altura": 58
 	},
 	{
+		"id": "cla-hozuki--lider-do-cla",
+		"verbete": "cla-hozuki#lider-do-cla",
+		"nome": "Hozuki, Líder do clã",
+		"estilo": "Fiel à arte",
+		"w": 41,
+		"h": 69,
+		"pe": [
+			20.5,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "cla-hyuuga--genin",
+		"verbete": "cla-hyuuga#genin",
+		"nome": "Hyuuga, Genin",
+		"estilo": "Fiel à arte",
+		"w": 30,
+		"h": 54,
+		"pe": [
+			14.5,
+			52
+		],
+		"altura": 51
+	},
+	{
+		"id": "cla-hyuuga--chunin",
+		"verbete": "cla-hyuuga#chunin",
+		"nome": "Hyuuga, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 51,
+		"h": 65,
+		"pe": [
+			13,
+			64
+		],
+		"altura": 62
+	},
+	{
+		"id": "cla-hyuuga--jounin",
+		"verbete": "cla-hyuuga#jounin",
+		"nome": "Hyuuga, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 66,
+		"h": 69,
+		"pe": [
+			33,
+			67
+		],
+		"altura": 66
+	},
+	{
+		"id": "cla-hyuuga--nivel-anbu",
+		"verbete": "cla-hyuuga#nivel-anbu",
+		"nome": "Hyuuga, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 55,
+		"h": 56,
+		"pe": [
+			28,
+			54
+		],
+		"altura": 52
+	},
+	{
+		"id": "cla-hyuuga--lider-do-cla",
+		"verbete": "cla-hyuuga#lider-do-cla",
+		"nome": "Hyuuga, Líder do clã",
+		"estilo": "Fiel à arte",
+		"w": 36,
+		"h": 56,
+		"pe": [
+			18,
+			55
+		],
+		"altura": 54
+	},
+	{
+		"id": "cla-inuzuka--genin",
+		"verbete": "cla-inuzuka#genin",
+		"nome": "Inuzuka, Genin",
+		"estilo": "Fiel à arte",
+		"w": 42,
+		"h": 67,
+		"pe": [
+			21,
+			65
+		],
+		"altura": 63
+	},
+	{
+		"id": "cla-inuzuka--chunin",
+		"verbete": "cla-inuzuka#chunin",
+		"nome": "Inuzuka, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 42,
+		"h": 65,
+		"pe": [
+			21,
+			63
+		],
+		"altura": 62
+	},
+	{
+		"id": "cla-inuzuka--jounin",
+		"verbete": "cla-inuzuka#jounin",
+		"nome": "Inuzuka, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 68,
+		"h": 63,
+		"pe": [
+			17.5,
+			60
+		],
+		"altura": 55
+	},
+	{
+		"id": "cla-inuzuka--nivel-anbu",
+		"verbete": "cla-inuzuka#nivel-anbu",
+		"nome": "Inuzuka, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 51,
+		"h": 58,
+		"pe": [
+			25,
+			56
+		],
+		"altura": 55
+	},
+	{
+		"id": "cla-inuzuka--lider-do-cla",
+		"verbete": "cla-inuzuka#lider-do-cla",
+		"nome": "Inuzuka, Líder do clã",
+		"estilo": "Fiel à arte",
+		"w": 54,
+		"h": 65,
+		"pe": [
+			27.5,
+			61
+		],
+		"altura": 60
+	},
+	{
+		"id": "cla-kaguya--genin",
+		"verbete": "cla-kaguya#genin",
+		"nome": "Kaguya, Genin",
+		"estilo": "Fiel à arte",
+		"w": 49,
+		"h": 64,
+		"pe": [
+			25,
+			61
+		],
+		"altura": 58
+	},
+	{
+		"id": "cla-kaguya--chunin",
+		"verbete": "cla-kaguya#chunin",
+		"nome": "Kaguya, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 70,
+		"h": 70,
+		"pe": [
+			36.5,
+			68
+		],
+		"altura": 66
+	},
+	{
+		"id": "cla-kaguya--jounin",
+		"verbete": "cla-kaguya#jounin",
+		"nome": "Kaguya, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 72,
+		"h": 69,
+		"pe": [
+			32.5,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "cla-kaguya--nivel-anbu",
+		"verbete": "cla-kaguya#nivel-anbu",
+		"nome": "Kaguya, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 59,
+		"h": 57,
+		"pe": [
+			29.5,
+			55
+		],
+		"altura": 54
+	},
+	{
+		"id": "cla-kaguya--lider-do-cla",
+		"verbete": "cla-kaguya#lider-do-cla",
+		"nome": "Kaguya, Líder do clã",
+		"estilo": "Fiel à arte",
+		"w": 50,
+		"h": 58,
+		"pe": [
+			22,
+			55
+		],
+		"altura": 54
+	},
+	{
 		"id": "uchiha-chunin-fiel",
 		"verbete": "cla-uchiha#chunin",
 		"nome": "Uchiha, Chunin",
@@ -193,71 +401,5 @@
 			61
 		],
 		"altura": 58
-	},
-	{
-		"id": "uchiha-chunin-pintada",
-		"verbete": "cla-uchiha#chunin",
-		"nome": "Uchiha, Chunin",
-		"estilo": "Miniatura pintada",
-		"base": true,
-		"w": 69,
-		"h": 94,
-		"pe": [
-			33.5,
-			93
-		],
-		"altura": 91
-	},
-	{
-		"id": "uchiha-chunin-heroico",
-		"verbete": "cla-uchiha#chunin",
-		"nome": "Uchiha, Chunin",
-		"estilo": "Anime heroico",
-		"w": 84,
-		"h": 88,
-		"pe": [
-			41.5,
-			87
-		],
-		"altura": 86
-	},
-	{
-		"id": "uchiha-chunin-chibi",
-		"verbete": "cla-uchiha#chunin",
-		"nome": "Uchiha, Chunin",
-		"estilo": "Chibi tático",
-		"w": 52,
-		"h": 62,
-		"pe": [
-			25.5,
-			61
-		],
-		"altura": 60
-	},
-	{
-		"id": "uchiha-chunin-sumi",
-		"verbete": "cla-uchiha#chunin",
-		"nome": "Uchiha, Chunin",
-		"estilo": "Tinta sumi",
-		"w": 53,
-		"h": 60,
-		"pe": [
-			26.5,
-			58
-		],
-		"altura": 56
-	},
-	{
-		"id": "uchiha-chunin-retro",
-		"verbete": "cla-uchiha#chunin",
-		"nome": "Uchiha, Chunin",
-		"estilo": "Retrô 16 bits",
-		"w": 18,
-		"h": 39,
-		"pe": [
-			9,
-			36
-		],
-		"altura": 35
 	}
 ]
