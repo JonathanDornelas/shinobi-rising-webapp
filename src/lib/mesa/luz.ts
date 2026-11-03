@@ -73,7 +73,54 @@ export function limparLuzes(v: unknown): Luz[] {
 export const luzDoToken = (v: unknown): LuzToken | null =>
 	v && typeof v === 'object' && numero((v as LuzToken).plena) && numero((v as LuzToken).penumbra) && (v as LuzToken).plena + (v as LuzToken).penumbra > 0 ? (v as LuzToken) : null;
 
-export const segmentosDeVisao = (paredes: readonly Parede[]): Segmento[] => paredes.filter((p) => cortaVisao(p[4])).map((p) => [p[0], p[1], p[2], p[3]]);
+// folga para "na mesma reta" (as pontas gravadas são arredondadas a 1 cm)
+const NA_RETA = 0.06;
+const efetivas = new WeakMap<readonly Parede[], readonly Parede[]>();
+/**
+ * A porta e a janela traçadas por cima de uma parede tomam o lugar daquele trecho: na conta, a parede fica cortada ali. O
+ * que está gravado não muda (apagar a porta devolve a parede inteira).
+ */
+export function paredesEfetivas(paredes: readonly Parede[]): readonly Parede[] {
+	const pronta = efetivas.get(paredes);
+	if (pronta) return pronta;
+	const vaos = paredes.filter((p) => p[4] !== 0);
+	let saida: readonly Parede[] = paredes;
+	if (vaos.length) {
+		const lista: Parede[] = [];
+		for (const p of paredes) {
+			const [x1, y1, x2, y2] = p;
+			const [dx, dy] = [x2 - x1, y2 - y1];
+			const l2 = dx * dx + dy * dy;
+			const naReta = (x: number, y: number) => Math.abs((x - x1) * dy - (y - y1) * dx) / Math.sqrt(l2) <= NA_RETA;
+			// os trechos da parede (de 0 a 1) cobertos por portas e janelas na mesma reta
+			const cortes: [number, number][] = [];
+			if (p[4] === 0 && l2 > 0)
+				for (const v of vaos) {
+					if (!naReta(v[0], v[1]) || !naReta(v[2], v[3])) continue;
+					const a = ((v[0] - x1) * dx + (v[1] - y1) * dy) / l2;
+					const b = ((v[2] - x1) * dx + (v[3] - y1) * dy) / l2;
+					const [i0, i1] = [Math.max(0, Math.min(a, b)), Math.min(1, Math.max(a, b))];
+					if (i1 - i0 > 1e-6) cortes.push([i0, i1]);
+				}
+			if (!cortes.length) {
+				lista.push(p);
+				continue;
+			}
+			cortes.sort((a, b) => a[0] - b[0]);
+			let k = 0;
+			for (const [i0, i1] of cortes) {
+				if (i0 > k + 1e-6) lista.push([x1 + dx * k, y1 + dy * k, x1 + dx * i0, y1 + dy * i0, 0]);
+				k = Math.max(k, i1);
+			}
+			if (k < 1 - 1e-6) lista.push([x1 + dx * k, y1 + dy * k, x2, y2, 0]);
+		}
+		saida = lista;
+	}
+	efetivas.set(paredes, saida);
+	return saida;
+}
+
+export const segmentosDeVisao = (paredes: readonly Parede[]): Segmento[] => paredesEfetivas(paredes).filter((p) => cortaVisao(p[4])).map((p) => [p[0], p[1], p[2], p[3]]);
 
 /** De que lado de p→q fica r: 1, −1 ou 0 (na mesma reta). */
 const orientacao = (px: number, py: number, qx: number, qy: number, rx: number, ry: number) => {
@@ -95,7 +142,7 @@ function cruzam(ax: number, ay: number, bx: number, by: number, cx: number, cy: 
 
 /** O passo de (x0, y0) a (x1, y1) atravessa uma parede ou uma porta fechada? */
 export const bloqueiaPasso = (paredes: readonly Parede[], x0: number, y0: number, x1: number, y1: number) =>
-	paredes.some((p) => cortaPasso(p[4]) && cruzam(x0, y0, x1, y1, p[0], p[1], p[2], p[3]));
+	paredesEfetivas(paredes).some((p) => cortaPasso(p[4]) && cruzam(x0, y0, x1, y1, p[0], p[1], p[2], p[3]));
 
 export const deslocarParedes = (paredes: readonly Parede[], dx: number, dy: number): Parede[] => paredes.map(([x1, y1, x2, y2, t]) => [r2(x1 + dx), r2(y1 + dy), r2(x2 + dx), r2(y2 + dy), t]);
 export const deslocarLuzes = (luzes: readonly Luz[], dx: number, dy: number): Luz[] => luzes.map((l) => ({ ...l, x: r2(l.x + dx), y: r2(l.y + dy) }));

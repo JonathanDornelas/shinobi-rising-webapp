@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bloqueiaPasso, calcularVisao, encaixar, explorar, limparParedes, paredeEm, type Parede } from './luz.ts';
+import { bloqueiaPasso, calcularVisao, encaixar, explorar, limparParedes, paredeEm, paredesEfetivas, type Parede } from './luz.ts';
 import { ambienteDaCor, lerUvtt } from './uvtt.ts';
 import { dentro, poligonoVisao, rasterizar } from './visao.ts';
 
@@ -64,6 +64,20 @@ describe('paredes', () => {
 		expect(bloqueiaPasso(sala(4), 2.5, 5, 7.5, 5)).toBe(false);
 		expect(bloqueiaPasso(sala(2), 2.5, 5, 7.5, 5)).toBe(false);
 		expect(bloqueiaPasso(sala(1), 2.5, 2.5, 3.5, 8.5)).toBe(false);
+	});
+
+	it('a porta ou a janela traçada por cima de uma parede toma o lugar daquele trecho', () => {
+		// a parede inteira em x = 5 e, por cima, uma porta de y = 4 a y = 6
+		const sobre = (t: 1 | 2 | 4): Parede[] => [[5, 0, 5, 10, 0], [5, 6, 5, 4, t]];
+		expect(paredesEfetivas(sobre(2))).toEqual([[5, 0, 5, 4, 0], [5, 6, 5, 10, 0], [5, 6, 5, 4, 2]]);
+		const ver = (t: 1 | 2 | 4) => calcularVisao({ L: 10, A: 10, paredes: sobre(t), ambiente: 'claro', luzes: [], observadores: [{ x: 2.5, y: 5, corpo: 1 }] }).visivel(8, 5);
+		expect([ver(1), ver(2), ver(4)]).toEqual([false, true, true]);
+		expect(bloqueiaPasso(sobre(2), 2.5, 5, 7.5, 5)).toBe(false);
+		expect(bloqueiaPasso(sobre(1), 2.5, 5, 7.5, 5)).toBe(true);
+		// fora da porta, a parede continua
+		expect(bloqueiaPasso(sobre(2), 2.5, 2, 7.5, 2)).toBe(true);
+		// a porta numa abertura (sem parede por baixo) não corta nada
+		expect(paredesEfetivas(sala(2))).toEqual(sala(2));
 	});
 
 	it('encaixa na ponta mais perto ou no canto da grade; limpa o que não presta', () => {

@@ -433,13 +433,16 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		);
 		return () => clearTimeout(timer);
 	});
-	/** Os marcadores de porta: o Mestre vê todos; o grupo, os que estão à vista (de um lado ou do outro da porta). */
+	/**
+	 * Os marcadores de porta: o Mestre vê todos; o grupo (e o Mestre no "ver como o grupo vê"), só os que estão à vista agora,
+	 * de um lado ou do outro da porta.
+	 */
 	const portas = $derived.by(() => {
 		if (!luzLigada && ui.ferramenta !== 'paredes') return [];
 		return paredes.flatMap((p, i) => {
 			if (!ehPorta(p[4])) return [];
 			const [x, y] = meioDaParede(p);
-			if (visao && !mesa.mestre) {
+			if (visao) {
 				const n = Math.hypot(p[2] - p[0], p[3] - p[1]) || 1;
 				const [nx, ny] = [(-(p[3] - p[1]) / n) * 0.3, ((p[2] - p[0]) / n) * 0.3];
 				if (!visao.visivel(x + nx, y + ny) && !visao.visivel(x - nx, y - ny)) return [];
@@ -745,6 +748,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 				const modo = ui.paredeModo;
 				if (modo === 'apagar') {
 					apagando = true;
+					apagandoVaos = null;
 					paredesTemp = [...mesa.paredes];
 					apagarParedeEm(p.mx, p.my, raio);
 				} else if (modo === 'mover') {
@@ -808,6 +812,8 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	let paredeNova = $state<{ a: Ponto; b: Ponto; tipo: TipoParede; clique: Ponto } | null>(null);
 	let pontaArrasto = $state<{ de: Ponto; para: Ponto } | null>(null);
 	let apagando = false;
+	/** No gesto de apagar: começou numa porta ou janela (true), numa parede (false), ou ainda em nada (null). */
+	let apagandoVaos: boolean | null = null;
 	let luzArrasto: { id: string; modo: 'mover' | 'plena' | 'penumbra'; dx: number; dy: number } | null = null;
 	const mesmoPonto = (x: number, y: number, p: Ponto) => Math.abs(x - p[0]) < 1e-6 && Math.abs(y - p[1]) < 1e-6;
 	/** Um clique num marcador de porta (ferramenta Mover): abre ou fecha. */
@@ -822,10 +828,18 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		void mesa.alternarPorta(d.i);
 		return true;
 	}
+	/**
+	 * Apaga o trecho sob o ponteiro. A porta e a janela (por cima da parede, quando foram traçadas sobre ela) vêm antes; se o
+	 * gesto começou numa delas, o arrasto só apaga portas e janelas (a parede de baixo fica).
+	 */
 	function apagarParedeEm(x: number, y: number, raio: number) {
 		const lista = paredesTemp ?? [...mesa.paredes];
-		const i = paredeEm(lista, x, y, raio);
-		if (i >= 0) paredesTemp = lista.filter((_, k) => k !== i);
+		const vao = (q: Parede) => q[4] !== 0;
+		let i = apagandoVaos === false ? -1 : paredeEm(lista, x, y, raio, vao);
+		if (i < 0 && apagandoVaos !== true) i = paredeEm(lista, x, y, raio);
+		if (i < 0) return;
+		apagandoVaos ??= vao(lista[i]) ? true : false;
+		paredesTemp = lista.filter((_, k) => k !== i);
 	}
 	/** A ponta de parede mais perto (a até `raio`). */
 	function pontaEm(x: number, y: number, raio: number): Ponto | null {

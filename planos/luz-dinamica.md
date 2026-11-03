@@ -60,6 +60,9 @@ podem gravar a cena. Até a gravação chegar, cada jogador já vê a própria �
 **Ferramentas do Mestre:**
 
 - Paredes (R): parede, porta, janela, mover pontas, apagar.
+  - Porta ou janela traçada por cima de uma parede toma o lugar daquele trecho: a conta (`paredesEfetivas`) corta a
+    parede ali, sem mexer no que está gravado; apagar a porta devolve a parede inteira.
+  - No Apagar, a porta e a janela vêm antes da parede de baixo; o gesto que começa numa delas só apaga portas e janelas.
 - Luz (U): ambiente, fonte que o clique põe, alças dos raios, acender e apagar, "ver como o grupo", esquecer a exploração.
 - Portas: um clique no marcador, com a ferramenta Mover.
 

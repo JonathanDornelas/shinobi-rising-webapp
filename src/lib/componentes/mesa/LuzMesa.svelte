@@ -91,10 +91,15 @@
 {/if}
 
 {#if verParedes}
-	<!-- as paredes do Mestre: vermelhão, porta em âmbar (aberta em verde, trancada em ouro), janela tracejada em azul -->
+	<!-- as paredes do Mestre: vermelhão, porta em âmbar (aberta em verde, trancada em ouro), janela tracejada em azul; portas
+	     e janelas por cima (traçadas sobre uma parede, tomam o lugar daquele trecho) -->
 	<g pointer-events="none" opacity={verParedes === 'forte' ? 1 : 0.45}>
-		{#each paredes as p, i (i)}
-			<line x1={p[0]} y1={p[1]} x2={p[2]} y2={p[3]} style="stroke: {COR[p[4]]}" stroke-width={ehPorta(p[4]) ? 4 : 3} stroke-linecap="round" stroke-dasharray={p[4] === 4 ? '6 4' : p[4] === 2 ? '2 5' : undefined} vector-effect="non-scaling-stroke" />
+		{#each [paredes.filter((p) => p[4] === 0), paredes.filter((p) => p[4] !== 0)] as camada, c (c)}
+			{#each camada as p, i (i)}
+				<!-- o fundo da porta e da janela esconde a parede de baixo nos vãos do tracejado -->
+				{#if c}<line x1={p[0]} y1={p[1]} x2={p[2]} y2={p[3]} style="stroke: var(--b0)" stroke-width="6" vector-effect="non-scaling-stroke" />{/if}
+				<line x1={p[0]} y1={p[1]} x2={p[2]} y2={p[3]} style="stroke: {COR[p[4]]}" stroke-width={ehPorta(p[4]) ? 4 : 3} stroke-linecap="round" stroke-dasharray={p[4] === 4 ? '6 4' : p[4] === 2 ? '2 5' : undefined} vector-effect="non-scaling-stroke" />
+			{/each}
 		{/each}
 		{#if verParedes === 'forte'}
 			{#each paredes as p, i (i)}
