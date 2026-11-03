@@ -84,5 +84,68 @@
 		"nome": "Aburame, Líder do clã",
 		"estilo": "Fiel à arte",
 		"personagem": "334a64e2-c890-4fb9-86e6-ca5085ca48dc"
+	},
+	{
+		"id": "cla-akimichi--chunin",
+		"verbete": "cla-akimichi#chunin",
+		"nome": "Akimichi, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "0857f554-356d-4212-85c6-9d8f905dbf91"
+	},
+	{
+		"id": "cla-akimichi--lider-do-cla",
+		"verbete": "cla-akimichi#lider-do-cla",
+		"nome": "Akimichi, Líder do clã",
+		"estilo": "Fiel à arte",
+		"personagem": "37ae185d-64af-4c92-88fe-e15970e07c1e"
+	},
+	{
+		"id": "cla-akimichi--nivel-anbu",
+		"verbete": "cla-akimichi#nivel-anbu",
+		"nome": "Akimichi, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "e719769d-5fad-4f0d-8870-5b0482a4cca1"
+	},
+	{
+		"id": "cla-hozuki--chunin",
+		"verbete": "cla-hozuki#chunin",
+		"nome": "Hozuki, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "0252307a-c498-4f21-b21f-c67abc3b9645"
+	},
+	{
+		"id": "cla-hozuki--nivel-anbu",
+		"verbete": "cla-hozuki#nivel-anbu",
+		"nome": "Hozuki, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "859e9b9f-456d-49d9-80cb-97f25f7eb569"
+	},
+	{
+		"id": "cla-hozuki--genin",
+		"verbete": "cla-hozuki#genin",
+		"nome": "Hozuki, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "cd221363-5fc9-4869-b1a4-d3ebff4b0afd"
+	},
+	{
+		"id": "cla-hozuki--jounin",
+		"verbete": "cla-hozuki#jounin",
+		"nome": "Hozuki, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "6ef1fd84-abbb-46b3-871d-8cb3d70c9f0d"
+	},
+	{
+		"id": "cla-hozuki--lider-do-cla",
+		"verbete": "cla-hozuki#lider-do-cla",
+		"nome": "Hozuki, Líder do clã",
+		"estilo": "Fiel à arte",
+		"personagem": "b9fe495a-2029-4ae5-a754-e64e963cd8b9"
+	},
+	{
+		"id": "cla-hyuuga--chunin",
+		"verbete": "cla-hyuuga#chunin",
+		"nome": "Hyuuga, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "28b64819-3fb2-4d98-a47f-1f78c39e0b8f"
 	}
 ]

@@ -52,6 +52,19 @@
 		"altura": 52
 	},
 	{
+		"id": "cla-aburame--lider-do-cla",
+		"verbete": "cla-aburame#lider-do-cla",
+		"nome": "Aburame, Líder do clã",
+		"estilo": "Fiel à arte",
+		"w": 35,
+		"h": 59,
+		"pe": [
+			16,
+			53
+		],
+		"altura": 52
+	},
+	{
 		"id": "cla-akimichi--genin",
 		"verbete": "cla-akimichi#genin",
 		"nome": "Akimichi, Genin",
@@ -65,6 +78,19 @@
 		"altura": 64
 	},
 	{
+		"id": "cla-akimichi--chunin",
+		"verbete": "cla-akimichi#chunin",
+		"nome": "Akimichi, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 51,
+		"h": 77,
+		"pe": [
+			25,
+			75
+		],
+		"altura": 74
+	},
+	{
 		"id": "cla-akimichi--jounin",
 		"verbete": "cla-akimichi#jounin",
 		"nome": "Akimichi, Jounin",
@@ -76,6 +102,84 @@
 			71
 		],
 		"altura": 70
+	},
+	{
+		"id": "cla-akimichi--nivel-anbu",
+		"verbete": "cla-akimichi#nivel-anbu",
+		"nome": "Akimichi, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 52,
+		"h": 72,
+		"pe": [
+			26,
+			71
+		],
+		"altura": 69
+	},
+	{
+		"id": "cla-akimichi--lider-do-cla",
+		"verbete": "cla-akimichi#lider-do-cla",
+		"nome": "Akimichi, Líder do clã",
+		"estilo": "Fiel à arte",
+		"w": 72,
+		"h": 74,
+		"pe": [
+			36,
+			71
+		],
+		"altura": 69
+	},
+	{
+		"id": "cla-hozuki--genin",
+		"verbete": "cla-hozuki#genin",
+		"nome": "Hozuki, Genin",
+		"estilo": "Fiel à arte",
+		"w": 49,
+		"h": 66,
+		"pe": [
+			29.5,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "cla-hozuki--chunin",
+		"verbete": "cla-hozuki#chunin",
+		"nome": "Hozuki, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 60,
+		"h": 73,
+		"pe": [
+			28,
+			72
+		],
+		"altura": 71
+	},
+	{
+		"id": "cla-hozuki--jounin",
+		"verbete": "cla-hozuki#jounin",
+		"nome": "Hozuki, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 76,
+		"h": 73,
+		"pe": [
+			38,
+			71
+		],
+		"altura": 70
+	},
+	{
+		"id": "cla-hozuki--nivel-anbu",
+		"verbete": "cla-hozuki#nivel-anbu",
+		"nome": "Hozuki, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 70,
+		"h": 65,
+		"pe": [
+			20.5,
+			61
+		],
+		"altura": 58
 	},
 	{
 		"id": "uchiha-chunin-fiel",
