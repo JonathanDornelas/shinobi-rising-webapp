@@ -130,6 +130,123 @@
 		"altura": 75
 	},
 	{
+		"id": "bandidos-de-estrada--bandidos-de-estrada",
+		"verbete": "bandidos-de-estrada#bandidos-de-estrada",
+		"nome": "Bandidos de estrada, Bandidos de estrada",
+		"estilo": "Fiel à arte",
+		"w": 60,
+		"h": 65,
+		"pe": [
+			29,
+			64
+		],
+		"altura": 61
+	},
+	{
+		"id": "cacador-de-recompensas--cacador-de-recompensas",
+		"verbete": "cacador-de-recompensas#cacador-de-recompensas",
+		"nome": "Caçador de recompensas, Caçador de recompensas",
+		"estilo": "Fiel à arte",
+		"w": 46,
+		"h": 67,
+		"pe": [
+			23,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "chefe-de-bandidos--chefe-de-bandidos",
+		"verbete": "chefe-de-bandidos#chefe-de-bandidos",
+		"nome": "Chefe de bandidos, Chefe de bandidos",
+		"estilo": "Fiel à arte",
+		"w": 78,
+		"h": 79,
+		"pe": [
+			39,
+			77
+		],
+		"altura": 74
+	},
+	{
+		"id": "conselheiro--conselheiro-da-vila",
+		"verbete": "conselheiro#conselheiro-da-vila",
+		"nome": "Conselheiro da vila, Conselheiro da vila",
+		"estilo": "Fiel à arte",
+		"w": 52,
+		"h": 71,
+		"pe": [
+			26,
+			68
+		],
+		"altura": 67
+	},
+	{
+		"id": "divisao-das-sombras--recruta",
+		"verbete": "divisao-das-sombras#recruta",
+		"nome": "Divisão das Sombras, Recruta",
+		"estilo": "Fiel à arte",
+		"w": 33,
+		"h": 64,
+		"pe": [
+			16,
+			63
+		],
+		"altura": 60
+	},
+	{
+		"id": "divisao-das-sombras--agente",
+		"verbete": "divisao-das-sombras#agente",
+		"nome": "Divisão das Sombras, Agente",
+		"estilo": "Fiel à arte",
+		"w": 64,
+		"h": 64,
+		"pe": [
+			32,
+			62
+		],
+		"altura": 59
+	},
+	{
+		"id": "divisao-das-sombras--operador",
+		"verbete": "divisao-das-sombras#operador",
+		"nome": "Divisão das Sombras, Operador",
+		"estilo": "Fiel à arte",
+		"w": 68,
+		"h": 65,
+		"pe": [
+			34,
+			64
+		],
+		"altura": 63
+	},
+	{
+		"id": "divisao-das-sombras--capitao",
+		"verbete": "divisao-das-sombras#capitao",
+		"nome": "Divisão das Sombras, Capitão",
+		"estilo": "Fiel à arte",
+		"w": 50,
+		"h": 70,
+		"pe": [
+			25,
+			68
+		],
+		"altura": 67
+	},
+	{
+		"id": "divisao-das-sombras--kage-da-sombra",
+		"verbete": "divisao-das-sombras#kage-da-sombra",
+		"nome": "Divisão das Sombras, Kage da Sombra",
+		"estilo": "Fiel à arte",
+		"w": 62,
+		"h": 66,
+		"pe": [
+			31,
+			65
+		],
+		"altura": 64
+	},
+	{
 		"id": "especialista-bakuton--genin",
 		"verbete": "especialista-bakuton#genin",
 		"nome": "Especialista em Bakuton, Genin",
@@ -1005,13 +1122,13 @@
 		"verbete": "especialista-yoton#jounin",
 		"nome": "Especialista em Yōton, Jounin",
 		"estilo": "Fiel à arte",
-		"w": 43,
-		"h": 66,
+		"w": 42,
+		"h": 69,
 		"pe": [
-			22,
-			65
+			21,
+			67
 		],
-		"altura": 64
+		"altura": 65
 	},
 	{
 		"id": "especialista-yoton--nivel-anbu",
@@ -1038,6 +1155,84 @@
 			66
 		],
 		"altura": 65
+	},
+	{
+		"id": "espiao-infiltrado--genin",
+		"verbete": "espiao-infiltrado#genin",
+		"nome": "Espião infiltrado, Genin",
+		"estilo": "Fiel à arte",
+		"w": 47,
+		"h": 67,
+		"pe": [
+			22,
+			64
+		],
+		"altura": 62
+	},
+	{
+		"id": "espiao-infiltrado--chunin",
+		"verbete": "espiao-infiltrado#chunin",
+		"nome": "Espião infiltrado, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 54,
+		"h": 64,
+		"pe": [
+			27,
+			62
+		],
+		"altura": 60
+	},
+	{
+		"id": "espiao-infiltrado--jounin",
+		"verbete": "espiao-infiltrado#jounin",
+		"nome": "Espião infiltrado, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 60,
+		"h": 68,
+		"pe": [
+			30,
+			67
+		],
+		"altura": 64
+	},
+	{
+		"id": "espiao-infiltrado--nivel-anbu",
+		"verbete": "espiao-infiltrado#nivel-anbu",
+		"nome": "Espião infiltrado, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 68,
+		"h": 65,
+		"pe": [
+			34,
+			63
+		],
+		"altura": 62
+	},
+	{
+		"id": "espiao-infiltrado--nivel-kage",
+		"verbete": "espiao-infiltrado#nivel-kage",
+		"nome": "Espião infiltrado, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 43,
+		"h": 64,
+		"pe": [
+			21,
+			63
+		],
+		"altura": 62
+	},
+	{
+		"id": "guarda-costas--guarda-costas",
+		"verbete": "guarda-costas#guarda-costas",
+		"nome": "Guarda-costas, Guarda-costas",
+		"estilo": "Fiel à arte",
+		"w": 43,
+		"h": 72,
+		"pe": [
+			21,
+			70
+		],
+		"altura": 67
 	},
 	{
 		"id": "cla-hozuki--genin",
@@ -1170,6 +1365,71 @@
 		"altura": 63
 	},
 	{
+		"id": "ilusionista--genin",
+		"verbete": "ilusionista#genin",
+		"nome": "Ilusionista, Genin",
+		"estilo": "Fiel à arte",
+		"w": 41,
+		"h": 65,
+		"pe": [
+			21,
+			64
+		],
+		"altura": 62
+	},
+	{
+		"id": "ilusionista--chunin",
+		"verbete": "ilusionista#chunin",
+		"nome": "Ilusionista, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 37,
+		"h": 64,
+		"pe": [
+			18,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "ilusionista--jounin",
+		"verbete": "ilusionista#jounin",
+		"nome": "Ilusionista, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 52,
+		"h": 64,
+		"pe": [
+			26,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "ilusionista--nivel-anbu",
+		"verbete": "ilusionista#nivel-anbu",
+		"nome": "Ilusionista, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 56,
+		"h": 68,
+		"pe": [
+			28,
+			67
+		],
+		"altura": 65
+	},
+	{
+		"id": "ilusionista--nivel-kage",
+		"verbete": "ilusionista#nivel-kage",
+		"nome": "Ilusionista, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 66,
+		"h": 58,
+		"pe": [
+			33,
+			57
+		],
+		"altura": 55
+	},
+	{
 		"id": "cla-inuzuka--genin",
 		"verbete": "cla-inuzuka#genin",
 		"nome": "Inuzuka, Genin",
@@ -1233,6 +1493,45 @@
 			70
 		],
 		"altura": 68
+	},
+	{
+		"id": "jinchuuriki--chakra-vazando",
+		"verbete": "jinchuuriki#chakra-vazando",
+		"nome": "Jinchuuriki, Chakra vazando",
+		"estilo": "Fiel à arte",
+		"w": 47,
+		"h": 69,
+		"pe": [
+			23,
+			68
+		],
+		"altura": 67
+	},
+	{
+		"id": "jinchuuriki--manto-de-uma-cauda",
+		"verbete": "jinchuuriki#manto-de-uma-cauda",
+		"nome": "Jinchuuriki, Manto de uma cauda",
+		"estilo": "Fiel à arte",
+		"w": 67,
+		"h": 68,
+		"pe": [
+			33,
+			65
+		],
+		"altura": 57
+	},
+	{
+		"id": "jinchuuriki--manto-de-varias-caudas",
+		"verbete": "jinchuuriki#manto-de-varias-caudas",
+		"nome": "Jinchuuriki, Manto de várias caudas",
+		"estilo": "Fiel à arte",
+		"w": 78,
+		"h": 76,
+		"pe": [
+			38,
+			72
+		],
+		"altura": 71
 	},
 	{
 		"id": "cla-kaguya--genin",
@@ -1300,6 +1599,279 @@
 		"altura": 67
 	},
 	{
+		"id": "marionetista--genin",
+		"verbete": "marionetista#genin",
+		"nome": "Marionetista, Genin",
+		"estilo": "Fiel à arte",
+		"w": 50,
+		"h": 64,
+		"pe": [
+			25,
+			63
+		],
+		"altura": 62
+	},
+	{
+		"id": "marionetista--chunin",
+		"verbete": "marionetista#chunin",
+		"nome": "Marionetista, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 74,
+		"h": 68,
+		"pe": [
+			37,
+			66
+		],
+		"altura": 63
+	},
+	{
+		"id": "marionetista--jounin",
+		"verbete": "marionetista#jounin",
+		"nome": "Marionetista, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 64,
+		"h": 68,
+		"pe": [
+			31,
+			66
+		],
+		"altura": 63
+	},
+	{
+		"id": "marionetista--nivel-anbu",
+		"verbete": "marionetista#nivel-anbu",
+		"nome": "Marionetista, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 49,
+		"h": 65,
+		"pe": [
+			23,
+			63
+		],
+		"altura": 62
+	},
+	{
+		"id": "marionetista--nivel-kage",
+		"verbete": "marionetista#nivel-kage",
+		"nome": "Marionetista, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 63,
+		"h": 64,
+		"pe": [
+			32,
+			62
+		],
+		"altura": 61
+	},
+	{
+		"id": "mestre-de-armas--genin",
+		"verbete": "mestre-de-armas#genin",
+		"nome": "Mestre de armas, Genin",
+		"estilo": "Fiel à arte",
+		"w": 68,
+		"h": 64,
+		"pe": [
+			34,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "mestre-de-armas--chunin",
+		"verbete": "mestre-de-armas#chunin",
+		"nome": "Mestre de armas, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 66,
+		"h": 64,
+		"pe": [
+			33,
+			63
+		],
+		"altura": 60
+	},
+	{
+		"id": "mestre-de-armas--jounin",
+		"verbete": "mestre-de-armas#jounin",
+		"nome": "Mestre de armas, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 60,
+		"h": 72,
+		"pe": [
+			29,
+			69
+		],
+		"altura": 65
+	},
+	{
+		"id": "mestre-de-armas--nivel-anbu",
+		"verbete": "mestre-de-armas#nivel-anbu",
+		"nome": "Mestre de armas, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 75,
+		"h": 69,
+		"pe": [
+			37,
+			68
+		],
+		"altura": 67
+	},
+	{
+		"id": "mestre-de-armas--nivel-kage",
+		"verbete": "mestre-de-armas#nivel-kage",
+		"nome": "Mestre de armas, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 79,
+		"h": 71,
+		"pe": [
+			39,
+			69
+		],
+		"altura": 61
+	},
+	{
+		"id": "mestre-de-taijutsu--genin",
+		"verbete": "mestre-de-taijutsu#genin",
+		"nome": "Mestre de taijutsu, Genin",
+		"estilo": "Fiel à arte",
+		"w": 56,
+		"h": 65,
+		"pe": [
+			28,
+			64
+		],
+		"altura": 62
+	},
+	{
+		"id": "mestre-de-taijutsu--chunin",
+		"verbete": "mestre-de-taijutsu#chunin",
+		"nome": "Mestre de taijutsu, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 68,
+		"h": 73,
+		"pe": [
+			33,
+			70
+		],
+		"altura": 66
+	},
+	{
+		"id": "mestre-de-taijutsu--jounin",
+		"verbete": "mestre-de-taijutsu#jounin",
+		"nome": "Mestre de taijutsu, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 50,
+		"h": 68,
+		"pe": [
+			25,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "mestre-de-taijutsu--nivel-anbu",
+		"verbete": "mestre-de-taijutsu#nivel-anbu",
+		"nome": "Mestre de taijutsu, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 69,
+		"h": 73,
+		"pe": [
+			34,
+			71
+		],
+		"altura": 70
+	},
+	{
+		"id": "mestre-de-taijutsu--nivel-kage",
+		"verbete": "mestre-de-taijutsu#nivel-kage",
+		"nome": "Mestre de taijutsu, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 64,
+		"h": 70,
+		"pe": [
+			32,
+			68
+		],
+		"altura": 62
+	},
+	{
+		"id": "mestre-do-selo--genin",
+		"verbete": "mestre-do-selo#genin",
+		"nome": "Mestre do selo, Genin",
+		"estilo": "Fiel à arte",
+		"w": 58,
+		"h": 71,
+		"pe": [
+			28,
+			69
+		],
+		"altura": 68
+	},
+	{
+		"id": "mestre-do-selo--chunin",
+		"verbete": "mestre-do-selo#chunin",
+		"nome": "Mestre do selo, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 72,
+		"h": 74,
+		"pe": [
+			37,
+			73
+		],
+		"altura": 71
+	},
+	{
+		"id": "mestre-do-selo--jounin",
+		"verbete": "mestre-do-selo#jounin",
+		"nome": "Mestre do selo, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 66,
+		"h": 65,
+		"pe": [
+			33,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "mestre-do-selo--nivel-anbu",
+		"verbete": "mestre-do-selo#nivel-anbu",
+		"nome": "Mestre do selo, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 44,
+		"h": 70,
+		"pe": [
+			22,
+			69
+		],
+		"altura": 61
+	},
+	{
+		"id": "mestre-do-selo--nivel-kage",
+		"verbete": "mestre-do-selo#nivel-kage",
+		"nome": "Mestre do selo, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 57,
+		"h": 65,
+		"pe": [
+			26,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "monge-guerreiro--monge-guerreiro",
+		"verbete": "monge-guerreiro#monge-guerreiro",
+		"nome": "Monge guerreiro, Monge guerreiro",
+		"estilo": "Fiel à arte",
+		"w": 49,
+		"h": 72,
+		"pe": [
+			24,
+			70
+		],
+		"altura": 61
+	},
+	{
 		"id": "cla-nara--genin",
 		"verbete": "cla-nara#genin",
 		"nome": "Nara, Genin",
@@ -1363,6 +1935,253 @@
 			74
 		],
 		"altura": 73
+	},
+	{
+		"id": "ninja-medico--genin",
+		"verbete": "ninja-medico#genin",
+		"nome": "Ninja médico de campo, Genin",
+		"estilo": "Fiel à arte",
+		"w": 39,
+		"h": 66,
+		"pe": [
+			19,
+			65
+		],
+		"altura": 63
+	},
+	{
+		"id": "ninja-medico--chunin",
+		"verbete": "ninja-medico#chunin",
+		"nome": "Ninja médico de campo, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 51,
+		"h": 65,
+		"pe": [
+			27,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "ninja-medico--jounin",
+		"verbete": "ninja-medico#jounin",
+		"nome": "Ninja médico de campo, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 47,
+		"h": 68,
+		"pe": [
+			23,
+			65
+		],
+		"altura": 63
+	},
+	{
+		"id": "ninja-medico--nivel-anbu",
+		"verbete": "ninja-medico#nivel-anbu",
+		"nome": "Ninja médico de campo, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 79,
+		"h": 66,
+		"pe": [
+			39,
+			56
+		],
+		"altura": 53
+	},
+	{
+		"id": "ninja-medico--nivel-kage",
+		"verbete": "ninja-medico#nivel-kage",
+		"nome": "Ninja médico de campo, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 54,
+		"h": 66,
+		"pe": [
+			26,
+			62
+		],
+		"altura": 61
+	},
+	{
+		"id": "ninja-renegado--genin",
+		"verbete": "ninja-renegado#genin",
+		"nome": "Ninja renegado, Genin",
+		"estilo": "Fiel à arte",
+		"w": 44,
+		"h": 65,
+		"pe": [
+			22,
+			64
+		],
+		"altura": 63
+	},
+	{
+		"id": "ninja-renegado--chunin",
+		"verbete": "ninja-renegado#chunin",
+		"nome": "Ninja renegado, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 41,
+		"h": 64,
+		"pe": [
+			20,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "ninja-renegado--jounin",
+		"verbete": "ninja-renegado#jounin",
+		"nome": "Ninja renegado, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 65,
+		"h": 63,
+		"pe": [
+			31,
+			62
+		],
+		"altura": 61
+	},
+	{
+		"id": "ninja-renegado--nivel-anbu",
+		"verbete": "ninja-renegado#nivel-anbu",
+		"nome": "Ninja renegado, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"w": 52,
+		"h": 64,
+		"pe": [
+			26,
+			63
+		],
+		"altura": 60
+	},
+	{
+		"id": "ninja-renegado--nivel-kage",
+		"verbete": "ninja-renegado#nivel-kage",
+		"nome": "Ninja renegado, Nível Kage",
+		"estilo": "Fiel à arte",
+		"w": 65,
+		"h": 68,
+		"pe": [
+			30,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "organizacao-clandestina--informante",
+		"verbete": "organizacao-clandestina#informante",
+		"nome": "Organização clandestina, Informante",
+		"estilo": "Fiel à arte",
+		"w": 45,
+		"h": 66,
+		"pe": [
+			23,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "organizacao-clandestina--recruta",
+		"verbete": "organizacao-clandestina#recruta",
+		"nome": "Organização clandestina, Recruta",
+		"estilo": "Fiel à arte",
+		"w": 39,
+		"h": 65,
+		"pe": [
+			19,
+			64
+		],
+		"altura": 61
+	},
+	{
+		"id": "organizacao-clandestina--membro",
+		"verbete": "organizacao-clandestina#membro",
+		"nome": "Organização clandestina, Membro",
+		"estilo": "Fiel à arte",
+		"w": 49,
+		"h": 68,
+		"pe": [
+			25,
+			66
+		],
+		"altura": 63
+	},
+	{
+		"id": "organizacao-clandestina--executor",
+		"verbete": "organizacao-clandestina#executor",
+		"nome": "Organização clandestina, Executor",
+		"estilo": "Fiel à arte",
+		"w": 59,
+		"h": 68,
+		"pe": [
+			30,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "organizacao-clandestina--lider",
+		"verbete": "organizacao-clandestina#lider",
+		"nome": "Organização clandestina, Líder",
+		"estilo": "Fiel à arte",
+		"w": 46,
+		"h": 67,
+		"pe": [
+			23,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "portador-da-marca--marca-adormecida",
+		"verbete": "portador-da-marca#marca-adormecida",
+		"nome": "Portador da marca amaldiçoada, Marca adormecida",
+		"estilo": "Fiel à arte",
+		"w": 36,
+		"h": 65,
+		"pe": [
+			18,
+			64
+		],
+		"altura": 61
+	},
+	{
+		"id": "portador-da-marca--marca-desperta",
+		"verbete": "portador-da-marca#marca-desperta",
+		"nome": "Portador da marca amaldiçoada, Marca desperta",
+		"estilo": "Fiel à arte",
+		"w": 39,
+		"h": 65,
+		"pe": [
+			19,
+			64
+		],
+		"altura": 61
+	},
+	{
+		"id": "portador-da-marca--segunda-forma",
+		"verbete": "portador-da-marca#segunda-forma",
+		"nome": "Portador da marca amaldiçoada, Segunda forma",
+		"estilo": "Fiel à arte",
+		"w": 80,
+		"h": 67,
+		"pe": [
+			40,
+			66
+		],
+		"altura": 62
+	},
+	{
+		"id": "ronin-mercenario--ronin-mercenario",
+		"verbete": "ronin-mercenario#ronin-mercenario",
+		"nome": "Rōnin mercenário, Rōnin mercenário",
+		"estilo": "Fiel à arte",
+		"w": 53,
+		"h": 66,
+		"pe": [
+			26,
+			65
+		],
+		"altura": 63
 	},
 	{
 		"id": "cla-sabaku--genin",
@@ -1430,6 +2249,19 @@
 		"altura": 65
 	},
 	{
+		"id": "samurai-do-pais-do-ferro--samurai-do-pais-do-ferro",
+		"verbete": "samurai-do-pais-do-ferro#samurai-do-pais-do-ferro",
+		"nome": "Samurai do País do Ferro, Samurai do País do Ferro",
+		"estilo": "Fiel à arte",
+		"w": 66,
+		"h": 72,
+		"pe": [
+			33,
+			70
+		],
+		"altura": 68
+	},
+	{
 		"id": "cla-senju--genin",
 		"verbete": "cla-senju#genin",
 		"nome": "Senju, Genin",
@@ -1493,6 +2325,565 @@
 			73
 		],
 		"altura": 72
+	},
+	{
+		"id": "sennin--aprendiz-de-senjutsu",
+		"verbete": "sennin#aprendiz-de-senjutsu",
+		"nome": "Sennin, Aprendiz de senjutsu",
+		"estilo": "Fiel à arte",
+		"w": 37,
+		"h": 67,
+		"pe": [
+			18,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "sennin--modo-sennin",
+		"verbete": "sennin#modo-sennin",
+		"nome": "Sennin, Modo Sennin",
+		"estilo": "Fiel à arte",
+		"w": 56,
+		"h": 66,
+		"pe": [
+			28,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "sennin--sabio",
+		"verbete": "sennin#sabio",
+		"nome": "Sennin, Sábio",
+		"estilo": "Fiel à arte",
+		"w": 53,
+		"h": 65,
+		"pe": [
+			26,
+			64
+		],
+		"altura": 63
+	},
+	{
+		"id": "shinobi-de-ame--genin",
+		"verbete": "shinobi-de-ame#genin",
+		"nome": "Shinobi de Ame, Genin",
+		"estilo": "Fiel à arte",
+		"w": 45,
+		"h": 66,
+		"pe": [
+			22,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "shinobi-de-ame--chunin",
+		"verbete": "shinobi-de-ame#chunin",
+		"nome": "Shinobi de Ame, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 60,
+		"h": 71,
+		"pe": [
+			31,
+			70
+		],
+		"altura": 69
+	},
+	{
+		"id": "shinobi-de-ame--jounin",
+		"verbete": "shinobi-de-ame#jounin",
+		"nome": "Shinobi de Ame, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 48,
+		"h": 65,
+		"pe": [
+			24,
+			64
+		],
+		"altura": 61
+	},
+	{
+		"id": "shinobi-de-ame--vigias-da-chuva",
+		"verbete": "shinobi-de-ame#vigias-da-chuva",
+		"nome": "Shinobi de Ame, Vigias da Chuva",
+		"estilo": "Fiel à arte",
+		"w": 56,
+		"h": 67,
+		"pe": [
+			28,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "shinobi-de-ame--lider-da-chuva",
+		"verbete": "shinobi-de-ame#lider-da-chuva",
+		"nome": "Shinobi de Ame, Líder da Chuva",
+		"estilo": "Fiel à arte",
+		"w": 71,
+		"h": 73,
+		"pe": [
+			33,
+			69
+		],
+		"altura": 68
+	},
+	{
+		"id": "shinobi-de-iwa--genin",
+		"verbete": "shinobi-de-iwa#genin",
+		"nome": "Shinobi de Iwa, Genin",
+		"estilo": "Fiel à arte",
+		"w": 58,
+		"h": 69,
+		"pe": [
+			29,
+			67
+		],
+		"altura": 66
+	},
+	{
+		"id": "shinobi-de-iwa--chunin",
+		"verbete": "shinobi-de-iwa#chunin",
+		"nome": "Shinobi de Iwa, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 51,
+		"h": 66,
+		"pe": [
+			26,
+			64
+		],
+		"altura": 62
+	},
+	{
+		"id": "shinobi-de-iwa--jounin",
+		"verbete": "shinobi-de-iwa#jounin",
+		"nome": "Shinobi de Iwa, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 46,
+		"h": 67,
+		"pe": [
+			22,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "shinobi-de-iwa--corpo-de-explosao",
+		"verbete": "shinobi-de-iwa#corpo-de-explosao",
+		"nome": "Shinobi de Iwa, Corpo de Explosão",
+		"estilo": "Fiel à arte",
+		"w": 57,
+		"h": 65,
+		"pe": [
+			28,
+			64
+		],
+		"altura": 62
+	},
+	{
+		"id": "shinobi-de-iwa--tsuchikage",
+		"verbete": "shinobi-de-iwa#tsuchikage",
+		"nome": "Shinobi de Iwa, Tsuchikage",
+		"estilo": "Fiel à arte",
+		"w": 64,
+		"h": 67,
+		"pe": [
+			32,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "shinobi-de-kiri--genin",
+		"verbete": "shinobi-de-kiri#genin",
+		"nome": "Shinobi de Kiri, Genin",
+		"estilo": "Fiel à arte",
+		"w": 47,
+		"h": 67,
+		"pe": [
+			23,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "shinobi-de-kiri--chunin",
+		"verbete": "shinobi-de-kiri#chunin",
+		"nome": "Shinobi de Kiri, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 48,
+		"h": 69,
+		"pe": [
+			24,
+			67
+		],
+		"altura": 66
+	},
+	{
+		"id": "shinobi-de-kiri--jounin",
+		"verbete": "shinobi-de-kiri#jounin",
+		"nome": "Shinobi de Kiri, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 66,
+		"h": 70,
+		"pe": [
+			31,
+			67
+		],
+		"altura": 59
+	},
+	{
+		"id": "shinobi-de-kiri--oinin",
+		"verbete": "shinobi-de-kiri#oinin",
+		"nome": "Shinobi de Kiri, Oinin",
+		"estilo": "Fiel à arte",
+		"w": 50,
+		"h": 65,
+		"pe": [
+			25,
+			64
+		],
+		"altura": 61
+	},
+	{
+		"id": "shinobi-de-kiri--mizukage",
+		"verbete": "shinobi-de-kiri#mizukage",
+		"nome": "Shinobi de Kiri, Mizukage",
+		"estilo": "Fiel à arte",
+		"w": 54,
+		"h": 69,
+		"pe": [
+			26,
+			67
+		],
+		"altura": 66
+	},
+	{
+		"id": "shinobi-de-konoha--genin",
+		"verbete": "shinobi-de-konoha#genin",
+		"nome": "Shinobi de Konoha, Genin",
+		"estilo": "Fiel à arte",
+		"w": 54,
+		"h": 66,
+		"pe": [
+			27,
+			65
+		],
+		"altura": 62
+	},
+	{
+		"id": "shinobi-de-konoha--chunin",
+		"verbete": "shinobi-de-konoha#chunin",
+		"nome": "Shinobi de Konoha, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 58,
+		"h": 67,
+		"pe": [
+			28,
+			66
+		],
+		"altura": 63
+	},
+	{
+		"id": "shinobi-de-konoha--jounin",
+		"verbete": "shinobi-de-konoha#jounin",
+		"nome": "Shinobi de Konoha, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 48,
+		"h": 65,
+		"pe": [
+			24,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "shinobi-de-konoha--anbu",
+		"verbete": "shinobi-de-konoha#anbu",
+		"nome": "Shinobi de Konoha, Anbu",
+		"estilo": "Fiel à arte",
+		"w": 69,
+		"h": 66,
+		"pe": [
+			34,
+			65
+		],
+		"altura": 63
+	},
+	{
+		"id": "shinobi-de-konoha--hokage",
+		"verbete": "shinobi-de-konoha#hokage",
+		"nome": "Shinobi de Konoha, Hokage",
+		"estilo": "Fiel à arte",
+		"w": 52,
+		"h": 70,
+		"pe": [
+			26,
+			69
+		],
+		"altura": 68
+	},
+	{
+		"id": "shinobi-de-kumo--genin",
+		"verbete": "shinobi-de-kumo#genin",
+		"nome": "Shinobi de Kumo, Genin",
+		"estilo": "Fiel à arte",
+		"w": 38,
+		"h": 66,
+		"pe": [
+			19,
+			64
+		],
+		"altura": 63
+	},
+	{
+		"id": "shinobi-de-kumo--chunin",
+		"verbete": "shinobi-de-kumo#chunin",
+		"nome": "Shinobi de Kumo, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 41,
+		"h": 64,
+		"pe": [
+			21,
+			63
+		],
+		"altura": 62
+	},
+	{
+		"id": "shinobi-de-kumo--jounin",
+		"verbete": "shinobi-de-kumo#jounin",
+		"nome": "Shinobi de Kumo, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 57,
+		"h": 65,
+		"pe": [
+			27,
+			64
+		],
+		"altura": 63
+	},
+	{
+		"id": "shinobi-de-kumo--guarda-do-raio",
+		"verbete": "shinobi-de-kumo#guarda-do-raio",
+		"nome": "Shinobi de Kumo, Guarda do Raio",
+		"estilo": "Fiel à arte",
+		"w": 48,
+		"h": 64,
+		"pe": [
+			25,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "shinobi-de-kumo--raikage",
+		"verbete": "shinobi-de-kumo#raikage",
+		"nome": "Shinobi de Kumo, Raikage",
+		"estilo": "Fiel à arte",
+		"w": 63,
+		"h": 75,
+		"pe": [
+			32,
+			73
+		],
+		"altura": 65
+	},
+	{
+		"id": "shinobi-de-oto--genin",
+		"verbete": "shinobi-de-oto#genin",
+		"nome": "Shinobi de Oto, Genin",
+		"estilo": "Fiel à arte",
+		"w": 60,
+		"h": 67,
+		"pe": [
+			31,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "shinobi-de-oto--chunin",
+		"verbete": "shinobi-de-oto#chunin",
+		"nome": "Shinobi de Oto, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 52,
+		"h": 63,
+		"pe": [
+			25,
+			62
+		],
+		"altura": 60
+	},
+	{
+		"id": "shinobi-de-oto--jounin",
+		"verbete": "shinobi-de-oto#jounin",
+		"nome": "Shinobi de Oto, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 63,
+		"h": 66,
+		"pe": [
+			30,
+			65
+		],
+		"altura": 62
+	},
+	{
+		"id": "shinobi-de-oto--guarda-do-som",
+		"verbete": "shinobi-de-oto#guarda-do-som",
+		"nome": "Shinobi de Oto, Guarda do Som",
+		"estilo": "Fiel à arte",
+		"w": 46,
+		"h": 65,
+		"pe": [
+			23,
+			64
+		],
+		"altura": 63
+	},
+	{
+		"id": "shinobi-de-oto--otokage",
+		"verbete": "shinobi-de-oto#otokage",
+		"nome": "Shinobi de Oto, Otokage",
+		"estilo": "Fiel à arte",
+		"w": 46,
+		"h": 66,
+		"pe": [
+			22,
+			64
+		],
+		"altura": 63
+	},
+	{
+		"id": "shinobi-de-suna--genin",
+		"verbete": "shinobi-de-suna#genin",
+		"nome": "Shinobi de Suna, Genin",
+		"estilo": "Fiel à arte",
+		"w": 38,
+		"h": 66,
+		"pe": [
+			18,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "shinobi-de-suna--chunin",
+		"verbete": "shinobi-de-suna#chunin",
+		"nome": "Shinobi de Suna, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 63,
+		"h": 70,
+		"pe": [
+			32,
+			69
+		],
+		"altura": 67
+	},
+	{
+		"id": "shinobi-de-suna--jounin",
+		"verbete": "shinobi-de-suna#jounin",
+		"nome": "Shinobi de Suna, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 62,
+		"h": 68,
+		"pe": [
+			31,
+			65
+		],
+		"altura": 63
+	},
+	{
+		"id": "shinobi-de-suna--escorpioes-do-deserto",
+		"verbete": "shinobi-de-suna#escorpioes-do-deserto",
+		"nome": "Shinobi de Suna, Escorpiões do Deserto",
+		"estilo": "Fiel à arte",
+		"w": 71,
+		"h": 69,
+		"pe": [
+			35,
+			68
+		],
+		"altura": 67
+	},
+	{
+		"id": "shinobi-de-suna--kazekage",
+		"verbete": "shinobi-de-suna#kazekage",
+		"nome": "Shinobi de Suna, Kazekage",
+		"estilo": "Fiel à arte",
+		"w": 52,
+		"h": 70,
+		"pe": [
+			26,
+			68
+		],
+		"altura": 67
+	},
+	{
+		"id": "shinobi-de-taki--genin",
+		"verbete": "shinobi-de-taki#genin",
+		"nome": "Shinobi de Taki, Genin",
+		"estilo": "Fiel à arte",
+		"w": 63,
+		"h": 70,
+		"pe": [
+			31,
+			67
+		],
+		"altura": 65
+	},
+	{
+		"id": "shinobi-de-taki--chunin",
+		"verbete": "shinobi-de-taki#chunin",
+		"nome": "Shinobi de Taki, Chunin",
+		"estilo": "Fiel à arte",
+		"w": 49,
+		"h": 66,
+		"pe": [
+			24,
+			64
+		],
+		"altura": 61
+	},
+	{
+		"id": "shinobi-de-taki--jounin",
+		"verbete": "shinobi-de-taki#jounin",
+		"nome": "Shinobi de Taki, Jounin",
+		"estilo": "Fiel à arte",
+		"w": 75,
+		"h": 74,
+		"pe": [
+			37,
+			69
+		],
+		"altura": 68
+	},
+	{
+		"id": "shinobi-de-taki--guardioes-da-agua-do-heroi",
+		"verbete": "shinobi-de-taki#guardioes-da-agua-do-heroi",
+		"nome": "Shinobi de Taki, Guardiões da Água do Herói",
+		"estilo": "Fiel à arte",
+		"w": 49,
+		"h": 73,
+		"pe": [
+			24,
+			71
+		],
+		"altura": 64
+	},
+	{
+		"id": "shinobi-de-taki--lider-da-cachoeira",
+		"verbete": "shinobi-de-taki#lider-da-cachoeira",
+		"nome": "Shinobi de Taki, Líder da Cachoeira",
+		"estilo": "Fiel à arte",
+		"w": 48,
+		"h": 65,
+		"pe": [
+			24,
+			64
+		],
+		"altura": 62
 	},
 	{
 		"id": "cla-uchiha--genin",

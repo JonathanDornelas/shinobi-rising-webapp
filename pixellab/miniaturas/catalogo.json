@@ -927,7 +927,7 @@
 		"verbete": "especialista-yoton#jounin",
 		"nome": "Especialista em Yōton, Jounin",
 		"estilo": "Fiel à arte",
-		"personagem": "a2a487bf-42db-45fd-a7b2-da6b0b6368be"
+		"personagem": "d529b4a9-027d-4ae1-a2d6-f866b8945861"
 	},
 	{
 		"id": "especialista-yoton--nivel-anbu",
@@ -942,5 +942,754 @@
 		"nome": "Especialista em Yōton, Nível Kage",
 		"estilo": "Fiel à arte",
 		"personagem": "faddb91a-ab04-4641-8a79-e514cf96fa48"
+	},
+	{
+		"id": "shinobi-de-ame--vigias-da-chuva",
+		"verbete": "shinobi-de-ame#vigias-da-chuva",
+		"nome": "Shinobi de Ame, Vigias da Chuva",
+		"estilo": "Fiel à arte",
+		"personagem": "155cb804-41c8-4174-a544-09d99db81793"
+	},
+	{
+		"id": "shinobi-de-ame--chunin",
+		"verbete": "shinobi-de-ame#chunin",
+		"nome": "Shinobi de Ame, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "001eed63-024d-40d7-9a18-f47926b51579"
+	},
+	{
+		"id": "shinobi-de-ame--genin",
+		"verbete": "shinobi-de-ame#genin",
+		"nome": "Shinobi de Ame, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "de70f087-8262-4346-9f16-68f69daf3e4a"
+	},
+	{
+		"id": "shinobi-de-ame--jounin",
+		"verbete": "shinobi-de-ame#jounin",
+		"nome": "Shinobi de Ame, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "cce80314-af05-4b46-bd5c-99f59921cae9"
+	},
+	{
+		"id": "shinobi-de-ame--lider-da-chuva",
+		"verbete": "shinobi-de-ame#lider-da-chuva",
+		"nome": "Shinobi de Ame, Líder da Chuva",
+		"estilo": "Fiel à arte",
+		"personagem": "e06d0051-1d09-495c-bdef-9136cc93008c"
+	},
+	{
+		"id": "shinobi-de-iwa--genin",
+		"verbete": "shinobi-de-iwa#genin",
+		"nome": "Shinobi de Iwa, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "158a09cd-1ab7-41d8-8fc1-26e63b301eab"
+	},
+	{
+		"id": "shinobi-de-iwa--jounin",
+		"verbete": "shinobi-de-iwa#jounin",
+		"nome": "Shinobi de Iwa, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "450c5e4f-a1d3-4203-9238-9f37446993a5"
+	},
+	{
+		"id": "shinobi-de-iwa--chunin",
+		"verbete": "shinobi-de-iwa#chunin",
+		"nome": "Shinobi de Iwa, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "1285b27d-aecf-4685-94ee-258d562a0ba3"
+	},
+	{
+		"id": "shinobi-de-iwa--corpo-de-explosao",
+		"verbete": "shinobi-de-iwa#corpo-de-explosao",
+		"nome": "Shinobi de Iwa, Corpo de Explosão",
+		"estilo": "Fiel à arte",
+		"personagem": "a80e9d36-d580-49e7-8c0a-e1a7c452ec83"
+	},
+	{
+		"id": "shinobi-de-kiri--chunin",
+		"verbete": "shinobi-de-kiri#chunin",
+		"nome": "Shinobi de Kiri, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "16087ba0-9c0c-41bb-9fe9-e3fbb4f23bcc"
+	},
+	{
+		"id": "shinobi-de-iwa--tsuchikage",
+		"verbete": "shinobi-de-iwa#tsuchikage",
+		"nome": "Shinobi de Iwa, Tsuchikage",
+		"estilo": "Fiel à arte",
+		"personagem": "099f0e6f-238c-4c66-895e-5e3e96225cfb"
+	},
+	{
+		"id": "shinobi-de-kiri--genin",
+		"verbete": "shinobi-de-kiri#genin",
+		"nome": "Shinobi de Kiri, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "34d492d5-c711-4770-8d5b-6810fdb37599"
+	},
+	{
+		"id": "shinobi-de-kiri--jounin",
+		"verbete": "shinobi-de-kiri#jounin",
+		"nome": "Shinobi de Kiri, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "491741d0-cf89-4de5-b6f9-dabcf319e488"
+	},
+	{
+		"id": "shinobi-de-kiri--oinin",
+		"verbete": "shinobi-de-kiri#oinin",
+		"nome": "Shinobi de Kiri, Oinin",
+		"estilo": "Fiel à arte",
+		"personagem": "e0e45f82-717c-428c-af54-5bb1c7504753"
+	},
+	{
+		"id": "shinobi-de-konoha--genin",
+		"verbete": "shinobi-de-konoha#genin",
+		"nome": "Shinobi de Konoha, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "02339f70-6f69-4f0a-adbc-64fe37dbd2a2"
+	},
+	{
+		"id": "shinobi-de-kiri--mizukage",
+		"verbete": "shinobi-de-kiri#mizukage",
+		"nome": "Shinobi de Kiri, Mizukage",
+		"estilo": "Fiel à arte",
+		"personagem": "3bbdea60-f795-4780-a07d-3af141ffc42e"
+	},
+	{
+		"id": "shinobi-de-konoha--chunin",
+		"verbete": "shinobi-de-konoha#chunin",
+		"nome": "Shinobi de Konoha, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "790a708b-92ac-4c30-8d8b-6bf31afaaaa0"
+	},
+	{
+		"id": "shinobi-de-konoha--hokage",
+		"verbete": "shinobi-de-konoha#hokage",
+		"nome": "Shinobi de Konoha, Hokage",
+		"estilo": "Fiel à arte",
+		"personagem": "cbfd0e3f-8ce3-4613-aec5-d93213b69c6a"
+	},
+	{
+		"id": "shinobi-de-konoha--jounin",
+		"verbete": "shinobi-de-konoha#jounin",
+		"nome": "Shinobi de Konoha, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "30a2edd3-d222-4ddf-b2c7-571b4a00561e"
+	},
+	{
+		"id": "shinobi-de-konoha--anbu",
+		"verbete": "shinobi-de-konoha#anbu",
+		"nome": "Shinobi de Konoha, Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "6ff42b90-da73-429d-8e06-b44a3a50167f"
+	},
+	{
+		"id": "shinobi-de-kumo--guarda-do-raio",
+		"verbete": "shinobi-de-kumo#guarda-do-raio",
+		"nome": "Shinobi de Kumo, Guarda do Raio",
+		"estilo": "Fiel à arte",
+		"personagem": "8cf3631a-f178-45a2-a9db-b8bb410a4fce"
+	},
+	{
+		"id": "shinobi-de-kumo--chunin",
+		"verbete": "shinobi-de-kumo#chunin",
+		"nome": "Shinobi de Kumo, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "6d1b1207-fab8-4e56-bf70-ff34449b99f0"
+	},
+	{
+		"id": "shinobi-de-kumo--jounin",
+		"verbete": "shinobi-de-kumo#jounin",
+		"nome": "Shinobi de Kumo, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "a1d0b28d-ac47-4caf-bf1a-2801da44bed8"
+	},
+	{
+		"id": "shinobi-de-kumo--genin",
+		"verbete": "shinobi-de-kumo#genin",
+		"nome": "Shinobi de Kumo, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "5586992c-28a9-4e35-8e50-9b96eca14ab5"
+	},
+	{
+		"id": "shinobi-de-kumo--raikage",
+		"verbete": "shinobi-de-kumo#raikage",
+		"nome": "Shinobi de Kumo, Raikage",
+		"estilo": "Fiel à arte",
+		"personagem": "4d78f59a-93de-4099-87b6-f5b039059c56"
+	},
+	{
+		"id": "shinobi-de-oto--genin",
+		"verbete": "shinobi-de-oto#genin",
+		"nome": "Shinobi de Oto, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "b241a82a-023b-4d60-8893-96eaec3a2c23"
+	},
+	{
+		"id": "shinobi-de-oto--chunin",
+		"verbete": "shinobi-de-oto#chunin",
+		"nome": "Shinobi de Oto, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "6083d26d-f021-465b-a845-879d525abd1d"
+	},
+	{
+		"id": "shinobi-de-oto--jounin",
+		"verbete": "shinobi-de-oto#jounin",
+		"nome": "Shinobi de Oto, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "eb5e6c6c-ca99-4e37-a432-e1261cceb11f"
+	},
+	{
+		"id": "shinobi-de-oto--guarda-do-som",
+		"verbete": "shinobi-de-oto#guarda-do-som",
+		"nome": "Shinobi de Oto, Guarda do Som",
+		"estilo": "Fiel à arte",
+		"personagem": "14befcf2-20f6-4980-9cd8-b3771b74e4f8"
+	},
+	{
+		"id": "shinobi-de-suna--genin",
+		"verbete": "shinobi-de-suna#genin",
+		"nome": "Shinobi de Suna, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "9a291f53-c2fe-4097-960f-732281db88cd"
+	},
+	{
+		"id": "shinobi-de-suna--chunin",
+		"verbete": "shinobi-de-suna#chunin",
+		"nome": "Shinobi de Suna, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "dbabe4cb-56d7-408b-8619-9807dc4ec36a"
+	},
+	{
+		"id": "shinobi-de-oto--otokage",
+		"verbete": "shinobi-de-oto#otokage",
+		"nome": "Shinobi de Oto, Otokage",
+		"estilo": "Fiel à arte",
+		"personagem": "fe7292ff-e43e-4c23-9aad-4f9a592f9e36"
+	},
+	{
+		"id": "shinobi-de-suna--escorpioes-do-deserto",
+		"verbete": "shinobi-de-suna#escorpioes-do-deserto",
+		"nome": "Shinobi de Suna, Escorpiões do Deserto",
+		"estilo": "Fiel à arte",
+		"personagem": "e4c5fb27-0383-4626-b117-a71b63e6492f"
+	},
+	{
+		"id": "shinobi-de-suna--jounin",
+		"verbete": "shinobi-de-suna#jounin",
+		"nome": "Shinobi de Suna, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "9f983289-1be9-449f-8e99-11b0ae40541e"
+	},
+	{
+		"id": "shinobi-de-taki--genin",
+		"verbete": "shinobi-de-taki#genin",
+		"nome": "Shinobi de Taki, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "e04d78b8-c845-4b39-af1a-263f1eba1a50"
+	},
+	{
+		"id": "shinobi-de-taki--guardioes-da-agua-do-heroi",
+		"verbete": "shinobi-de-taki#guardioes-da-agua-do-heroi",
+		"nome": "Shinobi de Taki, Guardiões da Água do Herói",
+		"estilo": "Fiel à arte",
+		"personagem": "cdaee721-b29c-4657-8f5c-0078a76c47b7"
+	},
+	{
+		"id": "shinobi-de-taki--chunin",
+		"verbete": "shinobi-de-taki#chunin",
+		"nome": "Shinobi de Taki, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "8861137c-35f4-4d54-92bb-b31fcfd51e2f"
+	},
+	{
+		"id": "shinobi-de-taki--jounin",
+		"verbete": "shinobi-de-taki#jounin",
+		"nome": "Shinobi de Taki, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "ef250a97-4f5b-41c2-8a9c-aaec46152bed"
+	},
+	{
+		"id": "shinobi-de-taki--lider-da-cachoeira",
+		"verbete": "shinobi-de-taki#lider-da-cachoeira",
+		"nome": "Shinobi de Taki, Líder da Cachoeira",
+		"estilo": "Fiel à arte",
+		"personagem": "5bc5f058-4a36-4265-bccd-6a7cca123b93"
+	},
+	{
+		"id": "bandidos-de-estrada--bandidos-de-estrada",
+		"verbete": "bandidos-de-estrada#bandidos-de-estrada",
+		"nome": "Bandidos de estrada, Bandidos de estrada",
+		"estilo": "Fiel à arte",
+		"personagem": "105b40e1-8aa1-4d81-8ca6-d0af5b332576"
+	},
+	{
+		"id": "cacador-de-recompensas--cacador-de-recompensas",
+		"verbete": "cacador-de-recompensas#cacador-de-recompensas",
+		"nome": "Caçador de recompensas, Caçador de recompensas",
+		"estilo": "Fiel à arte",
+		"personagem": "8f400055-ac37-46fa-ac54-8b0cd7b29247"
+	},
+	{
+		"id": "chefe-de-bandidos--chefe-de-bandidos",
+		"verbete": "chefe-de-bandidos#chefe-de-bandidos",
+		"nome": "Chefe de bandidos, Chefe de bandidos",
+		"estilo": "Fiel à arte",
+		"personagem": "47647fbb-e3ba-47d6-9a93-7eeceefaaa7e"
+	},
+	{
+		"id": "conselheiro--conselheiro-da-vila",
+		"verbete": "conselheiro#conselheiro-da-vila",
+		"nome": "Conselheiro da vila, Conselheiro da vila",
+		"estilo": "Fiel à arte",
+		"personagem": "4857eb3b-a437-48ad-88cf-bbceffe478b1"
+	},
+	{
+		"id": "divisao-das-sombras--agente",
+		"verbete": "divisao-das-sombras#agente",
+		"nome": "Divisão das Sombras, Agente",
+		"estilo": "Fiel à arte",
+		"personagem": "e927f131-a729-47ce-b340-2a092e4308fb"
+	},
+	{
+		"id": "divisao-das-sombras--recruta",
+		"verbete": "divisao-das-sombras#recruta",
+		"nome": "Divisão das Sombras, Recruta",
+		"estilo": "Fiel à arte",
+		"personagem": "e777fe93-5dfc-487d-8590-56c010779582"
+	},
+	{
+		"id": "divisao-das-sombras--operador",
+		"verbete": "divisao-das-sombras#operador",
+		"nome": "Divisão das Sombras, Operador",
+		"estilo": "Fiel à arte",
+		"personagem": "ebdba290-039b-43ca-a017-ab69b4f69bca"
+	},
+	{
+		"id": "divisao-das-sombras--capitao",
+		"verbete": "divisao-das-sombras#capitao",
+		"nome": "Divisão das Sombras, Capitão",
+		"estilo": "Fiel à arte",
+		"personagem": "6250c409-460e-483a-b460-fff8c09f43b8"
+	},
+	{
+		"id": "espiao-infiltrado--genin",
+		"verbete": "espiao-infiltrado#genin",
+		"nome": "Espião infiltrado, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "6786a9ad-5cad-4d41-b4e3-6673a4a6d8cd"
+	},
+	{
+		"id": "espiao-infiltrado--chunin",
+		"verbete": "espiao-infiltrado#chunin",
+		"nome": "Espião infiltrado, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "79aebc1c-15ae-4394-b966-dabe722d1660"
+	},
+	{
+		"id": "espiao-infiltrado--nivel-kage",
+		"verbete": "espiao-infiltrado#nivel-kage",
+		"nome": "Espião infiltrado, Nível Kage",
+		"estilo": "Fiel à arte",
+		"personagem": "984959a2-066b-4a39-886b-8e2da5940d0e"
+	},
+	{
+		"id": "espiao-infiltrado--nivel-anbu",
+		"verbete": "espiao-infiltrado#nivel-anbu",
+		"nome": "Espião infiltrado, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "2c5d5244-81da-497a-8da9-5b0cf239d956"
+	},
+	{
+		"id": "guarda-costas--guarda-costas",
+		"verbete": "guarda-costas#guarda-costas",
+		"nome": "Guarda-costas, Guarda-costas",
+		"estilo": "Fiel à arte",
+		"personagem": "171af5d5-88c1-463c-b84f-055d68f639df"
+	},
+	{
+		"id": "espiao-infiltrado--jounin",
+		"verbete": "espiao-infiltrado#jounin",
+		"nome": "Espião infiltrado, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "d98b64ff-97f6-47ca-a396-b06baf6f3dac"
+	},
+	{
+		"id": "ilusionista--genin",
+		"verbete": "ilusionista#genin",
+		"nome": "Ilusionista, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "f2d003f0-8959-404d-b330-661f984253a3"
+	},
+	{
+		"id": "ilusionista--chunin",
+		"verbete": "ilusionista#chunin",
+		"nome": "Ilusionista, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "0bff69a1-de02-4e95-9804-3e3bdfc8090b"
+	},
+	{
+		"id": "ilusionista--jounin",
+		"verbete": "ilusionista#jounin",
+		"nome": "Ilusionista, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "d787794c-f8bb-48a4-9231-0c4e7dd21f33"
+	},
+	{
+		"id": "ilusionista--nivel-anbu",
+		"verbete": "ilusionista#nivel-anbu",
+		"nome": "Ilusionista, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "1f422055-36e9-48f4-b404-c497fb037232"
+	},
+	{
+		"id": "ilusionista--nivel-kage",
+		"verbete": "ilusionista#nivel-kage",
+		"nome": "Ilusionista, Nível Kage",
+		"estilo": "Fiel à arte",
+		"personagem": "e834ce16-014a-4af4-858d-13d3d5ad68d7"
+	},
+	{
+		"id": "jinchuuriki--chakra-vazando",
+		"verbete": "jinchuuriki#chakra-vazando",
+		"nome": "Jinchuuriki, Chakra vazando",
+		"estilo": "Fiel à arte",
+		"personagem": "0c9bb555-7a58-491a-a507-384813736d0c"
+	},
+	{
+		"id": "jinchuuriki--manto-de-uma-cauda",
+		"verbete": "jinchuuriki#manto-de-uma-cauda",
+		"nome": "Jinchuuriki, Manto de uma cauda",
+		"estilo": "Fiel à arte",
+		"personagem": "a3cb0a4e-647f-4c5e-bdc7-fef7d8131a7f"
+	},
+	{
+		"id": "jinchuuriki--manto-de-varias-caudas",
+		"verbete": "jinchuuriki#manto-de-varias-caudas",
+		"nome": "Jinchuuriki, Manto de várias caudas",
+		"estilo": "Fiel à arte",
+		"personagem": "3407300f-bd15-4c74-9c2c-4bdaf2ad6d5d"
+	},
+	{
+		"id": "marionetista--chunin",
+		"verbete": "marionetista#chunin",
+		"nome": "Marionetista, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "3a99f07f-47ed-42e3-bebb-094c2853e555"
+	},
+	{
+		"id": "marionetista--genin",
+		"verbete": "marionetista#genin",
+		"nome": "Marionetista, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "257a25fe-2bca-44e7-9020-89c914ea128d"
+	},
+	{
+		"id": "marionetista--jounin",
+		"verbete": "marionetista#jounin",
+		"nome": "Marionetista, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "272ac269-ca59-4eb5-ab76-fe3b0b3cd19d"
+	},
+	{
+		"id": "marionetista--nivel-anbu",
+		"verbete": "marionetista#nivel-anbu",
+		"nome": "Marionetista, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "ba7cd96a-652c-448e-826a-a3e4ac6105da"
+	},
+	{
+		"id": "marionetista--nivel-kage",
+		"verbete": "marionetista#nivel-kage",
+		"nome": "Marionetista, Nível Kage",
+		"estilo": "Fiel à arte",
+		"personagem": "4fec9817-1281-4118-ae00-342079ef4ead"
+	},
+	{
+		"id": "mestre-de-armas--chunin",
+		"verbete": "mestre-de-armas#chunin",
+		"nome": "Mestre de armas, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "b1aeec65-ac06-4fce-ac4d-f3f13e259e7d"
+	},
+	{
+		"id": "mestre-de-armas--genin",
+		"verbete": "mestre-de-armas#genin",
+		"nome": "Mestre de armas, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "f161f2d2-6919-4a72-bbd7-3e6ea84306e6"
+	},
+	{
+		"id": "mestre-de-armas--jounin",
+		"verbete": "mestre-de-armas#jounin",
+		"nome": "Mestre de armas, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "9d7efe9c-f59b-418c-843b-70ae16e026ba"
+	},
+	{
+		"id": "mestre-de-armas--nivel-anbu",
+		"verbete": "mestre-de-armas#nivel-anbu",
+		"nome": "Mestre de armas, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "52b0ebcd-00ae-43fa-8526-9b1e3d40f497"
+	},
+	{
+		"id": "mestre-de-armas--nivel-kage",
+		"verbete": "mestre-de-armas#nivel-kage",
+		"nome": "Mestre de armas, Nível Kage",
+		"estilo": "Fiel à arte",
+		"personagem": "07b7c744-e7a9-4721-b49a-c3f6cb7b241b"
+	},
+	{
+		"id": "mestre-de-taijutsu--genin",
+		"verbete": "mestre-de-taijutsu#genin",
+		"nome": "Mestre de taijutsu, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "7ecab934-6475-4603-8821-8845e46da0bd"
+	},
+	{
+		"id": "mestre-de-taijutsu--jounin",
+		"verbete": "mestre-de-taijutsu#jounin",
+		"nome": "Mestre de taijutsu, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "5e1aba45-f502-49af-ab71-bb488efd1c09"
+	},
+	{
+		"id": "mestre-de-taijutsu--chunin",
+		"verbete": "mestre-de-taijutsu#chunin",
+		"nome": "Mestre de taijutsu, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "d069764c-284c-4b58-8937-144b3418c4b4"
+	},
+	{
+		"id": "mestre-de-taijutsu--nivel-anbu",
+		"verbete": "mestre-de-taijutsu#nivel-anbu",
+		"nome": "Mestre de taijutsu, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "508030f3-d4f8-4d7c-b3d8-8a4320427137"
+	},
+	{
+		"id": "mestre-de-taijutsu--nivel-kage",
+		"verbete": "mestre-de-taijutsu#nivel-kage",
+		"nome": "Mestre de taijutsu, Nível Kage",
+		"estilo": "Fiel à arte",
+		"personagem": "89d03da3-7b4a-42e8-b277-ba2a4cb18649"
+	},
+	{
+		"id": "mestre-do-selo--genin",
+		"verbete": "mestre-do-selo#genin",
+		"nome": "Mestre do selo, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "01366502-041d-470d-aa49-12b4598ee374"
+	},
+	{
+		"id": "mestre-do-selo--chunin",
+		"verbete": "mestre-do-selo#chunin",
+		"nome": "Mestre do selo, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "dbe8a37a-8a36-4c34-92b9-1ac2c397d196"
+	},
+	{
+		"id": "mestre-do-selo--nivel-anbu",
+		"verbete": "mestre-do-selo#nivel-anbu",
+		"nome": "Mestre do selo, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "736c6c5b-4e70-4dfd-83ae-c976623a85c6"
+	},
+	{
+		"id": "monge-guerreiro--monge-guerreiro",
+		"verbete": "monge-guerreiro#monge-guerreiro",
+		"nome": "Monge guerreiro, Monge guerreiro",
+		"estilo": "Fiel à arte",
+		"personagem": "012bfe90-ac15-4db4-879e-11d1c5c0fc6b"
+	},
+	{
+		"id": "ninja-medico--genin",
+		"verbete": "ninja-medico#genin",
+		"nome": "Ninja médico de campo, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "99ddeab8-b080-47a6-937d-3c7f51cccda5"
+	},
+	{
+		"id": "ninja-medico--chunin",
+		"verbete": "ninja-medico#chunin",
+		"nome": "Ninja médico de campo, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "7f8c9021-6b43-40aa-80ee-3d2f29972226"
+	},
+	{
+		"id": "mestre-do-selo--nivel-kage",
+		"verbete": "mestre-do-selo#nivel-kage",
+		"nome": "Mestre do selo, Nível Kage",
+		"estilo": "Fiel à arte",
+		"personagem": "0e838ec9-0eb7-4a2a-91de-dce91f165663"
+	},
+	{
+		"id": "ninja-medico--jounin",
+		"verbete": "ninja-medico#jounin",
+		"nome": "Ninja médico de campo, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "a6538c7f-4f58-453a-89a5-5f5c256738c2"
+	},
+	{
+		"id": "ninja-medico--nivel-kage",
+		"verbete": "ninja-medico#nivel-kage",
+		"nome": "Ninja médico de campo, Nível Kage",
+		"estilo": "Fiel à arte",
+		"personagem": "5d9f2839-d466-4b75-bed0-8de870060446"
+	},
+	{
+		"id": "ninja-medico--nivel-anbu",
+		"verbete": "ninja-medico#nivel-anbu",
+		"nome": "Ninja médico de campo, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "312f6cc5-e892-42c0-ba54-febf6739adf1"
+	},
+	{
+		"id": "ninja-renegado--chunin",
+		"verbete": "ninja-renegado#chunin",
+		"nome": "Ninja renegado, Chunin",
+		"estilo": "Fiel à arte",
+		"personagem": "535ac6ce-ad27-47be-90b6-c19a1c5de0f7"
+	},
+	{
+		"id": "ninja-renegado--genin",
+		"verbete": "ninja-renegado#genin",
+		"nome": "Ninja renegado, Genin",
+		"estilo": "Fiel à arte",
+		"personagem": "84c129e9-1214-4670-8eed-9f00e25e4197"
+	},
+	{
+		"id": "ninja-renegado--nivel-anbu",
+		"verbete": "ninja-renegado#nivel-anbu",
+		"nome": "Ninja renegado, Nível Anbu",
+		"estilo": "Fiel à arte",
+		"personagem": "351ec779-1e39-4a9d-8d9d-b848c53c28ac"
+	},
+	{
+		"id": "ninja-renegado--nivel-kage",
+		"verbete": "ninja-renegado#nivel-kage",
+		"nome": "Ninja renegado, Nível Kage",
+		"estilo": "Fiel à arte",
+		"personagem": "2d553828-488e-4490-96a6-836ff0325b1e"
+	},
+	{
+		"id": "ninja-renegado--jounin",
+		"verbete": "ninja-renegado#jounin",
+		"nome": "Ninja renegado, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "7de66633-15be-4c57-ad0a-3e9a0d7423d5"
+	},
+	{
+		"id": "organizacao-clandestina--informante",
+		"verbete": "organizacao-clandestina#informante",
+		"nome": "Organização clandestina, Informante",
+		"estilo": "Fiel à arte",
+		"personagem": "5878fe4b-3d39-49fb-8711-af7428608c74"
+	},
+	{
+		"id": "organizacao-clandestina--recruta",
+		"verbete": "organizacao-clandestina#recruta",
+		"nome": "Organização clandestina, Recruta",
+		"estilo": "Fiel à arte",
+		"personagem": "941fb54a-3b34-4363-b654-f1aff7114110"
+	},
+	{
+		"id": "organizacao-clandestina--membro",
+		"verbete": "organizacao-clandestina#membro",
+		"nome": "Organização clandestina, Membro",
+		"estilo": "Fiel à arte",
+		"personagem": "0efd280e-e58b-4637-b621-e62891bcb8f5"
+	},
+	{
+		"id": "organizacao-clandestina--executor",
+		"verbete": "organizacao-clandestina#executor",
+		"nome": "Organização clandestina, Executor",
+		"estilo": "Fiel à arte",
+		"personagem": "97e0771e-47eb-4492-adef-c60ee5f88564"
+	},
+	{
+		"id": "organizacao-clandestina--lider",
+		"verbete": "organizacao-clandestina#lider",
+		"nome": "Organização clandestina, Líder",
+		"estilo": "Fiel à arte",
+		"personagem": "85e205e3-c886-496e-b5a7-e63d979e7856"
+	},
+	{
+		"id": "portador-da-marca--marca-adormecida",
+		"verbete": "portador-da-marca#marca-adormecida",
+		"nome": "Portador da marca amaldiçoada, Marca adormecida",
+		"estilo": "Fiel à arte",
+		"personagem": "1e507356-441c-4bf2-a183-af35ebeabd85"
+	},
+	{
+		"id": "portador-da-marca--marca-desperta",
+		"verbete": "portador-da-marca#marca-desperta",
+		"nome": "Portador da marca amaldiçoada, Marca desperta",
+		"estilo": "Fiel à arte",
+		"personagem": "46ad79a4-4cee-4d48-a7e3-20250ee2c159"
+	},
+	{
+		"id": "portador-da-marca--segunda-forma",
+		"verbete": "portador-da-marca#segunda-forma",
+		"nome": "Portador da marca amaldiçoada, Segunda forma",
+		"estilo": "Fiel à arte",
+		"personagem": "b7185719-1ee0-43cb-8277-3c48f1d503fc"
+	},
+	{
+		"id": "ronin-mercenario--ronin-mercenario",
+		"verbete": "ronin-mercenario#ronin-mercenario",
+		"nome": "Rōnin mercenário, Rōnin mercenário",
+		"estilo": "Fiel à arte",
+		"personagem": "f1ad4f47-3967-433e-96c7-7e1f4df106ce"
+	},
+	{
+		"id": "samurai-do-pais-do-ferro--samurai-do-pais-do-ferro",
+		"verbete": "samurai-do-pais-do-ferro#samurai-do-pais-do-ferro",
+		"nome": "Samurai do País do Ferro, Samurai do País do Ferro",
+		"estilo": "Fiel à arte",
+		"personagem": "cdca34b7-8e8f-4e99-aede-27214a83d301"
+	},
+	{
+		"id": "sennin--aprendiz-de-senjutsu",
+		"verbete": "sennin#aprendiz-de-senjutsu",
+		"nome": "Sennin, Aprendiz de senjutsu",
+		"estilo": "Fiel à arte",
+		"personagem": "37983bac-cf83-4912-b8b8-d4d117f5ae1c"
+	},
+	{
+		"id": "sennin--sabio",
+		"verbete": "sennin#sabio",
+		"nome": "Sennin, Sábio",
+		"estilo": "Fiel à arte",
+		"personagem": "9b4b8c99-9a7b-4a47-ae21-e4e6b63164a8"
+	},
+	{
+		"id": "shinobi-de-suna--kazekage",
+		"verbete": "shinobi-de-suna#kazekage",
+		"nome": "Shinobi de Suna, Kazekage",
+		"estilo": "Fiel à arte",
+		"personagem": "38b44f68-1790-4dd0-9870-923e00dd9754"
+	},
+	{
+		"id": "divisao-das-sombras--kage-da-sombra",
+		"verbete": "divisao-das-sombras#kage-da-sombra",
+		"nome": "Divisão das Sombras, Kage da Sombra",
+		"estilo": "Fiel à arte",
+		"personagem": "cfaef68f-5840-4257-85f0-77962d19ee9c"
+	},
+	{
+		"id": "mestre-do-selo--jounin",
+		"verbete": "mestre-do-selo#jounin",
+		"nome": "Mestre do selo, Jounin",
+		"estilo": "Fiel à arte",
+		"personagem": "3dce1375-6385-408b-85ce-5c6ea9f60e95"
+	},
+	{
+		"id": "sennin--modo-sennin",
+		"verbete": "sennin#modo-sennin",
+		"nome": "Sennin, Modo Sennin",
+		"estilo": "Fiel à arte",
+		"personagem": "32ce5690-f56d-4dab-9681-2146a73da03b"
 	}
 ]

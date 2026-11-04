@@ -4,9 +4,11 @@
 // `paralelo` trabalhos de cada vez (1, se o arquivo de contas não disser) e só enquanto tem saldo para eles (10 gerações). As 8 direções vão para pixellab/miniaturas/<id>/ e a
 // miniatura entra em pixellab/miniaturas/catalogo.json; depois, `npx tsx scripts/mesa/miniaturas.ts` monta as tiras.
 // Cada miniatura tem a sua pose, escrita à mão em pixellab/miniaturas/poses.json (o jeito do personagem e a técnica do clã):
-// estágio sem pose fica fora da fila, nunca numa pose genérica.
+// estágio sem pose fica fora da fila, nunca numa pose genérica. Lá também, `conceito` troca a arte do estágio: um caminho
+// no repositório (o desenho de referência do personagem, quando a arte é uma cena com várias pessoas) ou null (sem
+// conceito, só a referência de estilo e o texto, quando a figura da arte é pequena demais para servir).
 //
-//   PIXELLAB_TOKEN=... PIXELLAB_CONTAS=contas.json node pixellab/scripts/miniaturas.mjs [--max N] [--clas | --grupo prefixo] [--so slug#estagio ...] [--ver]
+//   PIXELLAB_TOKEN=... PIXELLAB_CONTAS=contas.json node pixellab/scripts/miniaturas.mjs [--max N] [--clas | --grupo prefixo,...] [--so slug#estagio ...] [--ver]
 //   contas.json: [{ "token": "...", "paralelo": 3 }]. --clas: só os clãs. --ver: só lista a fila e o saldo, sem gerar.
 //   --estilo <id do personagem>: a referência de estilo e de proporções (o Chunin Uchiha escolhido, importado na conta).
 //   --refazer: refaz também as que já existem (as cabeçudas, antes da referência). --teste: não mexe no catálogo.
@@ -18,8 +20,9 @@ const RAIZ = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
 const SITE = 'https://shinobi-rising-webapp.vercel.app';
 const CUSTO = Number(process.argv.includes('--tamanho') ? (Number(process.argv[process.argv.indexOf('--tamanho') + 1]) > 85 ? 15 : 10) : 10);
 // o corpo: como o Chunin Uchiha escolhido (a referência de estilo), proporções perto das reais, um pouco estilizadas;
-// nada de chibi (as primeiras saíram cabeçudas)
-const PROPORCAO = 'Body proportions like the style reference: close to real human proportions, slightly stylized anime, a normal-sized head; NOT chibi, NOT super-deformed, no big head';
+// nada de chibi (as primeiras saíram cabeçudas); a cabeça medida (um sétimo da altura) e as pernas longas acertaram o
+// Atarashi, que tinha saído cabeçudo com o texto de antes
+const PROPORCAO = 'Body proportions like the style reference: close to real human proportions, slightly stylized anime, a small head about one seventh of the body height, long legs; NOT chibi, NOT super-deformed, no big head';
 const RUMOS = ['south', 'south-east', 'east', 'north-east', 'north', 'north-west', 'west', 'south-west'];
 
 const args = process.argv.slice(2);
@@ -28,8 +31,8 @@ const max = Number(opc('--max') ?? Infinity);
 const so = args.flatMap((a, i) => (args[i - 1] === '--so' ? [a] : []));
 const soVer = args.includes('--ver');
 const soClas = args.includes('--clas');
-/** --grupo <prefixo>: só os verbetes que começam assim (ex.: especialista-), em lotes por grupo do bestiário. */
-const grupo = opc('--grupo');
+/** --grupo <prefixo,...>: só os verbetes que começam assim (ex.: especialista-), em lotes por grupo do bestiário. */
+const grupo = opc('--grupo')?.split(',');
 const TAMANHO = Number(opc('--tamanho') ?? 80);
 /** --estilo <id>: um personagem da conta (8 direções) que guia o estilo e as proporções de todas (o Chunin Uchiha escolhido). */
 const ESTILO = opc('--estilo');
@@ -75,21 +78,33 @@ const feitos = new Set(catalogo.filter((m) => m.estilo === 'Fiel à arte').map((
  * a pose dela.
  */
 function descricao(pedido, id) {
-	const { pose, quem } = poses[id];
+	const { pose, quem, conceito } = poses[id];
 	const p = pedido.prompt;
 	const corte = /(.*?, (?:a |an )?(?:teenager|young adult|adult|elderly|old man|old woman|elder|middle-aged[^,]*|child)),\s*(.*)$/i.exec(p);
 	const cabeca = corte ? corte[1] : p.split(',').slice(0, 4).join(',');
 	const cena = corte ? corte[2].slice(0, 80).toLowerCase() : '';
 	const genero = /\b(woman|girl|kunoichi|she|her|lady|mother)\b/.test(cena) ? 'female' : /\b(man|boy|he|his|father|monk)\b/.test(cena) ? 'male' : '';
 	const sexo = genero === 'female' ? ', she is a girl or woman with a clearly feminine face and figure' : genero === 'male' ? ', he is a boy or man' : '';
-	return `${quem ?? `${cabeca}${sexo}`}. ${PROPORCAO}. Pose: ${pose}. Full body, facing the viewer. Keep the look of the concept art (face, hair, outfit and colors), only the pose changes.`;
+	const fiel = conceito === null ? '' : ' Keep the look of the concept art (face, hair, outfit and colors), only the pose changes.';
+	return `${quem ?? `${cabeca}${sexo}`}. ${PROPORCAO}. Pose: ${pose}. Full body, facing the viewer.${fiel}`;
+}
+
+/** O conceito do PixelLab: a arte do estágio no site, o desenho indicado em poses.json, ou nenhum. */
+function conceitoDe(x) {
+	const { conceito } = poses[x.id];
+	if (conceito === null) return {};
+	if (conceito) return { concept_image_base64: fs.readFileSync(path.join(RAIZ, conceito)).toString('base64') };
+	// o verbete de um estágio só guarda a arte nele, não no estágio
+	const arte = (x.e.arte ?? x.c.arte)?.arquivo?.split('?')[0];
+	if (!arte) throw new Error('estágio sem arte');
+	return { concept_image_url: `${SITE}${arte}` };
 }
 
 const ordem = [...bestiario].sort((a, b) => Number(!a.slug.startsWith('cla-')) - Number(!b.slug.startsWith('cla-')));
 const fila = ordem.flatMap((c) =>
 	c.estagios
 		.map((e) => ({ c, e, verbete: `${c.slug}#${e.slug}`, id: `${c.slug}--${e.slug}`.slice(0, 60), pedido: pedidos.find((p) => p.slug === `${c.slug}--${e.slug}`) ?? pedidos.find((p) => p.slug === c.slug) }))
-		.filter((x) => (soTeste || (refazer ? x.verbete !== 'cla-uchiha#chunin' : !feitos.has(x.verbete))) && x.pedido && (!so.length || so.includes(x.verbete)) && (!soClas || x.c.slug.startsWith('cla-')) && (!grupo || x.c.slug.startsWith(grupo)))
+		.filter((x) => (soTeste || (refazer ? x.verbete !== 'cla-uchiha#chunin' : !feitos.has(x.verbete))) && x.pedido && (!so.length || so.includes(x.verbete)) && (!soClas || x.c.slug.startsWith('cla-')) && (!grupo || grupo.some((g) => x.c.slug.startsWith(g))))
 		.filter((x) => soTeste || refazer || !fs.existsSync(path.join(RAIZ, 'pixellab', 'miniaturas', x.id, 'south-west.png')))
 );
 const semPose = fila.filter((x) => !poses[x.id]);
@@ -99,10 +114,8 @@ console.log(`fila: ${fila.length} estágios sem miniatura (${fila.filter((x) => 
 
 // ------------------------------------------------------------------ um trabalho
 async function fazer(conta, x) {
-	const arte = x.e.arte?.arquivo?.split('?')[0];
-	if (!arte) throw new Error('estágio sem arte');
 	const nome = `${x.c.nome.split(',')[0]}, ${x.e.nome}`;
-	const t = await chamar(conta.token, 'create_character', { mode: 'pro', size: TAMANHO, concept_image_url: `${SITE}${arte}`, ...(ESTILO ? { style_character_id: ESTILO } : {}), description: descricao(x.pedido, x.id), name: `Miniatura · ${nome}` });
+	const t = await chamar(conta.token, 'create_character', { mode: 'pro', size: TAMANHO, ...conceitoDe(x), ...(ESTILO ? { style_character_id: ESTILO } : {}), description: descricao(x.pedido, x.id), name: `Miniatura · ${nome}` });
 	const id = /character_id[":\s]+([0-9a-f-]{36})/.exec(t)?.[1] ?? /^id: ([0-9a-f-]{36})/m.exec(t)?.[1];
 	if (!id) throw new Error(t.slice(0, 300));
 	const inicio = Date.now();

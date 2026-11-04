@@ -38,15 +38,23 @@ entre todas as que já existem.
 
 ## Como fazer as miniaturas
 
-O lote usa `pixellab/scripts/miniaturas.mjs` (`--clas` só os clãs; `--ver` mostra a fila e as descrições sem gerar):
+O lote usa `pixellab/scripts/miniaturas.mjs` (`--clas` só os clãs; `--grupo a,b` só os verbetes que começam assim;
+`--ver` mostra a fila e as descrições sem gerar; `--so slug#estagio --refazer` refaz uma):
 
 1. Cada miniatura precisa de uma pose escrita à mão em `pixellab/miniaturas/poses.json`. A pose junta a técnica do clã e
    o jeito do personagem na arte dele: braço cruzado, mão no bolso, espada engatilhada, selo de jutsu na mão. Ela nunca
    se repete dentro do clã e nunca é genérica. Estágio sem pose fica fora do lote. `quem` descreve o personagem quando o
-   pedido da arte não segue o padrão (Nível Anbu, alguns Jounin e Líderes).
+   pedido da arte não segue o padrão (Nível Anbu, alguns Jounin e Líderes) e em todo grupo de artes que são cenas (as
+   vilas, os inimigos humanos). O Kage de uma vila tem o rosto escondido na sombra do chapéu ou do capuz.
 2. O PixelLab desenha o personagem em 8 direções: `create_character`, modo `pro`, `size` 80, a arte do estágio no site
    como `concept_image_url` e o Chunin Uchiha escolhido como `style_character_id` (`--estilo`), que dá as proporções:
-   perto das reais, nada de chibi (só o texto pedindo "7 cabeças" não bastava). Custa 10 gerações.
+   perto das reais, nada de chibi. Só o texto pedindo "7 cabeças" não bastava; o que pede "a cabeça com um sétimo da
+   altura, pernas longas" junto da referência acertou o Atarashi, que tinha saído cabeçudo. Custa 10 gerações.
+   - `conceito` em poses.json troca a arte do estágio: o desenho de referência de uma homenagem da campanha (Atarashi
+     Uchiha, Tatsumi Inuzuka), quando a arte é uma cena com várias pessoas, ou `null`, quando a figura da arte é pequena
+     demais ou não aparece (cenas largas, close nos olhos): aí vale só a referência de estilo e o texto.
+   - Na revisão, refazer a que lembra personagem famoso (saíram um Jiraiya e um Orochimaru) ou que vem com disco pintado
+     no chão (a Mesa já desenha a sombra).
 3. As 8 direções vão para `pixellab/miniaturas/<id>/`, e a miniatura entra em `pixellab/miniaturas/catalogo.json`.
 4. `npx tsx scripts/mesa/miniaturas.ts` monta as tiras em `static/mesa/miniaturas/` e o catálogo do app (`src/lib/mesa/miniaturas.json`), na ordem do bestiário. Os pés ficam no centro do
    quadro do PixelLab; a altura da figura e o chão são medidos na faixa do meio do corpo (espada, areia ou água no chão
@@ -65,3 +73,15 @@ O lote usa `pixellab/scripts/miniaturas.mjs` (`--clas` só os clãs; `--ver` mos
 
 **Escolha (2026-11-03): Fiel à arte.** O Chunin Uchiha escolhido (`uchiha-chunin-fiel`) fica para sempre: é a referência de
 estilo de todas. As outras cinco direções saíram do catálogo.
+
+## Lotes feitos
+
+| Grupo | Miniaturas |
+| - | - |
+| Clãs | 65 |
+| Especialistas em elementos | 70 |
+| Shinobis das vilas | 40 |
+| Outros inimigos humanos (shinobi, fora da lei, organizações, sennin) | 67 |
+
+Falta o resto do bestiário: criaturas, bijuu, companheiros e invocações. São animais e monstros, que pedem outra receita
+(quadrúpedes, tamanhos maiores que um quadrado).
