@@ -417,6 +417,8 @@ export type IniciativaCena = {
 	ordem?: { nome: string; valor: number; personagem_id?: string | null; npc_id?: string | null }[];
 	/** O Mestre limpou a ordem: a prévia só conta as iniciativas roladas depois disso. */
 	limpa_em?: string;
+	/** Os números que o Mestre digitou (`chave`: o personagem ou o NPC): valem no lugar do dado, até apagar ou LIMPAR. */
+	manuais?: { chave: string; nome: string; valor: number }[];
 };
 
 export type MesaCena = {

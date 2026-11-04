@@ -44,6 +44,14 @@ export function rumoDoPasso(dx: number, dy: number): number | null {
 	return (((Math.round((90 - graus) / 45) % 8) + 8) % 8) as number;
 }
 
+/** O rumo das setas apertadas juntas: uma vira para o lado dela, duas para a diagonal; opostas se anulam (null). */
+export function rumoDasSetas(setas: Iterable<string>): number | null {
+	const vetores: Record<string, [number, number]> = { ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] };
+	let [dx, dy] = [0, 0];
+	for (const s of setas) [dx, dy] = [dx + (vetores[s]?.[0] ?? 0), dy + (vetores[s]?.[1] ?? 0)];
+	return rumoDoPasso(dx, dy);
+}
+
 /** O vetor (na grade) de um rumo. */
 export function vetorDoRumo(rumo: number): [number, number] {
 	const a = ((90 - 45 * rumo) * Math.PI) / 180;

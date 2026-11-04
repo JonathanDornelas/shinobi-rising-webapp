@@ -11,13 +11,14 @@ import { mascararCena } from './cenas.ts';
 import { limitarPosicao } from './musica.ts';
 import { limpar as limparRuns } from './nevoa.ts';
 import { coresDosMembros } from './cores.ts';
+import { colocarNaOrdem, juntarManuais, trocarManual } from './iniciativa.ts';
 import { deslocarQuadrados, deslocarRuns, deslocarToken } from './reenquadrar.ts';
 import { lerAjustes, lerCenaMiniaturas, rumoDoPasso, type AjusteMiniaturas, type CenaMiniaturas } from './miniaturas.ts';
 import { bloqueiaPasso, deslocarLuzes, deslocarParedes, ehPorta, limparLuzes, limparParedes, type Luz, type Parede } from './luz.ts';
 import { avancarRodada, relogiosDaCena, type Relogio } from './relogios.ts';
 import type { Quadrado } from './geometria.ts';
 import { molduraDoToken, molduraPorId } from './molduras.ts';
-import { nomeReal, siglaDoNome } from './nomes.ts';
+import { NOME_OCULTO, nomeReal, siglaDoNome } from './nomes.ts';
 
 export type Ferramenta = 'mover' | 'medir' | 'lapis' | 'apontar' | 'borracha' | 'terreno' | 'fundo' | 'alfinete' | 'texto' | 'objeto' | 'nevoa' | 'paredes' | 'luz';
 
@@ -563,18 +564,44 @@ export class Mesa {
 		return new Set(this.tokens.filter((t) => (e.personagem_id && t.personagem_id === e.personagem_id) || (e.npc_id && t.npc_id === e.npc_id)).map((t) => t.id));
 	});
 
+	/** Quem pode entrar na ordem: cada personagem e cada NPC em cena uma vez (a tropa joga junta), sem os clones. */
+	participantes = $derived.by(() => {
+		const vistos = new Map<string, { chave: string; nome: string }>();
+		for (const t of this.tokens) {
+			const chave = t.personagem_id ?? t.npc_id;
+			if (chave && !ehClone(t) && !vistos.has(chave)) vistos.set(chave, { chave, nome: t.nome_oculto ? NOME_OCULTO : t.nome });
+		}
+		return [...vistos.values()];
+	});
+
+	/** Uma entrada da ordem, ligada ao personagem ou ao NPC em cena (é por ela que o token da vez se acende). */
+	private entradaDa(chave: string, nome: string, valor: number) {
+		const pc = this.tokens.some((t) => t.personagem_id === chave);
+		const npc = this.tokens.some((t) => t.npc_id === chave);
+		return { nome, valor, personagem_id: pc ? chave : null, npc_id: npc ? chave : null };
+	}
+
 	async comecarCombate(rolagens: Rolagem[]) {
-		const ordem = ordemIniciativa(rolagens, this.campanha, 6, new Date(), this.iniciativa.limpa_em ?? null).map((o) => {
-			const pc = this.tokens.find((t) => t.personagem_id === o.chave);
-			const npc = this.tokens.find((t) => t.npc_id === o.chave);
-			return { nome: o.quem, valor: o.total, personagem_id: pc ? o.chave : null, npc_id: npc ? o.chave : null };
-		});
+		const ini = this.iniciativa;
+		const roladas = ordemIniciativa(rolagens, this.campanha, 6, new Date(), ini.limpa_em ?? null);
+		const ordem = juntarManuais(roladas, ini.manuais ?? []).map((o) => this.entradaDa(o.chave, o.quem, o.total));
 		if (!ordem.length) {
-			toasts.mostrar('Ninguém rolou iniciativa ainda. Peça para cada um rolar pela ficha rápida.', 'aviso');
+			toasts.mostrar('Ninguém tem iniciativa ainda. Peça para cada um rolar pela ficha rápida ou digite os números aqui.', 'aviso');
 			return;
 		}
-		await this.patchCena({ iniciativa: { ativa: true, rodada: 1, vez: 0, ordem } });
+		await this.patchCena({ iniciativa: { ativa: true, rodada: 1, vez: 0, ordem, manuais: ini.manuais } });
 		await Promise.all([this.zerarMovido(), this.zerarReacoes()]);
+	}
+
+	/**
+	 * O Mestre digita a iniciativa de alguém: vale no lugar do dado, para quem rolou e para quem não rolou. `null` apaga o
+	 * número (a prévia volta ao que foi rolado). Durante o combate, a pessoa vai para o lugar do número novo na ordem.
+	 */
+	async definirIniciativa(quem: { chave: string; nome: string }, valor: number | null) {
+		const ini = this.iniciativa;
+		const manuais = trocarManual(ini.manuais ?? [], quem.chave, quem.nome, valor);
+		if (!ini.ativa || valor === null) return this.patchCena({ iniciativa: { ...ini, manuais } });
+		return this.patchCena({ iniciativa: { ...ini, manuais, ...colocarNaOrdem(ini.ordem ?? [], ini.vez ?? 0, this.entradaDa(quem.chave, quem.nome, valor)) } });
 	}
 
 	async proximoTurno() {
@@ -611,7 +638,7 @@ export class Mesa {
 	}
 
 	async encerrarCombate() {
-		await this.patchCena({ iniciativa: { ativa: false, limpa_em: this.iniciativa.limpa_em } });
+		await this.patchCena({ iniciativa: { ativa: false, limpa_em: this.iniciativa.limpa_em, manuais: this.iniciativa.manuais } });
 		// fim do combate: quem estava crescido volta ao normal, e os clones de jutsu se desfazem
 		await Promise.all([...this.tokens.filter((x) => x.tamanho_base != null).map((t) => this.voltarAoNormal(t)), ...this.tokens.filter(ehClone).map((t) => this.remover(t.id))]);
 		await this.zerarMovido();

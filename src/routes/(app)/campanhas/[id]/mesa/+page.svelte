@@ -41,7 +41,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	import PainelMesa from '#lib/componentes/mesa/PainelMesa.svelte';
 	import BuscaBestiario from '#lib/componentes/npc/BuscaBestiario.svelte';
 	import { npcDoVerbete } from '#lib/bestiario/npc.ts';
-	import { MINIATURAS, rumoDoPasso } from '#lib/mesa/miniaturas.ts';
+	import { MINIATURAS, rumoDasSetas } from '#lib/mesa/miniaturas.ts';
 	import MiniaturasMesa from '#lib/componentes/mesa/MiniaturasMesa.svelte';
 	import type { Criatura, Jutsu } from '#lib/livro/tipos.ts';
 	import CardJutsu from '#lib/componentes/regras/CardJutsu.svelte';
@@ -981,6 +981,12 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	}
 
 	// ------------------------------------------------------------------ atalhos
+	/** As setas presas com o Ctrl (somadas, viram a peça na diagonal). */
+	const setasPresas = new Set<string>();
+	function soltarSeta(e: KeyboardEvent) {
+		if (e.key === 'Control') setasPresas.clear();
+		else setasPresas.delete(e.key);
+	}
 	function atalho(e: KeyboardEvent) {
 		const alvo = e.target as HTMLElement | null;
 		if (alvo && (alvo.tagName === 'INPUT' || alvo.tagName === 'TEXTAREA' || alvo.isContentEditable)) return;
@@ -989,13 +995,17 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 			mesa.desfazerUltimo();
 			return;
 		}
-		// Ctrl + seta: a peça vira para o lado em que a seta andaria, sem sair do lugar
-		const virar = ({ ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] } as Record<string, [number, number]>)[e.key];
-		if (e.ctrlKey && virar) {
+		// Ctrl + seta: a peça vira para o lado em que a seta andaria, sem sair do lugar; duas setas juntas, na diagonal. A
+		// repetição da tecla presa não conta: ao soltar uma das duas, a peça continua na diagonal
+		if (e.ctrlKey && e.key.startsWith('Arrow')) {
 			const sel = mesa.tokens.find((t) => t.id === ui.sel);
 			if (sel && sel.rumo !== undefined && mesa.podeMover(sel)) {
 				e.preventDefault();
-				void mesa.virar(sel.id, rumoDoPasso(virar[0], virar[1]) ?? 0);
+				if (!e.repeat) {
+					setasPresas.add(e.key);
+					const rumo = rumoDasSetas(setasPresas);
+					if (rumo !== null) void mesa.virar(sel.id, rumo);
+				}
 			}
 			return;
 		}
@@ -1134,7 +1144,7 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 	const chip = 'min-h-9 flex-1 font-pixel text-xs leading-none font-bold';
 </script>
 
-<svelte:window onkeydown={atalho} />
+<svelte:window onkeydown={atalho} onkeyup={soltarSeta} onblur={() => setasPresas.clear()} />
 
 {#snippet trilho()}
 	<nav aria-label="Ferramentas" class="flex w-12 flex-none flex-col items-center gap-1 overflow-y-auto border-r-2 border-b3 bg-b0 py-1.5">

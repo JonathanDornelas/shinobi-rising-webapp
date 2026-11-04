@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MINIATURAS, PRATELEIRAS, escalaDe, lerAjustes, lerCenaMiniaturas, sombraDaMiniatura, miniaturaPorId, miniaturasDoVerbete, quadroNaTela, rumoDoPasso, vetorDoRumo } from './miniaturas.ts';
+import { MINIATURAS, PRATELEIRAS, escalaDe, lerAjustes, lerCenaMiniaturas, sombraDaMiniatura, miniaturaPorId, miniaturasDoVerbete, quadroNaTela, rumoDasSetas, rumoDoPasso, vetorDoRumo } from './miniaturas.ts';
 
 describe('miniaturas', () => {
 	it('o passo dá o rumo: sul de frente, leste, norte, oeste e as diagonais', () => {
@@ -12,6 +12,21 @@ describe('miniaturas', () => {
 		expect(rumoDoPasso(-1, 1)).toBe(7);
 		expect(rumoDoPasso(0, 0)).toBeNull();
 		for (let r = 0; r < 8; r++) expect(rumoDoPasso(...vetorDoRumo(r))).toBe(r);
+	});
+
+	it('as setas juntas dão o rumo: uma vira para o lado dela, duas para a diagonal', () => {
+		expect(rumoDasSetas(['ArrowDown'])).toBe(0);
+		expect(rumoDasSetas(['ArrowRight'])).toBe(2);
+		expect(rumoDasSetas(['ArrowUp'])).toBe(4);
+		expect(rumoDasSetas(['ArrowLeft'])).toBe(6);
+		expect(rumoDasSetas(['ArrowDown', 'ArrowRight'])).toBe(1);
+		expect(rumoDasSetas(['ArrowRight', 'ArrowUp'])).toBe(3);
+		expect(rumoDasSetas(['ArrowUp', 'ArrowLeft'])).toBe(5);
+		expect(rumoDasSetas(['ArrowLeft', 'ArrowDown'])).toBe(7);
+		// opostas se anulam: não há para onde virar; com uma terceira, vale a que sobra
+		expect(rumoDasSetas(['ArrowLeft', 'ArrowRight'])).toBeNull();
+		expect(rumoDasSetas(['ArrowLeft', 'ArrowRight', 'ArrowUp'])).toBe(4);
+		expect(rumoDasSetas([])).toBeNull();
 	});
 
 	it('na tela, o rumo segue a projeção (na isométrica, o leste da grade desce para a direita)', () => {
