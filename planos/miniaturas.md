@@ -31,7 +31,7 @@ entre todas as que já existem.
     luz acesa mais perto (com a luz dinâmica); sem luz, puxa para trás e à direita (de cima) ou para a frente e à direita
     (na isométrica, onde para trás a figura a cobriria). Uma silhueta da figura deitada no chão foi tentada e saiu mal
     posicionada (e recortar um quadro da tira some na isométrica: o navegador erra o recorte sob a projeção);
-  - Ctrl + seta vira a peça selecionada para aquele lado, sem andar.
+  - Ctrl + seta vira a peça selecionada para aquele lado, sem andar; duas setas juntas viram na diagonal.
 - **Na Mesa:**
   - no painel do token, "Peça no quadro" troca entre Token e Miniatura (o Mestre em qualquer token; o jogador no do
     próprio personagem);
@@ -83,6 +83,17 @@ O lote usa `pixellab/scripts/miniaturas.mjs` (`--clas` só os clãs; `--grupo a,
      `pixellab/miniaturas/conceitos/<slug>.png` e vira o `conceito` de "arquetipos--<slug>" em poses.json (com
      `nome`), e o lote (`--grupo arquetipos`) desenha as 8 direções na receita de sempre dos humanos: mesma referência
      de estilo, mesmas proporções, mesma altura no quadro.
+   - **A frente dos arquétipos:** com um conceito de frente, a direção sul sai copiada dele, com outro traço (mais ruidoso e
+     mais escuro) e às vezes maior; as outras sete saem no estilo das miniaturas. Depois do lote, a frente é redesenhada
+     pelo modo `v3` de `create_character`, com as direções giradas um passo: o sudeste entra como referência (o "sul" para a
+     ferramenta), as outras em `direction_images` e falta só o sudoeste dela, que é a frente verdadeira, entre as duas vistas
+     com rosto. Custa 1 geração. Girar 180° e usar as costas como referência não serve: em dois terços das vezes ela devolve
+     as costas de novo.
+   - **Consertar uma direção só:** quando uma direção destoa (a arma some, o arco abaixa, a mancha no chão), o mesmo modo
+     `v3` recebe o sul como referência e as direções boas em `direction_images` e desenha só as que faltam, por 1 geração,
+     sem tocar nas boas. Pedaços soltos do corpo (pedra, risco de vento) saem de graça, por componente conexo. Antes de
+     chamar uma pose de errada, comparar com a vista de costas e com a direção do efeito: a chama no meio do corpo, de
+     frente, estava certa. Refazer a frente com `create_image_pro` não compensa: 15 gerações e sai virada três quartos.
 3. As 8 direções vão para `pixellab/miniaturas/<id>/`, e a miniatura entra em `pixellab/miniaturas/catalogo.json`.
 4. `npx tsx scripts/mesa/miniaturas.ts` monta as tiras em `static/mesa/miniaturas/` e o catálogo do app (`src/lib/mesa/miniaturas.json`), na ordem do bestiário. Os pés ficam no centro do
    quadro do PixelLab; a altura da figura e o chão são medidos na faixa do meio do corpo (espada, areia ou água no chão
@@ -111,4 +122,4 @@ estilo de todas. As outras cinco direções saíram do catálogo.
 | Shinobis das vilas | 40 |
 | Outros inimigos humanos (shinobi, fora da lei, organizações, sennin) | 67 |
 | Criaturas, companheiros e invocações (as 9 Bestas com Cauda em 256 px) | 100 |
-| Arquétipos para jogadores | 30 |
+| Arquétipos para jogadores | 60 |

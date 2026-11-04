@@ -18,22 +18,22 @@
 		"nome": "Arquétipos, Aluna da Academia",
 		"estilo": "Fiel à arte",
 		"w": 50,
-		"h": 76,
+		"h": 73,
 		"pe": [
 			25,
 			71
 		],
-		"altura": 67
+		"altura": 70
 	},
 	{
 		"id": "arquetipos--lutador-de-taijutsu",
 		"verbete": "arquetipos#lutador-de-taijutsu",
 		"nome": "Arquétipos, Lutador de taijutsu",
 		"estilo": "Fiel à arte",
-		"w": 55,
-		"h": 67,
+		"w": 52,
+		"h": 65,
 		"pe": [
-			27,
+			26,
 			64
 		],
 		"altura": 62
@@ -43,36 +43,36 @@
 		"verbete": "arquetipos#usuaria-dos-portoes",
 		"nome": "Arquétipos, Usuária dos Portões",
 		"estilo": "Fiel à arte",
-		"w": 52,
-		"h": 71,
+		"w": 49,
+		"h": 69,
 		"pe": [
-			25,
-			67
+			24,
+			68
 		],
-		"altura": 66
+		"altura": 67
 	},
 	{
 		"id": "arquetipos--ninja-veloz",
 		"verbete": "arquetipos#ninja-veloz",
 		"nome": "Arquétipos, Ninja veloz",
 		"estilo": "Fiel à arte",
-		"w": 57,
-		"h": 67,
+		"w": 53,
+		"h": 66,
 		"pe": [
-			30,
+			26,
 			65
 		],
-		"altura": 63
+		"altura": 62
 	},
 	{
 		"id": "arquetipos--ninja-resistente",
 		"verbete": "arquetipos#ninja-resistente",
 		"nome": "Arquétipos, Ninja resistente",
 		"estilo": "Fiel à arte",
-		"w": 50,
+		"w": 46,
 		"h": 70,
 		"pe": [
-			25,
+			23,
 			69
 		],
 		"altura": 68
@@ -101,7 +101,7 @@
 			27,
 			66
 		],
-		"altura": 65
+		"altura": 61
 	},
 	{
 		"id": "arquetipos--ninja-do-fogo",
@@ -114,7 +114,7 @@
 			32,
 			64
 		],
-		"altura": 63
+		"altura": 59
 	},
 	{
 		"id": "arquetipos--ninja-da-agua",
@@ -122,25 +122,25 @@
 		"nome": "Arquétipos, Ninja da água",
 		"estilo": "Fiel à arte",
 		"w": 52,
-		"h": 73,
+		"h": 66,
 		"pe": [
 			26,
 			64
 		],
-		"altura": 61
+		"altura": 58
 	},
 	{
 		"id": "arquetipos--espadachim-do-raio",
 		"verbete": "arquetipos#espadachim-do-raio",
 		"nome": "Arquétipos, Espadachim do raio",
 		"estilo": "Fiel à arte",
-		"w": 63,
+		"w": 64,
 		"h": 74,
 		"pe": [
 			31,
 			73
 		],
-		"altura": 68
+		"altura": 64
 	},
 	{
 		"id": "arquetipos--brutamontes-de-iwa",
@@ -153,7 +153,7 @@
 			37,
 			74
 		],
-		"altura": 66
+		"altura": 62
 	},
 	{
 		"id": "arquetipos--ilusionista-do-som",
@@ -161,12 +161,12 @@
 		"nome": "Arquétipos, Ilusionista do Som",
 		"estilo": "Fiel à arte",
 		"w": 58,
-		"h": 73,
+		"h": 71,
 		"pe": [
 			28,
-			65
+			67
 		],
-		"altura": 64
+		"altura": 66
 	},
 	{
 		"id": "arquetipos--especialista-em-selos",
@@ -174,12 +174,12 @@
 		"nome": "Arquétipos, Especialista em selos",
 		"estilo": "Fiel à arte",
 		"w": 64,
-		"h": 69,
+		"h": 66,
 		"pe": [
 			31,
 			65
 		],
-		"altura": 64
+		"altura": 60
 	},
 	{
 		"id": "arquetipos--assassino",
@@ -192,15 +192,15 @@
 			25,
 			63
 		],
-		"altura": 61
+		"altura": 62
 	},
 	{
 		"id": "arquetipos--marionetista",
 		"verbete": "arquetipos#marionetista",
 		"nome": "Arquétipos, Marionetista",
 		"estilo": "Fiel à arte",
-		"w": 70,
-		"h": 69,
+		"w": 68,
+		"h": 66,
 		"pe": [
 			34,
 			65
@@ -212,26 +212,26 @@
 		"verbete": "arquetipos#invocadora",
 		"nome": "Arquétipos, Invocadora",
 		"estilo": "Fiel à arte",
-		"w": 70,
-		"h": 72,
+		"w": 66,
+		"h": 71,
 		"pe": [
 			33,
-			70
+			68
 		],
-		"altura": 69
+		"altura": 67
 	},
 	{
 		"id": "arquetipos--ninja-sensor",
 		"verbete": "arquetipos#ninja-sensor",
 		"nome": "Arquétipos, Ninja sensor",
 		"estilo": "Fiel à arte",
-		"w": 59,
-		"h": 70,
+		"w": 54,
+		"h": 69,
 		"pe": [
-			28,
+			23,
 			67
 		],
-		"altura": 66
+		"altura": 62
 	},
 	{
 		"id": "arquetipos--ninja-medica",
@@ -239,7 +239,7 @@
 		"nome": "Arquétipos, Ninja médica",
 		"estilo": "Fiel à arte",
 		"w": 45,
-		"h": 71,
+		"h": 68,
 		"pe": [
 			22,
 			67
@@ -257,7 +257,7 @@
 			30,
 			64
 		],
-		"altura": 63
+		"altura": 62
 	},
 	{
 		"id": "arquetipos--aprendiz-de-sennin",
@@ -265,25 +265,25 @@
 		"nome": "Arquétipos, Aprendiz de sennin",
 		"estilo": "Fiel à arte",
 		"w": 54,
-		"h": 72,
+		"h": 69,
 		"pe": [
 			27,
-			66
+			67
 		],
-		"altura": 64
+		"altura": 66
 	},
 	{
 		"id": "arquetipos--mestra-de-armas",
 		"verbete": "arquetipos#mestra-de-armas",
 		"nome": "Arquétipos, Mestra de armas",
 		"estilo": "Fiel à arte",
-		"w": 66,
-		"h": 71,
+		"w": 65,
+		"h": 73,
 		"pe": [
 			32,
-			68
+			70
 		],
-		"altura": 67
+		"altura": 69
 	},
 	{
 		"id": "arquetipos--espadachim-da-nevoa",
@@ -296,7 +296,7 @@
 			39,
 			73
 		],
-		"altura": 67
+		"altura": 68
 	},
 	{
 		"id": "arquetipos--ronin",
@@ -304,12 +304,12 @@
 		"nome": "Arquétipos, Rōnin",
 		"estilo": "Fiel à arte",
 		"w": 46,
-		"h": 73,
+		"h": 72,
 		"pe": [
 			23,
-			72
+			71
 		],
-		"altura": 71
+		"altura": 70
 	},
 	{
 		"id": "arquetipos--lanceira-de-iwa",
@@ -317,22 +317,22 @@
 		"nome": "Arquétipos, Lanceira de Iwa",
 		"estilo": "Fiel à arte",
 		"w": 46,
-		"h": 79,
+		"h": 77,
 		"pe": [
 			20,
 			74
 		],
-		"altura": 73
+		"altura": 70
 	},
 	{
 		"id": "arquetipos--monja-guerreira",
 		"verbete": "arquetipos#monja-guerreira",
 		"nome": "Arquétipos, Monja guerreira",
 		"estilo": "Fiel à arte",
-		"w": 41,
+		"w": 40,
 		"h": 75,
 		"pe": [
-			20,
+			19,
 			72
 		],
 		"altura": 65
@@ -342,26 +342,26 @@
 		"verbete": "arquetipos#espia",
 		"nome": "Arquétipos, Espiã",
 		"estilo": "Fiel à arte",
-		"w": 48,
-		"h": 74,
+		"w": 49,
+		"h": 73,
 		"pe": [
-			23,
+			24,
 			72
 		],
-		"altura": 67
+		"altura": 66
 	},
 	{
 		"id": "arquetipos--renegado-de-ame",
 		"verbete": "arquetipos#renegado-de-ame",
 		"nome": "Arquétipos, Renegado de Ame",
 		"estilo": "Fiel à arte",
-		"w": 60,
+		"w": 59,
 		"h": 65,
 		"pe": [
-			30,
+			29,
 			64
 		],
-		"altura": 61
+		"altura": 57
 	},
 	{
 		"id": "arquetipos--arqueiro-de-taki",
@@ -374,7 +374,7 @@
 			32,
 			71
 		],
-		"altura": 65
+		"altura": 60
 	},
 	{
 		"id": "arquetipos--ninja-do-som",
@@ -382,12 +382,402 @@
 		"nome": "Arquétipos, Ninja do Som",
 		"estilo": "Fiel à arte",
 		"w": 78,
-		"h": 68,
+		"h": 66,
 		"pe": [
 			39,
+			64
+		],
+		"altura": 63
+	},
+	{
+		"id": "arquetipos--genin-prodigio",
+		"verbete": "arquetipos#genin-prodigio",
+		"nome": "Arquétipos, Genin prodígio",
+		"estilo": "Fiel à arte",
+		"w": 54,
+		"h": 68,
+		"pe": [
+			27,
+			66
+		],
+		"altura": 64
+	},
+	{
+		"id": "arquetipos--genin-rebelde",
+		"verbete": "arquetipos#genin-rebelde",
+		"nome": "Arquétipos, Genin rebelde",
+		"estilo": "Fiel à arte",
+		"w": 45,
+		"h": 68,
+		"pe": [
+			22,
+			66
+		],
+		"altura": 63
+	},
+	{
+		"id": "arquetipos--aprendiz-da-nevoa",
+		"verbete": "arquetipos#aprendiz-da-nevoa",
+		"nome": "Arquétipos, Aprendiz da Névoa",
+		"estilo": "Fiel à arte",
+		"w": 73,
+		"h": 66,
+		"pe": [
+			37,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "arquetipos--genin-das-bombas",
+		"verbete": "arquetipos#genin-das-bombas",
+		"nome": "Arquétipos, Genin das bombas",
+		"estilo": "Fiel à arte",
+		"w": 47,
+		"h": 72,
+		"pe": [
+			23,
+			71
+		],
+		"altura": 69
+	},
+	{
+		"id": "arquetipos--genin-da-raposa",
+		"verbete": "arquetipos#genin-da-raposa",
+		"nome": "Arquétipos, Genin da raposa",
+		"estilo": "Fiel à arte",
+		"w": 47,
+		"h": 71,
+		"pe": [
+			23,
+			70
+		],
+		"altura": 69
+	},
+	{
+		"id": "arquetipos--chunin-do-deserto",
+		"verbete": "arquetipos#chunin-do-deserto",
+		"nome": "Arquétipos, Chunin do deserto",
+		"estilo": "Fiel à arte",
+		"w": 62,
+		"h": 64,
+		"pe": [
+			31,
+			63
+		],
+		"altura": 58
+	},
+	{
+		"id": "arquetipos--chunin-do-trovao",
+		"verbete": "arquetipos#chunin-do-trovao",
+		"nome": "Arquétipos, Chunin do trovão",
+		"estilo": "Fiel à arte",
+		"w": 46,
+		"h": 69,
+		"pe": [
+			23,
+			67
+		],
+		"altura": 66
+	},
+	{
+		"id": "arquetipos--escudeira-de-iwa",
+		"verbete": "arquetipos#escudeira-de-iwa",
+		"nome": "Arquétipos, Escudeira de Iwa",
+		"estilo": "Fiel à arte",
+		"w": 54,
+		"h": 74,
+		"pe": [
+			26,
+			70
+		],
+		"altura": 69
+	},
+	{
+		"id": "arquetipos--chunin-do-guarda-chuva",
+		"verbete": "arquetipos#chunin-do-guarda-chuva",
+		"nome": "Arquétipos, Chunin do guarda-chuva",
+		"estilo": "Fiel à arte",
+		"w": 50,
+		"h": 69,
+		"pe": [
+			25,
+			66
+		],
+		"altura": 64
+	},
+	{
+		"id": "arquetipos--jounin-da-cicatriz",
+		"verbete": "arquetipos#jounin-da-cicatriz",
+		"nome": "Arquétipos, Jounin da cicatriz",
+		"estilo": "Fiel à arte",
+		"w": 37,
+		"h": 71,
+		"pe": [
+			18,
+			68
+		],
+		"altura": 65
+	},
+	{
+		"id": "arquetipos--mestra-do-manriki",
+		"verbete": "arquetipos#mestra-do-manriki",
+		"nome": "Arquétipos, Mestra do manriki",
+		"estilo": "Fiel à arte",
+		"w": 44,
+		"h": 73,
+		"pe": [
+			21,
+			69
+		],
+		"altura": 68
+	},
+	{
+		"id": "arquetipos--lanceiro-da-nevoa",
+		"verbete": "arquetipos#lanceiro-da-nevoa",
+		"nome": "Arquétipos, Lanceiro da Névoa",
+		"estilo": "Fiel à arte",
+		"w": 54,
+		"h": 76,
+		"pe": [
+			27,
+			73
+		],
+		"altura": 65
+	},
+	{
+		"id": "arquetipos--mestre-das-duas-espadas",
+		"verbete": "arquetipos#mestre-das-duas-espadas",
+		"nome": "Arquétipos, Mestre das duas espadas",
+		"estilo": "Fiel à arte",
+		"w": 67,
+		"h": 68,
+		"pe": [
+			33,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "arquetipos--mestra-dos-venenos",
+		"verbete": "arquetipos#mestra-dos-venenos",
+		"nome": "Arquétipos, Mestra dos venenos",
+		"estilo": "Fiel à arte",
+		"w": 41,
+		"h": 66,
+		"pe": [
+			20,
+			64
+		],
+		"altura": 59
+	},
+	{
+		"id": "arquetipos--jounin-das-sai",
+		"verbete": "arquetipos#jounin-das-sai",
+		"nome": "Arquétipos, Jounin das sai",
+		"estilo": "Fiel à arte",
+		"w": 52,
+		"h": 70,
+		"pe": [
+			26,
+			69
+		],
+		"altura": 66
+	},
+	{
+		"id": "arquetipos--anbu-raposa",
+		"verbete": "arquetipos#anbu-raposa",
+		"nome": "Arquétipos, ANBU Raposa",
+		"estilo": "Fiel à arte",
+		"w": 49,
+		"h": 66,
+		"pe": [
+			24,
+			65
+		],
+		"altura": 61
+	},
+	{
+		"id": "arquetipos--anbu-coruja",
+		"verbete": "arquetipos#anbu-coruja",
+		"nome": "Arquétipos, ANBU Coruja",
+		"estilo": "Fiel à arte",
+		"w": 46,
+		"h": 69,
+		"pe": [
+			22,
+			67
+		],
+		"altura": 66
+	},
+	{
+		"id": "arquetipos--anbu-lobo",
+		"verbete": "arquetipos#anbu-lobo",
+		"nome": "Arquétipos, ANBU Lobo",
+		"estilo": "Fiel à arte",
+		"w": 60,
+		"h": 73,
+		"pe": [
+			30,
+			71
+		],
+		"altura": 65
+	},
+	{
+		"id": "arquetipos--anbu-gata",
+		"verbete": "arquetipos#anbu-gata",
+		"nome": "Arquétipos, ANBU Gata",
+		"estilo": "Fiel à arte",
+		"w": 50,
+		"h": 68,
+		"pe": [
+			27,
+			66
+		],
+		"altura": 62
+	},
+	{
+		"id": "arquetipos--agente-da-raiz",
+		"verbete": "arquetipos#agente-da-raiz",
+		"nome": "Arquétipos, Agente da Raiz",
+		"estilo": "Fiel à arte",
+		"w": 47,
+		"h": 68,
+		"pe": [
+			23,
+			67
+		],
+		"altura": 66
+	},
+	{
+		"id": "arquetipos--cacadora-da-nevoa",
+		"verbete": "arquetipos#cacadora-da-nevoa",
+		"nome": "Arquétipos, Caçadora da Névoa",
+		"estilo": "Fiel à arte",
+		"w": 61,
+		"h": 67,
+		"pe": [
+			30,
 			66
 		],
 		"altura": 65
+	},
+	{
+		"id": "arquetipos--portador-da-marca",
+		"verbete": "arquetipos#portador-da-marca",
+		"nome": "Arquétipos, Portador da marca",
+		"estilo": "Fiel à arte",
+		"w": 39,
+		"h": 70,
+		"pe": [
+			20,
+			67
+		],
+		"altura": 66
+	},
+	{
+		"id": "arquetipos--hospedeira-sombria",
+		"verbete": "arquetipos#hospedeira-sombria",
+		"nome": "Arquétipos, Hospedeira sombria",
+		"estilo": "Fiel à arte",
+		"w": 68,
+		"h": 71,
+		"pe": [
+			34,
+			69
+		],
+		"altura": 62
+	},
+	{
+		"id": "arquetipos--necromante-do-caixao",
+		"verbete": "arquetipos#necromante-do-caixao",
+		"nome": "Arquétipos, Necromante do caixão",
+		"estilo": "Fiel à arte",
+		"w": 57,
+		"h": 74,
+		"pe": [
+			28,
+			73
+		],
+		"altura": 72
+	},
+	{
+		"id": "arquetipos--ceifadora",
+		"verbete": "arquetipos#ceifadora",
+		"nome": "Arquétipos, Ceifadora",
+		"estilo": "Fiel à arte",
+		"w": 61,
+		"h": 77,
+		"pe": [
+			30,
+			73
+		],
+		"altura": 73
+	},
+	{
+		"id": "arquetipos--senhor-oni",
+		"verbete": "arquetipos#senhor-oni",
+		"nome": "Arquétipos, Senhor Oni",
+		"estilo": "Fiel à arte",
+		"w": 56,
+		"h": 76,
+		"pe": [
+			28,
+			75
+		],
+		"altura": 74
+	},
+	{
+		"id": "arquetipos--kitsune-das-chamas",
+		"verbete": "arquetipos#kitsune-das-chamas",
+		"nome": "Arquétipos, Kitsune das chamas",
+		"estilo": "Fiel à arte",
+		"w": 55,
+		"h": 76,
+		"pe": [
+			28,
+			70
+		],
+		"altura": 69
+	},
+	{
+		"id": "arquetipos--tengu-negro",
+		"verbete": "arquetipos#tengu-negro",
+		"nome": "Arquétipos, Tengu negro",
+		"estilo": "Fiel à arte",
+		"w": 66,
+		"h": 65,
+		"pe": [
+			33,
+			64
+		],
+		"altura": 63
+	},
+	{
+		"id": "arquetipos--boneca-viva",
+		"verbete": "arquetipos#boneca-viva",
+		"nome": "Arquétipos, Boneca viva",
+		"estilo": "Fiel à arte",
+		"w": 46,
+		"h": 71,
+		"pe": [
+			22,
+			68
+		],
+		"altura": 64
+	},
+	{
+		"id": "arquetipos--kage-renegado",
+		"verbete": "arquetipos#kage-renegado",
+		"nome": "Arquétipos, Kage renegado",
+		"estilo": "Fiel à arte",
+		"w": 52,
+		"h": 73,
+		"pe": [
+			26,
+			71
+		],
+		"altura": 70
 	},
 	{
 		"id": "cla-aburame--genin",

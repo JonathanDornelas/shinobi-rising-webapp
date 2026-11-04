@@ -2699,5 +2699,215 @@
 		"nome": "Arquétipos, Arqueiro de Taki",
 		"estilo": "Fiel à arte",
 		"personagem": "ee96ac12-8f60-4a5a-b9fb-2cd0793d39aa"
+	},
+	{
+		"id": "arquetipos--genin-prodigio",
+		"verbete": "arquetipos#genin-prodigio",
+		"nome": "Arquétipos, Genin prodígio",
+		"estilo": "Fiel à arte",
+		"personagem": "35bbae66-fdb6-40dd-bf04-043060e85770"
+	},
+	{
+		"id": "arquetipos--aprendiz-da-nevoa",
+		"verbete": "arquetipos#aprendiz-da-nevoa",
+		"nome": "Arquétipos, Aprendiz da Névoa",
+		"estilo": "Fiel à arte",
+		"personagem": "1b1a968d-0e25-4b5e-86a6-975a4b765391"
+	},
+	{
+		"id": "arquetipos--genin-rebelde",
+		"verbete": "arquetipos#genin-rebelde",
+		"nome": "Arquétipos, Genin rebelde",
+		"estilo": "Fiel à arte",
+		"personagem": "ae75c412-8a50-4742-9161-3bc3d4c23480"
+	},
+	{
+		"id": "arquetipos--genin-das-bombas",
+		"verbete": "arquetipos#genin-das-bombas",
+		"nome": "Arquétipos, Genin das bombas",
+		"estilo": "Fiel à arte",
+		"personagem": "71b5ca3b-a697-4837-818a-571b69eb9988"
+	},
+	{
+		"id": "arquetipos--chunin-do-deserto",
+		"verbete": "arquetipos#chunin-do-deserto",
+		"nome": "Arquétipos, Chunin do deserto",
+		"estilo": "Fiel à arte",
+		"personagem": "fc848735-7a41-4910-9f2b-3f77a0834de4"
+	},
+	{
+		"id": "arquetipos--genin-da-raposa",
+		"verbete": "arquetipos#genin-da-raposa",
+		"nome": "Arquétipos, Genin da raposa",
+		"estilo": "Fiel à arte",
+		"personagem": "8681e421-f5b9-4366-8459-220a3af904b2"
+	},
+	{
+		"id": "arquetipos--chunin-do-trovao",
+		"verbete": "arquetipos#chunin-do-trovao",
+		"nome": "Arquétipos, Chunin do trovão",
+		"estilo": "Fiel à arte",
+		"personagem": "eea1335d-6178-4db2-ad97-5ca3449d4ccc"
+	},
+	{
+		"id": "arquetipos--escudeira-de-iwa",
+		"verbete": "arquetipos#escudeira-de-iwa",
+		"nome": "Arquétipos, Escudeira de Iwa",
+		"estilo": "Fiel à arte",
+		"personagem": "7b670995-800b-4143-80bf-fb16667f2ae0"
+	},
+	{
+		"id": "arquetipos--mestra-do-manriki",
+		"verbete": "arquetipos#mestra-do-manriki",
+		"nome": "Arquétipos, Mestra do manriki",
+		"estilo": "Fiel à arte",
+		"personagem": "ebc7a510-7690-42c1-af80-5dfc6406141d"
+	},
+	{
+		"id": "arquetipos--jounin-da-cicatriz",
+		"verbete": "arquetipos#jounin-da-cicatriz",
+		"nome": "Arquétipos, Jounin da cicatriz",
+		"estilo": "Fiel à arte",
+		"personagem": "c57a70e8-59a4-4906-afde-f169ea7ee6e7"
+	},
+	{
+		"id": "arquetipos--chunin-do-guarda-chuva",
+		"verbete": "arquetipos#chunin-do-guarda-chuva",
+		"nome": "Arquétipos, Chunin do guarda-chuva",
+		"estilo": "Fiel à arte",
+		"personagem": "db5b49df-6d47-4cf2-a3dc-d85972febb41"
+	},
+	{
+		"id": "arquetipos--lanceiro-da-nevoa",
+		"verbete": "arquetipos#lanceiro-da-nevoa",
+		"nome": "Arquétipos, Lanceiro da Névoa",
+		"estilo": "Fiel à arte",
+		"personagem": "7efea178-d9a7-461f-8a50-fe243d793e97"
+	},
+	{
+		"id": "arquetipos--mestre-das-duas-espadas",
+		"verbete": "arquetipos#mestre-das-duas-espadas",
+		"nome": "Arquétipos, Mestre das duas espadas",
+		"estilo": "Fiel à arte",
+		"personagem": "9c1ec7a7-3fc6-44c6-8151-4c84dfc9290f"
+	},
+	{
+		"id": "arquetipos--mestra-dos-venenos",
+		"verbete": "arquetipos#mestra-dos-venenos",
+		"nome": "Arquétipos, Mestra dos venenos",
+		"estilo": "Fiel à arte",
+		"personagem": "2e72aea0-f156-4d49-80a2-5e75fd56a309"
+	},
+	{
+		"id": "arquetipos--jounin-das-sai",
+		"verbete": "arquetipos#jounin-das-sai",
+		"nome": "Arquétipos, Jounin das sai",
+		"estilo": "Fiel à arte",
+		"personagem": "c9544a46-9c55-4d20-992e-09494863a84f"
+	},
+	{
+		"id": "arquetipos--anbu-raposa",
+		"verbete": "arquetipos#anbu-raposa",
+		"nome": "Arquétipos, ANBU Raposa",
+		"estilo": "Fiel à arte",
+		"personagem": "8996aa45-4ab4-4dd6-860a-93195fd5b60e"
+	},
+	{
+		"id": "arquetipos--anbu-coruja",
+		"verbete": "arquetipos#anbu-coruja",
+		"nome": "Arquétipos, ANBU Coruja",
+		"estilo": "Fiel à arte",
+		"personagem": "13ca6955-1212-436a-bed3-d42a6eacf71f"
+	},
+	{
+		"id": "arquetipos--portador-da-marca",
+		"verbete": "arquetipos#portador-da-marca",
+		"nome": "Arquétipos, Portador da marca",
+		"estilo": "Fiel à arte",
+		"personagem": "e879da03-95e9-4b3f-8751-c9c04d328bf4"
+	},
+	{
+		"id": "arquetipos--cacadora-da-nevoa",
+		"verbete": "arquetipos#cacadora-da-nevoa",
+		"nome": "Arquétipos, Caçadora da Névoa",
+		"estilo": "Fiel à arte",
+		"personagem": "0be266cc-b52d-4e5c-b599-475780ed18f0"
+	},
+	{
+		"id": "arquetipos--anbu-lobo",
+		"verbete": "arquetipos#anbu-lobo",
+		"nome": "Arquétipos, ANBU Lobo",
+		"estilo": "Fiel à arte",
+		"personagem": "08519313-f162-4c9f-81a8-94487da50a2b"
+	},
+	{
+		"id": "arquetipos--agente-da-raiz",
+		"verbete": "arquetipos#agente-da-raiz",
+		"nome": "Arquétipos, Agente da Raiz",
+		"estilo": "Fiel à arte",
+		"personagem": "2949750b-81f1-4120-9ac5-0a30b7094762"
+	},
+	{
+		"id": "arquetipos--anbu-gata",
+		"verbete": "arquetipos#anbu-gata",
+		"nome": "Arquétipos, ANBU Gata",
+		"estilo": "Fiel à arte",
+		"personagem": "f31e95cf-0975-465c-836d-a35e0007ec19"
+	},
+	{
+		"id": "arquetipos--necromante-do-caixao",
+		"verbete": "arquetipos#necromante-do-caixao",
+		"nome": "Arquétipos, Necromante do caixão",
+		"estilo": "Fiel à arte",
+		"personagem": "d3bdb3f7-765f-46e4-96b6-9aafd0264bdd"
+	},
+	{
+		"id": "arquetipos--hospedeira-sombria",
+		"verbete": "arquetipos#hospedeira-sombria",
+		"nome": "Arquétipos, Hospedeira sombria",
+		"estilo": "Fiel à arte",
+		"personagem": "7016b536-1c72-4d71-bd3b-c9f0fafe494d"
+	},
+	{
+		"id": "arquetipos--senhor-oni",
+		"verbete": "arquetipos#senhor-oni",
+		"nome": "Arquétipos, Senhor Oni",
+		"estilo": "Fiel à arte",
+		"personagem": "99a1be59-171b-4f7b-bb67-3ea4ed785304"
+	},
+	{
+		"id": "arquetipos--ceifadora",
+		"verbete": "arquetipos#ceifadora",
+		"nome": "Arquétipos, Ceifadora",
+		"estilo": "Fiel à arte",
+		"personagem": "33856d1b-7bbd-4a8a-bea6-d9d9049b88a7"
+	},
+	{
+		"id": "arquetipos--kitsune-das-chamas",
+		"verbete": "arquetipos#kitsune-das-chamas",
+		"nome": "Arquétipos, Kitsune das chamas",
+		"estilo": "Fiel à arte",
+		"personagem": "f716bf83-f7bd-4c96-8767-088e01134ff5"
+	},
+	{
+		"id": "arquetipos--tengu-negro",
+		"verbete": "arquetipos#tengu-negro",
+		"nome": "Arquétipos, Tengu negro",
+		"estilo": "Fiel à arte",
+		"personagem": "e6ddb5bd-892f-4194-8f1f-b55208172f17"
+	},
+	{
+		"id": "arquetipos--boneca-viva",
+		"verbete": "arquetipos#boneca-viva",
+		"nome": "Arquétipos, Boneca viva",
+		"estilo": "Fiel à arte",
+		"personagem": "4ceda4a0-6d6b-481b-8346-180b006e9b0c"
+	},
+	{
+		"id": "arquetipos--kage-renegado",
+		"verbete": "arquetipos#kage-renegado",
+		"nome": "Arquétipos, Kage renegado",
+		"estilo": "Fiel à arte",
+		"personagem": "5e8bf28e-2220-4263-9c0f-529c21d0dee6"
 	}
 ]
