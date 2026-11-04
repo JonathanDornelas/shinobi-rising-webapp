@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { chaveDaEntrada, colocarNaOrdem, juntarManuais, lerIniciativa, trocarManual } from './iniciativa.ts';
+import { chaveDaEntrada, colocarNaOrdem, juntarManuais, lerIniciativa, tirarDaOrdem, trocarManual } from './iniciativa.ts';
 
 describe('iniciativa digitada à mão', () => {
 	it('lê um inteiro dentro do limite; campo vazio ou sem número não vale', () => {
@@ -60,6 +60,24 @@ describe('iniciativa digitada à mão', () => {
 		const trocada = [ordem[1], ordem[0], ordem[2]];
 		r = colocarNaOrdem(trocada, 0, { ...ordem[2], valor: 1 });
 		expect(r.ordem.map((e) => e.nome)).toEqual(['Hana', 'Ren', 'Ninja']);
+	});
+
+	it('no combate, quem sai da ordem não leva a vez de ninguém; se era a vez dele, passa a quem vinha depois', () => {
+		const ordem = [
+			{ nome: 'Ren', valor: 19, personagem_id: 'p1' },
+			{ nome: 'Hana', valor: 14, personagem_id: 'p2' },
+			{ nome: 'Ninja', valor: 8, npc_id: 'n1' }
+		];
+		// sai alguém antes de quem está na vez: a vez continua com Ninja
+		let r = tirarDaOrdem(ordem, 2, 'p1');
+		expect(r.ordem.map((e) => e.nome)).toEqual(['Hana', 'Ninja']);
+		expect(r.ordem[r.vez].nome).toBe('Ninja');
+		// sai quem está na vez: passa a quem vinha depois
+		r = tirarDaOrdem(ordem, 1, 'p2');
+		expect(r.ordem[r.vez].nome).toBe('Ninja');
+		// sai o último, na vez dele: volta ao começo
+		r = tirarDaOrdem(ordem, 2, 'n1');
+		expect(r.ordem[r.vez].nome).toBe('Ren');
 	});
 
 	it('a entrada se identifica pelo personagem, pelo NPC ou, sem token, pelo nome', () => {

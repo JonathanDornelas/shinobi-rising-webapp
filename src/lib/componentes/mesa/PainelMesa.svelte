@@ -1,6 +1,7 @@
 <script lang="ts">
 	// L11 · M7 · Painel da Mesa: o chat de rolagem (o mesmo registro do L10, só desta campanha, ao vivo) com o rolador no
 	// rodapé, e a aba de iniciativa, que é a mesma para todos na cena.
+	import { tick } from 'svelte';
 	import { ajustarDado, contarDados, erroExpressao } from '#lib/rolagens/expressoes.ts';
 	import { ordemIniciativa } from '#lib/rolagens/registro.ts';
 	import { rolador } from '#lib/rolagens/rolador.svelte.ts';
@@ -73,50 +74,43 @@
 		emCombate
 			? (mesa.iniciativa.ordem ?? []).map((o, i) => {
 					const chave = chaveDaEntrada(o);
-					return { chave, gravado: o.nome, nome: mesa.quemDe(o), valor: o.valor as number | null, vez: i === (mesa.iniciativa.vez ?? 0), manual: manuais.some((m) => m.chave === chave) };
+					return { chave, gravado: o.nome, nome: mesa.quemDe(o), valor: o.valor, vez: i === (mesa.iniciativa.vez ?? 0), manual: manuais.some((m) => m.chave === chave) };
 				})
 			: juntarManuais(ordemIniciativa(rolagens, mesa.campanha, 6, new Date(), mesa.iniciativa.limpa_em ?? null), manuais).map((o) => ({
 					chave: o.chave,
 					gravado: o.quem,
 					nome: mesa.quemDe({ quem: o.quem, npc_id: o.chave }),
-					valor: o.total as number | null,
+					valor: o.total,
 					vez: false,
 					manual: o.manual
 				}))
 	);
 	const editavel = $derived(mesa.mestre && !mesa.somenteLeitura);
-	/** Quem está em cena e ainda não tem número: o Mestre pode digitar o dele. */
-	const semNumero = $derived(
-		editavel ? mesa.participantes.filter((p) => !ordem.some((o) => o.chave === p.chave)).map((p) => ({ chave: p.chave, gravado: p.nome, nome: mesa.quemDe({ quem: p.nome, npc_id: p.chave }), valor: null, manual: false })) : []
-	);
-	function digitar(quem: { chave: string; gravado: string; valor: number | null; manual: boolean }, campo: HTMLInputElement) {
+	function digitar(quem: { chave: string; gravado: string; valor: number; manual: boolean }, campo: HTMLInputElement) {
 		const valor = lerIniciativa(campo.value);
 		// o campo volta ao número que tinha: as linhas seguem a posição, então quem muda o que aparece nele é a ordem nova
-		campo.value = quem.valor === null ? '' : String(quem.valor);
-		// apagar só vale para o número digitado, fora do combate; no combate o campo vazio não tira ninguém da ordem
-		const apagar = valor === null && quem.manual && !emCombate;
+		campo.value = String(quem.valor);
+		// apagar só vale para o número digitado (fora do combate volta ao dado; no combate, sai da ordem, menos o último)
+		const apagar = valor === null && quem.manual && (!emCombate || ordem.length > 1);
 		if (apagar || (valor !== null && valor !== quem.valor)) void mesa.definirIniciativa({ chave: quem.chave, nome: quem.gravado }, valor);
+	}
+	/** Quem está em cena e fora da ordem: o Mestre põe na ordem sem rolar. */
+	const foraDaOrdem = $derived(editavel ? mesa.participantes.filter((p) => !ordem.some((o) => o.chave === p.chave)) : []);
+	let adicionando = $state(false);
+	let painel = $state<HTMLElement>();
+	async function adicionar(p: { chave: string; nome: string }) {
+		adicionando = false;
+		await mesa.definirIniciativa(p, 0);
+		// entra com zero e o campo já selecionado: é só digitar o número
+		await tick();
+		const campo = painel?.querySelector<HTMLInputElement>(`[data-iniciativa="${CSS.escape(p.chave)}"]`);
+		campo?.focus();
+		campo?.select();
 	}
 	const btn = 'min-h-8 border-2 px-1.5 font-pixel text-[11px] leading-none font-bold';
 </script>
 
-{#snippet campoIniciativa(q: { chave: string; gravado: string; nome: string; valor: number | null; manual: boolean })}
-	<input
-		type="number"
-		inputmode="numeric"
-		min={LIMITE_INICIATIVA.min}
-		max={LIMITE_INICIATIVA.max}
-		value={q.valor}
-		placeholder="–"
-		aria-label="Iniciativa de {q.nome}"
-		title={q.manual ? 'Digitada pelo Mestre' : 'Digite um número para valer no lugar do dado'}
-		class="h-8 w-12 border-2 bg-b1 text-center font-pixel text-lg leading-none font-bold text-fg [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none {q.manual ? 'border-[var(--acc)]' : 'border-b3'}"
-		onchange={(e) => digitar(q, e.currentTarget)}
-		onkeydown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
-	/>
-{/snippet}
-
-<aside aria-label="Rolagens e iniciativa" class="flex min-h-0 flex-col bg-b2 {celular ? 'h-full' : 'w-[360px] flex-none border-l-2 border-b3'}">
+<aside bind:this={painel} aria-label="Rolagens e iniciativa" class="flex min-h-0 flex-col bg-b2 {celular ? 'h-full' : 'w-[360px] flex-none border-l-2 border-b3'}">
 	<div role="tablist" class="flex h-11 flex-none items-stretch border-b-2 border-b3 bg-b0">
 		{#each [['rolagens', 'ROLAGENS'], ['iniciativa', 'INICIATIVA']] as const as [id, n] (id)}
 			<button type="button" role="tab" aria-selected={ui.abaPainel === id} class="flex-1 font-pixel text-xs leading-none font-bold tracking-[0.08em] {ui.abaPainel === id ? 'bg-b2 text-title shadow-[inset_0_-3px_0_var(--vermelhao)]' : 'text-mut'}" onclick={() => (ui.abaPainel = id)}>{n}</button>
@@ -238,7 +232,19 @@
 					<span class="flex items-center gap-2 text-sm leading-5 font-semibold">{o.nome}{#if o.vez}<span class="bg-acc px-1 py-0.5 font-pixel text-[11px] leading-none font-bold text-[var(--accfg)]">VEZ</span>{/if}</span>
 					<span class="flex items-center gap-1">
 						{#if editavel}
-							{@render campoIniciativa(o)}
+							<input
+								type="number"
+								inputmode="numeric"
+								min={LIMITE_INICIATIVA.min}
+								max={LIMITE_INICIATIVA.max}
+								value={o.valor}
+								data-iniciativa={o.chave}
+								aria-label="Iniciativa de {o.nome}"
+								title={o.manual ? 'Digitada pelo Mestre' : 'Clique para mudar o número'}
+								class="h-8 w-12 border-2 border-transparent bg-transparent text-center font-pixel text-lg leading-none font-bold [appearance:textfield] hover:border-b3 focus:border-b3 focus:bg-b1 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none {o.manual ? 'text-acc' : 'text-fg'}"
+								onchange={(e) => digitar(o, e.currentTarget)}
+								onkeydown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
+							/>
 						{:else}
 							<span class="font-pixel text-lg leading-none font-bold">{o.valor}</span>
 						{/if}
@@ -249,16 +255,19 @@
 					</span>
 				</div>
 			{:else}
-				<span class="px-3 py-3 text-[13px] leading-[18px] text-mut">Ninguém rolou iniciativa ainda. Cada um rola pela ficha rápida (Iniciativa){semNumero.length ? ', ou digite os números abaixo' : ''}.</span>
+				<span class="px-3 py-3 text-[13px] leading-[18px] text-mut">Ninguém rolou iniciativa ainda. Cada um rola pela ficha rápida (Iniciativa).</span>
 			{/each}
-			{#if semNumero.length}
-				<div class="flex items-center gap-2 border-y-2 border-b3 px-3 py-2 font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">SEM INICIATIVA</div>
-				{#each semNumero as p (p.chave)}
-					<div class="flex min-h-11 items-center gap-2.5 border-b-2 border-b1 px-3 py-1.5">
-						<span class="min-w-0 flex-1 truncate text-sm leading-5 font-semibold" title={p.nome}>{p.nome}</span>
-						{@render campoIniciativa(p)}
-					</div>
-				{/each}
+			{#if foraDaOrdem.length}
+				<div class="border-b-2 border-b1 px-3 py-2">
+					<button type="button" class="{btn} border-b3" aria-expanded={adicionando} onclick={() => (adicionando = !adicionando)}>+ ADICIONAR</button>
+					{#if adicionando}
+						<div class="mt-2 flex flex-col gap-1">
+							{#each foraDaOrdem as p (p.chave)}
+								<button type="button" class="min-h-9 border-2 border-b3 px-2 text-left text-sm leading-5 font-semibold hover:border-mut" onclick={() => adicionar(p)}>{mesa.quemDe({ quem: p.nome, npc_id: p.chave })}</button>
+							{/each}
+						</div>
+					{/if}
+				</div>
 			{/if}
 			{#if mesa.efeitos.length}
 				<div class="flex items-center gap-2 border-y-2 border-b3 px-3 py-2 font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">EFEITOS EM CENA</div>
@@ -271,7 +280,7 @@
 					</div>
 				{/each}
 			{/if}
-			<span class="px-3 py-2.5 text-xs leading-[17px] text-mut">A ordem sai das rolagens de iniciativa e é a mesma para todos na cena. O token da vez ganha o halo ouro e o contador de movimento dele zera. A cada rodada nova, os efeitos em cena perdem um turno e saem do quadro no zero.{mesa.mestre ? ' Durante o combate, ▲ e ▼ mudam a ordem; LIMPAR começa do zero. Se preferir, digite o número de alguém: ele vale no lugar do dado (marcado em ouro), e fora do combate apagar volta ao que foi rolado.' : ''}</span>
+			<span class="px-3 py-2.5 text-xs leading-[17px] text-mut">A ordem sai das rolagens de iniciativa e é a mesma para todos na cena. O token da vez ganha o halo ouro e o contador de movimento dele zera. A cada rodada nova, os efeitos em cena perdem um turno e saem do quadro no zero.{mesa.mestre ? ' Durante o combate, ▲ e ▼ mudam a ordem; LIMPAR começa do zero. Clique num número para mudar: ele vale no lugar do dado e fica em ouro. + ADICIONAR põe alguém da cena na ordem sem rolar. Apagar um número em ouro desfaz: volta ao dado ou, no combate, tira da ordem.' : ''}</span>
 			{#if mesa.mestre && !mesa.somenteLeitura}
 				<div class="flex flex-wrap gap-1.5 px-3 pb-3">
 					{#if mesa.iniciativa.ativa}

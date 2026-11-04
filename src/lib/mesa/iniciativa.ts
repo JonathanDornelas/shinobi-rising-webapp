@@ -30,6 +30,14 @@ export function juntarManuais(roladas: { chave: string; quem: string; total: num
 	);
 }
 
+/** Durante o combate, tira alguém da ordem: a vez fica com quem estava nela; se saiu quem estava, passa a quem vinha depois. */
+export function tirarDaOrdem(ordem: EntradaIniciativa[], vez: number, chave: string): { ordem: EntradaIniciativa[]; vez: number } {
+	const daVez = ordem[vez] ? chaveDaEntrada(ordem[vez]) : null;
+	const nova = ordem.filter((e) => chaveDaEntrada(e) !== chave);
+	if (daVez === chave) return { ordem: nova, vez: vez >= nova.length ? 0 : vez };
+	return { ordem: nova, vez: Math.max(0, nova.findIndex((e) => chaveDaEntrada(e) === daVez)) };
+}
+
 /**
  * Durante o combate: a entrada vai para o lugar do número novo (ou entra na ordem, se estava fora), depois de quem tem o
  * mesmo número. Os outros ficam como estão, mesmo que o Mestre os tenha trocado de lugar, e a vez fica com quem estava nela.

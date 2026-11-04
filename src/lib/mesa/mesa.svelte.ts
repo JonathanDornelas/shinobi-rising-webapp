@@ -11,7 +11,7 @@ import { mascararCena } from './cenas.ts';
 import { limitarPosicao } from './musica.ts';
 import { limpar as limparRuns } from './nevoa.ts';
 import { coresDosMembros } from './cores.ts';
-import { colocarNaOrdem, juntarManuais, trocarManual } from './iniciativa.ts';
+import { colocarNaOrdem, juntarManuais, tirarDaOrdem, trocarManual } from './iniciativa.ts';
 import { deslocarQuadrados, deslocarRuns, deslocarToken } from './reenquadrar.ts';
 import { lerAjustes, lerCenaMiniaturas, rumoDoPasso, type AjusteMiniaturas, type CenaMiniaturas } from './miniaturas.ts';
 import { bloqueiaPasso, deslocarLuzes, deslocarParedes, ehPorta, limparLuzes, limparParedes, type Luz, type Parede } from './luz.ts';
@@ -594,14 +594,17 @@ export class Mesa {
 	}
 
 	/**
-	 * O Mestre digita a iniciativa de alguém: vale no lugar do dado, para quem rolou e para quem não rolou. `null` apaga o
-	 * número (a prévia volta ao que foi rolado). Durante o combate, a pessoa vai para o lugar do número novo na ordem.
+	 * O Mestre muda a iniciativa de alguém ou põe alguém da cena na ordem sem rolar: o número vale no lugar do dado. Durante
+	 * o combate, a pessoa vai para o lugar do número novo. `null` apaga o número: fora do combate, volta ao que foi rolado;
+	 * no combate, a pessoa sai da ordem.
 	 */
 	async definirIniciativa(quem: { chave: string; nome: string }, valor: number | null) {
 		const ini = this.iniciativa;
 		const manuais = trocarManual(ini.manuais ?? [], quem.chave, quem.nome, valor);
-		if (!ini.ativa || valor === null) return this.patchCena({ iniciativa: { ...ini, manuais } });
-		return this.patchCena({ iniciativa: { ...ini, manuais, ...colocarNaOrdem(ini.ordem ?? [], ini.vez ?? 0, this.entradaDa(quem.chave, quem.nome, valor)) } });
+		if (!ini.ativa) return this.patchCena({ iniciativa: { ...ini, manuais } });
+		const [ordem, vez] = [ini.ordem ?? [], ini.vez ?? 0];
+		const nova = valor === null ? tirarDaOrdem(ordem, vez, quem.chave) : colocarNaOrdem(ordem, vez, this.entradaDa(quem.chave, quem.nome, valor));
+		return this.patchCena({ iniciativa: { ...ini, manuais, ...nova } });
 	}
 
 	async proximoTurno() {
