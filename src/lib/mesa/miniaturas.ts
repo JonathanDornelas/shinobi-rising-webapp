@@ -12,12 +12,18 @@ export interface Miniatura {
 	estilo: string;
 	/** já vem com a base esculpida (o quadro não desenha a dele) */
 	base?: boolean;
+	/** um bicho ou monstro: cabe no quadrado também na largura (veja `altura`) */
+	criatura?: boolean;
 	/** um quadro da tira, em pixels */
 	w: number;
 	h: number;
 	/** os pés, em pixels do quadro */
 	pe: [number, number];
-	/** a altura da figura, em pixels */
+	/**
+	 * a medida que ocupa a altura da figura no quadro (ALTURA_DA_FIGURA), em pixels: a altura de uma pessoa; numa criatura,
+	 * a maior entre a altura e a largura dela em todas as direções (deitada, comprida ou de asas abertas, cabe no quadrado),
+	 * e a Pequena fica menor que a Média
+	 */
 	altura: number;
 }
 

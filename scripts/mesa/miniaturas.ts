@@ -1,7 +1,8 @@
 // Miniaturas da Mesa: junta as 8 direções de cada miniatura do PixelLab (pixellab/miniaturas/<id>/<rumo>.png) numa tira
 // só (static/mesa/miniaturas/<id>.png, na ordem sul, sudeste, leste, nordeste, norte, noroeste, oeste, sudoeste),
 // recortada na caixa que cabe todas, e escreve o catálogo do app (src/lib/mesa/miniaturas.json) com o ponto dos pés e a
-// altura da figura, medidos no quadro de frente (sul).
+// altura da figura, medidos no quadro de frente (sul). Numa criatura, a "altura" é a medida que cabe no quadrado: a maior
+// entre a altura e a largura do bicho em todas as direções (deitado, comprido ou de asas abertas), e a Pequena fica menor.
 // Uso: npx tsx scripts/mesa/miniaturas.ts
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -21,7 +22,11 @@ interface Origem {
 	estilo: string;
 	/** a miniatura já vem com a base esculpida (o quadro não desenha a dele) */
 	base?: boolean;
+	/** um bicho ou monstro (o corpo não é de gente): cabe no quadrado também na largura */
+	criatura?: boolean;
 }
+/** O quanto uma criatura Pequena ocupa do quadrado, perto de uma Média (um filhote não fica do tamanho do adulto). */
+const PEQUENA = 0.7;
 
 function png(largura: number, altura: number, rgba: Buffer): Buffer {
 	const bloco = (tipo: string, dados: Buffer) => {
@@ -45,8 +50,14 @@ function png(largura: number, altura: number, rgba: Buffer): Buffer {
 const catalogo: Origem[] = JSON.parse(readFileSync(join(RAIZ, 'pixellab', 'miniaturas', 'catalogo.json'), 'utf8'));
 // na ordem do bestiário (as prateleiras da caixa saem por criatura, e os estágios em ordem); variações do mesmo estágio
 // ficam na ordem do catálogo
-const criaturas: { slug: string; estagios: { slug: string }[] }[] = JSON.parse(readFileSync(join(RAIZ, 'src', 'lib', 'livro', 'gerado', 'bestiario.json'), 'utf8')).criaturas;
+const criaturas: { slug: string; estagios: { slug: string; tamanho?: string }[] }[] = JSON.parse(readFileSync(join(RAIZ, 'src', 'lib', 'livro', 'gerado', 'bestiario.json'), 'utf8')).criaturas;
 const posicao = new Map(criaturas.flatMap((c) => c.estagios.map((e) => `${c.slug}#${e.slug}`)).map((v, i) => [v, i]));
+const porte = new Map(criaturas.flatMap((c) => c.estagios.map((e) => [`${c.slug}#${e.slug}`, e.tamanho])));
+// os arquétipos para jogadores (sem verbete no bestiário) abrem a caixa, na ordem em que estão em poses.json
+const poses: Record<string, unknown> = JSON.parse(readFileSync(join(RAIZ, 'pixellab', 'miniaturas', 'poses.json'), 'utf8'));
+Object.keys(poses)
+	.filter((id) => id.startsWith('arquetipos--'))
+	.forEach((id, i) => posicao.set(`arquetipos#${id.slice('arquetipos--'.length)}`, i - 1e6));
 catalogo.sort((a, b) => (posicao.get(a.verbete) ?? 1e9) - (posicao.get(b.verbete) ?? 1e9));
 const saida = [];
 mkdirSync(join(RAIZ, 'static', 'mesa', 'miniaturas'), { recursive: true });
@@ -75,14 +86,28 @@ for (const m of catalogo) {
 			for (let x = Math.floor(meio - W * de); x < Math.ceil(meio + W * de); x++) if (q.rgba[(y * W + x) * 4 + 3] > 0) [topo, chao] = [Math.min(topo, y), Math.max(chao, y)];
 		return { topo, chao };
 	};
-	const chaos = quadros.map((q) => faixa(q, 0.2).chao).sort((a, b) => a - b);
+	// numa criatura, o mais baixo da figura inteira (patas e cauda ficam fora da faixa do meio)
+	const chaos = quadros.map((q) => faixa(q, m.criatura ? 0.5 : 0.2).chao).sort((a, b) => a - b);
 	const chao = chaos[Math.floor(chaos.length / 2)];
 	// a altura: do chão ao alto da cabeça na faixa estreita do meio (um punho erguido de lado não encolhe a figura)
 	const topo = faixa(quadros[0], 0.12).topo;
+	let altura = chao - topo + 1;
+	if (m.criatura) {
+		// a criatura cabe no quadrado nas 8 direções: a maior altura, ou a maior largura a partir do eixo (0,95 do quadrado
+		// de largo para 0,9 de alto)
+		let [alto, meia] = [0, 0];
+		for (const q of quadros) {
+			let cima = H;
+			for (let y = 0; y < H; y++)
+				for (let x = 0; x < W; x++) if (q.rgba[(y * W + x) * 4 + 3] > 0) [cima, meia] = [Math.min(cima, y), Math.max(meia, Math.abs(x + 0.5 - meio))];
+			alto = Math.max(alto, chao - cima + 1);
+		}
+		altura = Math.round((Math.max(alto, (2 * meia * 0.9) / 0.95) / (porte.get(m.verbete) === 'pequeno' ? PEQUENA : 1)) * 10) / 10;
+	}
 	const pe = [Math.round((meio - x0) * 10) / 10, chao + 1 - y0];
 	const arq = join(RAIZ, 'static', 'mesa', 'miniaturas', `${m.id}.png`);
 	writeFileSync(arq, indexar({ largura: w * 8, altura: h, rgba: tira }) ?? png(w * 8, h, tira));
-	saida.push({ id: m.id, verbete: m.verbete, nome: m.nome, estilo: m.estilo, ...(m.base ? { base: true } : {}), w, h, pe, altura: chao - topo + 1 });
-	console.log(`${m.id}: ${w}×${h} por direção, pés em ${pe.join(', ')}, figura de ${chao - topo + 1} px`);
+	saida.push({ id: m.id, verbete: m.verbete, nome: m.nome, estilo: m.estilo, ...(m.base ? { base: true } : {}), ...(m.criatura ? { criatura: true } : {}), w, h, pe, altura });
+	console.log(`${m.id}: ${w}×${h} por direção, pés em ${pe.join(', ')}, figura de ${altura} px`);
 }
 writeFileSync(join(RAIZ, 'src', 'lib', 'mesa', 'miniaturas.json'), JSON.stringify(saida, null, '\t') + '\n');

@@ -51,7 +51,9 @@ describe('miniaturas', () => {
 			expect(m.verbete).toMatch(/^[a-z0-9-]+#[a-z0-9-]+$/);
 			expect(m.id).toMatch(/^[a-z0-9-]{1,60}$/);
 			expect(m.pe[1]).toBeLessThanOrEqual(m.h);
-			expect(m.altura).toBeLessThanOrEqual(m.h);
+			// a criatura se mede também pela largura (e a Pequena encolhe), então a medida dela pode passar do quadro
+			if (!m.criatura) expect(m.altura).toBeLessThanOrEqual(m.h);
+			expect(m.altura).toBeGreaterThan(0);
 			expect(miniaturaPorId(m.id)).toBe(m);
 		}
 		expect(miniaturasDoVerbete('cla-uchiha#chunin').length).toBeGreaterThan(0);

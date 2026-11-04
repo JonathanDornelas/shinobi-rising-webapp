@@ -87,7 +87,10 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		const [px, py] = pesDaMiniatura(t.x, t.y, n);
 		const [fx, fy] = paraTela(px, py);
 		const [tx, ty] = paraTela(mx, my);
-		return Math.abs(tx - fx) <= 0.32 * n && ty <= fy + 0.1 && ty >= fy - H - (iso ? (t.elevacao ?? 0) * 0.25 : 0);
+		// a criatura larga (deitada, comprida, de asas abertas) pega o clique no corpo inteiro
+		const meia = mini.criatura ? Math.max(0.32 * n, (Math.max(mini.pe[0], mini.w - mini.pe[0]) * H) / mini.altura) : 0.32 * n;
+		const alto = mini.criatura ? (mini.h * H) / mini.altura : H;
+		return Math.abs(tx - fx) <= meia && ty <= fy + 0.1 && ty >= fy - alto - (iso ? (t.elevacao ?? 0) * 0.25 : 0);
 	}
 // o fundo com escala: a proporção vem da própria imagem; MOVER O FUNDO arrasta (só o Mestre) e grava ao soltar
 	let proporcaoFundo = $state(1);

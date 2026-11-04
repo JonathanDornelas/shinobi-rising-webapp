@@ -18,6 +18,9 @@ entre todas as que já existem.
 - **No quadro:**
   - todas as miniaturas têm a mesma altura: a figura cabe inteira no quadrado do token (0,9 do lado, do pé ou da base
     esculpida ao alto da cabeça, do porte do token redondo), vezes o tamanho de todas e o de cada uma;
+  - a criatura cabe no quadrado também na largura (deitada, comprida ou de asas abertas): a medida dela é a maior entre a
+    altura e a largura em todas as direções, e a Pequena ocupa 70% disso (um filhote não fica do tamanho do adulto). O
+    quadrado é o do token, que cresce com o porte: Grande 3 × 3, Enorme 6 × 6, Colossal 10 × 10;
   - a figura fica de pé sobre uma base oval na cor do dono, com a vida e o nome debaixo dos pés e os estados numa fileira
     em cima da cabeça;
   - a direção mostrada segue a vista (na isométrica, o sul da grade aponta para baixo à esquerda); de cima, quem está mais
@@ -55,6 +58,31 @@ O lote usa `pixellab/scripts/miniaturas.mjs` (`--clas` só os clãs; `--grupo a,
      demais ou não aparece (cenas largas, close nos olhos): aí vale só a referência de estilo e o texto.
    - Na revisão, refazer a que lembra personagem famoso (saíram um Jiraiya e um Orochimaru) ou que vem com disco pintado
      no chão (a Mesa já desenha a sombra).
+   - Pose compacta gira bem; estocada baixa com um arco largo de chakra não (o Ninja Médico Nível Anbu saiu de um jeito
+     em cada direção e foi refeito de pé, com o bisturi de chakra na mão).
+   - **Criaturas:** `corpo` em poses.json tira o texto de proporções humanas. Com o molde de quadrúpede do PixelLab
+     (`dog`, `cat`, `bear`, `horse`, `lion`) para bichos de pé nas quatro patas, ou `animal` para o resto (aves,
+     cobras, aranhas, lesmas, os bichos sentados ou deitados, os monstros de forma humana). A referência de estilo
+     continua (não empurra o bicho para forma de gente). O quadro cresce com o porte: 80 px até Médio (10 gerações), 112
+     px no Grande (15) e 128 px no Enorme e no Colossal (25, o máximo do modo pro). As artes das invocações são cenas com
+     o invocador, então todo estágio tem `quem` à mão, e o texto manda ignorar as pessoas da arte. Alguns filhotes e
+     bichos deitados vieram com uma sombra pintada no chão, em pixels opacos (não dá para tirar depois): o texto da
+     criatura agora pede "no ground shadow and no base under it".
+   - **Bestas com Cauda, em alta:** 128 px num token de 10 × 10 ficava com pouco pixel, e a primeira Kurama saiu
+     cabeçuda. Elas são feitas fora do lote, em dois passos: `create_image_pro` desenha a besta de frente em 256 px a
+     partir do quadro do anime (`pixellab/referencias/bestiario/paginas/<besta>.png`, como referência) e no estilo das
+     miniaturas (o Chunin Uchiha como imagem de estilo), 10 gerações; depois `create_object_pro_flash` gira a
+     escolhida nas 8 direções (só cobra o giro, 8 gerações). O resultado de `get_image` vem inline, um bloco de imagem
+     por candidata; o do objeto vem com um link por direção. No catálogo, a besta guarda o `objeto` em vez do
+     `personagem`.
+   - **Arquétipos para jogadores:** figuras sem verbete no bestiário, na prateleira Arquétipos (a primeira da caixa),
+     cada uma um tipo de combate da regra (as especializações do cap. 19, os Portões Internos e as armas do cap. 12),
+     metade homens, metade mulheres, das várias vilas. Também em dois passos: `create_image_pro` em 128 px dá 4
+     candidatas de frente, com o quadro do anime ou do mangá daquele tipo de combate como referência (equipamento,
+     uniforme, traço) e a instrução de desenhar uma pessoa nova, nunca o personagem da referência; a escolhida vai para
+     `pixellab/miniaturas/conceitos/<slug>.png` e vira o `conceito` de "arquetipos--<slug>" em poses.json (com
+     `nome`), e o lote (`--grupo arquetipos`) desenha as 8 direções na receita de sempre dos humanos: mesma referência
+     de estilo, mesmas proporções, mesma altura no quadro.
 3. As 8 direções vão para `pixellab/miniaturas/<id>/`, e a miniatura entra em `pixellab/miniaturas/catalogo.json`.
 4. `npx tsx scripts/mesa/miniaturas.ts` monta as tiras em `static/mesa/miniaturas/` e o catálogo do app (`src/lib/mesa/miniaturas.json`), na ordem do bestiário. Os pés ficam no centro do
    quadro do PixelLab; a altura da figura e o chão são medidos na faixa do meio do corpo (espada, areia ou água no chão
@@ -82,6 +110,5 @@ estilo de todas. As outras cinco direções saíram do catálogo.
 | Especialistas em elementos | 70 |
 | Shinobis das vilas | 40 |
 | Outros inimigos humanos (shinobi, fora da lei, organizações, sennin) | 67 |
-
-Falta o resto do bestiário: criaturas, bijuu, companheiros e invocações. São animais e monstros, que pedem outra receita
-(quadrúpedes, tamanhos maiores que um quadrado).
+| Criaturas, companheiros e invocações (as 9 Bestas com Cauda em 256 px) | 100 |
+| Arquétipos para jogadores | 30 |

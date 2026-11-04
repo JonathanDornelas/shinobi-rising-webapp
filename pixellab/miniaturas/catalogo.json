@@ -1543,7 +1543,7 @@
 		"verbete": "ninja-medico#nivel-anbu",
 		"nome": "Ninja médico de campo, Nível Anbu",
 		"estilo": "Fiel à arte",
-		"personagem": "312f6cc5-e892-42c0-ba54-febf6739adf1"
+		"personagem": "1bb8fc16-581e-4001-8ae2-c12359c1058b"
 	},
 	{
 		"id": "ninja-renegado--chunin",
@@ -1691,5 +1691,1013 @@
 		"nome": "Sennin, Modo Sennin",
 		"estilo": "Fiel à arte",
 		"personagem": "32ce5690-f56d-4dab-9681-2146a73da03b"
+	},
+	{
+		"id": "cobras-de-ryuchi--cobra-de-bote",
+		"verbete": "cobras-de-ryuchi#cobra-de-bote",
+		"nome": "Cobras de Ryūchi, Cobra de bote",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "b427aff4-0acc-4c64-8c7a-cae846f3f994"
+	},
+	{
+		"id": "caes-ninja--cao-de-caca",
+		"verbete": "caes-ninja#cao-de-caca",
+		"nome": "Cães ninja, Cão de caça",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "a9b3079f-4ebc-488b-be7a-a1ba5a04b469"
+	},
+	{
+		"id": "aranhas--aranha-tecela",
+		"verbete": "aranhas#aranha-tecela",
+		"nome": "Aranhas das cavernas, Aranha tecelã",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "ec79403a-a9a3-411e-bcfe-50e4c083b481"
+	},
+	{
+		"id": "bestas-com-cauda--kurama-o-nove-caudas",
+		"verbete": "bestas-com-cauda#kurama-o-nove-caudas",
+		"nome": "Bestas com Cauda, Kurama, o Nove Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"objeto": "d693d63d-3426-4f60-8486-89c3f643838d"
+	},
+	{
+		"id": "aguias-e-falcoes--aguia-de-caca",
+		"verbete": "aguias-e-falcoes#aguia-de-caca",
+		"nome": "Águias e falcões, Águia de caça",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "cb68edd0-b517-4a37-8536-53fb7f29462d"
+	},
+	{
+		"id": "aranhas--aranha-pequena",
+		"verbete": "aranhas#aranha-pequena",
+		"nome": "Aranhas das cavernas, Aranha pequena",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "c67c0035-ee64-40d7-8c0b-faf31f77444e"
+	},
+	{
+		"id": "sapos-de-myoboku--sapo-guerreiro",
+		"verbete": "sapos-de-myoboku#sapo-guerreiro",
+		"nome": "Sapos de Myōboku, Sapo guerreiro",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "9a2896a7-ba94-4b0b-8618-38b93e7a6b66"
+	},
+	{
+		"id": "aguias-e-falcoes--falcao-mensageiro",
+		"verbete": "aguias-e-falcoes#falcao-mensageiro",
+		"nome": "Águias e falcões, Falcão mensageiro",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "21871f69-004f-4a63-93c5-d8a4d64b4e93"
+	},
+	{
+		"id": "aguias-e-falcoes--aguia-gigante",
+		"verbete": "aguias-e-falcoes#aguia-gigante",
+		"nome": "Águias e falcões, Águia gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "7c37a85c-8c37-40e3-a19e-682dd7aa9814"
+	},
+	{
+		"id": "aguias-e-falcoes--senhor-dos-ceus",
+		"verbete": "aguias-e-falcoes#senhor-dos-ceus",
+		"nome": "Águias e falcões, Senhor dos céus",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "7ed1f0f1-2573-4ca1-8ead-23970c3a0816"
+	},
+	{
+		"id": "aranhas--aranha-gigante",
+		"verbete": "aranhas#aranha-gigante",
+		"nome": "Aranhas das cavernas, Aranha gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "ac36a89a-4b98-432f-a819-92a360ee764e"
+	},
+	{
+		"id": "aranhas--rainha-das-aranhas",
+		"verbete": "aranhas#rainha-das-aranhas",
+		"nome": "Aranhas das cavernas, Rainha das aranhas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "ca1bbeb7-4fed-4ebb-af88-86f0133a2379"
+	},
+	{
+		"id": "bakus--baku-jovem",
+		"verbete": "bakus#baku-jovem",
+		"nome": "Bakus devoradores, Baku jovem",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "9d6bc5b3-94bb-423e-903b-4159b4580a5c"
+	},
+	{
+		"id": "caes-ninja--cao-de-guerra",
+		"verbete": "caes-ninja#cao-de-guerra",
+		"nome": "Cães ninja, Cão de guerra",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "9bcc430e-dc89-4639-b8e7-6f9a46aed1e9"
+	},
+	{
+		"id": "bakus--baku-gigante",
+		"verbete": "bakus#baku-gigante",
+		"nome": "Bakus devoradores, Baku gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "7455463f-a0f9-457d-babc-450bd3ec89ea"
+	},
+	{
+		"id": "bakus--baku-anciao",
+		"verbete": "bakus#baku-anciao",
+		"nome": "Bakus devoradores, Baku ancião",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "5b588364-29f8-4681-a200-8f938c0b1e7e"
+	},
+	{
+		"id": "caes-ninja--chefe-da-matilha",
+		"verbete": "caes-ninja#chefe-da-matilha",
+		"nome": "Cães ninja, Chefe da matilha",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "59a18385-ecd2-4b0d-82c7-5d7b40c2b00b"
+	},
+	{
+		"id": "cao-ninja-do-inuzuka--adulto-jovem",
+		"verbete": "cao-ninja-do-inuzuka#adulto-jovem",
+		"nome": "Cão ninja do Inuzuka, Adulto Jovem",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "f59cab54-69d7-43d2-aaef-d589b2e5d940"
+	},
+	{
+		"id": "cao-ninja-do-inuzuka--adulto",
+		"verbete": "cao-ninja-do-inuzuka#adulto",
+		"nome": "Cão ninja do Inuzuka, Adulto",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "ffc0503c-2e78-452a-a8e6-40bba0ddcca0"
+	},
+	{
+		"id": "cao-ninja-do-inuzuka--alfa",
+		"verbete": "cao-ninja-do-inuzuka#alfa",
+		"nome": "Cão ninja do Inuzuka, Alfa",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "e2cbf7a8-cf95-47fa-bf13-6f8f2f07c98f"
+	},
+	{
+		"id": "cao-ninja-do-inuzuka--lendario",
+		"verbete": "cao-ninja-do-inuzuka#lendario",
+		"nome": "Cão ninja do Inuzuka, Lendário",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "bf96fe0d-f6f3-4adb-88c7-c193b2f89468"
+	},
+	{
+		"id": "centopeias--centopeia-pequena",
+		"verbete": "centopeias#centopeia-pequena",
+		"nome": "Centopeias da Floresta da Morte, Centopeia pequena",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "aea21228-fac1-436e-b41a-aa6c902bc00b"
+	},
+	{
+		"id": "centopeias--centopeia-gigante",
+		"verbete": "centopeias#centopeia-gigante",
+		"nome": "Centopeias da Floresta da Morte, Centopeia gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "ddf7f68f-da1b-4750-bad5-f0bf0121a740"
+	},
+	{
+		"id": "centopeias--centopeia-de-emboscada",
+		"verbete": "centopeias#centopeia-de-emboscada",
+		"nome": "Centopeias da Floresta da Morte, Centopeia de emboscada",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "4dcf34c5-e0e1-4eca-8c00-b559e1fd3c97"
+	},
+	{
+		"id": "cobras-de-ryuchi--cobra-pequena",
+		"verbete": "cobras-de-ryuchi#cobra-pequena",
+		"nome": "Cobras de Ryūchi, Cobra pequena",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "47d4aa49-efab-4d1b-a281-8c456facf2d2"
+	},
+	{
+		"id": "centopeias--matriarca-do-ninho",
+		"verbete": "centopeias#matriarca-do-ninho",
+		"nome": "Centopeias da Floresta da Morte, Matriarca do ninho",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "b92ecaa8-9545-49d5-acdf-e574265577dd"
+	},
+	{
+		"id": "corujas--corujinha",
+		"verbete": "corujas#corujinha",
+		"nome": "Corujas da noite, Corujinha",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "6fa56d44-706f-499b-8460-b388a76dca49"
+	},
+	{
+		"id": "cobras-de-ryuchi--chefe-das-serpentes",
+		"verbete": "cobras-de-ryuchi#chefe-das-serpentes",
+		"nome": "Cobras de Ryūchi, Chefe das serpentes",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "cf8356a1-bcf9-4c70-9f3b-5b0087f4aca9"
+	},
+	{
+		"id": "corujas--coruja-cacadora",
+		"verbete": "corujas#coruja-cacadora",
+		"nome": "Corujas da noite, Coruja caçadora",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "c4302d27-8f52-4312-af08-dc0b7018570f"
+	},
+	{
+		"id": "cobras-de-ryuchi--serpente-gigante",
+		"verbete": "cobras-de-ryuchi#serpente-gigante",
+		"nome": "Cobras de Ryūchi, Serpente gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "eb74d36b-fa90-4314-8d2a-fba79e21f942"
+	},
+	{
+		"id": "corujas--coruja-gigante",
+		"verbete": "corujas#coruja-gigante",
+		"nome": "Corujas da noite, Coruja gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "2d4d9529-f9cd-4b3a-8aa9-baab5e49637c"
+	},
+	{
+		"id": "corvos--corvo-mensageiro",
+		"verbete": "corvos#corvo-mensageiro",
+		"nome": "Corvos mensageiros, Corvo mensageiro",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "83aff475-df4b-49ae-8f3b-7c5ba2eba9d7"
+	},
+	{
+		"id": "corujas--grande-coruja",
+		"verbete": "corujas#grande-coruja",
+		"nome": "Corujas da noite, Grande coruja",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "f0a0100d-6003-4c80-9775-607b49b05a50"
+	},
+	{
+		"id": "corvos--corvo-anciao",
+		"verbete": "corvos#corvo-anciao",
+		"nome": "Corvos mensageiros, Corvo ancião",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "5a4e9c86-e2b7-4adb-9b66-9af7b77c0035"
+	},
+	{
+		"id": "corvos--corvo-patriarca",
+		"verbete": "corvos#corvo-patriarca",
+		"nome": "Corvos mensageiros, Corvo patriarca",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "6252e7fa-094c-4aad-9db8-056d9094a76e"
+	},
+	{
+		"id": "doki--doki",
+		"verbete": "doki#doki",
+		"nome": "Doki, Doki",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "2d2fed06-1e59-4961-867b-c764f3905c20"
+	},
+	{
+		"id": "doninhas--doninha-pequena",
+		"verbete": "doninhas#doninha-pequena",
+		"nome": "Doninhas do vento, Doninha pequena",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "29d59b2b-bdf3-4263-9d3d-a5cb377959c3"
+	},
+	{
+		"id": "doninhas--doninha-da-foice",
+		"verbete": "doninhas#doninha-da-foice",
+		"nome": "Doninhas do vento, Doninha da foice",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "a6eab375-d9f2-4376-b98b-69ebe9adbd98"
+	},
+	{
+		"id": "doninhas--doninha-da-tempestade",
+		"verbete": "doninhas#doninha-da-tempestade",
+		"nome": "Doninhas do vento, Doninha da tempestade",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "d68d1ea1-ae7a-4592-a791-05e592f1f945"
+	},
+	{
+		"id": "invocacoes-do-rinnegan--camaleao-de-cauda-de-cobra",
+		"verbete": "invocacoes-do-rinnegan#camaleao-de-cauda-de-cobra",
+		"nome": "Invocações do Rinnegan, Camaleão de cauda de cobra",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "ecf21a29-a40b-48a2-87f9-a99778f28974"
+	},
+	{
+		"id": "doninhas--senhora-dos-ventos",
+		"verbete": "doninhas#senhora-dos-ventos",
+		"nome": "Doninhas do vento, Senhora dos ventos",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "2ff420f0-78e0-4940-9bff-5ed72dd52edb"
+	},
+	{
+		"id": "experimento-proibido--experimento-proibido",
+		"verbete": "experimento-proibido#experimento-proibido",
+		"nome": "Experimento proibido, Experimento proibido",
+		"estilo": "Fiel à arte",
+		"personagem": "bbac5960-db60-46e8-93ab-166515f42315"
+	},
+	{
+		"id": "invocacoes-do-rinnegan--rinoceronte-gigante",
+		"verbete": "invocacoes-do-rinnegan#rinoceronte-gigante",
+		"nome": "Invocações do Rinnegan, Rinoceronte gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "a4cd049c-790a-4527-b6c2-599e55e1c657"
+	},
+	{
+		"id": "invocacoes-do-rinnegan--panda-gigante",
+		"verbete": "invocacoes-do-rinnegan#panda-gigante",
+		"nome": "Invocações do Rinnegan, Panda gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "dcec205c-3cea-48e8-b9bb-84ca38654ad9"
+	},
+	{
+		"id": "invocacoes-do-rinnegan--boi-gigante",
+		"verbete": "invocacoes-do-rinnegan#boi-gigante",
+		"nome": "Invocações do Rinnegan, Boi gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "041b8574-517e-446d-953d-efb638d30c0f"
+	},
+	{
+		"id": "invocacoes-do-rinnegan--crustaceo-gigante",
+		"verbete": "invocacoes-do-rinnegan#crustaceo-gigante",
+		"nome": "Invocações do Rinnegan, Crustáceo gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "388621ee-c00b-4ea1-8118-dcf3ad8f8031"
+	},
+	{
+		"id": "invocacoes-do-rinnegan--passaro-broca-gigante",
+		"verbete": "invocacoes-do-rinnegan#passaro-broca-gigante",
+		"nome": "Invocações do Rinnegan, Pássaro-broca gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "cb240224-aee3-433a-b0e8-a26b1c297a9b"
+	},
+	{
+		"id": "invocacoes-do-rinnegan--rei-do-inferno",
+		"verbete": "invocacoes-do-rinnegan#rei-do-inferno",
+		"nome": "Invocações do Rinnegan, Rei do Inferno",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "1da29fd4-b5c6-47ea-ba71-ed595f3a9e8d"
+	},
+	{
+		"id": "invocacoes-do-rinnegan--estatua-demoniaca-do-caminho-exterio",
+		"verbete": "invocacoes-do-rinnegan#estatua-demoniaca-do-caminho-exterior",
+		"nome": "Invocações do Rinnegan, Estátua Demoníaca do Caminho Exterior",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "e67f72c0-0930-49c7-91c2-bb89ef40167e"
+	},
+	{
+		"id": "invocacoes-do-rinnegan--cao-de-varias-cabecas",
+		"verbete": "invocacoes-do-rinnegan#cao-de-varias-cabecas",
+		"nome": "Invocações do Rinnegan, Cão de várias cabeças",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "e4ff7d69-37d9-4524-9649-f7439ca4f45e"
+	},
+	{
+		"id": "javalis--leitao",
+		"verbete": "javalis#leitao",
+		"nome": "Javalis da floresta, Leitão",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "e56a4a82-425b-413a-9e68-115f105c1512"
+	},
+	{
+		"id": "javalis--javali-de-batalha",
+		"verbete": "javalis#javali-de-batalha",
+		"nome": "Javalis da floresta, Javali de batalha",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "63c9edd5-f48f-44a1-b300-b0eacd30554e"
+	},
+	{
+		"id": "javalis--javali-gigante",
+		"verbete": "javalis#javali-gigante",
+		"nome": "Javalis da floresta, Javali gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "bdd69fba-1b4c-4f62-b775-4f13a6ee827e"
+	},
+	{
+		"id": "javalis--rei-dos-javalis",
+		"verbete": "javalis#rei-dos-javalis",
+		"nome": "Javalis da floresta, Rei dos javalis",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "f503c9e4-35b2-47a1-90b6-686cd30bb200"
+	},
+	{
+		"id": "lesmas-de-shikkotsu--lesma-pequena",
+		"verbete": "lesmas-de-shikkotsu#lesma-pequena",
+		"nome": "Lesmas de Shikkotsu, Lesma pequena",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "28b62dea-a5cb-4009-a966-6190b1ff48a5"
+	},
+	{
+		"id": "lesmas-de-shikkotsu--lesma-de-cura",
+		"verbete": "lesmas-de-shikkotsu#lesma-de-cura",
+		"nome": "Lesmas de Shikkotsu, Lesma de cura",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "dee7e69f-e025-49e9-8981-60aaf4144efa"
+	},
+	{
+		"id": "lobos--lobo-pequeno",
+		"verbete": "lobos#lobo-pequeno",
+		"nome": "Lobos do Norte, Lobo pequeno",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "6db34aa9-557c-45c8-900d-1da3f2621e31"
+	},
+	{
+		"id": "lesmas-de-shikkotsu--rainha-das-lesmas",
+		"verbete": "lesmas-de-shikkotsu#rainha-das-lesmas",
+		"nome": "Lesmas de Shikkotsu, Rainha das lesmas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "2e9a8c9c-9ed1-4386-ab8f-84189a52420f"
+	},
+	{
+		"id": "lobos--lobo-de-caca",
+		"verbete": "lobos#lobo-de-caca",
+		"nome": "Lobos do Norte, Lobo de caça",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "8e2111d7-c391-43e9-b216-4317fa6ab513"
+	},
+	{
+		"id": "lesmas-de-shikkotsu--lesma-gigante",
+		"verbete": "lesmas-de-shikkotsu#lesma-gigante",
+		"nome": "Lesmas de Shikkotsu, Lesma gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "6fa6347e-b2ad-4e55-9de7-ba9953ed8b12"
+	},
+	{
+		"id": "lobos--lobo-gigante",
+		"verbete": "lobos#lobo-gigante",
+		"nome": "Lobos do Norte, Lobo gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "074140da-6c3e-4b2a-85d0-16d9e1eb1fbd"
+	},
+	{
+		"id": "macacos-guerreiros--macaco-pequeno",
+		"verbete": "macacos-guerreiros#macaco-pequeno",
+		"nome": "Macacos guerreiros, Macaco pequeno",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "9f592b7f-e4ed-4532-b197-31c7a9616a63"
+	},
+	{
+		"id": "lobos--chefe-da-alcateia",
+		"verbete": "lobos#chefe-da-alcateia",
+		"nome": "Lobos do Norte, Chefe da alcateia",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "b97092a4-8a04-4cc9-945d-31293066af3f"
+	},
+	{
+		"id": "macacos-guerreiros--macaco-lutador",
+		"verbete": "macacos-guerreiros#macaco-lutador",
+		"nome": "Macacos guerreiros, Macaco lutador",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "837a753f-63b5-4289-aa93-147a67befef6"
+	},
+	{
+		"id": "macacos-guerreiros--macaco-guerreiro",
+		"verbete": "macacos-guerreiros#macaco-guerreiro",
+		"nome": "Macacos guerreiros, Macaco guerreiro",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "206a94e9-df3e-4897-9c57-39afc2660010"
+	},
+	{
+		"id": "macacos-guerreiros--rei-dos-macacos",
+		"verbete": "macacos-guerreiros#rei-dos-macacos",
+		"nome": "Macacos guerreiros, Rei dos macacos",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "cd0116c4-904a-4902-a3fc-3694492be1b0"
+	},
+	{
+		"id": "marionete-abandonada--marionete-abandonada",
+		"verbete": "marionete-abandonada#marionete-abandonada",
+		"nome": "Marionete abandonada, Marionete abandonada",
+		"estilo": "Fiel à arte",
+		"personagem": "d41f6c18-a79b-4470-b658-e0f941df899c"
+	},
+	{
+		"id": "salamandras--salamandra-pequena",
+		"verbete": "salamandras#salamandra-pequena",
+		"nome": "Salamandras do pântano, Salamandra pequena",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "b2117681-e1ea-4899-a071-8bf5a515153d"
+	},
+	{
+		"id": "molusco-da-miragem--molusco-da-miragem",
+		"verbete": "molusco-da-miragem#molusco-da-miragem",
+		"nome": "Molusco da miragem, Molusco da miragem",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "7fad45d4-b4ff-4754-a893-6323a0b23015"
+	},
+	{
+		"id": "salamandras--salamandra-gigante",
+		"verbete": "salamandras#salamandra-gigante",
+		"nome": "Salamandras do pântano, Salamandra gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "70608d9c-73e1-4648-8e39-17ba452fd9f0"
+	},
+	{
+		"id": "salamandras--salamandra-da-nevoa",
+		"verbete": "salamandras#salamandra-da-nevoa",
+		"nome": "Salamandras do pântano, Salamandra da névoa",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "c2661035-de05-4123-8af1-18707ffbec31"
+	},
+	{
+		"id": "sapos-de-myoboku--sapo-pequeno",
+		"verbete": "sapos-de-myoboku#sapo-pequeno",
+		"nome": "Sapos de Myōboku, Sapo pequeno",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "e8f68ee8-2903-42e0-a189-9634e3ab97cf"
+	},
+	{
+		"id": "salamandras--salamandra-ancia",
+		"verbete": "salamandras#salamandra-ancia",
+		"nome": "Salamandras do pântano, Salamandra anciã",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "8cb3c0e8-fcde-4c61-be85-87a79308185b"
+	},
+	{
+		"id": "sapos-de-myoboku--sapo-de-batalha",
+		"verbete": "sapos-de-myoboku#sapo-de-batalha",
+		"nome": "Sapos de Myōboku, Sapo de batalha",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "78db2e88-2bbd-4a5e-8717-86485477557d"
+	},
+	{
+		"id": "tartarugas--tartaruga-pequena",
+		"verbete": "tartarugas#tartaruga-pequena",
+		"nome": "Tartarugas da Ilha-Tartaruga, Tartaruga pequena",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "5da3be76-2255-486e-a5af-f55ed72d6494"
+	},
+	{
+		"id": "sapos-de-myoboku--chefe-dos-sapos",
+		"verbete": "sapos-de-myoboku#chefe-dos-sapos",
+		"nome": "Sapos de Myōboku, Chefe dos sapos",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "a700b93c-31e8-4794-b5a9-bc37982d72a5"
+	},
+	{
+		"id": "tartarugas--tartaruga-de-casco",
+		"verbete": "tartarugas#tartaruga-de-casco",
+		"nome": "Tartarugas da Ilha-Tartaruga, Tartaruga de casco",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "f62d10bc-ac48-4d23-ae2b-9e3cf999414b"
+	},
+	{
+		"id": "tartarugas--tartaruga-gigante",
+		"verbete": "tartarugas#tartaruga-gigante",
+		"nome": "Tartarugas da Ilha-Tartaruga, Tartaruga gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "6059ef40-7ee1-4ce2-b346-da62161514fd"
+	},
+	{
+		"id": "tartarugas--ancestral-da-ilha",
+		"verbete": "tartarugas#ancestral-da-ilha",
+		"nome": "Tartarugas da Ilha-Tartaruga, Ancestral da ilha",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "76dfacd8-cf34-4891-95b6-b5f0116327bc"
+	},
+	{
+		"id": "tigres--filhote-de-tigre",
+		"verbete": "tigres#filhote-de-tigre",
+		"nome": "Tigres do bambuzal, Filhote de tigre",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "960a64b0-06da-49f9-9a8a-ffda9218f790"
+	},
+	{
+		"id": "tigres--tigre-de-caca",
+		"verbete": "tigres#tigre-de-caca",
+		"nome": "Tigres do bambuzal, Tigre de caça",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "3942321a-801c-4eb9-9768-6486627fa660"
+	},
+	{
+		"id": "ursos--filhote-de-urso",
+		"verbete": "ursos#filhote-de-urso",
+		"nome": "Ursos das montanhas, Filhote de urso",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "bdea6283-0975-4aa1-bb4b-21b66206f164"
+	},
+	{
+		"id": "tigres--tigre-gigante",
+		"verbete": "tigres#tigre-gigante",
+		"nome": "Tigres do bambuzal, Tigre gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "c69ca724-c826-4af1-8025-573ffda524d1"
+	},
+	{
+		"id": "tigres--senhor-do-bambuzal",
+		"verbete": "tigres#senhor-do-bambuzal",
+		"nome": "Tigres do bambuzal, Senhor do bambuzal",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "d3b7f551-c369-4654-900f-e4890d6cd40b"
+	},
+	{
+		"id": "ursos--urso-de-batalha",
+		"verbete": "ursos#urso-de-batalha",
+		"nome": "Ursos das montanhas, Urso de batalha",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "5cffe575-a154-41e1-a665-658f8b25ec1d"
+	},
+	{
+		"id": "ursos--urso-gigante",
+		"verbete": "ursos#urso-gigante",
+		"nome": "Ursos das montanhas, Urso gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "2defe1e1-83a8-4c54-9e09-acfc70b5a2d0"
+	},
+	{
+		"id": "ursos--rei-da-montanha",
+		"verbete": "ursos#rei-da-montanha",
+		"nome": "Ursos das montanhas, Rei da montanha",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "83c69677-7c49-47b2-89f1-636f3b212756"
+	},
+	{
+		"id": "bakus--baku-pequeno",
+		"verbete": "bakus#baku-pequeno",
+		"nome": "Bakus devoradores, Baku pequeno",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "764219e9-5507-406d-a68f-670a48dd5cc0"
+	},
+	{
+		"id": "arquetipos--genin-de-konoha",
+		"verbete": "arquetipos#genin-de-konoha",
+		"nome": "Arquétipos, Genin de Konoha",
+		"estilo": "Fiel à arte",
+		"personagem": "882fb4e5-79d4-4049-a435-f544cf9adacb"
+	},
+	{
+		"id": "arquetipos--aluna-da-academia",
+		"verbete": "arquetipos#aluna-da-academia",
+		"nome": "Arquétipos, Aluna da Academia",
+		"estilo": "Fiel à arte",
+		"personagem": "d008ad4a-e938-4cf5-90ff-1b6914b454d4"
+	},
+	{
+		"id": "caes-ninja--filhote-farejador",
+		"verbete": "caes-ninja#filhote-farejador",
+		"nome": "Cães ninja, Filhote farejador",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "6786b55a-4a69-4b97-8bc1-5c87cf79dc1c"
+	},
+	{
+		"id": "bestas-com-cauda--shukaku-o-uma-cauda",
+		"verbete": "bestas-com-cauda#shukaku-o-uma-cauda",
+		"nome": "Bestas com Cauda, Shukaku, o Uma Cauda",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"objeto": "69da2a17-5cd1-46ea-8d49-1fe3ee124692"
+	},
+	{
+		"id": "bestas-com-cauda--matatabi-o-duas-caudas",
+		"verbete": "bestas-com-cauda#matatabi-o-duas-caudas",
+		"nome": "Bestas com Cauda, Matatabi, o Duas Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"objeto": "edccb9bf-dd70-49ff-ad34-41d1f2c4ae27"
+	},
+	{
+		"id": "arquetipos--lutador-de-taijutsu",
+		"verbete": "arquetipos#lutador-de-taijutsu",
+		"nome": "Arquétipos, Lutador de taijutsu",
+		"estilo": "Fiel à arte",
+		"personagem": "bcd0e930-77bc-4d9e-b3e5-53cc305cff8b"
+	},
+	{
+		"id": "arquetipos--usuaria-dos-portoes",
+		"verbete": "arquetipos#usuaria-dos-portoes",
+		"nome": "Arquétipos, Usuária dos Portões",
+		"estilo": "Fiel à arte",
+		"personagem": "fa7b1e58-67e5-48ec-b38f-c1a19cbf7429"
+	},
+	{
+		"id": "cao-ninja-do-inuzuka--filhote",
+		"verbete": "cao-ninja-do-inuzuka#filhote",
+		"nome": "Cão ninja do Inuzuka, Filhote",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "a71a9978-2397-4cef-aeb3-cd13b0e558d0"
+	},
+	{
+		"id": "cao-ninja-do-inuzuka--veterano",
+		"verbete": "cao-ninja-do-inuzuka#veterano",
+		"nome": "Cão ninja do Inuzuka, Veterano",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "03c13442-1903-4161-84b5-fa4815e76f65"
+	},
+	{
+		"id": "bestas-com-cauda--isobu-o-tres-caudas",
+		"verbete": "bestas-com-cauda#isobu-o-tres-caudas",
+		"nome": "Bestas com Cauda, Isobu, o Três Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"objeto": "12653422-91f5-4781-a23e-92c54bf5d529"
+	},
+	{
+		"id": "bestas-com-cauda--son-goku-o-quatro-caudas",
+		"verbete": "bestas-com-cauda#son-goku-o-quatro-caudas",
+		"nome": "Bestas com Cauda, Son Gokū, o Quatro Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"objeto": "4f8b3657-6d88-4de3-9f63-b57e77f3affe"
+	},
+	{
+		"id": "arquetipos--ninja-veloz",
+		"verbete": "arquetipos#ninja-veloz",
+		"nome": "Arquétipos, Ninja veloz",
+		"estilo": "Fiel à arte",
+		"personagem": "853e26eb-57b0-4fbc-88bd-f20e7d0b174f"
+	},
+	{
+		"id": "arquetipos--ninja-resistente",
+		"verbete": "arquetipos#ninja-resistente",
+		"nome": "Arquétipos, Ninja resistente",
+		"estilo": "Fiel à arte",
+		"personagem": "ad3352df-6477-4366-98b9-9c5f512bb2f2"
+	},
+	{
+		"id": "corvos--bando-de-corvos",
+		"verbete": "corvos#bando-de-corvos",
+		"nome": "Corvos mensageiros, Bando de corvos",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"personagem": "9b7c631d-d01f-45a3-8bb8-a9d406b3118a"
+	},
+	{
+		"id": "arquetipos--mestra-do-chakra",
+		"verbete": "arquetipos#mestra-do-chakra",
+		"nome": "Arquétipos, Mestra do chakra",
+		"estilo": "Fiel à arte",
+		"personagem": "730d85f0-119b-42fe-be18-8c11591cc213"
+	},
+	{
+		"id": "arquetipos--reservatorio-de-chakra",
+		"verbete": "arquetipos#reservatorio-de-chakra",
+		"nome": "Arquétipos, Reservatório de chakra",
+		"estilo": "Fiel à arte",
+		"personagem": "c950fbd9-e046-4b29-9d72-ee917e171ff4"
+	},
+	{
+		"id": "bestas-com-cauda--saiken-o-seis-caudas",
+		"verbete": "bestas-com-cauda#saiken-o-seis-caudas",
+		"nome": "Bestas com Cauda, Saiken, o Seis Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"objeto": "3e0240fa-c648-4673-9b8e-c7673621de04"
+	},
+	{
+		"id": "bestas-com-cauda--chomei-o-sete-caudas",
+		"verbete": "bestas-com-cauda#chomei-o-sete-caudas",
+		"nome": "Bestas com Cauda, Chōmei, o Sete Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"objeto": "141d03c4-4a0b-4c72-90ae-f187d0e09cfc"
+	},
+	{
+		"id": "bestas-com-cauda--gyuki-o-oito-caudas",
+		"verbete": "bestas-com-cauda#gyuki-o-oito-caudas",
+		"nome": "Bestas com Cauda, Gyūki, o Oito Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"objeto": "bd710b98-04a0-46c8-8d39-64fca65971eb"
+	},
+	{
+		"id": "arquetipos--ninja-do-fogo",
+		"verbete": "arquetipos#ninja-do-fogo",
+		"nome": "Arquétipos, Ninja do fogo",
+		"estilo": "Fiel à arte",
+		"personagem": "f560d41e-851b-47a3-abb9-445a47ca484b"
+	},
+	{
+		"id": "arquetipos--ninja-da-agua",
+		"verbete": "arquetipos#ninja-da-agua",
+		"nome": "Arquétipos, Ninja da água",
+		"estilo": "Fiel à arte",
+		"personagem": "29424fa7-35b2-435a-8686-08b7d99aa0ac"
+	},
+	{
+		"id": "arquetipos--especialista-em-selos",
+		"verbete": "arquetipos#especialista-em-selos",
+		"nome": "Arquétipos, Especialista em selos",
+		"estilo": "Fiel à arte",
+		"personagem": "ebb8f4d9-204c-4c08-a089-11795f4784ef"
+	},
+	{
+		"id": "arquetipos--ilusionista-do-som",
+		"verbete": "arquetipos#ilusionista-do-som",
+		"nome": "Arquétipos, Ilusionista do Som",
+		"estilo": "Fiel à arte",
+		"personagem": "63a3b6b0-fcdb-4d65-bb28-6adbbba0858e"
+	},
+	{
+		"id": "arquetipos--espadachim-do-raio",
+		"verbete": "arquetipos#espadachim-do-raio",
+		"nome": "Arquétipos, Espadachim do raio",
+		"estilo": "Fiel à arte",
+		"personagem": "51ae3ec0-2ffb-4f40-8a1b-cd19b7188608"
+	},
+	{
+		"id": "bestas-com-cauda--kokuo-o-cinco-caudas",
+		"verbete": "bestas-com-cauda#kokuo-o-cinco-caudas",
+		"nome": "Bestas com Cauda, Kokuō, o Cinco Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"objeto": "7d3e3b85-32c3-477e-a80b-b6b73ab6b237"
+	},
+	{
+		"id": "arquetipos--brutamontes-de-iwa",
+		"verbete": "arquetipos#brutamontes-de-iwa",
+		"nome": "Arquétipos, Brutamontes de Iwa",
+		"estilo": "Fiel à arte",
+		"personagem": "5d1782ee-43ec-4905-9b60-5a5601732fa5"
+	},
+	{
+		"id": "arquetipos--marionetista",
+		"verbete": "arquetipos#marionetista",
+		"nome": "Arquétipos, Marionetista",
+		"estilo": "Fiel à arte",
+		"personagem": "9b5818f2-c6f7-464b-9671-6331183924ac"
+	},
+	{
+		"id": "arquetipos--assassino",
+		"verbete": "arquetipos#assassino",
+		"nome": "Arquétipos, Assassino",
+		"estilo": "Fiel à arte",
+		"personagem": "4bd7416c-899f-436f-8162-44acd619e16f"
+	},
+	{
+		"id": "arquetipos--invocadora",
+		"verbete": "arquetipos#invocadora",
+		"nome": "Arquétipos, Invocadora",
+		"estilo": "Fiel à arte",
+		"personagem": "5d16bb62-df55-41ad-a4ee-45d493c27d76"
+	},
+	{
+		"id": "arquetipos--ninja-sensor",
+		"verbete": "arquetipos#ninja-sensor",
+		"nome": "Arquétipos, Ninja sensor",
+		"estilo": "Fiel à arte",
+		"personagem": "99551fb4-66d7-4b49-adad-646a0a0f1129"
+	},
+	{
+		"id": "arquetipos--ninja-medica",
+		"verbete": "arquetipos#ninja-medica",
+		"nome": "Arquétipos, Ninja médica",
+		"estilo": "Fiel à arte",
+		"personagem": "2fdd4662-21cd-43b6-9b99-466c785e4ca0"
+	},
+	{
+		"id": "arquetipos--ninja-do-vento",
+		"verbete": "arquetipos#ninja-do-vento",
+		"nome": "Arquétipos, Ninja do vento",
+		"estilo": "Fiel à arte",
+		"personagem": "2f445a1c-6376-496c-b123-35de87b64345"
+	},
+	{
+		"id": "arquetipos--aprendiz-de-sennin",
+		"verbete": "arquetipos#aprendiz-de-sennin",
+		"nome": "Arquétipos, Aprendiz de sennin",
+		"estilo": "Fiel à arte",
+		"personagem": "41e005bb-8701-417e-8933-ec475f97cb04"
+	},
+	{
+		"id": "arquetipos--monja-guerreira",
+		"verbete": "arquetipos#monja-guerreira",
+		"nome": "Arquétipos, Monja guerreira",
+		"estilo": "Fiel à arte",
+		"personagem": "16bf9703-c008-476d-834c-07c6423cb624"
+	},
+	{
+		"id": "arquetipos--lanceira-de-iwa",
+		"verbete": "arquetipos#lanceira-de-iwa",
+		"nome": "Arquétipos, Lanceira de Iwa",
+		"estilo": "Fiel à arte",
+		"personagem": "1734d8ba-91b5-43a5-a727-61ae0c34b07a"
+	},
+	{
+		"id": "arquetipos--mestra-de-armas",
+		"verbete": "arquetipos#mestra-de-armas",
+		"nome": "Arquétipos, Mestra de armas",
+		"estilo": "Fiel à arte",
+		"personagem": "6a028afe-f309-44de-9ad7-39d60d06c786"
+	},
+	{
+		"id": "arquetipos--ronin",
+		"verbete": "arquetipos#ronin",
+		"nome": "Arquétipos, Rōnin",
+		"estilo": "Fiel à arte",
+		"personagem": "6ab8b3a9-fcd0-4f9e-9fb4-2b3177473e49"
+	},
+	{
+		"id": "arquetipos--espadachim-da-nevoa",
+		"verbete": "arquetipos#espadachim-da-nevoa",
+		"nome": "Arquétipos, Espadachim da Névoa",
+		"estilo": "Fiel à arte",
+		"personagem": "d2eca7cf-194c-4f25-a85e-b9acd055b42d"
+	},
+	{
+		"id": "arquetipos--espia",
+		"verbete": "arquetipos#espia",
+		"nome": "Arquétipos, Espiã",
+		"estilo": "Fiel à arte",
+		"personagem": "b0285997-627d-4bbd-ab4c-dd22d6b734ea"
+	},
+	{
+		"id": "arquetipos--renegado-de-ame",
+		"verbete": "arquetipos#renegado-de-ame",
+		"nome": "Arquétipos, Renegado de Ame",
+		"estilo": "Fiel à arte",
+		"personagem": "188c0f36-0ca3-486a-a6f3-ca4d74c072bd"
+	},
+	{
+		"id": "arquetipos--ninja-do-som",
+		"verbete": "arquetipos#ninja-do-som",
+		"nome": "Arquétipos, Ninja do Som",
+		"estilo": "Fiel à arte",
+		"personagem": "7e643d31-4383-4445-b308-0a0ebbd90ad1"
+	},
+	{
+		"id": "arquetipos--arqueiro-de-taki",
+		"verbete": "arquetipos#arqueiro-de-taki",
+		"nome": "Arquétipos, Arqueiro de Taki",
+		"estilo": "Fiel à arte",
+		"personagem": "ee96ac12-8f60-4a5a-b9fb-2cd0793d39aa"
 	}
 ]

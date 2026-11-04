@@ -1,5 +1,395 @@
 [
 	{
+		"id": "arquetipos--genin-de-konoha",
+		"verbete": "arquetipos#genin-de-konoha",
+		"nome": "Arquétipos, Genin de Konoha",
+		"estilo": "Fiel à arte",
+		"w": 37,
+		"h": 67,
+		"pe": [
+			18,
+			66
+		],
+		"altura": 64
+	},
+	{
+		"id": "arquetipos--aluna-da-academia",
+		"verbete": "arquetipos#aluna-da-academia",
+		"nome": "Arquétipos, Aluna da Academia",
+		"estilo": "Fiel à arte",
+		"w": 50,
+		"h": 76,
+		"pe": [
+			25,
+			71
+		],
+		"altura": 67
+	},
+	{
+		"id": "arquetipos--lutador-de-taijutsu",
+		"verbete": "arquetipos#lutador-de-taijutsu",
+		"nome": "Arquétipos, Lutador de taijutsu",
+		"estilo": "Fiel à arte",
+		"w": 55,
+		"h": 67,
+		"pe": [
+			27,
+			64
+		],
+		"altura": 62
+	},
+	{
+		"id": "arquetipos--usuaria-dos-portoes",
+		"verbete": "arquetipos#usuaria-dos-portoes",
+		"nome": "Arquétipos, Usuária dos Portões",
+		"estilo": "Fiel à arte",
+		"w": 52,
+		"h": 71,
+		"pe": [
+			25,
+			67
+		],
+		"altura": 66
+	},
+	{
+		"id": "arquetipos--ninja-veloz",
+		"verbete": "arquetipos#ninja-veloz",
+		"nome": "Arquétipos, Ninja veloz",
+		"estilo": "Fiel à arte",
+		"w": 57,
+		"h": 67,
+		"pe": [
+			30,
+			65
+		],
+		"altura": 63
+	},
+	{
+		"id": "arquetipos--ninja-resistente",
+		"verbete": "arquetipos#ninja-resistente",
+		"nome": "Arquétipos, Ninja resistente",
+		"estilo": "Fiel à arte",
+		"w": 50,
+		"h": 70,
+		"pe": [
+			25,
+			69
+		],
+		"altura": 68
+	},
+	{
+		"id": "arquetipos--mestra-do-chakra",
+		"verbete": "arquetipos#mestra-do-chakra",
+		"nome": "Arquétipos, Mestra do chakra",
+		"estilo": "Fiel à arte",
+		"w": 51,
+		"h": 68,
+		"pe": [
+			24,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "arquetipos--reservatorio-de-chakra",
+		"verbete": "arquetipos#reservatorio-de-chakra",
+		"nome": "Arquétipos, Reservatório de chakra",
+		"estilo": "Fiel à arte",
+		"w": 53,
+		"h": 67,
+		"pe": [
+			27,
+			66
+		],
+		"altura": 65
+	},
+	{
+		"id": "arquetipos--ninja-do-fogo",
+		"verbete": "arquetipos#ninja-do-fogo",
+		"nome": "Arquétipos, Ninja do fogo",
+		"estilo": "Fiel à arte",
+		"w": 64,
+		"h": 66,
+		"pe": [
+			32,
+			64
+		],
+		"altura": 63
+	},
+	{
+		"id": "arquetipos--ninja-da-agua",
+		"verbete": "arquetipos#ninja-da-agua",
+		"nome": "Arquétipos, Ninja da água",
+		"estilo": "Fiel à arte",
+		"w": 52,
+		"h": 73,
+		"pe": [
+			26,
+			64
+		],
+		"altura": 61
+	},
+	{
+		"id": "arquetipos--espadachim-do-raio",
+		"verbete": "arquetipos#espadachim-do-raio",
+		"nome": "Arquétipos, Espadachim do raio",
+		"estilo": "Fiel à arte",
+		"w": 63,
+		"h": 74,
+		"pe": [
+			31,
+			73
+		],
+		"altura": 68
+	},
+	{
+		"id": "arquetipos--brutamontes-de-iwa",
+		"verbete": "arquetipos#brutamontes-de-iwa",
+		"nome": "Arquétipos, Brutamontes de Iwa",
+		"estilo": "Fiel à arte",
+		"w": 74,
+		"h": 77,
+		"pe": [
+			37,
+			74
+		],
+		"altura": 66
+	},
+	{
+		"id": "arquetipos--ilusionista-do-som",
+		"verbete": "arquetipos#ilusionista-do-som",
+		"nome": "Arquétipos, Ilusionista do Som",
+		"estilo": "Fiel à arte",
+		"w": 58,
+		"h": 73,
+		"pe": [
+			28,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "arquetipos--especialista-em-selos",
+		"verbete": "arquetipos#especialista-em-selos",
+		"nome": "Arquétipos, Especialista em selos",
+		"estilo": "Fiel à arte",
+		"w": 64,
+		"h": 69,
+		"pe": [
+			31,
+			65
+		],
+		"altura": 64
+	},
+	{
+		"id": "arquetipos--assassino",
+		"verbete": "arquetipos#assassino",
+		"nome": "Arquétipos, Assassino",
+		"estilo": "Fiel à arte",
+		"w": 50,
+		"h": 65,
+		"pe": [
+			25,
+			63
+		],
+		"altura": 61
+	},
+	{
+		"id": "arquetipos--marionetista",
+		"verbete": "arquetipos#marionetista",
+		"nome": "Arquétipos, Marionetista",
+		"estilo": "Fiel à arte",
+		"w": 70,
+		"h": 69,
+		"pe": [
+			34,
+			65
+		],
+		"altura": 62
+	},
+	{
+		"id": "arquetipos--invocadora",
+		"verbete": "arquetipos#invocadora",
+		"nome": "Arquétipos, Invocadora",
+		"estilo": "Fiel à arte",
+		"w": 70,
+		"h": 72,
+		"pe": [
+			33,
+			70
+		],
+		"altura": 69
+	},
+	{
+		"id": "arquetipos--ninja-sensor",
+		"verbete": "arquetipos#ninja-sensor",
+		"nome": "Arquétipos, Ninja sensor",
+		"estilo": "Fiel à arte",
+		"w": 59,
+		"h": 70,
+		"pe": [
+			28,
+			67
+		],
+		"altura": 66
+	},
+	{
+		"id": "arquetipos--ninja-medica",
+		"verbete": "arquetipos#ninja-medica",
+		"nome": "Arquétipos, Ninja médica",
+		"estilo": "Fiel à arte",
+		"w": 45,
+		"h": 71,
+		"pe": [
+			22,
+			67
+		],
+		"altura": 65
+	},
+	{
+		"id": "arquetipos--ninja-do-vento",
+		"verbete": "arquetipos#ninja-do-vento",
+		"nome": "Arquétipos, Ninja do vento",
+		"estilo": "Fiel à arte",
+		"w": 63,
+		"h": 65,
+		"pe": [
+			30,
+			64
+		],
+		"altura": 63
+	},
+	{
+		"id": "arquetipos--aprendiz-de-sennin",
+		"verbete": "arquetipos#aprendiz-de-sennin",
+		"nome": "Arquétipos, Aprendiz de sennin",
+		"estilo": "Fiel à arte",
+		"w": 54,
+		"h": 72,
+		"pe": [
+			27,
+			66
+		],
+		"altura": 64
+	},
+	{
+		"id": "arquetipos--mestra-de-armas",
+		"verbete": "arquetipos#mestra-de-armas",
+		"nome": "Arquétipos, Mestra de armas",
+		"estilo": "Fiel à arte",
+		"w": 66,
+		"h": 71,
+		"pe": [
+			32,
+			68
+		],
+		"altura": 67
+	},
+	{
+		"id": "arquetipos--espadachim-da-nevoa",
+		"verbete": "arquetipos#espadachim-da-nevoa",
+		"nome": "Arquétipos, Espadachim da Névoa",
+		"estilo": "Fiel à arte",
+		"w": 79,
+		"h": 76,
+		"pe": [
+			39,
+			73
+		],
+		"altura": 67
+	},
+	{
+		"id": "arquetipos--ronin",
+		"verbete": "arquetipos#ronin",
+		"nome": "Arquétipos, Rōnin",
+		"estilo": "Fiel à arte",
+		"w": 46,
+		"h": 73,
+		"pe": [
+			23,
+			72
+		],
+		"altura": 71
+	},
+	{
+		"id": "arquetipos--lanceira-de-iwa",
+		"verbete": "arquetipos#lanceira-de-iwa",
+		"nome": "Arquétipos, Lanceira de Iwa",
+		"estilo": "Fiel à arte",
+		"w": 46,
+		"h": 79,
+		"pe": [
+			20,
+			74
+		],
+		"altura": 73
+	},
+	{
+		"id": "arquetipos--monja-guerreira",
+		"verbete": "arquetipos#monja-guerreira",
+		"nome": "Arquétipos, Monja guerreira",
+		"estilo": "Fiel à arte",
+		"w": 41,
+		"h": 75,
+		"pe": [
+			20,
+			72
+		],
+		"altura": 65
+	},
+	{
+		"id": "arquetipos--espia",
+		"verbete": "arquetipos#espia",
+		"nome": "Arquétipos, Espiã",
+		"estilo": "Fiel à arte",
+		"w": 48,
+		"h": 74,
+		"pe": [
+			23,
+			72
+		],
+		"altura": 67
+	},
+	{
+		"id": "arquetipos--renegado-de-ame",
+		"verbete": "arquetipos#renegado-de-ame",
+		"nome": "Arquétipos, Renegado de Ame",
+		"estilo": "Fiel à arte",
+		"w": 60,
+		"h": 65,
+		"pe": [
+			30,
+			64
+		],
+		"altura": 61
+	},
+	{
+		"id": "arquetipos--arqueiro-de-taki",
+		"verbete": "arquetipos#arqueiro-de-taki",
+		"nome": "Arquétipos, Arqueiro de Taki",
+		"estilo": "Fiel à arte",
+		"w": 68,
+		"h": 72,
+		"pe": [
+			32,
+			71
+		],
+		"altura": 65
+	},
+	{
+		"id": "arquetipos--ninja-do-som",
+		"verbete": "arquetipos#ninja-do-som",
+		"nome": "Arquétipos, Ninja do Som",
+		"estilo": "Fiel à arte",
+		"w": 78,
+		"h": 68,
+		"pe": [
+			39,
+			66
+		],
+		"altura": 65
+	},
+	{
 		"id": "cla-aburame--genin",
 		"verbete": "cla-aburame#genin",
 		"nome": "Aburame, Genin",
@@ -63,6 +453,62 @@
 			66
 		],
 		"altura": 65
+	},
+	{
+		"id": "aguias-e-falcoes--falcao-mensageiro",
+		"verbete": "aguias-e-falcoes#falcao-mensageiro",
+		"nome": "Águias e falcões, Falcão mensageiro",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 66,
+		"h": 69,
+		"pe": [
+			33,
+			64
+		],
+		"altura": 90
+	},
+	{
+		"id": "aguias-e-falcoes--aguia-de-caca",
+		"verbete": "aguias-e-falcoes#aguia-de-caca",
+		"nome": "Águias e falcões, Águia de caça",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 74,
+		"h": 75,
+		"pe": [
+			37,
+			72
+		],
+		"altura": 71
+	},
+	{
+		"id": "aguias-e-falcoes--aguia-gigante",
+		"verbete": "aguias-e-falcoes#aguia-gigante",
+		"nome": "Águias e falcões, Águia gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 110,
+		"h": 100,
+		"pe": [
+			55,
+			98
+		],
+		"altura": 101.4
+	},
+	{
+		"id": "aguias-e-falcoes--senhor-dos-ceus",
+		"verbete": "aguias-e-falcoes#senhor-dos-ceus",
+		"nome": "Águias e falcões, Senhor dos céus",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 126,
+		"h": 111,
+		"pe": [
+			63,
+			108
+		],
+		"altura": 116.5
 	},
 	{
 		"id": "cla-akimichi--genin",
@@ -130,6 +576,118 @@
 		"altura": 75
 	},
 	{
+		"id": "aranhas--aranha-pequena",
+		"verbete": "aranhas#aranha-pequena",
+		"nome": "Aranhas das cavernas, Aranha pequena",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 79,
+		"h": 69,
+		"pe": [
+			39,
+			67
+		],
+		"altura": 104.2
+	},
+	{
+		"id": "aranhas--aranha-tecela",
+		"verbete": "aranhas#aranha-tecela",
+		"nome": "Aranhas das cavernas, Aranha tecelã",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 78,
+		"h": 72,
+		"pe": [
+			38,
+			68
+		],
+		"altura": 74.8
+	},
+	{
+		"id": "aranhas--aranha-gigante",
+		"verbete": "aranhas#aranha-gigante",
+		"nome": "Aranhas das cavernas, Aranha gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 108,
+		"h": 101,
+		"pe": [
+			54,
+			97
+		],
+		"altura": 99.5
+	},
+	{
+		"id": "aranhas--rainha-das-aranhas",
+		"verbete": "aranhas#rainha-das-aranhas",
+		"nome": "Aranhas das cavernas, Rainha das aranhas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 126,
+		"h": 122,
+		"pe": [
+			63,
+			120
+		],
+		"altura": 119
+	},
+	{
+		"id": "bakus--baku-pequeno",
+		"verbete": "bakus#baku-pequeno",
+		"nome": "Bakus devoradores, Baku pequeno",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 68,
+		"h": 68,
+		"pe": [
+			34,
+			66
+		],
+		"altura": 92.9
+	},
+	{
+		"id": "bakus--baku-jovem",
+		"verbete": "bakus#baku-jovem",
+		"nome": "Bakus devoradores, Baku jovem",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 68,
+		"h": 73,
+		"pe": [
+			34,
+			71
+		],
+		"altura": 70
+	},
+	{
+		"id": "bakus--baku-gigante",
+		"verbete": "bakus#baku-gigante",
+		"nome": "Bakus devoradores, Baku gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 110,
+		"h": 90,
+		"pe": [
+			55,
+			86
+		],
+		"altura": 101.4
+	},
+	{
+		"id": "bakus--baku-anciao",
+		"verbete": "bakus#baku-anciao",
+		"nome": "Bakus devoradores, Baku ancião",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 128,
+		"h": 107,
+		"pe": [
+			64,
+			99
+		],
+		"altura": 118.4
+	},
+	{
 		"id": "bandidos-de-estrada--bandidos-de-estrada",
 		"verbete": "bandidos-de-estrada#bandidos-de-estrada",
 		"nome": "Bandidos de estrada, Bandidos de estrada",
@@ -141,6 +699,132 @@
 			64
 		],
 		"altura": 61
+	},
+	{
+		"id": "bestas-com-cauda--shukaku-o-uma-cauda",
+		"verbete": "bestas-com-cauda#shukaku-o-uma-cauda",
+		"nome": "Bestas com Cauda, Shukaku, o Uma Cauda",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 237,
+		"h": 236,
+		"pe": [
+			118,
+			232
+		],
+		"altura": 231
+	},
+	{
+		"id": "bestas-com-cauda--matatabi-o-duas-caudas",
+		"verbete": "bestas-com-cauda#matatabi-o-duas-caudas",
+		"nome": "Bestas com Cauda, Matatabi, o Duas Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 249,
+		"h": 231,
+		"pe": [
+			124,
+			220
+		],
+		"altura": 234
+	},
+	{
+		"id": "bestas-com-cauda--isobu-o-tres-caudas",
+		"verbete": "bestas-com-cauda#isobu-o-tres-caudas",
+		"nome": "Bestas com Cauda, Isobu, o Três Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 256,
+		"h": 239,
+		"pe": [
+			128,
+			236
+		],
+		"altura": 241.6
+	},
+	{
+		"id": "bestas-com-cauda--son-goku-o-quatro-caudas",
+		"verbete": "bestas-com-cauda#son-goku-o-quatro-caudas",
+		"nome": "Bestas com Cauda, Son Gokū, o Quatro Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 254,
+		"h": 218,
+		"pe": [
+			127,
+			216
+		],
+		"altura": 237.8
+	},
+	{
+		"id": "bestas-com-cauda--kokuo-o-cinco-caudas",
+		"verbete": "bestas-com-cauda#kokuo-o-cinco-caudas",
+		"nome": "Bestas com Cauda, Kokuō, o Cinco Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 246,
+		"h": 234,
+		"pe": [
+			123,
+			229
+		],
+		"altura": 230.2
+	},
+	{
+		"id": "bestas-com-cauda--saiken-o-seis-caudas",
+		"verbete": "bestas-com-cauda#saiken-o-seis-caudas",
+		"nome": "Bestas com Cauda, Saiken, o Seis Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 192,
+		"h": 163,
+		"pe": [
+			97,
+			159
+		],
+		"altura": 180.9
+	},
+	{
+		"id": "bestas-com-cauda--chomei-o-sete-caudas",
+		"verbete": "bestas-com-cauda#chomei-o-sete-caudas",
+		"nome": "Bestas com Cauda, Chōmei, o Sete Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 254,
+		"h": 207,
+		"pe": [
+			128,
+			206
+		],
+		"altura": 241.6
+	},
+	{
+		"id": "bestas-com-cauda--gyuki-o-oito-caudas",
+		"verbete": "bestas-com-cauda#gyuki-o-oito-caudas",
+		"nome": "Bestas com Cauda, Gyūki, o Oito Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 254,
+		"h": 248,
+		"pe": [
+			127,
+			242
+		],
+		"altura": 241
+	},
+	{
+		"id": "bestas-com-cauda--kurama-o-nove-caudas",
+		"verbete": "bestas-com-cauda#kurama-o-nove-caudas",
+		"nome": "Bestas com Cauda, Kurama, o Nove Caudas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 256,
+		"h": 226,
+		"pe": [
+			128,
+			198
+		],
+		"altura": 241.6
 	},
 	{
 		"id": "cacador-de-recompensas--cacador-de-recompensas",
@@ -156,6 +840,202 @@
 		"altura": 64
 	},
 	{
+		"id": "caes-ninja--filhote-farejador",
+		"verbete": "caes-ninja#filhote-farejador",
+		"nome": "Cães ninja, Filhote farejador",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 59,
+		"h": 62,
+		"pe": [
+			29,
+			59
+		],
+		"altura": 82.9
+	},
+	{
+		"id": "caes-ninja--cao-de-caca",
+		"verbete": "caes-ninja#cao-de-caca",
+		"nome": "Cães ninja, Cão de caça",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 76,
+		"h": 73,
+		"pe": [
+			38,
+			68
+		],
+		"altura": 69.2
+	},
+	{
+		"id": "caes-ninja--cao-de-guerra",
+		"verbete": "caes-ninja#cao-de-guerra",
+		"nome": "Cães ninja, Cão de guerra",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 106,
+		"h": 94,
+		"pe": [
+			53,
+			87
+		],
+		"altura": 97.6
+	},
+	{
+		"id": "caes-ninja--chefe-da-matilha",
+		"verbete": "caes-ninja#chefe-da-matilha",
+		"nome": "Cães ninja, Chefe da matilha",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 126,
+		"h": 119,
+		"pe": [
+			63,
+			114
+		],
+		"altura": 116.5
+	},
+	{
+		"id": "cao-ninja-do-inuzuka--filhote",
+		"verbete": "cao-ninja-do-inuzuka#filhote",
+		"nome": "Cão ninja do Inuzuka, Filhote",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 64,
+		"h": 63,
+		"pe": [
+			32,
+			61
+		],
+		"altura": 85.7
+	},
+	{
+		"id": "cao-ninja-do-inuzuka--adulto-jovem",
+		"verbete": "cao-ninja-do-inuzuka#adulto-jovem",
+		"nome": "Cão ninja do Inuzuka, Adulto Jovem",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 63,
+		"h": 65,
+		"pe": [
+			31,
+			62
+		],
+		"altura": 61
+	},
+	{
+		"id": "cao-ninja-do-inuzuka--adulto",
+		"verbete": "cao-ninja-do-inuzuka#adulto",
+		"nome": "Cão ninja do Inuzuka, Adulto",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 78,
+		"h": 66,
+		"pe": [
+			39,
+			62
+		],
+		"altura": 71.1
+	},
+	{
+		"id": "cao-ninja-do-inuzuka--veterano",
+		"verbete": "cao-ninja-do-inuzuka#veterano",
+		"nome": "Cão ninja do Inuzuka, Veterano",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 78,
+		"h": 74,
+		"pe": [
+			39,
+			66
+		],
+		"altura": 71.1
+	},
+	{
+		"id": "cao-ninja-do-inuzuka--alfa",
+		"verbete": "cao-ninja-do-inuzuka#alfa",
+		"nome": "Cão ninja do Inuzuka, Alfa",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 80,
+		"h": 74,
+		"pe": [
+			40,
+			73
+		],
+		"altura": 72.9
+	},
+	{
+		"id": "cao-ninja-do-inuzuka--lendario",
+		"verbete": "cao-ninja-do-inuzuka#lendario",
+		"nome": "Cão ninja do Inuzuka, Lendário",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 79,
+		"h": 70,
+		"pe": [
+			39,
+			68
+		],
+		"altura": 72.9
+	},
+	{
+		"id": "centopeias--centopeia-pequena",
+		"verbete": "centopeias#centopeia-pequena",
+		"nome": "Centopeias da Floresta da Morte, Centopeia pequena",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 70,
+		"h": 75,
+		"pe": [
+			35,
+			71
+		],
+		"altura": 100
+	},
+	{
+		"id": "centopeias--centopeia-de-emboscada",
+		"verbete": "centopeias#centopeia-de-emboscada",
+		"nome": "Centopeias da Floresta da Morte, Centopeia de emboscada",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 70,
+		"h": 72,
+		"pe": [
+			35,
+			68
+		],
+		"altura": 67
+	},
+	{
+		"id": "centopeias--centopeia-gigante",
+		"verbete": "centopeias#centopeia-gigante",
+		"nome": "Centopeias da Floresta da Morte, Centopeia gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 104,
+		"h": 106,
+		"pe": [
+			52,
+			100
+		],
+		"altura": 99
+	},
+	{
+		"id": "centopeias--matriarca-do-ninho",
+		"verbete": "centopeias#matriarca-do-ninho",
+		"nome": "Centopeias da Floresta da Morte, Matriarca do ninho",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 120,
+		"h": 126,
+		"pe": [
+			60,
+			125
+		],
+		"altura": 124
+	},
+	{
 		"id": "chefe-de-bandidos--chefe-de-bandidos",
 		"verbete": "chefe-de-bandidos#chefe-de-bandidos",
 		"nome": "Chefe de bandidos, Chefe de bandidos",
@@ -169,6 +1049,62 @@
 		"altura": 74
 	},
 	{
+		"id": "cobras-de-ryuchi--cobra-pequena",
+		"verbete": "cobras-de-ryuchi#cobra-pequena",
+		"nome": "Cobras de Ryūchi, Cobra pequena",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 43,
+		"h": 53,
+		"pe": [
+			21,
+			50
+		],
+		"altura": 70
+	},
+	{
+		"id": "cobras-de-ryuchi--cobra-de-bote",
+		"verbete": "cobras-de-ryuchi#cobra-de-bote",
+		"nome": "Cobras de Ryūchi, Cobra de bote",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 66,
+		"h": 73,
+		"pe": [
+			33,
+			69
+		],
+		"altura": 68
+	},
+	{
+		"id": "cobras-de-ryuchi--serpente-gigante",
+		"verbete": "cobras-de-ryuchi#serpente-gigante",
+		"nome": "Cobras de Ryūchi, Serpente gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 110,
+		"h": 103,
+		"pe": [
+			55,
+			101
+		],
+		"altura": 101.4
+	},
+	{
+		"id": "cobras-de-ryuchi--chefe-das-serpentes",
+		"verbete": "cobras-de-ryuchi#chefe-das-serpentes",
+		"nome": "Cobras de Ryūchi, Chefe das serpentes",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 124,
+		"h": 122,
+		"pe": [
+			62,
+			121
+		],
+		"altura": 120
+	},
+	{
 		"id": "conselheiro--conselheiro-da-vila",
 		"verbete": "conselheiro#conselheiro-da-vila",
 		"nome": "Conselheiro da vila, Conselheiro da vila",
@@ -180,6 +1116,118 @@
 			68
 		],
 		"altura": 67
+	},
+	{
+		"id": "corujas--corujinha",
+		"verbete": "corujas#corujinha",
+		"nome": "Corujas da noite, Corujinha",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 52,
+		"h": 63,
+		"pe": [
+			26,
+			61
+		],
+		"altura": 85.7
+	},
+	{
+		"id": "corujas--coruja-cacadora",
+		"verbete": "corujas#coruja-cacadora",
+		"nome": "Corujas da noite, Coruja caçadora",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 80,
+		"h": 60,
+		"pe": [
+			40,
+			59
+		],
+		"altura": 72.9
+	},
+	{
+		"id": "corujas--coruja-gigante",
+		"verbete": "corujas#coruja-gigante",
+		"nome": "Corujas da noite, Coruja gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 102,
+		"h": 99,
+		"pe": [
+			51,
+			96
+		],
+		"altura": 95
+	},
+	{
+		"id": "corujas--grande-coruja",
+		"verbete": "corujas#grande-coruja",
+		"nome": "Corujas da noite, Grande coruja",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 76,
+		"h": 108,
+		"pe": [
+			38,
+			101
+		],
+		"altura": 100
+	},
+	{
+		"id": "corvos--corvo-mensageiro",
+		"verbete": "corvos#corvo-mensageiro",
+		"nome": "Corvos mensageiros, Corvo mensageiro",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 76,
+		"h": 68,
+		"pe": [
+			38,
+			61
+		],
+		"altura": 98.8
+	},
+	{
+		"id": "corvos--bando-de-corvos",
+		"verbete": "corvos#bando-de-corvos",
+		"nome": "Corvos mensageiros, Bando de corvos",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 74,
+		"h": 76,
+		"pe": [
+			37,
+			73
+		],
+		"altura": 72
+	},
+	{
+		"id": "corvos--corvo-anciao",
+		"verbete": "corvos#corvo-anciao",
+		"nome": "Corvos mensageiros, Corvo ancião",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 90,
+		"h": 75,
+		"pe": [
+			45,
+			72
+		],
+		"altura": 82.4
+	},
+	{
+		"id": "corvos--corvo-patriarca",
+		"verbete": "corvos#corvo-patriarca",
+		"nome": "Corvos mensageiros, Corvo patriarca",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 124,
+		"h": 114,
+		"pe": [
+			62,
+			112
+		],
+		"altura": 114.6
 	},
 	{
 		"id": "divisao-das-sombras--recruta",
@@ -245,6 +1293,76 @@
 			65
 		],
 		"altura": 64
+	},
+	{
+		"id": "doki--doki",
+		"verbete": "doki#doki",
+		"nome": "Doki, Doki",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 71,
+		"h": 71,
+		"pe": [
+			35,
+			70
+		],
+		"altura": 69
+	},
+	{
+		"id": "doninhas--doninha-pequena",
+		"verbete": "doninhas#doninha-pequena",
+		"nome": "Doninhas do vento, Doninha pequena",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 69,
+		"h": 68,
+		"pe": [
+			34,
+			63
+		],
+		"altura": 90.7
+	},
+	{
+		"id": "doninhas--doninha-da-foice",
+		"verbete": "doninhas#doninha-da-foice",
+		"nome": "Doninhas do vento, Doninha da foice",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 72,
+		"h": 74,
+		"pe": [
+			36,
+			71
+		],
+		"altura": 70
+	},
+	{
+		"id": "doninhas--doninha-da-tempestade",
+		"verbete": "doninhas#doninha-da-tempestade",
+		"nome": "Doninhas do vento, Doninha da tempestade",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 102,
+		"h": 83,
+		"pe": [
+			51,
+			81
+		],
+		"altura": 93.8
+	},
+	{
+		"id": "doninhas--senhora-dos-ventos",
+		"verbete": "doninhas#senhora-dos-ventos",
+		"nome": "Doninhas do vento, Senhora dos ventos",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 116,
+		"h": 115,
+		"pe": [
+			58,
+			113
+		],
+		"altura": 112
 	},
 	{
 		"id": "especialista-bakuton--genin",
@@ -1222,6 +2340,19 @@
 		"altura": 62
 	},
 	{
+		"id": "experimento-proibido--experimento-proibido",
+		"verbete": "experimento-proibido#experimento-proibido",
+		"nome": "Experimento proibido, Experimento proibido",
+		"estilo": "Fiel à arte",
+		"w": 66,
+		"h": 68,
+		"pe": [
+			33,
+			64
+		],
+		"altura": 62
+	},
+	{
 		"id": "guarda-costas--guarda-costas",
 		"verbete": "guarda-costas#guarda-costas",
 		"nome": "Guarda-costas, Guarda-costas",
@@ -1495,6 +2626,188 @@
 		"altura": 68
 	},
 	{
+		"id": "invocacoes-do-rinnegan--camaleao-de-cauda-de-cobra",
+		"verbete": "invocacoes-do-rinnegan#camaleao-de-cauda-de-cobra",
+		"nome": "Invocações do Rinnegan, Camaleão de cauda de cobra",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 80,
+		"h": 73,
+		"pe": [
+			40,
+			62
+		],
+		"altura": 72.9
+	},
+	{
+		"id": "invocacoes-do-rinnegan--rinoceronte-gigante",
+		"verbete": "invocacoes-do-rinnegan#rinoceronte-gigante",
+		"nome": "Invocações do Rinnegan, Rinoceronte gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 112,
+		"h": 95,
+		"pe": [
+			56,
+			90
+		],
+		"altura": 103.3
+	},
+	{
+		"id": "invocacoes-do-rinnegan--boi-gigante",
+		"verbete": "invocacoes-do-rinnegan#boi-gigante",
+		"nome": "Invocações do Rinnegan, Boi gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 112,
+		"h": 87,
+		"pe": [
+			56,
+			83
+		],
+		"altura": 103.3
+	},
+	{
+		"id": "invocacoes-do-rinnegan--panda-gigante",
+		"verbete": "invocacoes-do-rinnegan#panda-gigante",
+		"nome": "Invocações do Rinnegan, Panda gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 90,
+		"h": 89,
+		"pe": [
+			45,
+			86
+		],
+		"altura": 85
+	},
+	{
+		"id": "invocacoes-do-rinnegan--crustaceo-gigante",
+		"verbete": "invocacoes-do-rinnegan#crustaceo-gigante",
+		"nome": "Invocações do Rinnegan, Crustáceo gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 108,
+		"h": 97,
+		"pe": [
+			54,
+			93
+		],
+		"altura": 99.5
+	},
+	{
+		"id": "invocacoes-do-rinnegan--passaro-broca-gigante",
+		"verbete": "invocacoes-do-rinnegan#passaro-broca-gigante",
+		"nome": "Invocações do Rinnegan, Pássaro-broca gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 112,
+		"h": 96,
+		"pe": [
+			56,
+			92
+		],
+		"altura": 105.2
+	},
+	{
+		"id": "invocacoes-do-rinnegan--cao-de-varias-cabecas",
+		"verbete": "invocacoes-do-rinnegan#cao-de-varias-cabecas",
+		"nome": "Invocações do Rinnegan, Cão de várias cabeças",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 110,
+		"h": 100,
+		"pe": [
+			55,
+			90
+		],
+		"altura": 101.4
+	},
+	{
+		"id": "invocacoes-do-rinnegan--rei-do-inferno",
+		"verbete": "invocacoes-do-rinnegan#rei-do-inferno",
+		"nome": "Invocações do Rinnegan, Rei do Inferno",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 90,
+		"h": 106,
+		"pe": [
+			45,
+			101
+		],
+		"altura": 100
+	},
+	{
+		"id": "invocacoes-do-rinnegan--estatua-demoniaca-do-caminho-exterio",
+		"verbete": "invocacoes-do-rinnegan#estatua-demoniaca-do-caminho-exterior",
+		"nome": "Invocações do Rinnegan, Estátua Demoníaca do Caminho Exterior",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 96,
+		"h": 128,
+		"pe": [
+			48,
+			127
+		],
+		"altura": 126
+	},
+	{
+		"id": "javalis--leitao",
+		"verbete": "javalis#leitao",
+		"nome": "Javalis da floresta, Leitão",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 70,
+		"h": 63,
+		"pe": [
+			35,
+			58
+		],
+		"altura": 90.7
+	},
+	{
+		"id": "javalis--javali-de-batalha",
+		"verbete": "javalis#javali-de-batalha",
+		"nome": "Javalis da floresta, Javali de batalha",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 76,
+		"h": 76,
+		"pe": [
+			38,
+			72
+		],
+		"altura": 71
+	},
+	{
+		"id": "javalis--javali-gigante",
+		"verbete": "javalis#javali-gigante",
+		"nome": "Javalis da floresta, Javali gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 104,
+		"h": 100,
+		"pe": [
+			52,
+			92
+		],
+		"altura": 95.7
+	},
+	{
+		"id": "javalis--rei-dos-javalis",
+		"verbete": "javalis#rei-dos-javalis",
+		"nome": "Javalis da floresta, Rei dos javalis",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 128,
+		"h": 123,
+		"pe": [
+			64,
+			118
+		],
+		"altura": 118.4
+	},
+	{
 		"id": "jinchuuriki--chakra-vazando",
 		"verbete": "jinchuuriki#chakra-vazando",
 		"nome": "Jinchuuriki, Chakra vazando",
@@ -1597,6 +2910,187 @@
 			68
 		],
 		"altura": 67
+	},
+	{
+		"id": "lesmas-de-shikkotsu--lesma-pequena",
+		"verbete": "lesmas-de-shikkotsu#lesma-pequena",
+		"nome": "Lesmas de Shikkotsu, Lesma pequena",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 68,
+		"h": 69,
+		"pe": [
+			34,
+			61
+		],
+		"altura": 88
+	},
+	{
+		"id": "lesmas-de-shikkotsu--lesma-de-cura",
+		"verbete": "lesmas-de-shikkotsu#lesma-de-cura",
+		"nome": "Lesmas de Shikkotsu, Lesma de cura",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 75,
+		"h": 68,
+		"pe": [
+			38,
+			62
+		],
+		"altura": 69.2
+	},
+	{
+		"id": "lesmas-de-shikkotsu--lesma-gigante",
+		"verbete": "lesmas-de-shikkotsu#lesma-gigante",
+		"nome": "Lesmas de Shikkotsu, Lesma gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 97,
+		"h": 80,
+		"pe": [
+			49,
+			76
+		],
+		"altura": 90
+	},
+	{
+		"id": "lesmas-de-shikkotsu--rainha-das-lesmas",
+		"verbete": "lesmas-de-shikkotsu#rainha-das-lesmas",
+		"nome": "Lesmas de Shikkotsu, Rainha das lesmas",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 118,
+		"h": 113,
+		"pe": [
+			59,
+			108
+		],
+		"altura": 108.9
+	},
+	{
+		"id": "lobos--lobo-pequeno",
+		"verbete": "lobos#lobo-pequeno",
+		"nome": "Lobos do Norte, Lobo pequeno",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 74,
+		"h": 66,
+		"pe": [
+			37,
+			64
+		],
+		"altura": 96.1
+	},
+	{
+		"id": "lobos--lobo-de-caca",
+		"verbete": "lobos#lobo-de-caca",
+		"nome": "Lobos do Norte, Lobo de caça",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 80,
+		"h": 74,
+		"pe": [
+			40,
+			69
+		],
+		"altura": 72.9
+	},
+	{
+		"id": "lobos--lobo-gigante",
+		"verbete": "lobos#lobo-gigante",
+		"nome": "Lobos do Norte, Lobo gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 108,
+		"h": 89,
+		"pe": [
+			54,
+			81
+		],
+		"altura": 99.5
+	},
+	{
+		"id": "lobos--chefe-da-alcateia",
+		"verbete": "lobos#chefe-da-alcateia",
+		"nome": "Lobos do Norte, Chefe da alcateia",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 124,
+		"h": 124,
+		"pe": [
+			62,
+			123
+		],
+		"altura": 122
+	},
+	{
+		"id": "macacos-guerreiros--macaco-pequeno",
+		"verbete": "macacos-guerreiros#macaco-pequeno",
+		"nome": "Macacos guerreiros, Macaco pequeno",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 67,
+		"h": 67,
+		"pe": [
+			33,
+			65
+		],
+		"altura": 91.4
+	},
+	{
+		"id": "macacos-guerreiros--macaco-lutador",
+		"verbete": "macacos-guerreiros#macaco-lutador",
+		"nome": "Macacos guerreiros, Macaco lutador",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 74,
+		"h": 74,
+		"pe": [
+			37,
+			71
+		],
+		"altura": 70
+	},
+	{
+		"id": "macacos-guerreiros--macaco-guerreiro",
+		"verbete": "macacos-guerreiros#macaco-guerreiro",
+		"nome": "Macacos guerreiros, Macaco guerreiro",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 86,
+		"h": 88,
+		"pe": [
+			43,
+			85
+		],
+		"altura": 84
+	},
+	{
+		"id": "macacos-guerreiros--rei-dos-macacos",
+		"verbete": "macacos-guerreiros#rei-dos-macacos",
+		"nome": "Macacos guerreiros, Rei dos macacos",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 126,
+		"h": 106,
+		"pe": [
+			63,
+			104
+		],
+		"altura": 116.5
+	},
+	{
+		"id": "marionete-abandonada--marionete-abandonada",
+		"verbete": "marionete-abandonada#marionete-abandonada",
+		"nome": "Marionete abandonada, Marionete abandonada",
+		"estilo": "Fiel à arte",
+		"w": 53,
+		"h": 67,
+		"pe": [
+			29,
+			66
+		],
+		"altura": 64
 	},
 	{
 		"id": "marionetista--genin",
@@ -1859,6 +3353,20 @@
 		"altura": 61
 	},
 	{
+		"id": "molusco-da-miragem--molusco-da-miragem",
+		"verbete": "molusco-da-miragem#molusco-da-miragem",
+		"nome": "Molusco da miragem, Molusco da miragem",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 96,
+		"h": 90,
+		"pe": [
+			48,
+			87
+		],
+		"altura": 88.1
+	},
+	{
 		"id": "monge-guerreiro--monge-guerreiro",
 		"verbete": "monge-guerreiro#monge-guerreiro",
 		"nome": "Monge guerreiro, Monge guerreiro",
@@ -1980,13 +3488,13 @@
 		"verbete": "ninja-medico#nivel-anbu",
 		"nome": "Ninja médico de campo, Nível Anbu",
 		"estilo": "Fiel à arte",
-		"w": 79,
-		"h": 66,
+		"w": 44,
+		"h": 65,
 		"pe": [
-			39,
-			56
+			22,
+			64
 		],
-		"altura": 53
+		"altura": 63
 	},
 	{
 		"id": "ninja-medico--nivel-kage",
@@ -2249,6 +3757,62 @@
 		"altura": 65
 	},
 	{
+		"id": "salamandras--salamandra-pequena",
+		"verbete": "salamandras#salamandra-pequena",
+		"nome": "Salamandras do pântano, Salamandra pequena",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 76,
+		"h": 71,
+		"pe": [
+			38,
+			55
+		],
+		"altura": 98.8
+	},
+	{
+		"id": "salamandras--salamandra-da-nevoa",
+		"verbete": "salamandras#salamandra-da-nevoa",
+		"nome": "Salamandras do pântano, Salamandra da névoa",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 78,
+		"h": 76,
+		"pe": [
+			39,
+			64
+		],
+		"altura": 71.1
+	},
+	{
+		"id": "salamandras--salamandra-gigante",
+		"verbete": "salamandras#salamandra-gigante",
+		"nome": "Salamandras do pântano, Salamandra gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 110,
+		"h": 90,
+		"pe": [
+			55,
+			84
+		],
+		"altura": 101.4
+	},
+	{
+		"id": "salamandras--salamandra-ancia",
+		"verbete": "salamandras#salamandra-ancia",
+		"nome": "Salamandras do pântano, Salamandra anciã",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 124,
+		"h": 106,
+		"pe": [
+			62,
+			91
+		],
+		"altura": 114.6
+	},
+	{
 		"id": "samurai-do-pais-do-ferro--samurai-do-pais-do-ferro",
 		"verbete": "samurai-do-pais-do-ferro#samurai-do-pais-do-ferro",
 		"nome": "Samurai do País do Ferro, Samurai do País do Ferro",
@@ -2260,6 +3824,62 @@
 			70
 		],
 		"altura": 68
+	},
+	{
+		"id": "sapos-de-myoboku--sapo-pequeno",
+		"verbete": "sapos-de-myoboku#sapo-pequeno",
+		"nome": "Sapos de Myōboku, Sapo pequeno",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 56,
+		"h": 67,
+		"pe": [
+			28,
+			66
+		],
+		"altura": 92.9
+	},
+	{
+		"id": "sapos-de-myoboku--sapo-de-batalha",
+		"verbete": "sapos-de-myoboku#sapo-de-batalha",
+		"nome": "Sapos de Myōboku, Sapo de batalha",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 75,
+		"h": 67,
+		"pe": [
+			37,
+			66
+		],
+		"altura": 69.2
+	},
+	{
+		"id": "sapos-de-myoboku--sapo-guerreiro",
+		"verbete": "sapos-de-myoboku#sapo-guerreiro",
+		"nome": "Sapos de Myōboku, Sapo guerreiro",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 112,
+		"h": 92,
+		"pe": [
+			56,
+			76
+		],
+		"altura": 105.2
+	},
+	{
+		"id": "sapos-de-myoboku--chefe-dos-sapos",
+		"verbete": "sapos-de-myoboku#chefe-dos-sapos",
+		"nome": "Sapos de Myōboku, Chefe dos sapos",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 123,
+		"h": 105,
+		"pe": [
+			61,
+			102
+		],
+		"altura": 114.6
 	},
 	{
 		"id": "cla-senju--genin",
@@ -2886,6 +4506,118 @@
 		"altura": 62
 	},
 	{
+		"id": "tartarugas--tartaruga-pequena",
+		"verbete": "tartarugas#tartaruga-pequena",
+		"nome": "Tartarugas da Ilha-Tartaruga, Tartaruga pequena",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 68,
+		"h": 60,
+		"pe": [
+			34,
+			59
+		],
+		"altura": 88
+	},
+	{
+		"id": "tartarugas--tartaruga-de-casco",
+		"verbete": "tartarugas#tartaruga-de-casco",
+		"nome": "Tartarugas da Ilha-Tartaruga, Tartaruga de casco",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 78,
+		"h": 72,
+		"pe": [
+			39,
+			68
+		],
+		"altura": 71.1
+	},
+	{
+		"id": "tartarugas--tartaruga-gigante",
+		"verbete": "tartarugas#tartaruga-gigante",
+		"nome": "Tartarugas da Ilha-Tartaruga, Tartaruga gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 108,
+		"h": 94,
+		"pe": [
+			54,
+			88
+		],
+		"altura": 99.5
+	},
+	{
+		"id": "tartarugas--ancestral-da-ilha",
+		"verbete": "tartarugas#ancestral-da-ilha",
+		"nome": "Tartarugas da Ilha-Tartaruga, Ancestral da ilha",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 126,
+		"h": 108,
+		"pe": [
+			63,
+			107
+		],
+		"altura": 116.5
+	},
+	{
+		"id": "tigres--filhote-de-tigre",
+		"verbete": "tigres#filhote-de-tigre",
+		"nome": "Tigres do bambuzal, Filhote de tigre",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 71,
+		"h": 72,
+		"pe": [
+			35,
+			70
+		],
+		"altura": 98.6
+	},
+	{
+		"id": "tigres--tigre-de-caca",
+		"verbete": "tigres#tigre-de-caca",
+		"nome": "Tigres do bambuzal, Tigre de caça",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 80,
+		"h": 75,
+		"pe": [
+			40,
+			70
+		],
+		"altura": 72.9
+	},
+	{
+		"id": "tigres--tigre-gigante",
+		"verbete": "tigres#tigre-gigante",
+		"nome": "Tigres do bambuzal, Tigre gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 110,
+		"h": 91,
+		"pe": [
+			55,
+			83
+		],
+		"altura": 101.4
+	},
+	{
+		"id": "tigres--senhor-do-bambuzal",
+		"verbete": "tigres#senhor-do-bambuzal",
+		"nome": "Tigres do bambuzal, Senhor do bambuzal",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 126,
+		"h": 108,
+		"pe": [
+			63,
+			104
+		],
+		"altura": 116.5
+	},
+	{
 		"id": "cla-uchiha--genin",
 		"verbete": "cla-uchiha#genin",
 		"nome": "Uchiha, Genin",
@@ -2949,6 +4681,62 @@
 			69
 		],
 		"altura": 67
+	},
+	{
+		"id": "ursos--filhote-de-urso",
+		"verbete": "ursos#filhote-de-urso",
+		"nome": "Ursos das montanhas, Filhote de urso",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 58,
+		"h": 62,
+		"pe": [
+			29,
+			57
+		],
+		"altura": 80
+	},
+	{
+		"id": "ursos--urso-de-batalha",
+		"verbete": "ursos#urso-de-batalha",
+		"nome": "Ursos das montanhas, Urso de batalha",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 78,
+		"h": 74,
+		"pe": [
+			39,
+			72
+		],
+		"altura": 71.1
+	},
+	{
+		"id": "ursos--urso-gigante",
+		"verbete": "ursos#urso-gigante",
+		"nome": "Ursos das montanhas, Urso gigante",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 98,
+		"h": 111,
+		"pe": [
+			49,
+			109
+		],
+		"altura": 108
+	},
+	{
+		"id": "ursos--rei-da-montanha",
+		"verbete": "ursos#rei-da-montanha",
+		"nome": "Ursos das montanhas, Rei da montanha",
+		"estilo": "Fiel à arte",
+		"criatura": true,
+		"w": 102,
+		"h": 114,
+		"pe": [
+			50,
+			112
+		],
+		"altura": 111
 	},
 	{
 		"id": "cla-uzumaki--genin",
