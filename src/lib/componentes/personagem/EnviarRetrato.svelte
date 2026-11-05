@@ -249,7 +249,7 @@
 				</div>
 				<label class="flex items-center gap-3 text-sm font-semibold">
 					Zoom
-					<input type="range" min="1" max="4" step="0.01" class="range range-sm flex-1" value={e.zoom} oninput={(ev) => ajustar({ ...e, zoom: Number(ev.currentTarget.value) })} />
+					<input type="range" min="1" max="4" step="0.01" class="controle-faixa min-w-0 flex-1" value={e.zoom} oninput={(ev) => ajustar({ ...e, zoom: Number(ev.currentTarget.value) })} />
 				</label>
 				<div class="flex flex-wrap justify-end gap-2.5">
 					<button type="button" class="btn-jogo btn-fantasma" disabled={ocupado} onclick={voltar}>VOLTAR</button>

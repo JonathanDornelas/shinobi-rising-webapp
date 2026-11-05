@@ -1,83 +1,10 @@
 @import 'tailwindcss';
 @import './fontes.css';
 
-/* DaisyUI fica disponível para as próximas fases; os temas seguem a direção 1a (cantos retos, borda 2px, sem profundidade). */
-@plugin 'daisyui' {
-	themes: false;
-}
-
-@plugin 'daisyui/theme' {
-	name: 'sumi';
-	default: true;
-	prefersdark: false;
-	color-scheme: dark;
-	--color-base-100: #16110f;
-	--color-base-200: #1f1815;
-	--color-base-300: #2e2420;
-	--color-base-content: #efe3d3;
-	--color-primary: var(--vermelhao);
-	--color-primary-content: #ffffff;
-	--color-secondary: var(--grena);
-	--color-secondary-content: #f4e4d6;
-	--color-accent: #d9a82b;
-	--color-accent-content: #16110f;
-	--color-neutral: #0e0b0a;
-	--color-neutral-content: #f4e4d6;
-	--color-info: #5b9bd5;
-	--color-info-content: #16110f;
-	--color-success: #4fa373;
-	--color-success-content: #16110f;
-	--color-warning: #e0a82e;
-	--color-warning-content: #16110f;
-	--color-error: #e5534b;
-	--color-error-content: #16110f;
-	--radius-selector: 0rem;
-	--radius-field: 0rem;
-	--radius-box: 0rem;
-	--size-selector: 0.25rem;
-	--size-field: 0.25rem;
-	--border: 2px;
-	--depth: 0;
-	--noise: 0;
-}
-
-@plugin 'daisyui/theme' {
-	name: 'washi';
-	default: false;
-	color-scheme: light;
-	--color-base-100: #f4e4d6;
-	--color-base-200: #fbf7f0;
-	--color-base-300: #e6d2bf;
-	--color-base-content: #1a1a1a;
-	--color-primary: var(--vermelhao);
-	--color-primary-content: #ffffff;
-	--color-secondary: var(--grena);
-	--color-secondary-content: #f4e4d6;
-	--color-accent: #bf9000;
-	--color-accent-content: #1a1a1a;
-	--color-neutral: #2b2320;
-	--color-neutral-content: #f4e4d6;
-	--color-info: #2d6a9f;
-	--color-info-content: #ffffff;
-	--color-success: #2f7a4f;
-	--color-success-content: #ffffff;
-	--color-warning: #c98a00;
-	--color-warning-content: #1a1a1a;
-	--color-error: #9b1c1c;
-	--color-error-content: #ffffff;
-	--radius-selector: 0rem;
-	--radius-field: 0rem;
-	--radius-box: 0rem;
-	--size-selector: 0.25rem;
-	--size-field: 0.25rem;
-	--border: 2px;
-	--depth: 0;
-	--noise: 0;
-}
-
 /* Tokens da direção 1a (DS 1 · Temas). */
 :root,
 [data-theme='sumi'] {
+	color-scheme: dark;
 	--b0: #0e0b0a;
 	--b0fg: #f4e4d6;
 	--b0mut: #b5a797;
@@ -134,6 +61,7 @@
 }
 
 [data-theme='washi'] {
+	color-scheme: light;
 	--b0: #2b2320;
 	--b0fg: #f4e4d6;
 	--b0mut: #d9c2a7;
@@ -236,9 +164,26 @@
 	line-gap-override: 0%;
 }
 
+/* Na Pixelify, a abertura do C e do G fecha no negrito: CRIAR vira ORIAR, REGRAS vira REBRAS e PC vira PO. Estas letras são as
+   mesmas, com a abertura de verdade (scripts/fontes/letras-shinobi.mjs). Só valem para C, G, c e Ç. */
+@font-face {
+	font-family: 'Letras Shinobi';
+	src: url('/fonts/letras-shinobi-400.woff2') format('woff2');
+	font-weight: 400 550;
+	font-display: swap;
+	unicode-range: U+0043, U+0047, U+0063, U+00C7;
+}
+@font-face {
+	font-family: 'Letras Shinobi';
+	src: url('/fonts/letras-shinobi-700.woff2') format('woff2');
+	font-weight: 551 900;
+	font-display: swap;
+	unicode-range: U+0043, U+0047, U+0063, U+00C7;
+}
+
 @theme inline {
 	--font-mincho: 'Shippori Mincho B1', serif;
-	--font-pixel: 'Digitos Shinobi', 'Pixelify Sans', 'Noto Sans', sans-serif;
+	--font-pixel: 'Digitos Shinobi', 'Letras Shinobi', 'Pixelify Sans', 'Noto Sans', sans-serif;
 	--font-sans: 'Noto Sans', system-ui, sans-serif;
 	--font-jp: 'Shippori Mincho B1', serif;
 
@@ -344,6 +289,7 @@
 		color: var(--fg);
 		-webkit-font-smoothing: antialiased;
 		scroll-padding-top: 16px;
+		scrollbar-color: currentColor transparent;
 	}
 	body {
 		margin: 0;
@@ -375,6 +321,11 @@
 		outline: 2px solid var(--focus);
 		outline-offset: 2px;
 	}
+	h1,
+	h2,
+	h3 {
+		text-wrap: balance;
+	}
 	mark {
 		background: rgba(217, 168, 43, 0.28);
 		color: inherit;
@@ -393,6 +344,108 @@
 		animation-iteration-count: 1 !important;
 		transition-duration: 1ms !important;
 		scroll-behavior: auto !important;
+	}
+}
+
+/* A barra do topo durante a navegação: só aparece se a página demorar, e anda em degraus, como o resto do jogo. */
+@keyframes navegando {
+	0% {
+		transform: scaleX(0);
+	}
+	15% {
+		transform: scaleX(0.35);
+	}
+	50% {
+		transform: scaleX(0.7);
+	}
+	100% {
+		transform: scaleX(0.96);
+	}
+}
+.barra-navegando {
+	position: fixed;
+	inset: 0 0 auto;
+	z-index: 90;
+	height: 3px;
+	background: var(--acc);
+	transform-origin: left;
+	animation: navegando 10s steps(50) 150ms both;
+}
+
+/* Progresso de leitura: acompanha a rolagem sem JavaScript. Quem não tem o recurso simplesmente não vê a barra. */
+.progresso-leitura {
+	display: none;
+}
+@keyframes ler {
+	from {
+		transform: scaleX(0);
+	}
+	to {
+		transform: scaleX(1);
+	}
+}
+@supports (animation-timeline: scroll()) {
+	.progresso-leitura {
+		display: block;
+		position: fixed;
+		inset: 0 0 auto;
+		z-index: 46;
+		height: 3px;
+		background: var(--vermelhao);
+		transform-origin: left;
+		animation: ler linear both;
+		animation-timeline: scroll(root block);
+	}
+}
+
+/* A home revela cada seção ao entrar na tela, em degraus. Quem pede menos movimento vê tudo parado. */
+@keyframes revelar {
+	from {
+		opacity: 0;
+		translate: 0 20px;
+	}
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.revelar {
+			animation: revelar steps(5) both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 45%;
+		}
+	}
+}
+
+/* O título da home nasce como o sol: sobe em degraus de 4 px, para ficar na grade dos pixels nas duas escalas. */
+@keyframes nascer {
+	from {
+		translate: 0 24px;
+	}
+	to {
+		translate: 0 0;
+	}
+}
+.logo-nasce {
+	animation: nascer 480ms steps(6) both;
+}
+
+/* No celular, as barras de baixo saem do caminho enquanto a pessoa lê um capítulo (ver regras/[capitulo]). */
+@media (max-width: 767px) {
+	[data-recolhe] {
+		transition: translate 120ms steps(3);
+	}
+	:root[data-recolher] [data-recolhe] {
+		translate: 0 var(--recolhe, 100%);
+	}
+}
+
+@media print {
+	.barra-navegando,
+	.progresso-leitura {
+		display: none;
 	}
 }
 
@@ -483,16 +536,23 @@
 	}
 	.cartao-link {
 		transition:
-			transform 120ms ease-out,
-			box-shadow 120ms ease-out,
-			border-color 120ms ease-out;
+			translate 90ms steps(2),
+			box-shadow 90ms steps(2),
+			border-color 90ms steps(2);
 	}
 	.cartao-link:hover {
 		border-color: var(--mut);
 	}
+	/* no toque não existe hover: o cartão ficaria levantado depois do dedo sair */
+	@media (hover: hover) {
+		.cartao-link:hover {
+			translate: -2px -2px;
+			box-shadow: 6px 6px 0 var(--ink) !important;
+		}
+	}
 	.cartao-link:active {
-		transform: translate(2px, 2px);
-		box-shadow: 2px 2px 0 var(--ink);
+		translate: 2px 2px;
+		box-shadow: 2px 2px 0 var(--ink) !important;
 	}
 
 	/* botões (DS 2 · B1) */
@@ -509,6 +569,13 @@
 		border: 0;
 		white-space: nowrap;
 		box-sizing: border-box;
+		transition:
+			translate 60ms steps(2),
+			background-color 90ms steps(2),
+			border-color 90ms steps(2);
+	}
+	.btn-jogo:active:not(:disabled) {
+		translate: 0 1px;
 	}
 	.btn-jogo.com-icone {
 		padding-left: 8px;
@@ -528,7 +595,6 @@
 	}
 	.btn-primario:active {
 		box-shadow: inset 0 4px 0 var(--vermelhao-lo);
-		transform: translateY(1px);
 	}
 	.btn-secundario {
 		background: var(--grena);
@@ -538,6 +604,9 @@
 	}
 	.btn-secundario:hover {
 		border-color: var(--vermelhao);
+	}
+	.btn-secundario:active {
+		box-shadow: inset 0 4px 0 #2b1a14;
 	}
 	.btn-contorno {
 		background: transparent;
@@ -737,6 +806,45 @@
 	}
 	.caixa:focus-visible,
 	.interruptor:focus-visible {
+		outline: 2px solid var(--focus);
+		outline-offset: 2px;
+	}
+
+	/* controle deslizante (zoom do retrato e da arte) */
+	.controle-faixa {
+		appearance: none;
+		height: 24px;
+		margin: 0;
+		background: transparent;
+		cursor: pointer;
+	}
+	.controle-faixa::-webkit-slider-runnable-track {
+		height: 8px;
+		background: var(--b3);
+		border: 2px solid var(--ink);
+	}
+	.controle-faixa::-moz-range-track {
+		height: 4px;
+		background: var(--b3);
+		border: 2px solid var(--ink);
+	}
+	.controle-faixa::-webkit-slider-thumb {
+		appearance: none;
+		width: 16px;
+		height: 20px;
+		margin-top: -8px;
+		background: var(--vermelhao);
+		border: 2px solid var(--ink);
+		border-radius: 0;
+	}
+	.controle-faixa::-moz-range-thumb {
+		width: 12px;
+		height: 16px;
+		background: var(--vermelhao);
+		border: 2px solid var(--ink);
+		border-radius: 0;
+	}
+	.controle-faixa:focus-visible {
 		outline: 2px solid var(--focus);
 		outline-offset: 2px;
 	}

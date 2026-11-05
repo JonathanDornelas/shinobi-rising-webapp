@@ -55,7 +55,7 @@
 		<span class="text-xs text-mut">Arraste a imagem para centralizar o rosto ou o corpo.</span>
 		<label class="flex items-center gap-2 text-xs font-semibold text-mut">
 			Zoom
-			<input type="range" class="range range-xs flex-1" min="1" max="4" step="0.05" value={foco.zoom} oninput={(e) => aoMudar({ x: foco.x, y: foco.y, zoom: +e.currentTarget.value })} />
+			<input type="range" class="controle-faixa min-w-0 flex-1" min="1" max="4" step="0.05" value={foco.zoom} oninput={(e) => aoMudar({ x: foco.x, y: foco.y, zoom: +e.currentTarget.value })} />
 		</label>
 		{#if valor}<button type="button" class="link self-start text-xs font-semibold" onclick={() => aoMudar(null)}>Voltar ao padrão</button>{:else}<span class="text-xs text-mut">Enquadramento padrão da arte ({padrao.zoom.toFixed(1)}×).</span>{/if}
 	</div>

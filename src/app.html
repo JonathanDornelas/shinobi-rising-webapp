@@ -13,6 +13,7 @@
 		<link rel="preload" href="%sveltekit.assets%/fonts/google/pixelify-sans-latin-normal-400.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
 		<link rel="preload" href="%sveltekit.assets%/fonts/google/shippori-mincho-b1-latin-normal-700.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
 		<link rel="preload" href="%sveltekit.assets%/fonts/digitos-shinobi.otf" as="font" type="font/otf" crossorigin="anonymous" />
+		<link rel="preload" href="%sveltekit.assets%/fonts/letras-shinobi-700.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
 		<script>
 			// Aplica tema e tamanho de leitura antes da primeira pintura (sem piscar).
 			try {
@@ -20,6 +21,7 @@
 				var t = localStorage.getItem('snm:tema');
 				if (t === 'sistema') t = matchMedia('(prefers-color-scheme: light)').matches ? 'washi' : 'sumi';
 				d.dataset.theme = t === 'washi' ? 'washi' : 'sumi';
+				if (t === 'washi') document.querySelector('meta[name="theme-color"]').content = '#2b2320';
 				var l = localStorage.getItem('snm:leitura');
 				if (l) d.dataset.leitura = l;
 				var v = JSON.parse(localStorage.getItem('snm:visual-css') || '{}');

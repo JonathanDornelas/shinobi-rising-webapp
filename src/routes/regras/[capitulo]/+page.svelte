@@ -28,6 +28,24 @@
 
 	const espiao = new EspiaoSecoes();
 	let artigo: HTMLElement | undefined = $state();
+
+	// no celular, as barras de baixo saem do caminho ao rolar para baixo e voltam ao subir ou ao chegar no fim do capítulo
+	$effect(() => {
+		const raiz = document.documentElement;
+		let ultimo = scrollY;
+		const aoRolar = () => {
+			const y = scrollY;
+			if (Math.abs(y - ultimo) < 12) return;
+			const noFim = y + innerHeight > raiz.scrollHeight - 160;
+			raiz.toggleAttribute('data-recolher', y > ultimo && y > 240 && !noFim);
+			ultimo = y;
+		};
+		addEventListener('scroll', aoRolar, { passive: true });
+		return () => {
+			removeEventListener('scroll', aoRolar);
+			raiz.removeAttribute('data-recolher');
+		};
+	});
 	let sumarioAberto = $state(false);
 	let nestaPaginaAberta = $state(false);
 	let dropdownAberto = $state(false);
@@ -69,6 +87,8 @@
 		}
 	}
 </script>
+
+<div class="progresso-leitura" aria-hidden="true"></div>
 
 <!-- Tablet: barra com Sumário, Nesta página e Aa -->
 <div role="navigation" aria-label="Capítulo" class="sticky top-0 z-20 hidden items-center gap-2.5 border-b-2 border-b3 bg-b2 px-5 py-2 md:flex lg:hidden">
@@ -194,7 +214,8 @@
 {#if secoes.length}
 	<button
 		type="button"
-		class="fixed right-0 bottom-16 left-0 z-30 flex min-h-[52px] items-center gap-2 border-t-2 border-ink bg-b2 pr-1.5 pl-4 text-left md:hidden"
+		data-recolhe
+		class="fixed right-0 bottom-16 left-0 z-30 flex min-h-[52px] items-center gap-2 border-t-2 border-ink bg-b2 pr-1.5 pl-4 text-left [--recolhe:calc(116px+env(safe-area-inset-bottom))] md:hidden"
 		onclick={() => (nestaPaginaAberta = true)}
 	>
 		<span class="min-w-0 flex-1 truncate text-sm leading-5 font-semibold">Nesta página · {secaoAtiva?.titulo ?? secoes[0].titulo}</span>

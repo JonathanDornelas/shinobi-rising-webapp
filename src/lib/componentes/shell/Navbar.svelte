@@ -122,9 +122,11 @@
 		</div>
 	{:else if sessao.pronta}
 		<div class="flex gap-2">
-			<a href="/entrar{volta}" class="btn-jogo hidden px-3.5 text-b0fg hover:bg-[#2E2420] lg:inline-flex">Entrar</a>
-			<a href="/criar-conta{volta}" class="btn-jogo btn-primario hidden lg:inline-flex">Criar conta</a>
-			<a href="/entrar{volta}" class="btn-jogo btn-primario min-h-11 px-3 text-[13px] lg:hidden">Entrar</a>
+			{#if !caminho.startsWith('/entrar')}
+				<a href="/entrar{volta}" class="btn-jogo hidden px-3.5 text-b0fg hover:bg-[#2E2420] lg:inline-flex">Entrar</a>
+				<a href="/entrar{volta}" class="btn-jogo btn-primario min-h-11 px-3 text-[13px] lg:hidden">Entrar</a>
+			{/if}
+			{#if !caminho.startsWith('/criar-conta')}<a href="/criar-conta{volta}" class="btn-jogo btn-primario hidden lg:inline-flex">Criar conta</a>{/if}
 		</div>
 	{/if}
 </header>

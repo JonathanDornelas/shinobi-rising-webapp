@@ -16,7 +16,7 @@
 		{/each}
 	</div>
 	<label class="flex min-h-9 cursor-pointer items-center gap-2 border-2 border-b3 px-2.5 text-[13px] font-semibold" title="Só você e o Mestre veem as rolagens ocultas">
-		<input type="checkbox" class="checkbox checkbox-sm" bind:checked={rolador.oculta} />Oculta
+		<input type="checkbox" class="caixa" bind:checked={rolador.oculta} />Oculta
 	</label>
 	{#if registro}<a href={registro} class="link ml-auto text-[13px] font-semibold">Registro de rolagens</a>{/if}
 </div>

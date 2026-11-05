@@ -1,9 +1,14 @@
 <script lang="ts">
 	// G5 · Página inicial — tela-título de jogo para visitantes.
+	import Brasas from '#lib/componentes/shell/Brasas.svelte';
 	import Rodape from '#lib/componentes/shell/Rodape.svelte';
+	import VitrineMiniaturas from '#lib/componentes/shell/VitrineMiniaturas.svelte';
 	import Icone from '#lib/componentes/ui/Icone.svelte';
 	import { goto } from '$app/navigation';
 	import { sessao } from '#lib/estado/sessao.svelte.ts';
+	import type { PageProps } from './$types';
+
+	let { data }: PageProps = $props();
 
 	// A home é estática; quem já entrou segue direto para as campanhas.
 	$effect(() => {
@@ -24,12 +29,13 @@
 </script>
 
 <main class="flex flex-1 flex-col">
-<section class="flex flex-col items-center gap-5 border-b-2 border-ink bg-b0 px-4 pt-6 pb-8 md:gap-6 md:px-5 md:pt-10 md:pb-12 lg:gap-7 lg:px-6 lg:pt-16 lg:pb-[72px]">
+<section class="relative flex flex-col items-center gap-5 overflow-hidden border-b-2 border-ink bg-b0 px-4 pt-6 pb-8 md:gap-6 md:px-5 md:pt-10 md:pb-12 lg:gap-7 lg:px-6 lg:pt-16 lg:pb-[72px]">
 	<div class="relative flex h-48 w-full max-w-[768px] justify-center overflow-hidden border-2 border-[#2E2420] md:h-auto md:overflow-visible md:shadow-[6px_6px_0_#000] lg:shadow-[8px_8px_0_#000]">
 		<img src="/covers/capa-inicio.png" width="768" height="288" alt="Ninjas de Konoha saltando pelos telhados da vila ao pôr do sol, com a torre do Hokage e o monumento dos Hokage ao fundo" class="h-48 w-auto max-w-none flex-none md:h-auto md:w-full md:max-w-full" />
 	</div>
+	<Brasas />
 	<h1 class="relative z-10 m-0 -mt-[136px] md:-mt-[244px] lg:-mt-[252px]">
-		<img src="/marca/logo-titulo.png" width="272" height="223" alt="Rising Shinobi" fetchpriority="high" class="block h-[223px] w-[272px] [image-rendering:pixelated] md:h-[446px] md:w-[544px]" />
+		<img src="/marca/logo-titulo.png" width="272" height="223" alt="Rising Shinobi" fetchpriority="high" class="logo-nasce block h-[223px] w-[272px] [image-rendering:pixelated] md:h-[446px] md:w-[544px]" />
 	</h1>
 	<div class="flex flex-col items-center gap-2 text-center md:gap-2.5">
 		<span class="font-pixel text-xs leading-none font-bold tracking-[.14em] text-[#D9A82B] md:text-[13px]">LIVRO DE REGRAS V18.0</span>
@@ -53,7 +59,17 @@
 	</div>
 </section>
 
-<section class="mx-auto box-border flex w-full max-w-[1280px] flex-col gap-3 px-4 pt-7 md:gap-5 md:px-5 md:pt-10 lg:gap-6 lg:px-6 lg:pt-16">
+<section class="mx-auto box-border grid w-full max-w-[1280px] grid-cols-[minmax(0,1fr)] items-center gap-5 px-4 pt-7 md:px-5 md:pt-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,8fr)] lg:gap-8 lg:px-6 lg:pt-16">
+	<div class="revelar flex flex-col items-start gap-2.5">
+		<h2 class="t-rotulo m-0 text-sm">Mesa tática</h2>
+		<p class="t-h2 m-0 text-balance">Suas lutas num tabuleiro de verdade</p>
+		<p class="m-0 text-[15px] leading-6 text-mut">Mais de 400 miniaturas em pixel art, cada uma girando nas 8 direções. Grade, névoa, moldes de jutsu com alcance e dados em 3D que o grupo inteiro vê rolar.</p>
+		<a href="/campanhas/nova" class="btn-jogo btn-primario mt-1">Criar uma campanha</a>
+	</div>
+	<div class="revelar"><VitrineMiniaturas figuras={data.vitrine} /></div>
+</section>
+
+<section class="revelar mx-auto box-border flex w-full max-w-[1280px] flex-col gap-3 px-4 pt-7 md:gap-5 md:px-5 md:pt-10 lg:gap-6 lg:px-6 lg:pt-16">
 	<h2 class="t-rotulo m-0 text-sm">O que tem aqui</h2>
 	<div class="grid grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-2 md:gap-3.5 lg:grid-cols-5 lg:gap-4">
 		{#each recursos as r (r.titulo)}

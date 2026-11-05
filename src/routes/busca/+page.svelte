@@ -11,6 +11,7 @@
 	import type { TipoDocBusca } from '#lib/livro/tipos.ts';
 
 	const POR_PAGINA = 20;
+	const SUGESTOES = ['Rasengan', 'Sharingan', 'Kawarimi', 'Esquiva Ativa', 'Fadiga', 'Portões Internos'];
 	let consulta = $state('');
 	let estado = $state<'vazio' | 'carregando' | 'pronto' | 'erro'>('vazio');
 	let resultados = $state<Resultado[]>([]);
@@ -72,7 +73,7 @@
 				aria-pressed={on}
 				onclick={() => ((tipo = g.tipo), (pagina = 1))}
 			>
-				<span class="flex-1">{g.rotulo}</span><span class="t-num text-[13px]">{g.n}</span>
+				<span class="flex-1">{g.rotulo}</span>{#if estado === 'pronto'}<span class="t-num text-[13px]">{g.n}</span>{/if}
 			</button>
 		{/each}
 	</aside>
@@ -95,6 +96,10 @@
 		{#if estado === 'vazio'}
 			<div class="painel flex flex-col gap-3 p-4">
 				<span class="text-[15px]">Digite o que procura: uma regra, um jutsu, um clã, uma arma ou um termo do glossário.</span>
+				<span class="t-rotulo-sm text-title">Para começar</span>
+				<div class="flex flex-wrap gap-2">
+					{#each SUGESTOES as s (s)}<button type="button" class="chip sem-icone" onclick={() => (consulta = s)}>{s}</button>{/each}
+				</div>
 				{#if paleta.recentes.length}
 					<span class="t-rotulo-sm text-title">Buscas recentes</span>
 					<div class="flex flex-wrap gap-2">

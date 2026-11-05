@@ -2,7 +2,7 @@
 	import { SITE } from '#lib/site.ts';
 	import './layout.css';
 	import { onMount } from 'svelte';
-	import { page } from '$app/state';
+	import { navigating, page } from '$app/state';
 	import PaletaBusca from '#lib/componentes/busca/PaletaBusca.svelte';
 	import CartaoTermo from '#lib/componentes/leitura/CartaoTermo.svelte';
 	import Dock from '#lib/componentes/shell/Dock.svelte';
@@ -53,6 +53,8 @@
 	<meta property="og:image:height" content="630" />
 	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
+
+{#if navigating.to}<div class="barra-navegando" aria-hidden="true"></div>{/if}
 
 <a href="#conteudo" class="sr-only z-[80] bg-vermelhao px-4 py-3 font-pixel font-bold text-white focus:not-sr-only focus:fixed focus:top-2 focus:left-2">PULAR PARA O CONTEÚDO</a>
 

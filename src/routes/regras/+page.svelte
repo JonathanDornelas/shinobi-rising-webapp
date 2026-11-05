@@ -42,7 +42,7 @@
 	<div class="mx-auto grid max-w-[1280px] grid-cols-[minmax(0,1fr)] items-end gap-3 lg:grid-cols-[minmax(0,1fr)_520px] lg:gap-12">
 		<div class="flex flex-col gap-2.5 md:gap-3">
 			<span class="hidden font-pixel text-[13px] leading-none font-bold tracking-[.14em] text-[#D9A82B] md:block">REGRAS</span>
-			<h1 class="m-0 font-mincho text-[30px] leading-[38px] font-extrabold text-papel md:text-5xl md:leading-[56px]">Livro de Regras — Versão 18.0</h1>
+			<h1 class="m-0 font-mincho text-[30px] leading-[38px] font-extrabold text-papel md:text-5xl md:leading-[56px] text-balance">Livro de Regras — Versão 18.0</h1>
 			<p class="m-0 text-[15px] leading-[23px] text-areia md:text-[17px] md:leading-[27px]">Edição com Dōjutsus: Mangekyou Eterno, Transferência de Olhos, Tabelas Compatíveis</p>
 		</div>
 		<button

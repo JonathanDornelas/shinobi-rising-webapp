@@ -48,7 +48,6 @@
 				</button>
 			{/each}
 		</div>
-		<span class="hidden h-7 w-0.5 bg-b3 lg:mx-1.5 lg:block"></span>
 		<div class="flex flex-wrap items-center gap-2">
 			<span class="t-rotulo-sm w-full text-mut sm:w-auto">KKG</span>
 			<div class="alternancia">

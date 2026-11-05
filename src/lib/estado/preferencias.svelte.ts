@@ -41,6 +41,7 @@ class Preferencias {
 		this.tema = tema;
 		this.aplicado = resolver(tema);
 		document.documentElement.dataset.theme = this.aplicado;
+		document.querySelector('meta[name="theme-color"]')?.setAttribute('content', this.aplicado === 'washi' ? '#2b2320' : '#0e0b0a');
 		gravarTexto('tema', tema);
 	}
 

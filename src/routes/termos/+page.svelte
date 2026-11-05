@@ -12,13 +12,13 @@
 		licenciados.
 	</p>
 	<h2 class="t-h3 m-0 mt-2">Sua conta</h2>
-	<ul class="m-0 flex flex-col gap-1.5 pl-5">
+	<ul class="m-0 flex list-[square] flex-col gap-1.5 pl-5 marker:text-vermelhao">
 		<li>Use um e-mail seu e mantenha a senha em segredo.</li>
 		<li>O nome de exibição aparece para os grupos de que você participa.</li>
 		<li>Você pode excluir a conta a qualquer momento em Perfil e preferências, depois de transferir ou arquivar as campanhas em que é Mestre.</li>
 	</ul>
 	<h2 class="t-h3 m-0 mt-2">Campanhas</h2>
-	<ul class="m-0 flex flex-col gap-1.5 pl-5">
+	<ul class="m-0 flex list-[square] flex-col gap-1.5 pl-5 marker:text-vermelhao">
 		<li>O Mestre decide quem entra na campanha e o que é aprovado nela.</li>
 		<li>Fichas, criações e comentários ficam visíveis para os membros da campanha.</li>
 		<li>Respeite o grupo. O Mestre pode remover quem atrapalhar a mesa.</li>

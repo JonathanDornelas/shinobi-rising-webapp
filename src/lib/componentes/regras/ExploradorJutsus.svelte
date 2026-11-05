@@ -19,6 +19,7 @@
 	// tabela. Serve o catálogo (/regras/jutsus, filtros na URL) e a aba Jutsus da campanha (oficiais e criados, com
 	// status e ações por jutsu). Um jutsu "em modal" abre o D5 por cima, com shallow routing.
 	import { onMount, untrack, type Snippet } from 'svelte';
+	import type { Attachment } from 'svelte/attachments';
 	import { pushState, replaceState } from '$app/navigation';
 	import { page } from '$app/state';
 	import { gravar, ler } from '#lib/estado/armazenamento.ts';
@@ -142,6 +143,21 @@
 		else r.sort((a, b) => a.custoNum - b.custoNum || a.nome.localeCompare(b.nome, 'pt-BR'));
 		return r;
 	});
+	/**
+	 * Só os primeiros jutsus entram na página, e o resto conforme a pessoa rola: com 428 cartas, criar tudo de uma vez é o que mais
+	 * pesa no celular. As páginas de cada jutsu não dependem destes links, saem do entries() delas. O limite não volta ao filtrar:
+	 * filtrar já encurta a lista, e voltar faria a página pular quando um favorito muda no meio da rolagem.
+	 */
+	const PASSO_LISTA = 48;
+	let limite = $state(PASSO_LISTA);
+	const visiveis = $derived(filtrados.slice(0, limite));
+	/** Chegando perto do fim entra mais um lote. Lê o limite para observar de novo: o botão pode continuar perto da tela. */
+	const mostrarAoChegar: Attachment<HTMLElement> = (no) => {
+		void limite;
+		const vigia = new IntersectionObserver(([e]) => e.isIntersecting && (limite += PASSO_LISTA), { rootMargin: '600px' });
+		vigia.observe(no);
+		return () => vigia.disconnect();
+	};
 
 	/** Opções de cada grupo com a contagem que resultaria ao marcá-las (respeitando os outros filtros). */
 	const opcoes = $derived(
@@ -359,7 +375,7 @@
 			</div>
 		{:else if visao === 'lista'}
 			<div class="grid grid-cols-[minmax(0,1fr)] gap-2 md:gap-3 xl:grid-cols-2">
-				{#each filtrados as j (j.slug)}
+				{#each visiveis as j (j.slug)}
 					{@const t = TIPO_JUTSU[j.tipo]}
 					<div class="painel cartao-link relative grid grid-cols-[4px_32px_minmax(0,1fr)_auto_auto] items-center gap-2.5 py-1 pr-1 md:sombra-painel md:gap-3 md:py-1.5">
 						<span class="-my-1 self-stretch md:-my-1.5" style:background={t.cor}></span>
@@ -369,7 +385,7 @@
 								<a href={href(j)} onclick={(e) => abrir(e, j)} class="truncate font-mincho text-[15px] leading-5 font-bold after:absolute after:inset-0 md:text-[17px] md:leading-[22px]">{j.nome}</a>
 								<Glosa texto={j.traducao} class="truncate text-xs leading-4 md:text-[13px] md:leading-[18px]" />
 							</span>
-							<span class="truncate text-xs leading-4 text-mut md:text-[13px] md:leading-[18px]"><span class="md:hidden">{j.tipo}{' · '}</span>{linha(j)}</span>
+							<span class="truncate text-xs leading-4 text-mut md:text-[13px] md:leading-[18px]">{#if !linha(j).startsWith(j.tipo)}<span class="md:hidden">{j.tipo}{' · '}</span>{/if}{linha(j)}</span>
 						</span>
 						<span class="flex flex-col items-end gap-1.5">
 							<span class="t-num text-[17px] leading-none whitespace-nowrap md:text-xl">{j.custo}</span>
@@ -381,7 +397,7 @@
 			</div>
 		{:else if visao === 'cards'}
 			<div class="grid grid-cols-[minmax(0,1fr)] gap-3 sm:grid-cols-2">
-				{#each filtrados as j (j.slug)}
+				{#each visiveis as j (j.slug)}
 					{@const t = TIPO_JUTSU[j.tipo]}
 					<article class="cartao-link relative flex flex-col border-2 border-[var(--vermelhao-lo)] bg-b2 sombra-painel">
 						<header class="flex items-start gap-1 bg-grena py-2 pr-1 pl-3.5" style:box-shadow="inset 4px 0 0 {t.cor}">
@@ -416,7 +432,7 @@
 			</div>
 		{:else if visao === 'livro'}
 			<div class="flex flex-col gap-4">
-				{#each filtrados as j (j.slug)}
+				{#each visiveis as j (j.slug)}
 					<CardJutsu jutsu={j} rodape={!selo}>
 						{#snippet acoes()}
 							{@render botoes(j, true)}
@@ -437,7 +453,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						{#each filtrados as j, i (j.slug)}
+						{#each visiveis as j, i (j.slug)}
 							<tr class={i % 2 ? 'bg-b2' : 'bg-b1'}>
 								<td class="sticky left-0 z-10 py-0 pr-3 {i % 2 ? 'bg-b2' : 'bg-b1'}">
 									<span class="flex items-center">
@@ -460,6 +476,9 @@
 					</tbody>
 				</table>
 			</div>
+		{/if}
+		{#if visiveis.length < filtrados.length}
+			<button type="button" class="btn-jogo btn-contorno mt-2 self-center" {@attach mostrarAoChegar} onclick={() => (limite += PASSO_LISTA)}>Mostrar mais jutsus</button>
 		{/if}
 	</div>
 </div>
