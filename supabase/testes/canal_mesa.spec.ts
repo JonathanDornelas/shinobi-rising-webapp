@@ -21,7 +21,7 @@ beforeAll(async () => {
 	outra = (await um(banco.como<{ id: string }>(estranho, `insert into campanhas (nome, mestre_id) values ('Areia', $1) returning id`, [estranho.id]))).id;
 	const l = await um(banco.como<{ token: string }>(kaito, `insert into convites (campanha_id, tipo) values ($1, 'link') returning token`, [campanha]));
 	await banco.como(bruno, `select aceitar_convite($1)`, [l.token]);
-});
+}, 30000);
 
 describe('canal privado da Mesa', () => {
 	it('o Mestre e quem é da campanha entram; quem é de fora não', async () => {

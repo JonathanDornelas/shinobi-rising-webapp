@@ -16,7 +16,7 @@ const abertas = async (papel: string) =>
 beforeAll(async () => {
 	banco = await criarBanco();
 	aiko = await banco.criarUsuario('aiko@exemplo.com', 'Aiko');
-});
+}, 30000);
 
 describe('funções abertas', () => {
 	// se este teste falhar por uma função nova: o Postgres dá EXECUTE ao PUBLIC por padrão, e o

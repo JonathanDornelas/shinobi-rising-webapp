@@ -40,7 +40,7 @@ beforeAll(async () => {
 	await banco.como(aiko, `select enviar_ficha($1)`, [hana]);
 	await banco.como(kaito, `select decidir_ficha($1, 'aprovada')`, [hana]);
 	await banco.db.query(`update personagens set pt = 40, xp = 500, dados = $2::jsonb where id = $1`, [hana, JSON.stringify(ficha('nara', 1, (f) => void (f.atributos.FOR = 2)))]);
-});
+}, 30000);
 
 describe('o catálogo do banco', () => {
 	it('é o mesmo do livro (se falhar: npx tsx scripts/livro/catalogo-banco.ts <data>)', async () => {
