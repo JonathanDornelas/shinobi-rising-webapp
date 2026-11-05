@@ -34,6 +34,9 @@ pixellab/gerados/**/jobs.json
 # Referências do anime usadas como imagem inicial (img2img) das artes do bestiário: não vão para o repositório
 pixellab/referencias/bestiario/
 
+# Frames do anime usados como referência das paisagens das vilas: também ficam fora
+pixellab/referencias/vilas/
+
 # imagens sem uso (varredura de 21/10): guardadas fora do git
 backup-imagens/
 

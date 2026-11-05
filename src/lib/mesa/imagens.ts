@@ -8,7 +8,7 @@ const VILAS = ['konoha', 'suna', 'kiri', 'kumo', 'iwa', 'ame', 'taki', 'oto', 'f
 /** A galeria: capas das vilas e as 23 aberturas de capítulo. */
 export const IMAGENS_DO_LIVRO: { caminho: string; nome: string }[] = [
 	{ caminho: '/covers/capa-inicio.png', nome: 'Início' },
-	...VILAS.map((v) => ({ caminho: `/covers/capa-${v}-256.png`, nome: v[0].toUpperCase() + v.slice(1) })),
+	...VILAS.map((v) => ({ caminho: `/covers/capa-${v}-768.png`, nome: v === 'floresta' ? 'Vale do Fim' : v[0].toUpperCase() + v.slice(1) })),
 	...Array.from({ length: 23 }, (_, i) => ({ caminho: `/capitulos/cap-${String(i + 1).padStart(2, '0')}.png`, nome: `Cap. ${i + 1}` }))
 ];
 

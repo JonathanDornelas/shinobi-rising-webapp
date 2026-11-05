@@ -21,7 +21,8 @@ export function rotuloEra(c: Pick<Campanha, 'era' | 'era_alternativa'>): string 
 	return ERAS.find((e) => e.id === c.era)?.curto ?? c.era.toUpperCase();
 }
 
-// Paisagens das vilas (PixelLab, pixellab/gerados/capas-vilas); a Floresta é o interior genérico dos Renegados.
+// Paisagens das vilas, desenhadas no PixelLab a partir dos frames do anime (receita em pixellab/vilas.json).
+// A capa-floresta, de Renegados e de quem não tem vila, é o Vale do Fim.
 export const CAPAS = [
 	{ id: 'capa-konoha', nome: 'Konoha' },
 	{ id: 'capa-suna', nome: 'Suna' },
@@ -37,11 +38,35 @@ export const CAPAS = [
 // capas genéricas de antes das vilas (a migração converte o banco; aqui só por segurança)
 const CAPA_ANTIGA: Record<string, string> = { 'capa-nevoa': 'capa-kiri', 'capa-deserto': 'capa-suna', 'capa-montanha': 'capa-kumo', 'capa-chuva': 'capa-ame', 'capa-rochas': 'capa-iwa' };
 
-/** URL da paisagem (256×96) de uma capa de campanha. */
-export const urlCapa = (id: string | null | undefined) => `/covers/${CAPA_ANTIGA[id ?? ''] ?? id ?? 'capa-konoha'}-256.png`;
+const idCapa = (id: string | null | undefined) => CAPA_ANTIGA[id ?? ''] ?? id ?? 'capa-konoha';
 
-/** Paisagem da vila do personagem (Renegado/sem vila: floresta). */
-export const capaDaVila = (vila: string | null | undefined) => urlCapa(CAPAS.some((c) => c.id === `capa-${vila}`) ? `capa-${vila}` : 'capa-floresta');
+/** URL da paisagem inteira (768×288). */
+export const urlCapa = (id: string | null | undefined) => `/covers/${idCapa(id)}-768.png`;
+
+/**
+ * A mesma paisagem reduzida (256×96), para miniaturas. O nome é o de antes das artes novas, porque as cenas salvas na
+ * Mesa guardam esse caminho; o ?v=2 só serve para quem ainda tem a arte antiga no cache do navegador (covers/ dura 7 dias).
+ */
+export const urlCapaMini = (id: string | null | undefined) => `/covers/${idCapa(id)}-256.png?v=2`;
+
+/** Id da paisagem da vila do personagem (Renegado e sem vila: capa-floresta). */
+export const capaDaVila = (vila: string | null | undefined) => (CAPAS.some((c) => c.id === `capa-${vila}`) ? `capa-${vila}` : 'capa-floresta');
+
+// altura do marco de cada paisagem (o Monumento Hokage fica no alto, a cabeça de cobra de Oto mais abaixo)
+const FOCO_CAPA: Record<string, number> = {
+	'capa-konoha': 12,
+	'capa-suna': 45,
+	'capa-kiri': 42,
+	'capa-kumo': 32,
+	'capa-iwa': 25,
+	'capa-ame': 40,
+	'capa-taki': 40,
+	'capa-oto': 20,
+	'capa-floresta': 12
+};
+
+/** object-position da paisagem numa faixa estreita, que corta a arte: mantém o marco da vila à vista. */
+export const focoCapa = (id: string | null | undefined) => `50% ${FOCO_CAPA[idCapa(id)] ?? 50}%`;
 
 export const VILAS = [
 	{ id: 'konoha', nome: 'Konoha' },

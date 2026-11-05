@@ -11,6 +11,7 @@
 	import {
 		APROVACOES,
 		CAPAS,
+		focoCapa,
 		urlCapa,
 		dadosPadrao,
 		nomeCla,
@@ -112,7 +113,7 @@
 {#if criada}
 	<main class="flex flex-1 items-start justify-center px-4 py-10 md:items-center">
 		<div class="camada flex w-full max-w-[560px] flex-col" role="status">
-			<img src={urlCapa(criada.capa)} alt="" class="h-[208px] w-full border-b-2 border-carvao object-cover [image-rendering:pixelated]" />
+			<img src={urlCapa(criada.capa)} alt="" class="h-[208px] w-full border-b-2 border-carvao object-cover [image-rendering:auto]" style:object-position={focoCapa(criada.capa)} />
 			<div class="flex items-center gap-5 p-6">
 				<img src="/illustrations/il-aprovado-96.png" width="96" height="96" alt="Selo de aprovado" class="carimbo flex-none [image-rendering:pixelated]" />
 				<div class="flex flex-col gap-1.5">

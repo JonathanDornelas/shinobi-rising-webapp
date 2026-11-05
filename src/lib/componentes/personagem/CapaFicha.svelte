@@ -2,7 +2,7 @@
 	// Paisagem no topo da ficha: a da vila do personagem, ou a que o dono escolheu (definir_capa_ficha).
 	// A escolha abre num modal (rola no celular e fecha com Esc), fora do banner, que corta o que transborda.
 	import { invalidateAll } from '$app/navigation';
-	import { CAPAS, capaDaVila, urlCapa } from '#lib/campanhas/dominio.ts';
+	import { CAPAS, capaDaVila, focoCapa, urlCapa, urlCapaMini } from '#lib/campanhas/dominio.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
 	import Girando from '../ui/Girando.svelte';
@@ -15,7 +15,7 @@
 		podeTrocar?: boolean;
 	}
 	let { ficha, capa, vila, podeTrocar = false }: Props = $props();
-	const url = $derived(capa ? urlCapa(capa) : capaDaVila(vila));
+	const atual = $derived(capa ?? capaDaVila(vila));
 	let aberto = $state(false);
 	let salvando = $state<string | null | false>(false);
 
@@ -29,9 +29,9 @@
 	}
 </script>
 
-<div class="relative h-[120px] overflow-hidden border-b-2 border-ink bg-b1 md:h-[168px]">
-	<img src={url} alt="" class="h-full w-full object-cover [image-rendering:pixelated]" />
-	<div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_45%,var(--b1))]"></div>
+<div class="relative h-[136px] overflow-hidden border-b-2 border-ink bg-b1 md:h-[220px]">
+	<img src={urlCapa(atual)} width="768" height="288" alt="" class="h-full w-full object-cover [image-rendering:pixelated]" style:object-position={focoCapa(atual)} />
+	<div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_62%,var(--b1))]"></div>
 	{#if podeTrocar}
 		<button type="button" class="absolute top-2 right-2 flex min-h-9 items-center gap-1.5 border-2 border-ink bg-b2/90 px-2.5 font-pixel text-xs font-bold hover:bg-b3" aria-haspopup="dialog" onclick={() => (aberto = true)}>PAISAGEM</button>
 	{/if}
@@ -58,14 +58,14 @@
 					disabled={salvando !== false}
 					onclick={() => escolher(null)}
 				>
-					<img src={capaDaVila(vila)} alt="" class="aspect-[256/96] w-32 flex-none object-cover [image-rendering:pixelated]" />
+					<img src={urlCapaMini(capaDaVila(vila))} alt="" class="aspect-[256/96] w-32 flex-none object-cover [image-rendering:auto]" />
 					<span class="flex-1 text-sm font-semibold">Da vila do personagem{!capa ? ' ✓' : ''}</span>
 					{#if salvando === null}<Girando />{/if}
 				</button>
 				{#each CAPAS as c (c.id)}
 					{@const on = capa === c.id}
 					<button type="button" role="radio" aria-checked={on} class="flex flex-col border-2 text-left {on ? 'border-vermelhao' : 'border-b3 hover:border-mut'}" disabled={salvando !== false} onclick={() => escolher(c.id)}>
-						<img src={urlCapa(c.id)} alt="" class="aspect-[256/96] w-full object-cover [image-rendering:pixelated]" loading="lazy" />
+						<img src={urlCapaMini(c.id)} alt="" class="aspect-[256/96] w-full object-cover [image-rendering:pixelated]" loading="lazy" />
 						<span class="flex items-center gap-1.5 px-2 py-1.5 text-[13px] font-semibold {on ? 'bg-grena text-papel' : ''}">{c.nome}{on ? ' ✓' : ''}{#if salvando === c.id}<Girando />{/if}</span>
 					</button>
 				{/each}

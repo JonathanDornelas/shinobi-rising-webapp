@@ -1,0 +1,339 @@
+{
+	"_sobre": "Paisagens das vilas (static/covers), feitas a partir de frames do anime. Gera com: node scripts/bestiario.cjs --lista vilas --seed <n> capa-<vila>. Em \"escolhida\" fica a seed publicada; depois de trocá-la, node scripts/vilas-montar.cjs grava a capa de 768×288 e a miniatura de 256×96.",
+	"_referencias": "Os frames ficam em referencias/vilas/, fora do git: JPEG de 640 px de largura (PNG de 700 KB deixa o pedido pesado demais). O campo \"wiki\" é o arquivo em naruto.fandom.com; a CDN recusa curl e o servidor do PixelLab, então baixe pelo navegador. Ficam de fora os frames da era Boruto (Kirigakure.png moderna, os domos de Iwagakure).",
+	"_composicao": "A ficha mostra só uma faixa da arte: mantenha o marco da vila visível e ajuste a altura dele em FOCO_CAPA (src/lib/campanhas/dominio.ts). Tela de 768×288: custa 25 gerações e sai 1 candidata.",
+	"estilo": ", faithful to the Naruto anime location design, wide panoramic establishing shot, painted anime background turned into detailed pixel art, no people, no characters, no captions, crisp pixels",
+	"paleta": [
+		"#1a1a1a",
+		"#2b1a14",
+		"#5c1e15",
+		"#8b2e20",
+		"#c44536",
+		"#e07a5f",
+		"#fbf7f0",
+		"#f4e4d6",
+		"#d9c2a7",
+		"#a88b6a",
+		"#bf9000",
+		"#f2c14e",
+		"#069bbd",
+		"#7fd3e6",
+		"#38761d",
+		"#7fb069",
+		"#674ea7",
+		"#a895d6",
+		"#7f6000",
+		"#8d6e3f",
+		"#5e6b73",
+		"#a7b4bc",
+		"#e8692e",
+		"#2e6fd1",
+		"#ffffff"
+	],
+	"modelo": "pro",
+	"imagem_estilo": "gerados/bestiario/ronin-mercenario-7801.png",
+	"parametros": {
+		"no_background": false
+	},
+	"formatos": {
+		"capa": {
+			"width": 768,
+			"height": 288,
+			"uso": "paisagem da vila (8:3): faixa da ficha, seleção de vila, cartões de campanha, telas de conta e Mesa",
+			"prompt": "background art of the Naruto anime"
+		}
+	},
+	"planos": {},
+	"verbetes": [
+		{
+			"slug": "capa-konoha",
+			"nome": "Konohagakure",
+			"formato": "capa",
+			"escolhida": 5101,
+			"prompt": "Konohagakure, the Hidden Leaf Village, seen from a rooftop on a clear sunny afternoon. A huge tan rock cliff crosses the whole background, with exactly four giant human faces carved into the stone in a row, the Hokage Rock, with green trees on top of the cliff. In the middle ground stands the wide round red-orange Hokage Residence with its flat disc roof and the kanji 火 on it. Below it a dense sprawl of low round white houses with brown and orange roofs, water tanks on the rooftops, electric poles, green treetops between the houses, a band of dense forest at the edges",
+			"cores_extras": [
+				"#d8b98a",
+				"#b89668",
+				"#f28c38",
+				"#cfe8f2",
+				"#2f5d3a"
+			],
+			"referencias": [
+				{
+					"arquivo": "referencias/vilas/konoha__Hokage-Rock.jpg",
+					"wiki": "Hokage Rock.png",
+					"uso": "the Hokage Rock exactly as drawn in the Naruto anime: tan rock cliff with giant carved faces and trees on top. Use only four faces and ignore the tall modern buildings on top"
+				},
+				{
+					"arquivo": "referencias/vilas/konoha__Konoha.jpg",
+					"wiki": "Konoha.png",
+					"uso": "the sprawl of Konoha as drawn in the anime: thousands of low houses with orange, brown and blue roofs inside a ring of forest and cliffs"
+				},
+				{
+					"arquivo": "referencias/vilas/konoha__Konoha-Crush.jpg",
+					"wiki": "Konoha Crush.png",
+					"uso": "the rooftops of Konoha up close: round white walls, brown thatched roofs, water tanks"
+				},
+				{
+					"arquivo": "referencias/vilas/konoha__Hokage-Residence.jpg",
+					"wiki": "Hokage Residence.png",
+					"uso": "the shape of the round Hokage Residence with the kanji 火 on its disc roof; this frame is at night, draw the building red-orange in daylight"
+				}
+			]
+		},
+		{
+			"slug": "capa-suna",
+			"nome": "Sunagakure",
+			"formato": "capa",
+			"escolhida": 5301,
+			"prompt": "Sunagakure, the Hidden Sand Village, seen from a rooftop inside the village, in the blazing light of the Land of Wind. In the foreground and all across the image a dense city of round ochre clay houses with dome roofs, small oval windows, horizontal bands, terraces, cables strung between the domes, wooden ladders, cloth awnings, in rich detail. In the center the big round Kazekage Residence, a wide stacked clay dome with two small round domes on top and a round white sign with the kanji 風. A wide straight avenue runs toward the narrow gap in the tall sandstone canyon wall that closes the whole horizon, veils of sand blowing over the wall, pale hot blue sky",
+			"cores_extras": [
+				"#e8c27a",
+				"#d39a4c",
+				"#b5762e",
+				"#8c5a2b",
+				"#f6dfae",
+				"#9fd1ea"
+			],
+			"referencias": [
+				{
+					"arquivo": "referencias/vilas/suna__Sunagakure.jpg",
+					"wiki": "Sunagakure.png",
+					"uso": "the layout of Sunagakure as drawn in the anime: a city of round clay houses inside a ring of sandstone canyon walls"
+				},
+				{
+					"arquivo": "referencias/vilas/suna__Kazekage-Residence.jpg",
+					"wiki": "Kazekage Residence.PNG",
+					"uso": "the Kazekage Residence as in the anime: wide round clay dome with stacked bands, small domes on top and the kanji 風 in a circle"
+				},
+				{
+					"arquivo": "referencias/vilas/suna__Suna-Hospital.jpg",
+					"wiki": "Suna Hospital.PNG",
+					"uso": "the architecture of Suna up close: round clay domes, horizontal bands, rows of round windows, cables between the buildings. Do not copy the kanji on this sign"
+				}
+			]
+		},
+		{
+			"slug": "capa-kiri",
+			"nome": "Kirigakure",
+			"formato": "capa",
+			"escolhida": 5202,
+			"prompt": "Kirigakure, the Hidden Mist Village, on a cold morning with white mist drifting between the buildings. In the center the wide round Mizukage Residence, a stacked round brick fortress with a purple-gray tiled disc roof, a band of dark windows, a small circular emblem and a big stone arch below it. Around it tall round brick towers with dark slit windows, green bushes and trees growing on their flat roofs, blue and purple tiled caps, stone stairways and ramps with walls connecting them, small round huts. Behind them jagged pale gray rock spires fade into the fog, thin waterfalls, low clouds. Muted blue, gray and green, damp and quiet",
+			"cores_extras": [
+				"#cfd8dc",
+				"#9fb2bd",
+				"#6f8796",
+				"#43596a",
+				"#2b3d4d",
+				"#7c6fb0",
+				"#3f7f7a",
+				"#b9a7a0"
+			],
+			"referencias": [
+				{
+					"arquivo": "referencias/vilas/kiri__Current-Kirigakure.jpg",
+					"wiki": "Current Kirigakure.png",
+					"uso": "the buildings and the layout of Kirigakure exactly as drawn in the anime: round Mizukage building with the arch, round brick towers with greenery on top, stone ramps"
+				},
+				{
+					"arquivo": "referencias/vilas/kiri__Kirivillage.jpg",
+					"wiki": "Kirivillage.png",
+					"uso": "the same place in muted colors: the mood, the mist and the jagged rock spires behind the village"
+				}
+			]
+		},
+		{
+			"slug": "capa-kumo",
+			"nome": "Kumogakure",
+			"formato": "capa",
+			"escolhida": 5203,
+			"prompt": "Kumogakure, the Hidden Cloud Village, in the Land of Lightning, high in the mountains above a sea of white clouds. Tall narrow rock spires rise out of the clouds with round buildings and terraces built on them. In the center a huge round Raikage tower on the tallest rock, a giant blue and white banded globe-shaped building with rings of windows and the kanji 雷. Circular stone platforms with railings, stairways, red metal bridges, cables hanging between the spires, small round houses clinging to the rocks, lightning flickering inside dark distant clouds. Bright deep blue sky",
+			"cores_extras": [
+				"#e6eef5",
+				"#b8cce0",
+				"#6f93b8",
+				"#3f6a9a",
+				"#a8856a",
+				"#6b5a4c",
+				"#f7d44c",
+				"#c23b2e"
+			],
+			"referencias": [
+				{
+					"arquivo": "referencias/vilas/kumo__Kumogakure.jpg",
+					"wiki": "Kumogakure.png",
+					"uso": "the layout of Kumogakure exactly as drawn in the anime: rock spires in the clouds, the big banded globe tower on a rock, circular terraced platforms with railings"
+				},
+				{
+					"arquivo": "referencias/vilas/kumo__Lightning-Daimy-residence.jpg",
+					"wiki": "Lightning Daimyō residence.png",
+					"uso": "the look of the Land of Lightning: a metal globe building on rocks above a sea of clouds, cables and red bridges. Take the mood and the materials, not the bowl of trees"
+				},
+				{
+					"arquivo": "referencias/vilas/kumo__Kumo-Infinite-Tsukuyomi.jpg",
+					"wiki": "Kumo Infinite Tsukuyomi.png",
+					"uso": "another view of the same village, for the shapes of the buildings and the rocks; ignore the tinted light"
+				}
+			]
+		},
+		{
+			"slug": "capa-iwa",
+			"nome": "Iwagakure",
+			"formato": "capa",
+			"escolhida": 5204,
+			"prompt": "Iwagakure, the Hidden Stone Village, in the Land of Earth, among huge gray rocky mountains. In the center the tall round Tsuchikage tower, stacked stone rings with a conical top and a round emblem, smaller conical towers attached to it. All around it a dense crowd of stone buildings shaped like cones and beehives, layered in horizontal rings, with small windows and little red and blue pointed tips, thin ropes strung between them with small flags. Behind the village jagged gray mountains, thin waterfalls falling down the rock faces, low white clouds between the peaks, cool blue sky",
+			"cores_extras": [
+				"#c9c0b2",
+				"#9a9284",
+				"#6d675e",
+				"#4b4640",
+				"#b9a06b",
+				"#7d8a63",
+				"#8fb7d6"
+			],
+			"referencias": [
+				{
+					"arquivo": "referencias/vilas/iwa__Iwagakure-no-Sato.jpg",
+					"wiki": "Iwagakure no Sato.png",
+					"uso": "Iwagakure exactly as drawn in the anime: the conical layered stone buildings, the Tsuchikage tower, the gray mountains and the thin waterfalls"
+				},
+				{
+					"arquivo": "referencias/vilas/iwa__Iwa-Infinite-Tsukuyomi.jpg",
+					"wiki": "Iwa Infinite Tsukuyomi.png",
+					"uso": "only the shape of the Tsuchikage tower up close: stacked rings, conical top and round emblem. Ignore the giant tentacles, the white cocoons and the blue tint"
+				}
+			]
+		},
+		{
+			"slug": "capa-ame",
+			"nome": "Amegakure",
+			"formato": "capa",
+			"escolhida": 5205,
+			"prompt": "Amegakure, the Hidden Rain Village, in endless heavy rain under a dark churning gray sky. A forest of tall narrow gray-green metal skyscrapers covered in thick vertical pipes, ducts, ladders and antennas rises out of a flooded lake. In the center the tallest tower, with giant sculpted horned heads with open mouths and long tongues on its sides. Long diagonal streaks of rain across the whole image, mist at the base of the towers, ripples on the dark water, a few faint yellow lit windows, cold and oppressive",
+			"cores_extras": [
+				"#3a4250",
+				"#4f5a6b",
+				"#2a303b",
+				"#6d7a8c",
+				"#8fa0b3",
+				"#1f242d",
+				"#b7c4d3",
+				"#5f6f62"
+			],
+			"referencias": [
+				{
+					"arquivo": "referencias/vilas/ame__Amegakure.jpg",
+					"wiki": "Amegakure.png",
+					"uso": "the towers of Amegakure exactly as drawn in the anime: narrow metal towers covered in pipes, rain, dark sky"
+				},
+				{
+					"arquivo": "referencias/vilas/ame__Pain-s-Tower.jpg",
+					"wiki": "Pain's Tower.png",
+					"uso": "the top of the main tower exactly as designed: sculpted horned heads with tongues on the sides of the metal tower. Draw it dark in the rain, not against a pale sky"
+				}
+			]
+		},
+		{
+			"slug": "capa-taki",
+			"nome": "Takigakure",
+			"formato": "capa",
+			"escolhida": 5206,
+			"prompt": "Takigakure, the Hidden Waterfall Village, in a lush valley behind a colossal waterfall. In the center, on a small round island in a calm green lake, stands one gigantic ancient tree with a huge trunk and an enormous canopy, light shafts falling through the mist. A massive waterfall thunders down a tall cliff behind it. Along the shore wooden village houses with curved pink-red tiled roofs and pointed towers, wooden bridges and walkways, a wooden sign with the kanji 滝 on the main residence. Moss, ferns, spray in the air, soft green and turquoise light",
+			"cores_extras": [
+				"#cf5a6b",
+				"#e58a8f",
+				"#8a5a3c",
+				"#5e8f5a",
+				"#3f7a5a",
+				"#bfe6e8",
+				"#6fc2c9",
+				"#2f5d4a"
+			],
+			"referencias": [
+				{
+					"arquivo": "referencias/vilas/taki__Takigakure.jpg",
+					"wiki": "Takigakure.png",
+					"uso": "the giant tree on the small island in the lake, as drawn in the anime, with the light shafts"
+				},
+				{
+					"arquivo": "referencias/vilas/taki__Takigakure-Head-Residence.jpg",
+					"wiki": "Takigakure Head Residence.png",
+					"uso": "the architecture of the village: wooden buildings with pink-red tiled roofs, pointed towers and the kanji 滝"
+				},
+				{
+					"arquivo": "referencias/vilas/taki__Takigakure-s-Waterfall.jpg",
+					"wiki": "Takigakure's Waterfall.png",
+					"uso": "the great waterfall of Takigakure; draw it bright in daylight"
+				}
+			]
+		},
+		{
+			"slug": "capa-oto",
+			"nome": "Otogakure",
+			"formato": "capa",
+			"escolhida": 5317,
+			"prompt": "Otogakure, the Hidden Sound Village, seen from across a deep rocky chasm at sunset. A gigantic pale stone snake head emerges from the cliff in the center of the image, jaws wide open over a stone stairway, its eyes carved and its scales clearly drawn, warm sunlight on it. Tall rust-red rock spires, a pagoda with a dome roof on a cliff, rope bridges with wooden planks, paper lanterns, twisted pines, thin violet fog in the chasm. Orange and purple sky, clear readable mid tones, no pure black shadows",
+			"paleta": [
+				"#2a1d38",
+				"#3e2a57",
+				"#5b3a7a",
+				"#7d5aa0",
+				"#a895d6",
+				"#8b3a3a",
+				"#b5563c",
+				"#d98a55",
+				"#f2c14e",
+				"#6a6a52",
+				"#8d8f6e",
+				"#b8b48e",
+				"#3f4a35",
+				"#5f6f4a",
+				"#c7a16b",
+				"#e8d9c0",
+				"#fbf7f0",
+				"#7f8a94"
+			],
+			"referencias": [
+				{
+					"arquivo": "referencias/vilas/oto__Eastern-Hideout.jpg",
+					"wiki": "Eastern Hideout.png",
+					"uso": "the giant stone snake head at the entrance of a hideout of Orochimaru, as drawn in the anime"
+				},
+				{
+					"arquivo": "referencias/vilas/oto__Otogakure.jpg",
+					"wiki": "Otogakure.png",
+					"uso": "the cliffs, the rope bridge and the pagoda with the dome, as drawn in the anime"
+				},
+				{
+					"arquivo": "referencias/vilas/oto__Orochimaru-s-Northern-Hideout.jpg",
+					"wiki": "Orochimaru's Northern Hideout.png",
+					"uso": "the rust-red rock spires with the pagoda"
+				}
+			]
+		},
+		{
+			"slug": "capa-floresta",
+			"nome": "Renegados e sem vila: o Vale do Fim",
+			"formato": "capa",
+			"escolhida": 5208,
+			"prompt": "The Valley of the End at dusk, the place where shinobi turn their backs on their village. A huge waterfall falls in the center, between two gigantic moss-covered stone statues of ancient shinobi facing each other across the river, one in armor with wild long spiky hair, the other in armor with straight hair, each one raising a hand in a seal. Sheer columns of green-gray rock on both sides, dense forest on top of the cliffs, the wide river in the foreground, spray rising from the falls. Long orange light of the setting sun, lonely and solemn",
+			"cores_extras": [
+				"#2f5d3a",
+				"#4b7a45",
+				"#6f8a5e",
+				"#5a6b5a",
+				"#3b4a44",
+				"#d9b36a",
+				"#f28c38"
+			],
+			"estilo": ", faithful to the Naruto anime location design, wide panoramic establishing shot, painted anime background turned into detailed pixel art, no living people, no captions, crisp pixels",
+			"referencias": [
+				{
+					"arquivo": "referencias/vilas/floresta__Valley-of-the-End.jpg",
+					"wiki": "Valley of the End.png",
+					"uso": "the Valley of the End exactly as drawn in the anime: the two giant statues, the waterfall between them and the rock columns; widen it into a panorama and draw it at dusk"
+				}
+			]
+		}
+	]
+}

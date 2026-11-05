@@ -24,7 +24,7 @@
 	aria-label="{c.nome}, {PAPEL[c.papel].nome}{arquivada ? ', arquivada' : ''}"
 >
 	<div class="relative aspect-[256/96] overflow-hidden border-b-2 border-ink">
-		<img src={urlCapa(c.capa)} alt="" class="h-full w-full object-cover [image-rendering:pixelated]" loading="lazy" />
+		<img src={urlCapa(c.capa)} alt="" class="h-full w-full object-cover [image-rendering:auto]" loading="lazy" />
 		<span
 			class="absolute top-2.5 left-2.5 inline-flex h-9 items-center gap-1 border-2 pr-2.5 text-[13px] leading-none font-semibold {c.papel === 'mestre'
 				? 'border-[var(--vermelhao-lo)] bg-grena text-papel'

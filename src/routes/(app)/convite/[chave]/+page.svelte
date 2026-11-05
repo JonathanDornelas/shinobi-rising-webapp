@@ -3,7 +3,7 @@
 	import { goto, refreshAll } from '$app/navigation';
 	import Alerta from '#lib/componentes/ui/Alerta.svelte';
 	import Girando from '#lib/componentes/ui/Girando.svelte';
-	import { rotuloEra, urlCapa } from '#lib/campanhas/dominio.ts';
+	import { focoCapa, rotuloEra, urlCapa } from '#lib/campanhas/dominio.ts';
 	import { sessao } from '#lib/estado/sessao.svelte.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 	import { supabase } from '#lib/supabase/cliente.ts';
@@ -77,7 +77,7 @@
 	{#if k && (situacao === 'valido' || situacao === 'visitante' || situacao === 'ja_membro')}
 		<article class="camada flex w-full max-w-[640px] flex-col">
 			<div class="relative">
-				<img src={urlCapa(k.capa)} alt="" class="h-[180px] w-full border-b-2 border-carvao object-cover [image-rendering:pixelated] md:h-[238px]" />
+				<img src={urlCapa(k.capa)} alt="" class="h-[180px] w-full border-b-2 border-carvao object-cover [image-rendering:auto] md:h-[238px]" style:object-position={focoCapa(k.capa)} />
 				<img src="/illustrations/il-convite-96.png" width="96" height="96" alt="" class="absolute -bottom-10 left-6 border-2 border-[var(--vermelhao-lo)] bg-b1 [image-rendering:pixelated]" />
 			</div>
 			<div class="flex flex-col gap-3 px-6 pt-[52px] pb-6">

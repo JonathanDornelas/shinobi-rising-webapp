@@ -140,7 +140,7 @@
 	<!-- ================================================================ C3 · Mestre -->
 	<main class="flex min-w-0 flex-col gap-5 p-4 md:p-6">
 		<div class="painel-sombra flex items-stretch gap-5 max-md:hidden">
-			<img src={urlCapa(c.capa)} width="512" height="192" alt="" class="flex-none border-r-2 border-ink [image-rendering:pixelated] max-xl:w-[384px] max-xl:object-cover" />
+			<img src={urlCapa(c.capa)} width="512" height="192" alt="" class="flex-none border-r-2 border-ink [image-rendering:auto] max-xl:w-[384px] max-xl:object-cover" />
 			<div class="flex flex-1 flex-col gap-2.5 py-[18px] pr-[18px]">
 				<span class="font-mincho text-[30px] leading-[38px] font-bold">{c.nome}</span>
 				<div class="flex flex-wrap gap-x-4 gap-y-1 text-sm leading-5 font-semibold text-mut">

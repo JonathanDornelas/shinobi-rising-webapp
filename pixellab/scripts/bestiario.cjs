@@ -3,10 +3,12 @@
 //   node bestiario.cjs --seed 7701 <slug> [slug ...]   → pixellab/gerados/bestiario/<slug>-7701.png
 //   node bestiario.cjs --seed 7701 --todos             → todos os verbetes que ainda não têm arte nessa seed
 //   node bestiario.cjs --lista inicio --seed 1 capa-inicio → outra lista (pixellab/inicio.json)
-//   node bestiario.cjs --saldo                         → quantas gerações cada conta ainda tem hoje
+//   node bestiario.cjs --lista vilas --seed 5101 capa-konoha → as paisagens das vilas (depois, vilas-montar.cjs)
+//   node bestiario.cjs --saldo                        → quantas gerações cada conta ainda tem hoje
 //   node bestiario.cjs --seed 9001 --paralelo 3 …      → 3 jobs ao mesmo tempo em cada conta
 // Num pedido, "tamanho": [l, a] troca a tela do formato (até 170 px saem 4 candidatas: <slug>-<seed>.png, -b, -c, -d) e
 // "edicao": { origem, instrucao } edita uma arte de gerados/ em vez de gerar (Pixen, 1 geração).
+// "paleta" e "estilo" trocam, só nesse pedido, a paleta e o fim do prompt da lista (a de Oto saía preta com a paleta comum).
 // Pedido com "referencia": a imagem do anime em pixellab/referencias/ (fora do git; baixada da wiki) entra como
 // imagem inicial, e "forca" diz quanto do desenho dela fica (120–140: corpo, roupa e cores; pose e cena mudam).
 // Contas: PIXELLAB_TOKEN (uma) e/ou PIXELLAB_CONTAS (arquivo com vários tokens: JSON [{token}] ou um por linha).
@@ -78,7 +80,7 @@ async function baixar(conta, jobId, arquivo) {
 
 function descricao(v) {
   const camera = [].concat(v.plano || []).map(p => LISTA.planos[p].prompt);
-  return [...camera, v.prompt, LISTA.formatos[v.formato].prompt].join(", ") + LISTA.estilo;
+  return [...camera, v.prompt, LISTA.formatos[v.formato].prompt].join(", ") + (v.estilo ?? LISTA.estilo);
 }
 
 // "ok", "falhou" ou "sem-cota" (a conta esgotou: o item volta para a fila de outra conta).
@@ -129,7 +131,7 @@ async function gerar(conta, v, seed, jobs) {
         reference_images: refs.length ? refs : null,
         style_image_base64: estilo,
         style_copy: ["outline", "detail", "shading"],
-        palette: [...new Set([...LISTA.paleta, ...(LISTA.paleta_anime || []), ...(v.cores_extras || [])])]
+        palette: v.paleta ?? [...new Set([...LISTA.paleta, ...(LISTA.paleta_anime || []), ...(v.cores_extras || [])])]
       });
     }
     let r;
