@@ -62,9 +62,9 @@ describe('em jogo', () => {
 
 describe('progressão', () => {
 	it('sobe de nível com XP suficiente e ganha 3 PT (+ marcos)', async () => {
-		const [{ subir_nivel: n }] = await banco.como<{ subir_nivel: number }>(aiko, `select subir_nivel($1, '{"versao":1}', '{}', '{}', 0)`, [hana]);
+		const [{ alcancar_nivel: n }] = await banco.como<{ alcancar_nivel: number }>(aiko, `select alcancar_nivel($1, '{"nivel":2}', '{}', '{}')`, [hana]);
 		expect(n).toBe(2);
-		await expect(banco.como(aiko, `select subir_nivel($1, '{}', '{}', '{}', 0)`, [hana])).rejects.toThrow(/XP insuficiente/);
+		await expect(banco.como(aiko, `select alcancar_nivel($1, '{"nivel":3}', '{}', '{}')`, [hana])).rejects.toThrow(/XP insuficiente/);
 		const p = await um(banco.como<{ pt: number }>(aiko, `select pt from personagens where id = $1`, [hana]));
 		expect(p.pt).toBe(4);
 		const n2 = await banco.como<{ texto: string }>(kaito, `select texto from notificacoes where tipo = 'nivel'`);
@@ -72,12 +72,12 @@ describe('progressão', () => {
 	});
 
 	it('Mestre não sobe o nível de ficha alheia', async () => {
-		await expect(banco.como(kaito, `select subir_nivel($1, '{}', '{}', '{}', 0)`, [hana])).rejects.toThrow(/não encontrada/);
+		await expect(banco.como(kaito, `select alcancar_nivel($1, '{"nivel":3}', '{}', '{}')`, [hana])).rejects.toThrow(/não encontrada/);
 	});
 
 	it('treinar gasta PT e não deixa ficar negativo', async () => {
-		await expect(banco.como(aiko, `select treinar($1, '{}', '{}', 9, 'Rank B')`, [hana])).rejects.toThrow(/insuficientes/);
-		const [{ treinar: resta }] = await banco.como<{ treinar: number }>(aiko, `select treinar($1, '{"versao":1}', '{}', 2, 'Shunshin no Jutsu')`, [hana]);
+		await expect(banco.como(aiko, `select aprender_treinos($1, '[{"tipo":"jutsu","slug":"shunshin-no-jutsu","pt":2},{"tipo":"jutsu","slug":"x-1","pt":3},{"tipo":"jutsu","slug":"x-2","pt":4}]', '{}', 'Três jutsus')`, [hana])).rejects.toThrow(/insuficientes/);
+		const [{ aprender_treinos: resta }] = await banco.como<{ aprender_treinos: number }>(aiko, `select aprender_treinos($1, '[{"tipo":"jutsu","slug":"shunshin-no-jutsu","pt":2}]', '{}', 'Shunshin no Jutsu')`, [hana]);
 		expect(resta).toBe(2);
 	});
 

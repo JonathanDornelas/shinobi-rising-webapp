@@ -120,15 +120,15 @@
 		if (!carrinho.length || resta < 0) return;
 		gastando = true;
 		const dados = aplicarTreinos(f.dados, carrinho.map((c) => c.treino));
-		const { error } = await supabase().rpc('treinar', {
+		const { error } = await supabase().rpc('aprender_treinos', {
 			ficha: f.id,
-			dados: dados as unknown as Json,
+			treinos: carrinho.map((c) => c.treino) as unknown as Json,
 			resumo: resumoFicha(dados, f.catalogo.loja as ItemLoja[]) as unknown as Json,
-			custo,
 			descricao: carrinho.map((c) => c.nome).join(', ').slice(0, 160)
 		});
 		gastando = false;
-		if (error) return toasts.mostrar(error.message.includes('insuficientes') ? 'PT insuficientes.' : 'Não foi possível registrar o treino.', 'erro');
+		// o banco confere o treino e explica a recusa (P0001); o resto é falha de conexão
+		if (error) return toasts.mostrar(error.code === 'P0001' ? error.message : 'Não foi possível registrar o treino.', 'erro');
 		toasts.mostrar(`Treino registrado: −${custo} PT.`, 'sucesso');
 		carrinho = [];
 		await refreshAll();

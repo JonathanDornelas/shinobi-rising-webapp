@@ -19,7 +19,7 @@
 		planoNivel,
 		type EstadoJogo
 	} from '#lib/personagem/progressao.ts';
-	import { especializacoes, normalizarFicha, resumoFicha, sinal, treinoPericia, type FichaDados, type GanhoMarco, type ItemLoja } from '#lib/personagem/regras.ts';
+	import { especializacoes, normalizarFicha, resumoFicha, sinal, treinoPericia, type EscolhaNivel, type FichaDados, type GanhoMarco, type ItemLoja, type Treino } from '#lib/personagem/regras.ts';
 	import { hrefFicha } from '#lib/personagem/status.ts';
 	import Glosa from '#lib/componentes/regras/Glosa.svelte';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
@@ -98,13 +98,14 @@
 		confirmando = true;
 		falha = '';
 		const sb = supabase();
-		const semElemento = aplicarNivel(antes, {
+		const escolha: EscolhaNivel = {
 			nivel: novo,
 			...(atributo ? { atributo } : {}),
 			...(pericia ? { pericia } : {}),
 			...(especializacao ? { especializacao: { id: especializacao, elemento: espElemento } } : {}),
 			...(marco ? { marco } : {})
-		});
+		};
+		const semElemento = aplicarNivel(antes, escolha);
 		// os recursos atuais sobem junto com os máximos
 		const est = (p.estado ?? {}) as EstadoJogo;
 		const fN = ficha(semElemento, loja);
@@ -114,25 +115,24 @@
 			...(est.pc !== undefined ? { pc: est.pc + (fN.recursos.pc - fAntes.recursos.pc) } : {}),
 			...(est.pe !== undefined ? { pe: est.pe + (fN.recursos.pe - fAntes.recursos.pe) } : {})
 		};
-		const { error } = await sb.rpc('subir_nivel', {
+		const { error } = await sb.rpc('alcancar_nivel', {
 			ficha: p.id,
-			dados: semElemento as unknown as Json,
+			escolha: escolha as unknown as Json,
 			resumo: resumoFicha(semElemento, loja) as unknown as Json,
-			estado: estado as unknown as Json,
-			pt_marcos: ptMarco
+			estado: estado as unknown as Json
 		});
 		if (error) {
 			confirmando = false;
-			falha = 'Não foi possível subir de nível agora. Nada foi alterado; tente de novo.';
+			falha = error.code === 'P0001' ? `${error.message} Nada foi alterado.` : 'Não foi possível subir de nível agora. Nada foi alterado; tente de novo.';
 			return;
 		}
 		if (elemento && plano.elemento) {
-			const comElemento = aplicarTreinos(semElemento, [{ tipo: 'elemento', id: elemento, pt: plano.elemento.pt }]);
-			const r = await sb.rpc('treinar', {
+			const treino: Treino = { tipo: 'elemento', id: elemento, pt: plano.elemento.pt };
+			const comElemento = aplicarTreinos(semElemento, [treino]);
+			const r = await sb.rpc('aprender_treinos', {
 				ficha: p.id,
-				dados: comElemento as unknown as Json,
+				treinos: [treino] as unknown as Json,
 				resumo: resumoFicha(comElemento, loja) as unknown as Json,
-				custo: plano.elemento.pt,
 				descricao: `${plano.elemento.ordem}º elemento: ${nomeElemento(elemento)}`
 			});
 			if (r.error) toasts.mostrar('Nível alcançado, mas o elemento não foi registrado. Treine-o pela ficha.', 'aviso', 7000);

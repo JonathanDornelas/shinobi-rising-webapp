@@ -694,8 +694,8 @@ export type Database = {
 			personagens_do_grupo: { Args: { campanha: string }; Returns: PersonagemPublico[] };
 			atualizar_estado: { Args: { ficha: string; estado: Json; descricao: string }; Returns: undefined };
 			atualizar_inventario: { Args: { ficha: string; inventario: Json; ryo: number; descricao: string }; Returns: undefined };
-			subir_nivel: { Args: { ficha: string; dados: Json; resumo: Json; estado: Json; pt_marcos?: number }; Returns: number };
-			treinar: { Args: { ficha: string; dados: Json; resumo: Json; custo: number; descricao: string }; Returns: number };
+			alcancar_nivel: { Args: { ficha: string; escolha: Json; resumo: Json; estado: Json }; Returns: number };
+			aprender_treinos: { Args: { ficha: string; treinos: Json; resumo: Json; descricao: string }; Returns: number };
 			solicitar_pt: { Args: { ficha: string; sessao: string; semanas: number; descricao: string }; Returns: string };
 			decidir_pedido_pt: { Args: { pedido: string; aprovar: boolean; comentario?: string | null }; Returns: undefined };
 			conceder_recompensa: {
