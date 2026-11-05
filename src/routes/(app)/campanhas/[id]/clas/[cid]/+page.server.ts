@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { carregarCampanha } from '#lib/campanhas/servidor.ts';
 import { normalizarCla, type ClaDados } from '#lib/clas/regras.ts';
+import { calcularJutsu, normalizarJutsu, type JutsuDados } from '#lib/jutsus/regras.ts';
 import { clas as clasDoLivro } from '#lib/livro/dados.server.ts';
 import { jutsusParaCla } from '#lib/personagem/catalogo.server.ts';
 import type { PageServerLoad } from './$types';
@@ -24,11 +25,12 @@ export const load: PageServerLoad = async ({ locals, params, url }) => {
 		dono && cla.status === 'aprovado'
 			? locals.supabase.from('clas').select('id').eq('anterior_id', cla.id).in('status', ['rascunho', 'em_revisao', 'ajustes']).maybeSingle()
 			: Promise.resolve({ data: null }),
-		locals.supabase.from('jutsus_criados').select('id, carta_id, status, rank, resumo, versao').eq('cla_id', cla.id).eq('tipo', 'jutsu').order('versao', { ascending: false })
+		locals.supabase.from('jutsus_criados').select('id, carta_id, status, rank, dados, versao').eq('cla_id', cla.id).eq('tipo', 'jutsu').order('versao', { ascending: false })
 	]);
-	// a versão mais nova de cada carta
+	// a versão mais nova de cada carta; o custo sai da conta, porque o salvo no resumo envelhece quando a regra muda
 	const porCarta: Record<string, { id: string; status: string; rank: string | null; custo: string | null }> = {};
-	for (const j of jutsusCartas ?? []) if (j.carta_id && !porCarta[j.carta_id]) porCarta[j.carta_id] = { id: j.id, status: j.status, rank: j.rank, custo: (j.resumo as { custo?: string })?.custo ?? null };
+	for (const j of jutsusCartas ?? [])
+		if (j.carta_id && !porCarta[j.carta_id]) porCarta[j.carta_id] = { id: j.id, status: j.status, rank: j.rank, custo: calcularJutsu(normalizarJutsu(j.dados as Partial<JutsuDados>)).custo.texto };
 
 	return {
 		titulo: cla.nome ? `Clã ${cla.nome}` : 'Criar clã',
