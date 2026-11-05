@@ -66,6 +66,7 @@
 	const porLetra = $derived(letras.map((l) => [l, lista.filter((c) => c.letra === l)] as const).filter(([, cs]) => cs.length));
 </script>
 
+<main class="contents">
 <header class="border-b-2 border-ink bg-b0 px-4 py-6 md:px-6 md:py-10">
 	<div class="mx-auto grid max-w-[1280px] grid-cols-[minmax(0,1fr)] items-end gap-5 lg:grid-cols-[minmax(0,1fr)_460px] lg:gap-12">
 		<div class="flex flex-col gap-2.5">
@@ -94,7 +95,7 @@
 	</div>
 </header>
 
-<main id="monstros" class="mx-auto box-border flex w-full max-w-[1280px] scroll-mt-16 flex-col gap-5 px-4 pt-5 pb-12 md:px-6 md:pt-8 md:pb-14">
+<div id="monstros" class="mx-auto box-border flex w-full max-w-[1280px] scroll-mt-16 flex-col gap-5 px-4 pt-5 pb-12 md:px-6 md:pt-8 md:pb-14">
 	<nav aria-label="Letras" class="flex flex-wrap gap-1.5">
 		{#each letras as l (l)}
 			{@const tem = porLetra.some(([x]) => x === l)}
@@ -161,6 +162,7 @@
 			{/each}
 		</div>
 	{/if}
+</div>
 </main>
 
 <Rodape />

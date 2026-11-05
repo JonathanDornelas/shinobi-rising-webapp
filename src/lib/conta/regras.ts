@@ -3,6 +3,13 @@
 /** Só aceita caminhos internos como destino de volta (evita redirecionar para outro site). */
 export function destinoSeguro(volta: string | null | undefined, padrao = '/campanhas'): string {
 	if (!volta || !volta.startsWith('/') || volta.startsWith('//') || volta.startsWith('/\\')) return padrao;
+	// o navegador descarta tabs e quebras de linha antes de ler o endereço: "/<tab>/site.com" sairia daqui
+	try {
+		const base = 'https://destino.invalid';
+		if (new URL(volta, base).origin !== base) return padrao;
+	} catch {
+		return padrao;
+	}
 	if (volta.startsWith('/entrar') || volta.startsWith('/criar-conta') || volta.startsWith('/auth/')) return padrao;
 	return volta;
 }

@@ -669,7 +669,8 @@ export class Mesa {
 		const ids = this.tokens.filter((t) => t.reagiu).map((t) => t.id);
 		if (!ids.length) return;
 		this.tokens = this.tokens.map((t) => (t.reagiu ? { ...t, reagiu: false } : t));
-		await sb().from('mesa_tokens').update({ reagiu: false }).in('id', ids);
+		const { error } = await sb().from('mesa_tokens').update({ reagiu: false }).in('id', ids);
+		if (error) toasts.mostrar('Não foi possível zerar as Reações da rodada.', 'erro');
 	}
 	/** Marca (ou desmarca) a Reação do token nesta rodada: o dono ou o Mestre. */
 	marcarReacao(t: MesaToken, reagiu = !t.reagiu) {
@@ -738,12 +739,14 @@ export class Mesa {
 	async mover(id: string, x: number, y: number, metros: number) {
 		const t = this.tokens.find((k) => k.id === id);
 		if (!t || (t.x === x && t.y === y)) return;
-		this.desfazer.push({ tipo: 'mover', id, x: t.x, y: t.y, movido: t.movido });
+		const volta = { tipo: 'mover' as const, id, x: t.x, y: t.y, movido: t.movido };
 		const movido = this.daVez.has(id) ? t.movido + metros : 0;
 		// a peça vira para onde andou (só com a coluna do rumo: a migração das miniaturas)
 		const rumo = t.rumo !== undefined ? (rumoDoPasso(x - t.x, y - t.y) ?? t.rumo) : undefined;
 		const patch = rumo !== undefined ? { x, y, movido, rumo } : { x, y, movido };
-		if ((await this.atualizarToken(id, patch)) && t.visivel && this.conectado) this.canal?.send({ type: 'broadcast', event: 'andou', payload: { id, ...patch } });
+		if (!(await this.atualizarToken(id, patch))) return;
+		this.desfazer.push(volta);
+		if (t.visivel && this.conectado) this.canal?.send({ type: 'broadcast', event: 'andou', payload: { id, ...patch } });
 	}
 
 	async colocar(novo: Partial<MesaToken> & { nome: string }) {
@@ -1048,11 +1051,13 @@ export class Mesa {
 		await Promise.all(tokens.map(([t, [x, y]]) => this.atualizarToken(t.id, { x, y })));
 		if (dx || dy) {
 			await Promise.all(this.objetos.map((o) => this.atualizarObjeto(o.id, { x: o.x + dx, y: o.y + dy })));
+			let falhou = false;
 			for (const e of this.efeitos) {
 				const patch = { quadrados: deslocarQuadrados(e.quadrados, dx, dy, L, A), rotulo_x: e.rotulo_x + dx, rotulo_y: e.rotulo_y + dy };
 				this.efeitos = this.efeitos.map((k) => (k.id === e.id ? { ...k, ...patch } : k));
-				await sb().from('mesa_efeitos').update(patch).eq('id', e.id);
+				if ((await sb().from('mesa_efeitos').update(patch).eq('id', e.id)).error) falhou = true;
 			}
+			if (falhou) toasts.mostrar('Alguns efeitos não acompanharam o mapa. Recarregue a cena e confira.', 'erro');
 		}
 		return true;
 	}

@@ -71,7 +71,7 @@
 </script>
 
 <!-- Tablet: barra com Sumário, Nesta página e Aa -->
-<div class="sticky top-0 z-20 hidden items-center gap-2.5 border-b-2 border-b3 bg-b2 px-5 py-2 md:flex lg:hidden">
+<div role="navigation" aria-label="Capítulo" class="sticky top-0 z-20 hidden items-center gap-2.5 border-b-2 border-b3 bg-b2 px-5 py-2 md:flex lg:hidden">
 	<button type="button" class="btn-jogo btn-contorno min-h-11 px-3 text-[13px] tracking-[.06em]" onclick={() => (sumarioAberto = true)}>
 		<svg width="18" height="18" viewBox="0 0 24 24" class="fill-none stroke-current stroke-2 [stroke-linecap:square]"><path d="M4 6h16M4 12h16M4 18h16" /></svg>Sumário
 	</button>
@@ -94,7 +94,7 @@
 </div>
 
 <!-- Mobile: barra fixa com o capítulo e o sumário -->
-<div class="sticky top-0 z-20 flex min-h-[52px] items-center gap-2 border-b-2 border-ink bg-b2 pr-1.5 pl-4 md:hidden">
+<div role="navigation" aria-label="Capítulo" class="sticky top-0 z-20 flex min-h-[52px] items-center gap-2 border-b-2 border-ink bg-b2 pr-1.5 pl-4 md:hidden">
 	<span class="min-w-0 flex-1 truncate font-mincho text-base leading-[22px] font-bold">Cap. {cap.numero} · {cap.titulo}</span>
 	<AjustesLeitura />
 	<button type="button" class="flex min-h-11 items-center border-2 border-b3 px-2.5 font-pixel text-xs font-bold tracking-[.06em]" onclick={() => (sumarioAberto = true)}>SUMÁRIO</button>

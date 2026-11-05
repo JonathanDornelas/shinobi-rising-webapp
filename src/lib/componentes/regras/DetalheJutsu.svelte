@@ -29,7 +29,7 @@
 </script>
 
 <div class="flex flex-col gap-4">
-	<CardJutsu {jutsu} semSombra rodape={false} />
+	<CardJutsu {jutsu} semSombra rodape={false} titulo="h2" />
 	<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
 		<div class="flex flex-col gap-1.5 border-2 border-b3 bg-b1 p-3">
 			<span class="t-rotulo-sm text-title">Onde aparece</span>

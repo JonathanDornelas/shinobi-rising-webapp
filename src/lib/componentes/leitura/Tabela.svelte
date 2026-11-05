@@ -52,7 +52,8 @@
 		</figcaption>
 	{/if}
 	<div class="relative {lista ? 'hidden md:block' : ''}">
-		<div bind:this={rolagem} class="overflow-x-auto" onscroll={medir}>
+		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+		<div bind:this={rolagem} class="overflow-x-auto" onscroll={medir} tabindex="0" role="group" aria-label="Tabela com rolagem lateral">
 			<table class="sombra-painel w-full border-collapse border-2 border-frame text-[15px] leading-[22px]">
 				{#if cab}
 					<thead>

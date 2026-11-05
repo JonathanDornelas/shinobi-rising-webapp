@@ -20,8 +20,10 @@
 		semSombra?: boolean;
 		/** Botões no fim da faixa (favorito, abrir). */
 		acoes?: Snippet;
+		/** Nível do título: h2 na página do jutsu, logo abaixo do h1. */
+		titulo?: 'h2' | 'h3';
 	}
-	let { jutsu, rodape = true, semSombra = false, acoes }: Props = $props();
+	let { jutsu, rodape = true, semSombra = false, acoes, titulo = 'h3' }: Props = $props();
 	const cor = $derived(TIPO_JUTSU[jutsu.tipo].cor);
 	// HUD: o dano (ou a cura) do efeito com o dado na cor do elemento e a faixa "4~14 de dano"
 	const efeitoTxt = $derived((jutsu.efeito ?? []).map((t) => t.t).join(''));
@@ -36,7 +38,7 @@
 	<div class="min-w-0 flex-1">
 		<header class="flex flex-col gap-2.5 bg-grena px-3.5 py-3 @[520px]:flex-row @[520px]:items-start @[520px]:gap-3.5 @[520px]:px-4 @[520px]:py-3.5">
 			<div class="flex min-w-0 flex-1 flex-col gap-0.5">
-				<h3 class="m-0 font-mincho text-[22px] leading-7 font-bold text-papel @[520px]:text-2xl @[520px]:leading-[30px]">{jutsu.nome}</h3>
+				<svelte:element this={titulo} class="m-0 font-mincho text-[22px] leading-7 font-bold text-papel @[520px]:text-2xl @[520px]:leading-[30px]">{jutsu.nome}</svelte:element>
 				<span class="text-sm leading-5 text-papel-2 italic">{jutsu.traducao}{#if jutsu.origem}<span class="not-italic">{' · '}</span>{jutsu.origem}{/if}</span>
 			</div>
 			<div class="flex flex-none items-center gap-2.5">

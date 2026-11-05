@@ -80,6 +80,7 @@
 	const semCards = (bs: Bloco[]) => bs.filter((b) => b.tipo !== 'jutsu' && b.tipo !== 'habilidade');
 </script>
 
+<main class="contents">
 <header class="border-b-2 border-carvao bg-grena text-papel">
 	<div class="mx-auto flex max-w-[1280px] flex-col gap-4 px-4 py-[18px] md:px-6 md:py-7 lg:flex-row lg:items-center lg:gap-6">
 		<div class="flex items-center gap-3.5 md:gap-6">
@@ -260,5 +261,6 @@
 		</div>
 	</aside>
 </div>
+</main>
 
 <Rodape />

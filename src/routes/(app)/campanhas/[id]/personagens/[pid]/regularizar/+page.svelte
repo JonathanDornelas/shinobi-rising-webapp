@@ -18,6 +18,7 @@
 	let { data }: PageProps = $props();
 	// svelte-ignore state_referenced_locally
 	const antes: FichaDados = normalizarFicha(data.completa.dados as Partial<FichaDados>);
+	// svelte-ignore state_referenced_locally
 	const nivel = data.completa.nivel as number;
 	const vagas = (PROGRESSAO.niveisAtributo as readonly number[]).filter((n) => n <= nivel);
 	const doCla = atributoDoCla(antes);

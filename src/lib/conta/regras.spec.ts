@@ -9,6 +9,9 @@ describe('destinoSeguro', () => {
 	it('recusa destinos externos ou de conta', () => {
 		expect(destinoSeguro('https://mal.example')).toBe('/campanhas');
 		expect(destinoSeguro('//mal.example')).toBe('/campanhas');
+		expect(destinoSeguro('/\t/mal.example')).toBe('/campanhas');
+		expect(destinoSeguro('/\n/mal.example')).toBe('/campanhas');
+		expect(destinoSeguro('/\r\\mal.example')).toBe('/campanhas');
 		expect(destinoSeguro('/\\mal.example')).toBe('/campanhas');
 		expect(destinoSeguro('/entrar')).toBe('/campanhas');
 		expect(destinoSeguro(null, '/')).toBe('/');

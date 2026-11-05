@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { SITE } from '#lib/site.ts';
 	import './layout.css';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
@@ -36,14 +37,13 @@
 
 	const titulo = $derived(page.data.titulo ? `${page.data.titulo} · Rising Shinobi` : 'Rising Shinobi · RPG de mesa no universo shinobi');
 	const descricao = $derived((page.data.descricao as string | undefined) ?? 'RPG de mesa ambientado no universo shinobi, de Genin a lenda: o livro de regras completo, com fichas, clãs, jutsus, campanhas e mesa tática online.');
-	// as páginas públicas são pré-renderizadas: a prévia de link precisa do endereço fixo, não do da página
-	const SITE = 'https://shinobi-rising-webapp.vercel.app';
 </script>
 
 <svelte:window onkeydown={atalho} />
 <svelte:head>
 	<title>{titulo}</title>
 	<meta name="description" content={descricao} />
+	<link rel="canonical" href="{SITE}{page.url.pathname === '/' ? '' : page.url.pathname}" />
 	<meta property="og:site_name" content="Rising Shinobi" />
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content={page.data.titulo ?? 'Rising Shinobi'} />

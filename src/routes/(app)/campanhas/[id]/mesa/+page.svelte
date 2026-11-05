@@ -653,7 +653,8 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		},
 		notasNpc: async (n, notas) => {
 			n.notas = notas;
-			await supabase().from('npcs').update({ notas }).eq('id', n.id);
+			const { error } = await supabase().from('npcs').update({ notas }).eq('id', n.id);
+			if (error) toasts.mostrar('Não foi possível salvar as notas do NPC.', 'erro');
 		}
 	};
 

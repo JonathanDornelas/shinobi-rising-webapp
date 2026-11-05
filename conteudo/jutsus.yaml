@@ -3801,36 +3801,6 @@
   cla: null
   elemento: null
   tipo_dano: concussao
-- slug: goukakyu-no-jutsu-2
-  nome: Goukakyu no Jutsu
-  traducao: Grande Bola de Fogo
-  origem: Katon
-  tipo: Ninjutsu
-  rank: C
-  custo: 14 PC
-  info:
-    - k: Alcance
-      v: Médio (30m)
-    - k: Duração
-      v: Instantâneo
-    - k: Área
-      v: Cone médio (10m)
-    - k: Ataque
-      v: — (área)
-    - k: Resistência
-      v: Acrobacia (DT do Jutsu); metade do dano
-    - k: Ação
-      v: Primária
-  descricao:
-    - O ninja enche o peito e solta uma bola de fogo do tamanho de uma carroça. É a marca de iniciação dos Uchiha.
-  efeito: 2d6+2 de dano de fogo em área. Pode incendiar madeira, papel e tecido.
-  notas: []
-  pj: dano 2d6+2 (5) + Médio (2) + Cone médio (2) = 9 PJ → Rank C, 14 PC.
-  capitulo: 20
-  ancora: exemplo-de-ficha-pronta
-  cla: null
-  elemento: katon
-  tipo_dano: fogo
 - slug: hyousenkou-no-mai
   nome: Hyousenkou no Mai
   traducao: Dança das Mil Agulhas Geladas
@@ -3951,36 +3921,6 @@
   cla: null
   elemento: suiton
   tipo_dano: agua
-- slug: shosen-jutsu-2
-  nome: Shōsen Jutsu
-  traducao: Técnica da Palma Mística
-  origem: Ninjutsu Médico
-  tipo: Ninjutsu
-  rank: C
-  custo: 11 PC
-  info:
-    - k: Alcance
-      v: Toque
-    - k: Duração
-      v: Instantâneo
-    - k: Área
-      v: 1 aliado
-    - k: Ataque
-      v: Automático
-    - k: Resistência
-      v: —
-    - k: Ação
-      v: Primária
-  descricao:
-    - As mãos do médico se cobrem de chakra verde-claro, que fecha ferimentos e segura o veneno no lugar.
-  efeito: Cura 3d6 PV de um aliado tocado e remove 1 condição negativa (paralisia, veneno ou sangramento).
-  notas: []
-  pj: null
-  capitulo: 20
-  ancora: exemplo-5-shosen-jutsu-cura-rank-c
-  cla: null
-  elemento: null
-# ---- Jutsus da wiki de Naruto: onda 1 (gerado por scripts/livro/importar-jutsus.ts a partir da especificação da onda)
 - slug: katon-haisekisho
   nome: "Katon: Haisekishō"
   traducao: "Estilo Fogo: Pilha Ardente de Cinzas"

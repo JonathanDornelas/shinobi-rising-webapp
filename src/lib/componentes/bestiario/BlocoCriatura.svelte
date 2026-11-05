@@ -130,7 +130,7 @@
 			{/if}
 		</dl>
 
-		<section class="flex flex-col gap-2" aria-label="Ataques">
+		<section class="flex flex-col gap-2" aria-label="Ataques: {estagio.nome}">
 			<h3 class="t-rotulo m-0 text-title">Ataques</h3>
 			{#each k.ataques as a, i (`${a.nome}-${i}`)}
 				<div class="flex flex-col gap-1">
@@ -148,7 +148,7 @@
 		</section>
 
 		{#if k.jutsus.length}
-			<section class="flex flex-col gap-2 border-t border-b3 pt-3" aria-label="Jutsus">
+			<section class="flex flex-col gap-2 border-t border-b3 pt-3" aria-label="Jutsus: {estagio.nome}">
 				<h3 class="t-rotulo m-0 text-title">Jutsus</h3>
 				{#if jutsus.length}
 					<!-- lado a lado; o nome abre o cartão do jutsu no hover, como no livro -->
@@ -174,7 +174,7 @@
 		{/if}
 
 		{#if k.tracos.length}
-			<section class="flex flex-col gap-1.5 border-t border-b3 pt-3" aria-label="Traços">
+			<section class="flex flex-col gap-1.5 border-t border-b3 pt-3" aria-label="Traços: {estagio.nome}">
 				<h3 class="t-rotulo m-0 text-title">Traços</h3>
 				{#each k.tracos as t, i (`${t.nome}-${i}`)}
 					<p class="m-0 text-pretty"><b class="font-semibold">{t.nome}.</b> <Texto trechos={t.efeito} /></p>

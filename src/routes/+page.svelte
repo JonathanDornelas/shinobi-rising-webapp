@@ -11,11 +11,11 @@
 	});
 
 	const recursos = [
-		{ icone: 'nav/ic-nav-regras', titulo: 'Documentação navegável', texto: 'O livro inteiro com sumário, glossário, referências cruzadas e busca.', breve: false },
-		{ icone: 'acao/ic-acao-criar-personagem', titulo: 'Criador de personagens em 11 passos', texto: 'Atributos, perícias, vila, clã e jutsus com as contas feitas para você.', breve: true },
-		{ icone: 'kkg/ic-kkg-dojutsu', titulo: 'Clãs e Kekkei Genkai', texto: 'Use os clãs do livro ou crie o seu com a balança de PKG.', breve: false },
-		{ icone: 'acao/ic-acao-criar-jutsu', titulo: 'Criação de jutsus por PJ', texto: 'Monte a técnica e veja rank e custo mudarem a cada escolha.', breve: true },
-		{ icone: 'status/ic-status-aprovado', titulo: 'Campanhas e convites', texto: 'Crie a mesa, chame o grupo por link ou código e decida o que precisa de aprovação.', breve: false }
+		{ icone: 'nav/ic-nav-regras', titulo: 'Documentação navegável', texto: 'O livro inteiro com sumário, glossário, referências cruzadas e busca.' },
+		{ icone: 'acao/ic-acao-criar-personagem', titulo: 'Criador de personagens em 11 passos', texto: 'Atributos, perícias, vila, clã e jutsus com as contas feitas para você.' },
+		{ icone: 'kkg/ic-kkg-dojutsu', titulo: 'Clãs e Kekkei Genkai', texto: 'Use os clãs do livro ou crie o seu com a balança de PKG.' },
+		{ icone: 'acao/ic-acao-criar-jutsu', titulo: 'Criação de jutsus por PJ', texto: 'Monte a técnica e veja rank e custo mudarem a cada escolha.' },
+		{ icone: 'status/ic-status-aprovado', titulo: 'Campanhas e convites', texto: 'Crie a mesa, chame o grupo por link ou código e decida o que precisa de aprovação.' }
 	];
 	const inicios = [
 		{ icone: 'papel/ic-papel-jogador', titulo: 'Novo jogador', texto: 'Leia as Partes I, II e a metade inicial da III antes da primeira sessão. O resto você consulta durante o jogo.', link: 'Começar pela Parte I', href: '/regras/introducao' },
@@ -23,10 +23,7 @@
 	];
 </script>
 
-{#snippet emBreve()}
-	<span class="t-rotulo-sm bg-acc px-1.5 py-1 text-accfg">Em breve</span>
-{/snippet}
-
+<main class="flex flex-1 flex-col">
 <section class="flex flex-col items-center gap-5 border-b-2 border-ink bg-b0 px-4 pt-6 pb-8 md:gap-6 md:px-5 md:pt-10 md:pb-12 lg:gap-7 lg:px-6 lg:pt-16 lg:pb-[72px]">
 	<div class="relative flex h-48 w-full max-w-[768px] justify-center overflow-hidden border-2 border-[#2E2420] md:h-auto md:overflow-visible md:shadow-[6px_6px_0_#000] lg:shadow-[8px_8px_0_#000]">
 		<img src="/covers/capa-inicio.png" width="768" height="288" alt="Ninjas de Konoha saltando pelos telhados da vila ao pôr do sol, com a torre do Hokage e o monumento dos Hokage ao fundo" class="h-48 w-auto max-w-none flex-none md:h-auto md:w-full md:max-w-full" />
@@ -49,10 +46,10 @@
 			<span class="bg-vermelhao px-3.5 py-2.5 font-pixel text-sm leading-none font-bold tracking-[.1em] text-white">▸ LER AS REGRAS</span>
 			<span class="flex items-center gap-3.5 p-4"><Icone id="nav/ic-nav-regras" tamanho={64} /><span class="text-[15px] leading-[23px] text-[#EFE3D3]">23 capítulos navegáveis, com glossário, tabelas e busca.</span></span>
 		</a>
-		<div class="flex flex-col border-2 border-[#2E2420] bg-[#1F1815] shadow-[4px_4px_0_#000]" aria-disabled="true">
-			<span class="flex items-center gap-2 bg-[#2E2420] px-3.5 py-2 font-pixel text-sm leading-none font-bold tracking-[.1em] text-papel">CRIAR UMA CAMPANHA <span class="flex-1"></span>{@render emBreve()}</span>
+		<a href="/campanhas/nova" class="cartao-link flex flex-col border-2 border-[#5C524A] bg-[#1F1815] shadow-[4px_4px_0_#000]">
+			<span class="bg-[#2E2420] px-3.5 py-2.5 font-pixel text-sm leading-none font-bold tracking-[.1em] text-papel">▸ CRIAR UMA CAMPANHA</span>
 			<span class="flex items-center gap-3.5 p-4"><Icone id="papel/ic-papel-mestre" tamanho={64} /><span class="text-[15px] leading-[23px] text-[#EFE3D3]">Convide o grupo, aprove fichas e criações e guarde tudo num lugar só.</span></span>
-		</div>
+		</a>
 	</div>
 </section>
 
@@ -67,7 +64,6 @@
 				<div class="flex min-w-0 flex-col gap-1 lg:gap-2.5">
 					<span class="font-mincho text-base leading-[22px] font-bold md:text-[17px] md:leading-[23px] lg:text-lg lg:leading-6">{r.titulo}</span>
 					<span class="text-[13px] leading-[19px] text-mut md:text-sm md:leading-[21px]">{r.texto}</span>
-					{#if r.breve}<span class="self-start">{@render emBreve()}</span>{/if}
 				</div>
 			</div>
 		{/each}
@@ -89,5 +85,6 @@
 		{/each}
 	</div>
 </section>
+</main>
 
 <Rodape />

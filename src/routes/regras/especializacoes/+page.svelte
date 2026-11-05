@@ -27,7 +27,7 @@
 
 	<div class="grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-2">
 		{#if esp.quando}
-			<aside class="sombra-painel border-2 border-[#BF9000] bg-b2">
+			<aside class="sombra-painel border-2 border-[#BF9000] bg-b2" aria-label="Como ganhar especializações">
 				<div class="flex items-center gap-1.5 bg-[#BF9000] py-0.5 pr-3 pl-1 text-[#1A1A1A]"><Icone id="callout/ic-callout-destaque" /><span class="t-rotulo-sm">Quando se ganha</span></div>
 				<div class="flex flex-col gap-2.5 px-3.5 py-3">
 					<div class="flex flex-wrap items-center gap-1.5 text-[15px] leading-[23px]">

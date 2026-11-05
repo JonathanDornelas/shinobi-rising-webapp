@@ -37,6 +37,7 @@
 	];
 </script>
 
+<main class="contents">
 <header class="border-b-2 border-ink bg-b0 px-4 py-6 md:px-6 md:py-12">
 	<div class="mx-auto grid max-w-[1280px] grid-cols-[minmax(0,1fr)] items-end gap-3 lg:grid-cols-[minmax(0,1fr)_520px] lg:gap-12">
 		<div class="flex flex-col gap-2.5 md:gap-3">
@@ -56,7 +57,7 @@
 	</div>
 </header>
 
-<main class="mx-auto box-border flex w-full max-w-[1280px] flex-col gap-8 px-4 pt-4 pb-10 md:gap-10 md:px-6 md:pt-10 md:pb-16">
+<div class="mx-auto box-border flex w-full max-w-[1280px] flex-col gap-8 px-4 pt-4 pb-10 md:gap-10 md:px-6 md:pt-10 md:pb-16">
 	<div class="grid grid-cols-[minmax(0,1fr)] gap-3.5 md:gap-5 {progresso ? 'lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_minmax(0,1fr)]' : 'md:grid-cols-2'}">
 		{#if progresso}
 			<a href={progresso.secao ? `${progresso.href}#${progresso.secao}` : progresso.href} class="cartao-link flex flex-col gap-1.5 border-2 border-[var(--vermelhao-lo)] bg-grena p-3.5 text-papel md:gap-2.5 md:p-[18px] md:sombra-painel">
@@ -165,6 +166,7 @@
 			</div>
 		</section>
 	</div>
+</div>
 </main>
 
 <Rodape />

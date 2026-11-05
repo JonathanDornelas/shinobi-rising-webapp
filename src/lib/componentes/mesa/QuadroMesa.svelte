@@ -1049,7 +1049,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			const y = Math.min(A - t.tamanho, Math.max(0, Math.round(p.my - arrasto.dy)));
 			if (x !== arrasto.x || y !== arrasto.y) {
 				arrasto = { ...arrasto, x, y };
-				mesa.enviar('fantasma', { token: t.id, x, y });
+				if (t.visivel) mesa.enviar('fantasma', { token: t.id, x, y });
 			}
 			return;
 		}

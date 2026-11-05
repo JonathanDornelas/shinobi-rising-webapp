@@ -95,8 +95,9 @@
 	}
 	async function revogar(id: string) {
 		ocupado = true;
-		await supabase().from('convites').update({ status: 'revogado' }).eq('id', id);
+		const { error } = await supabase().from('convites').update({ status: 'revogado' }).eq('id', id);
 		ocupado = false;
+		if (error) return toasts.mostrar('Não foi possível revogar: o link continua valendo. Tente de novo.', 'erro');
 		toasts.mostrar('Convite revogado. O link antigo deixa de funcionar.', 'info');
 		await refreshAll();
 	}

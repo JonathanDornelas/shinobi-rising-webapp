@@ -12,7 +12,7 @@
 </script>
 
 <div class="grid flex-1 grid-cols-[minmax(0,1fr)] bg-b0 lg:grid-cols-[minmax(0,1fr)_560px]">
-	<div class="relative hidden items-center justify-center overflow-hidden border-r-2 border-carvao lg:flex">
+	<div class="relative hidden items-center justify-center overflow-hidden border-r-2 border-carvao lg:flex" aria-hidden="true">
 		<img src={urlCapa(capa)} width="1024" height="384" alt="" class="max-w-none flex-none opacity-85" />
 		<img src="/marca/logo-titulo.png" width="272" height="223" alt="" class="absolute top-10 left-12 [image-rendering:pixelated]" />
 		{#if frase}
@@ -26,8 +26,8 @@
 		<div class="flex h-[120px] justify-center overflow-hidden border-b-2 border-ink lg:hidden">
 			<img src={urlCapa(capa)} width="512" height="192" alt="" class="-mt-9 max-w-none flex-none" />
 		</div>
-		<div class="flex flex-1 flex-col gap-4 px-4 py-6 sm:px-10 lg:justify-center lg:px-14 lg:py-12">
+		<main class="flex flex-1 flex-col gap-4 px-4 py-6 sm:px-10 lg:justify-center lg:px-14 lg:py-12">
 			{@render children()}
-		</div>
+		</main>
 	</div>
 </div>

@@ -47,7 +47,7 @@ Logo abaixo da linha de informação vem o efeito, em prosa: o que o jutsu faz n
 
 ### Exemplo de Ficha Pronta {#exemplo-de-ficha-pronta}
 
-::jutsu{slug="goukakyu-no-jutsu-2"}
+::jutsu{slug="goukakyu-no-jutsu"}
 
 ## 20.2 PC ou PE: Que Custo Usar? {#pc-vs-pe-que-custo-usar}
 
@@ -269,7 +269,7 @@ Um jato de água pressurizada que empurra o alvo. A conta: dano 1d6 (1), alcance
 
 Cura um aliado com chakra médico, pelo toque. É um Ninjutsu médico. A conta: cura de 3d6 PV (5, como o dano de 3d6), alcance Toque (0) e remover 1 condição negativa (3), o que dá 8 PJ, rank C. O componente mãos descobertas (durável) tira 1 PJ e deixa o total em 7: o jutsu custa 11 PC. Levou 2 meses para ser criado.
 
-::jutsu{slug="shosen-jutsu-2"}
+::jutsu{slug="shosen-jutsu"}
 
 ## 20.6 Regras de Ouro {#regras-de-ouro}
 
