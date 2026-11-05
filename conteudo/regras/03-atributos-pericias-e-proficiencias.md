@@ -154,7 +154,7 @@ Um personagem novo começa com 4 PT na criação (Passo 6, cap. 6). Dá para esp
 :::
 
 :::exemplo{titulo="Sasuke e Tenten"}
-Sasuke tem CTR +3 e é treinado em Ninjutsu, o que dá Ninjutsu +5. Numa temporada de descanso, gastou 3 PT para ficar Treinado (+2) no Goukakyu, a Grande Bola de Fogo. Como o Goukakyu é um jutsu de área, quem rola são os alvos: Acrobacia contra a DT do Jutsu, que fica em 18 (11 de base, 2 do rank C, 3 do CTR e 2 da proficiência). E o jutsu passa a custar 8 PC em vez de 9, pelo benefício fixo.
+Sasuke tem CTR +3 e é treinado em Ninjutsu, o que dá Ninjutsu +5. Numa temporada de descanso, gastou 3 PT para ficar Treinado (+2) no Goukakyu, a Grande Bola de Fogo. Como o Goukakyu é um jutsu de área, quem rola são os alvos: Acrobacia contra a DT do Jutsu, que fica em 18 (11 de base, 2 do rank C, 3 do CTR e 2 da proficiência). E o jutsu passa a custar 13 PC em vez de 14, pelo benefício fixo.
 
 Tenten investiu 10 PT, em anos de treino, para virar Mestre em Kunai (+4). Ao atacar com kunai, ela rola 1d20 + Bukijutsu + 4, e cada kunai causa +1 de dano. Se perder as kunai e tiver de usar shuriken, perde tudo isso até voltar a empunhar uma kunai. Das cinco vagas de proficiência, Tenten ocupou uma; ainda pode treinar mais quatro.
 :::

@@ -12,7 +12,7 @@ describe('NPC', () => {
 	it('gera um NPC completo e válido para o rank pedido', () => {
 		for (let i = 0; i < 50; i++) {
 			const n = gerarNpc('jounin');
-			expect(n).toMatchObject({ rank: 'jounin', pv: 75, pc: 70, defesa: 15 });
+			expect(n).toMatchObject({ rank: 'jounin', pv: 75, pc: 105, defesa: 15 });
 			expect(n.nome).toMatch(/^\S+ \S+$/);
 			expect(n.tags.length).toBeGreaterThanOrEqual(1);
 			expect(n.tags.length).toBeLessThanOrEqual(3);

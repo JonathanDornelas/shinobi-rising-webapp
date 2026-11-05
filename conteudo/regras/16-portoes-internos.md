@@ -69,23 +69,23 @@ Mestres do Taijutsu como Gai e Lee criaram técnicas que só funcionam com certo
 
 ### Omote Renge (Lótus Frontal), com o 1º Portão {#omote-renge-lotus-frontal-exige-1-portao-aberto}
 
-**Rank C · 7 PE · ação primária.** Com o 1º Portão aberto, o usuário chuta o alvo para o alto, aparece atrás dele e o esmaga contra o chão. É um ataque de Taijutsu que causa 4d6 + FOR de dano; o alvo cai e faz uma Resistência de VIG contra a DT do Jutsu ou fica Atordoado. O usuário sofre 1d6 de dano de recuo. O card completo está no cap. 10.
+**Rank C · 11 PE · ação primária.** Com o 1º Portão aberto, o usuário chuta o alvo para o alto, aparece atrás dele e o esmaga contra o chão. É um ataque de Taijutsu que causa 4d6 + FOR de dano; o alvo cai e faz uma Resistência de VIG contra a DT do Jutsu ou fica Atordoado. O usuário sofre 1d6 de dano de recuo. O card completo está no cap. 10.
 
 ### Ura Renge (Lótus Reversa), com o 3º Portão {#ura-renge-lotus-reversa-exige-3-portao-aberto}
 
-**Rank B · 12 PE · ação primária.** Com o 3º Portão aberto, o usuário acerta cinco golpes seguidos no ar antes do impacto final: 6d8 + FOR de dano, e o alvo faz uma Resistência de VIG contra a DT do Jutsu ou fica Atordoado. Depois, o usuário sofre 2d10 de dano e 1 nível de Fadiga a mais.
+**Rank B · 18 PE · ação primária.** Com o 3º Portão aberto, o usuário acerta cinco golpes seguidos no ar antes do impacto final: 6d8 + FOR de dano, e o alvo faz uma Resistência de VIG contra a DT do Jutsu ou fica Atordoado. Depois, o usuário sofre 2d10 de dano e 1 nível de Fadiga a mais.
 
 ### Asakujaku (Pavão da Manhã), com o 6º Portão {#asakujaku-pavao-da-manha-exige-6-portao-aberto}
 
-**Rank A · 19 PE · ação primária.** Com o 6º Portão aberto, o usuário dá socos tão rápidos que o atrito incendeia o ar: 8d8 + FOR de dano num alvo, que fica Em chamas. Depois, o usuário sofre 3d10 de dano.
+**Rank A · 29 PE · ação primária.** Com o 6º Portão aberto, o usuário dá socos tão rápidos que o atrito incendeia o ar: 8d8 + FOR de dano num alvo, que fica Em chamas. Depois, o usuário sofre 3d10 de dano.
 
 ### Hirudora (Tigre do Dia), com o 7º Portão {#hirudora-tigre-do-dia-exige-7-portao-aberto}
 
-**Rank S · 33 PE · ação primária.** Com o 7º Portão aberto, um único soco comprime o ar numa onda de choque em forma de tigre: 10d10 de dano numa esfera de 6 m, a até 60 m (Resistência de Acrobacia para metade). Depois, o usuário sofre 4d12 de dano e perde o uso dos braços por 1d4 horas.
+**Rank S · 50 PE · ação primária.** Com o 7º Portão aberto, um único soco comprime o ar numa onda de choque em forma de tigre: 10d10 de dano numa esfera de 6 m, a até 60 m (Resistência de Acrobacia para metade). Depois, o usuário sofre 4d12 de dano e perde o uso dos braços por 1d4 horas.
 
 ### Sekizō (Dia do Elefante), com o 6º ou o 7º Portão {#sekizo-dia-do-elefante-sequencia-com-6-ou-7-portao}
 
-**Rank A · 23 PE · ação primária.** Com o 6º ou o 7º Portão aberto, uma sequência de socos cria colunas de ar comprimido: 7d8 de dano num alvo por turno, por até 6 turnos seguidos (gastando a ação primária a cada turno, sem custo extra). Depois, o usuário sofre 2d8 de dano e 2 níveis de Fadiga.
+**Rank A · 35 PE · ação primária.** Com o 6º ou o 7º Portão aberto, uma sequência de socos cria colunas de ar comprimido: 7d8 de dano num alvo por turno, por até 6 turnos seguidos (gastando a ação primária a cada turno, sem custo extra). Depois, o usuário sofre 2d8 de dano e 2 níveis de Fadiga.
 
 ## Criando Suas Próprias Habilidades de Portão {#criando-suas-proprias-habilidades-de-portao}
 
@@ -115,7 +115,7 @@ Entre as técnicas canônicas, o Omote Renge é do 1º Portão (rank C), o Ura R
 | Regra de Criação | Detalhe |
 | - | - |
 | Pré-requisito de uso | Manter pelo menos o Portão correspondente aberto durante a execução |
-| Custo em PE | Igual ao total de PJ, como em qualquer técnica de Taijutsu (cap. 20) |
+| Custo em PE | Uma vez e meia o total de PJ, como em qualquer técnica de Taijutsu (cap. 20) |
 | Modificador recomendado | Causa dano ao usuário (−1 PJ para cada 1d6), o que dá força narrativa ao estilo |
 | Bônus do Portão | O bônus de dano dos portões não se soma às técnicas de portão |
 | Tempo de desenvolvimento | 1 mês dedicado para cada nível de Portão exigido |
@@ -126,7 +126,7 @@ Uma técnica criada para o 1º Portão não vira técnica de um portão superior
 :::exemplo{titulo="Uma técnica de portão criada"}
 **Konoha Senpū Houō** (Furacão da Folha em Forma de Fênix), rank B, ligada ao 3º Portão. O usuário gira em alta velocidade, com os pés envoltos em chakra ardente, e cria uma fênix de fogo que avança em linha reta.
 
-A conta de PJ: 3d8+4 de dano (9), alcance Médio (2), linha de 10 m (1) e empurrão (1), menos 1 por exigir o 3º Portão aberto e menos 1 por causar 1d6 de dano ao usuário. São 11 PJ, rank B, e a técnica custa 11 PE. É a única técnica criada por esse personagem para o 3º Portão; ele ainda pode criar uma para o 1º e uma para o 2º.
+A conta de PJ: 3d8+4 de dano (9), alcance Médio (2), linha de 10 m (1) e empurrão (1), menos 1 por exigir o 3º Portão aberto e menos 1 por causar 1d6 de dano ao usuário. São 11 PJ, rank B, e a técnica custa 17 PE. É a única técnica criada por esse personagem para o 3º Portão; ele ainda pode criar uma para o 1º e uma para o 2º.
 :::
 
 ## Treino para Abrir Portões {#treino-para-abrir-portoes}

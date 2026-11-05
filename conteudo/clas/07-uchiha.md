@@ -150,7 +150,7 @@ Esta habilidade tem regras especiais:
 - PJ máximo pelo nível: até 18 (Rank B) nos níveis 6–10, até 30 (Rank A) nos níveis 11–14 e até 40 (Rank S) a partir do 15. Ao subir de nível, a habilidade pode receber novos componentes até o novo teto (o conceito não muda).
 - Reflete a personalidade, o trauma, ou a aspiração do personagem.
 - Não pode ser copiada por outros Sharingans (essa restrição vem grátis, sem custo de PJ extra).
-- O custo em PC é igual ao total de PJ (cap. 20).
+- O custo em PC é uma vez e meia o total de PJ, arredondado para cima (cap. 20).
 - Não pode ser refeita ou "trocada" depois — é uma escolha permanente que define o personagem.
 - Conta como "uso do Mangekyou" para fins de cegueira progressiva.
 
@@ -166,7 +166,7 @@ O Mestre tem direito de veto durante a criação. O jutsu deve ser temático e f
 | Visão Pré-Cognitiva | Ver futuro próximo, antecipar ataques |
 | Conjuração Temática | Invocar entidade única que serve apenas a este olho |
 | Selamento de Almas | Aprisionar consciência, dividir mente |
-| **Exemplo de Habilidade do Mangekyou Construída**<br>Hikari no Tsuki (Lua de Luz) — habilidade criada pela personagem Akemi Uchiha (nível 11). Conceito: cega temporariamente todos em um cone e, durante a cegueira, ela se move livremente. PJ: Cone médio (2) + Médio (2) + Cega (2) + 2 turnos extras (2) + Persegue (3) + Atravessa múltiplos alvos (3) + Concede ação extra (4) + Não pode ser copiada (3) + Sem selos (2) − Causa 1d8 de dano à usuária (−1) − Cega Akemi por 1 minuto após o uso (−2) = 20 PJ → Rank A (permitido a partir do nível 11). Custo: 20 PC. | |
+| **Exemplo de Habilidade do Mangekyou Construída**<br>Hikari no Tsuki (Lua de Luz) — habilidade criada pela personagem Akemi Uchiha (nível 11). Conceito: cega temporariamente todos em um cone e, durante a cegueira, ela se move livremente. PJ: Cone médio (2) + Médio (2) + Cega (2) + 2 turnos extras (2) + Persegue (3) + Atravessa múltiplos alvos (3) + Concede ação extra (4) + Não pode ser copiada (3) + Sem selos (2) − Causa 1d8 de dano à usuária (−1) − Cega Akemi por 1 minuto após o uso (−2) = 20 PJ → Rank A (permitido a partir do nível 11). Custo: 30 PC. | |
 
 #### O Custo do Mangekyou — Cegueira Progressiva {#o-custo-do-mangekyou-cegueira-progressiva}
 

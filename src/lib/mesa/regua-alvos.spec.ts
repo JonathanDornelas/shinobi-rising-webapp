@@ -8,14 +8,14 @@ const card = (slug: string) => {
 };
 
 describe('jutsus que cobram por alvo a mais', () => {
-	it('Kage Mane: +2 PC por alvo, até 3 (na Área)', () => {
-		expect(card('kage-mane-no-jutsu')).toMatchObject({ forma: 'alvos', alvos: 3, custoAlvo: 2 });
+	it('Kage Mane: +3 PC por alvo, até 3 (na Área)', () => {
+		expect(card('kage-mane-no-jutsu')).toMatchObject({ forma: 'alvos', alvos: 3, custoAlvo: 3 });
 	});
-	it('Suna Shuriken: +2 PC por alvo, sem limite escrito', () => {
-		expect(card('suna-shuriken')).toMatchObject({ forma: 'alvos', alvos: MAX_ALVOS_PAGOS, custoAlvo: 2 });
+	it('Suna Shuriken: +3 PC por alvo, sem limite escrito', () => {
+		expect(card('suna-shuriken')).toMatchObject({ forma: 'alvos', alvos: MAX_ALVOS_PAGOS, custoAlvo: 3 });
 	});
 	it('Mizu Teppou: o custo por alvo está no efeito, "no máximo 2" a mais', () => {
-		expect(card('mizu-teppou')).toMatchObject({ forma: 'alvos', alvos: 3, custoAlvo: 2 });
+		expect(card('mizu-teppou')).toMatchObject({ forma: 'alvos', alvos: 3, custoAlvo: 3 });
 	});
 	it('alvos a mais sem custo ("Alvo único +2") continuam sem custo extra', () => {
 		expect(card('choju-giga')).toMatchObject({ forma: 'alvos', alvos: 3 });

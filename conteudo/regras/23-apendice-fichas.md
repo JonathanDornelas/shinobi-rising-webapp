@@ -225,7 +225,7 @@ Aparência marcante (1 frase): \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\
 | Recurso | Valor |
 | - | - |
 | PV | \_\_\_\_ (sugestão por rank: Genin 25, Chunin 45, Jounin 75, Anbu 100, Lendário 150+) |
-| PC | \_\_\_\_ (sugestão: Genin 25, Chunin 40, Jounin 70, Anbu 90, Lendário 130+) |
+| PC | \_\_\_\_ (sugestão: Genin 40, Chunin 60, Jounin 105, Anbu 135, Lendário 195+) |
 | Defesa | \_\_\_\_ (sugestão: Genin 12, Chunin 14, Jounin 16, Anbu 17, Lendário 19+) |
 | Iniciativa | 1d20 + \_\_\_\_ |
 | Ataque principal | 1d20 + \_\_\_\_; dano \_\_\_\_ |
@@ -258,9 +258,9 @@ Gancho 2 (segredo ou conexão útil): \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 ### Exemplo de Ficha Resumida Preenchida {#exemplo-de-ficha-resumida-preenchida}
 
 :::exemplo{titulo="Três fichas resumidas"}
-**Hideo, ronin contratado pelo daimyō (Chunin).** Cicatriz vertical no olho direito, roupas cinza-escuro. PV 45, PC 35, Defesa 14, Iniciativa 1d20 + 3. Ataca de katana: 1d20 + 7, dano 1d8 + 4. Jutsu marcante: Kirigakure no Jutsu (Técnica de Ocultação na Névoa), que encobre uma esfera de 15 m em volta dele em névoa por 12 PC. Tags: Tático, Cauteloso e Leal. Gancho 1: foi pago para entregar um pergaminho selado ao daimyō rival. Gancho 2: conhece o assassino de um aliado dos personagens dos jogadores, uma informação valiosa se ele for subornado ou capturado.
+**Hideo, ronin contratado pelo daimyō (Chunin).** Cicatriz vertical no olho direito, roupas cinza-escuro. PV 45, PC 55, Defesa 14, Iniciativa 1d20 + 3. Ataca de katana: 1d20 + 7, dano 1d8 + 4. Jutsu marcante: Kirigakure no Jutsu (Técnica de Ocultação na Névoa), que encobre uma esfera de 15 m em volta dele em névoa por 18 PC. Tags: Tático, Cauteloso e Leal. Gancho 1: foi pago para entregar um pergaminho selado ao daimyō rival. Gancho 2: conhece o assassino de um aliado dos personagens dos jogadores, uma informação valiosa se ele for subornado ou capturado.
 
-**Ayame Sasaki, mestra de Genjutsu (Jounin).** Cabelo prateado, óculos redondos. PV 70, PC 110, Defesa 16, Iniciativa 1d20 + 4. Corpo a corpo, é fraca: 1d20 + 4, dano 1d6 + 2. Jutsus marcantes: Magen: Kyouten Chiten (Inversão Céu-Terra), por 8 PC, e Sairento Kiringu (Som Letal Ilusório), por 14 PC. Tags: Tática e Diplomata. Gancho 1: investiga uma série de assassinatos de jovens Yamanaka. Gancho 2: pode oferecer treino :sem[em Genjutsu] (1 nível de proficiência) em troca de ajuda na investigação.
+**Ayame Sasaki, mestra de Genjutsu (Jounin).** Cabelo prateado, óculos redondos. PV 70, PC 165, Defesa 16, Iniciativa 1d20 + 4. Corpo a corpo, é fraca: 1d20 + 4, dano 1d6 + 2. Jutsus marcantes: Magen: Kyouten Chiten (Inversão Céu-Terra), por 12 PC, e Sairento Kiringu (Som Letal Ilusório), por 17 PC. Tags: Tática e Diplomata. Gancho 1: investiga uma série de assassinatos de jovens Yamanaka. Gancho 2: pode oferecer treino :sem[em Genjutsu] (1 nível de proficiência) em troca de ajuda na investigação.
 
 **Tropa genérica: 4 bandidos comuns (não ninjas).** Use os mesmos números para o grupo todo: PV 15 cada, Defesa 11, Iniciativa 1d20 + 1, ataque 1d20 + 3, dano 1d6 + 1 (faca ou clava). Tags: Agressivos e Covardes (fogem se 50% do grupo cair). Gancho: trabalham para um chefe maior, e interrogá-los pode levar ao verdadeiro vilão.
 :::

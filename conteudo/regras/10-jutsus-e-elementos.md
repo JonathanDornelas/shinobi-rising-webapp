@@ -93,7 +93,7 @@ Todo jutsu deste livro segue a mesma estrutura de card. Ao ler uma técnica, voc
 | Nome | Nome em rōmaji e tradução |
 | Origem | Elemento, clã ou categoria (Academia, Taijutsu…) |
 | Rank | De E (mais fraco) a S (mais poderoso); define o custo de aprendizado e o nível mínimo |
-| Custo | PC (ou PE, em Taijutsu e Bukijutsu) gastos ao usar; igual aos PJ do jutsu |
+| Custo | PC (ou PE, em Taijutsu e Bukijutsu) gastos ao usar; uma vez e meia os PJ do jutsu |
 | Tipo | Ninjutsu, Genjutsu, Taijutsu, Bukijutsu, Fuuinjutsu ou Kugutsu |
 | Alcance | Distância máxima até o alvo ou a área afetada |
 | Duração | Instantâneo, X turnos, sustentado (custo por turno) ou cena |

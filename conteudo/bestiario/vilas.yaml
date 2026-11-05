@@ -780,7 +780,7 @@
         - { slug: shunshin-no-jutsu }
       tracos:
         - *emboscada
-        - &agua-heroi { nome: Água do Herói, efeito: "Uma vez por cena, bebe a Água do Herói: até o fim da cena, recupera 10 PC no começo de cada turno. No fim da cena, ganha dois níveis de Fadiga." }
+        - &agua-heroi { nome: Água do Herói, efeito: "Uma vez por cena, bebe a Água do Herói: até o fim da cena, recupera 15 PC no começo de cada turno. No fim da cena, ganha dois níveis de Fadiga." }
     - nome: Líder da Cachoeira
       ameaca: 16
       papel: chefe

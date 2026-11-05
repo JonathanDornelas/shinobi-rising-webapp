@@ -387,7 +387,7 @@
 					{/snippet}
 					{#snippet s3()}
 						<p class="m-0 text-[15px] leading-[23px]">
-							Custo final = PJ: <b class="t-num">{c.calc.custo.texto}</b>{c.calc.sustentado ? ` · sustentado: ${c.calc.sustentado} por turno` : ''}.
+							Custo final = PJ × 1,5, arredondado para cima: <b class="t-num">{c.calc.custo.texto}</b>{c.calc.sustentado ? ` · sustentado: ${c.calc.sustentado} por turno` : ''}.
 							{c.dados.tipo === 'Taijutsu' || c.dados.tipo === 'Bukijutsu' ? 'Técnicas corporais e de arma gastam PE.' : c.dados.tipo === 'Kugutsu' ? 'Kugutsu divide entre PC (controle) e PE (movimento).' : 'Jutsus de chakra gastam PC.'}
 						</p>
 						{#if c.ctx.pcMax != null}<span class="text-[13px] text-mut">Máximo de {data.ficha?.nome}: {c.ctx.pcMax} PC · {c.ctx.peMax} PE. Se o custo passar disso, o jutsu existe, mas ainda não dá para usar (cap. 20.6).</span>{/if}

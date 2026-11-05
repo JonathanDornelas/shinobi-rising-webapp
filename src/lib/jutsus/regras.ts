@@ -158,19 +158,23 @@ export function calcularJutsu(d: JutsuDados) {
 	const r = rankDoPj(pj);
 	const nivelMin = PROGRESSAO.rankPorNivel[r.rank] ?? 1;
 	const custo = custoDoJutsu(d.tipo, pj);
-	const sustentado = (d.componentes.sustentado ?? 0) > 0 ? Math.max(1, Math.ceil(pj / 4)) : 0;
+	const sustentado = (d.componentes.sustentado ?? 0) > 0 ? Math.max(1, Math.ceil(custoDoPj(pj) / 4)) : 0;
 	return { linhas, bruto, pj, rank: r.rank, ptAprender: r.pt, bonusDt: r.dt, nivelMin, custo, sustentado, media };
 }
 export type CalculoJutsu = ReturnType<typeof calcularJutsu>;
 
-/** Custo final = PJ, em PC (PE no Taijutsu e Bukijutsu); Kugutsu divide entre PC e PE. */
+/** O custo de um jutsu: uma vez e meia os PJ, arredondado para cima. Os PJ seguem definindo o rank e os PT. */
+export const custoDoPj = (pj: number) => Math.ceil(pj * 1.5);
+
+/** Custo final em PC (PE no Taijutsu e Bukijutsu); Kugutsu divide entre PC e PE. */
 export function custoDoJutsu(tipo: TipoJutsu | null, pj: number) {
-	if (tipo && TIPOS_FISICOS.includes(tipo)) return { pc: 0, pe: pj, texto: `${pj} PE` };
+	const total = custoDoPj(pj);
+	if (tipo && TIPOS_FISICOS.includes(tipo)) return { pc: 0, pe: total, texto: `${total} PE` };
 	if (tipo === 'Kugutsu') {
-		const pc = Math.ceil(pj / 2);
-		return { pc, pe: pj - pc, texto: pj - pc ? `${pc} PC + ${pj - pc} PE` : `${pc} PC` };
+		const pc = Math.ceil(total / 2);
+		return { pc, pe: total - pc, texto: total - pc ? `${pc} PC + ${total - pc} PE` : `${pc} PC` };
 	}
-	return { pc: pj, pe: 0, texto: `${pj} PC` };
+	return { pc: total, pe: 0, texto: `${total} PC` };
 }
 
 const PERICIA_DO_TIPO: Record<TipoJutsu, string> = { Ninjutsu: 'Ninjutsu', Genjutsu: 'Genjutsu', Taijutsu: 'Taijutsu', Bukijutsu: 'Bukijutsu', Fuuinjutsu: 'Selamento', Kugutsu: 'Kugutsu' };

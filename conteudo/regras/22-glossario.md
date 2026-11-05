@@ -112,12 +112,12 @@ Os sete atributos do sistema.
 
 | Rank | Quem usa | Custo PC aprox. |
 | - | - | - |
-| E | Acadêmicos | 1 a 2 PC |
-| D | Genin | 3 a 5 PC |
-| C | Chunin | 6 a 10 PC |
-| B | Jounin | 11 a 18 PC |
-| A | Jounin de elite, Anbu | 19 a 30 PC |
-| S | Kage, Sannin, lendas | 31 a 50+ PC |
+| E | Acadêmicos | 2 a 3 PC |
+| D | Genin | 5 a 8 PC |
+| C | Chunin | 9 a 15 PC |
+| B | Jounin | 17 a 27 PC |
+| A | Jounin de elite, Anbu | 29 a 45 PC |
+| S | Kage, Sannin, lendas | 47 a 75+ PC |
 
 ## Termos Mecânicos {#termos-mecanicos}
 

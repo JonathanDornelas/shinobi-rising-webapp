@@ -147,7 +147,7 @@ O rank máximo é A, nunca S, porque o Sennin amplia o ninja, mas não substitui
 :::exemplo{titulo="Uma habilidade Senpou criada"}
 **Senpou: Kawazu Tataki** (Estilo Eremita: Bater do Sapo), rank A. Naruto bate as mãos no chão, e ondas de choque carregadas de energia natural se espalham a partir do impacto.
 
-A conta de PJ: 7d8 de dano (20), alcance Curto (1), esfera de 6 m (4) e empurrão (1), menos 1 por causar Fadiga ao usuário e menos 2 por exigir o Modo Sennin ativo. São 23 PJ, rank A. Com o desconto de 20%, arredondado para cima, o custo fica em 19 PC.
+A conta de PJ: 7d8 de dano (20), alcance Curto (1), esfera de 6 m (4) e empurrão (1), menos 1 por causar Fadiga ao usuário e menos 2 por exigir o Modo Sennin ativo. São 23 PJ, rank A, o que daria 35 PC. Com o desconto de 20%, arredondado para cima, o custo fica em 28 PC.
 :::
 
 ## Equilíbrio com Outros Sistemas {#equilibrio-com-outros-sistemas}

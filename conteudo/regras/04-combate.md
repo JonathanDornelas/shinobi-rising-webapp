@@ -315,8 +315,8 @@ Alguns itens e jutsus criam encobrimento de propósito, e alguns ninjas enxergam
 | Fonte | Efeito |
 | - | - |
 | Bomba de Fumaça (item, 300 ryo) | Fumaça densa num quadrado de 5 m × 5 m, a até 10 m de quem lança, por 3 turnos: Encoberto Pesadamente para quem está dentro e contra quem está dentro. Lançar custa uma ação. |
-| Kirigakure no Jutsu Ilusório (Genjutsu, rank D, 5 PC) | Névoa ilusória numa esfera de 6 m por 3 turnos. Quem falha na Resistência de ESP tem -2 nos ataques, como contra alvos Encobertos Levemente, e -3 em Percepção. Gasto baixo, efeito modesto. |
-| Kirigakure no Jutsu (Suiton, rank B, 12 PC) | Névoa real numa esfera de 15 m em torno do usuário, por uma cena: Encoberto Pesadamente. É a marca registrada de Kirigakure. |
+| Kirigakure no Jutsu Ilusório (Genjutsu, rank D, 8 PC) | Névoa ilusória numa esfera de 6 m por 3 turnos. Quem falha na Resistência de ESP tem -2 nos ataques, como contra alvos Encobertos Levemente, e -3 em Percepção. Gasto baixo, efeito modesto. |
+| Kirigakure no Jutsu (Suiton, rank B, 18 PC) | Névoa real numa esfera de 15 m em torno do usuário, por uma cena: Encoberto Pesadamente. É a marca registrada de Kirigakure. |
 | Doton: Doryūheki (Muralha de Terra, rank C) | Bloqueia toda a linha de visão, como cobertura física. Para atacar através dela, é preciso destruí-la antes. |
 | Sensores de chakra (Especialização Sensor e Kekkei Genkai sensoriais, como o Byakugan) | Ignoram o encobrimento visual, porque “veem” pelo chakra. Mas podem ser enganados por Mascarar Chakra (cap. 5). |
 
@@ -352,7 +352,7 @@ Um ninja atordoado, preso numa sombra ou envolto em chamas não luta como antes.
 | Em chamas | Sofre 1d6 de dano por turno até apagar o fogo (ação secundária, água ou rolar no chão) |
 | Envenenado | Sofre o dano do veneno a cada turno (Tabela de Venenos, cap. 11) e tem -1 em testes até ser curado |
 | Sangrando | Perde 1d4 PV por turno; um teste de Medicina (DT 15, ação primária) estanca |
-| Em Genjutsu | Percebe o que o lançador determina. Repete a Resistência de ESP ao fim de cada turno; um aliado adjacente pode gastar a ação primária e 2 PC (Kai) para dar vantagem nesse teste; desvantagem nas Resistências físicas |
+| Em Genjutsu | Percebe o que o lançador determina. Repete a Resistência de ESP ao fim de cada turno; um aliado adjacente pode gastar a ação primária e 3 PC (Kai) para dar vantagem nesse teste; desvantagem nas Resistências físicas |
 | Desprevenido | Na primeira rodada, antes de agir, não pode usar Reações e tem -2 na Defesa |
 
 **Esquivar sem poder se mexer.** Quem não manda no próprio corpo não sai da frente de uma Bola de Fogo. As Resistências físicas, as de Acrobacia, AGI e FOR, dependem de mover o corpo a tempo: pular para fora do cone, rolar para longe da explosão, forçar a saída de uma prisão. Paralisado ou Inconsciente, o alvo falha nelas sozinho, sem rolar, e leva o dano inteiro do jutsu de área. Atordoado, Em Genjutsu ou Controlado, ele ainda se mexe por instinto, mas mal, e rola essas Resistências com desvantagem. As de VIG e de ESP não mudam, porque o corpo continua lutando contra o veneno e a mente contra a ilusão.

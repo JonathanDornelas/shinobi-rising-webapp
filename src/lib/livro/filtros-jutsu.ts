@@ -20,10 +20,10 @@ export function alcanceAlvo(j: ComInfo): 'Alvo único ou pessoal' | 'Área' {
 }
 
 export const FAIXAS_CUSTO = [
-	{ id: '1-5', rotulo: '1 a 5', min: 1, max: 5 },
-	{ id: '6-10', rotulo: '6 a 10', min: 6, max: 10 },
-	{ id: '11-20', rotulo: '11 a 20', min: 11, max: 20 },
-	{ id: '21+', rotulo: '21 ou mais', min: 21, max: Infinity }
+	{ id: '1-8', rotulo: '1 a 8', min: 1, max: 8 },
+	{ id: '9-15', rotulo: '9 a 15', min: 9, max: 15 },
+	{ id: '16-30', rotulo: '16 a 30', min: 16, max: 30 },
+	{ id: '31+', rotulo: '31 ou mais', min: 31, max: Infinity }
 ] as const;
 
 export function faixaCusto(j: { custoNum: number }): string | null {

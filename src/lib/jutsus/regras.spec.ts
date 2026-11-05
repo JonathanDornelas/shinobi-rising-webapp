@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import jutsusJson from '#lib/livro/gerado/jutsus.json';
 import { pjDoDano, rankDoPj } from './dados.ts';
-import { analisarJutsu, calcularJutsu, infoAutomatica, jutsuVazio, paraJutsuLivro, type JutsuDados } from './regras.ts';
+import { analisarJutsu, calcularJutsu, custoDoPj, infoAutomatica, jutsuVazio, paraJutsuLivro, type JutsuDados } from './regras.ts';
 
 const jutsu = (p: Partial<JutsuDados>): JutsuDados => ({ ...jutsuVazio(), nome: 'Teste', efeito: 'x', ...p, dano: { ...jutsuVazio().dano, ...p.dano } });
 
@@ -26,24 +26,24 @@ describe('catálogo do livro', () => {
 			// custo duplo, como "5 PC (Reação) ou 10 PC (cena)", fica de fora; custo misto (PC + PE) soma as partes
 			if (/ ou /.test(j.custo)) continue;
 			const custo = (j.custo.match(/\d+/g) ?? []).reduce((t, n) => t + Number(n), 0);
-			expect({ slug: j.slug, rank: j.rank, custo }).toEqual({ slug: j.slug, rank: rankDoPj(+pj).rank, custo: +pj });
+			expect({ slug: j.slug, rank: j.rank, custo }).toEqual({ slug: j.slug, rank: rankDoPj(+pj).rank, custo: custoDoPj(+pj) });
 			expect(rank).toBe(j.rank);
 		}
 	});
 });
 
 describe('exemplos do cap. 20.5', () => {
-	it('Hyousenkou no Mai: 2d6, Médio, Esfera 3m, sangramento = 9 PJ, Rank C, 9 PC', () => {
+	it('Hyousenkou no Mai: 2d6, Médio, Esfera 3m, sangramento = 9 PJ, Rank C, 14 PC', () => {
 		const c = calcularJutsu(jutsu({ tipo: 'Ninjutsu', dano: { modo: 'dano', qtd: 2, dado: 6, bonus: 0 }, alcance: 'medio', area: 'esfera3', componentes: { continuo: 1 } }));
 		expect(c).toMatchObject({ pj: 9, rank: 'C', ptAprender: 4 });
-		expect(c.custo.texto).toBe('9 PC');
+		expect(c.custo.texto).toBe('14 PC');
 	});
 
-	it('Konoha Daikaiten: 1d6 + FOR, Pessoal, Esfera 3m, empurra = 4 PJ, Rank D, 4 PE', () => {
+	it('Konoha Daikaiten: 1d6 + FOR, Pessoal, Esfera 3m, empurra = 4 PJ, Rank D, 6 PE', () => {
 		const d = jutsu({ tipo: 'Taijutsu', dano: { modo: 'dano', qtd: 1, dado: 6, bonus: 0 }, alcance: 'pessoal', area: 'esfera3', componentes: { empurra: 1 } });
 		const c = calcularJutsu(d);
 		expect(c).toMatchObject({ pj: 4, rank: 'D' });
-		expect(c.custo.texto).toBe('4 PE');
+		expect(c.custo.texto).toBe('6 PE');
 		expect(c.linhas[0].rotulo).toContain('+ FOR');
 	});
 
@@ -79,7 +79,7 @@ describe('regras de ouro e verificações', () => {
 
 	it('área massiva só em Rank S; Kugutsu divide PC e PE', () => {
 		expect(analisarJutsu(jutsu({ tipo: 'Ninjutsu', area: 'massiva' })).verificacoes.some((v) => v.texto.includes('massiva'))).toBe(true);
-		expect(calcularJutsu(jutsu({ tipo: 'Kugutsu', dano: { modo: 'dano', qtd: 2, dado: 6, bonus: 0 }, alcance: 'curto' })).custo.texto).toBe('2 PC + 2 PE');
+		expect(calcularJutsu(jutsu({ tipo: 'Kugutsu', dano: { modo: 'dano', qtd: 2, dado: 6, bonus: 0 }, alcance: 'curto' })).custo.texto).toBe('3 PC + 3 PE');
 	});
 
 	it('paralisar custa 3 PJ em Genjutsu e 2 nos outros tipos (Utakata: 5 PJ)', () => {
@@ -90,7 +90,7 @@ describe('regras de ouro e verificações', () => {
 
 	it('linha de info automática', () => {
 		const d = jutsu({ tipo: 'Ninjutsu', dano: { modo: 'dano', qtd: 2, dado: 6, bonus: 0 }, alcance: 'medio', area: 'esfera3', componentes: { continuo: 1, sustentado: 1 } });
-		expect(infoAutomatica(d)).toEqual({ alcance: 'Médio (30m)', duracao: 'Sustentado (3 PC/turno)', area: 'Esfera 3m', ataque: '— (área)', resistencia: 'Acrobacia (DT do Jutsu)', acao: 'Primária' });
+		expect(infoAutomatica(d)).toEqual({ alcance: 'Médio (30m)', duracao: 'Sustentado (5 PC/turno)', area: 'Esfera 3m', ataque: '— (área)', resistencia: 'Acrobacia (DT do Jutsu)', acao: 'Primária' });
 		expect(paraJutsuLivro('x', d, 'Clã').pj).toContain(': 11 PJ, rank B.');
 	});
 });

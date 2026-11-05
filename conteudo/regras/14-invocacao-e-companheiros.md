@@ -65,10 +65,10 @@ Quanto maior a criatura, mais chakra ela cobra para atravessar.
 
 | Tamanho da invocação | Custo PC |
 | - | - |
-| Pequena (cão de bolso, sapo bebê) | 5 PC |
-| Média (lobo, cobra, sapo médio) | 10 PC |
-| Grande (lobo gigante, sapo guerreiro) | 20 PC |
-| Chefe da espécie (Gamabunta, Manda) | 40 PC |
+| Pequena (cão de bolso, sapo bebê) | 8 PC |
+| Média (lobo, cobra, sapo médio) | 15 PC |
+| Grande (lobo gigante, sapo guerreiro) | 30 PC |
+| Chefe da espécie (Gamabunta, Manda) | 60 PC |
 
 ### Estatísticas de Invocações Comuns {#estatisticas-de-invocacoes-comuns}
 

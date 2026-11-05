@@ -217,10 +217,10 @@ Some todos os PJ comprados, ajuste pelos modificadores (e pelo desconto do sense
 
 ### Passo 4 · Custo Final em PC ou PE {#passo-4-custo-final-em-pc-ou-pe}
 
-O custo final, em PC (ou em PE, no Taijutsu e no Bukijutsu), é igual ao total de PJ, e nunca menor que 1. Efeitos sustentados custam uma fração disso a cada turno.
+O custo final, em PC (ou em PE, no Taijutsu e no Bukijutsu), é uma vez e meia o total de PJ, arredondado para cima. O rank e os PT para aprender continuam saindo dos PJ: só o chakra gasto é que sobe. Efeitos sustentados custam uma fração desse custo a cada turno.
 
 :::na-mesa{titulo="Custo do jutsu"}
-- **Custo final:** o total de PJ (mínimo 1), em PC ou PE
+- **Custo final:** PJ × 1,5, arredondado para cima, em PC ou PE
 - **Sustentado:** ¼ do custo por turno, arredondado para cima
 :::
 
@@ -243,31 +243,31 @@ Cinco jutsus criados do zero, com a conta de PJ de cada um.
 
 ### Exemplo 1 · Hyousenkou no Mai (Yuki, Rank C) {#exemplo-1-hyousenkou-no-mai-yuki-rank-c}
 
-Mil agulhas de gelo cercam os alvos numa área. É um Ninjutsu de Hyouton. A conta de PJ: dano 2d6 (3), alcance Médio (2), esfera de 3 m (2) e sangramento (2). São 9 PJ, rank C, e o jutsu custa 9 PC. Levou 2 meses para ser criado.
+Mil agulhas de gelo cercam os alvos numa área. É um Ninjutsu de Hyouton. A conta de PJ: dano 2d6 (3), alcance Médio (2), esfera de 3 m (2) e sangramento (2). São 9 PJ, rank C, e o jutsu custa 14 PC. Levou 2 meses para ser criado.
 
 ::jutsu{slug="hyousenkou-no-mai"}
 
 ### Exemplo 2 · Konoha Daikaiten (Taijutsu, Rank D) {#exemplo-2-konoha-daikaiten-taijutsu-rank-d}
 
-Um chute giratório de 360 graus, que atinge todos em volta. Como é Taijutsu, o custo é em PE. A conta: dano 1d6 + FOR (1 PJ, porque o atributo é grátis no Taijutsu), alcance Pessoal (0), esfera de 3 m centrada em você (2) e empurrar os atingidos 1 m (1). São 4 PJ, rank D, e a técnica custa 4 PE. Não usa selos, como todo Taijutsu, e levou 1 mês de treino físico.
+Um chute giratório de 360 graus, que atinge todos em volta. Como é Taijutsu, o custo é em PE. A conta: dano 1d6 + FOR (1 PJ, porque o atributo é grátis no Taijutsu), alcance Pessoal (0), esfera de 3 m centrada em você (2) e empurrar os atingidos 1 m (1). São 4 PJ, rank D, e a técnica custa 6 PE. Não usa selos, como todo Taijutsu, e levou 1 mês de treino físico.
 
 ::jutsu{slug="konoha-daikaiten"}
 
 ### Exemplo 3 · Rasengan Sombrio (Ninjutsu, Rank A) {#exemplo-3-rasengan-sombrio-ninjutsu-rank-a}
 
-Um Rasengan modificado, com chakra negro que queima o espírito. A conta: dano 6d8 (15), alcance Toque (0), drenar o chakra do alvo (2) e não poder ser copiado pelo Sharingan (+3), menos 1 por causar 1d6 de dano ao próprio usuário. São 19 PJ, rank A, e o jutsu custa 19 PC. Sem selos, custaria 2 PJ a mais (21), mas o jogador manteve os selos de uma mão. Levou 1 ano para ser criado.
+Um Rasengan modificado, com chakra negro que queima o espírito. A conta: dano 6d8 (15), alcance Toque (0), drenar o chakra do alvo (2) e não poder ser copiado pelo Sharingan (+3), menos 1 por causar 1d6 de dano ao próprio usuário. São 19 PJ, rank A, e o jutsu custa 29 PC. Sem selos, seriam 2 PJ a mais (21 PJ, 32 PC), mas o jogador manteve os selos de uma mão. Levou 1 ano para ser criado.
 
 ::jutsu{slug="yami-no-rasengan"}
 
 ### Exemplo 4 · Suiton: Mizurappa (Ninjutsu, Rank D) {#exemplo-4-suiton-mizurappa-ninjutsu-rank-d}
 
-Um jato de água pressurizada que empurra o alvo. A conta: dano 1d6 (1), alcance Curto (1) e empurrar o alvo (1). São 3 PJ, rank D, e o jutsu custa 3 PC. Sem selos, custaria 2 PJ a mais (5 PJ, ainda rank D, 5 PC); o jogador manteve os selos e ficou em 3 PC.
+Um jato de água pressurizada que empurra o alvo. A conta: dano 1d6 (1), alcance Curto (1) e empurrar o alvo (1). São 3 PJ, rank D, e o jutsu custa 5 PC. Sem selos, seriam 2 PJ a mais (5 PJ, ainda rank D, 8 PC); o jogador manteve os selos e ficou em 5 PC.
 
 ::jutsu{slug="suiton-mizurappa"}
 
 ### Exemplo 5 · Shōsen Jutsu (Cura, Rank C) {#exemplo-5-shosen-jutsu-cura-rank-c}
 
-Cura um aliado com chakra médico, pelo toque. É um Ninjutsu médico. A conta: cura de 3d6 PV (5, como o dano de 3d6), alcance Toque (0) e remover 1 condição negativa (3), o que dá 8 PJ, rank C. O componente mãos descobertas (durável) tira 1 PJ e deixa o total em 7: o jutsu custa 7 PC. Levou 2 meses para ser criado.
+Cura um aliado com chakra médico, pelo toque. É um Ninjutsu médico. A conta: cura de 3d6 PV (5, como o dano de 3d6), alcance Toque (0) e remover 1 condição negativa (3), o que dá 8 PJ, rank C. O componente mãos descobertas (durável) tira 1 PJ e deixa o total em 7: o jutsu custa 11 PC. Levou 2 meses para ser criado.
 
 ::jutsu{slug="shosen-jutsu-2"}
 
