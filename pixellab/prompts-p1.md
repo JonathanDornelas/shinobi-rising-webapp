@@ -49,7 +49,7 @@ Ferramenta: `create_1_direction_object`.
 
 | # | ID | Prompt (item_description) | Alt | Obs. |
 | --- | --- | --- | --- | --- |
-| 1 | marca | metal ninja forehead protector plate with an engraved shuriken, red cloth band | Shinobi no Michi |  |
+| 1 | marca | metal ninja forehead protector plate with an engraved shuriken, red cloth band | Rising Shinobi |  |
 | 2 | nav-regras | open paper scroll with a red ribbon bookmark | Regras |  |
 | 3 | nav-campanhas | rolled mission map scroll tied with a red wax seal | Campanhas |  |
 | 4 | nav-personagens | bust portrait of a ninja wearing a forehead protector | Personagens |  |

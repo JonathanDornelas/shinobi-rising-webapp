@@ -10,6 +10,6 @@ export const load: PageServerLoad = () => {
 		intro: iSecao > 0 ? c22.blocos.slice(0, iSecao) : [],
 		titulo: 'Glossário',
 		navTitulo: 'GLOSSÁRIO',
-		descricao: 'Glossário e dicionário de Shinobi no Michi: atributos, recursos, elementos, termos em japonês, ranks, termos mecânicos (cap. 22) e o compêndio de todos os termos destacados no livro.'
+		descricao: 'Glossário e dicionário de Rising Shinobi: atributos, recursos, elementos, termos em japonês, ranks, termos mecânicos (cap. 22) e o compêndio de todos os termos destacados no livro.'
 	};
 };

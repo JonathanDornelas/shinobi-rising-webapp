@@ -2,13 +2,13 @@
 	// Termos de uso (link do A2). Texto curto e direto, no tom do app.
 </script>
 
-<svelte:head><title>Termos de uso · Shinobi no Michi</title></svelte:head>
+<svelte:head><title>Termos de uso · Rising Shinobi</title></svelte:head>
 
 <main class="mx-auto flex w-full max-w-[72ch] flex-col gap-4 px-4 pt-8 pb-14 text-[17px] leading-[29px]">
 	<span class="t-rotulo">Conta</span>
 	<h1 class="t-h1 m-0">Termos de uso</h1>
 	<p class="m-0">
-		O Shinobi no Michi é um projeto de fãs, sem fins lucrativos, para jogar o RPG de mesa no universo de Naruto. Naruto e seus elementos pertencem a Masashi Kishimoto e seus
+		O Rising Shinobi é um projeto de fãs, sem fins lucrativos, para jogar o RPG de mesa no universo de Naruto. Naruto e seus elementos pertencem a Masashi Kishimoto e seus
 		licenciados.
 	</p>
 	<h2 class="t-h3 m-0 mt-2">Sua conta</h2>

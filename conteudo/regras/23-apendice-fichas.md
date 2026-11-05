@@ -267,7 +267,7 @@ Gancho 2 (segredo ou conexão útil): \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 
 Use a Ficha Resumida para NPCs rápidos, encontros aleatórios e personagens secundários. Para vilões importantes ou aliados centrais, ainda vale montar a ficha completa, a mesma do jogador.
 
-*Shinobi no Michi*
+*Rising Shinobi*
 
 *Que o seu Caminho do Ninja*
 

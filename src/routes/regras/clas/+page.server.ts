@@ -11,6 +11,6 @@ export const load: PageServerLoad = () => {
 		hrefCriacao: `${c8.href}#${secao(/^8\.4 /)?.id ?? ''}`,
 		titulo: 'Clãs',
 		navTitulo: 'CLÃS',
-		descricao: 'Os 13 clãs do livro de regras de Shinobi no Michi, com vila, Kekkei Genkai, bônus hereditário e marcos por nível.'
+		descricao: 'Os 13 clãs do livro de regras de Rising Shinobi, com vila, Kekkei Genkai, bônus hereditário e marcos por nível.'
 	};
 };

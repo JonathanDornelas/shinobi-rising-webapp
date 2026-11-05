@@ -11,7 +11,7 @@
 	import Traco from '../ui/Traco.svelte';
 	import ListaNotificacoes from './ListaNotificacoes.svelte';
 
-	let titulo = $derived((page.data.navTitulo as string | undefined) ?? 'SHINOBI NO MICHI');
+	let titulo = $derived((page.data.navTitulo as string | undefined) ?? 'RISING SHINOBI');
 	const caminho = $derived(page.url.pathname);
 	const regrasAtivo = $derived(caminho.startsWith('/regras') || caminho.startsWith('/busca'));
 	const campanhasAtivo = $derived(caminho.startsWith('/campanhas') || caminho.startsWith('/convite'));
@@ -43,9 +43,9 @@
 {/snippet}
 
 <header data-shell class="relative z-40 flex h-14 items-center gap-2.5 border-b-2 border-ink bg-b0 pr-1.5 pl-3 md:h-16 md:gap-4 md:px-5 lg:gap-6 lg:px-6 print:hidden">
-	<a href={sessao.usuario ? '/campanhas' : '/'} class="flex items-center gap-2.5" aria-label="Shinobi no Michi, página inicial">
-		<Icone id="marca/ic-marca" />
-		<span class="hidden font-pixel text-[17px] leading-none font-bold tracking-[.08em] whitespace-nowrap text-b0fg lg:inline">SHINOBI NO MICHI</span>
+	<a href={sessao.usuario ? '/campanhas' : '/'} class="flex items-center gap-2.5" aria-label="Rising Shinobi, página inicial">
+		<img src="/marca/emblema-44.png" width="44" height="44" alt="" class="block flex-none [image-rendering:pixelated]" />
+		<img src="/marca/logo-linha.png" width="168" height="38" alt="" class="hidden flex-none [image-rendering:pixelated] lg:block" />
 	</a>
 
 	<span class="min-w-0 flex-1 truncate font-pixel text-sm leading-none font-bold tracking-[.06em] text-b0fg md:hidden">{titulo}</span>

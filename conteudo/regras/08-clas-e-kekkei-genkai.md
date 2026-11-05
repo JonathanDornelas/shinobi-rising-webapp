@@ -15,7 +15,7 @@ A outra metade é com ela.
 Clãs são linhagens com tradição, território e política e, às vezes, um poder no sangue: a Kekkei Genkai (KKG), ou Linhagem Sanguínea Avançada. Veja como funcionam e como criar o seu.
 
 :::destaque{titulo="O clã é a espinha dorsal"}
-No Shinobi no Michi, o clã não é um sobrenome com superpoder. Ele é a espinha dorsal da progressão do personagem: define os bônus iniciais, traça uma trilha de ganhos automáticos a cada nível, oferece um catálogo próprio de jutsus e habilidades e cria laços sociais, como os Pontos de Influência do Clã, os aliados e as obrigações. Quem não tem clã, como os errantes e os órfãos, recebe compensações na criação, mas perde essa progressão guiada, o que pode ser libertador para jogadores experientes e desafiador para iniciantes.
+No Rising Shinobi, o clã não é um sobrenome com superpoder. Ele é a espinha dorsal da progressão do personagem: define os bônus iniciais, traça uma trilha de ganhos automáticos a cada nível, oferece um catálogo próprio de jutsus e habilidades e cria laços sociais, como os Pontos de Influência do Clã, os aliados e as obrigações. Quem não tem clã, como os errantes e os órfãos, recebe compensações na criação, mas perde essa progressão guiada, o que pode ser libertador para jogadores experientes e desafiador para iniciantes.
 :::
 
 ## 8.1 Anatomia de um Clã {#anatomia-de-um-cla}

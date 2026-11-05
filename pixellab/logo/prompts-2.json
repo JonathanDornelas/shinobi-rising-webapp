@@ -1,0 +1,48 @@
+[
+	{
+		"nome": "emblema-aco",
+		"w": 128,
+		"h": 128,
+		"seed": 777,
+		"paleta": ["#0e0b0a", "#2b2320", "#5c1e15", "#8b2e20", "#c44536", "#e8622c", "#f2a93b", "#d9a82b", "#f4e4d6", "#ffffff", "#c9c2b8", "#8a8178"],
+		"referencia": "C:/Users/jonat/AppData/Local/Temp/claude/0cdae7db92ec3d88/5114cde9-2f2a-4cb6-b229-2c920e012e8f/scratchpad/logo/saida/enso-kunai-3.png",
+		"uso": "composition to keep: brush circle, sun disc and upright kunai",
+		"prompt": "Game logo emblem in bold pixel art for a near-black background. A vermilion rising sun disc inside one thick rough sumi-e brush circle (enso) with dry-brush streaks. A long bright polished steel kunai, pale silver and parchment white with a gold edge, thrusts straight up through the center and pierces the top of the circle; its wrapped handle and ring are bright too, never black. The kunai must stand out with high contrast against the sun. Strong simple silhouette, no text, no letters."
+	},
+	{
+		"nome": "letreiro-linha",
+		"w": 170,
+		"h": 44,
+		"seed": 778,
+		"referencia": "C:/Users/jonat/AppData/Local/Temp/claude/0cdae7db92ec3d88/5114cde9-2f2a-4cb6-b229-2c920e012e8f/scratchpad/logo/saida/letreiro-pincel-0.png",
+		"uso": "lettering style to keep: same brush-cut letters, gold edges and vermilion shadow",
+		"prompt": "Pixel art video game title logo on one single line, the words RISING SHINOBI spelled exactly R-I-S-I-N-G S-H-I-N-O-B-I, filling the whole width. Thick heavy brush-cut letters, parchment white fill with gold edge flicks and a vermilion and maroon drop shadow. Crisp, highly readable, only these two words."
+	},
+	{
+		"nome": "letreiro-kunai",
+		"w": 170,
+		"h": 96,
+		"seed": 779,
+		"referencia": "C:/Users/jonat/AppData/Local/Temp/claude/0cdae7db92ec3d88/5114cde9-2f2a-4cb6-b229-2c920e012e8f/scratchpad/logo/saida/letreiro-pincel-0.png",
+		"uso": "exact lettering and layout to keep: RISING on top, SHINOBI below",
+		"prompt": "Pixel art video game title logo, RISING on the top line and SHINOBI on the bottom line, spelled exactly. Same thick brush-cut letters, parchment white with gold edge flicks and a vermilion and maroon drop shadow. The first letter I of RISING is replaced by a bright steel kunai pointing straight up, taller than the other letters, breaking above the top of the word. Only these two words and the kunai."
+	},
+	{
+		"nome": "titulo-a",
+		"w": 300,
+		"h": 220,
+		"seed": 780,
+		"referencia": "C:/Users/jonat/AppData/Local/Temp/claude/0cdae7db92ec3d88/5114cde9-2f2a-4cb6-b229-2c920e012e8f/scratchpad/logo/saida/letreiro-pincel-0.png",
+		"uso": "exact lettering to keep: the words RISING and SHINOBI in this style",
+		"prompt": "Epic pixel art video game title logo. In the lower two thirds, the big title RISING on the top line and SHINOBI on the bottom line, spelled exactly, thick brush-cut letters in parchment white with gold edge flicks and a vermilion and maroon drop shadow. Behind and above the letters, a huge vermilion rising sun disc inside a rough sumi-e brush circle, and one bright polished steel kunai rising straight up out of the title through the sun, its point above everything. A few ink splashes. Centered, symmetrical, clean silhouette. Nothing else."
+	},
+	{
+		"nome": "titulo-b",
+		"w": 300,
+		"h": 220,
+		"seed": 781,
+		"referencia": "C:/Users/jonat/AppData/Local/Temp/claude/0cdae7db92ec3d88/5114cde9-2f2a-4cb6-b229-2c920e012e8f/scratchpad/logo/saida/letreiro-pincel-0.png",
+		"uso": "exact lettering to keep: the words RISING and SHINOBI in this style",
+		"prompt": "Epic pixel art video game title logo. The big title RISING on the top line and SHINOBI on the bottom line, spelled exactly, thick brush-cut letters in parchment white with gold edge flicks and a vermilion and maroon drop shadow. Rising behind the letters like a dawn: a half vermilion sun with sharp ink-brush rays fanning upward, with a lone ninja silhouette standing on top of the title with a scarf blowing, seen from behind, small against the sun. Centered, dramatic, clean. Nothing else."
+	}
+]

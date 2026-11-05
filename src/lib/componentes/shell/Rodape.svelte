@@ -10,7 +10,7 @@
 <footer class="border-t-2 border-ink bg-b0 px-4 py-5 text-sm leading-5 font-medium text-[#D9C2A7] md:px-6 md:py-7">
 	{#if leitura}
 		<div class="flex items-center gap-4">
-			<span class="font-jp text-xl leading-none font-extrabold text-vermelhao" title="Shinobi no Michi: o caminho do ninja">「忍道」</span>
+			<span class="font-jp text-xl leading-none font-extrabold text-vermelhao" title="O caminho do ninja">「忍道」</span>
 			<span>Que o seu Caminho do Ninja seja repleto de aventuras!</span>
 		</div>
 	{:else}
@@ -24,7 +24,7 @@
 				<a class="link text-[#D9C2A7]" href="/regras/referencia-rapida">Referência rápida</a>
 			</nav>
 			<span class="hidden flex-1 md:block"></span>
-			<span class="font-jp text-[22px] leading-none font-extrabold text-vermelhao" title="Shinobi no Michi: o caminho do ninja">「忍道」</span>
+			<span class="font-jp text-[22px] leading-none font-extrabold text-vermelhao" title="O caminho do ninja">「忍道」</span>
 		</div>
 	{/if}
 </footer>

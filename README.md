@@ -1,6 +1,6 @@
 # Rising Shinobi
 
-Documentação web e criador de campanhas do RPG de mesa **Shinobi no Michi — O Caminho do Ninja** (Livro de Regras v18.0).
+Documentação web e criador de campanhas do RPG de mesa **Rising Shinobi** (Livro de Regras v18.0).
 
 Stack: SvelteKit 3 (Svelte 5) + Tailwind CSS 4 + DaisyUI 5 + Supabase, publicado no Vercel (`adapter-vercel`): a documentação é pré-renderizada; conta e campanhas rodam no servidor. As telas são desenhadas antes no Claude Design (direção visual 1a "Jogo", temas sumi e washi).
 

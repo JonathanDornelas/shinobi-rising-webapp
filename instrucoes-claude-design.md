@@ -1,6 +1,6 @@
-# Shinobi no Michi — Guia de Interfaces para o Claude Design
+# Rising Shinobi: Guia de Interfaces para o Claude Design
 
-> Documento-base para criar, no Claude Design, **todas as telas** da **Documentação Web** e do **Criador de Campanhas** do RPG de mesa *Shinobi no Michi — O Caminho do Ninja* (Livro de Regras v18.0).
+> Documento-base para criar, no Claude Design, **todas as telas** da **Documentação Web** e do **Criador de Campanhas** do RPG de mesa *Rising Shinobi* (Livro de Regras v18.0).
 >
 > Projeto: `risingShinobi` · Implementação futura: SvelteKit + Tailwind CSS + DaisyUI · Ícones personalizados: PixelLab · Idioma da interface: português do Brasil.
 
@@ -1022,7 +1022,7 @@ Modelo de cada tela: **Rota · Objetivo · Acesso · Layout · Conteúdo e compo
 #### G5 · Página inicial
 - **Objetivo:** apresentar os dois produtos a visitantes e levar à leitura ou ao cadastro.
 - **Conteúdo:**
-  - Hero com marca, "Shinobi no Michi — O Caminho do Ninja", subtítulo "RPG de mesa ambientado no universo shinobi, de Genin a lenda" e `il-boas-vindas`.
+  - Hero com marca, "Rising Shinobi", subtítulo "RPG de mesa ambientado no universo shinobi, de Genin a lenda" e `il-boas-vindas`.
   - Dois CTAs em cards: "Ler as regras" (D1) e "Criar uma campanha" (A2).
   - Seções curtas: Documentação navegável · Criador de personagens em 11 passos · Clãs e Kekkei Genkai · Criação de jutsus por PJ · Aprovação do Mestre (ilustrada com o carimbo).
   - "Por onde começar": novo jogador (Partes I, II e metade da III) e Mestre (tudo, com atenção à Parte I e ao cap. 8).
@@ -1515,7 +1515,7 @@ Use estes dados, coerentes com as regras, em vez de texto genérico.
 ### 10.1 Contexto fixo (cole no início de cada sessão)
 
 ```text
-Projeto: Shinobi no Michi — Documentação Web + Criador de Campanhas de um RPG de mesa
+Projeto: Rising Shinobi, Documentação Web + Criador de Campanhas de um RPG de mesa
 ambientado no universo de Naruto (Livro de Regras v18). Interface em português do Brasil.
 
 Usuários: visitantes (leem regras), Jogadores (criam personagens e conteúdo que passa por

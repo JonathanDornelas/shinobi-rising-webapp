@@ -7,7 +7,7 @@ para o Mestre e para os jogadores, olhando o que concorrentes como Roll20, Found
 
 Este documento:
 - mostra o que a Mesa já tem;
-- lista o que os concorrentes oferecem e ainda falta aqui, adaptado ao Shinobi no Michi;
+- lista o que os concorrentes oferecem e ainda falta aqui, adaptado ao Rising Shinobi;
 - propõe uma ordem de construção.
 
 Nada é construído antes da escolha do usuário.

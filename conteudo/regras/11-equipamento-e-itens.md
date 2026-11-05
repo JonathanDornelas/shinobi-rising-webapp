@@ -81,7 +81,7 @@ E um pergaminho que perde a integridade, rasgado ou queimado em mais de 50%, sol
 
 ## Sistema de Carga (Inventário) {#sistema-de-carga-inventario}
 
-Para que ninguém carregue dezenas de armas sem consequência, o Shinobi no Michi usa um sistema simples de carga. O peso real é abstraído: em vez de quilos, contamos unidades de carga.
+Para que ninguém carregue dezenas de armas sem consequência, o Rising Shinobi usa um sistema simples de carga. O peso real é abstraído: em vez de quilos, contamos unidades de carga.
 
 ### Capacidade Máxima {#capacidade-maxima}
 

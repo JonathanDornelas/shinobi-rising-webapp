@@ -35,7 +35,7 @@
 	<section class="folha" aria-label="Página 1">
 		<header class="flex items-end gap-3.5 border-b-[3px] border-black pb-2.5">
 			<div class="flex flex-1 flex-col gap-1">
-				<span class="font-pixel text-[10pt] leading-none font-bold tracking-[0.12em]">SHINOBI NO MICHI · FICHA DE PERSONAGEM</span>
+				<span class="font-pixel text-[10pt] leading-none font-bold tracking-[0.12em]">RISING SHINOBI · FICHA DE PERSONAGEM</span>
 				<span class="font-mincho text-[26pt] leading-[1.1] font-bold">{p.nome}</span>
 			</div>
 			<div class="grid grid-cols-3 gap-x-4 gap-y-1 text-[10pt] leading-[1.4]">

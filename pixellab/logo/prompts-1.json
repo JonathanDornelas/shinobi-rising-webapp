@@ -1,0 +1,38 @@
+[
+	{
+		"nome": "enso-kunai",
+		"w": 128,
+		"h": 128,
+		"prompt": "Game logo emblem in bold pixel art, centered and symmetrical. A huge vermilion rising sun painted as one thick rough sumi-e ink brush circle (enso), with dry-brush streaks. A single long black steel kunai thrusts straight upward through the middle of the circle and pierces its top edge, the ring of the kunai handle at the bottom. A thin gold glint along the blade. Very strong simple silhouette that reads at small size. No text, no letters, no background scene."
+	},
+	{
+		"nome": "ninja-sol",
+		"w": 128,
+		"h": 128,
+		"prompt": "Game logo emblem in bold pixel art. A lone masked ninja in solid black silhouette leaping straight upward with one arm raised holding a kunai, a long vermilion scarf trailing below like a single brushstroke, in front of a huge rising vermilion sun disc with sharp ink rays. Ink splatter at the base. Dramatic, heroic, strong silhouette, centered, no text, no letters, no village symbols."
+	},
+	{
+		"nome": "shuriken-sol",
+		"w": 128,
+		"h": 128,
+		"prompt": "Game logo emblem in bold pixel art, centered. A rising sun half above a horizon made of one thick black sumi ink brushstroke. The sun is a giant four-pointed shuriken: vermilion and dark steel blades radiating up like sun rays, with a gold core. Sparks of red chakra flying upward. Sharp, aggressive, iconic silhouette that reads at small size. No text, no letters."
+	},
+	{
+		"nome": "mascara-sol",
+		"w": 128,
+		"h": 128,
+		"prompt": "Game logo emblem in bold pixel art, centered and symmetrical. A white porcelain ninja mask with fierce vermilion brush markings and narrow black eye slits, in front of a vermilion rising sun disc, two black kunai crossed behind it. Menacing and elegant, strong silhouette, limited colors, no text, no letters, no village symbols."
+	},
+	{
+		"nome": "letreiro-pincel",
+		"w": 170,
+		"h": 96,
+		"prompt": "Pixel art video game title logo, the words RISING on the top line and SHINOBI on the bottom line, spelled exactly R-I-S-I-N-G and S-H-I-N-O-B-I. Thick heavy letters with brush-cut edges like Japanese sumi calligraphy, parchment white letters with a vermilion and black layered shadow. Bold, readable, only these two words, no other symbols."
+	},
+	{
+		"nome": "letreiro-largo",
+		"w": 400,
+		"h": 150,
+		"prompt": "Pixel art video game title logo, the two words RISING SHINOBI spelled exactly, large heavy brush-cut letters on two lines, parchment white letters with thick black outline and a vermilion drop shadow, a red rising sun disc behind the letters, a kunai replacing the letter I in RISING. Epic anime game title style, sharp clean pixels, readable, nothing else."
+	}
+]

@@ -30,18 +30,12 @@
 <section class="flex flex-col items-center gap-5 border-b-2 border-ink bg-b0 px-4 pt-6 pb-8 md:gap-6 md:px-5 md:pt-10 md:pb-12 lg:gap-7 lg:px-6 lg:pt-16 lg:pb-[72px]">
 	<div class="relative flex h-48 w-full max-w-[768px] justify-center overflow-hidden border-2 border-[#2E2420] md:h-auto md:overflow-visible md:shadow-[6px_6px_0_#000] lg:shadow-[8px_8px_0_#000]">
 		<img src="/covers/capa-inicio.png" width="768" height="288" alt="Ninjas de Konoha saltando pelos telhados da vila ao pôr do sol, com a torre do Hokage e o monumento dos Hokage ao fundo" class="h-48 w-auto max-w-none flex-none md:h-auto md:w-full md:max-w-full" />
-		<img
-			src="/illustrations/il-boas-vindas-96.png"
-			width="96"
-			height="96"
-			alt=""
-			class="absolute bottom-[-48px] left-1/2 ml-[-48px] hidden border-2 border-[var(--vermelhao-lo)] bg-carvao md:block lg:shadow-[4px_4px_0_#000]"
-		/>
 	</div>
-	<img src="/illustrations/il-boas-vindas-96.png" width="96" height="96" alt="" class="relative -mt-[68px] border-2 border-[var(--vermelhao-lo)] bg-carvao md:hidden" />
-	<div class="flex flex-col items-center gap-2 text-center md:mt-8 md:gap-2.5">
+	<h1 class="relative z-10 m-0 -mt-[136px] md:-mt-[244px] lg:-mt-[252px]">
+		<img src="/marca/logo-titulo.png" width="272" height="223" alt="Rising Shinobi" fetchpriority="high" class="block h-[223px] w-[272px] [image-rendering:pixelated] md:h-[446px] md:w-[544px]" />
+	</h1>
+	<div class="flex flex-col items-center gap-2 text-center md:gap-2.5">
 		<span class="font-pixel text-xs leading-none font-bold tracking-[.14em] text-[#D9A82B] md:text-[13px]">LIVRO DE REGRAS V18.0</span>
-		<h1 class="m-0 font-mincho text-[32px] leading-10 font-extrabold text-balance text-papel md:text-[40px] md:leading-[48px] lg:text-[56px] lg:leading-[64px]">Shinobi no Michi — O Caminho do Ninja</h1>
 		<p class="m-0 text-base leading-[25px] text-areia md:text-[17px] md:leading-[27px] lg:text-[19px] lg:leading-[30px]">RPG de mesa ambientado no universo shinobi, de Genin a lenda</p>
 	</div>
 

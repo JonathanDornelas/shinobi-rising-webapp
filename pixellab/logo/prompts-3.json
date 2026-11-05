@@ -1,0 +1,11 @@
+[
+ {"nome":"emblema-32","w":32,"h":32,"seed":801,"referencia":"C:/Users/jonat/AppData/Local/Temp/claude/0cdae7db92ec3d88/5114cde9-2f2a-4cb6-b229-2c920e012e8f/scratchpad/logo/saida/emblema-aco-3.png","uso":"the emblem to redraw at tiny size: vermilion ring, orange sun, upright steel kunai",
+  "paleta":["#0e0b0a","#2b2320","#5c1e15","#8b2e20","#c44536","#e8622c","#f2a93b","#d9a82b","#f4e4d6","#ffffff","#c9c2b8","#8a8178"],
+  "prompt":"Tiny pixel art app icon, 32 pixels. A thick vermilion ring around an orange sun disc, with one bright pale steel kunai standing straight up through the center and poking out of the top of the ring. Very few pixels, maximum clarity, high contrast on a near-black background. No text."},
+ {"nome":"emblema-44","w":44,"h":44,"seed":802,"referencia":"C:/Users/jonat/AppData/Local/Temp/claude/0cdae7db92ec3d88/5114cde9-2f2a-4cb6-b229-2c920e012e8f/scratchpad/logo/saida/emblema-aco-3.png","uso":"the emblem to redraw at small size: vermilion brush ring, orange sun, upright steel kunai",
+  "paleta":["#0e0b0a","#2b2320","#5c1e15","#8b2e20","#c44536","#e8622c","#f2a93b","#d9a82b","#f4e4d6","#ffffff","#c9c2b8","#8a8178"],
+  "prompt":"Small pixel art logo emblem. A thick vermilion brush ring around an orange rising sun disc, with one bright pale steel kunai standing straight up through the center, its point above the ring and its ring handle below. Clean, bold, high contrast on a near-black background. No text."},
+ {"nome":"emblema-64","w":64,"h":64,"seed":803,"referencia":"C:/Users/jonat/AppData/Local/Temp/claude/0cdae7db92ec3d88/5114cde9-2f2a-4cb6-b229-2c920e012e8f/scratchpad/logo/saida/emblema-aco-3.png","uso":"the emblem to redraw at this size: vermilion brush ring, orange sun, upright steel kunai",
+  "paleta":["#0e0b0a","#2b2320","#5c1e15","#8b2e20","#c44536","#e8622c","#f2a93b","#d9a82b","#f4e4d6","#ffffff","#c9c2b8","#8a8178"],
+  "prompt":"Pixel art logo emblem. A thick vermilion sumi brush ring around an orange rising sun disc, with one bright pale steel kunai standing straight up through the center, its point above the ring and its ring handle below, a thin gold edge on the blade. Clean, bold, high contrast on a near-black background. No text."}
+]

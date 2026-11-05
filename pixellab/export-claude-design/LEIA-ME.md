@@ -1,4 +1,4 @@
-# Ícones Shinobi no Michi — pacote para o Claude Design
+# Ícones Rising Shinobi — pacote para o Claude Design
 
 Pixel art gerada no PixelLab (e alguns ícones desenhados em código) para as telas do projeto.
 Total: **219 ícones**, **12 ilustrações** e **6 capas de campanha**. Especificação completa: seção 3 de `instrucoes-claude-design.md`.

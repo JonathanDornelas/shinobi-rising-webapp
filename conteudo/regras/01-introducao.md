@@ -12,7 +12,7 @@ O sol ainda não nasceu e três genin já esperam junto ao portão da vila, com 
 É assim que o caminho começa.
 :::
 
-Shinobi no Michi, o Caminho do Ninja, é um RPG de mesa ambientado no universo de Naruto. Os jogadores vivem ninjas em diferentes momentos da carreira, do genin recém-formado (ninja de baixo escalão) ao jounin veterano (ninja de elite), e juntos cumprem missões, atravessam conflitos entre vilas e descobrem o poder oculto dos seus clãs.
+Rising Shinobi é um RPG de mesa ambientado no universo de Naruto. Os jogadores vivem ninjas em diferentes momentos da carreira, do genin recém-formado (ninja de baixo escalão) ao jounin veterano (ninja de elite), e juntos cumprem missões, atravessam conflitos entre vilas e descobrem o poder oculto dos seus clãs.
 
 :::destaque{titulo="Qualquer era, qualquer linha do tempo"}
 O livro não se prende à era clássica. A sua campanha pode se passar na Primeira Guerra Ninja, na era dos Sannin, na época de Naruto, no pós-guerra de Shippuden, na era Boruto ou numa linha do tempo que a própria mesa inventar. Em qualquer uma delas, o sistema oferece um arsenal amplo de ferramentas, e o que importa de verdade é sempre o mesmo: administrar o chakra, treinar técnicas e crescer dentro do clã.
@@ -20,7 +20,7 @@ O livro não se prende à era clássica. A sua campanha pode se passar na Primei
 
 ## Como se Joga {#como-se-joga}
 
-Uma sessão de Shinobi no Michi é uma conversa. O Mestre descreve o mundo: a ponte coberta de névoa, o mercador que mente mal, o ninja renegado que espera na outra margem. Os jogadores dizem o que os seus ninjas fazem. Quando o resultado de uma ação é incerto, ou quando há risco, os dados decidem: você rola um d20, soma o que o seu ninja sabe fazer e compara com a dificuldade da ação (cap. 2).
+Uma sessão de Rising Shinobi é uma conversa. O Mestre descreve o mundo: a ponte coberta de névoa, o mercador que mente mal, o ninja renegado que espera na outra margem. Os jogadores dizem o que os seus ninjas fazem. Quando o resultado de uma ação é incerto, ou quando há risco, os dados decidem: você rola um d20, soma o que o seu ninja sabe fazer e compara com a dificuldade da ação (cap. 2).
 
 O resto do livro conta como cada coisa funciona: lutar, se esconder, gastar chakra, aprender jutsus, crescer. Mas tudo parte do mesmo movimento. O Mestre narra, os jogadores agem e os dados decidem o que ninguém pode garantir.
 

@@ -188,7 +188,7 @@ if (fs.existsSync(CAP)) {
 const ilMissing = J.ilustracoes.itens.map(i => i.id).filter(id => !ilOut.find(o => o.id === id));
 
 // ---------- README ----------
-const readme = `# Ícones Shinobi no Michi — pacote para o Claude Design
+const readme = `# Ícones Rising Shinobi — pacote para o Claude Design
 
 Pixel art gerada no PixelLab (e alguns ícones desenhados em código) para as telas do projeto.
 Total: **${manifest.length} ícones**, **${ilOut.length} ilustrações** e **${capOut.length} capas de campanha**. Especificação completa: seção 3 de \`instrucoes-claude-design.md\`.

@@ -19,5 +19,5 @@ export const load: PageServerLoad = () => ({
 	comoUsar: { titulo: bestiario.comoUsar.titulo, secoes: bestiario.comoUsar.secoes.filter((s) => s.nivel === 2) },
 	titulo: 'Bestiário',
 	navTitulo: 'BESTIÁRIO',
-	descricao: 'O livro de monstros de Shinobi no Michi: os shinobi de cada vila do Genin ao Kage, clãs, o Sennin, organizações, fora da lei, feras, invocações e criaturas, em ordem alfabética, com ameaça, níveis, números de combate, táticas e ganchos.'
+	descricao: 'O livro de monstros de Rising Shinobi: os shinobi de cada vila do Genin ao Kage, clãs, o Sennin, organizações, fora da lei, feras, invocações e criaturas, em ordem alfabética, com ameaça, níveis, números de combate, táticas e ganchos.'
 });

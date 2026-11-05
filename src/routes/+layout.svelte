@@ -34,13 +34,24 @@
 		}
 	}
 
-	const titulo = $derived(page.data.titulo ? `${page.data.titulo} · Shinobi no Michi` : 'Shinobi no Michi — O Caminho do Ninja');
+	const titulo = $derived(page.data.titulo ? `${page.data.titulo} · Rising Shinobi` : 'Rising Shinobi · RPG de mesa no universo shinobi');
+	const descricao = $derived((page.data.descricao as string | undefined) ?? 'RPG de mesa ambientado no universo shinobi, de Genin a lenda: o livro de regras completo, com fichas, clãs, jutsus, campanhas e mesa tática online.');
+	// as páginas públicas são pré-renderizadas: a prévia de link precisa do endereço fixo, não do da página
+	const SITE = 'https://shinobi-rising-webapp.vercel.app';
 </script>
 
 <svelte:window onkeydown={atalho} />
 <svelte:head>
 	<title>{titulo}</title>
-	{#if page.data.descricao}<meta name="description" content={page.data.descricao} />{/if}
+	<meta name="description" content={descricao} />
+	<meta property="og:site_name" content="Rising Shinobi" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content={page.data.titulo ?? 'Rising Shinobi'} />
+	<meta property="og:description" content={descricao} />
+	<meta property="og:image" content="{SITE}/marca/compartilhar.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
 <a href="#conteudo" class="sr-only z-[80] bg-vermelhao px-4 py-3 font-pixel font-bold text-white focus:not-sr-only focus:fixed focus:top-2 focus:left-2">PULAR PARA O CONTEÚDO</a>

@@ -8,7 +8,7 @@ Manter as regras. Mudar só o texto que as apresenta.
 
 ---
 
-Palavra-guia (candidata): **o Caminho**. Shinobi no Michi já é o título. Cada capítulo é um trecho do caminho; a cena que abre uma regra é um instante do caminho de alguém.
+Palavra-guia (candidata): **o Caminho**. O Caminho do Ninja é o tema do jogo. Cada capítulo é um trecho do caminho; a cena que abre uma regra é um instante do caminho de alguém.
 
 ---
 

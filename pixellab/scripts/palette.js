@@ -1,4 +1,4 @@
-// Writes palette.png: one 4x4 swatch per color of the Shinobi no Michi pixel palette (section 3.2).
+// Writes palette.png: one 4x4 swatch per color of the Rising Shinobi pixel palette (section 3.2).
 const fs = require("fs");
 const zlib = require("zlib");
 

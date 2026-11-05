@@ -16,6 +16,6 @@ export const load: PageServerLoad = () => {
 		hrefTreino: `${c18.href}#${secao?.id ?? ''}`,
 		titulo: 'Especializações',
 		navTitulo: 'ESPECIALIZAÇÕES',
-		descricao: 'As 16 especializações de Shinobi no Michi, com os benefícios de cada um dos 3 níveis (cap. 19).'
+		descricao: 'As 16 especializações de Rising Shinobi, com os benefícios de cada um dos 3 níveis (cap. 19).'
 	};
 };

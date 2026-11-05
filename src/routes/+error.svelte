@@ -19,7 +19,7 @@
 	}
 </script>
 
-<svelte:head><title>{e404 ? 'Página não encontrada' : 'Erro'} · Shinobi no Michi</title></svelte:head>
+<svelte:head><title>{e404 ? 'Página não encontrada' : 'Erro'} · Rising Shinobi</title></svelte:head>
 
 <main class="flex flex-1 items-start justify-center px-4 py-10 md:items-center md:p-6">
 	<div class="painel-sombra flex w-full max-w-[560px] flex-col">

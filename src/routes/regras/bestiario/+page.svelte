@@ -69,7 +69,7 @@
 <header class="border-b-2 border-ink bg-b0 px-4 py-6 md:px-6 md:py-10">
 	<div class="mx-auto grid max-w-[1280px] grid-cols-[minmax(0,1fr)] items-end gap-5 lg:grid-cols-[minmax(0,1fr)_460px] lg:gap-12">
 		<div class="flex flex-col gap-2.5">
-			<span class="font-pixel text-[13px] leading-none font-bold tracking-[.14em] text-[#D9A82B]">SHINOBI NO MICHI · LIVRO DE MONSTROS</span>
+			<span class="font-pixel text-[13px] leading-none font-bold tracking-[.14em] text-[#D9A82B]">RISING SHINOBI · LIVRO DE MONSTROS</span>
 			<h1 class="m-0 font-mincho text-[38px] leading-[44px] font-extrabold text-papel md:text-[56px] md:leading-[62px]">Bestiário</h1>
 			<p class="m-0 max-w-[62ch] text-[15px] leading-[23px] text-areia md:text-[17px] md:leading-[27px]">
 				O que se levanta contra os ninjas: os shinobi de cada vila, do Genin ao Kage, clãs, o Sennin, organizações, fora da lei, feras, invocações e coisas que não deveriam andar. {data.criaturas.length} verbetes e {data.fichas} fichas de combate, em ordem alfabética.

@@ -1,0 +1,22 @@
+{
+	"name": "Rising Shinobi",
+	"short_name": "Rising Shinobi",
+	"description": "RPG de mesa no universo shinobi: livro de regras, fichas, campanhas e mesa tática.",
+	"lang": "pt-BR",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#0e0b0a",
+	"theme_color": "#0e0b0a",
+	"icons": [
+		{
+			"src": "/marca/icone-192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "/marca/icone-512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	]
+}

@@ -14,9 +14,10 @@
 <div class="grid flex-1 grid-cols-[minmax(0,1fr)] bg-b0 lg:grid-cols-[minmax(0,1fr)_560px]">
 	<div class="relative hidden items-center justify-center overflow-hidden border-r-2 border-carvao lg:flex">
 		<img src={urlCapa(capa)} width="1024" height="384" alt="" class="max-w-none flex-none opacity-85" />
+		<img src="/marca/logo-titulo.png" width="272" height="223" alt="" class="absolute top-10 left-12 [image-rendering:pixelated]" />
 		{#if frase}
 			<div class="absolute bottom-12 left-12 flex max-w-[420px] flex-col gap-2">
-				<span class="font-jp text-[40px] leading-none font-extrabold text-vermelhao" title="Shinobi no Michi: o caminho do ninja">忍道</span>
+				<span class="font-jp text-[40px] leading-none font-extrabold text-vermelhao" title="O caminho do ninja">忍道</span>
 				<span class="border-2 border-[#2E2420] bg-carvao px-3 py-2 font-mincho text-xl leading-[30px] font-semibold text-papel italic">Que o seu Caminho do Ninja seja repleto de aventuras!</span>
 			</div>
 		{/if}
