@@ -188,7 +188,40 @@ export class Mesa {
 	podeMover = (t: MesaToken) => !this.somenteLeitura && (this.mestre || (t.dono_id === this.eu && !this.travada));
 
 	// ------------------------------------------------------------------ tempo real
+	/** A entrada em andamento: quem sai da mesa antes do login chegar ao Realtime cancela a entrada. */
+	private entrada = 0;
+	/** O canal privado recusou esta sessão: a Mesa segue pelo canal aberto (ver usarCanalAberto). */
+	private canalAberto = false;
+	/** Recusas seguidas: uma só pode ser o login renovando depois de a aba dormir. */
+	private recusas = 0;
+
 	conectar() {
+		if (this.canal || !this.cenaId) return;
+		const vez = ++this.entrada;
+		// o canal privado confere a permissão ao entrar, com o login de quem entra: ele precisa chegar ao Realtime antes
+		const login = sb().realtime.setAuth().catch(() => undefined);
+		void Promise.race([login, new Promise((f) => setTimeout(f, 3000))]).then(() => {
+			if (vez === this.entrada) this.entrar();
+		});
+	}
+
+	/**
+	 * Se o canal privado recusar alguém da campanha, a mesa não pode parar no meio da sessão: ela volta para o canal aberto,
+	 * que continua existindo mas não se mistura com o privado. O aviso vai ao Mestre e aos logs, porque isso não devia acontecer.
+	 */
+	private usarCanalAberto(motivo: string) {
+		this.canalAberto = true;
+		this.tentativas = 0;
+		console.error('[mesa] canal privado recusado', motivo);
+		if (this.mestre) toasts.mostrar('A Mesa não entrou no canal privado e segue pelo canal aberto.', 'erro');
+		try {
+			navigator.sendBeacon?.('/api/erro', new Blob([JSON.stringify({ rota: 'mesa', detalhe: `canal privado recusado: ${motivo}`.slice(0, 300) })], { type: 'application/json' }));
+		} catch {
+			// sem rede: fica só no console
+		}
+	}
+
+	private entrar() {
 		if (this.canal || !this.cenaId) return;
 		const cena = this.cenaId;
 		const lista = <T extends { id: string }>(arr: T[], novo: T) => (arr.some((x) => x.id === novo.id) ? arr.map((x) => (x.id === novo.id ? novo : x)) : [...arr, novo]);
@@ -275,7 +308,7 @@ export class Mesa {
 			}
 		};
 		const canal: RealtimeChannel = (this.canal = sb()
-			.channel(`mesa:${this.campanha}`, { config: { broadcast: { self: false }, presence: { key: this.eu } } })
+			.channel(`mesa:${this.campanha}`, { config: { private: !this.canalAberto, broadcast: { self: false }, presence: { key: this.eu } } })
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_tokens', filter: `cena_id=eq.${cena}` }, rotear)
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_tracos', filter: `cena_id=eq.${cena}` }, rotear)
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_efeitos', filter: `cena_id=eq.${cena}` }, rotear)
@@ -340,14 +373,16 @@ export class Mesa {
 				this.online = Object.keys(this.canal?.presenceState() ?? {});
 				this.limparQuemSaiu();
 			})
-			.subscribe((status) => {
+			.subscribe((status, erro) => {
 				if (this.canal !== canal) return;
 				const caiu = !this.conectado;
 				this.conectado = status === 'SUBSCRIBED';
+				if (status === 'CHANNEL_ERROR' && !this.canalAberto && /unauthorized|permission/i.test(erro?.message ?? '') && ++this.recusas >= 2) this.usarCanalAberto(erro?.message ?? '');
 				// o servidor fechou o canal (limite de mensagens, queda longa): o Supabase não volta sozinho
 				if (status === 'CLOSED' || status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') return void this.reconectarDepois(canal);
 				if (status !== 'SUBSCRIBED') return;
 				this.tentativas = 0;
+				this.recusas = 0;
 				this.canal?.track({ em: Date.now() });
 				// voltou depois de cair (wifi, aba dormindo): o que mudou enquanto isso não chega pelo tempo real
 				if (caiu && this.jaConectou) void this.ressincronizar(true);
@@ -408,6 +443,7 @@ export class Mesa {
 	}
 
 	desconectar() {
+		this.entrada++;
 		if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', this.aoMudarVisibilidade);
 		clearInterval(this.vigia);
 		clearTimeout(this.religar);
