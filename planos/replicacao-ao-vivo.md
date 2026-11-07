@@ -4,7 +4,7 @@ Pesquisa de 2026-11-07. A pergunta era quais práticas e stacks os MMOs e jogos 
 
 ## Conclusão
 
-A Mesa já usa boa parte do que importa: previsão local com correção, conflito por campo, salas isoladas e ressincronização ao reconectar. Trocar a stack traria pouco, e em um caso pioraria a latência. As melhorias que valem são pequenas e ficam no cliente. A exceção é levar o banco para São Paulo, o maior ganho e a maior obra.
+A Mesa já usa boa parte do que importa: previsão local com correção, conflito por campo, salas isoladas e ressincronização ao reconectar. Trocar a stack traria pouco, e em um caso pioraria a latência. As melhorias que valem são pequenas e ficam no cliente. A exceção é levar o banco para São Paulo, o maior ganho. A obra cresce com os dados, e hoje ainda é pequena.
 
 Os MMOs resolvem um problema que a Mesa não tem: milhares de entidades num mundo só, com tiros resolvidos em milissegundos. A Mesa tem uma mesa com até uma dúzia de pessoas, turnos e dezenas de tokens. Dessas técnicas, servem as que tratam da sensação de movimento e da recuperação de falhas, não as de escala.
 
@@ -29,7 +29,7 @@ Os MMOs resolvem um problema que a Mesa não tem: milhares de entidades num mund
 
 **4. Broadcast do banco no lugar do Postgres Changes.** Médio, só se o item 1 mostrar confirmação lenta. O Postgres Changes [confere a permissão de cada inscrito e processa num fio só](https://supabase.com/docs/guides/realtime/postgres-changes). Um [teste de terceiros](https://dev.to/kubeden/neon-realtime-vs-supabase-realtime-410g) deu 58 a 60 ms contra 328 a 434 ms, com método desconhecido. O cuidado: o RLS deixa de filtrar por pessoa, então cada público (Mestre, grupo) precisa do seu tópico, senão o token escondido vaza.
 
-**5. Banco em São Paulo.** Grande, e é decisão sua. Hoje cada leitura e gravação custa 187 ms de ida e volta até Ohio. Levar o banco e as funções para o Brasil corta isso em todas as telas, não só na Mesa. A [Albion dividiu servidores por região](https://unity.com/blog/albion-online-cross-platform-pvp-mmo-architecture) pelo mesmo motivo. Pede projeto novo na Supabase, migração de dados, contas e arquivos, e uma janela fora do ar. O ganho exato não foi medido.
+**5. Banco em São Paulo.** Pequeno hoje, e é decisão sua. Cada leitura e gravação custa 187 ms de ida e volta até Ohio. Medido daqui em 2026-11-07, abrir conexão com a AWS leva cerca de 20 ms em São Paulo e 180 ms em Ohio (endpoints da AWS, não a Supabase). Levar o banco e as funções para o Brasil corta isso em todas as telas, não só na Mesa. A [Albion dividiu servidores por região](https://unity.com/blog/albion-online-cross-platform-pvp-mmo-architecture) pelo mesmo motivo. A Supabase [não muda a região de um projeto](https://github.com/orgs/supabase/discussions/16341): é preciso criar outro em `sa-east-1` e [migrar para ele](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore). Em 2026-11-07 são 18,5 MB de banco, 4 contas e 252 arquivos (13 MB), sem Edge Functions e sem nenhuma URL do projeto gravada nas tabelas. Quanto antes, menor a mudança: com mais campanhas ela só cresce.
 
 **6. Névoa decidida no servidor.** Médio a grande, prioridade baixa. O [VALORANT e o League](https://technology.riotgames.com/node/108) não mandam a posição de quem o jogador não pode ver, e assim o wallhack não tem o que mostrar. Na Mesa, um token `visivel` fora da linha de visão chega ao navegador e só a tela o esconde: quem abrir o inspetor de rede vê. Entre amigos à mesa, isso pesa pouco. Vale se surgir jogo competitivo.
 
