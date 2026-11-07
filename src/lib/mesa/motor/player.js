@@ -11510,7 +11510,8 @@ var yc = (e, t) => t * 65536 + e, bc = (e) => Math.floor(e / 32), xc = class {
 	"objects",
 	"roofs",
 	"wires",
-	"lights"
+	"lights",
+	"regions"
 ], Mc = (e) => {
 	throw Error(`Arquivo de mapa inválido: ${e}.`);
 };
@@ -13092,7 +13093,7 @@ function $l(e, t, n, r, i, a, o = () => 0) {
 			Ql(d, t, n, c, u, l, a, (e) => o(n.id, e));
 			return;
 		}
-		if (n.kind === "roofs" || n.kind === "wires" || n.kind === "lights") return;
+		if (n.kind === "roofs" || n.kind === "wires" || n.kind === "lights" || n.kind === "regions") return;
 		let s = e.grids.get(n.id);
 		s && (n.kind === "terrain" ? Kl(d, e, t, s, c, u, l, a, n) : n.kind === "walls" ? Zl(d, e, t, s, f, u, l, a, r) : Jl(d, e, t, s, c, u, l, a, p));
 	}), d.finish();
@@ -13336,7 +13337,7 @@ var eu = (e, t, n) => `${e}:${t}:${n}`, tu = class {
 					}
 					continue;
 				}
-				if (c.kind === "lights" || c.kind === "wires") continue;
+				if (c.kind === "lights" || c.kind === "wires" || c.kind === "regions") continue;
 				let r = e.grids.get(c.id);
 				if (r) for (let o = bc(t.top); o <= bc(t.top + t.tilesY); o++) for (let l = bc(t.left); l <= bc(t.left + t.tilesX); l++) {
 					let u = r.chunk(l, o);
