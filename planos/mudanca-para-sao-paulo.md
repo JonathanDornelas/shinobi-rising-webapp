@@ -4,7 +4,7 @@ Feita em 2026-11-07, para o projeto `rising-naruto-sa` (`qjvdbwuvqyfbyhsthtgh`, 
 
 ## Como terminou
 
-A troca entrou no ar em 2026-11-07, às 17:43 UTC, com as funções em `gru1`. Depois dela, os dois bancos foram comparados de novo: 27 tabelas e 1.926 linhas iguais, e nada gravado no antigo depois da cópia final. Falta alguém entrar com a própria conta em produção e uma sessão de jogo de verdade.
+A troca entrou no ar em 2026-11-07, às 17:43 UTC, com as funções em `gru1`. Depois dela, os dois bancos foram comparados de novo: 27 tabelas e 1.926 linhas iguais, e nada gravado no antigo depois da cópia final. O usuário confirmou no mesmo dia que os logins funcionam. Falta ver um e-mail de nova senha chegar e uma sessão de jogo de verdade.
 
 O endereço público é `https://shinobi-rising.vercel.app`. O `shinobi-rising-webapp.vercel.app`, que estava no código, no `robots.txt` e na configuração de login, deixou de existir com a exclusão do projeto `-mela`, e foi trocado nos três lugares. Ele saiu também da lista de redirecionamentos do login, porque um subdomínio liberado pode ser registrado por qualquer pessoa.
 
