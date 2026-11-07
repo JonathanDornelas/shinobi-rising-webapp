@@ -2,4 +2,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://shinobi-rising-webapp.vercel.app/sitemap.xml
+Sitemap: https://shinobi-rising.vercel.app/sitemap.xml
