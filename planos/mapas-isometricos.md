@@ -204,6 +204,24 @@ O editor fingersMap (`../fingersMap`) exporta um andar como `.fmesa`, e a Mesa r
 - Cenas importadas antes do mapa vivo têm peças em `mesa_objetos` (com `desce`). Elas seguem sendo desenhadas até a cena ser importada de novo.
 - Apagar a cena não apaga os arquivos do bucket.
 - `/dev/mapa-vivo` monta o quadro real sem banco nem login, só em desenvolvimento, para o teste `scripts/mesa-vivo.mjs` do fingersMap.
+- Relevo: `mesa.relevo` diz onde dá para ficar em pé e que paredes valem em cada altura. Quem anda segue no telhado e cai se ele acaba; PageUp e PageDown vão à próxima superfície. A elevação é real (metros) e de quem move o token.
+- Portas: tipo 1 e 2 em `paredes` abrem e fecham a porta do mapa. Quem entra numa casa abre só aquela casa (`motor.dentro`).
+- `motor.corpos` traz só o que está de pé. Um telhado escondido, cortado ou aberto deixa de ser corpo, e os cômodos seguem as paredes. Sem isso, quem via o chão em volta via a casa por dentro.
+- A névoa de quem joga, sem luz dinâmica, passa pela máscara do motor (`pintarMascaraDaNevoa`). O SVG da névoa fica só para o Mestre, na ferramenta Névoa.
+
+## 13a. Tempo real
+
+Medido do Brasil em 2026-11-06: ida e volta HTTP até o banco (`us-east-2`), 187 ms; broadcast entre duas conexões, 16 ms. Gravar um token leva de 3 a 10 ms no Postgres, a conta da visão fica abaixo de 2 ms, e uma releitura não trava nada. O atraso é a rede até Ohio somada ao Postgres Changes, que processa num fio só e confere a permissão de cada inscrito a cada mudança.
+
+- O que alguém faz vai primeiro pelo broadcast e depois para o banco (`src/lib/mesa/espelho.ts`). O banco segue sendo a verdade: o aviso dele confirma, e é ele quem vale se o broadcast se perder.
+- O broadcast não passa pelo RLS. Só vai o que está nas listas do `espelho.ts`, e nunca PV, nome, cena em preparo ou o que está escondido. Um campo novo fica de fora até alguém o pôr na lista.
+- `Frescos`: um aviso atrasado do banco não desfaz o que já chegou. É campo a campo, por 4 s. Passou disso, vale o banco.
+- Se o banco recusa, quem mandou desfaz na sua tela e manda o caminho de volta.
+- `avisar` tem um teto (8 por segundo, com folga de 12): cada mensagem conta uma vez para cada um na mesa, e passar do limite faz o servidor fechar o canal. O que passa do teto chega pelo aviso do banco.
+- As rolagens não usam o caminho rápido de propósito: quem joga poderia forjar um resultado no canal, e o dado é sorteado no servidor para isso não existir.
+- O aviso do banco deixa de fora as colunas grandes que não mudaram, e o que passa de 1 MB chega só com os campos pequenos. Por isso `cenaDoAviso`: o que não veio fica como estava.
+- A cada 20 confirmações sai uma linha no console, `[mesa] o aviso do banco chega N ms depois`. É o número que falta medir com o RLS de verdade.
+- `src/lib/mesa/replicacao.spec.ts` roda um Mestre e dois jogadores com a Mesa de verdade, sobre um banco e um canal de mentira que imitam a latência, o RLS e o TOAST.
 
 ## 14. Perguntas abertas
 

@@ -631,6 +631,30 @@ describe('a vez', () => {
 	});
 });
 
+describe('uma leva grande', () => {
+	it('não enche o canal: o que passar do limite chega pelo aviso do banco', async () => {
+		const ids = ['de-ana', 'de-bruno', 'npc'];
+		for (let i = 0; i < 40; i++) void como(mesas.m, () => mesas.m.atualizarToken(ids[i % 3], { x: 10 + i }));
+		expect(rede.trafego.filter((t) => t.evento === 'token').length).toBeLessThanOrEqual(12);
+		await passar(3000);
+		for (const id of ids) {
+			const certo = rede.tabelas.mesa_tokens.get(id)!.x;
+			for (const mesa of Object.values(mesas)) expect(posicao(mesa, id)).toBe(certo);
+		}
+	});
+
+	it('depois da leva, o canal volta a valer', async () => {
+		for (let i = 0; i < 20; i++) void como(mesas.m, () => mesas.m.atualizarToken('npc', { x: 10 + i }));
+		await passar(3000);
+		void como(mesas.a, () => mesas.a.mover('de-ana', 7, 1, 6));
+		await passar(CANAL + 4);
+		expect(posicao(mesas.b, 'de-ana')).toBe(7);
+		void como(mesas.m, () => mesas.m.mover('npc', 4, 1, 6));
+		await passar(CANAL + 4);
+		expect(posicao(mesas.b, 'npc')).toBe(4);
+	});
+});
+
 describe('quem chega ou volta', () => {
 	it('o que mudou entre a página montar e o canal abrir aparece logo', async () => {
 		const tarde = abrir(ANA);

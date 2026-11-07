@@ -428,9 +428,21 @@ export class Mesa {
 		}, ms);
 	}
 
-	/** Manda pelo canal o que o banco ainda vai avisar. Sem canal, fica o aviso do banco. */
+	/** Quantos avisos cabem agora: enche 8 por segundo, até 12. */
+	private folga = 12;
+	private folgaEm = 0;
+	/**
+	 * Manda pelo canal o que o banco ainda vai avisar. Sem canal, fica o aviso do banco, e também numa leva grande (reenquadrar a cena, o fim do combate): cada mensagem conta
+	 * uma vez para cada um na mesa, e passar do limite faz o servidor fechar o canal, o que custa bem mais que meio segundo.
+	 */
 	private avisar(evento: 'token' | 'tokens' | 'cena' | 'porta' | 'linha' | 'fora', payload: unknown) {
-		if (this.canal && this.conectado) void this.canal.send({ type: 'broadcast', event: evento, payload });
+		if (!this.canal || !this.conectado) return;
+		const agora = Date.now();
+		this.folga = Math.min(12, this.folga + ((agora - this.folgaEm) / 1000) * 8);
+		this.folgaEm = agora;
+		if (this.folga < 1) return;
+		this.folga--;
+		void this.canal.send({ type: 'broadcast', event: evento, payload });
 	}
 	private espelharToken(t: MesaToken, patch: Partial<MesaToken>) {
 		const parte = t.visivel ? parteDoToken(patch) : null;
