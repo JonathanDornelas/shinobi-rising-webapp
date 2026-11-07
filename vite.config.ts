@@ -16,8 +16,8 @@ export default defineConfig({
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
 			// A documentação continua pré-renderizada; contas e campanhas rodam no servidor (Vercel Functions), em
-			// Cleveland (cle1), ao lado do banco do Supabase (us-east-2): cada página faz várias consultas em sequência.
-			adapter: adapter({ regions: ['cle1'] })
+			// São Paulo (gru1), ao lado do banco do Supabase (sa-east-1): cada página faz várias consultas em sequência.
+			adapter: adapter({ regions: ['gru1'] })
 		})
 	],
 	test: {

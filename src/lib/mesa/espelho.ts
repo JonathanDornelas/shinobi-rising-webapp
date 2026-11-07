@@ -1,5 +1,5 @@
-// O caminho rápido da Mesa. O banco fica em Ohio: gravar custa 187 ms só de rede, e o aviso dele ainda passa pelo fio único do Postgres Changes, que confere a permissão de
-// cada inscrito. O broadcast chega à outra tela em 16 ms (medido do Brasil em 2026-11-06). Por isso o que alguém faz vai primeiro pelo broadcast e depois para o banco, que
+// O caminho rápido da Mesa. Gravar no banco custa uma ida e volta pela rede, e o aviso dele ainda passa pelo fio único do Postgres Changes, que confere a permissão de
+// cada inscrito. O broadcast chega à outra tela em 16 ms (medido do Brasil em 2026-11-07, com o banco em São Paulo, a leitura levou 65 ms, e 465 ms quando ele ficava em Ohio). Por isso o que alguém faz vai primeiro pelo broadcast e depois para o banco, que
 // segue sendo a verdade: o aviso dele confirma o que já chegou, e é ele quem vale se o broadcast se perder.
 //
 // O broadcast não passa pelo RLS: quem está no canal recebe tudo. Só vai o que está nestas listas, e só o que o grupo já pode ler. Nome, PV e o que está escondido ficam fora.

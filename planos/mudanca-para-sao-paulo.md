@@ -1,6 +1,15 @@
 # Mudança do banco para São Paulo
 
-Passo a passo guardado em 2026-11-07. Ainda não foi feito: a decisão de quando fazer é do usuário. Quanto antes, menor a mudança, porque ela cresce com os dados.
+Feita em 2026-11-07, para o projeto `rising-naruto-sa` (`qjvdbwuvqyfbyhsthtgh`, `sa-east-1`). O passo a passo fica como registro. O caminho real foi outro, porque não havia a senha do banco antigo: tudo passou pela Management API da Supabase, com um token para cada projeto. Veja "Como foi feito".
+
+## Como foi feito
+
+- **Estrutura:** as 54 migrações do repositório, em ordem, no projeto novo. As funções foram refeitas depois a partir da produção, porque os arquivos daqui têm quebra de linha do Windows. Comparados 14 tipos de item dos dois lados (colunas, restrições, índices, políticas, gatilhos, funções, permissões, publicação, buckets), deu zero diferença.
+- **Dados:** 27 tabelas, 1.937 linhas, 4 contas com as senhas, com a mesma impressão digital dos dois lados.
+- **Arquivos:** 252 arquivos, com o dono de cada um.
+- **Auth:** só a URL do site e os redirecionamentos eram diferentes. Os modelos de e-mail já eram iguais.
+- **Prova:** uma conta descartável entrou com senha, leu o próprio perfil, foi barrada no que era dos outros, e foi apagada.
+- **Medida:** a mesma leitura levou 65 ms no banco novo e 465 ms no antigo. O broadcast seguiu em 17 ms.
 
 ## Por quê
 
@@ -20,7 +29,7 @@ Levantado em produção em 2026-11-07. Vale conferir de novo no dia, porque este
 | Edge Functions e tarefas agendadas | nenhuma |
 | URL do projeto gravada nas tabelas públicas | nenhuma |
 | Tabelas na publicação do Realtime | 10: `membros`, `notificacoes`, `rolagens`, `mesa_cenas`, `mesa_tokens`, `mesa_tracos`, `mesa_efeitos`, `mesa_objetos`, `mesa_jukebox`, `mesa_diario` |
-| Auth | URL do site, 4 endereços de redirecionamento, 13 modelos de e-mail, e-mail da própria Supabase, confirmação de e-mail ligada |
+| Auth | URL do site, 4 endereços de redirecionamento, e-mail da própria Supabase, confirmação de e-mail ligada |
 
 Estimativa: cerca de uma hora de trabalho e uns 30 minutos com o site fora do ar.
 
@@ -72,7 +81,6 @@ A documentação não traz uma lista completa, então esta vem do que o projeto 
 
 - As publicações do Realtime, em Database > Publications, com as 10 tabelas acima.
 - A URL do site e os 4 endereços de redirecionamento.
-- Os 13 modelos de e-mail.
 - As configurações do Realtime no painel. A Mesa usa canal privado: confira se o acesso público segue desligado, porque o código tem um desvio temporário para canal aberto.
 - A confirmação de e-mail ligada.
 
