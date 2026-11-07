@@ -2,6 +2,7 @@
 	// L11 · CMP-37 · Quadro da Mesa: grade de 1 m (linha mais forte a cada 5 m), efeitos em cena, traços, moldes de
 	// jutsu, tokens, réguas e ponteiros, em SVG. A vista (zoom e canto) fica no UiMesa; tudo no quadro é em metros.
 	import { onMount, untrack } from 'svelte';
+	import { dev } from '$app/env';
 	import type { MesaToken } from '#lib/supabase/banco.ts';
 	import { CORES, corCss } from '#lib/mesa/cores.ts';
 	import { CONDICOES } from '#lib/personagem/dados.ts';
@@ -13,6 +14,9 @@
 	import { calcularMolde, nomeCurto, type UiMesa } from '#lib/mesa/ui.svelte.ts';
 	import type { MesaCena, MesaObjeto } from '#lib/supabase/banco.ts';
 	import { pontosDaPeca } from '#lib/mesa/fingersmap.ts';
+	import { figuraDaMiniatura, figuraDaSombra, figuraRedonda, corDoTema } from '#lib/mesa/figuras.ts';
+	import { PIXELS_DA_VISAO, lerMapaVivo, pintarVisao } from '#lib/mesa/mapa-vivo.ts';
+	import { MotorDaMesa, type FiguraPedida } from '#lib/mesa/motor.svelte.ts';
 	import { caminhoNevoa, celulasEntre, emRuns, grade as gradeNevoa, indice as indiceNevoa, pintar as pintarNevoa, type Run } from '#lib/mesa/nevoa.ts';
 import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as limitarObj, objetoEm, objetoEmTela, tamanhoInicial } from '#lib/mesa/objetos.ts';
 	import { ESTILOS, estiloDoJutsu, estiloValido, faseDoQuadrado, spritesDoEfeito, tamanhoDoSprite } from '#lib/mesa/efeitos.ts';
@@ -539,6 +543,84 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	/** Pixel art nítida de perto; de longe, suave, porque pular pixels faz o mapa virar chuvisco. */
 	const nitidaDePerto = $derived(ui.zoom >= 1 ? 'pixelated' : 'auto');
 	const temPecas = $derived(mesa.objetos.some((o) => o.desce != null));
+	// ------------------------------------------------------------------ mapa vivo
+	// o motor do fingersMap desenha o mapa num canvas sob o quadro, e os corpos dos tokens dentro dele. O quadro segue com tudo o
+	// que está por cima: a vida, os nomes, os moldes, as réguas. Até o motor ficar pronto, ou se ele não rodar aqui, vale a imagem
+	const vivo = $derived(iso ? lerMapaVivo(cena?.mapa_vivo) : null);
+	const chaveDoVivo = $derived(vivo ? `${vivo.mapa}|${vivo.andar}` : null);
+	const motor = new MotorDaMesa();
+	// só em desenvolvimento: o teste do mapa vivo lê o motor de fora
+	if (dev) (globalThis as unknown as { __motor?: MotorDaMesa }).__motor = motor;
+	let telaDoMotor = $state<HTMLCanvasElement>();
+	/** O mapa está rodando: a imagem, a grade e a escuridão do quadro dão lugar às dele. */
+	const mapaNoAr = $derived(motor.pronto && !!vivo);
+	$effect(() => {
+		const chave = chaveDoVivo;
+		const tela = telaDoMotor;
+		if (!chave || !tela) return;
+		void motor.abrir(tela, untrack(() => vivo!));
+		return () => motor.fechar();
+	});
+	$effect(() => {
+		if (chaveDoVivo) motor.camera({ left: ui.vx * BASE, top: ui.vy * BASE, zoom: ui.zoom, width: W, height: H });
+	});
+	$effect(() => {
+		if (!vivo) return;
+		motor.ar({ hour: vivo.hora, weather: vivo.clima, strength: vivo.forca, wind: vivo.vento });
+		motor.aparenciaDoMapa({ roofs: vivo.telhados, cut: vivo.corte, grid: ui.gradeOculta ? 0 : 0.28 });
+	});
+	$effect(() => {
+		if (!chaveDoVivo) return;
+		motor.figuras(figurasDoMapa());
+	});
+	const noMotor = (t: MesaToken) => motor.noMapa.has(t.id);
+	let telaDaVisao: HTMLCanvasElement | null = null;
+	$effect(() => {
+		const v = visao;
+		if (!motor.pronto) return;
+		if (!v) return motor.visao(null);
+		telaDaVisao ??= document.createElement('canvas');
+		const [w, h] = [L * PIXELS_DA_VISAO, A * PIXELS_DA_VISAO];
+		if (telaDaVisao.width !== w || telaDaVisao.height !== h) Object.assign(telaDaVisao, { width: w, height: h });
+		pintarVisao(telaDaVisao.getContext('2d')!, L, A, v, ambiente, memoria ? runsExibidas : null, motor.corpos, revelado);
+		motor.visao(telaDaVisao);
+	});
+	/** Quem o motor desenha agora, onde está: um token escondido do grupo segue no quadro, meio apagado, para o Mestre. */
+	function figurasDoMapa(): FiguraPedida[] {
+		const lista: FiguraPedida[] = [];
+		for (const t of visiveis) {
+			if (!t.visivel) continue;
+			const ar = arrasto?.id === t.id ? arrasto : null;
+			const [x, y, n] = [ar ? ar.x : t.x, ar ? ar.y : t.y, t.tamanho];
+			const [cx, cy] = [x + n / 2, y + n / 2];
+			const caido = t.ferimento === 3 || t.condicoes.includes('caido');
+			const sombra = { chave: `sombra:${n}`, montar: () => figuraDaSombra(n) };
+			const z = (t.elevacao ?? 0) * 0.25 * BASE;
+			const mini = miniaturaPorId(t.miniatura);
+			if (mini) {
+				const rumo = (ar ? rumoDoPasso(ar.x - t.x, ar.y - t.y) : null) ?? t.rumo ?? 0;
+				const q = quadroNaTela(rumo, cx, cy, paraTela);
+				const escala = ((ALTURA_DA_FIGURA * n * mesa.escalaMiniatura(mini.id)) / mini.altura) * BASE;
+				lista.push({ id: t.id, x: cx, y: cy, z, sombra, chave: `mini:${mini.id}:${q}:${escala}:${caido}`, montar: () => figuraDaMiniatura(urlMiniatura(mini), mini, q, escala, caido) });
+				continue;
+			}
+			const foto = fotoDe(t);
+			const mol = mesa.molduraDe(t);
+			const anel = corDoTema(caido ? 'var(--field)' : corCss(mesa.corDe(mesa.donoDe(t))));
+			const raio = mol ? 0.56 * n * mol.interno : 0.45 * n;
+			const sigla = t.sigla || t.nome.slice(0, 2).toUpperCase();
+			lista.push({
+				id: t.id,
+				x: cx,
+				y: cy,
+				z,
+				sombra,
+				chave: `disco:${foto}:${sigla}:${n}:${anel}:${mol?.id}:${caido}`,
+				montar: () => figuraRedonda({ foto, foco: focoDe(t), sigla, anel, fundo: corDoTema(caido ? 'var(--b3)' : 'var(--b2)'), letra: corDoTema(caido ? 'var(--field)' : 'var(--fg)'), n, raio, sobe: 0.4 * n, moldura: mol ? { url: `/molduras/${mol.id}.png`, raio: 0.56 * n } : null, caido })
+			});
+		}
+		return lista;
+	}
 	const objetosVisiveis = $derived((escondeDeMim ? mesa.objetos.filter((o) => o.tipo === 'imagem' || revelado(o.x, o.y)) : mesa.objetos).filter((o) => vistaDasPecas?.get(o.id) !== 'nunca'));
 	/** As imagens ficam sob os tokens; os alfinetes e os textos, por cima. Cada grupo na ordem de empilhamento. */
 	const porOrdem = (a: MesaObjeto, b: MesaObjeto) => a.ordem - b.ordem || a.criado_em.localeCompare(b.criado_em);
@@ -1360,7 +1442,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 					{#if mini}
 						{@render miniaturaSvg(t, mini, ar, x, y, c, caido, pv, fr)}
 					{:else}
-						{#if iso}<circle {cx} {cy} r={0.42 * n} fill="#000" fill-opacity="0.3" pointer-events="none" />{/if}
+						{#if iso && !noMotor(t)}<circle {cx} {cy} r={0.42 * n} fill="#000" fill-opacity="0.3" pointer-events="none" />{/if}
 						<g opacity={t.visivel ? 1 : 0.5} transform={emPe(cx, cy, sobeToken(t))}>
 							{#if mesa.daVez.has(t.id)}<circle {cx} {cy} r={(mol ? rm : r) + 0.12} fill="none" style="stroke: var(--acc)" stroke-width={0.1} />{/if}
 							{#if t.reagiu && mesa.iniciativa.ativa}
@@ -1374,6 +1456,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 								</g>
 							{/if}
 						{#if ui.sel === t.id}<circle {cx} {cy} r={(mol ? rm : r) + 0.22} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
+						{#if !noMotor(t)}
 						<circle {cx} {cy} r={rf} style="fill: {caido ? 'var(--b3)' : 'var(--b2)'}" />
 						{#if foto}
 							<clipPath id="foto-{t.id}"><circle {cx} {cy} r={rf - 0.02} /></clipPath>
@@ -1384,7 +1467,8 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 							<text x={cx} y={cy + (0.11 * n * rf) / r} text-anchor="middle" font-size={(0.32 * n * rf) / r} font-family="'Pixelify Sans'" font-weight="700" style="fill: {caido ? 'var(--field)' : 'var(--fg)'}">{t.sigla || t.nome.slice(0, 2).toUpperCase()}</text>
 						{/if}
 						<circle {cx} {cy} r={rf} fill="none" style="stroke: {caido ? 'var(--field)' : c}" stroke-width={(mol ? 0.05 : 0.08) * Math.min(n, 3)} />
-						{#if mol}
+						{/if}
+						{#if mol && !noMotor(t)}
 							<image href="/molduras/{mol.id}.png" x={cx - rm} y={cy - rm} width={2 * rm} height={2 * rm} pointer-events="none" style="image-rendering: pixelated; filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" />
 						{/if}
 						<!-- a barra de vida: o Mestre vê todas; o jogador, a dos tokens dele (e as outras com "PV à vista") -->
@@ -1433,7 +1517,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 	{@const yb = pe[1] + (iso ? 0.3 : 0.1) * n}
 	{@const sb = mesa.miniaturasCena.sombra ? sombraNoChao(t, pe, cx, cy) : null}
 	<g opacity={t.visivel ? 1 : 0.5}>
-		{#if sb}
+		{#if sb && !noMotor(t)}
 			<!-- a sombra: uma mancha suave no chão, sob os pés, um pouco puxada e alongada para o lado contrário da luz (de cima,
 			     achatada como a base; na isométrica, deitada na grade, a projeção dá a perspectiva) -->
 			<g transform="translate({pe[0] + sb.dx * 0.12 * n} {pe[1] + sb.dy * 0.12 * n}){iso ? '' : ' scale(1 0.5)'} rotate({(Math.atan2(sb.dy, sb.dx) * 180) / Math.PI})" pointer-events="none">
@@ -1443,16 +1527,18 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		{#if iso}
 			{#if mesa.daVez.has(t.id)}<circle {cx} {cy} r={0.42 * n + 0.06} fill="none" style="stroke: var(--acc)" stroke-width={0.09} />{/if}
 			{#if ui.sel === t.id}<circle {cx} {cy} r={0.42 * n + 0.18} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
-			<circle {cx} {cy} r={(mini.base ? 0.4 : 0.36) * n} style="fill: var(--b0); stroke: {caido ? 'var(--field)' : c}" fill-opacity={mini.base || sb ? 0 : 0.5} stroke-width={0.07} />
+			{#if !noMotor(t)}<circle {cx} {cy} r={(mini.base ? 0.4 : 0.36) * n} style="fill: var(--b0); stroke: {caido ? 'var(--field)' : c}" fill-opacity={mini.base || sb ? 0 : 0.5} stroke-width={0.07} />{/if}
 		{:else}
 			{#if mesa.daVez.has(t.id)}<ellipse cx={pe[0]} cy={pe[1]} rx={0.4 * n + 0.06} ry={0.15 * n + 0.04} fill="none" style="stroke: var(--acc)" stroke-width={0.09} />{/if}
 			{#if ui.sel === t.id}<ellipse cx={pe[0]} cy={pe[1]} rx={0.4 * n + 0.16} ry={0.15 * n + 0.1} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
 			<ellipse cx={pe[0]} cy={pe[1]} rx={(mini.base ? 0.38 : 0.34) * n} ry={(mini.base ? 0.13 : 0.11) * n} style="fill: var(--b0); stroke: {caido ? 'var(--field)' : c}" fill-opacity={mini.base || sb ? 0 : 0.5} stroke-width={0.07} />
 		{/if}
 		<g transform={emPe(pe[0], pe[1], (t.elevacao ?? 0) * 0.25)}>
+			{#if !noMotor(t)}
 			<svg x={pe[0] - mini.pe[0] * k} y={pe[1] - mini.pe[1] * k} width={mini.w * k} height={mini.h * k} viewBox="{q * mini.w} 0 {mini.w} {mini.h}" preserveAspectRatio="none" overflow="hidden">
 				<image href={urlMiniatura(mini)} width={mini.w * 8} height={mini.h} style="image-rendering: pixelated; filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" />
 			</svg>
+			{/if}
 			{#if t.reagiu && mesa.iniciativa.ativa}
 				<!-- Reação gasta nesta rodada: o R riscado ao lado da cabeça -->
 				{@const rq = Math.max(0.3, 0.28 * n)}
@@ -1560,6 +1646,12 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 {/snippet}
 
 <div bind:this={caixa} bind:clientWidth={W} bind:clientHeight={H} class="absolute inset-0 overflow-hidden bg-[var(--fundo)]" role="presentation" ondragover={aoArrastarSobre} ondrop={aoLargar}>
+	{#if chaveDoVivo && !motor.falhou}
+		<!-- o mapa vivo fica sob o quadro: o motor dá o tamanho do canvas e o desliza para cair entre dois pixels de arte. Cada mapa tem o seu -->
+		{#key chaveDoVivo}
+			<canvas bind:this={telaDoMotor} class="pointer-events-none absolute top-0 left-0 block origin-top-left" aria-hidden="true" style:visibility={motor.pronto ? 'visible' : 'hidden'}></canvas>
+		{/key}
+	{/if}
 	<svg
 		bind:this={svg}
 		width={W}
@@ -1567,7 +1659,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		viewBox="0 0 {W} {H}"
 		role="application"
 		aria-label="Quadro da cena {cena?.nome ?? ''}, {L} por {A} metros, 1 quadrado = 1 m"
-		class="block touch-none select-none"
+		class="relative block touch-none select-none"
 		style="cursor: {cursor}"
 		onpointerdown={aoBaixar}
 		onpointermove={aoMover}
@@ -1599,7 +1691,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			</pattern>
 		</defs>
 		<g transform="translate({-ui.vx * s} {-ui.vy * s}) scale({s}) {giroVista ? `rotate(${giroVista})` : ''} {matrizTxt}">
-			<rect x="0" y="0" width={L} height={A} style="fill: var(--b1)" clip-path={clipCena} />
+			{#if !mapaNoAr}<rect x="0" y="0" width={L} height={A} style="fill: var(--b1)" clip-path={clipCena} />{/if}
 			{#if recortar}
 				<!-- o retângulo da imagem, na tela (como a imagem: sem a projeção e girado com ela), corta a grade -->
 				<clipPath id="recorte-imagem">
@@ -1607,7 +1699,9 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				</clipPath>
 			{/if}
 			<!-- fundo do quadro: o mapa estica na cena inteira, sob a grade -->
-				{#if fundo && iso}
+				{#if mapaNoAr}
+					<!-- o mapa está rodando sob o quadro -->
+				{:else if fundo && iso}
 					<g transform={desfazer}>
 						<image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : temPecas ? nitidaDePerto : 'auto'} />
 						{#each ladrilhosVisiveis as l (l.url)}<image href={l.url} x={l.x} y={l.y} width={l.w} height={l.h} transform={rotacaoFundo} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={temPecas ? nitidaDePerto : 'auto'} />{/each}
@@ -1619,7 +1713,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
 			{/if}
 			<!-- a grade: cada um esconde só na própria tela; ajustando a grade ao mapa, ela aparece -->
-			{#if !ui.gradeOculta || ui.bordas}
+			{#if (!ui.gradeOculta && !mapaNoAr) || ui.bordas}
 				<!-- dois traçados (linhas de 1 m e de 5 m) com 1 px fixo: o zoom e a câmera não mexem na grade -->
 				<path d={grade1} fill="none" style="stroke: var(--fg)" stroke-opacity={0.09 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" clip-path={clipCena} />
 					<path d={grade5} fill="none" style="stroke: var(--fg)" stroke-opacity={0.18 * (fundo ? 1.6 : 1)} stroke-width="1" vector-effect="non-scaling-stroke" pointer-events="none" clip-path={clipCena} />
@@ -1784,16 +1878,16 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 					{A}
 					{F}
 					{clipCena}
-					{visao}
+					visao={mapaNoAr ? null : visao}
 					{ambiente}
 					opacidade={memoria ? 0.86 : 1}
 					nevoa={visao && memoria && nevoaLigada ? caminhoDaNevoa : ''}
 					{paredes}
-					verParedes={mesa.mestre && !ui.verComoGrupo ? (ui.ferramenta === 'paredes' ? 'forte' : luzLigada ? 'fraco' : null) : null}
+					verParedes={mesa.mestre && !ui.verComoGrupo ? (ui.ferramenta === 'paredes' ? 'forte' : luzLigada && !mapaNoAr ? 'fraco' : null) : null}
 					paredeNova={paredeNova}
 					{portas}
 					luzes={luzesCena}
-					verLuzes={mesa.mestre && !ui.verComoGrupo ? (ui.ferramenta === 'luz' ? 'forte' : luzLigada && ambiente !== 'claro' ? 'fraco' : null) : null}
+					verLuzes={mesa.mestre && !ui.verComoGrupo ? (ui.ferramenta === 'luz' ? 'forte' : luzLigada && ambiente !== 'claro' && !mapaNoAr ? 'fraco' : null) : null}
 					luzSel={ui.luzSel}
 					tela={paraTela}
 					{desfazer}
@@ -1845,7 +1939,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				{#if infoArrasto.parede}{@render rotulo(arrasto.x + (arrastado?.tamanho ?? 1) / 2, arrasto.y + (arrastado?.tamanho ?? 1) + 0.6, infoArrasto.parede, 'var(--mesa-vermelhao)', 'meio')}{/if}
 			{/if}
 
-			{#if nevoaVisivel && !visao}
+			{#if nevoaVisivel && !visao && (!mapaNoAr || ui.ferramenta === 'nevoa')}
 				<!-- a névoa: o grupo não vê o que está coberto; o Mestre vê esmaecido, com hachura. Com a luz dinâmica (e no "ver como o
 				     grupo vê"), o que ninguém explorou é breu de verdade, em qualquer tema; o explorado fica sob o véu da memória -->
 				{@const breu = !!visao}

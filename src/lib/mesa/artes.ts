@@ -176,30 +176,37 @@ export async function enviarArte(campanha: string, arquivo: File, tipo: MesaArte
 	}
 }
 
+/** Um ano: o nome de cada lote é único, então um arquivo nunca muda, e quem joga só baixa uma vez. */
+const GUARDAR_POR = '31536000';
+
 /**
- * Envia as imagens das peças de um mapa (seis de cada vez) e devolve os caminhos, na mesma ordem. Elas vêm prontas e não
- * passam pela biblioteca, que tem limite de 300 artes por campanha. Se alguma falha, tira as que subiram.
+ * Envia o mapa e a arte dele para o bucket mapas e devolve os caminhos que a cena guarda. Se algo falha, tira o que subiu.
  */
-export async function enviarPecas(campanha: string, imagens: Uint8Array<ArrayBuffer>[], aoAndar?: (feitos: number, total: number) => void): Promise<string[]> {
-	const lote = sufixo();
-	const caminhos = imagens.map((_, i) => `${campanha}/fm-${lote}-${i}.webp`);
-	const fila = imagens.map((imagem, i) => ({ imagem, caminho: caminhos[i] }));
+export async function enviarMapaVivo(campanha: string, arquivos: { mapa: Uint8Array<ArrayBuffer>; pacoteLista: Uint8Array<ArrayBuffer>; pacotePixels: Uint8Array<ArrayBuffer> }, aoAndar?: (feitos: number, total: number) => void) {
+	const pasta = `${campanha}/${sufixo()}`;
+	const lista: [string, Uint8Array<ArrayBuffer>, string][] = [
+		[`${pasta}/mapa.fmap`, arquivos.mapa, 'application/octet-stream'],
+		[`${pasta}/pacote.json`, arquivos.pacoteLista, 'application/json'],
+		[`${pasta}/pacote.pack`, arquivos.pacotePixels, 'application/octet-stream']
+	];
 	const sb = supabase();
-	let feitos = 0;
-	const trabalhar = async () => {
-		for (let item = fila.shift(); item; item = fila.shift()) {
-			const { error } = await sb.storage.from('mesa').upload(item.caminho, new Blob([item.imagem], { type: 'image/webp' }), { contentType: 'image/webp', upsert: false });
-			if (error) throw error;
-			aoAndar?.(++feitos, imagens.length);
-		}
-	};
 	try {
-		await Promise.all(Array.from({ length: 6 }, trabalhar));
-		return caminhos;
+		let feitos = 0;
+		for (const [caminho, bytes, tipo] of lista) {
+			const { error } = await sb.storage.from('mapas').upload(caminho, new Blob([bytes], { type: tipo }), { contentType: tipo, cacheControl: GUARDAR_POR, upsert: false });
+			if (error) throw error;
+			aoAndar?.(++feitos, lista.length);
+		}
+		return { mapa: `${pasta}/mapa.fmap`, pacote: `${pasta}/pacote` };
 	} catch (e) {
-		await sb.storage.from('mesa').remove(caminhos);
+		await sb.storage.from('mapas').remove(lista.map(([caminho]) => caminho));
 		throw e;
 	}
+}
+
+/** Tira do bucket os arquivos de um mapa que a cena deixou de usar. */
+export async function apagarMapaVivo(v: { mapa: string; pacote: string }) {
+	await supabase().storage.from('mapas').remove([v.mapa, `${v.pacote}.json`, `${v.pacote}.pack`]);
 }
 
 /** Apaga a arte da biblioteca (o banco tira ela de onde estava em uso) e os arquivos do bucket, com os ladrilhos. */

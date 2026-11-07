@@ -1,55 +1,57 @@
-// Cenas do fingersMap, o editor de mapas isométricos (.fmesa): um ZIP com cena.json, o chão em fundo.png e, em pecas/, o
-// que fica de pé (prédios, árvores, trechos de parede), já com a luz assada. A Mesa desenha em SVG, sem profundidade por
-// pixel: para um token passar atrás de um prédio, o prédio precisa ser uma imagem à parte, pintada em ordem com os tokens.
-// A grade é a mesma nos dois lados: 1 tile = 1 quadrado = 1 m, 64 px = 1 metro de tela, com a mesma origem.
+// Cenas do fingersMap, o editor de mapas isométricos (.fmesa): um ZIP com cena.json, o mapa, a arte que ele usa e uma imagem de
+// tudo, para quem não consegue rodar o motor. A grade é a mesma nos dois lados: 1 tile = 1 quadrado = 1 m, 64 px = 1 metro de
+// tela, com a mesma origem. A partir da versão 2 a Mesa roda o mapa de verdade (ver mapa-vivo.ts); as peças da versão 1 que já
+// estão em alguma cena seguem sendo desenhadas, mas o arquivo antigo precisa ser exportado de novo.
 import { strFromU8, unzipSync } from 'fflate';
 import { limparLuzes, limparParedes, type Ambiente, type Luz, type Parede } from './luz.ts';
-import { MAX_OBJETOS } from './objetos.ts';
-import type { ClimaCena, MesaObjeto } from '#lib/supabase/banco.ts';
+import { CLIMAS_VIVOS } from './mapa-vivo.ts';
+import type { Weather } from './motor/player.js';
+import type { MesaObjeto } from '#lib/supabase/banco.ts';
 
-export const VERSAO_FINGERSMAP = 1;
+export const VERSAO_FINGERSMAP = 2;
 const LADO_MAXIMO = 200;
-/** O arquivo inteiro, a cena e cada imagem. O fundo vai a 8192 px de lado e passa de 30 MB com folga. */
-export const LIMITE_FMESA = 400 * 1024 * 1024;
+/** O arquivo inteiro e cada parte dele. */
+export const LIMITE_FMESA = 300 * 1024 * 1024;
 const LIMITE_CENA = 8 * 1024 * 1024;
 const LIMITE_FUNDO = 100 * 1024 * 1024;
-const LIMITE_PECA = 5 * 1024 * 1024;
+const LIMITE_MAPA = 50 * 1024 * 1024;
+/** O bucket mapas vai até 50 MB por arquivo. */
+const LIMITE_ARTE = 50 * 1024 * 1024;
 
-export interface PecaFingersMap {
-	x: number;
-	y: number;
-	largura: number;
-	altura: number;
-	desce: number;
-	camada: 'meio' | 'acima';
-	imagem: Uint8Array<ArrayBuffer>;
-}
+type Bytes = Uint8Array<ArrayBuffer>;
 
 export interface CenaFingersMap {
 	nome: string;
 	largura: number;
 	altura: number;
-	/** O canto de cima à esquerda do fundo na tela e o tamanho dele, em metros de tela. */
-	fundo: { x: number; y: number; w: number; h: number; imagem: Uint8Array<ArrayBuffer> };
-	pecas: PecaFingersMap[];
+	andar: number;
+	/** A imagem do andar: o canto de cima à esquerda na tela e o tamanho, em metros de tela. */
+	fundo: { x: number; y: number; w: number; h: number; imagem: Bytes };
+	mapa: Bytes;
+	/** A arte: a lista e os pixels. */
+	pacoteLista: Bytes;
+	pacotePixels: Bytes;
+	ar: { hora: number; clima: Weather; forca: number; vento: number };
 	paredes: Parede[];
 	luzes: Luz[];
 	ambiente: Ambiente;
-	clima: ClimaCena | null;
 }
 
 const NAO_E = 'O arquivo não é uma cena do fingersMap (.fmesa).';
 const num = (v: unknown, min: number, max: number): v is number => typeof v === 'number' && Number.isFinite(v) && v >= min && v <= max;
 const ehPng = (b: Uint8Array) => b.length > 8 && [0x89, 0x50, 0x4e, 0x47].every((v, i) => b[i] === v);
-const ehWebp = (b: Uint8Array) => b.length > 12 && strFromU8(b.subarray(0, 4)) === 'RIFF' && strFromU8(b.subarray(8, 12)) === 'WEBP';
-const copia = (b: Uint8Array) => new Uint8Array(b) as Uint8Array<ArrayBuffer>;
+const ehZip = (b: Uint8Array) => b.length > 4 && b[0] === 0x50 && b[1] === 0x4b;
+const ehGzip = (b: Uint8Array) => b.length > 2 && b[0] === 0x1f && b[1] === 0x8b;
+const copia = (b: Uint8Array) => new Uint8Array(b) as Bytes;
+
+const LIMITES: Record<string, number> = { 'cena.json': LIMITE_CENA, 'fundo.png': LIMITE_FUNDO, 'mapa.fmap': LIMITE_MAPA, 'pacote.json': LIMITE_ARTE, 'pacote.pack': LIMITE_ARTE };
 
 /** Lê e confere o arquivo, que veio de fora: nada passa daqui sem ter o formato certo. Erra com uma frase para o Mestre ler. */
 export function lerFingersMap(dados: Uint8Array): CenaFingersMap {
-	if (dados.length > LIMITE_FMESA) throw new Error('O arquivo é grande demais (até 400 MB).');
+	if (dados.length > LIMITE_FMESA) throw new Error('O arquivo é grande demais (até 300 MB).');
 	let zip: Record<string, Uint8Array>;
 	try {
-		zip = unzipSync(dados, { filter: (f) => f.originalSize <= (f.name === 'cena.json' ? LIMITE_CENA : f.name === 'fundo.png' ? LIMITE_FUNDO : /^pecas\/\d{3,4}\.webp$/.test(f.name) ? LIMITE_PECA : 0) });
+		zip = unzipSync(dados, { filter: (a) => a.originalSize <= (LIMITES[a.name] ?? 0) });
 	} catch {
 		throw new Error(NAO_E);
 	}
@@ -62,36 +64,44 @@ export function lerFingersMap(dados: Uint8Array): CenaFingersMap {
 	}
 	if (typeof c?.versao !== 'number') throw new Error(NAO_E);
 	if (c.versao > VERSAO_FINGERSMAP) throw new Error('Esta cena veio de uma versão mais nova do fingersMap.');
+	if (c.versao < VERSAO_FINGERSMAP) throw new Error('Esta cena foi exportada antes do mapa vivo. Exporte de novo no fingersMap.');
 	const { largura, altura } = c;
 	if (!Number.isInteger(largura) || !Number.isInteger(altura)) throw new Error(NAO_E);
 	const [L, A] = [largura as number, altura as number];
 	if (L > LADO_MAXIMO || A > LADO_MAXIMO) throw new Error(`O mapa tem ${L} × ${A} quadrados; a Mesa vai até 200 × 200.`);
 	if (L < 1 || A < 1) throw new Error(NAO_E);
 
-	const f = c.fundo as Record<string, unknown> | undefined;
-	const bytesDoFundo = zip['fundo.png'];
-	if (!f || !bytesDoFundo || !ehPng(bytesDoFundo) || !num(f.x, -1000, 1000) || !num(f.y, -1000, 1000) || !num(f.w, 1, 1000) || !num(f.h, 0.01, 1000)) throw new Error(NAO_E);
+	const fundo = c.fundo as Record<string, unknown> | undefined;
+	const imagem = zip['fundo.png'];
+	if (!fundo || !imagem || !ehPng(imagem) || !num(fundo.x, -1000, 1000) || !num(fundo.y, -1000, 1000) || !num(fundo.w, 1, 1000) || !num(fundo.h, 0.01, 1000)) throw new Error(NAO_E);
+	const [mapa, lista, pixels] = [zip['mapa.fmap'], zip['pacote.json'], zip['pacote.pack']];
+	if (!mapa || !ehZip(mapa) || !lista || !pixels || !ehGzip(pixels)) throw new Error(NAO_E);
+	try {
+		JSON.parse(strFromU8(lista));
+	} catch {
+		throw new Error(NAO_E);
+	}
 
-	if (!Array.isArray(c.pecas)) throw new Error(NAO_E);
-	if (c.pecas.length > MAX_OBJETOS) throw new Error(`A cena traz ${c.pecas.length} peças; a Mesa guarda até ${MAX_OBJETOS} objetos por cena.`);
-	const pecas = c.pecas.map((p: Record<string, unknown>): PecaFingersMap => {
-		const imagem = typeof p?.arquivo === 'string' ? zip[p.arquivo] : undefined;
-		const certa = imagem && ehWebp(imagem) && num(p.x, -50, 250) && num(p.y, -50, 250) && num(p.largura, 0.25, 400) && num(p.altura, 0.25, 400) && num(p.desce, 0, 40) && (p.camada === 'meio' || p.camada === 'acima');
-		if (!certa) throw new Error(NAO_E);
-		return { x: p.x as number, y: p.y as number, largura: p.largura as number, altura: p.altura as number, desce: p.desce as number, camada: p.camada as PecaFingersMap['camada'], imagem: copia(imagem) };
-	});
+	const ar = (c.ar ?? {}) as Record<string, unknown>;
 	const ambiente = c.ambiente === 'penumbra' || c.ambiente === 'escuro' ? c.ambiente : 'claro';
-	const clima = c.clima === 'chuva' || c.clima === 'neve' || c.clima === 'nevoa' ? c.clima : null;
 	return {
 		nome: typeof c.nome === 'string' ? c.nome.trim().slice(0, 60) : '',
 		largura: L,
 		altura: A,
-		fundo: { x: f.x as number, y: f.y as number, w: f.w as number, h: f.h as number, imagem: copia(bytesDoFundo) },
-		pecas,
+		andar: num(c.andar, 0, 15) ? Math.round(c.andar) : 0,
+		fundo: { x: fundo.x as number, y: fundo.y as number, w: fundo.w as number, h: fundo.h as number, imagem: copia(imagem) },
+		mapa: copia(mapa),
+		pacoteLista: copia(lista),
+		pacotePixels: copia(pixels),
+		ar: {
+			hora: num(ar.hora, 0, 24) ? ar.hora : 10,
+			clima: CLIMAS_VIVOS.some((v) => v.id === ar.clima) ? (ar.clima as Weather) : 'clear',
+			forca: num(ar.forca, 0, 1) ? ar.forca : 0.7,
+			vento: num(ar.vento, 0, 1) ? ar.vento : 0.3
+		},
 		paredes: limparParedes(c.paredes, L, A),
 		luzes: limparLuzes(c.luzes),
-		ambiente,
-		clima
+		ambiente
 	};
 }
 

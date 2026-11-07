@@ -9,9 +9,9 @@
 	import { MAX_CAMADAS, adicionar, alternarEmPe, camadasDaCena, indiceDaCamada, mover, remover, renomear, type Camada } from '#lib/mesa/camadas.ts';
 	import type { UiMesa } from '#lib/mesa/ui.svelte.ts';
 	import type { MesaCena, MesaObjeto } from '#lib/supabase/banco.ts';
-	import { enviarArte, enviarPecas, nomeDoArquivo } from '#lib/mesa/artes.ts';
+	import { apagarMapaVivo, enviarArte, enviarMapaVivo, nomeDoArquivo } from '#lib/mesa/artes.ts';
 	import { camposDaCena, lerFingersMap } from '#lib/mesa/fingersmap.ts';
-	import { MAX_OBJETOS } from '#lib/mesa/objetos.ts';
+	import { CLIMAS_VIVOS, lerMapaVivo, type MapaVivo } from '#lib/mesa/mapa-vivo.ts';
 	import { caixaDaCena, cfgIso } from '#lib/mesa/projecao.ts';
 	import { arquivoDaImagem, lerUvtt } from '#lib/mesa/uvtt.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
@@ -264,8 +264,19 @@
 			importando = null;
 		}
 	}
-	// cena do fingersMap (.fmesa): o chão vai para a biblioteca, como um mapa grande, e o que fica de pé vai em peças travadas.
-	// A cena fica isométrica, do tamanho do mapa, com as paredes, as luzes e a luz dinâmica ligada
+	// cena do fingersMap (.fmesa): o mapa e a arte vão para o bucket mapas, e a Mesa roda o mapa de verdade. A imagem vai para a
+	// biblioteca, para quem não consegue rodar o motor. A cena fica isométrica, do tamanho do mapa, com as paredes e a luz dinâmica
+	const vivo = $derived(lerMapaVivo(cena.mapa_vivo));
+	let pendenteDoVivo: ReturnType<typeof setTimeout> | undefined;
+	/** O Mestre mexe e a tela responde na hora; o banco recebe o valor de quando a mão para. */
+	function mudarVivo(patch: Partial<MapaVivo>) {
+		if (!vivo) return;
+		const novo = { ...vivo, ...patch };
+		mesa.cenas = mesa.cenas.map((c) => (c.id === cena.id ? { ...c, mapa_vivo: novo } : c));
+		clearTimeout(pendenteDoVivo);
+		pendenteDoVivo = setTimeout(() => void mesa.patchCena({ mapa_vivo: novo }), 150);
+	}
+	const horaDoVivo = (h: number) => `${String(Math.floor(h)).padStart(2, '0')}h${String(Math.floor((h % 1) * 60)).padStart(2, '0')}`;
 	async function importarFingersMap(e: Event) {
 		const entrada = e.currentTarget as HTMLInputElement;
 		const arquivo = entrada.files?.[0];
@@ -274,14 +285,13 @@
 		try {
 			importando = 'Lendo a cena…';
 			const m = lerFingersMap(new Uint8Array(await arquivo.arrayBuffer()));
-			const soltos = mesa.objetos.filter((o) => o.desce == null).length;
-			if (soltos + m.pecas.length > MAX_OBJETOS) throw new Error(`A cena ficaria com ${soltos + m.pecas.length} objetos; a Mesa guarda até ${MAX_OBJETOS}. Tire ${soltos + m.pecas.length - MAX_OBJETOS} dela.`);
 			const nome = (m.nome || nomeDoArquivo(arquivo.name)).slice(0, 60);
-			importando = 'Enviando o chão…';
-			const arte = await enviarArte(mesa.campanha, new File([m.fundo.imagem], `${nome}.png`, { type: 'image/png' }), 'mapa', nome, (feitos, total) => (importando = `O chão: ${feitos}/${total} pedaços…`), true);
+			importando = 'Enviando a imagem do mapa…';
+			const arte = await enviarArte(mesa.campanha, new File([m.fundo.imagem], `${nome}.png`, { type: 'image/png' }), 'mapa', nome, (feitos, total) => (importando = `A imagem: ${feitos}/${total} pedaços…`), true);
 			mesa.artes = [arte, ...mesa.artes];
-			importando = `As peças: 0/${m.pecas.length}…`;
-			const caminhos = await enviarPecas(mesa.campanha, m.pecas.map((p) => p.imagem), (feitos, total) => (importando = `As peças: ${feitos}/${total}…`));
+			importando = 'Enviando o mapa e a arte…';
+			const arquivos = await enviarMapaVivo(mesa.campanha, m, (feitos, total) => (importando = `O mapa e a arte: ${feitos}/${total}…`));
+			const antes = lerMapaVivo(cena.mapa_vivo);
 			for (const t of mesa.tokens)
 				if (t.x + t.tamanho > m.largura || t.y + t.tamanho > m.altura) await mesa.atualizarToken(t.id, { x: Math.max(0, Math.min(t.x, m.largura - t.tamanho)), y: Math.max(0, Math.min(t.y, m.altura - t.tamanho)) });
 			importando = 'Montando a cena…';
@@ -290,10 +300,12 @@
 				fundo: arte.caminho,
 				fundo_ladrilhos: arte.ladrilhos ?? null,
 				...(cena.fundo_rotacao !== undefined ? { fundo_rotacao: 0 } : {}),
-				...(cena.clima !== undefined ? { clima: m.clima } : {})
+				...(cena.clima !== undefined ? { clima: null } : {}),
+				mapa_vivo: { ...arquivos, andar: m.andar, ...m.ar, telhados: true, corte: false }
 			});
-			await mesa.trocarPecas(m.pecas.map(({ x, y, largura, altura, desce, camada }, i) => ({ x, y, largura, altura, desce, camada, imagem: caminhos[i] })));
-			ui.avisar(`Cena importada: ${m.largura} × ${m.altura} quadrados, ${m.pecas.length} peças em pé, ${m.paredes.length} paredes e ${m.luzes.length} luzes.`);
+			await mesa.tirarPecas();
+			if (antes) await apagarMapaVivo(antes);
+			ui.avisar(`Mapa vivo: ${m.largura} × ${m.altura} quadrados, ${m.paredes.length} paredes e ${m.luzes.length} luzes.`);
 		} catch (erro) {
 			console.error(erro);
 			toasts.mostrar(erro instanceof Error && /fingersMap|200|objetos|grande/.test(erro.message) ? erro.message : 'Não foi possível importar a cena.', 'erro');
@@ -552,11 +564,35 @@
 				</section>
 				<section class={secao}>
 					<h3 class={titulo}>Cena do fingersMap (.fmesa)</h3>
-					<p class={dica}>Mapas isométricos do fingersMap entram com o chão, as peças em pé, as paredes e as luzes. O token passa atrás do que fica de pé. Substitui o fundo, as paredes e as peças de mapa desta cena.</p>
+					<p class={dica}>O mapa roda ao vivo no quadro: luz, clima e animações, com os tokens dentro dele. Substitui o fundo e as paredes desta cena.</p>
 					<label class="{botao} flex cursor-pointer items-center justify-center" aria-busy={!!importando}>
 						{importando ?? 'Importar do fingersMap'}
 						<input id="importar-fingersmap" type="file" accept=".fmesa" class="sr-only" disabled={!!importando} onchange={importarFingersMap} />
 					</label>
+				</section>
+			{/if}
+			{#if vivo}
+				<section class={secao}>
+					<h3 class={titulo}>Mapa vivo</h3>
+					<label class="grid gap-1">
+						<span class="flex justify-between {dica}"><span>Hora do dia</span><span>{horaDoVivo(vivo.hora)}</span></span>
+						<input id="vivo-hora" type="range" min="0" max="24" step="0.25" value={vivo.hora} oninput={(e) => mudarVivo({ hora: Number(e.currentTarget.value) })} aria-label="Hora do dia" />
+					</label>
+					<div class="grid grid-cols-3 gap-1" role="radiogroup" aria-label="Clima do mapa">
+						{#each CLIMAS_VIVOS as c (c.id)}
+							<button type="button" role="radio" aria-checked={vivo.clima === c.id} class="{botao} {vivo.clima === c.id ? 'btn-primario' : ''}" onclick={() => mudarVivo({ clima: c.id })}>{c.nome}</button>
+						{/each}
+					</div>
+					<label class="grid gap-1">
+						<span class="{dica}">Força do clima</span>
+						<input id="vivo-forca" type="range" min="0" max="1" step="0.05" value={vivo.forca} oninput={(e) => mudarVivo({ forca: Number(e.currentTarget.value) })} aria-label="Força do clima" />
+					</label>
+					<label class="grid gap-1">
+						<span class="{dica}">Vento</span>
+						<input id="vivo-vento" type="range" min="0" max="1" step="0.05" value={vivo.vento} oninput={(e) => mudarVivo({ vento: Number(e.currentTarget.value) })} aria-label="Vento" />
+					</label>
+					<label class="flex items-center gap-2 {dica}"><input type="checkbox" checked={vivo.telhados} onchange={(e) => mudarVivo({ telhados: e.currentTarget.checked })} />Telhados</label>
+					<label class="flex items-center gap-2 {dica}"><input type="checkbox" checked={vivo.corte} onchange={(e) => mudarVivo({ corte: e.currentTarget.checked })} />Cortar as paredes para ver dentro dos cômodos</label>
 				</section>
 			{/if}
 			{#if cena.clima !== undefined}

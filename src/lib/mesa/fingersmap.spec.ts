@@ -1,37 +1,43 @@
 import { strToU8, zipSync } from 'fflate';
 import { describe, expect, it } from 'vitest';
 import { camposDaCena, lerFingersMap, pontosDaPeca } from './fingersmap.ts';
-import { camadasDaCena } from './camadas.ts';
+import { lerMapaVivo } from './mapa-vivo.ts';
 import { caixaDaCena, cfgIso, ordemDePintura, projetar } from './projecao.ts';
 import { caixaDePe } from './objetos.ts';
 
 const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 13, 10, 26, 10, 0]);
-const WEBP = new Uint8Array([...strToU8('RIFF'), 1, 0, 0, 0, ...strToU8('WEBP'), 0]);
+const FMAP = new Uint8Array([0x50, 0x4b, 3, 4, 0, 0]);
+const GZIP = new Uint8Array([0x1f, 0x8b, 8, 0, 0]);
+const LISTA = strToU8('{"version":1,"sprites":[]}');
 
 const cena = (extra: Record<string, unknown> = {}) => ({
-	versao: 1,
+	versao: 2,
 	nome: 'Rua de Konoha',
 	largura: 72,
 	altura: 72,
+	andar: 1,
 	fundo: { arquivo: 'fundo.png', x: -36, y: -8, w: 72, h: 39.4 },
-	pecas: [{ arquivo: 'pecas/000.webp', x: 10.5, y: 7, largura: 0.5, altura: 1.75, desce: 0.125, camada: 'meio' }],
+	mapa: 'mapa.fmap',
+	pacote: 'pacote',
+	ar: { hora: 21, clima: 'rain', forca: 0.5, vento: 0.2 },
 	paredes: [[0, 0, 4, 0, 0]],
 	luzes: [{ id: 'l1', x: 2, y: 3, plena: 4, penumbra: 4, acesa: true }],
 	ambiente: 'penumbra',
-	clima: 'chuva',
 	...extra
 });
-const pacote = (c: unknown = cena(), arquivos: Record<string, Uint8Array> = { 'fundo.png': PNG, 'pecas/000.webp': WEBP }) => zipSync({ 'cena.json': strToU8(JSON.stringify(c)), ...arquivos });
+const ARQUIVOS = { 'fundo.png': PNG, 'mapa.fmap': FMAP, 'pacote.json': LISTA, 'pacote.pack': GZIP };
+const pacote = (c: unknown = cena(), arquivos: Record<string, Uint8Array> = ARQUIVOS) => zipSync({ 'cena.json': strToU8(JSON.stringify(c)), ...arquivos });
 
 describe('lerFingersMap', () => {
-	it('lê a cena e as imagens', () => {
+	it('lê a cena e os arquivos', () => {
 		const m = lerFingersMap(pacote());
 		expect(m.nome).toBe('Rua de Konoha');
-		expect([m.largura, m.altura, m.ambiente, m.clima]).toEqual([72, 72, 'penumbra', 'chuva']);
+		expect([m.largura, m.altura, m.andar, m.ambiente]).toEqual([72, 72, 1, 'penumbra']);
 		expect(m.fundo).toMatchObject({ x: -36, y: -8, w: 72, h: 39.4 });
+		expect(m.ar).toEqual({ hora: 21, clima: 'rain', forca: 0.5, vento: 0.2 });
 		expect([...m.fundo.imagem]).toEqual([...PNG]);
-		expect(m.pecas[0]).toMatchObject({ x: 10.5, y: 7, desce: 0.125, camada: 'meio' });
-		expect([...m.pecas[0].imagem]).toEqual([...WEBP]);
+		expect([...m.mapa]).toEqual([...FMAP]);
+		expect([...m.pacotePixels]).toEqual([...GZIP]);
 		expect(m.paredes).toEqual([[0, 0, 4, 0, 0]]);
 		expect(m.luzes).toHaveLength(1);
 	});
@@ -43,39 +49,37 @@ describe('lerFingersMap', () => {
 		expect(() => lerFingersMap(zipSync({ 'cena.json': strToU8('{oi') }))).toThrow(/fingersMap/);
 	});
 
-	it('avisa quando a versão é mais nova ou o mapa é grande demais', () => {
-		expect(() => lerFingersMap(pacote(cena({ versao: 2 })))).toThrow(/mais nova/);
+	it('avisa quando a versão é outra ou o mapa é grande demais', () => {
+		expect(() => lerFingersMap(pacote(cena({ versao: 3 })))).toThrow(/mais nova/);
+		expect(() => lerFingersMap(pacote(cena({ versao: 1 })))).toThrow(/Exporte de novo/);
 		expect(() => lerFingersMap(pacote(cena({ largura: 201 })))).toThrow(/200 × 200/);
-		expect(() => lerFingersMap(pacote(cena({ pecas: Array.from({ length: 301 }, () => cena().pecas[0]) })))).toThrow(/300/);
 	});
 
-	it('recusa imagem que não é a que diz ser, ou que falta', () => {
-		expect(() => lerFingersMap(pacote(cena(), { 'fundo.png': WEBP, 'pecas/000.webp': WEBP }))).toThrow(/fingersMap/);
-		expect(() => lerFingersMap(pacote(cena(), { 'fundo.png': PNG, 'pecas/000.webp': PNG }))).toThrow(/fingersMap/);
-		expect(() => lerFingersMap(pacote(cena(), { 'fundo.png': PNG }))).toThrow(/fingersMap/);
+	it('recusa arquivo que não é o que diz ser, ou que falta', () => {
+		expect(() => lerFingersMap(pacote(cena(), { ...ARQUIVOS, 'fundo.png': GZIP }))).toThrow(/fingersMap/);
+		expect(() => lerFingersMap(pacote(cena(), { ...ARQUIVOS, 'mapa.fmap': GZIP }))).toThrow(/fingersMap/);
+		expect(() => lerFingersMap(pacote(cena(), { ...ARQUIVOS, 'pacote.pack': FMAP }))).toThrow(/fingersMap/);
+		expect(() => lerFingersMap(pacote(cena(), { ...ARQUIVOS, 'pacote.json': strToU8('{oi') }))).toThrow(/fingersMap/);
+		const { 'mapa.fmap': _, ...semMapa } = ARQUIVOS;
+		expect(() => lerFingersMap(pacote(cena(), semMapa))).toThrow(/fingersMap/);
 	});
 
-	it('não abre o que está fora do formato, como um caminho que sobe de pasta', () => {
-		const m = cena({ pecas: [{ ...cena().pecas[0], arquivo: '../../segredo.webp' }] });
-		expect(() => lerFingersMap(pacote(m, { 'fundo.png': PNG, '../../segredo.webp': WEBP }))).toThrow(/fingersMap/);
+	it('não abre o que está fora da lista, como um caminho que sobe de pasta', () => {
+		const m = lerFingersMap(pacote(cena(), { ...ARQUIVOS, '../../segredo.webp': PNG }));
+		expect(Object.keys(m)).not.toContain('../../segredo.webp');
 	});
 
-	it('recusa peça fora dos limites do banco', () => {
-		for (const ruim of [{ largura: 0.1 }, { altura: 500 }, { x: 900 }, { desce: -1 }, { desce: Number.NaN }, { camada: 'chao' }]) {
-			expect(() => lerFingersMap(pacote(cena({ pecas: [{ ...cena().pecas[0], ...ruim }] })))).toThrow(/fingersMap/);
-		}
-	});
-
-	it('limpa paredes, luzes, ambiente e clima que não servem', () => {
-		const m = lerFingersMap(pacote(cena({ paredes: [[0, 0, 4, 0, 9], [1, 1, 900, 1, 0]], luzes: [{ id: 3 }], ambiente: 'sol', clima: 'fogo' })));
+	it('limpa paredes, luzes, ambiente e ar que não servem', () => {
+		const m = lerFingersMap(pacote(cena({ paredes: [[0, 0, 4, 0, 9], [1, 1, 900, 1, 0]], luzes: [{ id: 3 }], ambiente: 'sol', ar: { hora: 40, clima: 'fogo', forca: 3 } })));
 		expect(m.paredes).toEqual([]);
 		expect(m.luzes).toEqual([]);
-		expect([m.ambiente, m.clima]).toEqual(['claro', null]);
+		expect(m.ambiente).toBe('claro');
+		expect(m.ar).toEqual({ hora: 10, clima: 'clear', forca: 0.7, vento: 0.3 });
 	});
 });
 
 describe('camposDaCena', () => {
-	it('mede o fundo a partir do canto da caixa da cena, que é onde a Mesa o desenha', () => {
+	it('mede a imagem a partir do canto da caixa da cena, que é onde a Mesa a desenha', () => {
 		const m = lerFingersMap(pacote());
 		const cfg = cfgIso(m.largura, m.altura, { tw: 1, eh: 0.25, razao: 2, rotacao: 0 });
 		const b = caixaDaCena(cfg, 0, 0);
@@ -93,7 +97,31 @@ describe('camposDaCena', () => {
 	});
 });
 
-describe('a peça entre os tokens', () => {
+describe('lerMapaVivo', () => {
+	const certo = { mapa: '11111111-2222-3333-4444-555555555555/lote-1/mapa.fmap', pacote: '11111111-2222-3333-4444-555555555555/lote-1/pacote', andar: 1, hora: 21.5, clima: 'rain', forca: 0.4, vento: 0.1, telhados: false, corte: true };
+
+	it('lê o que a cena guarda', () => {
+		expect(lerMapaVivo(certo)).toEqual(certo);
+	});
+
+	it('uma cena comum não tem mapa vivo', () => {
+		expect(lerMapaVivo(null)).toBeNull();
+		expect(lerMapaVivo(undefined)).toBeNull();
+		expect(lerMapaVivo({})).toBeNull();
+	});
+
+	it('não aceita caminho estranho, que viraria um pedido de rede', () => {
+		expect(lerMapaVivo({ ...certo, mapa: 'https://exemplo.com/mapa.fmap' })).toBeNull();
+		expect(lerMapaVivo({ ...certo, pacote: '../../outra/coisa' })).toBeNull();
+	});
+
+	it('segura os números e o clima no que o motor entende', () => {
+		const v = lerMapaVivo({ ...certo, hora: 99, forca: -2, vento: 'muito', clima: 'fogo', andar: 3.4 })!;
+		expect([v.hora, v.forca, v.vento, v.clima, v.andar]).toEqual([24, 0, 0.3, 'clear', 3]);
+	});
+});
+
+describe('a ordem no quadro', () => {
 	const cfg = cfgIso(30, 30, { tw: 1, eh: 0.25, razao: 2, rotacao: 0 });
 	/** A mesma conta do quadro: tokens e imagens em espaço 1 × 1 em volta do centro ou do apoio. */
 	const ordem = (peca: { x: number; y: number }, token: { x: number; y: number; n: number }) =>
@@ -107,11 +135,11 @@ describe('a peça entre os tokens', () => {
 	// um trecho de parede ao longo de x, com o pé sobre ela, entre (4, 7) e (5, 7)
 	const parede = { x: 4.5, y: 7 };
 
-	it('fica na frente do token de 1 quadrado atrás da parede', () => {
+	it('a imagem fica na frente do token de 1 quadrado atrás dela', () => {
 		expect(ordem(parede, { x: 4, y: 6, n: 1 })).toEqual(['Tt', 'Ip']);
 	});
 
-	it('fica atrás do token de 1 quadrado na frente da parede', () => {
+	it('a imagem fica atrás do token de 1 quadrado na frente dela', () => {
 		expect(ordem(parede, { x: 4, y: 7, n: 1 })).toEqual(['Ip', 'Tt']);
 	});
 
@@ -123,43 +151,26 @@ describe('a peça entre os tokens', () => {
 	});
 });
 
-describe('a peça na tela', () => {
-	it('desce abaixo do apoio na caixa de pé', () => {
+describe('as peças antigas, de antes do mapa vivo', () => {
+	it('descem abaixo do apoio na caixa de pé', () => {
 		const o = { tipo: 'imagem' as const, x: 3, y: 4, largura: 2, altura: 4, desce: 0.5, texto: null, tamanho: null };
 		expect(caixaDePe(o)).toEqual({ dx: 0, dy: -1.5, hw: 1, hh: 2 });
 	});
 
-	it('sem desce, a base fica no apoio, como antes', () => {
+	it('sem desce, a base fica no apoio', () => {
 		const o = { tipo: 'imagem' as const, x: 3, y: 4, largura: 2, altura: 4, texto: null, tamanho: null };
 		expect(caixaDePe(o).dy).toBe(-2);
 	});
 
-	it('as camadas das peças existem na pilha padrão: o meio em pé e o acima sobre os tokens', () => {
-		const pilha = camadasDaCena(null);
-		expect(pilha.find((c) => c.id === 'meio')?.em_pe).toBe(true);
-		expect(pilha.findIndex((c) => c.id === 'acima')).toBeGreaterThan(pilha.findIndex((c) => c.tipo === 'tokens'));
-	});
-});
-
-describe('pontosDaPeca', () => {
-	it('olha os dois lados de um trecho de parede', () => {
+	it('olham os dois lados de um trecho de parede', () => {
 		const pontos = pontosDaPeca({ x: 4.5, y: 7, largura: 0.5, desce: 0.1 });
 		expect(pontos.some(([, y]) => y < 7)).toBe(true);
 		expect(pontos.some(([, y]) => y > 7)).toBe(true);
 	});
 
-	it('sai do corpo de um prédio', () => {
+	it('saem do corpo de um prédio', () => {
 		// 6 × 6, com o apoio no meio: a figura tem 6 de largura e desce 1,5
 		const fora = pontosDaPeca({ x: 10, y: 10, largura: 6, desce: 1.5 }).slice(1);
 		for (const [x, y] of fora) expect(Math.abs(x - 10) >= 3 || Math.abs(y - 10) >= 3).toBe(true);
-	});
-
-	it('segue a projeção: cada ponto cai onde foi pedido na tela', () => {
-		const cfg = cfgIso(30, 30, { tw: 1, eh: 0.25, razao: 2, rotacao: 0 });
-		const [apoio, esquerda] = pontosDaPeca({ x: 10, y: 10, largura: 3, desce: 0.75 });
-		const [ax, ay] = projetar(apoio[0], apoio[1], 0, cfg);
-		const [ex, ey] = projetar(esquerda[0], esquerda[1], 0, cfg);
-		expect(ex).toBeCloseTo(ax - 1.7);
-		expect(ey).toBeCloseTo(ay);
 	});
 });

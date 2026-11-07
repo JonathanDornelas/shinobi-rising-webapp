@@ -496,3 +496,26 @@ describe('peças de mapa', () => {
 		expect(o.desce).toBeNull();
 	});
 });
+
+describe('mapa vivo', () => {
+	const vivo = (c: string) => ({ mapa: `${c}/lote/mapa.fmap`, pacote: `${c}/lote/pacote`, hora: 21 });
+
+	it('a cena guarda onde está o mapa, e quem joga lê como o resto da cena', async () => {
+		await banco.como(kaito, `update mesa_cenas set mapa_vivo = $2 where id = $1`, [ponte, JSON.stringify(vivo(campanha))]);
+		const [c] = await banco.como<{ mapa_vivo: { hora: number } }>(bruno, `select mapa_vivo from mesa_cenas where id = $1`, [ponte]);
+		expect(c.mapa_vivo.hora).toBe(21);
+	});
+
+	it('só o Mestre muda, e só com um objeto', async () => {
+		expect(await banco.como(bruno, `update mesa_cenas set mapa_vivo = '{}' where id = $1 returning id`, [ponte])).toEqual([]);
+		await expect(banco.como(kaito, `update mesa_cenas set mapa_vivo = '[]' where id = $1`, [ponte])).rejects.toThrow(/mapa_vivo/);
+	});
+
+	it('o bucket é do Mestre da campanha: arquivo público, envio só dele', async () => {
+		const enviar = (u: Usuario, nome: string) => banco.como(u, `insert into storage.objects (bucket_id, name) values ('mapas', $1)`, [nome]);
+		await expect(enviar(kaito, `${campanha}/lote/mapa.fmap`)).resolves.toBeDefined();
+		await expect(enviar(bruno, `${campanha}/lote/outro.fmap`)).rejects.toThrow(/row-level security/);
+		const [b] = (await banco.db.query<{ public: boolean; file_size_limit: number }>(`select public, file_size_limit from storage.buckets where id = 'mapas'`)).rows;
+		expect(b).toEqual({ public: true, file_size_limit: 52428800 });
+	});
+});

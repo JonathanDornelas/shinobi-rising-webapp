@@ -450,6 +450,8 @@ export type MesaCena = {
 	fundo_rotacao?: number;
 	/** Isométrica: a grade fica só dentro do retângulo da imagem (ausente enquanto a migração não roda). */
 	fundo_recorte?: boolean;
+	/** O mapa que roda ao vivo, com o motor do fingersMap (ver mesa/mapa-vivo.ts); null numa cena comum. */
+	mapa_vivo?: unknown;
 	/** Relógios da cena (ver mesa/relogios.ts); ausente enquanto a migração não roda. */
 	relogios?: unknown;
 	/** Clima sobre o mapa (chuva, neve, névoa…); ausente enquanto a migração não roda. */

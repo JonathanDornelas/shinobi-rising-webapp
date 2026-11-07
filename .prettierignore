@@ -7,3 +7,6 @@ bun.lockb
 
 # Miscellaneous
 /static/
+
+# Gerado no fingersMap
+/src/lib/mesa/motor/player.js
