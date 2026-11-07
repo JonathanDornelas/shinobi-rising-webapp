@@ -2,6 +2,14 @@
 
 Feita em 2026-11-07, para o projeto `rising-naruto-sa` (`qjvdbwuvqyfbyhsthtgh`, `sa-east-1`). O passo a passo fica como registro. O caminho real foi outro, porque não havia a senha do banco antigo: tudo passou pela Management API da Supabase, com um token para cada projeto. Veja "Como foi feito".
 
+## Como terminou
+
+A troca entrou no ar em 2026-11-07, às 17:43 UTC, com as funções em `gru1`. Depois dela, os dois bancos foram comparados de novo: 27 tabelas e 1.926 linhas iguais, e nada gravado no antigo depois da cópia final. Falta alguém entrar com a própria conta em produção e uma sessão de jogo de verdade.
+
+O endereço público é `https://shinobi-rising.vercel.app`. O `shinobi-rising-webapp.vercel.app`, que estava no código, no `robots.txt` e na configuração de login, deixou de existir com a exclusão do projeto `-mela`, e foi trocado nos três lugares. Ele saiu também da lista de redirecionamentos do login, porque um subdomínio liberado pode ser registrado por qualquer pessoa.
+
+Depois disto, quem aplicar migração precisa de um token que alcance o projeto novo.
+
 ## Como foi feito
 
 - **Estrutura:** as 54 migrações do repositório, em ordem, no projeto novo. As funções foram refeitas depois a partir da produção, porque os arquivos daqui têm quebra de linha do Windows. Comparados 14 tipos de item dos dois lados (colunas, restrições, índices, políticas, gatilhos, funções, permissões, publicação, buckets), deu zero diferença.
