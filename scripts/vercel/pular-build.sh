@@ -19,6 +19,11 @@ if [ -z "$anterior" ] || ! git cat-file -e "$anterior^{commit}" 2>/dev/null; the
 	echo 'Sem o último deploy para comparar: constrói.'
 	exit 1
 fi
+# O mesmo commit de novo é um Redeploy pedido no painel, quase sempre porque mudou uma variável: o código é igual, mas o build não é.
+if [ "$anterior" = "$(git rev-parse HEAD)" ]; then
+	echo 'Redeploy do mesmo commit: constrói.'
+	exit 1
+fi
 if git diff --quiet "$anterior" HEAD -- . ':(exclude)planos' ':(exclude)supabase' ':(exclude)pixellab' ':(exclude)legado' ':(exclude,glob)*.md'; then
 	echo "Nada muda o site desde ${anterior:0:7}: sem build."
 	exit 0
