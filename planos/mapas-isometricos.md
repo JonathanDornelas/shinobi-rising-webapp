@@ -223,6 +223,17 @@ Medido do Brasil em 2026-11-06: ida e volta HTTP até o banco (`us-east-2`), 187
 - O aviso do banco deixa de fora as colunas grandes que não mudaram, e o que passa de 1 MB chega só com os campos pequenos. Por isso `cenaDoAviso`: o que não veio fica como estava.
 - A cada 20 confirmações sai uma linha no console, `[mesa] o aviso do banco chega N ms depois`. É o número que falta medir com o RLS de verdade.
 - `src/lib/mesa/replicacao.spec.ts` roda um Mestre e dois jogadores com a Mesa de verdade, sobre um banco e um canal de mentira que imitam a latência, o RLS e o TOAST.
+- O que os jogos online fazem, o que serve para a Mesa e a ordem do que falta: `planos/replicacao-ao-vivo.md`.
+
+## 13b. Cenas de até 1 km
+
+A cena vai até 1000 × 1000 m (migração `20261201120000_cenas_de_um_quilometro.sql`, constante `LADO_MAXIMO_CENA`). Numa cidade de 1000 × 1000 com 625 casas e 3750 paredes, medida em 2026-11-07, um token anda a 60 fps e a câmera também, do zoom de 100% ao de 3%.
+
+- Em cena com mais de 320 m de lado, o olhar vai até 160 m (`ALCANCE_DO_OLHAR`), e a luz que ninguém alcança ver fica fora da conta.
+- `poligonoVisao` testa as paredes da mais perto para a mais longe, e `dentro` faz busca binária pelo ângulo. Sem isso, um passo custava 45 ms só nesse teste.
+- A máscara de visão cai de 8 para até 2 pixels por quadrado, para caber em 2048. A imagem da cena sai reduzida acima de 8192 px.
+- De longe (zoom abaixo de 25%) os marcadores de porta somem, e numa cena grande só aparecem os que estão na tela.
+- O como e o porquê do lado do motor estão em `docs/decisoes.md` do fingersMap.
 
 ## 14. Perguntas abertas
 
