@@ -301,7 +301,7 @@
 				fundo_ladrilhos: arte.ladrilhos ?? null,
 				...(cena.fundo_rotacao !== undefined ? { fundo_rotacao: 0 } : {}),
 				...(cena.clima !== undefined ? { clima: null } : {}),
-				mapa_vivo: { ...arquivos, andar: m.andar, ...m.ar, telhados: true, corte: false }
+				mapa_vivo: { ...arquivos, andar: m.andar, acima: m.acima, ...m.ar, telhados: true, corte: false }
 			});
 			await mesa.tirarPecas();
 			if (antes) await apagarMapaVivo(antes);
@@ -592,6 +592,7 @@
 						<input id="vivo-vento" type="range" min="0" max="1" step="0.05" value={vivo.vento} oninput={(e) => mudarVivo({ vento: Number(e.currentTarget.value) })} aria-label="Vento" />
 					</label>
 					<label class="flex items-center gap-2 {dica}"><input type="checkbox" checked={vivo.telhados} onchange={(e) => mudarVivo({ telhados: e.currentTarget.checked })} />Telhados</label>
+					<label class="flex items-center gap-2 {dica}"><input type="checkbox" checked={vivo.acima} onchange={(e) => mudarVivo({ acima: e.currentTarget.checked })} />Andares de cima</label>
 					<label class="flex items-center gap-2 {dica}"><input type="checkbox" checked={vivo.corte} onchange={(e) => mudarVivo({ corte: e.currentTarget.checked })} />Cortar as paredes para ver dentro dos cômodos</label>
 				</section>
 			{/if}

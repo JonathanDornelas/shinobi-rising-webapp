@@ -10,6 +10,7 @@ export interface Look {
 	roofs: boolean;
 	cut: boolean;
 	grid: number;
+	above: boolean;
 }
 export interface Camera {
 	left: number;

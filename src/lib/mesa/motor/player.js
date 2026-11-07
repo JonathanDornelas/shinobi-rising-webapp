@@ -14419,7 +14419,8 @@ var ku = 44, Au = 2, ju = .45, Mu = 30, Nu = 60, Pu = 1.2, Fu = 1, Iu = 24, Lu =
 	look = {
 		roofs: !0,
 		cut: !1,
-		grid: 0
+		grid: 0,
+		above: !1
 	};
 	quality;
 	floor = 0;
@@ -14560,7 +14561,7 @@ var ku = 44, Au = 2, ju = .45, Mu = 30, Nu = 60, Pu = 1.2, Fu = 1, Iu = 24, Lu =
 			centerY: r + o / 2 + 1e-6,
 			zoom: i,
 			activeFloor: this.floor,
-			showAbove: !1,
+			showAbove: this.look.above,
 			cutPx: this.look.cut ? ku : null,
 			hour: this.air.hour,
 			shadows: t,

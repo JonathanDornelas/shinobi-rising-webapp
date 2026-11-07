@@ -25,6 +25,7 @@ export interface CenaFingersMap {
 	largura: number;
 	altura: number;
 	andar: number;
+	acima: boolean;
 	/** A imagem do andar: o canto de cima à esquerda na tela e o tamanho, em metros de tela. */
 	fundo: { x: number; y: number; w: number; h: number; imagem: Bytes };
 	mapa: Bytes;
@@ -89,6 +90,7 @@ export function lerFingersMap(dados: Uint8Array): CenaFingersMap {
 		largura: L,
 		altura: A,
 		andar: num(c.andar, 0, 15) ? Math.round(c.andar) : 0,
+		acima: c.acima === true,
 		fundo: { x: fundo.x as number, y: fundo.y as number, w: fundo.w as number, h: fundo.h as number, imagem: copia(imagem) },
 		mapa: copia(mapa),
 		pacoteLista: copia(lista),

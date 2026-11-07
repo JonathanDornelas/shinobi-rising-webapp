@@ -16,6 +16,7 @@ const cena = (extra: Record<string, unknown> = {}) => ({
 	largura: 72,
 	altura: 72,
 	andar: 1,
+	acima: true,
 	fundo: { arquivo: 'fundo.png', x: -36, y: -8, w: 72, h: 39.4 },
 	mapa: 'mapa.fmap',
 	pacote: 'pacote',
@@ -32,7 +33,7 @@ describe('lerFingersMap', () => {
 	it('lê a cena e os arquivos', () => {
 		const m = lerFingersMap(pacote());
 		expect(m.nome).toBe('Rua de Konoha');
-		expect([m.largura, m.altura, m.andar, m.ambiente]).toEqual([72, 72, 1, 'penumbra']);
+		expect([m.largura, m.altura, m.andar, m.acima, m.ambiente]).toEqual([72, 72, 1, true, 'penumbra']);
 		expect(m.fundo).toMatchObject({ x: -36, y: -8, w: 72, h: 39.4 });
 		expect(m.ar).toEqual({ hora: 21, clima: 'rain', forca: 0.5, vento: 0.2 });
 		expect([...m.fundo.imagem]).toEqual([...PNG]);
@@ -98,7 +99,7 @@ describe('camposDaCena', () => {
 });
 
 describe('lerMapaVivo', () => {
-	const certo = { mapa: '11111111-2222-3333-4444-555555555555/lote-1/mapa.fmap', pacote: '11111111-2222-3333-4444-555555555555/lote-1/pacote', andar: 1, hora: 21.5, clima: 'rain', forca: 0.4, vento: 0.1, telhados: false, corte: true };
+	const certo = { mapa: '11111111-2222-3333-4444-555555555555/lote-1/mapa.fmap', pacote: '11111111-2222-3333-4444-555555555555/lote-1/pacote', andar: 1, acima: true, hora: 21.5, clima: 'rain', forca: 0.4, vento: 0.1, telhados: false, corte: true };
 
 	it('lê o que a cena guarda', () => {
 		expect(lerMapaVivo(certo)).toEqual(certo);

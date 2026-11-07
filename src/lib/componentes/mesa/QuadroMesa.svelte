@@ -567,7 +567,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	$effect(() => {
 		if (!vivo) return;
 		motor.ar({ hour: vivo.hora, weather: vivo.clima, strength: vivo.forca, wind: vivo.vento });
-		motor.aparenciaDoMapa({ roofs: vivo.telhados, cut: vivo.corte, grid: ui.gradeOculta ? 0 : 0.28 });
+		motor.aparenciaDoMapa({ roofs: vivo.telhados, cut: vivo.corte, above: vivo.acima, grid: ui.gradeOculta ? 0 : 0.28 });
 	});
 	$effect(() => {
 		if (!chaveDoVivo) return;

@@ -21,6 +21,8 @@ export interface MapaVivo {
 	mapa: string;
 	pacote: string;
 	andar: number;
+	/** Os andares de cima aparecem também, como num mapa ao ar livre com paredões. */
+	acima: boolean;
 	hora: number;
 	clima: Weather;
 	/** De 0 a 1. */
@@ -43,6 +45,7 @@ export function lerMapaVivo(v: unknown): MapaVivo | null {
 		mapa: m.mapa,
 		pacote: m.pacote,
 		andar: Math.round(entre(m.andar, 0, 15, 0)),
+		acima: m.acima === true,
 		hora: entre(m.hora, 0, 24, 10),
 		clima: CLIMAS_VIVOS.some((c) => c.id === m.clima) ? (m.clima as Weather) : 'clear',
 		forca: entre(m.forca, 0, 1, 0.7),
