@@ -215,6 +215,7 @@ Medido do Brasil em 2026-11-06: ida e volta HTTP até o banco (`us-east-2`), 187
 
 - O que alguém faz vai primeiro pelo broadcast e depois para o banco (`src/lib/mesa/espelho.ts`). O banco segue sendo a verdade: o aviso dele confirma, e é ele quem vale se o broadcast se perder.
 - O broadcast não passa pelo RLS. Só vai o que está nas listas do `espelho.ts`, e nunca PV, nome, cena em preparo ou o que está escondido. Um campo novo fica de fora até alguém o pôr na lista.
+- Numa cena em preparo nada sai pelo canal, porque ele chega a todos, até a quem ignora a mensagem. O que aponta um lugar do quadro (ping, régua, molde) também fica de fora: aparecia na cena de quem joga.
 - `Frescos`: um aviso atrasado do banco não desfaz o que já chegou. É campo a campo, por 4 s. Passou disso, vale o banco.
 - Se o banco recusa, quem mandou desfaz na sua tela e manda o caminho de volta.
 - `avisar` tem um teto (8 por segundo, com folga de 12): cada mensagem conta uma vez para cada um na mesa, e passar do limite faz o servidor fechar o canal. O que passa do teto chega pelo aviso do banco.

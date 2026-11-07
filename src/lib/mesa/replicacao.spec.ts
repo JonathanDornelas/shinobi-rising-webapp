@@ -130,7 +130,7 @@ class CanalFalso {
 
 /** O banco e o canal. Só faz o que a Mesa pede, com a mesma regra do RLS para o que cada um vê. */
 class Rede {
-	tabelas: Record<string, Map<string, Linha>> = { mesa_cenas: new Map(), mesa_tokens: new Map(), mesa_tracos: new Map(), mesa_efeitos: new Map(), mesa_objetos: new Map(), mesa_jukebox: new Map() };
+	tabelas: Record<string, Map<string, Linha>> = { mesa_cenas: new Map(), mesa_tokens: new Map(), mesa_tracos: new Map(), mesa_efeitos: new Map(), mesa_objetos: new Map(), mesa_jukebox: new Map(), campanhas: new Map() };
 	canais = new Set<CanalFalso>();
 	quem: { run<T>(u: string, f: () => T): T; getStore(): string | undefined } = new AsyncLocalStorage();
 	trafego: { evento: string; texto: string }[] = [];
@@ -439,11 +439,30 @@ describe('a cena', () => {
 		expect(cena(mesas.a).nome).toBe('Estrada');
 	});
 
-	it('uma cena em preparo não sai pelo canal', async () => {
+	it('nada de uma cena em preparo sai pelo canal: nem a cena, nem quem está nela, nem o ping do Mestre', async () => {
 		mesas.m.cenaId = PREPARO;
-		await feito(mesas.m, () => mesas.m.patchCena({ luzes: [{ id: 'emboscada', x: 1, y: 1, plena: 1, penumbra: 1, acesa: true }] }));
+		mesas.m.tokens = [];
+		await feito(mesas.m, async () => {
+			await mesas.m.patchCena({ luzes: [{ id: 'emboscada', x: 1, y: 1, plena: 1, penumbra: 1, acesa: true }] });
+			const t = await mesas.m.colocar({ nome: 'Ninja da emboscada', x: 4, y: 4, visivel: true });
+			await mesas.m.mover(t!.id, 6, 4, 2);
+			await mesas.m.remover(t!.id);
+			await mesas.m.deixarEfeito('Selo da emboscada', [[1, 1]], null, [1, 1]);
+			await mesas.m.desenhar([[0, 0], [1, 1]], 2);
+		});
+		mesas.m.ping(3, 3);
+		mesas.m.olharTodos(3, 3);
+		mesas.m.enviar('regua', { pontos: [] }, true);
 		await passar(2000);
-		expect(rede.trafego.filter((t) => t.evento === 'cena')).toEqual([]);
+		expect(rede.trafego).toEqual([]);
+		expect(mesas.a.pings).toEqual([]);
+		mesas.m.cenaId = ATIVA;
+	});
+
+	it('o que vale para a campanha inteira segue saindo, mesmo com o Mestre numa cena em preparo', async () => {
+		mesas.m.cenaId = PREPARO;
+		await feito(mesas.m, () => mesas.m.definirMolduraMesa(null, true));
+		expect(rede.trafego.map((t) => t.evento)).toEqual(['moldura-mesa']);
 		mesas.m.cenaId = ATIVA;
 	});
 

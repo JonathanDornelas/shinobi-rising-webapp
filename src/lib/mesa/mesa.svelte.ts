@@ -436,7 +436,8 @@ export class Mesa {
 	 * uma vez para cada um na mesa, e passar do limite faz o servidor fechar o canal, o que custa bem mais que meio segundo.
 	 */
 	private avisar(evento: 'token' | 'tokens' | 'cena' | 'porta' | 'linha' | 'fora', payload: unknown) {
-		if (!this.canal || !this.conectado) return;
+		// numa cena em preparo não há ninguém para receber, e o grupo não pode ler o que há nela: o canal chega a todos, até a quem ignora
+		if (!this.canal || !this.conectado || !this.cena?.ativa) return;
 		const agora = Date.now();
 		this.folga = Math.min(12, this.folga + ((agora - this.folgaEm) / 1000) * 8);
 		this.folgaEm = agora;
@@ -449,8 +450,7 @@ export class Mesa {
 		if (parte) this.avisar('token', { id: t.id, ...parte });
 	}
 	private espelharCena(c: MesaCena | null, patch: Partial<MesaCena>) {
-		// uma cena em preparo não está nas telas de quem joga, e o grupo não pode ler o que há nela
-		const parte = c?.ativa && this.mestre ? parteDaCena(patch) : null;
+		const parte = c && this.mestre ? parteDaCena(patch) : null;
 		if (parte) this.avisar('cena', { usuario: this.eu, id: c!.id, patch: parte });
 	}
 	private receberToken(p: unknown) {
@@ -641,6 +641,8 @@ export class Mesa {
 	 */
 	enviar(evento: 'fantasma' | 'regua' | 'molde' | 'apontar' | 'pulso' | 'ping' | 'moldura' | 'moldura-mesa' | 'olhar' | 'miniaturas', dados: unknown, forcar = false) {
 		if (!this.canal || !this.conectado) return;
+		// o que aponta um lugar do quadro vale para quem está nele: o ping do Mestre numa cena em preparo não aparece na cena de quem joga
+		if (evento !== 'moldura' && evento !== 'moldura-mesa' && evento !== 'miniaturas' && !this.cena?.ativa) return;
 		const agora = Date.now();
 		// o molde pode ter mais de mil quadrados: vai no máximo 6 vezes por segundo; o resto, 12
 		if (!forcar && dados != null && agora - (this.ultimoEnvio[evento] ?? 0) < (evento === 'molde' ? 160 : 80)) return;
