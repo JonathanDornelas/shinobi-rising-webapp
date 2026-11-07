@@ -12,7 +12,8 @@ export interface FiguraPedida {
 	z: number;
 	chave: string;
 	montar: () => Promise<FigureArt> | FigureArt;
-	sombra: { chave: string; montar: () => FigureArt } | null;
+	/** O motor faz a sombra com a luz, sob os pés que ele acha na imagem. */
+	sombra: boolean;
 }
 
 const FALHOU = -1;
@@ -160,10 +161,7 @@ export class MotorDaMesa {
 			const sprite = this.sprites.get(f.chave);
 			if (sprite === undefined) this.pedir(f.chave, f.montar);
 			if (sprite === undefined || sprite === FALHOU) continue;
-			const sombra = f.sombra && this.sprites.get(f.sombra.chave);
-			if (f.sombra && sombra === undefined) this.pedir(f.sombra.chave, f.sombra.montar);
-			if (sombra !== undefined && sombra !== null && sombra !== FALHOU) feitas.push({ sprite: sombra, x: f.x, y: f.y, flat: true });
-			feitas.push({ sprite, x: f.x, y: f.y, z: f.z });
+			feitas.push({ sprite, x: f.x, y: f.y, z: f.z, shadow: f.sombra });
 			ids.add(f.id);
 		}
 		player.setFigures(feitas);

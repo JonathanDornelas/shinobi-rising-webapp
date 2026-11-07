@@ -15,7 +15,7 @@
 	import { calcularMolde, nomeCurto, type UiMesa } from '#lib/mesa/ui.svelte.ts';
 	import type { MesaCena, MesaObjeto } from '#lib/supabase/banco.ts';
 	import { pontosDaPeca } from '#lib/mesa/fingersmap.ts';
-	import { figuraDaMiniatura, figuraDaSombra, figuraRedonda, corDoTema } from '#lib/mesa/figuras.ts';
+	import { figuraDaMiniatura, figuraRedonda, corDoTema } from '#lib/mesa/figuras.ts';
 	import { PX_POR_METRO, lerMapaVivo, pintarMascaraDaNevoa, pintarVisao, pixelsDaVisao } from '#lib/mesa/mapa-vivo.ts';
 	import { LADO_MAXIMO_CENA, LADO_MINIMO_CENA } from '#lib/mesa/cenas.ts';
 	import { MotorDaMesa, type FiguraPedida } from '#lib/mesa/motor.svelte.ts';
@@ -712,7 +712,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 			const [x, y, n] = [onde.x, onde.y, t.tamanho];
 			const [cx, cy] = [x + n / 2, y + n / 2];
 			const caido = t.ferimento === 3 || t.condicoes.includes('caido');
-			const sombra = { chave: `sombra:${n}`, montar: () => figuraDaSombra(n) };
+			const sombra = mesa.miniaturasCena.sombra;
 			const z = (ar ? mesa.alturaAo(t, ar.x, ar.y) : (t.elevacao ?? 0)) * PX_POR_METRO;
 			const mini = miniaturaPorId(t.miniatura);
 			if (mini) {

@@ -33,6 +33,10 @@ export interface Figure {
 	z?: number;
 	flip?: boolean;
 	flat?: boolean;
+	/** Uma sombra no chão feita pela luz, sob a parte mais baixa do corpo e da largura dela. */
+	shadow?: boolean;
+	/** O que está na frente abre uma janela pequena em volta da figura, para casa ou árvore nunca a esconder. Ligado, a não ser com false. */
+	seeThrough?: boolean;
 }
 export interface Body {
 	box: [number, number, number, number];

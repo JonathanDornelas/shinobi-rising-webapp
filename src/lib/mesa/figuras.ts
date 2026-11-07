@@ -112,18 +112,3 @@ export async function figuraRedonda(d: Disco): Promise<FigureArt> {
 	}
 	return { w: lado, h: lado, ax: Math.round(meio), ay: Math.round(meio + d.sobe * PX), pixels: c.getImageData(0, 0, lado, lado).data };
 }
-
-/** A sombra de quem está de pé: uma elipse deitada no chão, pontilhada como as sombras da arte, para não pedir transparência. */
-export function figuraDaSombra(n: number): FigureArt {
-	const rx = Math.round(0.4 * n * PX);
-	const ry = Math.round(rx / 2);
-	const [w, h] = [rx * 2, ry * 2];
-	const pixels = new Uint8ClampedArray(w * h * 4);
-	for (let y = 0; y < h; y++)
-		for (let x = 0; x < w; x++) {
-			const [dx, dy] = [(x + 0.5 - rx) / rx, (y + 0.5 - ry) / ry];
-			if (dx * dx + dy * dy > 1 || (x + y) % 2) continue;
-			pixels[(y * w + x) * 4 + 3] = 255;
-		}
-	return { w, h, ax: rx, ay: ry, pixels };
-}
