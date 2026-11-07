@@ -46,6 +46,10 @@ export const cortaPasso = (t: number) => t === 0 || t === 1 || t === 3;
 const r2 = (v: number) => Math.round(v * 100) / 100;
 const numero = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
 
+/** O banco tem as mesmas contas (mesa_cenas_paredes_check e mesa_cenas_luzes_check). */
+const MAX_PAREDES = 20000;
+const MAX_LUZES = 2000;
+
 /** Só o que o banco aceita: paredes com pontas dentro da cena (com folga de 1 m), tamanho > 0 e tipo de 0 a 4. */
 export function limparParedes(v: unknown, L: number, A: number): Parede[] {
 	if (!Array.isArray(v)) return [];
@@ -58,7 +62,7 @@ export function limparParedes(v: unknown, L: number, A: number): Parede[] {
 		if (Math.hypot(x2 - x1, y2 - y1) < 0.05) continue;
 		saida.push([r2(x1), r2(y1), r2(x2), r2(y2), t as TipoParede]);
 	}
-	return saida.slice(0, 5000);
+	return saida.slice(0, MAX_PAREDES);
 }
 
 export function limparLuzes(v: unknown): Luz[] {
@@ -66,7 +70,7 @@ export function limparLuzes(v: unknown): Luz[] {
 	return v
 		.filter((l): l is Luz => !!l && typeof l === 'object' && typeof l.id === 'string' && [l.x, l.y, l.plena, l.penumbra].every(numero))
 		.map((l) => ({ id: l.id, x: r2(l.x), y: r2(l.y), plena: Math.min(60, Math.max(0, r2(l.plena))), penumbra: Math.min(60, Math.max(0, r2(l.penumbra))), acesa: l.acesa !== false }))
-		.slice(0, 300);
+		.slice(0, MAX_LUZES);
 }
 
 /** A luz do token, se houver uma de verdade. */
@@ -258,20 +262,30 @@ export class CacheVisao {
 
 // um nada fora do centro: o olho nunca cai exatamente numa linha da grade (onde as paredes costumam estar)
 const DESLOCAMENTO = 0.0013;
+/** Uma cena até este tamanho é vista de ponta a ponta. */
+const CENA_SEM_HORIZONTE = 320;
+/** Numa maior, até onde vai o olhar, em metros: a conta da visão fica do tamanho do que está em volta, e não do mapa. */
+export const ALCANCE_DO_OLHAR = 160;
 
 export function calcularVisao(e: EntradaVisao, cache = new CacheVisao()): Visao {
 	const segs = cache.segmentos(e.paredes);
 	const cena: Caixa = { x0: 0, y0: 0, x1: e.L, y1: e.A };
 	const noLimite = (v: number, max: number) => Math.min(max - DESLOCAMENTO, Math.max(DESLOCAMENTO, v + DESLOCAMENTO));
+	const horizonte = Math.max(e.L, e.A) > CENA_SEM_HORIZONTE ? ALCANCE_DO_OLHAR : Infinity;
+	const emVolta = (x: number, y: number): Caixa =>
+		horizonte === Infinity ? cena : { x0: Math.max(0, x - horizonte), y0: Math.max(0, y - horizonte), x1: Math.min(e.L, x + horizonte), y1: Math.min(e.A, y + horizonte) };
 	const vistas = e.observadores.map((o) => {
 		const proprio = o.paredes ? cache.de(o.paredes) : null;
-		return (proprio ?? cache).poligono(noLimite(o.x, e.L), noLimite(o.y, e.A), cena, proprio ? proprio.segmentos(o.paredes!) : segs);
+		const [x, y] = [noLimite(o.x, e.L), noLimite(o.y, e.A)];
+		return (proprio ?? cache).poligono(x, y, emVolta(x, y), proprio ? proprio.segmentos(o.paredes!) : segs);
 	});
 	const fontes: FonteAcesa[] = [];
 	if (e.ambiente !== 'claro') {
 		const acender = (x: number, y: number, plena: number, penumbra: number) => {
 			const r = plena + penumbra;
 			if (r <= 0) return;
+			// a luz que ninguém alcança ver fica fora da conta
+			if (horizonte !== Infinity && !e.observadores.some((o) => Math.max(Math.abs(o.x - x), Math.abs(o.y - y)) <= horizonte + r)) return;
 			const [lx, ly] = [noLimite(x, e.L), noLimite(y, e.A)];
 			const caixa = { x0: Math.max(0, lx - r), y0: Math.max(0, ly - r), x1: Math.min(e.L, lx + r), y1: Math.min(e.A, ly + r) };
 			fontes.push({ x: lx, y: ly, plena, penumbra, poligono: cache.poligono(lx, ly, caixa, segs) });

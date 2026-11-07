@@ -11482,6 +11482,9 @@ var yc = (e, t) => t * 65536 + e, bc = (e) => Math.floor(e / 32), xc = class {
 		}
 		i[(t & 31) * 32 + (e & 31)] = n;
 	}
+	chunk(e, t) {
+		return this.chunks.get(yc(e, t));
+	}
 	filled() {
 		let e = [];
 		for (let [t, n] of this.chunks) n.some((e) => e !== 0) && e.push([
@@ -11514,7 +11517,7 @@ var yc = (e, t) => t * 65536 + e, bc = (e) => Math.floor(e / 32), xc = class {
 function Nc(e) {
 	typeof e == "object" && e || Mc("falta o map.json");
 	let t = e;
-	t.version !== 1 && Mc(`versão ${String(t.version)} não reconhecida`), typeof t.name != "string" && Mc("o mapa não tem nome"), t.grid && t.grid.tileW > 0 && t.grid.tileH > 0 && t.grid.stepPx > 0 && t.grid.storySteps > 0 || Mc("grade inválida"), (!t.size || !(t.size.x > 0) || !(t.size.y > 0) || t.size.x > 512 || t.size.y > 512) && Mc("tamanho inválido"), typeof t.pack != "string" && Mc("falta o pacote de arte"), Array.isArray(t.tiles) || Mc("falta a lista de tiles"), (!Array.isArray(t.floors) || !t.floors.length || t.floors.length > 16) && Mc("andares inválidos");
+	t.version !== 1 && Mc(`versão ${String(t.version)} não reconhecida`), typeof t.name != "string" && Mc("o mapa não tem nome"), t.grid && t.grid.tileW > 0 && t.grid.tileH > 0 && t.grid.stepPx > 0 && t.grid.storySteps > 0 || Mc("grade inválida"), (!t.size || !(t.size.x > 0) || !(t.size.y > 0) || t.size.x > 1e3 || t.size.y > 1e3) && Mc("tamanho inválido"), typeof t.pack != "string" && Mc("falta o pacote de arte"), Array.isArray(t.tiles) || Mc("falta a lista de tiles"), (!Array.isArray(t.floors) || !t.floors.length || t.floors.length > 16) && Mc("andares inválidos");
 	let n = /* @__PURE__ */ new Set();
 	for (let e of t.floors) {
 		(typeof e.id != "string" || n.has(e.id)) && Mc("andar com id repetido"), n.add(e.id), (!Array.isArray(e.layers) || e.layers.length > 24) && Mc(`camadas inválidas em ${e.name}`);
@@ -12374,37 +12377,54 @@ function dl(e, t, n, r, i, a, o) {
 	}
 	return (e.length - s) / 11;
 }
-var fl = .05, pl = 3, ml = 4, hl = .15, gl = (e) => Math.min(255, Math.max(0, Math.round(e / fl))), _l = class {
+var fl = .05, pl = 32, ml = 3, hl = 4, gl = .15, _l = (e) => Math.min(255, Math.max(0, Math.round(e / fl))), vl = class {
 	sizeX;
 	sizeY;
 	floors;
 	width;
 	height;
 	data;
-	constructor(e, t, n) {
-		this.sizeX = e, this.sizeY = t, this.floors = n, this.width = e * 8, this.height = t * 8, this.data = new Uint8Array(this.width * this.height * n * ml);
+	left = 0;
+	top = 0;
+	constructor(e, t, n, r = 320) {
+		this.sizeX = e, this.sizeY = t, this.floors = n, this.width = Math.min(e, r) * 8, this.height = Math.min(t, r) * 8, this.data = new Uint8Array(this.width * this.height * n * hl);
+	}
+	get tilesX() {
+		return this.width / 8;
+	}
+	get tilesY() {
+		return this.height / 8;
+	}
+	look(e, t) {
+		let n = (e, t, n, r) => Math.abs(e - (r + t / 2)) < t / 4 ? r : Math.max(0, Math.min(n - t, Math.round((e - t / 2) / pl) * pl)), [r, i] = [n(e, this.tilesX, this.sizeX, this.left), n(t, this.tilesY, this.sizeY, this.top)];
+		return r === this.left && i === this.top ? !1 : (this.left = r, this.top = i, !0);
+	}
+	reaches(e, t, n, r) {
+		return n >= this.left && r >= this.top && e <= this.left + this.tilesX && t <= this.top + this.tilesY;
 	}
 	box(e, t, n, r, i, a) {
-		let o = gl(a), s = Math.max(0, Math.round(t * 8)), c = Math.max(0, Math.round(n * 8)), l = Math.min(this.width, Math.round(r * 8)), u = Math.min(this.height, Math.round(i * 8)), d = e * this.width * this.height;
+		let o = _l(a), s = Math.max(0, Math.round((t - this.left) * 8)), c = Math.max(0, Math.round((n - this.top) * 8)), l = Math.min(this.width, Math.round((r - this.left) * 8)), u = Math.min(this.height, Math.round((i - this.top) * 8)), d = e * this.width * this.height;
 		for (let e = c; e < u; e++) for (let t = s; t < l; t++) {
-			let n = (d + e * this.width + t) * ml;
+			let n = (d + e * this.width + t) * hl;
 			o > this.data[n] && (this.data[n] = o);
 		}
 	}
 	wallAlongX(e, t, n, r) {
-		let i = pl / 2 / 8;
+		let i = ml / 2 / 8;
 		this.box(e, t - i, n - i, t + 1 + i, n + i, r);
 	}
 	wallAlongY(e, t, n, r) {
-		let i = pl / 2 / 8;
+		let i = ml / 2 / 8;
 		this.box(e, t - i, n - i, t + i, n + 1 + i, r);
 	}
 	slab(e, t, n) {
-		let r = e * this.width * this.height;
-		for (let e = 0; e < 8; e++) for (let i = 0; i < 8; i++) this.data[(r + (n * 8 + e) * this.width + t * 8 + i) * ml + 1] = 255;
+		let [r, i] = [t - this.left, n - this.top];
+		if (r < 0 || i < 0 || r >= this.tilesX || i >= this.tilesY) return;
+		let a = e * this.width * this.height;
+		for (let e = 0; e < 8; e++) for (let t = 0; t < 8; t++) this.data[(a + (i * 8 + e) * this.width + r * 8 + t) * hl + 1] = 255;
 	}
 	canopy(e, t, n, r, i, a = !1) {
-		let o = r.size >> 1, s = Math.round(t * 8) - o, c = Math.round(n * 8) - o, l = i / fl;
+		let o = r.size >> 1, s = Math.round((t - this.left) * 8) - o, c = Math.round((n - this.top) * 8) - o, l = i / fl;
 		for (let t = 0; t < r.size; t++) for (let n = 0; n < r.size; n++) {
 			let i = (a ? n * r.size + t : t * r.size + n) * 2, o = r.cells[i + 1];
 			if (!o) continue;
@@ -12416,30 +12436,30 @@ var fl = .05, pl = 3, ml = 4, hl = .15, gl = (e) => Math.min(255, Math.max(0, Ma
 		if (!(t < 0 || n < 0 || t >= this.width || n >= this.height)) for (let o = e; o < this.floors; o++) {
 			let s = (o - e) * a, c = o === this.floors - 1, l = Math.max(0, r - s), u = c ? i - s : Math.min(a, i - s);
 			if (u <= l) continue;
-			let d = (o * this.width * this.height + n * this.width + t) * ml, f = this.data[d + 3] > 0;
+			let d = (o * this.width * this.height + n * this.width + t) * hl, f = this.data[d + 3] > 0;
 			this.data[d + 2] = f ? Math.min(this.data[d + 2], Math.round(l)) : Math.round(l), this.data[d + 3] = Math.min(255, Math.max(this.data[d + 3], Math.round(u)));
 		}
 	}
 	solid(e, t, n, r, i, a, o) {
 		let s = a / fl, c = o / fl;
-		for (let a = Math.round(n * 8); a < Math.round(i * 8); a++) for (let n = Math.round(t * 8); n < Math.round(r * 8); n++) this.hanging(e, n, a, 0, s, c);
+		for (let a = Math.round((n - this.top) * 8); a < Math.round((i - this.top) * 8); a++) for (let n = Math.round((t - this.left) * 8); n < Math.round((r - this.left) * 8); n++) this.hanging(e, n, a, 0, s, c);
 	}
 	roof(e, t, n, r, i, a, o, s) {
 		let c = s / fl;
-		for (let s = Math.max(0, Math.floor(n * 8)); s < Math.min(this.height, Math.ceil(i * 8)); s++) for (let n = Math.max(0, Math.floor(t * 8)); n < Math.min(this.width, Math.ceil(r * 8)); n++) {
-			let t = o((n + .5) / 8, (s + .5) / 8);
+		for (let s = Math.max(0, Math.floor((n - this.top) * 8)); s < Math.min(this.height, Math.ceil((i - this.top) * 8)); s++) for (let n = Math.max(0, Math.floor((t - this.left) * 8)); n < Math.min(this.width, Math.ceil((r - this.left) * 8)); n++) {
+			let t = o((n + .5) / 8 + this.left, (s + .5) / 8 + this.top);
 			t !== null && this.hanging(e, n, s, a / fl, t / fl, c);
 		}
 	}
 	tower(e, t, n, r, i, a, o) {
 		let s = o / fl;
-		for (let o = Math.max(0, Math.floor(n * 8)); o < Math.min(this.height, Math.ceil(i * 8)); o++) for (let n = Math.max(0, Math.floor(t * 8)); n < Math.min(this.width, Math.ceil(r * 8)); n++) {
-			let t = a((n + .5) / 8, (o + .5) / 8);
+		for (let o = Math.max(0, Math.floor((n - this.top) * 8)); o < Math.min(this.height, Math.ceil((i - this.top) * 8)); o++) for (let n = Math.max(0, Math.floor((t - this.left) * 8)); n < Math.min(this.width, Math.ceil((r - this.left) * 8)); n++) {
+			let t = a((n + .5) / 8 + this.left, (o + .5) / 8 + this.top);
 			if (t) {
 				for (let r = e; r < this.floors; r++) {
 					let i = t.solid / fl - (r - e) * s;
 					if (i <= 0) break;
-					let a = (r * this.width * this.height + o * this.width + n) * ml;
+					let a = (r * this.width * this.height + o * this.width + n) * hl;
 					this.data[a] = Math.max(this.data[a], Math.min(255, Math.round(r === this.floors - 1 ? i : Math.min(s, i))));
 				}
 				t.high > t.low && this.hanging(e, n, o, t.low / fl, t.high / fl, s);
@@ -12447,9 +12467,9 @@ var fl = .05, pl = 3, ml = 4, hl = .15, gl = (e) => Math.min(255, Math.max(0, Ma
 		}
 	}
 	levelsAt(e, t, n) {
-		let r = Math.floor(e * 8), i = Math.floor(t * 8), a = [0];
+		let r = Math.floor((e - this.left) * 8), i = Math.floor((t - this.top) * 8), a = [0];
 		if (r < 0 || i < 0 || r >= this.width || i >= this.height) return a;
-		let o = Math.round(n / fl), s = (e) => (e * this.width * this.height + i * this.width + r) * ml;
+		let o = Math.round(n / fl), s = (e) => (e * this.width * this.height + i * this.width + r) * hl;
 		for (let e = 0; e < this.floors; e++) {
 			let t = s(e), r = e + 1 < this.floors ? s(e + 1) : -1;
 			e > 0 && this.data[t + 1] && a.push(e * n);
@@ -12458,7 +12478,7 @@ var fl = .05, pl = 3, ml = 4, hl = .15, gl = (e) => Math.min(255, Math.max(0, Ma
 				i > 0 && !t && a.push(e * n + i * fl);
 			}
 		}
-		return a.sort((e, t) => e - t), a.filter((e, t) => t === 0 || e - a[t - 1] > hl).map((e) => Math.round(e * 100) / 100);
+		return a.sort((e, t) => e - t), a.filter((e, t) => t === 0 || e - a[t - 1] > gl).map((e) => Math.round(e * 100) / 100);
 	}
 	clear() {
 		this.data.fill(0);
@@ -12467,7 +12487,7 @@ var fl = .05, pl = 3, ml = 4, hl = .15, gl = (e) => Math.min(255, Math.max(0, Ma
 		let e = new Y(this.data, this.width, this.height, this.floors);
 		return e.format = m, e.type = o, e.internalFormat = "RGBA8", e.minFilter = r, e.magFilter = r, e.generateMipmaps = !1, e.colorSpace = "", e.unpackAlignment = 1, e.needsUpdate = !0, e;
 	}
-}, vl = (e) => `vec3(${e.map((e) => e.toFixed(6)).join(", ")})`, yl = "\nprecision highp float;\nprecision highp int;\nprecision highp sampler2D;\nprecision highp sampler2DArray;\n", bl = "\nuniform sampler2D tCut;\n/** whether anything is cut, and the size of the map in tiles */\nuniform vec3 uCut;\nconst float CUT_ROOM = 6.0;\n/** A roof starts a little below the top of its walls, with the boards of the eaves: all of it goes, so none of it stays floating around the room. */\nconst float CUT_EAVES = 8.0;\nconst float CUT_SCALE = 1024.0;\n\nfloat cutAt(float screenX, float screenY, float height) {\n	float u = screenX / 32.0;\n	float v = (screenY + height) / 16.0;\n	return texture(tCut, vec2(v + u, v - u) * 0.5 / uCut.yz).r * CUT_SCALE;\n}\n", xl = 1024, Sl = `${yl}
+}, yl = (e) => `vec3(${e.map((e) => e.toFixed(6)).join(", ")})`, bl = "\nprecision highp float;\nprecision highp int;\nprecision highp sampler2D;\nprecision highp sampler2DArray;\n", xl = "\nuniform sampler2D tCut;\n/** whether anything is cut, and the size of the part of the map the picture covers, in tiles */\nuniform vec3 uCut;\n/** the far corner of that part */\nuniform vec2 uCutAt;\nconst float CUT_ROOM = 6.0;\n/** A roof starts a little below the top of its walls, with the boards of the eaves: all of it goes, so none of it stays floating around the room. */\nconst float CUT_EAVES = 8.0;\nconst float CUT_SCALE = 1024.0;\n\nfloat cutAt(float screenX, float screenY, float height) {\n	float u = screenX / 32.0;\n	float v = (screenY + height) / 16.0;\n	vec2 at = (vec2(v + u, v - u) * 0.5 - uCutAt) / uCut.yz;\n	if (at.x < 0.0 || at.y < 0.0 || at.x >= 1.0 || at.y >= 1.0) return 0.0;\n	return texture(tCut, at).r * CUT_SCALE;\n}\n", Sl = 1024, Cl = `${bl}
 in vec2 position;
 in vec3 aWorld;
 in vec4 aMeta;
@@ -12527,7 +12547,7 @@ void main() {
 
 	gl_Position = vec4((p.x - uView.x) / uView.z * 2.0 - 1.0, 1.0 - (p.y - uView.y) / uView.w * 2.0, 0.0, 1.0);
 }
-`, Cl = `${yl}
+`, wl = `${bl}
 in vec3 position;
 in vec2 aUv;
 in vec3 aMeta;
@@ -12565,7 +12585,7 @@ void main() {
 	vec2 p = vec2((position.x - position.y) * 32.0, (position.x + position.y) * 16.0 - position.z);
 	gl_Position = vec4((p.x - uView.x) / uView.z * 2.0 - 1.0, 1.0 - (p.y - uView.y) / uView.w * 2.0, 0.0, 1.0);
 }
-`, wl = `${yl}
+`, Tl = `${bl}
 in vec2 vUv;
 in float vHeight;
 flat in vec4 vRect;
@@ -12579,7 +12599,7 @@ uniform sampler2DArray uAux;
 uniform vec4 uDepth;
 uniform vec4 uView;
 uniform vec2 uBuffer;
-${bl}
+${xl}
 
 layout(location = 0) out vec4 gColor;
 layout(location = 1) out vec4 gNormal;
@@ -12604,7 +12624,7 @@ void main() {
 	float pick = vPick;
 	gId = vec4(mod(pick, 256.0), mod(floor(pick / 256.0), 256.0), floor(pick / 65536.0), 255.0) / 255.0;
 }
-`, Tl = `${yl}
+`, El = `${bl}
 in vec2 vTexel;
 flat in vec3 vWind;
 flat in float vWater;
@@ -12628,15 +12648,15 @@ uniform vec4 uView;
 uniform vec2 uBuffer;
 /** seconds, and how many art pixels the top of a tree travels */
 uniform vec2 uWind;
-${bl}
+${xl}
 
 layout(location = 0) out vec4 gColor;
 layout(location = 1) out vec4 gNormal;
 layout(location = 2) out vec4 gId;
 
-const vec3 RIGHT = ${vl(ks)};
-const vec3 UP = ${vl(As)};
-const vec3 TOWARD = ${vl(js)};
+const vec3 RIGHT = ${yl(ks)};
+const vec3 UP = ${yl(As)};
+const vec3 TOWARD = ${yl(js)};
 
 float cellHash(vec2 p) {
 	p = fract(p * vec2(0.1031, 0.1137));
@@ -12713,7 +12733,7 @@ void main() {
 	float pick = vPick;
 	gId = vec4(mod(pick, 256.0), mod(floor(pick / 256.0), 256.0), floor(pick / 65536.0), 255.0) / 255.0;
 }
-`, El = {
+`, Dl = {
 	sky: 0,
 	smoke: 2,
 	ember: 3,
@@ -12721,7 +12741,7 @@ void main() {
 	leaf: 5,
 	firefly: 6,
 	mist: 7
-}, Dl = `${yl}
+}, Ol = `${bl}
 in vec2 position;
 in vec4 aOrigin;
 in float aSeed;
@@ -12862,7 +12882,7 @@ void main() {
 	vec2 p = floor(at) + position * size;
 	gl_Position = vec4((p.x - uView.x) / uView.z * 2.0 - 1.0, 1.0 - (p.y - uView.y) / uView.w * 2.0, 0.0, 1.0);
 }
-`, Ol = `${yl}
+`, kl = `${bl}
 in vec2 vLocal;
 flat in vec2 vSize;
 flat in vec4 vColor;
@@ -12904,8 +12924,8 @@ void main() {
 	}
 	fragColor = vColor;
 }
-`, kl = (e, t) => e.feet?.[t % e.feet.length] ?? e.foot;
-async function Al(e, t) {
+`, Al = (e, t) => e.feet?.[t % e.feet.length] ?? e.foot;
+async function jl(e, t) {
 	let n = await (await fetch(`${e}.json`)).json(), r = await fetch(`${e}.pack`);
 	if (!r.ok || !r.body) throw Error(`Pack ${e} not found`);
 	let i = r.body.pipeThrough(new DecompressionStream("gzip")), a = new Uint8Array(await new Response(i).arrayBuffer()), o = /* @__PURE__ */ new Map(), s = /* @__PURE__ */ new Map();
@@ -12938,12 +12958,12 @@ async function Al(e, t) {
 	};
 }
 // ../engine/src/scene.ts
-var jl = (e) => e << 2, Ml = 8192, Nl = (e, t) => Math.min(e, 31) << 14 | Math.min(t, 31) << 19, Pl = (e) => e << 8, Fl = .04, Il = .002, Ll = 1 << 23, Rl = 1400, zl = (e, t, n, r) => Ll | (t === "y" ? 1 << 22 : 0) | e << 18 | r * 512 + n;
-function Bl(e, t) {
+var Ml = (e) => e << 2, Nl = 8192, Pl = (e, t) => Math.min(e, 31) << 14 | Math.min(t, 31) << 19, Fl = (e) => e << 8, Il = .04, Ll = .002, Rl = 1 << 23, zl = 1400, Bl = 16, Vl = 64, Hl = 1024, Ul = (e, t, n, r) => Rl | (t === "y" ? 1 << 22 : 0) | (e & 3) << 20 | r * Hl + n;
+function Wl(e, t) {
 	let n = Math.imul(e + 1, 2654435761) ^ Math.imul(t + 1, 2246822519);
 	return n ^= n >>> 16, n = Math.imul(n, 2246822507), n ^= n >>> 13, n = Math.imul(n, 3266489909), n ^= n >>> 16, n >>> 0;
 }
-var Vl = class {
+var Gl = class {
 	atlas;
 	floor;
 	cx;
@@ -12981,7 +13001,7 @@ var Vl = class {
 		} : null;
 	}
 };
-function Hl(e, t, n, r, i, a, o, s, c) {
+function Kl(e, t, n, r, i, a, o, s, c) {
 	let l = n.manifest.overlays?.[c.materials[1]], u = l ?? n.manifest.ground;
 	if (!u) return;
 	let d = l ? (e, t) => r.get(e, t) || 1 : (e, t) => r.get(e, t), f = n.manifest.terrains?.find((e) => e.id === c.materials[1])?.water === !0, p = l && f ? 128 : 0;
@@ -12990,22 +13010,22 @@ function Hl(e, t, n, r, i, a, o, s, c) {
 		if (!i || !c || !f || !m) continue;
 		let h = (i === 1 ? 8 : 0) | (c === 1 ? 4 : 0) | (f === 1 ? 2 : 0) | m === 1;
 		if (l && h === 15) continue;
-		let g = u[h], _ = Bl(r, t), v = g[_ % g.length], y = h === 0 || h === 15 ? (_ >>> 8 & 1) == 1 : v.flip, b = n.ids.get(v.sprite);
+		let g = u[h], _ = Wl(r, t), v = g[_ % g.length], y = h === 0 || h === 15 ? (_ >>> 8 & 1) == 1 : v.flip, b = n.ids.get(v.sprite);
 		b !== void 0 && e.add(r, t, o, b, a | p | +!!y, s);
 	}
 }
-function Ul(e, t, n) {
+function ql(e, t, n) {
 	let r = /* @__PURE__ */ new Set(), i = e.meta.floors[n - 1];
 	if (!i) return r;
 	for (let e of i.layers) if (e.kind === "objects" && e.visible) for (let n of e.items) {
 		let e = t.manifest.objects?.find((e) => e.id === n.asset);
 		if (e?.kind !== "stairs") continue;
-		let [i, a] = kl(e, n.facing), o = Math.round(n.x - i / 2), s = Math.round(n.y - a / 2);
+		let [i, a] = Al(e, n.facing), o = Math.round(n.x - i / 2), s = Math.round(n.y - a / 2);
 		for (let e = 0; e < a; e++) for (let t = 0; t < i; t++) r.add((s + e) * 65536 + o + t);
 	}
 	return r;
 }
-function Wl(e, t, n, r, i, a, o, s, c) {
+function Jl(e, t, n, r, i, a, o, s, c) {
 	let l = n.manifest.tiles ?? [];
 	for (let u = i.y0; u < i.y1; u++) for (let d = i.x0; d < i.x1; d++) {
 		let i = r.get(d, u);
@@ -13014,21 +13034,21 @@ function Wl(e, t, n, r, i, a, o, s, c) {
 		m !== void 0 && e.add(d, u, o, m, a | (i & 65536 ? 1 : 0), s);
 	}
 }
-function Gl(e, t, n) {
+function Yl(e, t, n) {
 	let r = n ? e.meta.wallStyles?.[n - 1] : void 0;
 	return r && t.wallKits?.[r] || t.walls;
 }
-var Kl = (e, t, n) => Gl(e, t.manifest, n);
-function ql(e, t, n, r, i, a, o, s, c) {
+var Xl = (e, t, n) => Yl(e, t.manifest, n);
+function Zl(e, t, n, r, i, a, o, s, c) {
 	if (!n.manifest.walls) return;
 	let l = (e, t, n) => t < 0 || n < 0 ? 0 : e(r.get(t, n)), u = (e, t) => l(wc, e, t), d = (e, t) => l(Tc, e, t), f = (e, t) => l(Ec, e, t), p = (e, t) => l(Dc, e, t), m = (t, r, i, c, l = 0) => {
 		let u = i === void 0 ? void 0 : n.ids.get(i);
-		u !== void 0 && e.add(t, r, o, u, a | (l ? Pl(l) : 0), s + (t + r) * Il, c);
+		u !== void 0 && e.add(t, r, o, u, a | (l ? Fl(l) : 0), s + (t + r) * Ll, c);
 	};
 	for (let e = i.y0; e < i.y1; e++) for (let a = i.x0; a < i.x1; a++) {
 		let i = r.get(a, e);
 		if (!i) continue;
-		let o = wc(i), s = Tc(i), l = zl(c, "x", a, e), h = zl(c, "y", a, e), g = Kl(t, n, Ec(i)), _ = Kl(t, n, Dc(i));
+		let o = wc(i), s = Tc(i), l = Ul(c, "x", a, e), h = Ul(c, "y", a, e), g = Xl(t, n, Ec(i)), _ = Xl(t, n, Dc(i));
 		if (o === 1) {
 			let t = d(a + 1, e - 1) === 1 && p(a + 1, e - 1) === Ec(i);
 			m(a, e - 1, t ? g.corner : g.x, l, g.frames);
@@ -13036,23 +13056,23 @@ function ql(e, t, n, r, i, a, o, s, c) {
 		s === 1 ? (u(a - 1, e + 1) !== 1 || f(a - 1, e + 1) !== Dc(i)) && m(a - 1, e, _.y, h, _.frames) : s === 2 || s === 5 ? (m(a - 1, e, _.doorY[0], h), s === 2 && m(a - 1, e, _.leafY?.[0], h)) : s === 3 || s === 6 ? (m(a - 1, e, _.doorY[1], h), s === 3 && m(a - 1, e, _.leafY?.[1], h)) : s === 4 && m(a - 1, e, _.windowY ?? _.y, h), o && s && !u(a - 1, e) && !d(a, e - 1) && m(a - 1, e - 1, g.post, l), o && g.endX && !u(a + 1, e) && !d(a + 1, e - 1) && m(a, e - 1, g.endX, l), s && _.endY && !d(a, e + 1) && !u(a - 1, e + 1) && m(a - 1, e, _.endY, h);
 	}
 }
-function Jl(e, t, n, r, i, a, o, s) {
+function Ql(e, t, n, r, i, a, o, s) {
 	let c = t.manifest.objects;
 	if (c) for (let l of n.items) {
 		let n = Math.floor(l.x), u = Math.floor(l.y);
 		if (n < r.x0 || n >= r.x1 || u < r.y0 || u >= r.y1) continue;
 		let d = c.find((e) => e.id === l.asset);
 		if (!d) continue;
-		let f = s(l.id), p = d.kind === "tree" || d.kind === "plant" || d.sway === !0, m = d.kind === "decal", [h, g] = kl(d, l.facing);
+		let f = s(l.id), p = d.kind === "tree" || d.kind === "plant" || d.sway === !0, m = d.kind === "decal", [h, g] = Al(d, l.facing);
 		for (let n of d.facings[l.facing % d.facings.length]) {
 			let r = t.ids.get(n.sprite);
 			if (r === void 0) continue;
-			let s = d.kind === "prop" && !n.flat && !n.rise && !n.dx && !n.dy, c = i | 2 | (s && h !== g ? Nl(h, g) : 0) | !!n.flip | (p && !n.flat ? 64 : 0) | (p || n.flat ? 0 : Ml) | (n.frames ? Pl(n.frames) : 0);
+			let s = d.kind === "prop" && !n.flat && !n.rise && !n.dx && !n.dy, c = i | 2 | (s && h !== g ? Pl(h, g) : 0) | !!n.flip | (p && !n.flat ? 64 : 0) | (p || n.flat ? 0 : Nl) | (n.frames ? Fl(n.frames) : 0);
 			e.add(l.x + (n.dx ?? 0), l.y + (n.dy ?? 0), a + (n.rise ?? 0), r, c, n.flat ? o - .02 : o, n.flat && !m ? 0 : f);
 		}
 	}
 }
-function Yl(e, t, n, r, i, a, o = () => 0) {
+function $l(e, t, n, r, i, a, o = () => 0) {
 	let s = e.meta.floors[r];
 	if (!s) return null;
 	let c = {
@@ -13060,28 +13080,29 @@ function Yl(e, t, n, r, i, a, o = () => 0) {
 		y0: a * 32,
 		x1: Math.min(e.meta.size.x, (i + 1) * 32),
 		y1: Math.min(e.meta.size.y, (a + 1) * 32)
-	}, l = s.elevation * e.meta.grid.stepPx, u = jl(r), d = new Vl(n, r, i, a), f = {
+	}, l = s.elevation * e.meta.grid.stepPx, u = Ml(r), d = new Gl(n, r, i, a), f = {
 		...c,
 		x1: Math.min(e.meta.size.x + 1, (i + 1) * 32),
 		y1: Math.min(e.meta.size.y + 1, (a + 1) * 32)
-	}, p = Ul(e, t, r);
+	}, p = ql(e, t, r);
 	return s.layers.forEach((n, i) => {
 		if (!n.visible) return;
-		let a = i * Fl;
+		let a = i * Il;
 		if (n.kind === "objects") {
-			Jl(d, t, n, c, u, l, a, (e) => o(n.id, e));
+			Ql(d, t, n, c, u, l, a, (e) => o(n.id, e));
 			return;
 		}
 		if (n.kind === "roofs" || n.kind === "wires" || n.kind === "lights") return;
 		let s = e.grids.get(n.id);
-		s && (n.kind === "terrain" ? Hl(d, e, t, s, c, u, l, a, n) : n.kind === "walls" ? ql(d, e, t, s, f, u, l, a, r) : Wl(d, e, t, s, c, u, l, a, p));
+		s && (n.kind === "terrain" ? Kl(d, e, t, s, c, u, l, a, n) : n.kind === "walls" ? Zl(d, e, t, s, f, u, l, a, r) : Jl(d, e, t, s, c, u, l, a, p));
 	}), d.finish();
 }
-var Xl = (e, t, n) => `${e}:${t}:${n}`, Zl = class {
+var eu = (e, t, n) => `${e}:${t}:${n}`, tu = class {
 	renderer;
 	pack;
 	atlas;
 	occlusion = null;
+	map = null;
 	storyMeters = 2.4;
 	stairs = /* @__PURE__ */ new Map();
 	objectPicks = /* @__PURE__ */ new Map();
@@ -13093,6 +13114,7 @@ var Xl = (e, t, n) => `${e}:${t}:${n}`, Zl = class {
 		this.renderer = e, this.pack = t, this.atlas = n, e.setAtlas(r);
 	}
 	show(e) {
+		this.map = e;
 		let { size: t, floors: n, grid: r } = e.meta, i = Cc(r), a = Math.max(...n.map((e) => e.elevation)) * r.stepPx + i;
 		this.renderer.setWorld({
 			sizeX: t.x,
@@ -13104,7 +13126,8 @@ var Xl = (e, t, n) => `${e}:${t}:${n}`, Zl = class {
 		}), this.renderer.clearChunks();
 		let o = Math.ceil((t.x + 1) / 32), s = Math.ceil((t.y + 1) / 32);
 		for (let t = 0; t < n.length; t++) for (let n = 0; n < s; n++) for (let r = 0; r < o; r++) this.redraw(e, t, r, n);
-		this.occlusion = new _l(t.x, t.y, n.length), this.writeOcclusion(e), this.renderer.setOcclusion(this.occlusion.texture()), this.renderer.setLights(this.lightsOf(e)), this.renderer.setRoofs(this.roofTriangles(e)), this.renderer.setParticles(this.particlesOf(e));
+		let c = this.occlusion;
+		this.occlusion = new vl(t.x, t.y, n.length), c && this.occlusion.look(c.left + c.tilesX / 2, c.top + c.tilesY / 2), this.writeOcclusion(e), this.renderer.setOcclusion(this.occlusion.texture()), this.renderer.setOcclusionWindow(this.occlusion.left, this.occlusion.top, this.occlusion.tilesX, this.occlusion.tilesY), this.renderer.setLights(this.lightsOf(e)), this.renderer.setRoofs(this.roofTriangles(e)), this.renderer.setParticles(this.particlesOf(e));
 	}
 	pickOf = (e, t) => {
 		let n = `${e}/${t}`, r = this.objectPicks.get(n);
@@ -13115,14 +13138,14 @@ var Xl = (e, t, n) => `${e}:${t}:${n}`, Zl = class {
 	};
 	whoIs(e) {
 		if (!e) return null;
-		if (e & Ll) {
-			let t = e & 262143;
+		if (e & Rl) {
+			let t = e & 1048575;
 			return {
 				kind: "wall",
-				floor: e >> 18 & 15,
+				floor: e >> 20 & 3,
 				axis: e & 1 << 22 ? "y" : "x",
-				x: t % 512,
-				y: t >> 9
+				x: t % Hl,
+				y: t >> 10
 			};
 		}
 		let t = this.picked.get(e);
@@ -13144,7 +13167,7 @@ var Xl = (e, t, n) => `${e}:${t}:${n}`, Zl = class {
 		return this.pickOf(e, t);
 	}
 	redraw(e, t, n, r) {
-		let i = Yl(e, this.pack, this.atlas, t, n, r, this.pickOf), a = Xl(t, n, r);
+		let i = $l(e, this.pack, this.atlas, t, n, r, this.pickOf), a = eu(t, n, r);
 		i ? this.renderer.setChunk(a, i) : this.renderer.removeChunk(a);
 	}
 	update(e, t) {
@@ -13154,19 +13177,25 @@ var Xl = (e, t, n) => `${e}:${t}:${n}`, Zl = class {
 		}
 	}
 	levelsAt(e, t) {
-		let n = this.occlusion?.levelsAt(e, t, this.storyMeters) ?? [0], r = this.stairs.get(Math.floor(t) * 65536 + Math.floor(e));
-		return r ? [.../* @__PURE__ */ new Set([...n, ...r])].sort((e, t) => e - t) : n;
+		let n = this.occlusion;
+		n && this.map && !n.reaches(e, t, e, t) && (n = new vl(n.sizeX, n.sizeY, n.floors, Vl), n.look(e, t), this.writeOcclusion(this.map, n));
+		let r = n?.levelsAt(e, t, this.storyMeters) ?? [0], i = this.stairs.get(Math.floor(t) * 65536 + Math.floor(e));
+		return i ? [.../* @__PURE__ */ new Set([...r, ...i])].sort((e, t) => e - t) : r;
+	}
+	follow(e, t, n) {
+		let r = this.occlusion;
+		r?.look(t, n) && (this.writeOcclusion(e), this.renderer.setOcclusionWindow(r.left, r.top, r.tilesX, r.tilesY), this.renderer.refreshOcclusion(e.meta.floors.map((e, t) => t)));
 	}
 	settle(e) {
 		this.occlusion && (this.writeOcclusion(e), this.renderer.refreshOcclusion(e.meta.floors.map((e, t) => t)), this.renderer.setLights(this.lightsOf(e)), this.renderer.setRoofs(this.roofTriangles(e)), this.renderer.setParticles(this.particlesOf(e)));
 	}
 	particlesOf(e) {
 		let t = [];
-		for (let e = 0; e < Rl; e++) t.push(0, 0, 0, El.sky, e * 1.37);
-		let { floors: n, grid: r } = e.meta, i = Rl * 1.37;
+		for (let e = 0; e < zl; e++) t.push(0, 0, 0, Dl.sky, e * 1.37);
+		let { floors: n, grid: r } = e.meta, i = zl * 1.37;
 		return n.forEach((e) => {
 			let n = e.elevation * r.stepPx / 40;
-			for (let r of e.layers) if (r.kind === "objects" && r.visible) for (let e of r.items) for (let r of this.asset(e.asset)?.emits ?? []) for (let a = 0; a < r.count; a++) t.push(e.x, e.y, n + r.z, El[r.kind], i += 1.73);
+			for (let r of e.layers) if (r.kind === "objects" && r.visible) for (let e of r.items) for (let r of this.asset(e.asset)?.emits ?? []) for (let a = 0; a < r.count; a++) t.push(e.x, e.y, n + r.z, Dl[r.kind], i += 1.73);
 		}), new Float32Array(t);
 	}
 	settleLights(e) {
@@ -13269,23 +13298,22 @@ var Xl = (e, t, n) => `${e}:${t}:${n}`, Zl = class {
 			}
 		}), t;
 	}
-	writeOcclusion(e) {
-		let t = this.occlusion;
+	writeOcclusion(e, t = this.occlusion) {
 		if (!t) return;
 		t.clear();
 		let { size: n, floors: r, grid: i } = e.meta, a = Cc(i) / 40;
 		this.storyMeters = a, this.stairs.clear();
 		let o = this.pack.manifest.walls?.meters ?? a;
 		r.forEach((r, i) => {
-			let s = Ul(e, this.pack, i);
+			let s = ql(e, this.pack, i);
 			for (let c of r.layers) {
 				if (!c.visible) continue;
 				if (c.kind === "objects") {
 					for (let e of c.items) {
-						this.writeObject(t, i, e.asset, e.x, e.y, e.facing, a);
+						t.reaches(e.x - Bl, e.y - Bl, e.x + Bl, e.y + Bl) && this.writeObject(t, i, e.asset, e.x, e.y, e.facing, a);
 						let n = this.asset(e.asset);
 						if (n?.kind !== "stairs") continue;
-						let [r, o] = kl(n, e.facing);
+						let [r, o] = Al(n, e.facing);
 						for (let t = 0; t < o; t++) for (let n = 0; n < r; n++) {
 							let s = (Math.floor(e.y - o / 2) + t) * 65536 + Math.floor(e.x - r / 2) + n;
 							this.stairs.set(s, [...this.stairs.get(s) ?? [], (i + 1) * a]);
@@ -13295,30 +13323,35 @@ var Xl = (e, t, n) => `${e}:${t}:${n}`, Zl = class {
 				}
 				if (c.kind === "roofs") {
 					let e = o, n = Lc, r = e - n * 16 / 40;
-					for (let o of c.items) if (o.shape === "round") {
-						let e = this.pack.manifest.towers?.find((e) => e.id === o.material);
-						if (!e || e.open) continue;
-						let n = Math.max(...e.rings.flatMap((e) => [e.from[1], e.to[1]]), 0);
-						t.tower(i, o.x - n, o.y - n, o.x + o.wide + n, o.y + o.deep + n, (t, n) => ul(o, e.rings, t, n), a);
-					} else t.roof(i, o.x - n, o.y - n, o.x + o.wide + n, o.y + o.deep + n, r, (t, n) => {
-						let r = $c(o, t, n);
-						return r === null ? null : e + r / 40;
-					}, a);
+					for (let o of c.items) if (t.reaches(o.x - Bl, o.y - Bl, o.x + o.wide + Bl, o.y + o.deep + Bl)) {
+						if (o.shape === "round") {
+							let e = this.pack.manifest.towers?.find((e) => e.id === o.material);
+							if (!e || e.open) continue;
+							let n = Math.max(...e.rings.flatMap((e) => [e.from[1], e.to[1]]), 0);
+							t.tower(i, o.x - n, o.y - n, o.x + o.wide + n, o.y + o.deep + n, (t, n) => ul(o, e.rings, t, n), a);
+						} else t.roof(i, o.x - n, o.y - n, o.x + o.wide + n, o.y + o.deep + n, r, (t, n) => {
+							let r = $c(o, t, n);
+							return r === null ? null : e + r / 40;
+						}, a);
+					}
 					continue;
 				}
 				if (c.kind === "lights" || c.kind === "wires") continue;
 				let r = e.grids.get(c.id);
-				if (r) for (let [o, l, u] of r.filled()) for (let r = 0; r < 32; r++) for (let d = 0; d < 32; d++) {
-					let f = u[r * 32 + d];
-					if (!f) continue;
-					let p = o * 32 + d, m = l * 32 + r;
-					if (c.kind === "walls") {
-						let n = (t, n) => {
-							let r = Kl(e, this.pack, n), i = (t === 2 || t === 3) && !!r?.leafX;
-							return t === 1 || i ? r?.meters ?? a : t === 4 ? r?.sillMeters ?? .9 : 0;
-						}, r = n(wc(f), Ec(f)), o = n(Tc(f), Dc(f));
-						r && t.wallAlongX(i, p, m, r), o && t.wallAlongY(i, p, m, o);
-					} else i > 0 && p < n.x && m < n.y && !s.has(m * 65536 + p) && t.slab(i, p, m);
+				if (r) for (let o = bc(t.top); o <= bc(t.top + t.tilesY); o++) for (let l = bc(t.left); l <= bc(t.left + t.tilesX); l++) {
+					let u = r.chunk(l, o);
+					if (u) for (let r = 0; r < 32; r++) for (let d = 0; d < 32; d++) {
+						let f = u[r * 32 + d];
+						if (!f) continue;
+						let p = l * 32 + d, m = o * 32 + r;
+						if (c.kind === "walls") {
+							let n = (t, n) => {
+								let r = Xl(e, this.pack, n), i = (t === 2 || t === 3) && !!r?.leafX;
+								return t === 1 || i ? r?.meters ?? a : t === 4 ? r?.sillMeters ?? .9 : 0;
+							}, r = n(wc(f), Ec(f)), o = n(Tc(f), Dc(f));
+							r && t.wallAlongX(i, p, m, r), o && t.wallAlongY(i, p, m, o);
+						} else i > 0 && p < n.x && m < n.y && !s.has(m * 65536 + p) && t.slab(i, p, m);
+					}
 				}
 			}
 		});
@@ -13328,15 +13361,15 @@ var Xl = (e, t, n) => `${e}:${t}:${n}`, Zl = class {
 		if (!s) return;
 		let c = this.stampOf(s);
 		if (c) {
-			let n = s.facings[a % s.facings.length][0], l = s.feet ? kl(s, a)[0] !== kl(s, 0)[0] : !1;
+			let n = s.facings[a % s.facings.length][0], l = s.feet ? Al(s, a)[0] !== Al(s, 0)[0] : !1;
 			e.canopy(t, r, i, c, o, n?.flip === !0 || n?.mirrored === !0 || l);
 		}
 		let l = s.trunk;
 		if (l && e.solid(t, r - l.radius, i - l.radius, r + l.radius, i + l.radius, l.meters, o), c || l || s.light || s.kind === "stairs" || s.kind === "decal") return;
-		let [u, d] = kl(s, a);
+		let [u, d] = Al(s, a);
 		e.solid(t, r - u / 2, i - d / 2, r + u / 2, i + d / 2, s.meters, o);
 	}
-}, Ql = `${yl}
+}, nu = `${bl}
 uniform sampler2D tColor;
 uniform sampler2D tNormal;
 uniform sampler2D tId;
@@ -13524,7 +13557,7 @@ void main() {
 	}
 	fragColor = vec4(lit, 1.0);
 }
-`, $l = `${yl}
+`, ru = `${bl}
 uniform sampler2D tFinal;
 /** canvas pixels per buffer pixel, and how many canvas rows hang below the visible area */
 uniform vec2 uPresent;
@@ -13544,7 +13577,7 @@ void main() {
 	ivec2 ip = ivec2(floor((gl_FragCoord.xy + vec2(0.0, uPresent.y)) / uPresent.x));
 	fragColor = texelFetch(tFinal, ip, 0);
 }
-`, eu = `
+`, iu = `
 uniform sampler2D tNormal;
 uniform sampler2D tDepth;
 uniform sampler2DArray tOcclusion;
@@ -13553,6 +13586,8 @@ uniform vec2 uBuffer;
 uniform vec4 uDepth;
 /** map size x and y in tiles, number of floors */
 uniform vec3 uMap;
+/** the part of the map the occlusion holds: its corner and its size, in tiles */
+uniform vec4 uOcc;
 /** ray step in meters, maximum number of steps */
 uniform vec2 uRay;
 /** height of a story in meters */
@@ -13615,9 +13650,10 @@ void readBody(ivec2 ip) {
 }
 
 bool blocked(vec3 p) {
-	if (p.x < 0.0 || p.y < 0.0 || p.x >= uMap.x || p.y >= uMap.y || p.z < 0.0) return false;
+	vec2 near = p.xy - uOcc.xy;
+	if (near.x < 0.0 || near.y < 0.0 || near.x >= uOcc.z || near.y >= uOcc.w || p.z < 0.0) return false;
 	float story = min(floor(p.z / uStory), uMap.z - 1.0);
-	ivec2 spot = ivec2(int(p.x * TEXELS), int(p.y * TEXELS));
+	ivec2 spot = ivec2(int(near.x * TEXELS), int(near.y * TEXELS));
 	vec4 cell = texelFetch(tOcclusion, ivec3(spot, int(story)), 0);
 	float above = p.z - story * uStory;
 	if (above < cell.r * HEIGHT_UNIT) return true;
@@ -13629,9 +13665,10 @@ bool blocked(vec3 p) {
 
 /** Whether a treetop hangs over this spot. */
 float underCanopy(vec2 xy, float z) {
-	if (xy.x < 0.0 || xy.y < 0.0 || xy.x >= uMap.x || xy.y >= uMap.y) return 0.0;
+	vec2 near = xy - uOcc.xy;
+	if (near.x < 0.0 || near.y < 0.0 || near.x >= uOcc.z || near.y >= uOcc.w) return 0.0;
 	float story = min(floor(z / uStory), uMap.z - 1.0);
-	vec4 cell = texelFetch(tOcclusion, ivec3(ivec2(xy * TEXELS), int(story)), 0);
+	vec4 cell = texelFetch(tOcclusion, ivec3(ivec2(near * TEXELS), int(story)), 0);
 	return cell.a * HEIGHT_UNIT > z - story * uStory ? 1.0 : 0.0;
 }
 
@@ -13651,13 +13688,13 @@ float rayIsClear(vec3 from, vec3 to) {
 	}
 	return 1.0;
 }
-`, tu = `${yl}
+`, au = `${bl}
 in vec3 position;
 void main() {
 	gl_Position = vec4(position.xy, 0.0, 1.0);
 }
-`, nu = `${yl}
-${eu}
+`, ou = `${bl}
+${iu}
 uniform vec3 uAmbient;
 uniform vec3 uSunColor;
 uniform vec3 uSunDir;
@@ -13727,7 +13764,7 @@ void main() {
 	float open = uOpenSky > 0.5 && contact < 1e8 ? skyOverhead(start + vec3(0.0, 0.0, contact > 0.0 ? 1.6 : 0.0)) : 1.0;
 	fragColor = vec4((uAmbient * ao + uSunColor * sun) * 0.5, open);
 }
-`, ru = `${yl}
+`, su = `${bl}
 in vec2 position;
 in vec4 aLight;
 in vec4 aColor;
@@ -13747,8 +13784,8 @@ void main() {
 	vSpot = aSpot;
 	gl_Position = vec4((p.x - uView.x) / uView.z * 2.0 - 1.0, 1.0 - (p.y - uView.y) / uView.w * 2.0, 0.0, 1.0);
 }
-`, iu = `${yl}
-${eu}
+`, cu = `${bl}
+${iu}
 flat in vec4 vLight;
 flat in vec3 vColor;
 /** where a spot points, and the cosine of its opening; below -1 it shines all around */
@@ -13797,41 +13834,41 @@ void main() {
 	// alpha stays out of the sum: the pass before left there how much of the sky this pixel sees
 	fragColor = vec4(vColor * amount * 0.5, 0.0);
 }
-`, au = (e, t, n) => [
+`, lu = (e, t, n) => [
 	e[0] + (t[0] - e[0]) * n,
 	e[1] + (t[1] - e[1]) * n,
 	e[2] + (t[2] - e[2]) * n
-], ou = (e) => Math.min(1, Math.max(0, e)), su = [
+], uu = (e) => Math.min(1, Math.max(0, e)), du = [
 	.56,
 	.58,
 	.62
-], cu = [
+], fu = [
 	.34,
 	.27,
 	.32
-], lu = [
+], pu = [
 	.1,
 	.13,
 	.22
-], uu = [
+], mu = [
 	.56,
 	.54,
 	.5
-], du = [
+], hu = [
 	.72,
 	.38,
 	.2
-], fu = [
+], gu = [
 	.09,
 	.12,
 	.2
 ];
-function pu(e) {
-	let t = (e % 24 + 24) % 24, n = (t - 6) / 12, r = n > 0 && n < 1, i = r ? Math.sin(n * Math.PI) : 0, a = ou(i / .5), o = r ? ou(1 - i / .16) * .55 : ou(Math.min(Math.abs(t - 18), Math.abs(t - 6)) / 1.2) * .45 + .55;
+function _u(e) {
+	let t = (e % 24 + 24) % 24, n = (t - 6) / 12, r = n > 0 && n < 1, i = r ? Math.sin(n * Math.PI) : 0, a = uu(i / .5), o = r ? uu(1 - i / .16) * .55 : uu(Math.min(Math.abs(t - 18), Math.abs(t - 6)) / 1.2) * .45 + .55;
 	if (!r) return {
-		ambient: lu,
-		sunColor: fu,
-		sunDir: _u([
+		ambient: pu,
+		sunColor: gu,
+		sunDir: xu([
 			-.45,
 			.25,
 			.86
@@ -13843,17 +13880,17 @@ function pu(e) {
 			.05
 		]
 	};
-	let s = Math.max(.12, i) * 1.05, c = (.9 - n * 1) * Math.PI, l = _u([
+	let s = Math.max(.12, i) * 1.05, c = (.9 - n * 1) * Math.PI, l = xu([
 		Math.cos(c) * Math.cos(s),
 		Math.sin(c) * Math.cos(s) * .6 + .25,
 		Math.sin(s)
 	]);
 	return {
-		ambient: au(cu, su, a),
-		sunColor: au(du, uu, a),
+		ambient: lu(fu, du, a),
+		sunColor: lu(hu, mu, a),
 		sunDir: l,
 		emissive: o,
-		background: au([
+		background: lu([
 			.09,
 			.07,
 			.09
@@ -13864,11 +13901,11 @@ function pu(e) {
 		], a)
 	};
 }
-var mu = (e, t) => [
+var vu = (e, t) => [
 	e[0] * t,
 	e[1] * t,
 	e[2] * t
-], hu = (e) => {
+], yu = (e) => {
 	let t = (e[0] + e[1] + e[2]) / 3;
 	return [
 		t,
@@ -13876,8 +13913,8 @@ var mu = (e, t) => [
 		t
 	];
 };
-function gu(e, t = "clear", n = 1) {
-	let r = pu(e), i = ou(n), a = {
+function bu(e, t = "clear", n = 1) {
+	let r = _u(e), i = uu(n), a = {
 		...r,
 		cloud: 0,
 		wet: 0,
@@ -13888,21 +13925,21 @@ function gu(e, t = "clear", n = 1) {
 	};
 	switch (t) {
 		case "cloudy":
-			a.cloud = i, a.sunColor = mu(r.sunColor, 1 - .45 * i), a.ambient = au(r.ambient, hu(r.ambient), .5 * i), a.background = au(r.background, hu(r.background), i);
+			a.cloud = i, a.sunColor = vu(r.sunColor, 1 - .45 * i), a.ambient = lu(r.ambient, yu(r.ambient), .5 * i), a.background = lu(r.background, yu(r.background), i);
 			break;
 		case "rain":
-			a.wet = i, a.cloud = .5 * i, a.falling = 1, a.sunColor = mu(r.sunColor, 1 - .85 * i), a.ambient = mu(au(r.ambient, [
+			a.wet = i, a.cloud = .5 * i, a.falling = 1, a.sunColor = vu(r.sunColor, 1 - .85 * i), a.ambient = vu(lu(r.ambient, [
 				.36,
 				.42,
 				.52
-			], .6 * i), 1 - .18 * i), a.background = au(r.background, mu(hu(r.background), .8), i);
+			], .6 * i), 1 - .18 * i), a.background = lu(r.background, vu(yu(r.background), .8), i);
 			break;
 		case "snow":
-			a.snow = i, a.falling = 2, a.sunColor = mu(r.sunColor, 1 - .6 * i), a.ambient = au(r.ambient, mu([
+			a.snow = i, a.falling = 2, a.sunColor = vu(r.sunColor, 1 - .6 * i), a.ambient = lu(r.ambient, vu([
 				.74,
 				.78,
 				.88
-			], Math.max(r.ambient[1], .2) * 1.3), .7 * i), a.background = au(r.background, [
+			], Math.max(r.ambient[1], .2) * 1.3), .7 * i), a.background = lu(r.background, [
 				.3,
 				.33,
 				.38
@@ -13913,7 +13950,7 @@ function gu(e, t = "clear", n = 1) {
 				0,
 				0,
 				0
-			], a.ambient = mu([
+			], a.ambient = vu([
 				.17,
 				.15,
 				.18
@@ -13923,7 +13960,7 @@ function gu(e, t = "clear", n = 1) {
 				.016
 			], a.fogColor = a.background;
 			break;
-		case "fog": a.fog = i, a.sunColor = mu(r.sunColor, 1 - .7 * i), a.fogColor = au([
+		case "fog": a.fog = i, a.sunColor = vu(r.sunColor, 1 - .7 * i), a.fogColor = lu([
 			.72,
 			.74,
 			.76
@@ -13931,11 +13968,11 @@ function gu(e, t = "clear", n = 1) {
 			.07,
 			.09,
 			.14
-		], r.emissive), a.background = au(r.background, a.fogColor, i);
+		], r.emissive), a.background = lu(r.background, a.fogColor, i);
 	}
 	return a;
 }
-function _u(e) {
+function xu(e) {
 	let t = Math.hypot(e[0], e[1], e[2]) || 1;
 	return [
 		e[0] / t,
@@ -13944,7 +13981,7 @@ function _u(e) {
 	];
 }
 // ../engine/src/renderer.ts
-var vu = 256, yu = .3, bu = 5, xu = class {
+var Su = 256, Cu = .3, wu = 5, Tu = class {
 	gl;
 	ext;
 	pending = [];
@@ -13963,8 +14000,8 @@ var vu = 256, yu = .3, bu = 5, xu = class {
 			this.gl.getParameter(this.ext.GPU_DISJOINT_EXT) || (this.lastMs = this.gl.getQueryParameter(e, this.gl.QUERY_RESULT) / 1e6), this.gl.deleteQuery(e), this.pending.shift();
 		}
 	}
-}, Su = new pn();
-Su.setAttribute("position", new Zt(new Float32Array([
+}, Eu = new pn();
+Eu.setAttribute("position", new Zt(new Float32Array([
 	-1,
 	-1,
 	0,
@@ -13975,7 +14012,7 @@ Su.setAttribute("position", new Zt(new Float32Array([
 	3,
 	0
 ]), 3));
-var Cu = new Zt(new Float32Array([
+var Du = new Zt(new Float32Array([
 	0,
 	0,
 	1,
@@ -13984,26 +14021,26 @@ var Cu = new Zt(new Float32Array([
 	1,
 	1,
 	1
-]), 2), wu = new Zt(new Uint16Array([
+]), 2), Ou = new Zt(new Uint16Array([
 	0,
 	1,
 	2,
 	2,
 	1,
 	3
-]), 1), Tu = (e) => {
+]), 1), ku = (e) => {
 	let t = new vt();
 	t.matrixWorldAutoUpdate = !1;
-	let n = new Vn(Su, e);
+	let n = new Vn(Eu, e);
 	return n.frustumCulled = !1, t.add(n), t;
-}, Eu = (e, t) => new Fe(e, t, {
+}, Au = (e, t) => new Fe(e, t, {
 	minFilter: r,
 	magFilter: r,
 	format: m,
 	type: o,
 	depthBuffer: !1,
 	generateMipmaps: !1
-}), Du = class {
+}), ju = class {
 	canvas;
 	maxSupersample = 2;
 	three;
@@ -14027,6 +14064,7 @@ var Cu = new Zt(new Float32Array([
 	uDepth = { value: new Ne() };
 	uBuffer = { value: new W() };
 	uMap = { value: new G() };
+	uOcc = { value: new Ne() };
 	uRay = { value: new W(.25, 32) };
 	uStory = { value: 3 };
 	tNormal = { value: null };
@@ -14035,6 +14073,7 @@ var Cu = new Zt(new Float32Array([
 	tVision = { value: new Wn(/* @__PURE__ */ new Uint8Array(4), 1, 1, m) };
 	tCut = { value: new Wn(/* @__PURE__ */ new Uint8Array(4), 1, 1, m) };
 	uCut = { value: new G() };
+	uCutAt = { value: new W() };
 	gbufferUniforms;
 	ambientUniforms;
 	lightUniforms;
@@ -14045,9 +14084,9 @@ var Cu = new Zt(new Float32Array([
 	roofMesh = null;
 	uRoofs = { value: new W(0, 1) };
 	lightGeometry = new Kr();
-	lightPosition = new Gn(new Float32Array(vu * 4), 4);
-	lightColor = new Gn(new Float32Array(vu * 4), 4);
-	lightSpot = new Gn(new Float32Array(vu * 4), 4);
+	lightPosition = new Gn(new Float32Array(Su * 4), 4);
+	lightColor = new Gn(new Float32Array(Su * 4), 4);
+	lightSpot = new Gn(new Float32Array(Su * 4), 4);
 	chunkMeshes = /* @__PURE__ */ new Map();
 	dynamicMesh = null;
 	dynamicBuffer = null;
@@ -14063,7 +14102,7 @@ var Cu = new Zt(new Float32Array([
 			depth: !1,
 			stencil: !1,
 			powerPreference: t.lowPower ? "low-power" : "high-performance"
-		}), this.three.autoClear = !1, this.three.sortObjects = !1, this.three.info.autoReset = !1, this.gl = this.three.getContext(), this.timer = new xu(this.gl), this.sprites.matrixWorldAutoUpdate = !1, this.lights.matrixWorldAutoUpdate = !1;
+		}), this.three.autoClear = !1, this.three.sortObjects = !1, this.three.info.autoReset = !1, this.gl = this.three.getContext(), this.timer = new Tu(this.gl), this.sprites.matrixWorldAutoUpdate = !1, this.lights.matrixWorldAutoUpdate = !1;
 		let n = {
 			tNormal: this.tNormal,
 			tDepth: this.tDepth,
@@ -14072,6 +14111,7 @@ var Cu = new Zt(new Float32Array([
 			uBuffer: this.uBuffer,
 			uDepth: this.uDepth,
 			uMap: this.uMap,
+			uOcc: this.uOcc,
 			uRay: this.uRay,
 			uStory: this.uStory
 		};
@@ -14084,7 +14124,8 @@ var Cu = new Zt(new Float32Array([
 			uBuffer: this.uBuffer,
 			uWind: { value: new W() },
 			tCut: this.tCut,
-			uCut: this.uCut
+			uCut: this.uCut,
+			uCutAt: this.uCutAt
 		}, this.particleUniforms = {
 			tDepth: this.tDepth,
 			tLight: { value: null },
@@ -14094,11 +14135,11 @@ var Cu = new Zt(new Float32Array([
 			uWind: { value: new G() },
 			uSky: { value: new W() },
 			uAir: { value: new Ne() }
-		}, this.particleGeometry.setAttribute("position", Cu), this.particleGeometry.setIndex(wu);
+		}, this.particleGeometry.setAttribute("position", Du), this.particleGeometry.setIndex(Ou);
 		let r = new Vn(this.particleGeometry, new mr({
 			glslVersion: F,
-			vertexShader: Dl,
-			fragmentShader: Ol,
+			vertexShader: Ol,
+			fragmentShader: kl,
 			uniforms: this.particleUniforms,
 			depthTest: !1,
 			depthWrite: !1,
@@ -14107,8 +14148,8 @@ var Cu = new Zt(new Float32Array([
 		}));
 		r.frustumCulled = !1, this.particles.matrixWorldAutoUpdate = !1, this.particles.add(r), this.gbufferMaterial = new mr({
 			glslVersion: F,
-			vertexShader: Sl,
-			fragmentShader: Tl,
+			vertexShader: Cl,
+			fragmentShader: El,
 			uniforms: this.gbufferUniforms,
 			depthTest: !0,
 			depthWrite: !0,
@@ -14116,8 +14157,8 @@ var Cu = new Zt(new Float32Array([
 			side: 2
 		}), this.roofMaterial = new mr({
 			glslVersion: F,
-			vertexShader: Cl,
-			fragmentShader: wl,
+			vertexShader: wl,
+			fragmentShader: Tl,
 			uniforms: {
 				uSprites: this.gbufferUniforms.uSprites,
 				uAlbedo: this.gbufferUniforms.uAlbedo,
@@ -14127,7 +14168,8 @@ var Cu = new Zt(new Float32Array([
 				uBuffer: this.uBuffer,
 				uRoofs: this.uRoofs,
 				tCut: this.tCut,
-				uCut: this.uCut
+				uCut: this.uCut,
+				uCutAt: this.uCutAt
 			},
 			depthTest: !0,
 			depthWrite: !0,
@@ -14142,15 +14184,15 @@ var Cu = new Zt(new Float32Array([
 			uContact: { value: 1 },
 			uCloud: { value: new G() },
 			uOpenSky: { value: 0 }
-		}, this.ambientPass = Tu(new mr({
+		}, this.ambientPass = ku(new mr({
 			glslVersion: F,
-			vertexShader: tu,
-			fragmentShader: nu,
+			vertexShader: au,
+			fragmentShader: ou,
 			uniforms: this.ambientUniforms,
 			depthTest: !1,
 			depthWrite: !1,
 			blending: 0
-		})), this.lightPosition.setUsage(P), this.lightColor.setUsage(P), this.lightSpot.setUsage(P), this.lightGeometry.setAttribute("position", Cu), this.lightGeometry.setIndex(wu), this.lightGeometry.setAttribute("aLight", this.lightPosition), this.lightGeometry.setAttribute("aColor", this.lightColor), this.lightGeometry.setAttribute("aSpot", this.lightSpot), this.lightUniforms = {
+		})), this.lightPosition.setUsage(P), this.lightColor.setUsage(P), this.lightSpot.setUsage(P), this.lightGeometry.setAttribute("position", Du), this.lightGeometry.setIndex(Ou), this.lightGeometry.setAttribute("aLight", this.lightPosition), this.lightGeometry.setAttribute("aColor", this.lightColor), this.lightGeometry.setAttribute("aSpot", this.lightSpot), this.lightUniforms = {
 			...n,
 			uShadows: { value: 1 },
 			uBands: { value: 8 },
@@ -14158,8 +14200,8 @@ var Cu = new Zt(new Float32Array([
 		};
 		let i = new Vn(this.lightGeometry, new mr({
 			glslVersion: F,
-			vertexShader: ru,
-			fragmentShader: iu,
+			vertexShader: su,
+			fragmentShader: cu,
 			uniforms: this.lightUniforms,
 			depthTest: !1,
 			depthWrite: !1,
@@ -14192,10 +14234,10 @@ var Cu = new Zt(new Float32Array([
 			uView: this.uView,
 			uBuffer: this.uBuffer,
 			uDepth: this.uDepth
-		}, this.compositePass = Tu(new mr({
+		}, this.compositePass = ku(new mr({
 			glslVersion: F,
-			vertexShader: tu,
-			fragmentShader: Ql,
+			vertexShader: au,
+			fragmentShader: nu,
 			uniforms: this.compositeUniforms,
 			depthTest: !1,
 			depthWrite: !1,
@@ -14204,10 +14246,10 @@ var Cu = new Zt(new Float32Array([
 			tFinal: { value: null },
 			uPresent: { value: new W(1, 0) },
 			uAverage: { value: 1 }
-		}, this.presentPass = Tu(new mr({
+		}, this.presentPass = ku(new mr({
 			glslVersion: F,
-			vertexShader: tu,
-			fragmentShader: $l,
+			vertexShader: au,
+			fragmentShader: ru,
 			uniforms: this.presentUniforms,
 			depthTest: !1,
 			depthWrite: !1,
@@ -14222,12 +14264,16 @@ var Cu = new Zt(new Float32Array([
 		this.gbufferUniforms.uSprites.value = e.table, this.gbufferUniforms.uAlbedo.value = e.albedo, this.gbufferUniforms.uAux.value = e.aux, this.three.initTexture(e.albedo), this.three.initTexture(e.aux), this.three.initTexture(e.table);
 	}
 	setWorld(e) {
-		this.uMap.value.set(e.sizeX, e.sizeY, e.floors), this.uDepth.value.x = e.depthMin, this.uDepth.value.y = e.depthMax, this.uDepth.value.z = Ms, this.uStory.value = e.storyPx / 40, this.storyPx = e.storyPx;
+		this.uMap.value.set(e.sizeX, e.sizeY, e.floors), this.uOcc.value.set(0, 0, e.sizeX, e.sizeY), this.uDepth.value.x = e.depthMin, this.uDepth.value.y = e.depthMax, this.uDepth.value.z = Ms, this.uStory.value = e.storyPx / 40, this.storyPx = e.storyPx;
 	}
 	setOcclusion(e) {
 		let t = this.tOcclusion.value;
 		t && t !== e && t.dispose(), this.tOcclusion.value = e;
 	}
+	setOcclusionWindow(e, t, n, r) {
+		this.uOcc.value.set(e, t, n, r);
+	}
+	cutSize = "";
 	refreshOcclusion(e) {
 		let t = this.tOcclusion.value;
 		if (t) {
@@ -14248,7 +14294,7 @@ var Cu = new Zt(new Float32Array([
 		let i = Math.ceil(t.count * 1.5), a = new Float32Array(i * 7);
 		a.set(t.data.subarray(0, r));
 		let o = new Kr();
-		o.setAttribute("position", Cu), o.setIndex(wu);
+		o.setAttribute("position", Du), o.setIndex(Ou);
 		let s = new li(a, 7, 1);
 		s.setUsage(P), o.setAttribute("aWorld", new _n(s, 3, 0)), o.setAttribute("aMeta", new _n(s, 4, 3)), o.instanceCount = t.count;
 		let c = new Vn(o, this.gbufferMaterial);
@@ -14278,7 +14324,7 @@ var Cu = new Zt(new Float32Array([
 		for (let [t, n] of e.chunks) this.setChunk(String(t), n);
 	}
 	setParticles(e) {
-		let t = e.length / bu, n = new li(e, bu, 1);
+		let t = e.length / wu, n = new li(e, wu, 1);
 		this.particleGeometry.setAttribute("aOrigin", new _n(n, 4, 0)), this.particleGeometry.setAttribute("aSeed", new _n(n, 1, 4)), this.particleGeometry.instanceCount = t;
 	}
 	setRoofs(e) {
@@ -14288,16 +14334,16 @@ var Cu = new Zt(new Float32Array([
 		let r = new Vn(t, this.roofMaterial);
 		r.frustumCulled = !1, r.matrixAutoUpdate = !1, this.sprites.add(r), this.roofMesh = r;
 	}
-	setCut(e) {
-		if (this.uCut.value.set(+!!e, this.uMap.value.x, this.uMap.value.y), !e) return;
-		let n = this.tCut.value;
-		if (n instanceof $n && n.image === e) {
-			n.needsUpdate = !0;
+	setCut(e, n) {
+		if (this.uCut.value.set(+!!e, n?.wide ?? this.uMap.value.x, n?.deep ?? this.uMap.value.y), this.uCutAt.value.set(n?.x ?? 0, n?.y ?? 0), !e) return;
+		let i = this.tCut.value, a = `${e.width}x${e.height}`;
+		if (i instanceof $n && i.image === e && this.cutSize === a) {
+			i.needsUpdate = !0;
 			return;
 		}
-		n.dispose();
-		let i = new $n(e);
-		i.minFilter = i.magFilter = r, i.wrapS = i.wrapT = t, i.generateMipmaps = !1, i.colorSpace = "", i.flipY = !1, this.tCut.value = i;
+		this.cutSize = a, i.dispose();
+		let o = new $n(e);
+		o.minFilter = o.magFilter = r, o.wrapS = o.wrapT = t, o.generateMipmaps = !1, o.colorSpace = "", o.flipY = !1, this.tCut.value = o;
 	}
 	setVision(e) {
 		let n = this.tVision.value;
@@ -14313,7 +14359,7 @@ var Cu = new Zt(new Float32Array([
 		if (!this.dynamicBuffer || this.dynamicBuffer.array !== e) {
 			this.dynamicMesh && (this.sprites.remove(this.dynamicMesh), this.dynamicGeometry?.dispose());
 			let t = new Kr();
-			t.setAttribute("position", Cu), t.setIndex(wu);
+			t.setAttribute("position", Du), t.setIndex(Ou);
 			let n = new li(e, 7, 1);
 			n.setUsage(P), t.setAttribute("aWorld", new _n(n, 3, 0)), t.setAttribute("aMeta", new _n(n, 4, 3));
 			let r = new Vn(t, this.gbufferMaterial);
@@ -14331,7 +14377,7 @@ var Cu = new Zt(new Float32Array([
 			depthBuffer: !0,
 			stencilBuffer: !1,
 			generateMipmaps: !1
-		}), this.gbuffer.depthTexture = new er(e, t, c), this.light = Eu(e, t), this.final = Eu(e, t)), this.tNormal.value = this.gbuffer.textures[1], this.tDepth.value = this.gbuffer.depthTexture, this.compositeUniforms.tColor.value = this.gbuffer.textures[0], this.compositeUniforms.tId.value = this.gbuffer.textures[2], this.compositeUniforms.tLight.value = this.light.texture, this.particleUniforms.tLight.value = this.light.texture, this.presentUniforms.tFinal.value = this.final.texture);
+		}), this.gbuffer.depthTexture = new er(e, t, c), this.light = Au(e, t), this.final = Au(e, t)), this.tNormal.value = this.gbuffer.textures[1], this.tDepth.value = this.gbuffer.depthTexture, this.compositeUniforms.tColor.value = this.gbuffer.textures[0], this.compositeUniforms.tId.value = this.gbuffer.textures[2], this.compositeUniforms.tLight.value = this.light.texture, this.particleUniforms.tLight.value = this.light.texture, this.presentUniforms.tFinal.value = this.final.texture);
 	}
 	resize(e, t) {
 		this.three.setPixelRatio(1), this.three.setSize(e, t, !1);
@@ -14350,7 +14396,7 @@ var Cu = new Zt(new Float32Array([
 	}
 	uploadLights(e, t, n, r, i, a) {
 		let o = this.lightPosition.array, s = this.lightColor.array, c = this.lightSpot.array, l = 0;
-		for (let u = 0; u < this.sceneLights.length && l < Math.min(vu, e.maxLights); u++) {
+		for (let u = 0; u < this.sceneLights.length && l < Math.min(Su, e.maxLights); u++) {
 			let d = this.sceneLights[u];
 			if (d.floor > e.activeFloor && !e.showAbove) continue;
 			let f = (d.x - d.y) * 32, p = (d.x + d.y) * 16 - d.z * 40, m = d.radius * 46;
@@ -14391,9 +14437,9 @@ var Cu = new Zt(new Float32Array([
 			let r = t.floor <= e.activeFloor || e.showAbove, c = t.x1 >= o && t.x0 <= o + i && t.y1 >= s && t.y0 <= s + a;
 			n.visible = r && c, n.visible && (l += t.count, u++);
 		}
-		let d = gu(e.hour, e.weather, e.strength), f = e.gale ?? 0;
+		let d = bu(e.hour, e.weather, e.strength), f = e.gale ?? 0;
 		this.ambientUniforms.uAmbient.value.set(...d.ambient), this.ambientUniforms.uSunColor.value.set(...d.sunColor), this.ambientUniforms.uSunDir.value.set(...d.sunDir), this.ambientUniforms.uSunShadows.value = +!!e.sunShadows, this.ambientUniforms.uContact.value = +!!e.contact, this.lightUniforms.uShadows.value = +!!e.shadows, this.ambientUniforms.uCloud.value.set(d.cloud, e.time * .02 * (1 + f * 3), e.time * .012 * (1 + f * 3)), this.ambientUniforms.uOpenSky.value = +(d.wet > 0 || d.snow > 0), this.compositeUniforms.uAir.value.set(d.wet, d.snow, d.fog, e.time), this.compositeUniforms.uFogColor.value.set(...d.fogColor), this.compositeUniforms.uSkyColor.value.set(d.ambient[0] * .9, d.ambient[1] * .95, d.ambient[2]), this.particleUniforms.uTime.value = e.time, this.particleUniforms.uWind.value.set(-40 - f * 170, f, f), this.particleUniforms.uSky.value.set(d.falling, .15 + .85 * (e.strength ?? 1)), this.particleUniforms.uAir.value.set(d.ambient[0], d.ambient[1], d.ambient[2], d.emissive), this.compositeUniforms.uBackground.value.set(...d.background), this.compositeUniforms.uEmissive.value = d.emissive, this.lightUniforms.uBands.value = e.bands, this.lightUniforms.uDither.value = e.dither, this.compositeUniforms.uDebug.value = e.debug, this.compositeUniforms.uVision.value.set(+!!e.vision, this.uMap.value.x, this.uMap.value.y), this.compositeUniforms.uGrid.value = e.grid ?? 0, this.compositeUniforms.uActiveFloor.value = e.activeFloor, this.compositeUniforms.uDimBelow.value = e.dimBelow ?? 0;
-		let p = this.uploadLights(e, o, s, i, a, Math.max(yu, d.emissive)), m = e.zoom >= 1 ? e.zoom : 1;
+		let p = this.uploadLights(e, o, s, i, a, Math.max(Cu, d.emissive)), m = e.zoom >= 1 ? e.zoom : 1;
 		return this.presentUniforms.uPresent.value.set(m, r * m - this.canvas.height), this.presentUniforms.uAverage.value = c, this.timer.begin(), t.setRenderTarget(this.gbuffer), t.setClearColor(0, 0), t.clear(!0, !0, !1), t.render(this.sprites, this.camera), t.setRenderTarget(this.light), t.clear(!0, !1, !1), t.render(this.ambientPass, this.camera), p && t.render(this.lights, this.camera), t.setRenderTarget(this.final), t.render(this.compositePass, this.camera), e.particles !== !1 && this.particleGeometry.instanceCount > 0 && t.render(this.particles, this.camera), t.setRenderTarget(null), t.render(this.presentPass, this.camera), this.timer.end(), {
 			drawCalls: t.info.render.calls,
 			visibleInstances: l,
@@ -14412,31 +14458,31 @@ var Cu = new Zt(new Float32Array([
 		let o = /* @__PURE__ */ new Uint8Array(4);
 		return await this.three.readRenderTargetPixelsAsync(this.gbuffer, i, a, 1, 1, o, void 0, 2), o[0] + o[1] * 256 + o[2] * 65536;
 	}
-	async capture(e, t, n, r, i) {
-		(this.canvas.width !== r || this.canvas.height !== i) && this.resize(r, i), this.render({
+	async capture(e, t, n, r, i, a = 1) {
+		(this.canvas.width !== r || this.canvas.height !== i) && this.resize(r, i), this.maxSupersample = 1, this.render({
 			...e,
-			centerX: t + r / 2,
-			centerY: n + i / 2,
-			zoom: 1
+			centerX: t + r / a / 2,
+			centerY: n + i / a / 2,
+			zoom: a
 		});
-		let a = new Uint8Array(r * i * 4), o = new Uint8Array(r * i * 4);
-		return await this.three.readRenderTargetPixelsAsync(this.final, 0, 0, r, i, a), await this.three.readRenderTargetPixelsAsync(this.gbuffer, 0, 0, r, i, o, void 0, 2), {
-			color: Ou(a, r, i),
-			ids: Ou(o, r, i)
+		let o = new Uint8Array(r * i * 4), s = new Uint8Array(r * i * 4);
+		return await this.three.readRenderTargetPixelsAsync(this.final, 0, 0, r, i, o), await this.three.readRenderTargetPixelsAsync(this.gbuffer, 0, 0, r, i, s, void 0, 2), {
+			color: Mu(o, r, i),
+			ids: Mu(s, r, i)
 		};
 	}
 	dispose() {
 		this.three.dispose(), this.three.forceContextLoss();
 	}
 };
-function Ou(e, t, n) {
+function Mu(e, t, n) {
 	let r = new Uint8Array(e.length), i = t * 4;
 	for (let t = 0; t < n; t++) r.set(e.subarray((n - 1 - t) * i, (n - t) * i), t * i);
 	return r;
 }
 // ../export/src/mesa.ts
-var ku = (e) => Math.round(e * 100) / 100, Au = (e) => (e?.meters ?? 2.4) < 1.2, ju = (e) => new Map((e.objects ?? []).map((e) => [e.id, e])), Mu = (e, t) => e.towers?.find((e) => e.id === t), Nu = (e) => e.kind === "prop" && !e.open && e.meters >= 2 && e.foot[0] * e.foot[1] >= 4, Pu = (e, t) => {
-	let [n, r] = kl(t, e.facing);
+var Nu = (e) => Math.round(e * 100) / 100, Pu = (e) => (e?.meters ?? 2.4) < 1.2, Fu = (e) => new Map((e.objects ?? []).map((e) => [e.id, e])), Iu = (e, t) => e.towers?.find((e) => e.id === t), Lu = (e) => e.kind === "prop" && !e.open && e.meters >= 2 && e.foot[0] * e.foot[1] >= 4, Ru = (e, t) => {
+	let [n, r] = Al(t, e.facing);
 	return [
 		e.x - n / 2,
 		e.y - r / 2,
@@ -14444,16 +14490,16 @@ var ku = (e) => Math.round(e * 100) / 100, Au = (e) => (e?.meters ?? 2.4) < 1.2,
 		e.y + r / 2
 	];
 };
-function Fu(e, t, n) {
-	let r = ju(n), i = [];
+function zu(e, t, n) {
+	let r = Fu(n), i = [];
 	for (let a of e.meta.floors[t].layers) if (a.visible) {
 		if (a.kind === "objects") for (let e of a.items) {
 			let t = r.get(e.asset);
-			t && Nu(t) && i.push({ box: Pu(e, t) });
+			t && Lu(t) && i.push({ box: Ru(e, t) });
 		}
 		if (a.kind === "roofs") for (let e of a.items) {
 			let r = e.shape === "round";
-			r && Mu(n, e.material)?.open !== void 0 || i.push({
+			r && Iu(n, e.material)?.open !== void 0 || i.push({
 				box: [
 					e.x,
 					e.y,
@@ -14468,7 +14514,7 @@ function Fu(e, t, n) {
 	}
 	return i;
 }
-function Iu(e, t) {
+function Bu(e, t) {
 	for (let [n, r, i] of e.filled()) {
 		let e = Math.sqrt(i.length);
 		for (let a = 0; a < e; a++) for (let o = 0; o < e; o++) {
@@ -14477,10 +14523,10 @@ function Iu(e, t) {
 		}
 	}
 }
-function Lu(e) {
+function Vu(e) {
 	let t = [], n = /* @__PURE__ */ new Map();
 	for (let r of [...e].sort((e, t) => e[4] - t[4] || e[1] - t[1] || e[0] - t[0] || e[3] - t[3] || e[2] - t[2])) {
-		let e = r[1] === r[3] ? "x" : r[0] === r[2] ? "y" : "", i = e === "x" ? `x${r[1]}:${r[4]}` : e === "y" ? `y${r[0]}:${r[4]}` : "", a = i ? n.get(i) : void 0, o = r[4] >= 1 && r[4] <= 3, s = !a || !o || a[2] - a[0] + a[3] - a[1] < zu;
+		let e = r[1] === r[3] ? "x" : r[0] === r[2] ? "y" : "", i = e === "x" ? `x${r[1]}:${r[4]}` : e === "y" ? `y${r[0]}:${r[4]}` : "", a = i ? n.get(i) : void 0, o = r[4] >= 1 && r[4] <= 3, s = !a || !o || a[2] - a[0] + a[3] - a[1] < Uu;
 		if (a && s && e === "x" && a[2] === r[0]) a[2] = r[2];
 		else if (a && s && e === "y" && a[3] === r[1]) a[3] = r[3];
 		else {
@@ -14496,23 +14542,64 @@ function Lu(e) {
 	}
 	return t;
 }
-var Ru = 16, zu = 2;
-function Bu(e, t, n) {
-	let r = ju(n), i = /* @__PURE__ */ new Map(), a = (e, t) => {
-		let n = ku(e);
+var Hu = 16, Uu = 2;
+function Wu(e) {
+	let { x: t, y: n } = e.meta.size, r = e.meta.floors[0].layers.filter((e) => e.visible), i = (t) => r.flatMap((n) => n.kind === t && e.grids.get(n.id) ? [e.grids.get(n.id)] : []), [a, o, s] = [
+		r.filter((e) => e.kind === "terrain"),
+		i("tiles"),
+		i("walls")
+	], c = (e, t) => [
+		[e, t],
+		[e + 1, t],
+		[e, t + 1],
+		[e + 1, t + 1]
+	], l = (t, n) => o.some((e) => e.get(t, n)) ? !0 : a.some((r, i) => {
+		let a = e.grids.get(r.id);
+		return !!a && (i === 0 ? c(t, n).every(([e, t]) => a.get(e, t)) : c(t, n).some(([e, t]) => a.get(e, t)));
+	}), u = a[0] && e.grids.get(a[0].id);
+	if (u && a[0].kind === "terrain" && Array.from({ length: Math.ceil((n + 1) / 32) }).every((e, r) => Array.from({ length: Math.ceil((t + 1) / 32) }).every((e, i) => {
+		let a = u.chunk(i, r);
+		if (!a) return !1;
+		for (let e = 0; e < 32; e++) for (let o = 0; o < 32; o++) if (!a[e * 32 + o] && i * 32 + o <= t && r * 32 + e <= n) return !1;
+		return !0;
+	}))) return [];
+	let d = [];
+	for (let e = 0; e < n; e++) for (let n = 0; n < t; n++) {
+		let t = l(n, e);
+		e > 0 && t !== l(n, e - 1) && !s.some((t) => wc(t.get(n, e))) && d.push([
+			n,
+			e,
+			n + 1,
+			e,
+			0
+		]), n > 0 && t !== l(n - 1, e) && !s.some((t) => Tc(t.get(n, e))) && d.push([
+			n,
+			e,
+			n,
+			e + 1,
+			0
+		]);
+	}
+	return d;
+}
+var Gu = 999;
+function Ku(e, t, n) {
+	let r = Fu(n), i = /* @__PURE__ */ new Map(), a = (e, t) => {
+		let n = Nu(e);
 		i.set(n, [...i.get(n) ?? [], t]);
 	}, o = n.walls?.meters ?? 2.4, s = (t, r) => {
-		let i = Gl(e, n, r);
-		return t === 1 ? Au(i) && !i?.rim ? 4 : 0 : t === 2 || t === 3 ? 1 : t === 5 || t === 6 ? 2 : t === 4 ? 4 : null;
+		let i = Yl(e, n, r);
+		return t === 1 ? Pu(i) && !i?.rim ? 4 : 0 : t === 2 || t === 3 ? 1 : t === 5 || t === 6 ? 2 : t === 4 ? 4 : null;
 	}, c = (t) => {
-		let r = Gl(e, n, t);
+		let r = Yl(e, n, t);
 		return r?.rim ? o : r?.meters ?? o;
 	};
+	if (t === 0) for (let t of Wu(e)) a(Gu, t);
 	for (let i of e.meta.floors[t].layers) if (i.visible) {
 		if (i.kind === "walls") {
 			let t = e.grids.get(i.id);
 			if (!t) continue;
-			Iu(t, (e, t, n) => {
+			Bu(t, (e, t, n) => {
 				let r = wc(n), i = Tc(n), o = r === 0 ? null : s(r, Ec(n)), l = i === 0 ? null : s(i, Dc(n));
 				o !== null && a(c(Ec(n)), [
 					e,
@@ -14531,8 +14618,8 @@ function Bu(e, t, n) {
 		}
 		if (i.kind === "objects") for (let e of i.items) {
 			let t = r.get(e.asset);
-			if (!t || !Nu(t)) continue;
-			let [n, i, o, s] = Pu(e, t).map(ku);
+			if (!t || !Lu(t)) continue;
+			let [n, i, o, s] = Ru(e, t).map(Nu);
 			for (let e of [
 				[
 					n,
@@ -14566,50 +14653,54 @@ function Bu(e, t, n) {
 		}
 		if (i.kind === "roofs") for (let e of i.items) {
 			if (e.shape !== "round") continue;
-			let t = Mu(n, e.material);
+			let t = Iu(n, e.material);
 			if (!t || t.open && !t.rings.some((e) => e.inside)) continue;
 			let [r, i] = [e.wide / 2, e.deep / 2], o = (t) => {
-				let n = t / Ru * Math.PI * 2;
-				return [ku(e.x + r + Math.cos(n) * r), ku(e.y + i + Math.sin(n) * i)];
+				let n = t / Hu * Math.PI * 2;
+				return [Nu(e.x + r + Math.cos(n) * r), Nu(e.y + i + Math.sin(n) * i)];
 			}, s = Math.max(...t.rings.flatMap((e) => [e.from[1], e.to[1]]), 0);
-			for (let e = 0; e < Ru; e++) a(s, [
+			for (let e = 0; e < Hu; e++) a(s, [
 				...o(e),
 				...o(e + 1),
 				0
 			]);
 		}
 	}
-	return [...i].flatMap(([e, t]) => Lu(t).map((t) => ({
+	return [...i].flatMap(([e, t]) => Vu(t).map((t) => ({
 		wall: t,
 		top: e
 	})));
 }
-function Vu(e, t) {
-	let { x: n, y: r } = e.meta.size, i = e.meta.floors[t].layers.flatMap((t) => t.kind === "walls" && t.visible && e.grids.get(t.id) ? [e.grids.get(t.id)] : []), a = (e, t) => i.some((n) => wc(n.get(e, t)) !== 0), o = (e, t) => i.some((n) => Tc(n.get(e, t)) !== 0), s = new Int32Array(n * r).fill(-1), c = (e, t, i) => {
-		let c = [t * n + e];
-		s[t * n + e] = i;
-		let l = (e, t) => {
+function qu(e, t) {
+	let { x: n, y: r } = e.meta.size, i = e.meta.floors[t].layers.flatMap((t) => t.kind === "walls" && t.visible && e.grids.get(t.id) ? [e.grids.get(t.id)] : []), a = (n + 1) * (r + 1), o = new Uint8Array(a), s = new Uint8Array(a);
+	for (let e of i) Bu(e, (e, t, i) => {
+		e > n || t > r || (wc(i) !== 0 && (o[t * (n + 1) + e] = 1), Tc(i) !== 0 && (s[t * (n + 1) + e] = 1));
+	});
+	let c = (e, t) => o[t * (n + 1) + e] === 1, l = (e, t) => s[t * (n + 1) + e] === 1, u = new Int32Array(n * r).fill(-1), d = (e, t, i) => {
+		let a = [t * n + e];
+		u[t * n + e] = i;
+		let o = (e, t) => {
 			let r = t * n + e;
-			s[r] === -1 && (s[r] = i, c.push(r));
+			u[r] === -1 && (u[r] = i, a.push(r));
 		};
-		for (; c.length;) {
-			let e = c.pop(), [t, i] = [e % n, Math.floor(e / n)];
-			t > 0 && !o(t, i) && l(t - 1, i), t + 1 < n && !o(t + 1, i) && l(t + 1, i), i > 0 && !a(t, i) && l(t, i - 1), i + 1 < r && !a(t, i + 1) && l(t, i + 1);
+		for (; a.length;) {
+			let e = a.pop(), [t, i] = [e % n, Math.floor(e / n)];
+			t > 0 && !l(t, i) && o(t - 1, i), t + 1 < n && !l(t + 1, i) && o(t + 1, i), i > 0 && !c(t, i) && o(t, i - 1), i + 1 < r && !c(t, i + 1) && o(t, i + 1);
 		}
 	};
-	for (let e = 0; e < n; e++) s[e] === -1 && c(e, 0, 0), s[(r - 1) * n + e] === -1 && c(e, r - 1, 0);
-	for (let e = 0; e < r; e++) s[e * n] === -1 && c(0, e, 0), s[e * n + n - 1] === -1 && c(n - 1, e, 0);
-	let l = 1;
-	for (let e = 0; e < s.length; e++) s[e] === -1 && c(e % n, Math.floor(e / n), l++);
-	let u = Array.from({ length: l }, (e, t) => t), d = (e) => u[e] === e ? e : u[e] = d(u[e]);
+	for (let e = 0; e < n; e++) u[e] === -1 && d(e, 0, 0), u[(r - 1) * n + e] === -1 && d(e, r - 1, 0);
+	for (let e = 0; e < r; e++) u[e * n] === -1 && d(0, e, 0), u[e * n + n - 1] === -1 && d(n - 1, e, 0);
+	let f = 1;
+	for (let e = 0; e < u.length; e++) u[e] === -1 && d(e % n, Math.floor(e / n), f++);
+	let p = Array.from({ length: f }, (e, t) => t), m = (e) => p[e] === e ? e : p[e] = m(p[e]);
 	for (let e = 0; e < r; e++) for (let t = 0; t < n; t++) {
-		let i = s[e * n + t];
-		if (i) for (let a of [t + 1 < n ? s[e * n + t + 1] : 0, e + 1 < r ? s[(e + 1) * n + t] : 0]) a && i !== a && (u[d(i)] = d(a));
+		let i = u[e * n + t];
+		if (i) for (let a of [t + 1 < n ? u[e * n + t + 1] : 0, e + 1 < r ? u[(e + 1) * n + t] : 0]) a && i !== a && (p[m(i)] = m(a));
 	}
-	return s.map((e) => e ? d(e) : 0);
+	return u.map((e) => e ? m(e) : 0);
 }
 // src/index.ts
-var Hu = 44, Uu = 2, Wu = .45, Gu = 30, Ku = 60, qu = 1.2, Ju = 1, Yu = 180, Xu = 4, Zu = .25, Qu = 1.5, $u = 24, ed = 40, td = class e {
+var Ju = 44, Yu = 2, Xu = .45, Zu = 30, Qu = 60, $u = 1.2, ed = 1, td = 180, nd = 4, rd = 2048, id = 3, ad = .25, od = .25, sd = 1.5, cd = 24, ld = 40, ud = class e {
 	canvas;
 	renderer;
 	atlas;
@@ -14655,9 +14746,9 @@ var Hu = 44, Uu = 2, Wu = .45, Gu = 30, Ku = 60, qu = 1.2, Ju = 1, Yu = 180, Xu 
 		}, this.quality = o;
 	}
 	static async open(t, n, r, i = {}) {
-		let a = new Du(t);
+		let a = new ju(t);
 		try {
-			let o = new Es(), s = await Al(r, o), c = new Zl(a, s, o, o.textures({ live: !0 })), l = Ic(n);
+			let o = new Es(), s = await jl(r, o), c = new tu(a, s, o, o.textures({ live: !0 })), l = Ic(n);
 			c.show(l);
 			let u = new e(t, a, o, c, s, l, i.quality ?? "high");
 			return u.floor = Math.min(i.floor ?? 0, l.meta.floors.length - 1), u;
@@ -14669,7 +14760,7 @@ var Hu = 44, Uu = 2, Wu = .45, Gu = 30, Ku = 60, qu = 1.2, Ju = 1, Yu = 180, Xu 
 		return this.map.meta.size;
 	}
 	bodies() {
-		return this.map.meta.floors.flatMap((e, t) => Fu(this.map, t, this.pack.manifest));
+		return this.map.meta.floors.flatMap((e, t) => zu(this.map, t, this.pack.manifest));
 	}
 	standingBodies() {
 		this.allBodies ??= this.bodies();
@@ -14699,11 +14790,11 @@ var Hu = 44, Uu = 2, Wu = .45, Gu = 30, Ku = 60, qu = 1.2, Ju = 1, Yu = 180, Xu 
 		})) : []));
 	}
 	wallsFor(e) {
-		let t = e + Qu;
+		let t = e + sd;
 		return this.map.meta.floors.flatMap((n, r) => {
 			if (r > this.floorAt(e)) return [];
 			let i = r * this.storyMeters;
-			return Bu(this.map, r, this.pack.manifest).flatMap((e) => i + e.top > t ? [e.wall] : []);
+			return Ku(this.map, r, this.pack.manifest).flatMap((e) => i + e.top > t ? [e.wall] : []);
 		});
 	}
 	setInside(e) {
@@ -14711,7 +14802,7 @@ var Hu = 44, Uu = 2, Wu = .45, Gu = 30, Ku = 60, qu = 1.2, Ju = 1, Yu = 180, Xu 
 		for (let n of e) {
 			let e = this.storyAt(n.z);
 			if (e >= this.map.meta.floors.length) continue;
-			let r = (this.houses[e] ??= Vu(this.map, e))[Math.floor(n.y) * t + Math.floor(n.x)] ?? 0;
+			let r = (this.houses[e] ??= qu(this.map, e))[Math.floor(n.y) * t + Math.floor(n.x)] ?? 0;
 			if (!r) continue;
 			let a = `${e}:${r}`, o = i.get(a);
 			(!o || n.z < o.meters) && i.set(a, {
@@ -14726,20 +14817,37 @@ var Hu = 44, Uu = 2, Wu = .45, Gu = 30, Ku = 60, qu = 1.2, Ju = 1, Yu = 180, Xu 
 			this.renderer.setCut(null), this.urgent = !0;
 			return;
 		}
-		let o = this.cutCanvas ??= Object.assign(document.createElement("canvas"), {
-			width: t * Xu,
-			height: n * Xu
-		}), s = o.getContext("2d");
-		s.setTransform(Xu, 0, 0, Xu, 0, 0), s.globalCompositeOperation = "source-over", s.fillStyle = "#000", s.fillRect(0, 0, t, n);
-		let c = (e) => `rgb(${Math.max(1, Math.round(e / xl * 255))} 0 0)`, l = [...i.values()].sort((e, t) => t.meters - e.meters);
-		for (let e of ["around", "inside"]) for (let { floor: i, house: a, meters: o } of l) {
-			let l = this.houses[i];
-			s.fillStyle = c(e === "around" ? (i + 1) * r * 40 : o * 40 + Hu);
-			let u = e === "around" ? Zu : 1 / Xu;
-			if (e === "around") for (let e of this.roofsOver(i, a)) this.openRoofs.add(`${e.floor}:${e.id}`), s.fillRect(e.x - Lc - u, e.y - Lc - u, e.wide + (Lc + u) * 2, e.deep + (Lc + u) * 2);
-			for (let r = 0; r < n; r++) for (let n = 0; n < t; n++) l[r * t + n] === a && (e === "around" ? s.fillRect(n - u, r - u, 1 + u * 2, 1 + u * 2) : s.fillRect(n + u, r + u, 1, 1));
+		let o = [...i.values()].sort((e, t) => t.meters - e.meters), [s, c, l, u] = [
+			t,
+			n,
+			0,
+			0
+		];
+		for (let { floor: e, house: r } of o) {
+			let i = this.houses[e];
+			for (let e = 0; e < n; e++) for (let n = 0; n < t; n++) i[e * t + n] === r && (s = Math.min(s, n), c = Math.min(c, e), l = Math.max(l, n + 1), u = Math.max(u, e + 1));
+			for (let t of this.roofsOver(e, r)) s = Math.min(s, t.x), c = Math.min(c, t.y), l = Math.max(l, t.x + t.wide), u = Math.max(u, t.y + t.deep);
 		}
-		this.renderer.setCut(o), this.urgent = !0;
+		let d = {
+			x: Math.max(0, s - id),
+			y: Math.max(0, c - id),
+			wide: 0,
+			deep: 0
+		};
+		d.wide = Math.min(t, l + id) - d.x, d.deep = Math.min(n, u + id) - d.y;
+		let f = Math.max(1, Math.min(nd, Math.floor(rd / Math.max(d.wide, d.deep)))), p = this.cutCanvas ??= document.createElement("canvas");
+		p.width = d.wide * f, p.height = d.deep * f;
+		let m = p.getContext("2d");
+		m.setTransform(f, 0, 0, f, -d.x * f, -d.y * f), m.globalCompositeOperation = "source-over", m.fillStyle = "#000", m.fillRect(d.x, d.y, d.wide, d.deep);
+		let h = (e) => `rgb(${Math.max(1, Math.round(e / Sl * 255))} 0 0)`;
+		for (let e of ["around", "inside"]) for (let { floor: i, house: a, meters: s } of o) {
+			let o = this.houses[i];
+			m.fillStyle = h(e === "around" ? (i + 1) * r * 40 : s * 40 + Ju);
+			let c = e === "around" ? od : 1 / f;
+			if (e === "around") for (let e of this.roofsOver(i, a)) this.openRoofs.add(`${e.floor}:${e.id}`), m.fillRect(e.x - Lc - c, e.y - Lc - c, e.wide + (Lc + c) * 2, e.deep + (Lc + c) * 2);
+			for (let r = 0; r < n; r++) for (let n = 0; n < t; n++) o[r * t + n] === a && (e === "around" ? m.fillRect(n - c, r - c, 1 + c * 2, 1 + c * 2) : m.fillRect(n + c, r + c, 1, 1));
+		}
+		this.renderer.setCut(p, d), this.urgent = !0;
 	}
 	setDoors(e) {
 		let t = e.map((e) => `${e.x0},${e.y0},${e.x1},${e.y1},${e.open}`).join("|");
@@ -14816,7 +14924,7 @@ var Hu = 44, Uu = 2, Wu = .45, Gu = 30, Ku = 60, qu = 1.2, Ju = 1, Yu = 180, Xu 
 		let t = e.length * 7;
 		t > this.figures.length && (this.figures = new Float32Array(t * 2)), e.forEach((e, t) => {
 			let n = t * 7;
-			this.figures[n] = e.x, this.figures[n + 1] = e.y, this.figures[n + 2] = e.z ?? 0, this.figures[n + 3] = e.sprite, this.figures[n + 4] = 2 | jl(this.floor) | !!e.flip, this.figures[n + 5] = e.flat ? Ju : (e.z ?? 0) > 0 ? Yu : qu, this.figures[n + 6] = 0;
+			this.figures[n] = e.x, this.figures[n + 1] = e.y, this.figures[n + 2] = e.z ?? 0, this.figures[n + 3] = e.sprite, this.figures[n + 4] = 2 | Ml(this.floor) | !!e.flip, this.figures[n + 5] = e.flat ? ed : (e.z ?? 0) > 0 ? td : $u, this.figures[n + 6] = 0;
 		}), this.renderer.setDynamic(this.figures, e.length), this.urgent = !0;
 	}
 	setVision(e) {
@@ -14834,45 +14942,47 @@ var Hu = 44, Uu = 2, Wu = .45, Gu = 30, Ku = 60, qu = 1.2, Ju = 1, Yu = 180, Xu 
 	tick = (e) => {
 		if (!this.running) return;
 		this.frame = requestAnimationFrame(this.tick);
-		let t = 1e3 / (this.urgent ? Ku : Gu) - 1;
+		let t = 1e3 / (this.urgent ? Qu : Zu) - 1;
 		if (e - this.last < t) return;
 		this.last = e, this.urgent = !1;
-		let n = this.renderer.render(this.params(e));
-		this.watch(n.gpuMs);
+		let n = this.params(e);
+		this.view.follow(this.map, (n.centerY / 16 + n.centerX / 32) / 2, (n.centerY / 16 - n.centerX / 32) / 2);
+		let r = this.renderer.render(n);
+		this.watch(r.gpuMs);
 	};
 	watch(e) {
-		if (e === null || this.quality === "low" || (this.measured.push(e), this.measured.length < ed)) return;
+		if (e === null || this.quality === "low" || (this.measured.push(e), this.measured.length < ld)) return;
 		let t = this.measured.reduce((e, t) => e + t, 0) / this.measured.length;
-		this.measured = [], t > $u && (this.quality = "low", this.onQuality?.("low"));
+		this.measured = [], t > cd && (this.quality = "low", this.onQuality?.("low"));
 	}
 	params(e) {
-		let t = this.quality === "high";
-		this.renderer.maxSupersample = t ? 2 : 1;
-		let { left: n, top: r, zoom: i } = this.camera, { viewW: a, viewH: o } = this.renderer.view({
+		let { left: t, top: n, zoom: r } = this.camera, i = r < ad, a = this.quality === "high" && !i;
+		this.renderer.maxSupersample = a ? 2 : 1;
+		let { viewW: o, viewH: s } = this.renderer.view({
 			centerX: 0,
 			centerY: 0,
-			zoom: i
+			zoom: r
 		});
 		return {
-			centerX: n + a / 2 + 1e-6,
-			centerY: r + o / 2 + 1e-6,
-			zoom: i,
+			centerX: t + o / 2 + 1e-6,
+			centerY: n + s / 2 + 1e-6,
+			zoom: r,
 			activeFloor: this.floor,
 			showAbove: this.look.above,
-			cutPx: this.look.cut ? Hu : null,
+			cutPx: this.look.cut ? Ju : null,
 			hour: this.air.hour,
-			shadows: t,
-			sunShadows: !0,
-			contact: t,
+			shadows: a,
+			sunShadows: !i,
+			contact: a,
 			bands: 8,
 			dither: .5,
-			rayStep: t ? .25 : .5,
-			maxSteps: t ? 32 : 14,
-			maxLights: t ? 64 : 16,
+			rayStep: a ? .25 : .5,
+			maxSteps: a ? 32 : 14,
+			maxLights: a ? 64 : 16,
 			debug: 0,
 			time: e / 1e3,
-			dimBelow: this.floor > 0 && !this.look.above ? Wu : 0,
-			wind: Uu * (.5 + this.air.wind * 2.5),
+			dimBelow: this.floor > 0 && !this.look.above ? Xu : 0,
+			wind: Yu * (.5 + this.air.wind * 2.5),
 			weather: this.air.weather,
 			strength: this.air.strength,
 			gale: this.air.wind,
@@ -14882,4 +14992,4 @@ var Hu = 44, Uu = 2, Wu = .45, Gu = 30, Ku = 60, qu = 1.2, Ju = 1, Yu = 180, Xu 
 		};
 	}
 };
-export { td as MapPlayer };
+export { ud as MapPlayer };

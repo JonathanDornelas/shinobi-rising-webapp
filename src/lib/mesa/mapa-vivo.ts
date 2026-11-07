@@ -78,8 +78,8 @@ export function proximoNivel(niveis: readonly number[], altura: number, rumo: 1 
 	return lista[0] ?? null;
 }
 
-/** Quantos pixels da máscara de visão vão em cada quadrado. */
-export const PIXELS_DA_VISAO = 8;
+/** Quantos pixels da máscara de visão vão em cada quadrado: 8 até 256 metros de lado, e menos depois, para ela seguir cabendo em 2048 pixels. */
+export const pixelsDaVisao = (L: number, A: number) => Math.max(2, Math.min(8, Math.floor(2048 / Math.max(L, A))));
 
 const cinza = (v: number) => {
 	const c = Math.round(v * 255);
@@ -112,7 +112,8 @@ function pontosEmVolta([x0, y0, x1, y1]: Corpo['box']): Ponto[] {
 
 /** A névoa sem luz dinâmica, também vista de cima: o que o Mestre revelou aparece, e o que fica em pé num quadrado coberto some com ele. */
 export function pintarMascaraDaNevoa(c: CanvasRenderingContext2D, L: number, A: number, runs: readonly Run[]) {
-	c.setTransform(PIXELS_DA_VISAO, 0, 0, PIXELS_DA_VISAO, 0, 0);
+	const px = pixelsDaVisao(L, A);
+	c.setTransform(px, 0, 0, px, 0, 0);
 	c.globalCompositeOperation = 'source-over';
 	c.fillStyle = '#000';
 	c.fillRect(0, 0, L, A);
@@ -121,13 +122,14 @@ export function pintarMascaraDaNevoa(c: CanvasRenderingContext2D, L: number, A: 
 }
 
 /**
- * A máscara de visão, vista de cima: 1 píxel é 1/8 de quadrado, e mais claro é mais à vista. O motor a lê para cada pixel na
+ * A máscara de visão, vista de cima: mais claro é mais à vista. O motor a lê para cada pixel na
  * posição dele no mundo, então o alto de uma parede usa o chão ao lado dela. Um corpo (um prédio) não tem chão visível por
  * dentro: quem vê o chão em volta vê o corpo inteiro, com o telhado. Por isso `corpos` traz só o que está de pé: um telhado
  * escondido, cortado ou aberto para quem entrou mostra o que há embaixo, e os cômodos seguem as paredes como qualquer lugar.
  */
 export function pintarVisao(c: CanvasRenderingContext2D, L: number, A: number, visao: Visao, ambiente: Ambiente, runs: readonly Run[] | null, corpos: readonly Corpo[], revelado: (x: number, y: number) => boolean) {
-	c.setTransform(PIXELS_DA_VISAO, 0, 0, PIXELS_DA_VISAO, 0, 0);
+	const px = pixelsDaVisao(L, A);
+	c.setTransform(px, 0, 0, px, 0, 0);
 	c.globalCompositeOperation = 'source-over';
 	c.fillStyle = '#000';
 	c.fillRect(0, 0, L, A);

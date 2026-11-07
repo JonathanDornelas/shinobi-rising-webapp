@@ -1,5 +1,10 @@
 // Cenas da Mesa: o que o grupo vê no lugar do que é só do Mestre.
 
+/** O lado de uma cena, em metros. O banco tem a mesma regra (mesa_cenas_largura_check). */
+export const LADO_MINIMO_CENA = 5;
+export const LADO_MAXIMO_CENA = 1000;
+export const ladoDaCena = (v: number) => Math.min(LADO_MAXIMO_CENA, Math.max(LADO_MINIMO_CENA, Math.round(v)));
+
 /**
  * O grupo vê o nome público da cena (ou "Cena"), não o do Mestre. É só o que a tela mostra: o nome continua na linha
  * que o banco entrega (quem abrir o inspetor de rede lê), então spoiler de verdade fica em "visível" e na névoa.

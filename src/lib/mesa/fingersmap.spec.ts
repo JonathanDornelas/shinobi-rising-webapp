@@ -54,7 +54,7 @@ describe('lerFingersMap', () => {
 	it('avisa quando a versão é outra ou o mapa é grande demais', () => {
 		expect(() => lerFingersMap(pacote(cena({ versao: 3 })))).toThrow(/mais nova/);
 		expect(() => lerFingersMap(pacote(cena({ versao: 1 })))).toThrow(/Exporte de novo/);
-		expect(() => lerFingersMap(pacote(cena({ largura: 201 })))).toThrow(/200 × 200/);
+		expect(() => lerFingersMap(pacote(cena({ largura: 1001 })))).toThrow(/1000 × 1000/);
 	});
 
 	it('recusa arquivo que não é o que diz ser, ou que falta', () => {

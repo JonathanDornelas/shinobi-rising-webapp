@@ -212,7 +212,7 @@ export function calcularMolde(mira: Mira, mesa: Mesa, visiveis: MesaToken[]): Mo
 		dist = distanciaEntre(c, alvo);
 		ok = dist <= alcance;
 	} else if (forma === 'cena') {
-		// a cena toda: o quadro pinta um retângulo só, sem listar quadrado por quadrado (até 200 × 200)
+		// a cena toda: o quadro pinta um retângulo só, sem listar quadrado por quadrado (até 1000 × 1000)
 	} else if (forma === 'alvos') {
 		const sob = visiveis.find((t) => mira.tx >= t.x && mira.tx < t.x + t.tamanho && mira.ty >= t.y && mira.ty < t.y + t.tamanho);
 		dist = sob ? distanciaEntre(c, sob) : distanciaEntre(c, alvo);

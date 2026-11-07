@@ -1,6 +1,7 @@
 // Mapas no formato Universal VTT (.dd2vtt do Dungeondraft, .uvtt do Dungeon Alchemist, DungeonFog e outros): um JSON
 // com a imagem (em base64), o tamanho em quadrados, as paredes (linhas de visão), as portas e as luzes, tudo em
 // quadrados a partir do canto do mapa. Na Mesa, 1 quadrado = 1 m, então os números entram como estão.
+import { LADO_MAXIMO_CENA } from './cenas.ts';
 import { limparParedes, type Ambiente, type Parede, type TipoParede } from './luz.ts';
 
 type Xy = { x: number; y: number };
@@ -51,7 +52,7 @@ export function lerUvtt(texto: string): MapaUvtt {
 	if (!ok(tam) || !d.image) throw new Error('O arquivo não é um mapa Universal VTT (.dd2vtt ou .uvtt).');
 	const largura = Math.round(tam.x);
 	const altura = Math.round(tam.y);
-	if (largura > 200 || altura > 200) throw new Error(`O mapa tem ${largura} × ${altura} quadrados; a Mesa vai até 200 × 200.`);
+	if (largura > LADO_MAXIMO_CENA || altura > LADO_MAXIMO_CENA) throw new Error(`O mapa tem ${largura} × ${altura} quadrados; a Mesa vai até ${LADO_MAXIMO_CENA} × ${LADO_MAXIMO_CENA}.`);
 	if (largura < 1 || altura < 1) throw new Error('O mapa não tem tamanho.');
 	const o = ok(d.resolution?.map_origin) ? d.resolution!.map_origin! : { x: 0, y: 0 };
 	const paredes: number[][] = [];

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bloqueiaPasso, calcularVisao, encaixar, explorar, limparParedes, paredeEm, paredesEfetivas, type Parede } from './luz.ts';
+import { ALCANCE_DO_OLHAR, bloqueiaPasso, calcularVisao, encaixar, explorar, limparParedes, paredeEm, paredesEfetivas, type Parede } from './luz.ts';
 import { ambienteDaCor, lerUvtt } from './uvtt.ts';
 import { dentro, poligonoVisao, rasterizar } from './visao.ts';
 
@@ -107,6 +107,74 @@ describe('Universal VTT', () => {
 		expect(m.luzes).toEqual([{ x: 3, y: 3, plena: 4, penumbra: 4 }]);
 		expect([m.ambiente, m.tipoImagem]).toEqual(['escuro', 'image/png']);
 		expect(ambienteDaCor('ffffffff')).toBe('claro');
-		expect(() => lerUvtt('{"resolution":{"map_size":{"x":300,"y":10}},"image":"x"}')).toThrow(/200 × 200/);
+		expect(() => lerUvtt('{"resolution":{"map_size":{"x":1300,"y":10}},"image":"x"}')).toThrow(/1000 × 1000/);
+	});
+});
+
+describe('cenas muito grandes', () => {
+	const olho = { x: 500, y: 500, corpo: 1 };
+	const claro = { paredes: [], ambiente: 'claro' as const, luzes: [], observadores: [olho] };
+
+	it('uma cena até 320 m é vista de ponta a ponta', () => {
+		const v = calcularVisao({ ...claro, L: 320, A: 320, observadores: [{ x: 1, y: 1, corpo: 1 }] });
+		expect(v.visivel(319, 319)).toBe(true);
+	});
+
+	it('numa maior, o olhar para no horizonte', () => {
+		const v = calcularVisao({ ...claro, L: 1000, A: 1000 });
+		expect(v.visivel(500 + ALCANCE_DO_OLHAR - 5, 500)).toBe(true);
+		expect(v.visivel(500 + ALCANCE_DO_OLHAR + 5, 500)).toBe(false);
+	});
+
+	it('a luz que ninguém alcança ver fica fora da conta, e a que ilumina o horizonte não', () => {
+		const luz = (x: number) => ({ x, y: 500, plena: 4, penumbra: 2 });
+		const v = calcularVisao({ ...claro, ambiente: 'penumbra', L: 1000, A: 1000, luzes: [luz(500 + ALCANCE_DO_OLHAR + 4), luz(900)] });
+		expect(v.fontes.map((f) => Math.round(f.x))).toEqual([500 + ALCANCE_DO_OLHAR + 4]);
+	});
+
+	it('saber se um lugar está à vista, pela ordem dos ângulos, dá o mesmo que contar as bordas', () => {
+		let semente = 11;
+		const sorte = () => (semente = (semente * 16807) % 2147483647) / 2147483647;
+		const paredes = Array.from({ length: 200 }, (): [number, number, number, number] => {
+			const [x, y] = [sorte() * 100, sorte() * 100];
+			return [x, y, x + (sorte() - 0.5) * 14, y + (sorte() - 0.5) * 14];
+		});
+		const p = poligonoVisao(47.1, 52.6, paredes, { x0: 0, y0: 0, x1: 100, y1: 100 });
+		// a mesma pergunta, por uma cópia sem o que o polígono guarda
+		const copia = p.map(([x, y]): [number, number] => [x, y]);
+		for (let i = 0; i < 4000; i++) {
+			const [x, y] = [sorte() * 100, sorte() * 100];
+			expect(dentro(p, x, y)).toBe(dentro(copia, x, y));
+		}
+	});
+
+	it('procurar pela parede mais perto dá o mesmo polígono de procurar em todas', () => {
+		// um gerador simples, para o teste dar sempre o mesmo
+		let semente = 7;
+		const sorte = () => (semente = (semente * 16807) % 2147483647) / 2147483647;
+		const caixa = { x0: 0, y0: 0, x1: 100, y1: 100 };
+		const paredes = Array.from({ length: 300 }, (): [number, number, number, number] => {
+			const [x, y] = [sorte() * 100, sorte() * 100];
+			return [x, y, x + (sorte() - 0.5) * 12, y + (sorte() - 0.5) * 12];
+		});
+		const todas: [number, number, number, number][] = [...paredes, [0, 0, 100, 0], [100, 0, 100, 100], [100, 100, 0, 100], [0, 100, 0, 0]];
+		const [ox, oy] = [50.3, 49.7];
+		const p = poligonoVisao(ox, oy, paredes, caixa);
+		expect(p.length).toBeGreaterThan(100);
+		for (const [x, y] of p) {
+			const distancia = Math.hypot(x - ox, y - oy);
+			const [dx, dy] = [(x - ox) / distancia, (y - oy) / distancia];
+			let primeira = Infinity;
+			for (const [x1, y1, x2, y2] of todas) {
+				const [sx, sy] = [x2 - x1, y2 - y1];
+				const den = dx * sy - dy * sx;
+				if (Math.abs(den) < 1e-12) continue;
+				const [qx, qy] = [x1 - ox, y1 - oy];
+				const t = (qx * sy - qy * sx) / den;
+				const u = (qx * dy - qy * dx) / den;
+				if (t >= 0 && u >= -1e-9 && u <= 1 + 1e-9 && t < primeira) primeira = t;
+			}
+			expect(distancia).toBeCloseTo(primeira, 6);
+		}
 	});
 });

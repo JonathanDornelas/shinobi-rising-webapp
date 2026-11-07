@@ -12,6 +12,7 @@
 	import { apagarMapaVivo, enviarArte, enviarMapaVivo, nomeDoArquivo } from '#lib/mesa/artes.ts';
 	import { camposDaCena, lerFingersMap } from '#lib/mesa/fingersmap.ts';
 	import { CLIMAS_VIVOS, lerMapaVivo, type MapaVivo } from '#lib/mesa/mapa-vivo.ts';
+	import { LADO_MAXIMO_CENA, ladoDaCena } from '#lib/mesa/cenas.ts';
 	import { caixaDaCena, cfgIso } from '#lib/mesa/projecao.ts';
 	import { arquivoDaImagem, lerUvtt } from '#lib/mesa/uvtt.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
@@ -84,8 +85,8 @@
 	});
 	let pxPorQuadrado = $state<number | null>(null);
 	let medindo = $state(false);
-	const L = $derived(Math.min(200, Math.max(5, Math.round(+largura || 0))));
-	const A = $derived(Math.min(200, Math.max(5, Math.round(+altura || 0))));
+	const L = $derived(ladoDaCena(+largura || 0));
+	const A = $derived(ladoDaCena(+altura || 0));
 	const fora = $derived(mesa.tokens.filter((t) => t.x + t.tamanho > L || t.y + t.tamanho > A).length);
 	const mudou = $derived(L !== cena.largura || A !== cena.altura);
 
@@ -128,8 +129,8 @@
 				novaL = Math.round(w / pxPorQuadrado);
 				novaA = Math.round(h / pxPorQuadrado);
 			}
-			// o maior lado cabe em 200: a cena encolhe junto, sem deformar
-			const k = Math.min(1, 200 / Math.max(novaL, novaA));
+			// o maior lado cabe na cena: ela encolhe junto, sem deformar
+			const k = Math.min(1, LADO_MAXIMO_CENA / Math.max(novaL, novaA));
 			novaL = Math.max(5, Math.round(novaL * k));
 			novaA = Math.max(5, Math.round(novaA * k));
 			if (await mesa.redimensionarCena(novaL, novaA)) {
@@ -259,7 +260,7 @@
 			});
 			ui.avisar(`Mapa importado: ${m.largura} × ${m.altura} quadrados, ${m.paredes.length} paredes e ${m.luzes.length} luzes.`);
 		} catch (erro) {
-			toasts.mostrar(erro instanceof Error && /Universal|200|tamanho|grande/.test(erro.message) ? erro.message : 'Não foi possível importar o mapa.', 'erro');
+			toasts.mostrar(erro instanceof Error && /Universal|quadrados|tamanho|grande/.test(erro.message) ? erro.message : 'Não foi possível importar o mapa.', 'erro');
 		} finally {
 			importando = null;
 		}
@@ -308,7 +309,7 @@
 			ui.avisar(`Mapa vivo: ${m.largura} × ${m.altura} quadrados, ${m.paredes.length} paredes e ${m.luzes.length} luzes.`);
 		} catch (erro) {
 			console.error(erro);
-			toasts.mostrar(erro instanceof Error && /fingersMap|200|objetos|grande/.test(erro.message) ? erro.message : 'Não foi possível importar a cena.', 'erro');
+			toasts.mostrar(erro instanceof Error && /fingersMap|quadrados|objetos|grande/.test(erro.message) ? erro.message : 'Não foi possível importar a cena.', 'erro');
 		} finally {
 			importando = null;
 		}
@@ -441,8 +442,8 @@
 						class="relative max-h-full max-w-full border-2 border-[var(--vermelhao)] bg-b1"
 						style="aspect-ratio: {L} / {A}; {L / A >= 1.75 ? 'width: 100%' : 'height: 100%'}; background-image: linear-gradient(to right, color-mix(in srgb, var(--fg) 16%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--fg) 16%, transparent) 1px, transparent 1px); background-size: {500 / L}% {500 / A}%"
 					>
-						<input type="number" min="5" max="200" step="1" bind:value={largura} class="absolute top-0 left-1/2 h-7 w-12 -translate-x-1/2 -translate-y-1/2 border-2 border-[var(--vermelhao)] bg-b0 text-center font-pixel text-xs font-bold text-fg [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none" aria-label="Largura da cena em metros" title="Largura (m)" />
-						<input type="number" min="5" max="200" step="1" bind:value={altura} class="absolute top-1/2 right-0 h-7 w-12 translate-x-1/2 -translate-y-1/2 border-2 border-[var(--vermelhao)] bg-b0 text-center font-pixel text-xs font-bold text-fg [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none" aria-label="Altura da cena em metros" title="Altura (m)" />
+						<input type="number" min="5" max={LADO_MAXIMO_CENA} step="1" bind:value={largura} class="absolute top-0 left-1/2 h-7 w-12 -translate-x-1/2 -translate-y-1/2 border-2 border-[var(--vermelhao)] bg-b0 text-center font-pixel text-xs font-bold text-fg [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none" aria-label="Largura da cena em metros" title="Largura (m)" />
+						<input type="number" min="5" max={LADO_MAXIMO_CENA} step="1" bind:value={altura} class="absolute top-1/2 right-0 h-7 w-12 translate-x-1/2 -translate-y-1/2 border-2 border-[var(--vermelhao)] bg-b0 text-center font-pixel text-xs font-bold text-fg [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none" aria-label="Altura da cena em metros" title="Altura (m)" />
 					</div>
 				</div>
 				{#if mudou}

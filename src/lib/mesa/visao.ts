@@ -21,6 +21,28 @@ const DESVIO = 1e-4;
 const tocaCaixa = ([x1, y1, x2, y2]: Segmento, c: Caixa) =>
 	!((x1 < c.x0 && x2 < c.x0) || (x1 > c.x1 && x2 > c.x1) || (y1 < c.y0 && y2 < c.y0) || (y1 > c.y1 && y2 > c.y1));
 
+/**
+ * O que um polígono de visão guarda além dos pontos. Os pontos vêm pela ordem do ângulo em volta do olho, então saber se um lugar
+ * está dentro é achar entre quais dois deles a direção cai: numa cidade são milhares de pontos, e cada árvore pergunta 8 vezes.
+ */
+interface Estrela {
+	ox: number;
+	oy: number;
+	angulos: Float64Array;
+	x0: number;
+	y0: number;
+	x1: number;
+	y1: number;
+}
+const estrelas = new WeakMap<readonly Ponto[], Estrela>();
+
+/** Quanto falta de (x, y) até o segmento. */
+function ateSegmento(x: number, y: number, [x1, y1, x2, y2]: Segmento) {
+	const [dx, dy] = [x2 - x1, y2 - y1];
+	const k = Math.max(0, Math.min(1, ((x - x1) * dx + (y - y1) * dy) / (dx * dx + dy * dy || 1)));
+	return Math.hypot(x - (x1 + k * dx), y - (y1 + k * dy));
+}
+
 /** O polígono do que se vê de (ox, oy), com os pontos em volta pela ordem do ângulo. O ponto precisa estar na caixa. */
 export function poligonoVisao(ox: number, oy: number, paredes: readonly Segmento[], caixa: Caixa): Ponto[] {
 	const segs: Segmento[] = [
@@ -42,12 +64,17 @@ export function poligonoVisao(ox: number, oy: number, paredes: readonly Segmento
 			angulos.push(a - DESVIO, a, a + DESVIO);
 		}
 	angulos.sort((a, b) => a - b);
+	// as paredes mais perto primeiro: o raio para de procurar ao passar da que já o barrou, e numa cidade quase todos param cedo
+	const perto = segs.map((s) => ({ s, d: ateSegmento(ox, oy, s) })).sort((a, b) => a.d - b.d);
 	const pts: Ponto[] = [];
+	const certos: number[] = [];
+	let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity];
 	for (const a of angulos) {
 		const dx = Math.cos(a);
 		const dy = Math.sin(a);
 		let tmin = Infinity;
-		for (const s of segs) {
+		for (const { s, d } of perto) {
+			if (d > tmin) break;
 			// raio O + tD contra o segmento P + uS: t = (Q × S) / (D × S), u = (Q × D) / (D × S), com Q = P − O
 			const sx = s[2] - s[0];
 			const sy = s[3] - s[1];
@@ -61,13 +88,34 @@ export function poligonoVisao(ox: number, oy: number, paredes: readonly Segmento
 			if (u < -1e-9 || u > 1 + 1e-9) continue;
 			tmin = t;
 		}
-		if (tmin < Infinity) pts.push([ox + dx * tmin, oy + dy * tmin]);
+		if (tmin === Infinity) continue;
+		const [x, y] = [ox + dx * tmin, oy + dy * tmin];
+		pts.push([x, y]);
+		certos.push(a);
+		[x0, y0, x1, y1] = [Math.min(x0, x), Math.min(y0, y), Math.max(x1, x), Math.max(y1, y)];
 	}
+	estrelas.set(pts, { ox, oy, angulos: Float64Array.from(certos), x0, y0, x1, y1 });
 	return pts;
 }
 
 /** O ponto (x, y) está dentro do polígono? (regra par-ímpar) */
 export function dentro(p: readonly Ponto[], x: number, y: number): boolean {
+	const e = estrelas.get(p);
+	if (e) {
+		if (p.length < 3 || x < e.x0 || x > e.x1 || y < e.y0 || y > e.y1) return false;
+		const a = Math.atan2(y - e.oy, x - e.ox);
+		// o último ponto que não passa da direção; antes do primeiro, a volta fecha no último
+		let [baixo, alto] = [0, p.length];
+		while (baixo < alto) {
+			const meio = (baixo + alto) >> 1;
+			if (e.angulos[meio] <= a) baixo = meio + 1;
+			else alto = meio;
+		}
+		const [qx, qy] = p[(baixo + p.length - 1) % p.length];
+		const [rx, ry] = p[baixo % p.length];
+		const lado = (ax: number, ay: number) => (rx - qx) * (ay - qy) - (ry - qy) * (ax - qx);
+		return lado(x, y) * lado(e.ox, e.oy) >= 0;
+	}
 	let d = false;
 	for (let i = 0, j = p.length - 1; i < p.length; j = i++) {
 		const [xi, yi] = p[i];

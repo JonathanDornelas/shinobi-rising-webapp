@@ -5,6 +5,7 @@
 	import { onMount, untrack } from 'svelte';
 	import { dev } from '$app/env';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
+	import { LADO_MAXIMO_CENA, ladoDaCena } from '#lib/mesa/cenas.ts';
 	import { CORES, corCss, nomeCor } from '#lib/mesa/cores.ts';
 	import { MOLDURAS, molduraPorId } from '#lib/mesa/molduras.ts';
 	import { Mesa, type Ferramenta } from '#lib/mesa/mesa.svelte.ts';
@@ -785,7 +786,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	async function criarCena() {
 		const { data: c, error } = await supabase()
 			.from('mesa_cenas')
-			.insert({ campanha_id: campanha, nome: novaCena.nome.trim().slice(0, 60) || 'Nova cena', largura: Math.max(5, Math.min(200, novaCena.largura)), altura: Math.max(5, Math.min(200, novaCena.altura)), ativa: !data.cenas.length, participantes: novaCena.comeco === 'escolher' ? novaCena.escolhidos : null, ...(novaCena.demo ? camposDaDemo(novaCena.demo) : {}) })
+			.insert({ campanha_id: campanha, nome: novaCena.nome.trim().slice(0, 60) || 'Nova cena', largura: ladoDaCena(novaCena.largura), altura: ladoDaCena(novaCena.altura), ativa: !data.cenas.length, participantes: novaCena.comeco === 'escolher' ? novaCena.escolhidos : null, ...(novaCena.demo ? camposDaDemo(novaCena.demo) : {}) })
 			.select('*')
 			.single();
 		if (error || !c) return void toasts.mostrar('Não foi possível criar a cena.', 'erro');
@@ -1849,10 +1850,10 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 					{/if}
 					<label class="flex flex-col gap-1.5"><span class="font-pixel text-xs font-bold tracking-[0.08em] text-mut">NOME</span><input bind:value={novaCena.nome} class="h-11 border-2 border-b3 bg-b1 px-2.5 text-[15px] font-semibold text-fg" /></label>
 					<div class="flex gap-2.5">
-						<label class="flex flex-1 flex-col gap-1.5"><span class="font-pixel text-xs font-bold tracking-[0.08em] text-mut">LARGURA (M)</span><input type="number" min="5" max="200" bind:value={novaCena.largura} disabled={!!novaCena.demo} class="disabled:opacity-60 h-11 border-2 border-b3 bg-b1 px-2.5 font-pixel text-base font-bold text-fg" /></label>
-						<label class="flex flex-1 flex-col gap-1.5"><span class="font-pixel text-xs font-bold tracking-[0.08em] text-mut">ALTURA (M)</span><input type="number" min="5" max="200" bind:value={novaCena.altura} disabled={!!novaCena.demo} class="disabled:opacity-60 h-11 border-2 border-b3 bg-b1 px-2.5 font-pixel text-base font-bold text-fg" /></label>
+						<label class="flex flex-1 flex-col gap-1.5"><span class="font-pixel text-xs font-bold tracking-[0.08em] text-mut">LARGURA (M)</span><input type="number" min="5" max={LADO_MAXIMO_CENA} bind:value={novaCena.largura} disabled={!!novaCena.demo} class="disabled:opacity-60 h-11 border-2 border-b3 bg-b1 px-2.5 font-pixel text-base font-bold text-fg" /></label>
+						<label class="flex flex-1 flex-col gap-1.5"><span class="font-pixel text-xs font-bold tracking-[0.08em] text-mut">ALTURA (M)</span><input type="number" min="5" max={LADO_MAXIMO_CENA} bind:value={novaCena.altura} disabled={!!novaCena.demo} class="disabled:opacity-60 h-11 border-2 border-b3 bg-b1 px-2.5 font-pixel text-base font-bold text-fg" /></label>
 					</div>
-					<span class="text-xs leading-4 text-mut">Até 200 × 200 m. {data.cenas.length ? 'A cena nova fica preparada, sem que o grupo veja, até você ativar.' : 'É a primeira cena: ela já abre para o grupo.'}</span>
+					<span class="text-xs leading-4 text-mut">Até {LADO_MAXIMO_CENA} × {LADO_MAXIMO_CENA} m. {data.cenas.length ? 'A cena nova fica preparada, sem que o grupo veja, até você ativar.' : 'É a primeira cena: ela já abre para o grupo.'}</span>
 					<div class="flex flex-col gap-1.5">
 						<span class="font-pixel text-xs font-bold tracking-[0.08em] text-mut">COMEÇAR</span>
 						<div role="radiogroup" class="flex border-2 border-b3">

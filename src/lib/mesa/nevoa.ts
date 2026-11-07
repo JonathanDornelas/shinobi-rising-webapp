@@ -1,5 +1,5 @@
 // Névoa da Mesa: o Mestre cobre o mapa e revela só o que quer. A cena guarda os quadrados revelados em runs
-// [y, x0, x1] (x0 e x1 incluídos), que são curtas mesmo num mapa de 200 × 200 m. Aqui ficam a conversão entre runs e
+// [y, x0, x1] (x0 e x1 incluídos), que são curtas mesmo num mapa de 1000 × 1000 m. Aqui ficam a conversão entre runs e
 // a grade de quadrados, o pincel, o desenho (um caminho só) e a consulta de um quadrado.
 
 export type Run = [number, number, number];

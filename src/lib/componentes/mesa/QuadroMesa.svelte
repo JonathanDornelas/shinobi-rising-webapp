@@ -15,7 +15,8 @@
 	import type { MesaCena, MesaObjeto } from '#lib/supabase/banco.ts';
 	import { pontosDaPeca } from '#lib/mesa/fingersmap.ts';
 	import { figuraDaMiniatura, figuraDaSombra, figuraRedonda, corDoTema } from '#lib/mesa/figuras.ts';
-	import { PIXELS_DA_VISAO, PX_POR_METRO, lerMapaVivo, pintarMascaraDaNevoa, pintarVisao } from '#lib/mesa/mapa-vivo.ts';
+	import { PX_POR_METRO, lerMapaVivo, pintarMascaraDaNevoa, pintarVisao, pixelsDaVisao } from '#lib/mesa/mapa-vivo.ts';
+	import { LADO_MAXIMO_CENA, LADO_MINIMO_CENA } from '#lib/mesa/cenas.ts';
 	import { MotorDaMesa, type FiguraPedida } from '#lib/mesa/motor.svelte.ts';
 	import { caminhoNevoa, celulasEntre, emRuns, grade as gradeNevoa, indice as indiceNevoa, pintar as pintarNevoa, type Run } from '#lib/mesa/nevoa.ts';
 import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as limitarObj, objetoEm, objetoEmTela, tamanhoInicial } from '#lib/mesa/objetos.ts';
@@ -63,6 +64,8 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	const cena = $derived(mesa.cena);
 	const L = $derived(cena?.largura ?? 40);
 	const A = $derived(cena?.altura ?? 30);
+	/** O bastante para ver a cena inteira, por maior que ela seja. */
+	const zoomMinimo = $derived(Math.min(0.25, Math.min(W || 1, H || 1) / (Math.max(L, A) * 1.1 * BASE)));
 	const fundo = $derived(urlImagemMesa(cena?.fundo));
 	// Vista isométrica (planos/mapas-isometricos.md): os dados seguem na grade em metros e só o desenho muda. O chão entra
 	// num grupo com a matriz da projeção; token, rótulo e imagem de objeto ficam "de pé" (emPe). A unidade da tela é o
@@ -249,12 +252,12 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		const a = ajuste;
 		if (!a) return;
 		if (a.tipo === 'borda') {
-			// a borda puxada vai para a linha da grade mais perto do mouse; a cena fica entre 5 e 200 quadrados
+			// a borda puxada vai para a linha da grade mais perto do mouse, com a cena dentro do tamanho que ela pode ter
 			const r = { ...a.ret };
-			if (a.x < 0) r.x0 = Math.max(L - 200, Math.min(L - 5, Math.round(p.mx)));
-			if (a.x > 0) r.x1 = Math.min(200, Math.max(5, Math.round(p.mx)));
-			if (a.y < 0) r.y0 = Math.max(A - 200, Math.min(A - 5, Math.round(p.my)));
-			if (a.y > 0) r.y1 = Math.min(200, Math.max(5, Math.round(p.my)));
+			if (a.x < 0) r.x0 = Math.max(L - LADO_MAXIMO_CENA, Math.min(L - LADO_MINIMO_CENA, Math.round(p.mx)));
+			if (a.x > 0) r.x1 = Math.min(LADO_MAXIMO_CENA, Math.max(LADO_MINIMO_CENA, Math.round(p.mx)));
+			if (a.y < 0) r.y0 = Math.max(A - LADO_MAXIMO_CENA, Math.min(A - LADO_MINIMO_CENA, Math.round(p.my)));
+			if (a.y > 0) r.y1 = Math.min(LADO_MAXIMO_CENA, Math.max(LADO_MINIMO_CENA, Math.round(p.my)));
 			ajuste = { ...a, ret: r };
 		} else if (a.tipo === 'mover') {
 			// a grade anda com o mouse e a imagem fica: a câmera vai junto com a grade e o fundo volta o mesmo tanto
@@ -335,7 +338,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		const xs = cantos.map((p) => p[0]);
 		const ys = cantos.map((p) => p[1]);
 		const ret = { x0: Math.floor(Math.min(...xs) + 1e-6), y0: Math.floor(Math.min(...ys) + 1e-6), x1: Math.ceil(Math.max(...xs) - 1e-6), y1: Math.ceil(Math.max(...ys) - 1e-6) };
-		if (ret.x1 - ret.x0 > 200 || ret.y1 - ret.y0 > 200) return ui.avisar(`Para cobrir a imagem, a cena precisaria de ${ret.x1 - ret.x0} × ${ret.y1 - ret.y0} quadrados (o máximo é 200). Diminua o mapa um pouco e tente de novo.`);
+		if (ret.x1 - ret.x0 > LADO_MAXIMO_CENA || ret.y1 - ret.y0 > LADO_MAXIMO_CENA) return ui.avisar(`Para cobrir a imagem, a cena precisaria de ${ret.x1 - ret.x0} × ${ret.y1 - ret.y0} quadrados (o máximo é ${LADO_MAXIMO_CENA}). Diminua o mapa um pouco e tente de novo.`);
 		if (ret.x1 - ret.x0 < 5 || ret.y1 - ret.y0 < 5) return ui.avisar('A imagem é pequena demais para uma cena (o mínimo é 5 × 5 quadrados).');
 		await reenquadrar(ret, { fundo_recorte: true });
 	}
@@ -480,9 +483,16 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	 */
 	const portas = $derived.by(() => {
 		if (!luzLigada && ui.ferramenta !== 'paredes') return [];
+		// de longe, numa cena grande, seriam um marcador por casa da cidade; de perto, só os que estão na tela
+		if (ui.zoom < 0.25) return [];
+		const grande = Math.max(L, A) > 320;
 		return paredes.flatMap((p, i) => {
 			if (!ehPorta(p[4])) return [];
 			const [x, y] = meioDaParede(p);
+			if (grande) {
+				const [sx, sy] = naTela(x, y);
+				if (sx < -60 || sy < -60 || sx > W + 60 || sy > H + 60) return [];
+			}
 			if (visao) {
 				const n = Math.hypot(p[2] - p[0], p[3] - p[1]) || 1;
 				const [nx, ny] = [(-(p[3] - p[1]) / n) * 0.3, ((p[2] - p[0]) / n) * 0.3];
@@ -609,7 +619,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		if (!motor.pronto) return;
 		if (!v && !nevoa) return motor.visao(null);
 		telaDaVisao ??= document.createElement('canvas');
-		const [w, h] = [L * PIXELS_DA_VISAO, A * PIXELS_DA_VISAO];
+		const [w, h] = [L * pixelsDaVisao(L, A), A * pixelsDaVisao(L, A)];
 		if (telaDaVisao.width !== w || telaDaVisao.height !== h) Object.assign(telaDaVisao, { width: w, height: h });
 		const c = telaDaVisao.getContext('2d')!;
 		if (v) pintarVisao(c, L, A, v, ambiente, memoria ? runsExibidas : null, motor.corpos, revelado);
@@ -747,7 +757,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		const [xs, ys] = [cantos.map((c) => c[0]), cantos.map((c) => c[1])];
 		const area = { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) };
 		const caber = Math.min(W / (area.w * BASE), H / (area.h * BASE)) * 0.96;
-		ui.zoom = Math.max(0.25, Math.min(4, inicial ? Math.max(caber, 0.9) : caber));
+		ui.zoom = Math.max(zoomMinimo, Math.min(4, inicial ? Math.max(caber, 0.9) : caber));
 		const ts = mesa.tokens.filter((t) => t.visivel || mesa.mestre);
 		const cs = ts.map((t) => naVista(...paraTela(t.x + t.tamanho / 2, t.y + t.tamanho / 2)));
 		const [cx, cy] = inicial && ts.length && caber < 0.9 ? [cs.reduce((a, c) => a + c[0], 0) / cs.length, cs.reduce((a, c) => a + c[1], 0) / cs.length] : [area.x + area.w / 2, area.y + area.h / 2];
@@ -786,7 +796,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		return [Math.min(L - 1, Math.max(0, Math.floor(gx))), Math.min(A - 1, Math.max(0, Math.floor(gy)))];
 	}
 	export function zoomEm(fator: number, sx = W / 2, sy = H / 2) {
-		const z = Math.max(0.25, Math.min(4, ui.zoom * fator));
+		const z = Math.max(zoomMinimo, Math.min(4, ui.zoom * fator));
 		const mx = sx / s + ui.vx;
 		const my = sy / s + ui.vy;
 		ui.zoom = z;

@@ -3,13 +3,13 @@
 // tela, com a mesma origem. A partir da versão 2 a Mesa roda o mapa de verdade (ver mapa-vivo.ts); as peças da versão 1 que já
 // estão em alguma cena seguem sendo desenhadas, mas o arquivo antigo precisa ser exportado de novo.
 import { strFromU8, unzipSync } from 'fflate';
+import { LADO_MAXIMO_CENA } from './cenas.ts';
 import { limparLuzes, limparParedes, type Ambiente, type Luz, type Parede } from './luz.ts';
 import { CLIMAS_VIVOS } from './mapa-vivo.ts';
 import type { Weather } from './motor/player.js';
 import type { MesaObjeto } from '#lib/supabase/banco.ts';
 
 export const VERSAO_FINGERSMAP = 2;
-const LADO_MAXIMO = 200;
 /** O arquivo inteiro e cada parte dele. */
 export const LIMITE_FMESA = 300 * 1024 * 1024;
 const LIMITE_CENA = 8 * 1024 * 1024;
@@ -69,12 +69,12 @@ export function lerFingersMap(dados: Uint8Array): CenaFingersMap {
 	const { largura, altura } = c;
 	if (!Number.isInteger(largura) || !Number.isInteger(altura)) throw new Error(NAO_E);
 	const [L, A] = [largura as number, altura as number];
-	if (L > LADO_MAXIMO || A > LADO_MAXIMO) throw new Error(`O mapa tem ${L} × ${A} quadrados; a Mesa vai até 200 × 200.`);
+	if (L > LADO_MAXIMO_CENA || A > LADO_MAXIMO_CENA) throw new Error(`O mapa tem ${L} × ${A} quadrados; a Mesa vai até ${LADO_MAXIMO_CENA} × ${LADO_MAXIMO_CENA}.`);
 	if (L < 1 || A < 1) throw new Error(NAO_E);
 
 	const fundo = c.fundo as Record<string, unknown> | undefined;
 	const imagem = zip['fundo.png'];
-	if (!fundo || !imagem || !ehPng(imagem) || !num(fundo.x, -1000, 1000) || !num(fundo.y, -1000, 1000) || !num(fundo.w, 1, 1000) || !num(fundo.h, 0.01, 1000)) throw new Error(NAO_E);
+	if (!fundo || !imagem || !ehPng(imagem) || !num(fundo.x, -2500, 2500) || !num(fundo.y, -2500, 2500) || !num(fundo.w, 1, 2200) || !num(fundo.h, 0.01, 2200)) throw new Error(NAO_E);
 	const [mapa, lista, pixels] = [zip['mapa.fmap'], zip['pacote.json'], zip['pacote.pack']];
 	if (!mapa || !ehZip(mapa) || !lista || !pixels || !ehGzip(pixels)) throw new Error(NAO_E);
 	try {

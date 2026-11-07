@@ -8,7 +8,7 @@ import { toasts } from '#lib/estado/toasts.svelte.ts';
 import { ordemIniciativa } from '#lib/rolagens/registro.ts';
 import { supabase } from '#lib/supabase/cliente.ts';
 import type { CorMesa, EntradaDiario, IniciativaCena, MesaArte, MesaCena, MesaCenaPasta, MesaEfeito, MesaJukebox, MesaObjeto, MesaToken, MesaTraco, Papel, Rolagem } from '#lib/supabase/banco.ts';
-import { cenaDoAviso, mascararCena } from './cenas.ts';
+import { cenaDoAviso, ladoDaCena, mascararCena } from './cenas.ts';
 import { camposDe, Frescos, parteDaCena, parteDoToken, TABELAS_DO_ESPELHO, tokenPublico, type TabelaDoEspelho } from './espelho.ts';
 import { limitarPosicao } from './musica.ts';
 import { limpar as limparRuns } from './nevoa.ts';
@@ -1171,13 +1171,13 @@ export class Mesa {
 	}
 
 	/**
-	 * O Mestre muda o tamanho da cena (5 a 200 metros de lado). Quem ficaria fora da cena é puxado para dentro, com o
+	 * O Mestre muda o tamanho da cena (5 a 1000 metros de lado). Quem ficaria fora da cena é puxado para dentro, com o
 	 * token inteiro à vista; o resto (terreno, névoa, objetos) fica como está.
 	 */
 	async redimensionarCena(largura: number, altura: number) {
 		if (!this.mestre || this.somenteLeitura || !this.cena) return false;
-		const L = Math.min(200, Math.max(5, Math.round(largura)));
-		const A = Math.min(200, Math.max(5, Math.round(altura)));
+		const L = ladoDaCena(largura);
+		const A = ladoDaCena(altura);
 		const fora = this.tokens.filter((t) => t.x + t.tamanho > L || t.y + t.tamanho > A);
 		if (!(await this.patchCena({ largura: L, altura: A }))) return false;
 		for (const t of fora) await this.atualizarToken(t.id, { x: Math.max(0, Math.min(t.x, L - t.tamanho)), y: Math.max(0, Math.min(t.y, A - t.tamanho)) });
@@ -1192,8 +1192,8 @@ export class Mesa {
 	async reenquadrarCena(dx: number, dy: number, largura: number, altura: number, fundo: Partial<MesaCena>) {
 		const c = this.cena;
 		if (!this.mestre || this.somenteLeitura || !c) return false;
-		const L = Math.min(200, Math.max(5, Math.round(largura)));
-		const A = Math.min(200, Math.max(5, Math.round(altura)));
+		const L = ladoDaCena(largura);
+		const A = ladoDaCena(altura);
 		const terreno = deslocarQuadrados(Array.isArray(c.terreno) ? c.terreno : [], dx, dy, L, A);
 		const reveladas = deslocarRuns(Array.isArray(c.reveladas) ? c.reveladas : [], dx, dy, L, A);
 		const luz = c.paredes !== undefined ? { paredes: limparParedes(deslocarParedes(this.paredes, dx, dy), L, A), luzes: deslocarLuzes(this.luzes, dx, dy) } : {};
