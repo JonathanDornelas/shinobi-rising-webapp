@@ -114,7 +114,7 @@ class CanalFalso {
 		const texto = JSON.stringify(m.payload);
 		this.rede.trafego.push({ evento: m.event, texto });
 		if (this.rede.semCanal) return Promise.resolve('ok');
-		for (const c of this.rede.canais) if (c !== this && c.topico === this.topico) setTimeout(() => c.entregar('broadcast', m.event, JSON.parse(texto)), CANAL);
+		for (const c of this.rede.canais) if (c !== this && c.topico === this.topico && !this.rede.surdos.has(c.eu)) setTimeout(() => c.entregar('broadcast', m.event, JSON.parse(texto)), CANAL);
 		return Promise.resolve('ok');
 	}
 	entregar(tipo: string, evento: string, payload: unknown) {
@@ -122,7 +122,7 @@ class CanalFalso {
 		for (const b of this.bindings) if (b.tipo === tipo && b.config.event === evento) this.rede.quem.run(this.eu, () => b.fazer({ payload }));
 	}
 	aviso(tabela: string, p: Linha) {
-		if (!this.aberto) return;
+		if (!this.aberto || this.rede.surdos.has(this.eu)) return;
 		const b = this.bindings.find((x) => x.tipo === 'postgres_changes' && x.config.table === tabela);
 		if (b) this.rede.quem.run(this.eu, () => b.fazer(p));
 	}
@@ -132,6 +132,8 @@ class CanalFalso {
 class Rede {
 	tabelas: Record<string, Map<string, Linha>> = { mesa_cenas: new Map(), mesa_tokens: new Map(), mesa_tracos: new Map(), mesa_efeitos: new Map(), mesa_objetos: new Map(), mesa_jukebox: new Map(), campanhas: new Map() };
 	canais = new Set<CanalFalso>();
+	/** Quem deixou de receber: nem o canal, nem o aviso do banco. */
+	surdos = new Set<string>();
 	quem: { run<T>(u: string, f: () => T): T; getStore(): string | undefined } = new AsyncLocalStorage();
 	trafego: { evento: string; texto: string }[] = [];
 	semCanal = false;
@@ -156,7 +158,7 @@ class Rede {
 				await espera(ESCRITA / 2);
 				return r;
 			},
-			realtime: { setAuth: async () => undefined },
+			realtime: { setAuth: async () => undefined, onHeartbeat() {} },
 			channel: (topico: string, config: Linha) => new CanalFalso(this, topico, config),
 			removeChannel: async (c: CanalFalso) => {
 				c.aberto = false;
@@ -671,6 +673,101 @@ describe('uma leva grande', () => {
 		void como(mesas.m, () => mesas.m.mover('npc', 4, 1, 6));
 		await passar(CANAL + 4);
 		expect(posicao(mesas.b, 'npc')).toBe(4);
+	});
+});
+
+describe('o que se perde no caminho', () => {
+	const mestreManda = (id: string, x: number) => void como(mesas.m, () => mesas.m.atualizarToken(id, { x }));
+
+	it('quem perdeu uma mensagem percebe na seguinte e relê, sem esperar a conferência de tempos em tempos', async () => {
+		mestreManda('de-bruno', 2);
+		await passar(CANAL + 4);
+		rede.surdos.add(BRUNO);
+		mestreManda('npc', 12);
+		await passar(ESCRITA * 2);
+		rede.surdos.clear();
+		expect(posicao(mesas.b, 'npc')).toBe(3);
+		mestreManda('de-ana', 14);
+		await passar(CANAL + 4);
+		expect(mesas.b.rede.perdidas).toBe(1);
+		expect(posicao(mesas.b, 'npc')).toBe(3);
+		await passar(2000);
+		expect(posicao(mesas.b, 'npc')).toBe(12);
+		expect(mesas.b.rede.releituras).toBe(1);
+	});
+
+	it('quem recebeu tudo não relê à toa', async () => {
+		mestreManda('npc', 12);
+		await passar(100);
+		mestreManda('de-ana', 14);
+		await passar(3000);
+		expect(mesas.b.rede.perdidas).toBe(0);
+		expect(mesas.b.rede.releituras).toBe(0);
+	});
+
+	it('várias faltas seguidas viram uma leitura só', async () => {
+		mestreManda('de-bruno', 2);
+		await passar(CANAL + 4);
+		for (let n = 0; n < 4; n++) {
+			rede.surdos.add(BRUNO);
+			mestreManda('npc', 20 + n);
+			await passar(40);
+			rede.surdos.clear();
+			mestreManda('de-ana', 20 + n);
+			await passar(40);
+		}
+		await passar(2000);
+		expect(mesas.b.rede.perdidas).toBe(4);
+		expect(mesas.b.rede.releituras).toBe(1);
+	});
+
+	it('a que chega depois de uma mais nova não desfaz o que já está na tela', async () => {
+		const bruno = [...rede.canais].find((c) => c.eu === BRUNO)!;
+		const chega = (x: number, n: number) => bruno.entregar('broadcast', 'token', { id: 'npc', x, seq: { de: MESTRE, ep: 'teste', n } });
+		chega(30, 5);
+		expect(posicao(mesas.b, 'npc')).toBe(30);
+		chega(20, 4);
+		expect(posicao(mesas.b, 'npc')).toBe(30);
+		expect(mesas.b.rede.foraDeOrdem).toBe(1);
+	});
+
+	it('o que passa pelo canal leva só o número de quem mandou', async () => {
+		mestreManda('npc', 12);
+		await passar(CANAL + 4);
+		const { seq } = JSON.parse(rede.trafego.find((m) => m.evento === 'token')!.texto);
+		expect(Object.keys(seq).sort()).toEqual(['de', 'ep', 'n']);
+		expect(seq.de).toBe(MESTRE);
+	});
+});
+
+describe('a sonda do painel de rede', () => {
+	it('mede a ida e volta até cada pessoa, pelo mesmo canal do jogo', async () => {
+		mesas.m.medirRede(true);
+		await passar(100);
+		mesas.m.medirRede(false);
+		const { pessoas } = mesas.m.rede.resumo(Date.now());
+		expect(pessoas.map((p) => p.usuario).sort()).toEqual([ANA, BRUNO]);
+		for (const p of pessoas) expect(p.ms).toBeGreaterThanOrEqual(CANAL * 2);
+	});
+
+	it('só sai com o painel aberto', async () => {
+		await passar(20000);
+		expect(rede.trafego.filter((m) => m.evento.startsWith('sonda'))).toHaveLength(0);
+		mesas.m.medirRede(true);
+		await passar(100);
+		mesas.m.medirRede(false);
+		rede.trafego = [];
+		await passar(20000);
+		expect(rede.trafego.filter((m) => m.evento.startsWith('sonda'))).toHaveLength(0);
+	});
+
+	it('quem joga não mede, e não consegue fazer a mesa inteira responder', async () => {
+		mesas.a.medirRede(true);
+		await passar(100);
+		expect(rede.trafego.filter((m) => m.evento === 'sonda')).toHaveLength(0);
+		for (const c of rede.canais) if (c.eu === BRUNO) c.entregar('broadcast', 'sonda', { usuario: ANA, dados: { id: 'forjada' } });
+		await passar(100);
+		expect(rede.trafego.filter((m) => m.evento === 'sonda-volta')).toHaveLength(0);
 	});
 });
 

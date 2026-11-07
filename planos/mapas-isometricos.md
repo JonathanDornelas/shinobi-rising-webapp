@@ -221,7 +221,9 @@ Medido do Brasil em 2026-11-06: ida e volta HTTP até o banco (`us-east-2`), 187
 - `avisar` tem um teto (8 por segundo, com folga de 12): cada mensagem conta uma vez para cada um na mesa, e passar do limite faz o servidor fechar o canal. O que passa do teto chega pelo aviso do banco.
 - As rolagens não usam o caminho rápido de propósito: quem joga poderia forjar um resultado no canal, e o dado é sorteado no servidor para isso não existir.
 - O aviso do banco deixa de fora as colunas grandes que não mudaram, e o que passa de 1 MB chega só com os campos pequenos. Por isso `cenaDoAviso`: o que não veio fica como estava.
-- A cada 20 confirmações sai uma linha no console, `[mesa] o aviso do banco chega N ms depois`. É o número que falta medir com o RLS de verdade.
+- A cada 20 confirmações sai uma linha no console, `[mesa] o aviso do banco chega N ms depois`. É o número que falta medir com o RLS de verdade. O painel de rede do Mestre (`RedeMesa.svelte`) mostra o mesmo número e o resto da rede.
+- As mensagens do caminho rápido saem numeradas (`rede.ts`). Quem percebe uma falta relê em 1,5 s. A conferência de tempos em tempos fica para o que nenhum número acusa: 30 s a leve, 2 min a completa.
+- O movimento dos outros desliza (`interpolacao.ts`): o fantasma do arrasto fica 160 ms atrás e chega 8 vezes por segundo, e o token que pousa desliza em até 320 ms. Só o desenho muda: a visão, a colisão e as contas seguem nas posições reais.
 - `src/lib/mesa/replicacao.spec.ts` roda um Mestre e dois jogadores com a Mesa de verdade, sobre um banco e um canal de mentira que imitam a latência, o RLS e o TOAST.
 - O que os jogos online fazem, o que serve para a Mesa e a ordem do que falta: `planos/replicacao-ao-vivo.md`.
 

@@ -1,8 +1,9 @@
 <script lang="ts">
 	// L11 · CMP-37 · Quadro da Mesa: grade de 1 m (linha mais forte a cada 5 m), efeitos em cena, traços, moldes de
 	// jutsu, tokens, réguas e ponteiros, em SVG. A vista (zoom e canto) fica no UiMesa; tudo no quadro é em metros.
-	import { onMount, untrack } from 'svelte';
+	import { onDestroy, onMount, untrack } from 'svelte';
 	import { dev } from '$app/env';
+	import { LONGE_DEMAIS, Trilha, noDeslize, tempoDoDeslize, type Deslize, type Ponto as Lugar } from '#lib/mesa/interpolacao.ts';
 	import type { MesaToken } from '#lib/supabase/banco.ts';
 	import { CORES, corCss } from '#lib/mesa/cores.ts';
 	import { CONDICOES } from '#lib/personagem/dados.ts';
@@ -626,13 +627,89 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		else pintarMascaraDaNevoa(c, L, A, runsNevoa);
 		motor.visao(telaDaVisao);
 	});
+	// ------------------------------------------------------------------ o movimento dos outros (ver interpolacao.ts)
+	const calmo = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const trilhas = new Map<string, { token: string; trilha: Trilha }>();
+	let fantasmasNaTela = $state<Record<string, { token: string; x: number; y: number }>>({});
+	const deslizes = new Map<string, Deslize>();
+	/** Onde estão os tokens que estão deslizando. O resto fica onde está. */
+	let deslizando = $state<Record<string, Lugar>>({});
+	/** O token que eu mesmo acabei de soltar: quem arrasta já viu o caminho. */
+	let soltoAgora: string | null = null;
+	let quadroDoMovimento = 0;
+	function animarMovimento() {
+		if (quadroDoMovimento) return;
+		quadroDoMovimento = requestAnimationFrame(function passo() {
+			quadroDoMovimento = 0;
+			const agora = Date.now();
+			let segue = false;
+			const vistos: typeof fantasmasNaTela = {};
+			for (const [u, { token, trilha }] of trilhas) {
+				const { x, y, parado } = trilha.em(agora);
+				vistos[u] = { token, x, y };
+				segue ||= !parado;
+			}
+			fantasmasNaTela = vistos;
+			for (const [id, d] of deslizes) {
+				const p = noDeslize(d, agora);
+				if (p) {
+					deslizando[id] = p;
+					segue = true;
+				} else {
+					deslizes.delete(id);
+					delete deslizando[id];
+				}
+			}
+			if (segue) animarMovimento();
+		});
+	}
+	onDestroy(() => cancelAnimationFrame(quadroDoMovimento));
+	$effect(() => {
+		const chegaram = mesa.fantasmas;
+		for (const u of trilhas.keys()) if (!chegaram[u]) trilhas.delete(u);
+		for (const [u, g] of Object.entries(chegaram)) {
+			let t = trilhas.get(u);
+			if (t?.token !== g.token) trilhas.set(u, (t = { token: g.token, trilha: new Trilha(calmo ? 0 : undefined) }));
+			t!.trilha.somar(g.x, g.y, g.t ?? Date.now());
+		}
+		animarMovimento();
+	});
+	let ondeEstavam = new Map<string, Lugar>();
+	let vistosAntes = new Set<string>();
+	$effect(() => {
+		const lista = mesa.tokens;
+		const vistos = new Set(untrack(() => visiveis).map((t) => t.id));
+		const antes = ondeEstavam;
+		const movidos = lista.filter((t) => {
+			const a = antes.get(t.id);
+			return a && (a.x !== t.x || a.y !== t.y) && vistosAntes.has(t.id) && vistos.has(t.id);
+		});
+		ondeEstavam = new Map(lista.map((t) => [t.id, { x: t.x, y: t.y }]));
+		vistosAntes = vistos;
+		// vários ao mesmo tempo é a cena sendo reenquadrada, não alguém andando
+		if (calmo || !movidos.length || movidos.length > 3) return;
+		const agora = Date.now();
+		for (const t of movidos) {
+			if (t.id === soltoAgora) continue;
+			const de = untrack(() => deslizando[t.id]) ?? antes.get(t.id)!;
+			const metros = Math.hypot(t.x - de.x, t.y - de.y);
+			if (metros >= LONGE_DEMAIS) continue;
+			deslizes.set(t.id, { de, para: { x: t.x, y: t.y }, t0: agora, duracao: tempoDoDeslize(metros) });
+			// já neste quadro: sem isto, o token aparece no destino e volta para sair de onde estava
+			deslizando[t.id] = de;
+		}
+		soltoAgora = null;
+		animarMovimento();
+	});
+
 	/** Quem o motor desenha agora, onde está: um token escondido do grupo segue no quadro, meio apagado, para o Mestre. */
 	function figurasDoMapa(): FiguraPedida[] {
 		const lista: FiguraPedida[] = [];
 		for (const t of visiveis) {
 			if (!t.visivel) continue;
 			const ar = arrasto?.id === t.id ? arrasto : null;
-			const [x, y, n] = [ar ? ar.x : t.x, ar ? ar.y : t.y, t.tamanho];
+			const onde = ar ?? deslizando[t.id] ?? t;
+			const [x, y, n] = [onde.x, onde.y, t.tamanho];
 			const [cx, cy] = [x + n / 2, y + n / 2];
 			const caido = t.ferimento === 3 || t.condicoes.includes('caido');
 			const sombra = { chave: `sombra:${n}`, montar: () => figuraDaSombra(n) };
@@ -1314,6 +1391,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			const t = mesa.tokens.find((k) => k.id === arrasto!.id);
 			const a = arrasto;
 			arrasto = null;
+			soltoAgora = a.id;
 			mesa.enviar('fantasma', null, true);
 			if (t && (a.x !== t.x || a.y !== t.y)) {
 				// a parede (ou a porta fechada) segura o jogador; o Mestre passa por onde quiser
@@ -1464,8 +1542,9 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 {#snippet tokenSvg(t: MesaToken)}
 					{#if t.visivel || mesa.mestre}
 					{@const ar = arrasto?.id === t.id ? arrasto : null}
-					{@const x = ar ? ar.x : t.x}
-					{@const y = ar ? ar.y : t.y}
+					{@const onde = ar ?? deslizando[t.id] ?? t}
+					{@const x = onde.x}
+					{@const y = onde.y}
 					{@const n = t.tamanho}
 					{@const cx = x + n / 2}
 					{@const cy = y + n / 2}
@@ -1903,7 +1982,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 				<line x1={arrastado.x + arrastado.tamanho / 2} y1={arrastado.y + arrastado.tamanho / 2} x2={arrasto.x + arrastado.tamanho / 2} y2={arrasto.y + arrastado.tamanho / 2} style="stroke: {infoArrasto.cor}" stroke-width={F(3)} pointer-events="none" />
 			{/if}
 
-			{#each Object.entries(mesa.fantasmas) as [u, g] (u)}
+			{#each Object.entries(fantasmasNaTela) as [u, g] (u)}
 				{@const t = mesa.tokens.find((k) => k.id === g.token)}
 				{#if t}
 					<circle cx={g.x + t.tamanho / 2} cy={g.y + t.tamanho / 2} r={0.45 * t.tamanho} fill="none" style="stroke: {corCss(mesa.corDe(u))}" stroke-width="0.06" stroke-dasharray=".12 .1" pointer-events="none" />

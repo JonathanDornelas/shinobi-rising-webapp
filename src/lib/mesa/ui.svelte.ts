@@ -31,7 +31,7 @@ export interface FichaAberta {
 	dano: string;
 }
 
-export type Pop = null | 'medir' | 'jutsu' | 'lapis' | 'cor' | 'cena' | 'gear' | 'alfinete' | 'texto' | 'objeto' | 'nevoa' | 'musica' | 'paredes' | 'luz';
+export type Pop = null | 'medir' | 'jutsu' | 'lapis' | 'cor' | 'cena' | 'gear' | 'alfinete' | 'texto' | 'objeto' | 'nevoa' | 'musica' | 'paredes' | 'luz' | 'rede';
 export type Modal = null | { tipo: 'nova' } | { tipo: 'excluir'; cena: string } | { tipo: 'renomear'; cena: string } | { tipo: 'participantes' } | { tipo: 'bestiario' } | { tipo: 'jutsu'; j: JutsuMesa } | { tipo: 'imagem'; alvo: 'imagem' | 'fundo' } | { tipo: 'artes' } | { tipo: 'pasta'; id: string | null; pai: string | null }| { tipo: 'mover-cena'; cena: string } | { tipo: 'config' } | { tipo: 'miniaturas'; token: string | null };
 
 /** Uma arte pronta para pôr no quadro: da biblioteca ou do livro. */

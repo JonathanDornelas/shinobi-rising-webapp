@@ -40,6 +40,7 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 	import { apagarAoCair, custoKkg } from '#lib/personagem/kkg.ts';
 	import { kkgLigadaNoToken, semKkg } from '#lib/mesa/kkg-npc.ts';
 	import PainelMesa from '#lib/componentes/mesa/PainelMesa.svelte';
+	import RedeMesa from '#lib/componentes/mesa/RedeMesa.svelte';
 	import BuscaBestiario from '#lib/componentes/npc/BuscaBestiario.svelte';
 	import { npcDoVerbete } from '#lib/bestiario/npc.ts';
 	import { MINIATURAS, rumoDasSetas } from '#lib/mesa/miniaturas.ts';
@@ -1488,10 +1489,16 @@ if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) ret
 			</div>
 			{#if mesa.iniciativa.ativa}<span class="border-2 border-grena px-2 py-1.5 font-pixel text-sm leading-none font-bold tracking-[0.08em] text-acc">RODADA {mesa.iniciativa.rodada ?? 1}</span>{/if}
 			{@render botoesExtras('h-10 w-10')}
+			{#if data.mestre}
+				<button type="button" class="flex h-10 w-10 items-center justify-center border-2 border-b3 p-0 {mesa.conectado ? 'text-ok' : 'text-warn'}" aria-label="Rede da mesa" title="Rede da mesa" aria-pressed={ui.pop === 'rede'} onclick={() => (ui.pop = ui.pop === 'rede' ? null : 'rede')}>
+					<svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><rect x="1" y="11" width="4" height="6" /><rect x="7" y="6" width="4" height="11" /><rect x="13" y="1" width="4" height="16" /></svg>
+				</button>
+			{/if}
 			{#if data.mestre && cena}
 				<button type="button" class="flex h-10 w-10 items-center justify-center border-2 border-b3 p-0" aria-label="Configurações da cena" title="Configurações da cena (no painel da esquerda)" aria-pressed={ui.elencoAberto && ui.ladoEsquerdo === 'cena'} onclick={() => ((ui.pop = null), ui.elencoAberto && ui.ladoEsquerdo === 'cena' ? (ui.ladoEsquerdo = 'elenco') : ((ui.elencoAberto = true), (ui.ladoEsquerdo = 'cena')))}><Icone id="nav/ic-nav-configuracoes" /></button>
 			{/if}
 
+			{#if ui.pop === 'rede' && data.mestre}<RedeMesa {mesa} class="{pop} top-14 right-4 w-72" />{/if}
 			{#if ui.pop === 'cena' && data.mestre}
 				<div role="menu" aria-label="Cenas" class="{pop} top-14 left-44 w-96">
 					<span class="px-3 pt-2.5 pb-1.5 font-pixel text-xs leading-none font-bold tracking-[0.1em] text-title">CENAS DA CAMPANHA</span>

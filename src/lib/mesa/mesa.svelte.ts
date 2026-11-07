@@ -9,6 +9,7 @@ import { ordemIniciativa } from '#lib/rolagens/registro.ts';
 import { supabase } from '#lib/supabase/cliente.ts';
 import type { CorMesa, EntradaDiario, IniciativaCena, MesaArte, MesaCena, MesaCenaPasta, MesaEfeito, MesaJukebox, MesaObjeto, MesaToken, MesaTraco, Papel, Rolagem } from '#lib/supabase/banco.ts';
 import { cenaDoAviso, ladoDaCena, mascararCena } from './cenas.ts';
+import { MedidorDeRede, Sequencias } from './rede.ts';
 import { camposDe, Frescos, parteDaCena, parteDoToken, TABELAS_DO_ESPELHO, tokenPublico, type TabelaDoEspelho } from './espelho.ts';
 import { limitarPosicao } from './musica.ts';
 import { limpar as limparRuns } from './nevoa.ts';
@@ -34,10 +35,17 @@ export interface MembroMesa {
 	moldura: string | null;
 }
 
+/** O que passa pelo canal mesmo numa cena em preparo, porque não aponta nenhum lugar do quadro. */
+const SEM_LUGAR_NO_QUADRO = new Set(['moldura', 'moldura-mesa', 'miniaturas', 'sonda', 'sonda-volta']);
+/** Em ms. O molde pode ter mais de mil quadrados; o fantasma tem quem deslize por ele. O resto vai a cada 80. */
+const INTERVALO_DE_ENVIO: Partial<Record<string, number>> = { molde: 160, fantasma: 125 };
+
 export interface Fantasma {
 	token: string;
 	x: number;
 	y: number;
+	/** Quando chegou. */
+	t?: number;
 }
 export interface ReguaViva {
 	pontos: Quadrado[];
@@ -123,9 +131,16 @@ export class Mesa {
 	private ultimoEnvio: Record<string, number> = {};
 	/** O que esta tela mudou ou recebeu pelo canal há pouco, por token e por cena: um aviso atrasado do banco não desfaz. */
 	private frescos = new Frescos((ms) => this.anotarAtraso(ms));
+	/** Os números do painel de rede do Mestre (RedeMesa.svelte). */
+	readonly rede = new MedidorDeRede();
+	private sequencias = new Sequencias();
+	/** Esta conexão e quantas mensagens do caminho rápido saíram por ela. */
+	private epoca = '';
+	private enviados = 0;
 	private atrasos: number[] = [];
 	/** Quanto o banco leva para confirmar o que o canal já trouxe. A cada 20 confirmações, uma linha no console, para medir numa sessão de verdade. */
 	private anotarAtraso(ms: number) {
+		this.rede.confirmacao.somar(ms);
 		this.atrasos.push(ms);
 		if (this.atrasos.length < 20) return;
 		console.info(`[mesa] o aviso do banco chega ${[...this.atrasos].sort((a, b) => a - b)[10]} ms depois (mediana de 20)`);
@@ -313,6 +328,12 @@ export class Mesa {
 				}
 			}
 		};
+		this.epoca = crypto.randomUUID().slice(0, 8);
+		this.enviados = 0;
+		this.sequencias.esquecer();
+		sb().realtime.onHeartbeat((estado, ms) => {
+			if (estado === 'ok' && ms !== undefined) this.rede.servidor = ms;
+		});
 		const canal: RealtimeChannel = (this.canal = sb()
 			.channel(`mesa:${this.campanha}`, { config: { private: !this.canalAberto, broadcast: { self: false }, presence: { key: this.eu } } })
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'mesa_tokens', filter: `cena_id=eq.${cena}` }, rotear)
@@ -353,15 +374,17 @@ export class Mesa {
 				this.temporarios = [...this.temporarios.filter((x) => x.id !== t.id), { ...t, t: Date.now() }];
 			})
 			// o caminho rápido: o mesmo que o banco vai avisar, antes dele (ver espelho.ts)
-			.on('broadcast', { event: 'token' }, ({ payload }) => this.receberToken(payload))
-			.on('broadcast', { event: 'tokens' }, ({ payload }) => this.receberTokens(payload))
-			.on('broadcast', { event: 'cena' }, ({ payload }) => this.receberCena(payload))
-			.on('broadcast', { event: 'porta' }, ({ payload }) => this.receberPorta(payload))
+			.on('broadcast', { event: 'token' }, ({ payload }) => void (this.chegou(payload) && this.receberToken(payload)))
+			.on('broadcast', { event: 'tokens' }, ({ payload }) => void (this.chegou(payload) && this.receberTokens(payload)))
+			.on('broadcast', { event: 'cena' }, ({ payload }) => void (this.chegou(payload) && this.receberCena(payload)))
+			.on('broadcast', { event: 'porta' }, ({ payload }) => void (this.chegou(payload) && this.receberPorta(payload)))
 			.on('broadcast', { event: 'linha' }, ({ payload }) => {
+				if (!this.chegou(payload)) return;
 				const { tabela, linha } = payload as { tabela: TabelaDoEspelho; linha: Record<string, unknown> };
 				if (TABELAS_DO_ESPELHO.includes(tabela) && linha?.id) rotear({ table: tabela, eventType: 'INSERT', new: linha, old: {} } as unknown as RealtimePostgresChangesPayload<Record<string, unknown>>);
 			})
 			.on('broadcast', { event: 'fora' }, ({ payload }) => {
+				if (!this.chegou(payload)) return;
 				const { tabela, ids } = payload as { tabela: TabelaDoEspelho; ids: string[] };
 				if (!TABELAS_DO_ESPELHO.includes(tabela) || !Array.isArray(ids)) return;
 				for (const id of ids) rotear({ table: tabela, eventType: 'DELETE', new: {}, old: { id } } as unknown as RealtimePostgresChangesPayload<Record<string, unknown>>);
@@ -388,6 +411,19 @@ export class Mesa {
 				const { usuario, dados } = payload as { usuario: string; dados: string | null };
 				this.membros = this.membros.map((m) => (m.id === usuario ? { ...m, moldura: molduraPorId(dados)?.id ?? null } : m));
 			})
+			// a sonda do painel de rede: só a do Mestre tem resposta, e no máximo uma por segundo, para ninguém conseguir fazer a mesa inteira falar
+			.on('broadcast', { event: 'sonda' }, ({ payload }) => {
+				const { usuario, dados } = payload as { usuario: string; dados: { id: string } };
+				const agora = Date.now();
+				if (this.membro(usuario)?.papel !== 'mestre' || agora - this.sondaRespondida < 1000) return;
+				this.sondaRespondida = agora;
+				this.enviar('sonda-volta', { id: dados?.id, para: usuario }, true);
+			})
+			.on('broadcast', { event: 'sonda-volta' }, ({ payload }) => {
+				const { usuario, dados } = payload as { usuario: string; dados: { id: string; para: string } };
+				const saiu = this.sondas.get(dados?.id);
+				if (saiu !== undefined && dados.para === this.eu) this.rede.ida(usuario, performance.now() - saiu, Date.now());
+			})
 			.on('presence', { event: 'sync' }, () => {
 				this.online = Object.keys(this.canal?.presenceState() ?? {});
 				this.limparQuemSaiu();
@@ -404,7 +440,11 @@ export class Mesa {
 				this.recusas = 0;
 				this.canal?.track({ em: Date.now() });
 				// voltou depois de cair (wifi, aba dormindo): o que mudou enquanto isso não chega pelo tempo real
-				if (caiu && this.jaConectou) void this.ressincronizar(true);
+				if (caiu && this.jaConectou) {
+					this.rede.quedas++;
+					this.sequencias.esquecer();
+					void this.ressincronizar(true);
+				}
 				// na primeira entrada, o que mudou entre o servidor montar a página e o canal abrir
 				else if (!this.jaConectou) void this.conferir();
 				this.jaConectou = true;
@@ -441,9 +481,50 @@ export class Mesa {
 		const agora = Date.now();
 		this.folga = Math.min(12, this.folga + ((agora - this.folgaEm) / 1000) * 8);
 		this.folgaEm = agora;
-		if (this.folga < 1) return;
+		if (this.folga < 1) return void this.rede.recusadas++;
 		this.folga--;
-		void this.canal.send({ type: 'broadcast', event: evento, payload });
+		this.rede.enviou(agora);
+		void this.canal.send({ type: 'broadcast', event: evento, payload: { ...(payload as object), seq: { de: this.eu, ep: this.epoca, n: ++this.enviados } } });
+	}
+	/** Confere o número de uma mensagem do caminho rápido. Falso: chegou depois de uma mais nova, e o banco já dirá o que vale. */
+	private chegou(payload: unknown) {
+		const { velha, perdidas } = this.sequencias.conferir((payload as { seq?: unknown } | null)?.seq);
+		if (velha) this.rede.foraDeOrdem++;
+		if (perdidas) {
+			this.rede.perdidas += perdidas;
+			this.conferirLogo();
+		}
+		return !velha;
+	}
+	private esperaConferencia: ReturnType<typeof setTimeout> | undefined;
+	/** Faltou mensagem. O aviso do banco costuma trazer o mesmo em menos de 1 s: a leitura vem depois dele, e várias faltas seguidas viram uma leitura só. */
+	private conferirLogo() {
+		if (this.esperaConferencia) return;
+		this.esperaConferencia = setTimeout(() => {
+			this.esperaConferencia = undefined;
+			this.rede.releituras++;
+			void this.conferir();
+		}, 1500);
+	}
+
+	/** O painel de rede aberto: uma sonda a cada 5 s, que cada pessoa na mesa responde. Mede o caminho que importa, de uma tela até a outra. */
+	private sondas = new Map<string, number>();
+	private sondando: ReturnType<typeof setInterval> | undefined;
+	private sondaRespondida = 0;
+	medirRede(ligada: boolean) {
+		clearInterval(this.sondando);
+		this.sondas.clear();
+		if (!ligada || !this.mestre) return;
+		const mandar = () => {
+			if (!this.conectado) return;
+			const id = crypto.randomUUID().slice(0, 8);
+			this.sondas.set(id, performance.now());
+			// uma sonda só pode ser respondida até a seguinte
+			for (const antiga of this.sondas.keys()) if (this.sondas.size > 2) this.sondas.delete(antiga);
+			this.enviar('sonda', { id }, true);
+		};
+		mandar();
+		this.sondando = setInterval(mandar, 5000);
 	}
 	private espelharToken(t: MesaToken, patch: Partial<MesaToken>) {
 		const parte = t.visivel ? parteDoToken(patch) : null;
@@ -490,7 +571,8 @@ export class Mesa {
 	/**
 	 * Redes de segurança do tempo real. A aba em segundo plano tem os relógios atrasados pelo navegador e a conexão pode cair
 	 * sem aviso; o que mudou nesse meio-tempo se perde. Ao voltar para a aba (depois de 5 s escondida), a cena é relida; e,
-	 * com a aba à vista, uma releitura silenciosa a cada 45 s pega algum aviso perdido.
+	 * com a aba à vista, uma releitura silenciosa de tempos em tempos pega algum aviso perdido. A mensagem do canal que falta quem
+	 * percebe é `chegou`, na hora: estas releituras ficam para o que nenhum número acusa, e numa cena grande cada uma traz as paredes todas.
 	 */
 	private escondidaDesde = 0;
 	private vigia: ReturnType<typeof setInterval> | undefined;
@@ -503,13 +585,13 @@ export class Mesa {
 		if (typeof document === 'undefined') return;
 		document.addEventListener('visibilitychange', this.aoMudarVisibilidade);
 		clearInterval(this.vigia);
-		// a cada 12 s, a conferência leve (tokens e a cena); a cada 45 s, tudo. Vale também com a conexão caída
+		// a cada 30 s, a conferência leve (tokens e a cena); a cada 2 min, tudo. Vale também com a conexão caída
 		let voltas = 0;
 		this.vigia = setInterval(() => {
 			if (document.visibilityState !== 'visible') return;
 			if (++voltas % 4 === 0) void this.ressincronizar();
 			else void this.conferir();
-		}, 12000);
+		}, 30_000);
 	}
 
 	desconectar() {
@@ -517,6 +599,9 @@ export class Mesa {
 		if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', this.aoMudarVisibilidade);
 		clearInterval(this.vigia);
 		clearTimeout(this.religar);
+		clearTimeout(this.esperaConferencia);
+		this.esperaConferencia = undefined;
+		this.medirRede(false);
 		this.tentativas = 0;
 		// o canal sai daqui antes de ser removido: o CLOSED que vem depois não pede para religar
 		const [canal, diario] = [this.canal, this.canalDiario];
@@ -636,17 +721,18 @@ export class Mesa {
 	}
 
 	/**
-	 * Manda o que é passageiro, no máximo 12 vezes por segundo (o último estado sempre sai: null limpa). É a maior parte do
-	 * tráfego do tempo real: com vários arrastando juntos, 20 por segundo estourava o limite e o servidor fechava o canal.
+	 * Manda o que é passageiro, com um intervalo mínimo (o último estado sempre sai: null limpa). É a maior parte do tráfego do
+	 * tempo real: com vários arrastando juntos, 20 por segundo estourava o limite e o servidor fechava o canal. O fantasma do arrasto
+	 * vai 8 vezes por segundo: quem recebe desliza entre uma posição e a outra (interpolacao.ts).
 	 */
-	enviar(evento: 'fantasma' | 'regua' | 'molde' | 'apontar' | 'pulso' | 'ping' | 'moldura' | 'moldura-mesa' | 'olhar' | 'miniaturas', dados: unknown, forcar = false) {
+	enviar(evento: 'fantasma' | 'regua' | 'molde' | 'apontar' | 'pulso' | 'ping' | 'moldura' | 'moldura-mesa' | 'olhar' | 'miniaturas' | 'sonda' | 'sonda-volta', dados: unknown, forcar = false) {
 		if (!this.canal || !this.conectado) return;
 		// o que aponta um lugar do quadro vale para quem está nele: o ping do Mestre numa cena em preparo não aparece na cena de quem joga
-		if (evento !== 'moldura' && evento !== 'moldura-mesa' && evento !== 'miniaturas' && !this.cena?.ativa) return;
+		if (!SEM_LUGAR_NO_QUADRO.has(evento) && !this.cena?.ativa) return;
 		const agora = Date.now();
-		// o molde pode ter mais de mil quadrados: vai no máximo 6 vezes por segundo; o resto, 12
-		if (!forcar && dados != null && agora - (this.ultimoEnvio[evento] ?? 0) < (evento === 'molde' ? 160 : 80)) return;
+		if (!forcar && dados != null && agora - (this.ultimoEnvio[evento] ?? 0) < (INTERVALO_DE_ENVIO[evento] ?? 80)) return;
 		this.ultimoEnvio[evento] = agora;
+		this.rede.enviou(agora);
 		const payload = evento === 'apontar' || evento === 'pulso' || evento === 'ping' ? dados : { usuario: this.eu, dados };
 		this.canal.send({ type: 'broadcast', event: evento, payload });
 	}
