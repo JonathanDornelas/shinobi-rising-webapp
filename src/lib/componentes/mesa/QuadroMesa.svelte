@@ -12,6 +12,7 @@
 	import { retanguloFoco, type FocoArte } from '#lib/bestiario/foco.ts';
 	import { calcularMolde, nomeCurto, type UiMesa } from '#lib/mesa/ui.svelte.ts';
 	import type { MesaCena, MesaObjeto } from '#lib/supabase/banco.ts';
+	import { pontosDaPeca } from '#lib/mesa/fingersmap.ts';
 	import { caminhoNevoa, celulasEntre, emRuns, grade as gradeNevoa, indice as indiceNevoa, pintar as pintarNevoa, type Run } from '#lib/mesa/nevoa.ts';
 import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as limitarObj, objetoEm, objetoEmTela, tamanhoInicial } from '#lib/mesa/objetos.ts';
 	import { ESTILOS, estiloDoJutsu, estiloValido, faseDoQuadrado, spritesDoEfeito, tamanhoDoSprite } from '#lib/mesa/efeitos.ts';
@@ -519,7 +520,26 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		return lista.slice(0, 64);
 	});
 	const rotacaoFundo = $derived(cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined);
-	const objetosVisiveis = $derived(escondeDeMim ? mesa.objetos.filter((o) => o.tipo === 'imagem' || revelado(o.x, o.y)) : mesa.objetos);
+	/**
+	 * A escuridão fica sob o que está de pé, então uma peça de mapa precisa da sua própria conta: quem joga vê a peça se enxerga o
+	 * chão em volta dela, e a que já viu fica apagada. A que ninguém viu não aparece. Sem luz dinâmica, ou para o Mestre, nada muda.
+	 */
+	const vistaDasPecas = $derived.by(() => {
+		const v = visao;
+		if (!v) return null;
+		const vista = new Map<string, 'agora' | 'lembrada' | 'nunca'>();
+		for (const o of mesa.objetos) {
+			if (o.desce == null) continue;
+			const pontos = pontosDaPeca(o);
+			vista.set(o.id, pontos.some(([x, y]) => v.visivel(x, y)) ? 'agora' : memoria && pontos.some(([x, y]) => revelado(x, y)) ? 'lembrada' : 'nunca');
+		}
+		return vista;
+	});
+	const opacidadeImagem = (o: MesaObjeto) => (!o.visivel ? 0.45 : vistaDasPecas?.get(o.id) === 'lembrada' ? 0.35 : 1);
+	/** Pixel art nítida de perto; de longe, suave, porque pular pixels faz o mapa virar chuvisco. */
+	const nitidaDePerto = $derived(ui.zoom >= 1 ? 'pixelated' : 'auto');
+	const temPecas = $derived(mesa.objetos.some((o) => o.desce != null));
+	const objetosVisiveis = $derived((escondeDeMim ? mesa.objetos.filter((o) => o.tipo === 'imagem' || revelado(o.x, o.y)) : mesa.objetos).filter((o) => vistaDasPecas?.get(o.id) !== 'nunca'));
 	/** As imagens ficam sob os tokens; os alfinetes e os textos, por cima. Cada grupo na ordem de empilhamento. */
 	const porOrdem = (a: MesaObjeto, b: MesaObjeto) => a.ordem - b.ordem || a.criado_em.localeCompare(b.criado_em);
 	// as imagens pela pilha de camadas da cena (de baixo para cima), cada uma na ordem do Mestre. Os tokens têm um lugar
@@ -574,8 +594,9 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	const pePintura = $derived.by((): ItemPe[] => {
 		if (!iso) return [];
 		const itens: ItemPe[] = [
-			...visiveis.map((t): ItemPe => ({ id: 'T' + t.id, k: 'token', t, x: t.x, y: t.y, tamanho: t.tamanho, z: t.elevacao ?? 0 })),
-...imagensMeio.map((o): ItemPe => ({ id: 'I' + o.id, k: 'imagem', o, x: o.x - 0.5, y: o.y - 0.5, tamanho: 1, z: 0 }))
+			// a chave é a do centro de cada um: o token grande atrás de uma parede fica atrás de todos os trechos que ele cobre
+			...visiveis.map((t): ItemPe => ({ id: 'T' + t.id, k: 'token', t, x: t.x + t.tamanho / 2 - 0.5, y: t.y + t.tamanho / 2 - 0.5, tamanho: 1, z: t.elevacao ?? 0 })),
+			...imagensMeio.map((o): ItemPe => ({ id: 'I' + o.id, k: 'imagem', o, x: o.x - 0.5, y: o.y - 0.5, tamanho: 1, z: 0 }))
 		];
 		return ordemDePintura(itens, cfgI);
 	});
@@ -942,8 +963,9 @@ function objetosNoClique(e: PointerEvent, p: { mx: number; my: number; sx: numbe
 			if (perto(al.girar)) return void (objArrasto = { id: objetoSel.id, modo: 'girar', dx: 0, dy: 0, ini: objetoSel, patch: {} }), true;
 			if (perto(al.canto)) return void (objArrasto = { id: objetoSel.id, modo: 'redim', dx: 0, dy: 0, ini: objetoSel, patch: {} }), true;
 		}
-		// com a ferramenta Objeto, as imagens também se pegam (nas outras, o mapa continua arrastável por baixo)
-const lista = f === 'objeto' && !ui.armada ? objetosVisiveis : marcadores;
+		// com a ferramenta Objeto, as imagens também se pegam (nas outras, o mapa continua arrastável por baixo); as peças de um mapa
+		// importado são o próprio mapa, e não saem do lugar
+		const lista = f === 'objeto' && !ui.armada ? objetosVisiveis.filter((o) => o.desce == null) : marcadores;
 		const alvo = iso ? objetoEmTela(lista, p.tx, p.ty, paraTela, rankDe) : objetoEm(lista, p.mx, p.my, rankDe);
 		if (alvo) {
 			ui.objSel = alvo.id;
@@ -1478,10 +1500,10 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 					width={o.largura ?? 1}
 					height={o.altura ?? 1}
 					preserveAspectRatio="none"
-						transform={emPe(o.x, o.y, (o.altura ?? 1) / 2) ?? `rotate(${o.rotacao} ${o.x} ${o.y})`}
-						opacity={o.visivel ? 1 : 0.45}
+						transform={emPe(o.x, o.y, (o.altura ?? 1) / 2 - (o.desce ?? 0)) ?? `rotate(${o.rotacao} ${o.x} ${o.y})`}
+						opacity={opacidadeImagem(o)}
 					pointer-events="none"
-					style:image-rendering={o.imagem?.startsWith('/') ? 'pixelated' : 'auto'}
+					style:image-rendering={o.imagem?.startsWith('/') ? 'pixelated' : o.desce != null ? nitidaDePerto : 'auto'}
 				/>
 {/snippet}
 
@@ -1587,8 +1609,8 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			<!-- fundo do quadro: o mapa estica na cena inteira, sob a grade -->
 				{#if fundo && iso}
 					<g transform={desfazer}>
-						<image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : 'auto'} />
-						{#each ladrilhosVisiveis as l (l.url)}<image href={l.url} x={l.x} y={l.y} width={l.w} height={l.h} transform={rotacaoFundo} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" />{/each}
+						<image href={fundo} x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={cena?.fundo?.startsWith('/') ? 'pixelated' : temPecas ? nitidaDePerto : 'auto'} />
+						{#each ladrilhosVisiveis as l (l.url)}<image href={l.url} x={l.x} y={l.y} width={l.w} height={l.h} transform={rotacaoFundo} preserveAspectRatio="none" opacity={cena?.fundo_opacidade ?? 1} pointer-events="none" style:image-rendering={temPecas ? nitidaDePerto : 'auto'} />{/each}
 						{#if ui.ferramenta === 'fundo' && cena?.fundo_escala}<rect x={caixaFundo.x} y={caixaFundo.y} width={caixaFundo.w} height={caixaFundo.h} transform={cena?.fundo_rotacao ? `rotate(${cena.fundo_rotacao} ${caixaFundo.x + caixaFundo.w / 2} ${caixaFundo.y + caixaFundo.h / 2})` : undefined} fill="none" style="stroke: var(--acc)" stroke-width={F(2)} stroke-dasharray="{F(8)} {F(5)}" pointer-events="none" />{/if}
 					</g>
 				{:else if fundo}
@@ -1660,10 +1682,10 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 					width={o.largura ?? 1}
 					height={o.altura ?? 1}
 					preserveAspectRatio="none"
-						transform={emPe(o.x, o.y, (o.altura ?? 1) / 2) ?? `rotate(${o.rotacao} ${o.x} ${o.y})`}
-						opacity={o.visivel ? 1 : 0.45}
+						transform={emPe(o.x, o.y, (o.altura ?? 1) / 2 - (o.desce ?? 0)) ?? `rotate(${o.rotacao} ${o.x} ${o.y})`}
+						opacity={opacidadeImagem(o)}
 					pointer-events="none"
-					style:image-rendering={o.imagem?.startsWith('/') ? 'pixelated' : 'auto'}
+					style:image-rendering={o.imagem?.startsWith('/') ? 'pixelated' : o.desce != null ? nitidaDePerto : 'auto'}
 				/>
 			{/each}
 

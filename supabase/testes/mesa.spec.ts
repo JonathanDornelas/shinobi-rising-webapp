@@ -467,3 +467,32 @@ describe('miniaturas', () => {
 		await expect(banco.como(kaito, `update campanhas set miniaturas = '[1]' where id = $1`, [campanha])).rejects.toThrow(/check/);
 	});
 });
+
+describe('peças de mapa', () => {
+	const inserir = (u: Usuario, desce: number, imagem = `${campanha}/fm-lote-1.webp`) =>
+		banco.como<{ desce: number; campanha_id: string; travado: boolean }>(
+			u,
+			`insert into mesa_objetos (cena_id, autor_id, tipo, x, y, largura, altura, desce, camada, imagem, travado) values ($1, $2, 'imagem', 10.5, 7, 0.53, 2, $3, 'meio', $4, true) returning desce, campanha_id, travado`,
+			[ponte, u.id, desce, imagem]
+		);
+
+	it('o Mestre põe uma peça com o apoio no meio da imagem', async () => {
+		expect(await inserir(kaito, 0.125)).toEqual([{ desce: 0.125, campanha_id: campanha, travado: true }]);
+	});
+
+	it('o nome do arquivo de uma peça passa na regra das imagens da campanha', async () => {
+		await expect(inserir(kaito, 0, `${campanha}/fm-mhn8xq-4k2j9a-231.webp`)).resolves.toHaveLength(1);
+		await expect(inserir(kaito, 0, `outra/fm-1.webp`)).rejects.toThrow(/mesa_objetos_imagem_valida/);
+	});
+
+	it('o jogador não põe peça, e o banco barra o que desce demais', async () => {
+		await expect(inserir(bruno, 0.125)).rejects.toThrow(/row-level security/);
+		await expect(inserir(kaito, 41)).rejects.toThrow(/desce/);
+		await expect(inserir(kaito, -1)).rejects.toThrow(/desce/);
+	});
+
+	it('uma imagem solta segue sem desce', async () => {
+		const [o] = await banco.como<{ desce: number | null }>(kaito, `insert into mesa_objetos (cena_id, autor_id, tipo, largura, altura, imagem) values ($1, $2, 'imagem', 2, 2, '/covers/konoha.png') returning desce`, [ponte, kaito.id]);
+		expect(o.desce).toBeNull();
+	});
+});

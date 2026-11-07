@@ -510,6 +510,8 @@ export type MesaObjeto = {
 	ordem: number;
 	/** Só imagens: o id da camada da cena (ver MesaCena.camadas) em que a imagem está. */
 	camada: string;
+	/** Peça de um mapa do fingersMap: quanto a imagem vai abaixo do ponto de apoio, em metros de tela. Nulo nas imagens soltas. */
+	desce?: number | null;
 	visivel: boolean;
 	travado: boolean;
 	criado_em: string;

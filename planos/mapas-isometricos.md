@@ -192,7 +192,17 @@ Cada fase fecha com `svelte-check` limpo, a suíte inteira passando e o roteiro 
 - **Token grande e névoa**: a névoa decide visibilidade pelo centro do token em grade (como hoje); isso não muda, mas pode parecer estranho numa vista em que o sprite é alto. Vale testar com o Mestre.
 - **Celular**: a vista isométrica ocupa mais altura; no celular pequeno a vista de cima continua a padrão e o jogador alterna.
 - **Arte de fora**: encaixar uma imagem na grade é a parte mais manhosa de usar; a calibração precisa ser boa, com ampliação e encaixe. A rotação de câmera exige que a arte exista nas 4 vistas, ou o app mostra a rotação só da grade e dos tokens e mantém o fundo fixo (decisão aberta, abaixo).
-## 13. Perguntas abertas
+## 13. Cenas do fingersMap
+
+O editor fingersMap (`../fingersMap`) exporta um andar como `.fmesa`, um ZIP com o chão, as peças em pé, as paredes e as luzes. O botão "Importar do fingersMap" fica na aba de imagens da cena, ao lado do mapa Universal VTT. O código está em `src/lib/mesa/fingersmap.ts`, e o formato em `docs/formato.md` do fingersMap.
+
+- O chão vai para a biblioteca como um mapa grande, sem perda. As peças vão direto para o bucket (`mesa/<campanha>/fm-…`), porque a biblioteca tem limite de 300 artes por campanha.
+- Uma peça é uma linha de `mesa_objetos` com `desce` preenchido, travada. A ferramenta Objeto não as pega.
+- Importar de novo na mesma cena troca as peças e apaga os arquivos antigos. Alfinetes, textos e imagens soltas ficam.
+- A escuridão fica sob o que está de pé, então as peças têm conta própria de visão, em `pontosDaPeca`.
+- Apagar a cena não apaga os arquivos das peças do bucket.
+
+## 14. Perguntas abertas
 
 1. A elevação deve entrar nas regras (distância com altura) ou fica só visual? O livro hoje diz que a altura é narrativa.
 2. Qual o tamanho do tile da arte que o Mestre usa? O plano assume 64 × 32 (2:1); se a arte for de outro tamanho, a razão e o tile são configuráveis por cena.

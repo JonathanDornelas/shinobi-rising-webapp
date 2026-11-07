@@ -62,9 +62,9 @@ export function objetoEm<T extends Parameters<typeof dentro>[0] & { ordem: numbe
  * A caixa do objeto de pé na vista isométrica, em metros de tela e relativa ao ponto de apoio (x, y do objeto): a
  * imagem fica de pé sobre o apoio, o alfinete e o texto como na vista de cima. Sem rotação.
  */
-export function caixaDePe(o: Parameters<typeof caixa>[0]) {
+export function caixaDePe(o: Parameters<typeof caixa>[0] & { desce?: number | null }) {
 	const c = caixa(o);
-	return { dx: 0, dy: o.tipo === 'imagem' ? -c.hh : c.cy - o.y, hw: c.hw, hh: c.hh };
+	return { dx: 0, dy: o.tipo === 'imagem' ? (o.desce ?? 0) - c.hh : c.cy - o.y, hw: c.hw, hh: c.hh };
 }
 
 /** O objeto mais acima (a ordem do banco, depois o mais novo) sob um ponto da tela, na vista isométrica. */

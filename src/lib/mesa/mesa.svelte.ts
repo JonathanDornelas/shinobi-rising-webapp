@@ -865,6 +865,27 @@ export class Mesa {
 	/** Pode mexer neste objeto? O Mestre em todos; cada um nos seus (e nunca nos travados). */
 	podeMexerObjeto = (o: MesaObjeto) => !this.somenteLeitura && (this.mestre || (o.autor_id === this.eu && !o.travado && !this.travada && o.tipo !== 'imagem'));
 
+	/**
+	 * Põe as peças de um mapa importado no lugar das que a cena tinha, travadas. Só as peças saem: alfinetes, textos e imagens
+	 * soltas ficam. Devolve false, com aviso, se não couber no limite de objetos da cena.
+	 */
+	async trocarPecas(pecas: Pick<MesaObjeto, 'x' | 'y' | 'largura' | 'altura' | 'desce' | 'camada' | 'imagem'>[]) {
+		if (!this.cenaId) return false;
+		const antigas = this.objetos.filter((o) => o.desce != null);
+		if (antigas.length) {
+			const { error } = await sb().from('mesa_objetos').delete().eq('cena_id', this.cenaId).not('desce', 'is', null);
+			if (error) throw error;
+			this.objetos = this.objetos.filter((o) => o.desce == null);
+			await sb().storage.from('mesa').remove(antigas.flatMap((o) => (o.imagem ? [o.imagem] : [])));
+		}
+		const linhas = pecas.map((p) => ({ ...p, cena_id: this.cenaId!, autor_id: this.eu, tipo: 'imagem' as const, travado: true }));
+		const { data, error } = await sb().from('mesa_objetos').insert(linhas).select('*');
+		if (error || !data) throw error ?? new Error('sem peças');
+		const novas = new Set(this.objetos.map((o) => o.id));
+		this.objetos = [...this.objetos, ...(data as MesaObjeto[]).filter((o) => !novas.has(o.id))];
+		return true;
+	}
+
 	async colocarObjeto(novo: Partial<MesaObjeto> & { tipo: MesaObjeto['tipo'] }) {
 		if (!this.cenaId) return null;
 		const { data, error } = await sb()

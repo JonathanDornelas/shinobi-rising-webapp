@@ -47,8 +47,8 @@ async function abrir(arquivo: File): Promise<{ origem: CanvasImageSource; w: num
 	}
 }
 
-function desenhar(origem: CanvasImageSource, w: number, h: number, lado: number) {
-	const k = Math.min(lado / Math.max(w, h), 8);
+function desenhar(origem: CanvasImageSource, w: number, h: number, lado: number, ampliar = 8) {
+	const k = Math.min(lado / Math.max(w, h), ampliar);
 	const tela = Object.assign(document.createElement('canvas'), { width: Math.max(1, Math.round(w * k)), height: Math.max(1, Math.round(h * k)) });
 	const c = tela.getContext('2d')!;
 	c.imageSmoothingQuality = 'high';
@@ -84,8 +84,8 @@ export interface ArtePreparada {
 }
 
 /** Lê a imagem já aberta e devolve o webp reduzido, a miniatura e o tamanho final. */
-async function preparar(o: { origem: CanvasImageSource; w: number; h: number }, tipo: MesaArte['tipo']): Promise<ArtePreparada> {
-	const { blob, tela } = await caber(desenhar(o.origem, o.w, o.h, LADO_MAXIMO[tipo]), LIMITE_BYTES);
+async function preparar(o: { origem: CanvasImageSource; w: number; h: number }, tipo: MesaArte['tipo'], pixelArte = false): Promise<ArtePreparada> {
+	const { blob, tela } = await caber(desenhar(o.origem, o.w, o.h, LADO_MAXIMO[tipo], pixelArte ? 1 : 8), LIMITE_BYTES);
 	const pequena = desenhar(tela, tela.width, tela.height, LADO_MINIATURA);
 	const miniatura = (await webp(pequena, 0.8)) ?? (await codificarWebp(pequena));
 	return { grande: blob, miniatura, largura: tela.width, altura: tela.height };
@@ -114,7 +114,7 @@ export function gradeDeLadrilhos(w: number, h: number) {
 export const caminhosDosLadrilhos = (l: Ladrilhos) => Array.from({ length: l.colunas * l.linhas }, (_, i) => `${l.pasta}/${i % l.colunas}-${Math.floor(i / l.colunas)}.webp`);
 
 /** Corta a imagem em ladrilhos de 1024 px e envia (quatro de cada vez), avisando o andamento. */
-async function enviarLadrilhos(origem: CanvasImageSource, w: number, h: number, pasta: string, aoAndar?: (feitos: number, total: number) => void): Promise<Ladrilhos> {
+async function enviarLadrilhos(origem: CanvasImageSource, w: number, h: number, pasta: string, aoAndar?: (feitos: number, total: number) => void, pixelArte = false): Promise<Ladrilhos> {
 	const g = gradeDeLadrilhos(w, h);
 	const total = g.colunas * g.linhas;
 	const l: Ladrilhos = { pasta, w: g.w, h: g.h, lado: LADO_LADRILHO, colunas: g.colunas, linhas: g.linhas };
@@ -129,7 +129,7 @@ async function enviarLadrilhos(origem: CanvasImageSource, w: number, h: number, 
 			const c = tela.getContext('2d')!;
 			c.imageSmoothingQuality = 'high';
 			c.drawImage(origem, (item.c * LADO_LADRILHO) / g.k, (item.r * LADO_LADRILHO) / g.k, tw / g.k, th / g.k, 0, 0, tw, th);
-			const blob = (await webp(tela, 0.9)) ?? (await codificarWebp(tela));
+			const blob = (await webp(tela, pixelArte ? 1 : 0.9)) ?? (await codificarWebp(tela));
 			const { error } = await sb.storage.from('mesa').upload(item.caminho, blob, { contentType: 'image/webp', upsert: false });
 			if (error) throw error;
 			aoAndar?.(++feitos, total);
@@ -145,7 +145,7 @@ const sufixo = () => `${Date.now().toString(36)}-${Math.random().toString(36).sl
  * Envia uma arte (e a miniatura) para o bucket e registra na biblioteca. O mapa maior que 2048 px também vai em ladrilhos;
  * `aoAndar` conta os ladrilhos enviados.
  */
-export async function enviarArte(campanha: string, arquivo: File, tipo: MesaArte['tipo'], nome = nomeDoArquivo(arquivo.name), aoAndar?: (feitos: number, total: number) => void): Promise<MesaArte> {
+export async function enviarArte(campanha: string, arquivo: File, tipo: MesaArte['tipo'], nome = nomeDoArquivo(arquivo.name), aoAndar?: (feitos: number, total: number) => void, pixelArte = false): Promise<MesaArte> {
 	if (arquivo.size > LIMITE_ENTRADA[tipo]) throw new Error(`O arquivo é grande demais (até ${LIMITE_ENTRADA[tipo] / 1024 / 1024} MB).`);
 	const o = await abrir(arquivo);
 	const base = `${campanha}/arte-${sufixo()}`;
@@ -153,14 +153,14 @@ export async function enviarArte(campanha: string, arquivo: File, tipo: MesaArte
 	let ladrilhos: Ladrilhos | null = null;
 	const tirar = (extra: string[] = []) => sb.storage.from('mesa').remove([`${base}.webp`, `${base}-m.webp`, ...extra, ...(ladrilhos ? caminhosDosLadrilhos(ladrilhos) : [])]);
 	try {
-		const p = await preparar(o, tipo);
+		const p = await preparar(o, tipo, pixelArte);
 		const grande = tipo === 'mapa' && Math.max(o.w, o.h) > LADO_MAXIMO.mapa * 1.1;
 		const [a, b] = await Promise.all([
 			sb.storage.from('mesa').upload(`${base}.webp`, p.grande, { contentType: 'image/webp', upsert: false }),
 			sb.storage.from('mesa').upload(`${base}-m.webp`, p.miniatura, { contentType: 'image/webp', upsert: false })
 		]);
 		if (a.error || b.error) throw a.error ?? b.error;
-		if (grande) ladrilhos = await enviarLadrilhos(o.origem, o.w, o.h, `${base}-t`, aoAndar);
+		if (grande) ladrilhos = await enviarLadrilhos(o.origem, o.w, o.h, `${base}-t`, aoAndar, pixelArte);
 		const { data, error } = await sb
 			.from('mesa_artes')
 			.insert({ campanha_id: campanha, nome, tipo, caminho: `${base}.webp`, miniatura: `${base}-m.webp`, largura: p.largura, altura: p.altura, bytes: p.grande.size, ...(ladrilhos ? { ladrilhos } : {}) })
@@ -173,6 +173,32 @@ export async function enviarArte(campanha: string, arquivo: File, tipo: MesaArte
 		throw e;
 	} finally {
 		o.fechar();
+	}
+}
+
+/**
+ * Envia as imagens das peças de um mapa (seis de cada vez) e devolve os caminhos, na mesma ordem. Elas vêm prontas e não
+ * passam pela biblioteca, que tem limite de 300 artes por campanha. Se alguma falha, tira as que subiram.
+ */
+export async function enviarPecas(campanha: string, imagens: Uint8Array<ArrayBuffer>[], aoAndar?: (feitos: number, total: number) => void): Promise<string[]> {
+	const lote = sufixo();
+	const caminhos = imagens.map((_, i) => `${campanha}/fm-${lote}-${i}.webp`);
+	const fila = imagens.map((imagem, i) => ({ imagem, caminho: caminhos[i] }));
+	const sb = supabase();
+	let feitos = 0;
+	const trabalhar = async () => {
+		for (let item = fila.shift(); item; item = fila.shift()) {
+			const { error } = await sb.storage.from('mesa').upload(item.caminho, new Blob([item.imagem], { type: 'image/webp' }), { contentType: 'image/webp', upsert: false });
+			if (error) throw error;
+			aoAndar?.(++feitos, imagens.length);
+		}
+	};
+	try {
+		await Promise.all(Array.from({ length: 6 }, trabalhar));
+		return caminhos;
+	} catch (e) {
+		await sb.storage.from('mesa').remove(caminhos);
+		throw e;
 	}
 }
 

@@ -9,7 +9,10 @@
 	import { MAX_CAMADAS, adicionar, alternarEmPe, camadasDaCena, indiceDaCamada, mover, remover, renomear, type Camada } from '#lib/mesa/camadas.ts';
 	import type { UiMesa } from '#lib/mesa/ui.svelte.ts';
 	import type { MesaCena, MesaObjeto } from '#lib/supabase/banco.ts';
-	import { enviarArte, nomeDoArquivo } from '#lib/mesa/artes.ts';
+	import { enviarArte, enviarPecas, nomeDoArquivo } from '#lib/mesa/artes.ts';
+	import { camposDaCena, lerFingersMap } from '#lib/mesa/fingersmap.ts';
+	import { MAX_OBJETOS } from '#lib/mesa/objetos.ts';
+	import { caixaDaCena, cfgIso } from '#lib/mesa/projecao.ts';
 	import { arquivoDaImagem, lerUvtt } from '#lib/mesa/uvtt.ts';
 	import { toasts } from '#lib/estado/toasts.svelte.ts';
 
@@ -261,6 +264,43 @@
 			importando = null;
 		}
 	}
+	// cena do fingersMap (.fmesa): o chão vai para a biblioteca, como um mapa grande, e o que fica de pé vai em peças travadas.
+	// A cena fica isométrica, do tamanho do mapa, com as paredes, as luzes e a luz dinâmica ligada
+	async function importarFingersMap(e: Event) {
+		const entrada = e.currentTarget as HTMLInputElement;
+		const arquivo = entrada.files?.[0];
+		entrada.value = '';
+		if (!arquivo) return;
+		try {
+			importando = 'Lendo a cena…';
+			const m = lerFingersMap(new Uint8Array(await arquivo.arrayBuffer()));
+			const soltos = mesa.objetos.filter((o) => o.desce == null).length;
+			if (soltos + m.pecas.length > MAX_OBJETOS) throw new Error(`A cena ficaria com ${soltos + m.pecas.length} objetos; a Mesa guarda até ${MAX_OBJETOS}. Tire ${soltos + m.pecas.length - MAX_OBJETOS} dela.`);
+			const nome = (m.nome || nomeDoArquivo(arquivo.name)).slice(0, 60);
+			importando = 'Enviando o chão…';
+			const arte = await enviarArte(mesa.campanha, new File([m.fundo.imagem], `${nome}.png`, { type: 'image/png' }), 'mapa', nome, (feitos, total) => (importando = `O chão: ${feitos}/${total} pedaços…`), true);
+			mesa.artes = [arte, ...mesa.artes];
+			importando = `As peças: 0/${m.pecas.length}…`;
+			const caminhos = await enviarPecas(mesa.campanha, m.pecas.map((p) => p.imagem), (feitos, total) => (importando = `As peças: ${feitos}/${total}…`));
+			for (const t of mesa.tokens)
+				if (t.x + t.tamanho > m.largura || t.y + t.tamanho > m.altura) await mesa.atualizarToken(t.id, { x: Math.max(0, Math.min(t.x, m.largura - t.tamanho)), y: Math.max(0, Math.min(t.y, m.altura - t.tamanho)) });
+			importando = 'Montando a cena…';
+			await mesa.patchCena({
+				...camposDaCena(m, caixaDaCena(cfgIso(m.largura, m.altura, { tw: 1, eh: 0.25, razao: 2, rotacao: 0 }), 0, 0)),
+				fundo: arte.caminho,
+				fundo_ladrilhos: arte.ladrilhos ?? null,
+				...(cena.fundo_rotacao !== undefined ? { fundo_rotacao: 0 } : {}),
+				...(cena.clima !== undefined ? { clima: m.clima } : {})
+			});
+			await mesa.trocarPecas(m.pecas.map(({ x, y, largura, altura, desce, camada }, i) => ({ x, y, largura, altura, desce, camada, imagem: caminhos[i] })));
+			ui.avisar(`Cena importada: ${m.largura} × ${m.altura} quadrados, ${m.pecas.length} peças em pé, ${m.paredes.length} paredes e ${m.luzes.length} luzes.`);
+		} catch (erro) {
+			console.error(erro);
+			toasts.mostrar(erro instanceof Error && /fingersMap|200|objetos|grande/.test(erro.message) ? erro.message : 'Não foi possível importar a cena.', 'erro');
+		} finally {
+			importando = null;
+		}
+	}
 	const nomeLinha = 'text-[13px] leading-4 font-semibold';
 </script>
 
@@ -508,6 +548,14 @@
 					<label class="{botao} flex cursor-pointer items-center justify-center" aria-busy={!!importando}>
 						{importando ?? 'Importar mapa'}
 						<input type="file" accept=".dd2vtt,.uvtt,.df2vtt,application/json" class="sr-only" disabled={!!importando} onchange={importarUvtt} />
+					</label>
+				</section>
+				<section class={secao}>
+					<h3 class={titulo}>Cena do fingersMap (.fmesa)</h3>
+					<p class={dica}>Mapas isométricos do fingersMap entram com o chão, as peças em pé, as paredes e as luzes. O token passa atrás do que fica de pé. Substitui o fundo, as paredes e as peças de mapa desta cena.</p>
+					<label class="{botao} flex cursor-pointer items-center justify-center" aria-busy={!!importando}>
+						{importando ?? 'Importar do fingersMap'}
+						<input id="importar-fingersmap" type="file" accept=".fmesa" class="sr-only" disabled={!!importando} onchange={importarFingersMap} />
 					</label>
 				</section>
 			{/if}
