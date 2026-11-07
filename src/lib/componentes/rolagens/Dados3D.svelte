@@ -16,6 +16,9 @@
 	const SUMIR = 400;
 	/** Com outras rolagens na fila, a legenda fica só este tanto antes dos próximos dados caírem. */
 	const NA_FILA = 900;
+	/** Se os dados falharem em sequência, o aviso não se repete a cada rolagem. */
+	const AVISO_A_CADA = 60000;
+	let avisouEm = 0;
 
 	let camada = $state<HTMLDivElement>();
 	let visivel = $state(false);
@@ -63,11 +66,15 @@
 				visivel = false;
 				tempo = setTimeout(() => minha === vez && (limpar(), (legenda = null)), SUMIR);
 			}, rolou ? FICA : FICA - 800);
-		} catch {
+		} catch (erro) {
+			console.error('Dados 3D:', erro);
 			rolador.liberar(r.id);
 			if (minha !== vez) return;
 			visivel = false;
-			toasts.mostrar('Os dados 3D não funcionam neste navegador. As rolagens voltaram para o aviso em pixel.', 'aviso');
+			if (Date.now() - avisouEm > AVISO_A_CADA) {
+				avisouEm = Date.now();
+				toasts.mostrar('Os dados 3D falharam nesta rolagem. Ela foi para o aviso em pixel, e a próxima tenta de novo.', 'aviso');
+			}
 			rolador.voltarAoPixel(r);
 		}
 	}

@@ -38,12 +38,25 @@ export interface Body {
 	box: [number, number, number, number];
 	round?: boolean;
 }
+export type Wall = [number, number, number, number, 0 | 1 | 2 | 3 | 4];
+export interface Door {
+	x0: number;
+	y0: number;
+	x1: number;
+	y1: number;
+	open: boolean;
+}
 export type Quality = 'high' | 'low';
 export class MapPlayer {
 	static open(canvas: HTMLCanvasElement, map: Uint8Array, packUrl: string, options?: { floor?: number; quality?: Quality }): Promise<MapPlayer>;
 	onQuality: ((quality: Quality) => void) | null;
 	readonly size: { x: number; y: number };
 	bodies(): Body[];
+	standingBodies(): Body[];
+	levelsAt(x: number, y: number): number[];
+	wallsFor(meters: number): Wall[];
+	setInside(people: readonly { x: number; y: number; z: number }[]): void;
+	setDoors(doors: readonly Door[]): void;
 	setAir(air: Partial<Air>): void;
 	setLook(look: Partial<Look>): void;
 	setQuality(quality: Quality): void;

@@ -457,11 +457,13 @@
 				<span class="text-[13px] leading-[18px] text-mut">{sub}</span>
 				<span class="flex flex-wrap items-center gap-1.5">
 					<span class="inline-flex items-center gap-1.5 border-2 px-1.5 py-[3px] text-xs leading-none font-semibold" style="border-color: {cor}"><span class="h-2 w-2" style="background: {cor}"></span>{dono?.nome ?? 'Mestre'}</span>
-{#if mesa.mestre && mesa.cena?.visao === 'isometrica'}
-						<span class="inline-flex items-center border-2 border-b3 font-pixel text-[11px] leading-none font-bold" title="Elevação do token na vista isométrica (visual: o token sobe na tela)">
-							<button type="button" class="h-7 w-7" aria-label="Descer o token" disabled={(token.elevacao ?? 0) <= -20} onclick={() => mesa.atualizarToken(token.id, { elevacao: Math.max(-20, (token.elevacao ?? 0) - 1) })}>−</button>
-							<span class="min-w-[44px] px-1 text-center">ELEV {token.elevacao ?? 0} m</span>
-							<button type="button" class="h-7 w-7" aria-label="Subir o token" disabled={(token.elevacao ?? 0) >= 60} onclick={() => mesa.atualizarToken(token.id, { elevacao: Math.min(60, (token.elevacao ?? 0) + 1) })}>+</button>
+{#if mesa.cena?.visao === 'isometrica' && (mesa.relevo ? mesa.podeMover(token) : mesa.mestre)}
+						{@const descer = mesa.proximaAltura(token, -1)}
+						{@const subir = mesa.proximaAltura(token, 1)}
+						<span class="inline-flex items-center border-2 border-b3 font-pixel text-[11px] leading-none font-bold" title={mesa.relevo ? 'Sobe para o próximo lugar onde dá para ficar em pé: caixa, ponte, telhado (PageUp e PageDown)' : 'Elevação do token na vista isométrica (visual: o token sobe na tela)'}>
+							<button type="button" class="h-7 w-7" aria-label="Descer o token" disabled={descer === null} onclick={() => descer !== null && mesa.atualizarToken(token.id, { elevacao: descer })}>−</button>
+							<span class="min-w-[44px] px-1 text-center">ELEV {(token.elevacao ?? 0).toLocaleString('pt-BR', { maximumFractionDigits: 1 })} m</span>
+							<button type="button" class="h-7 w-7" aria-label="Subir o token" disabled={subir === null} onclick={() => subir !== null && mesa.atualizarToken(token.id, { elevacao: subir })}>+</button>
 						</span>
 					{/if}
 					{#if mesa.temReacao && mesa.iniciativa.ativa && token.reagiu !== undefined}<button type="button" aria-pressed={!!token.reagiu} class="inline-flex min-h-7 items-center gap-1 border-2 px-1.5 font-pixel text-[11px] leading-none font-bold {token.reagiu ? 'border-b3 text-mut line-through' : 'border-ok text-ok'}" title={token.reagiu ? 'A Reação desta rodada já foi gasta (Esquiva Ativa, Kawarimi, golpe de oportunidade). Volta na rodada nova. Clique para desfazer.' : 'Reação disponível nesta rodada. Clique quando gastar (a Esquiva Ativa e o Kawarimi marcam sozinhos).'} disabled={!mesa.podeMover(token)} onclick={() => mesa.marcarReacao(token)}>REAÇÃO</button>{/if}

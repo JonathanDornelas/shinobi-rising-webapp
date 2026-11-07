@@ -129,6 +129,16 @@ function preparar(onde: HTMLElement): Promise<Caixa> {
 		};
 		for (const d of ['d4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100']) c.DiceFactory.get(d).font = 'Pixelify Sans';
 		await c.initialize();
+		// se a placa perder o contexto, os dados somem sem erro nenhum: a próxima rolagem monta tudo de novo
+		const tela = (c.renderer as unknown as { domElement: HTMLCanvasElement }).domElement;
+		tela.addEventListener('webglcontextlost', () => {
+			console.error('Dados 3D: a placa perdeu o contexto.');
+			tela.remove();
+			if (caixa === c) caixa = null;
+			preparando = null;
+			corAtual = null;
+			comSom = false;
+		});
 		caixa = c;
 		return c;
 	})();
@@ -155,14 +165,22 @@ function girarSeEmPe(c: Caixa) {
 	c.renderer.render(c.scene, c.camera);
 }
 
-/** O WebGL existe neste navegador? Sem ele, a rolagem volta para o aviso em pixel. */
+let webgl: boolean | null = null;
+/**
+ * O WebGL existe neste navegador? Sem ele, a rolagem volta para o aviso em pixel. Pergunta uma vez e devolve o contexto da pergunta: o navegador guarda poucos por
+ * página (16) e, passado isso, apaga o mais velho, que pode ser o dos próprios dados ou o do mapa vivo.
+ */
 export function temWebgl() {
+	if (webgl !== null) return webgl;
 	try {
 		const c = document.createElement('canvas');
-		return !!(c.getContext('webgl2') ?? c.getContext('webgl'));
+		const gl = c.getContext('webgl2') ?? c.getContext('webgl');
+		gl?.getExtension('WEBGL_lose_context')?.loseContext();
+		webgl = !!gl;
 	} catch {
-		return false;
+		webgl = false;
 	}
+	return webgl;
 }
 
 /**

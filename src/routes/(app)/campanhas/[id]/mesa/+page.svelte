@@ -1057,6 +1057,13 @@ import ArvoreCenas from '#lib/componentes/mesa/ArvoreCenas.svelte';
 		const sel = mesa.tokens.find((t) => t.id === ui.sel);
 if ((k === '[' || k === ']') && cena?.visao === 'isometrica' && !cena.fundo) return void ui.girarIso(cena.iso_rotacao, k === ']' ? 1 : -1);
 		if (k === 'h' && data.mestre && sel) return void mesa.atualizarToken(sel.id, { visivel: !sel.visivel });
+		// subir e descer: telhado, ponte, caixa (num mapa vivo) ou um metro
+		if ((e.key === 'PageUp' || e.key === 'PageDown') && sel && mesa.podeMover(sel) && (mesa.relevo || mesa.mestre)) {
+			e.preventDefault();
+			const nova = mesa.proximaAltura(sel, e.key === 'PageUp' ? 1 : -1);
+			if (nova !== null) void mesa.atualizarToken(sel.id, { elevacao: nova });
+			return;
+		}
 		const dir = ({ ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] } as Record<string, [number, number]>)[e.key];
 		if (dir && sel && mesa.podeMover(sel) && cena) {
 			e.preventDefault();

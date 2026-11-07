@@ -57,6 +57,27 @@ export function lerMapaVivo(v: unknown): MapaVivo | null {
 
 export const urlMapas = (caminho: string) => `${PUBLIC_SUPABASE_URL}/storage/v1/object/public/mapas/${caminho}`;
 
+/** Um degrau: o que cabe subir ou descer andando, sem pedir. */
+const DEGRAU = 0.6;
+/** Pixels de arte por metro de altura: a escala do mapa, mais alta que a de um token sobre uma imagem. */
+export const PX_POR_METRO = 40;
+
+/**
+ * A altura de quem anda até um lugar: segue na superfície em que está, sobe ou desce um degrau, e, se ela acabou (a beira do telhado), cai
+ * na de baixo. `niveis` vem do mais baixo para o mais alto, e tem sempre o chão.
+ */
+export function alturaAoAndar(niveis: readonly number[], altura: number) {
+	const aoAlcance = niveis.filter((n) => Math.abs(n - altura) <= DEGRAU);
+	if (aoAlcance.length) return Math.max(...aoAlcance);
+	return [...niveis].reverse().find((n) => n < altura) ?? niveis[0];
+}
+
+/** A próxima superfície para cima ou para baixo, ou null se não há. */
+export function proximoNivel(niveis: readonly number[], altura: number, rumo: 1 | -1) {
+	const lista = rumo > 0 ? niveis.filter((n) => n > altura + 0.05) : niveis.filter((n) => n < altura - 0.05).reverse();
+	return lista[0] ?? null;
+}
+
 /** Quantos pixels da máscara de visão vão em cada quadrado. */
 export const PIXELS_DA_VISAO = 8;
 
@@ -89,10 +110,21 @@ function pontosEmVolta([x0, y0, x1, y1]: Corpo['box']): Ponto[] {
 	return [[x0 - f, my], [x1 + f, my], [mx, y0 - f], [mx, y1 + f], [x0 - f, y0 - f], [x1 + f, y0 - f], [x0 - f, y1 + f], [x1 + f, y1 + f]];
 }
 
+/** A névoa sem luz dinâmica, também vista de cima: o que o Mestre revelou aparece, e o que fica em pé num quadrado coberto some com ele. */
+export function pintarMascaraDaNevoa(c: CanvasRenderingContext2D, L: number, A: number, runs: readonly Run[]) {
+	c.setTransform(PIXELS_DA_VISAO, 0, 0, PIXELS_DA_VISAO, 0, 0);
+	c.globalCompositeOperation = 'source-over';
+	c.fillStyle = '#000';
+	c.fillRect(0, 0, L, A);
+	c.fillStyle = '#fff';
+	for (const [y, x0, x1] of runs) c.fillRect(x0, y, x1 - x0 + 1, 1);
+}
+
 /**
  * A máscara de visão, vista de cima: 1 píxel é 1/8 de quadrado, e mais claro é mais à vista. O motor a lê para cada pixel na
  * posição dele no mundo, então o alto de uma parede usa o chão ao lado dela. Um corpo (um prédio) não tem chão visível por
- * dentro: quem vê o chão em volta vê o corpo inteiro, com o telhado.
+ * dentro: quem vê o chão em volta vê o corpo inteiro, com o telhado. Por isso `corpos` traz só o que está de pé: um telhado
+ * escondido, cortado ou aberto para quem entrou mostra o que há embaixo, e os cômodos seguem as paredes como qualquer lugar.
  */
 export function pintarVisao(c: CanvasRenderingContext2D, L: number, A: number, visao: Visao, ambiente: Ambiente, runs: readonly Run[] | null, corpos: readonly Corpo[], revelado: (x: number, y: number) => boolean) {
 	c.setTransform(PIXELS_DA_VISAO, 0, 0, PIXELS_DA_VISAO, 0, 0);

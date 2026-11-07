@@ -1,7 +1,8 @@
 import { strToU8, zipSync } from 'fflate';
 import { describe, expect, it } from 'vitest';
 import { camposDaCena, lerFingersMap, pontosDaPeca } from './fingersmap.ts';
-import { lerMapaVivo } from './mapa-vivo.ts';
+import { alturaAoAndar, lerMapaVivo, proximoNivel } from './mapa-vivo.ts';
+import { cenaDoAviso } from './cenas.ts';
 import { caixaDaCena, cfgIso, ordemDePintura, projetar } from './projecao.ts';
 import { caixaDePe } from './objetos.ts';
 
@@ -173,5 +174,58 @@ describe('as peças antigas, de antes do mapa vivo', () => {
 		// 6 × 6, com o apoio no meio: a figura tem 6 de largura e desce 1,5
 		const fora = pontosDaPeca({ x: 10, y: 10, largura: 6, desce: 1.5 }).slice(1);
 		for (const [x, y] of fora) expect(Math.abs(x - 10) >= 3 || Math.abs(y - 10) >= 3).toBe(true);
+	});
+});
+
+describe('andar pelas alturas', () => {
+	it('segue na superfície em que está, e sobe um degrau', () => {
+		expect(alturaAoAndar([0, 3.2], 3.2)).toBe(3.2);
+		expect(alturaAoAndar([0, 3.4], 3.2)).toBe(3.4);
+		expect(alturaAoAndar([0, 0.4], 0)).toBe(0.4);
+	});
+
+	it('não sobe sozinho no que é alto', () => {
+		expect(alturaAoAndar([0, 3.2], 0)).toBe(0);
+	});
+
+	it('cai na superfície de baixo quando a sua acaba', () => {
+		expect(alturaAoAndar([0], 3.2)).toBe(0);
+		expect(alturaAoAndar([0, 0.8], 3.2)).toBe(0.8);
+	});
+
+	it('acha a próxima para cima e para baixo', () => {
+		const niveis = [0, 0.7, 3.2];
+		expect(proximoNivel(niveis, 0, 1)).toBe(0.7);
+		expect(proximoNivel(niveis, 0.7, 1)).toBe(3.2);
+		expect(proximoNivel(niveis, 3.2, 1)).toBeNull();
+		expect(proximoNivel(niveis, 3.2, -1)).toBe(0.7);
+		expect(proximoNivel(niveis, 0, -1)).toBeNull();
+	});
+});
+
+describe('o aviso de uma cena', () => {
+	const paredes = [[0, 0, 4, 0, 0]];
+
+	it('o que o aviso não traz fica como estava: o bug da luz dinâmica', () => {
+		const antiga = { id: 'c', luz_dinamica: true, paredes, reveladas: [[1, 2, 3]] };
+		const c = cenaDoAviso({ id: 'c', luz_dinamica: false } as typeof antiga, antiga);
+		expect(c).toEqual({ id: 'c', luz_dinamica: false, paredes, reveladas: [[1, 2, 3]] });
+	});
+
+	it('o que mudou vale, mesmo que vire vazio ou nulo', () => {
+		const antiga = { id: 'c', paredes, fundo: 'a' as string | null, mapa_vivo: { hora: 3 } as object | null };
+		const c = cenaDoAviso({ id: 'c', paredes: [], fundo: null, mapa_vivo: null } as typeof antiga, antiga);
+		expect(c).toEqual({ id: 'c', paredes: [], fundo: null, mapa_vivo: null });
+	});
+
+	it('uma coluna com a forma errada não entra no lugar da certa', () => {
+		const antiga = { id: 'c', paredes, iniciativa: { rodada: 2 } };
+		const c = cenaDoAviso({ id: 'c', paredes: 'unchanged_toast', iniciativa: [] } as unknown as typeof antiga, antiga);
+		expect(c).toEqual(antiga);
+	});
+
+	it('uma cena nova entra como veio', () => {
+		const nova = { id: 'c', paredes };
+		expect(cenaDoAviso(nova, undefined)).toBe(nova);
 	});
 });

@@ -390,13 +390,13 @@ describe('vista isométrica', () => {
 		await banco.como(kaito, `update mesa_cenas set visao = 'topo', iso_razao = 2, iso_rotacao = 0 where id = $1`, [ponte]);
 	});
 
-	it('a elevação do token é do Mestre: o jogador não a muda nem a cria', async () => {
+	it('quem move o token sobe com ele, em metros quebrados, e o limite vale para todos', async () => {
 		const ren = (await um(banco.como<{ id: string }>(kaito, `select id from mesa_tokens where personagem_id = (select id from personagens where nome = 'Ren' limit 1) limit 1`))).id;
 		await banco.como(kaito, `update mesa_tokens set elevacao = 3 where id = $1`, [ren]);
 		expect(await um(banco.como(bruno, `select elevacao from mesa_tokens where id = $1`, [ren]))).toEqual({ elevacao: 3 });
-		await banco.como(bruno, `update mesa_tokens set elevacao = 9, x = 8 where id = $1`, [ren]);
-		expect(await um(banco.como(bruno, `select elevacao, x from mesa_tokens where id = $1`, [ren]))).toEqual({ elevacao: 3, x: 8 });
-		await expect(banco.como(kaito, `update mesa_tokens set elevacao = 61 where id = $1`, [ren])).rejects.toThrow(/check/);
+		await banco.como(bruno, `update mesa_tokens set elevacao = 3.25, x = 8 where id = $1`, [ren]);
+		expect(await um(banco.como(bruno, `select elevacao, x from mesa_tokens where id = $1`, [ren]))).toEqual({ elevacao: 3.25, x: 8 });
+		await expect(banco.como(bruno, `update mesa_tokens set elevacao = 61 where id = $1`, [ren])).rejects.toThrow(/check/);
 		await banco.como(kaito, `update mesa_tokens set elevacao = 0 where id = $1`, [ren]);
 	});
 });

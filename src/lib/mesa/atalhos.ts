@@ -42,6 +42,7 @@ export const ATALHOS: { grupo: string; itens: Atalho[] }[] = [
 		grupo: 'Tokens e objetos',
 		itens: [
 			{ teclas: ['Setas'], acao: 'Andar 1 m com o token selecionado' },
+			{ teclas: ['PageUp', 'PageDown'], acao: 'Subir e descer com o token: telhado, ponte, caixa, escada' },
 			{ teclas: ['Ctrl', 'Setas'], acao: 'Virar a miniatura selecionada para aquele lado, sem andar; duas setas juntas viram na diagonal' },
 			{ teclas: ['Setas'], acao: 'Empurrar o objeto selecionado (Shift: 1 m)' },
 			{ teclas: ['Delete'], acao: 'Tirar o objeto selecionado' },

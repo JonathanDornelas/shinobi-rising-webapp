@@ -193,6 +193,8 @@ export interface Observador {
 	y: number;
 	/** o próprio corpo: mesmo no escuro, quem olha se vê até esse raio */
 	corpo: number;
+	/** as paredes que param este olhar, quando não são as da cena: quem está num telhado vê por cima do que é mais baixo */
+	paredes?: readonly Parede[];
 }
 export interface FonteAcesa {
 	x: number;
@@ -223,6 +225,17 @@ export class CacheVisao {
 	private paredes: readonly Parede[] | null = null;
 	private segs: Segmento[] = [];
 	private mapa = new Map<string, Ponto[]>();
+	private outros = new Map<readonly Parede[], CacheVisao>();
+	/** O guardado de quem olha por outras paredes (poucas listas: uma por altura). */
+	de(paredes: readonly Parede[]) {
+		let c = this.outros.get(paredes);
+		if (!c) {
+			if (this.outros.size > 16) this.outros.clear();
+			c = new CacheVisao();
+			this.outros.set(paredes, c);
+		}
+		return c;
+	}
 	segmentos(paredes: readonly Parede[]) {
 		if (paredes !== this.paredes) {
 			this.paredes = paredes;
@@ -250,7 +263,10 @@ export function calcularVisao(e: EntradaVisao, cache = new CacheVisao()): Visao 
 	const segs = cache.segmentos(e.paredes);
 	const cena: Caixa = { x0: 0, y0: 0, x1: e.L, y1: e.A };
 	const noLimite = (v: number, max: number) => Math.min(max - DESLOCAMENTO, Math.max(DESLOCAMENTO, v + DESLOCAMENTO));
-	const vistas = e.observadores.map((o) => cache.poligono(noLimite(o.x, e.L), noLimite(o.y, e.A), cena, segs));
+	const vistas = e.observadores.map((o) => {
+		const proprio = o.paredes ? cache.de(o.paredes) : null;
+		return (proprio ?? cache).poligono(noLimite(o.x, e.L), noLimite(o.y, e.A), cena, proprio ? proprio.segmentos(o.paredes!) : segs);
+	});
 	const fontes: FonteAcesa[] = [];
 	if (e.ambiente !== 'claro') {
 		const acender = (x: number, y: number, plena: number, penumbra: number) => {

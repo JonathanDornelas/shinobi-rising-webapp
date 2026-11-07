@@ -468,9 +468,12 @@ class Rolador {
 
 	/** Os dados 3D falharam (sem WebGL): esta rolagem e as próximas vão para o aviso em pixel. */
 	voltarAoPixel(r: Rolagem | null) {
+		// só estas rolagens: a escolha é de quem joga, e uma falha de momento não apaga os dados até recarregar a página
+		const escolhido = this.estilo;
 		this.estilo = 'pixel';
 		this.soltarTudo();
 		if (r) this.receber(r, true);
+		this.estilo = escolhido;
 	}
 
 	definirMesa(m: { id: string; nome: string }) {

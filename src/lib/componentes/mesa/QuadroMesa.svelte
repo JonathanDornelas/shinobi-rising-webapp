@@ -15,7 +15,7 @@
 	import type { MesaCena, MesaObjeto } from '#lib/supabase/banco.ts';
 	import { pontosDaPeca } from '#lib/mesa/fingersmap.ts';
 	import { figuraDaMiniatura, figuraDaSombra, figuraRedonda, corDoTema } from '#lib/mesa/figuras.ts';
-	import { PIXELS_DA_VISAO, lerMapaVivo, pintarVisao } from '#lib/mesa/mapa-vivo.ts';
+	import { PIXELS_DA_VISAO, PX_POR_METRO, lerMapaVivo, pintarMascaraDaNevoa, pintarVisao } from '#lib/mesa/mapa-vivo.ts';
 	import { MotorDaMesa, type FiguraPedida } from '#lib/mesa/motor.svelte.ts';
 	import { caminhoNevoa, celulasEntre, emRuns, grade as gradeNevoa, indice as indiceNevoa, pintar as pintarNevoa, type Run } from '#lib/mesa/nevoa.ts';
 import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as limitarObj, objetoEm, objetoEmTela, tamanhoInicial } from '#lib/mesa/objetos.ts';
@@ -76,7 +76,9 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	/** Põe de pé o que foi desenhado em (ax, ay), erguido `sobe` metros de tela; na vista de cima não faz nada. */
 	const emPe = (ax: number, ay: number, sobe = 0) => (iso ? emPeIso(ax, ay, sobe, cfgI) : undefined);
 	/** O quanto o sprite do token sobe: a base redonda toca o ponto de apoio, e a elevação soma. */
-	const sobeToken = (t: MesaToken) => 0.4 * t.tamanho + (t.elevacao ?? 0) * 0.25;
+	const sobeToken = (t: MesaToken) => 0.4 * t.tamanho + alturaNaTela(t.elevacao ?? 0);
+	/** Metros de tela de uma altura: no mapa vivo vale a escala do mapa, e o token fica mesmo em cima do telhado. */
+	const alturaNaTela = (metros: number) => metros * (mapaNoAr ? PX_POR_METRO / BASE : 0.25);
 	/**
 	 * Onde ficam os pés da miniatura, para a figura ficar inteira dentro do espaço do token e no meio dele: de cima, perto da
 	 * borda de baixo do quadrado (a figura sobe até perto da borda de cima); na isométrica, no centro do losango, como o
@@ -95,7 +97,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		// a criatura larga (deitada, comprida, de asas abertas) pega o clique no corpo inteiro
 		const meia = mini.criatura ? Math.max(0.32 * n, (Math.max(mini.pe[0], mini.w - mini.pe[0]) * H) / mini.altura) : 0.32 * n;
 		const alto = mini.criatura ? (mini.h * H) / mini.altura : H;
-		return Math.abs(tx - fx) <= meia && ty <= fy + 0.1 && ty >= fy - alto - (iso ? (t.elevacao ?? 0) * 0.25 : 0);
+		return Math.abs(tx - fx) <= meia && ty <= fy + 0.1 && ty >= fy - alto - (iso ? alturaNaTela(t.elevacao ?? 0) : 0);
 	}
 // o fundo com escala: a proporção vem da própria imagem; MOVER O FUNDO arrasta (só o Mestre) e grava ao soltar
 	let proporcaoFundo = $state(1);
@@ -397,7 +399,8 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	const pelosOlhosDoGrupo = $derived(luzLigada && (!mesa.mestre || ui.verComoGrupo));
 	const observadorDe = (t: MesaToken, comArrasto = true): Observador => {
 		const [x, y] = comArrasto && arrasto?.id === t.id ? [arrasto.x, arrasto.y] : [t.x, t.y];
-		return { x: x + t.tamanho / 2, y: y + t.tamanho / 2, corpo: t.tamanho / 2 + 0.5 };
+		const alto = (t.elevacao ?? 0) > 0 && mesa.relevo ? { paredes: mesa.paredesDe(t) } : {};
+		return { x: x + t.tamanho / 2, y: y + t.tamanho / 2, corpo: t.tamanho / 2 + 0.5, ...alto };
 	};
 	/** As luzes acesas: as do Mestre e as que os tokens à vista carregam (tocha, lampião). */
 	const luzesAcesas = (luzes: readonly Luz[], comArrasto: boolean) => [
@@ -573,16 +576,44 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		if (!chaveDoVivo) return;
 		motor.figuras(figurasDoMapa());
 	});
+	// o relevo do mapa: a altura de quem anda, e as paredes que valem em cada altura
+	$effect(() => {
+		mesa.relevo = motor.pronto ? { niveis: (x, y) => motor.niveis(x, y), paredes: (m) => motor.paredesPara(m) as readonly Parede[] } : null;
+		return () => (mesa.relevo = null);
+	});
+	// quem entra numa casa abre só aquela casa
+	$effect(() => {
+		if (!chaveDoVivo) return;
+		motor.dentro(
+			visiveis
+				.filter((t) => t.visivel)
+				.map((t) => {
+					const ar = arrasto?.id === t.id ? arrasto : null;
+					const [x, y] = ar ? [ar.x, ar.y] : [t.x, t.y];
+					return { x: x + t.tamanho / 2, y: y + t.tamanho / 2, z: ar ? mesa.alturaAo(t, x, y) : (t.elevacao ?? 0) };
+				})
+		);
+	});
+	// as portas do mapa abrem e fecham com as da cena
+	$effect(() => {
+		if (!chaveDoVivo) return;
+		motor.portas(paredes.filter((p) => ehPorta(p[4])).map((p) => ({ x0: p[0], y0: p[1], x1: p[2], y1: p[3], open: p[4] === 2 })));
+	});
 	const noMotor = (t: MesaToken) => motor.noMapa.has(t.id);
 	let telaDaVisao: HTMLCanvasElement | null = null;
+	/** Sem luz dinâmica, a névoa de quem joga também passa pelo motor. */
+	const nevoaNoMotor = $derived(!visao && nevoaLigada && (!mesa.mestre || ui.verComoGrupo));
 	$effect(() => {
 		const v = visao;
+		const nevoa = nevoaNoMotor;
 		if (!motor.pronto) return;
-		if (!v) return motor.visao(null);
+		if (!v && !nevoa) return motor.visao(null);
 		telaDaVisao ??= document.createElement('canvas');
 		const [w, h] = [L * PIXELS_DA_VISAO, A * PIXELS_DA_VISAO];
 		if (telaDaVisao.width !== w || telaDaVisao.height !== h) Object.assign(telaDaVisao, { width: w, height: h });
-		pintarVisao(telaDaVisao.getContext('2d')!, L, A, v, ambiente, memoria ? runsExibidas : null, motor.corpos, revelado);
+		const c = telaDaVisao.getContext('2d')!;
+		if (v) pintarVisao(c, L, A, v, ambiente, memoria ? runsExibidas : null, motor.corpos, revelado);
+		else pintarMascaraDaNevoa(c, L, A, runsNevoa);
 		motor.visao(telaDaVisao);
 	});
 	/** Quem o motor desenha agora, onde está: um token escondido do grupo segue no quadro, meio apagado, para o Mestre. */
@@ -595,7 +626,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 			const [cx, cy] = [x + n / 2, y + n / 2];
 			const caido = t.ferimento === 3 || t.condicoes.includes('caido');
 			const sombra = { chave: `sombra:${n}`, montar: () => figuraDaSombra(n) };
-			const z = (t.elevacao ?? 0) * 0.25 * BASE;
+			const z = (ar ? mesa.alturaAo(t, ar.x, ar.y) : (t.elevacao ?? 0)) * PX_POR_METRO;
 			const mini = miniaturaPorId(t.miniatura);
 			if (mini) {
 				const rumo = (ar ? rumoDoPasso(ar.x - t.x, ar.y - t.y) : null) ?? t.rumo ?? 0;
@@ -1349,7 +1380,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 		const reacao = provocaReacao(arrastado, destino, inimigos).map((e) => nomeCurto(e.nome));
 		const cor = info.faixa === 'normal' ? corCss(mesa.corDe(mesa.donoDe(arrastado))) : info.faixa === 'sprint' ? 'var(--acc)' : 'var(--mesa-vermelhao)';
 		const n = arrastado.tamanho / 2;
-		const barra = cena?.paredes_bloqueiam !== false && paredes.length && bloqueiaPasso(paredes, arrastado.x + n, arrastado.y + n, arrasto.x + n, arrasto.y + n);
+		const barra = cena?.paredes_bloqueiam !== false && paredes.length && bloqueiaPasso(mesa.paredesDe(arrastado), arrastado.x + n, arrastado.y + n, arrasto.x + n, arrasto.y + n);
 		const parede = barra ? (mesa.mestre ? 'atravessa uma parede (só o Mestre passa)' : 'uma parede está no caminho') : '';
 		return { ...info, cor, reacao: reacao.length ? `provoca reação de ${reacao.join(', ')}` : '', terreno: custo > metros ? `terreno difícil: ${metros} m custam ${custo} m` : '', parede };
 	});
@@ -1533,7 +1564,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 			{#if ui.sel === t.id}<ellipse cx={pe[0]} cy={pe[1]} rx={0.4 * n + 0.16} ry={0.15 * n + 0.1} fill="none" style="stroke: var(--fg)" stroke-width={F(2)} stroke-dasharray="{F(4)} {F(3)}" />{/if}
 			<ellipse cx={pe[0]} cy={pe[1]} rx={(mini.base ? 0.38 : 0.34) * n} ry={(mini.base ? 0.13 : 0.11) * n} style="fill: var(--b0); stroke: {caido ? 'var(--field)' : c}" fill-opacity={mini.base || sb ? 0 : 0.5} stroke-width={0.07} />
 		{/if}
-		<g transform={emPe(pe[0], pe[1], (t.elevacao ?? 0) * 0.25)}>
+		<g transform={emPe(pe[0], pe[1], alturaNaTela(t.elevacao ?? 0))}>
 			{#if !noMotor(t)}
 			<svg x={pe[0] - mini.pe[0] * k} y={pe[1] - mini.pe[1] * k} width={mini.w * k} height={mini.h * k} viewBox="{q * mini.w} 0 {mini.w} {mini.h}" preserveAspectRatio="none" overflow="hidden">
 				<image href={urlMiniatura(mini)} width={mini.w * 8} height={mini.h} style="image-rendering: pixelated; filter: {caido ? 'grayscale(1) brightness(.6)' : 'none'}" />

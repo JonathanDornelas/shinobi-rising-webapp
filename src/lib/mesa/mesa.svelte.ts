@@ -1,19 +1,22 @@
 // L11 · Mesa: o estado de uma cena no navegador. O que fica salvo (tokens, traços, efeitos, a cena) chega ao vivo pelo
-// postgres_changes, já filtrado pelo RLS; o que é passageiro (o arrasto dos outros, a régua sendo medida, o Apontar, o
-// molde de jutsu) vai por broadcast no canal da campanha, e a presença diz quem está na mesa.
+// postgres_changes, já filtrado pelo RLS, e o que alguém faz vai antes pelo broadcast, porque o banco está longe (ver espelho.ts).
+// O que é passageiro (o arrasto dos outros, a régua sendo medida, o Apontar, o molde de jutsu) só vai por broadcast, no canal
+// da campanha, e a presença diz quem está na mesa.
 import type { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 import { sessao } from '#lib/estado/sessao.svelte.ts';
 import { toasts } from '#lib/estado/toasts.svelte.ts';
 import { ordemIniciativa } from '#lib/rolagens/registro.ts';
 import { supabase } from '#lib/supabase/cliente.ts';
 import type { CorMesa, EntradaDiario, IniciativaCena, MesaArte, MesaCena, MesaCenaPasta, MesaEfeito, MesaJukebox, MesaObjeto, MesaToken, MesaTraco, Papel, Rolagem } from '#lib/supabase/banco.ts';
-import { mascararCena } from './cenas.ts';
+import { cenaDoAviso, mascararCena } from './cenas.ts';
+import { camposDe, Frescos, parteDaCena, parteDoToken, TABELAS_DO_ESPELHO, tokenPublico, type TabelaDoEspelho } from './espelho.ts';
 import { limitarPosicao } from './musica.ts';
 import { limpar as limparRuns } from './nevoa.ts';
 import { coresDosMembros } from './cores.ts';
 import { colocarNaOrdem, juntarManuais, tirarDaOrdem, trocarManual } from './iniciativa.ts';
 import { deslocarQuadrados, deslocarRuns, deslocarToken } from './reenquadrar.ts';
 import { lerAjustes, lerCenaMiniaturas, rumoDoPasso, type AjusteMiniaturas, type CenaMiniaturas } from './miniaturas.ts';
+import { alturaAoAndar, proximoNivel } from './mapa-vivo.ts';
 import { bloqueiaPasso, deslocarLuzes, deslocarParedes, ehPorta, limparLuzes, limparParedes, type Luz, type Parede } from './luz.ts';
 import { avancarRodada, relogiosDaCena, type Relogio } from './relogios.ts';
 import type { Quadrado } from './geometria.ts';
@@ -59,7 +62,7 @@ export interface MoldeVivo {
 	t: number;
 }
 
-type Desfazer = { tipo: 'mover'; id: string; x: number; y: number; movido: number } | { tipo: 'traco'; id: string } | { tipo: 'objeto'; id: string };
+type Desfazer = { tipo: 'mover'; id: string; x: number; y: number; movido: number; elevacao: number } | { tipo: 'traco'; id: string } | { tipo: 'objeto'; id: string };
 
 
 const sb = () => supabase();
@@ -118,16 +121,32 @@ export class Mesa {
 	private canal: RealtimeChannel | null = null;
 	private desfazer: Desfazer[] = [];
 	private ultimoEnvio: Record<string, number> = {};
-	/**
-	 * Os valores que esta tela mandou para cada campo da cena, há pouco. O aviso do banco de uma mudança nossa mais velha
-	 * pode chegar depois de uma mais nova (ligar e desligar a grade rápido, por exemplo) e desfaria a nova na tela: um aviso
-	 * que traz um valor que mandamos antes, mas não o último, é eco velho e fica de fora. Valor de outra pessoa passa sempre.
-	 */
-	private enviadosAqui = new Map<string, { valores: string[]; quando: number }>();
+	/** O que esta tela mudou ou recebeu pelo canal há pouco, por token e por cena: um aviso atrasado do banco não desfaz. */
+	private frescos = new Frescos((ms) => this.anotarAtraso(ms));
+	private atrasos: number[] = [];
+	/** Quanto o banco leva para confirmar o que o canal já trouxe. A cada 20 confirmações, uma linha no console, para medir numa sessão de verdade. */
+	private anotarAtraso(ms: number) {
+		this.atrasos.push(ms);
+		if (this.atrasos.length < 20) return;
+		console.info(`[mesa] o aviso do banco chega ${[...this.atrasos].sort((a, b) => a - b)[10]} ms depois (mediana de 20)`);
+		this.atrasos = [];
+	}
+
+	/** O que o mapa vivo sabe do relevo: onde dá para ficar em pé e que paredes valem em cada altura. Null numa cena comum. */
+	relevo = $state.raw<{ niveis: (x: number, y: number) => number[]; paredes: (metros: number) => readonly Parede[] } | null>(null);
 
 	cena = $derived(this.cenas.find((c) => c.id === this.cenaId) ?? null);
-	/** As paredes e as fontes de luz da cena, já limpas (vazias enquanto a migração não roda; ver luz.ts). */
-	paredes = $derived<Parede[]>(this.cena ? limparParedes(this.cena.paredes, this.cena.largura, this.cena.altura) : []);
+	private paredesFixas: { chave: string; lista: Parede[] } = { chave: '[]', lista: [] };
+	/**
+	 * As paredes e as fontes de luz da cena, já limpas (vazias enquanto a migração não roda; ver luz.ts). A lista só muda quando as paredes mudam: o Mestre grava o que o
+	 * grupo explorou a cada parada, e a visão de todos guarda o que já calculou enquanto a lista é a mesma.
+	 */
+	paredes = $derived.by<Parede[]>(() => {
+		const lista = this.cena ? limparParedes(this.cena.paredes, this.cena.largura, this.cena.altura) : [];
+		const chave = JSON.stringify(lista);
+		if (chave !== this.paredesFixas.chave) this.paredesFixas = { chave, lista };
+		return this.paredesFixas.lista;
+	});
 	luzes = $derived<Luz[]>(limparLuzes(this.cena?.luzes));
 	cores = $derived(coresDosMembros(this.membros));
 	// a iniciativa e o terreno vêm do banco e do Realtime: qualquer formato inesperado vira vazio, nunca uma exceção
@@ -235,19 +254,16 @@ export class Mesa {
 			switch (p.table) {
 				case 'mesa_tokens': {
 					if (apagou) return void (this.tokens = this.tokens.filter((t) => t.id !== idAntigo(p)));
-					let novo = p.new as unknown as MesaToken;
-					if (novo.cena_id !== cena) return;
-					const velho = this.tokens.find((t) => t.id === novo.id);
-					// o andar já chegou pelo broadcast: um aviso do banco com uma posição anterior a essa é velho e não volta o token
-					const a = this.andados.get(novo.id);
-					if (velho && a && Date.now() - a.quando < 4000) {
-						const k = `${novo.x},${novo.y}`;
-						if (k !== a.posicoes.at(-1) && a.posicoes.includes(k)) novo = { ...novo, x: velho.x, y: velho.y, movido: velho.movido };
-					}
+					const aviso = p.new as unknown as MesaToken;
+					if (aviso.cena_id !== cena) return;
+					const velho = this.tokens.find((t) => t.id === aviso.id);
+					const { linha: novo, confirmados } = this.frescos.filtrar(aviso.id, aviso, velho);
 					this.tokens = lista(this.tokens, this.comNome(novo));
 					// a cada mudança no estado da ficha, o banco regrava o token do personagem (a faixa de ferimento e os estados):
-					// um aviso do token sem ele ter andado nem mudado de forma é a ficha mudando em outra tela
-					const parado = velho && velho.x === novo.x && velho.y === novo.y && velho.tamanho === novo.tamanho && velho.visivel === novo.visivel && velho.elevacao === novo.elevacao;
+					// um aviso do token sem ele ter andado nem mudado de forma é a ficha mudando em outra tela. O eco de um passo que
+					// o canal já trouxe também chega com o token no mesmo lugar, e esse não é a ficha
+					const eco = confirmados.has('x') || confirmados.has('y');
+					const parado = velho && !eco && velho.x === novo.x && velho.y === novo.y && velho.tamanho === novo.tamanho && velho.visivel === novo.visivel && velho.elevacao === novo.elevacao;
 					if (novo.personagem_id && parado) this.aoMudarFicha?.(novo.personagem_id);
 					// o PV visível só muda com ferimento, PV, entrada ou saída de token: andar não pede nova leitura
 					if (this.cena?.mostrar_pv && !this.mestre && (!velho || velho.ferimento !== novo.ferimento || velho.pv !== novo.pv || velho.pv_max !== novo.pv_max)) this.lerPvs();
@@ -280,19 +296,9 @@ export class Mesa {
 						if (idAntigo(p) === cena && !this.mestre) this.trocouCena++;
 						return;
 					}
-					const c = mascararCena(p.new as unknown as MesaCena, this.mestre);
-					// colunas grandes que não mudaram podem chegar de fora do aviso (TOAST do Postgres): fica o que já estava
-					const antiga = this.cenas.find((x) => x.id === c.id);
-					if (!Array.isArray(c.terreno)) c.terreno = antiga?.terreno ?? [];
-					if (!Array.isArray(c.reveladas)) c.reveladas = antiga?.reveladas ?? [];
-					if (c.participantes != null && !Array.isArray(c.participantes)) c.participantes = antiga?.participantes ?? null;
-					if (!c.iniciativa || typeof c.iniciativa !== 'object' || Array.isArray(c.iniciativa)) c.iniciativa = antiga?.iniciativa ?? {};
-					// eco velho de uma mudança nossa (veio depois de uma mais nova): o campo fica como está aqui
-					if (antiga && c.id === this.cenaId)
-						for (const [campo, e] of this.enviadosAqui) {
-							const v = JSON.stringify((c as Record<string, unknown>)[campo]);
-							if (Date.now() - e.quando < 10000 && v !== e.valores.at(-1) && e.valores.includes(v)) (c as Record<string, unknown>)[campo] = (antiga as Record<string, unknown>)[campo];
-						}
+					const antiga = this.cenas.find((x) => x.id === (p.new as { id?: string }).id);
+					const aviso = cenaDoAviso(p.new as unknown as MesaCena, antiga);
+					const c = mascararCena(this.frescos.filtrar(`cena:${aviso.id}`, aviso, antiga).linha, this.mestre);
 					this.cenas = lista(this.cenas, c);
 					// o Mestre ativou outra cena: quem joga vai junto
 					if (!this.mestre && c.ativa && c.id !== cena) this.trocouCena++;
@@ -346,7 +352,20 @@ export class Mesa {
 				const t = payload as TracoTemporario;
 				this.temporarios = [...this.temporarios.filter((x) => x.id !== t.id), { ...t, t: Date.now() }];
 			})
-			.on('broadcast', { event: 'andou' }, ({ payload }) => this.receberAndou(payload as { id: string; x: number; y: number; movido: number }))
+			// o caminho rápido: o mesmo que o banco vai avisar, antes dele (ver espelho.ts)
+			.on('broadcast', { event: 'token' }, ({ payload }) => this.receberToken(payload))
+			.on('broadcast', { event: 'tokens' }, ({ payload }) => this.receberTokens(payload))
+			.on('broadcast', { event: 'cena' }, ({ payload }) => this.receberCena(payload))
+			.on('broadcast', { event: 'porta' }, ({ payload }) => this.receberPorta(payload))
+			.on('broadcast', { event: 'linha' }, ({ payload }) => {
+				const { tabela, linha } = payload as { tabela: TabelaDoEspelho; linha: Record<string, unknown> };
+				if (TABELAS_DO_ESPELHO.includes(tabela) && linha?.id) rotear({ table: tabela, eventType: 'INSERT', new: linha, old: {} } as unknown as RealtimePostgresChangesPayload<Record<string, unknown>>);
+			})
+			.on('broadcast', { event: 'fora' }, ({ payload }) => {
+				const { tabela, ids } = payload as { tabela: TabelaDoEspelho; ids: string[] };
+				if (!TABELAS_DO_ESPELHO.includes(tabela) || !Array.isArray(ids)) return;
+				for (const id of ids) rotear({ table: tabela, eventType: 'DELETE', new: {}, old: { id } } as unknown as RealtimePostgresChangesPayload<Record<string, unknown>>);
+			})
 			.on('broadcast', { event: 'pulso' }, ({ payload }) => (this.pulso = { token: (payload as { token: string }).token, t: Date.now() }))
 			.on('broadcast', { event: 'ping' }, ({ payload }) => this.receberPing(payload as { id: string; usuario: string; x: number; y: number }))
 			// "Olhem aqui": só o Mestre puxa a vista dos outros
@@ -362,8 +381,8 @@ export class Mesa {
 				if (this.membro(usuario)?.papel === 'mestre' && this.miniaturasAjuste) this.miniaturasAjuste = lerAjustes(dados);
 			})
 			.on('broadcast', { event: 'moldura-mesa' }, ({ payload }) => {
-				const { dados } = payload as { dados: { id: string | null; universal: boolean } };
-				this.molduraMesa = { id: molduraPorId(dados.id)?.id ?? null, universal: !!dados.universal };
+				const { usuario, dados } = payload as { usuario: string; dados: { id: string | null; universal: boolean } };
+				if (this.membro(usuario)?.papel === 'mestre') this.molduraMesa = { id: molduraPorId(dados.id)?.id ?? null, universal: !!dados.universal };
 			})
 			.on('broadcast', { event: 'moldura' }, ({ payload }) => {
 				const { usuario, dados } = payload as { usuario: string; dados: string | null };
@@ -386,6 +405,8 @@ export class Mesa {
 				this.canal?.track({ em: Date.now() });
 				// voltou depois de cair (wifi, aba dormindo): o que mudou enquanto isso não chega pelo tempo real
 				if (caiu && this.jaConectou) void this.ressincronizar(true);
+				// na primeira entrada, o que mudou entre o servidor montar a página e o canal abrir
+				else if (!this.jaConectou) void this.conferir();
 				this.jaConectou = true;
 			}));
 		if (this.cena?.mostrar_pv && !this.mestre) this.lerPvs();
@@ -407,14 +428,51 @@ export class Mesa {
 		}, ms);
 	}
 
-	/** O andar de um token que outra tela já gravou: aparece aqui sem esperar o aviso do banco (meio segundo mais tarde). */
-	private andados = new Map<string, { posicoes: string[]; quando: number }>();
-	private receberAndou(p: { id: string; x: number; y: number; movido: number; rumo?: number }) {
-		if (!p || typeof p.x !== 'number' || typeof p.y !== 'number' || !this.tokens.some((t) => t.id === p.id)) return;
-		const a = this.andados.get(p.id);
-		const posicoes = [...(a && Date.now() - a.quando < 4000 ? a.posicoes : []), `${p.x},${p.y}`].slice(-8);
-		this.andados.set(p.id, { posicoes, quando: Date.now() });
-		this.trocar(p.id, { x: p.x, y: p.y, movido: p.movido, ...(Number.isInteger(p.rumo) && p.rumo! >= 0 && p.rumo! < 8 ? { rumo: p.rumo } : {}) });
+	/** Manda pelo canal o que o banco ainda vai avisar. Sem canal, fica o aviso do banco. */
+	private avisar(evento: 'token' | 'tokens' | 'cena' | 'porta' | 'linha' | 'fora', payload: unknown) {
+		if (this.canal && this.conectado) void this.canal.send({ type: 'broadcast', event: evento, payload });
+	}
+	private espelharToken(t: MesaToken, patch: Partial<MesaToken>) {
+		const parte = t.visivel ? parteDoToken(patch) : null;
+		if (parte) this.avisar('token', { id: t.id, ...parte });
+	}
+	private espelharCena(c: MesaCena | null, patch: Partial<MesaCena>) {
+		// uma cena em preparo não está nas telas de quem joga, e o grupo não pode ler o que há nela
+		const parte = c?.ativa && this.mestre ? parteDaCena(patch) : null;
+		if (parte) this.avisar('cena', { usuario: this.eu, id: c!.id, patch: parte });
+	}
+	private receberToken(p: unknown) {
+		const t = this.tokens.find((k) => k.id === (p as { id?: string } | null)?.id);
+		const parte = t ? parteDoToken(p) : null;
+		if (!t || !parte) return;
+		this.trocar(t.id, parte);
+		if (parte.ferimento !== undefined && this.cena?.mostrar_pv && !this.mestre) this.lerPvs();
+	}
+	private receberTokens(p: unknown) {
+		const { ids, patch } = (p ?? {}) as { ids?: string[]; patch?: unknown };
+		const parte = parteDoToken(patch);
+		if (Array.isArray(ids) && parte) this.trocarVarios(ids, parte);
+	}
+	private receberCena(p: unknown) {
+		const { usuario, id, patch } = (p ?? {}) as { usuario?: string; id?: string; patch?: unknown };
+		const atual = this.cenas.find((c) => c.id === id);
+		const parte = atual ? parteDaCena(patch) : null;
+		if (!atual || !parte || this.membro(usuario)?.papel !== 'mestre') return;
+		this.frescos.marcar(`cena:${atual.id}`, parte);
+		this.cenas = this.cenas.map((c) => (c.id === atual.id ? cenaDoAviso({ ...c, ...parte }, c) : c));
+	}
+	private receberPorta(p: unknown) {
+		const { cena, i, x1, y1, tipo } = (p ?? {}) as { cena?: string; i?: number; x1?: number; y1?: number; tipo?: number };
+		const q = this.cenas.find((c) => c.id === cena)?.paredes?.[i ?? -1];
+		// a mesma porta: a lista pode ter mudado no caminho, e o banco acerta o resto
+		if (q && q[0] === x1 && q[1] === y1 && ehPorta(q[4]) && ehPorta(tipo ?? -1)) this.trocarPorta(cena!, i!, tipo!);
+	}
+	private trocarPorta(cena: string, i: number, tipo: number) {
+		const c = this.cenas.find((x) => x.id === cena);
+		if (!c?.paredes) return;
+		const paredes = c.paredes.map((q, k) => (k === i ? ([q[0], q[1], q[2], q[3], tipo] as Parede) : q));
+		this.frescos.marcar(`cena:${cena}`, { paredes });
+		this.cenas = this.cenas.map((x) => (x.id === cena ? { ...x, paredes } : x));
 	}
 
 	/**
@@ -476,12 +534,15 @@ export class Mesa {
 		]);
 		// trocou de cena no meio (ou a resposta é de outra): fica o que está
 		if (cena !== this.cenaId) return;
-		if (tk.data) this.tokens = (tk.data as MesaToken[]).map((t) => this.comNome(t));
-		if (tr.data) this.tracos = tr.data as MesaTraco[];
-		if (ef.data) this.efeitos = ef.data as MesaEfeito[];
-		if (ob.data) this.objetos = ob.data as MesaObjeto[];
+		// só troca o que mudou: uma releitura igual não refaz a visão nem o quadro, e o que acabou de mudar aqui vale mais que uma leitura que pode ser de antes
+		const igual = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
+		if (tk.data) this.aplicarTokens(tk.data as MesaToken[]);
+		if (tr.data && !igual(tr.data, this.tracos)) this.tracos = tr.data as MesaTraco[];
+		if (ef.data && !igual(ef.data, this.efeitos)) this.efeitos = ef.data as MesaEfeito[];
+		if (ob.data && !igual(ob.data, this.objetos)) this.objetos = ob.data as MesaObjeto[];
 		if (cs.data) {
-			this.cenas = (cs.data as MesaCena[]).map((c) => mascararCena(c, this.mestre));
+			const lidas = (cs.data as MesaCena[]).map((c) => this.cenaLida(c));
+			if (!igual(lidas, this.cenas)) this.cenas = lidas;
 			const atual = this.cenas.find((c) => c.id === cena);
 			// a cena foi apagada, ou o Mestre ativou outra enquanto a conexão estava fora: quem joga vai junto
 			if (!this.mestre && (!atual || this.cenas.some((c) => c.ativa && c.id !== cena))) this.trocouCena++;
@@ -490,8 +551,15 @@ export class Mesa {
 		if (this.cena?.mostrar_pv && !this.mestre) this.lerPvs();
 		this.aoRessincronizar?.(avisar);
 	}
-	/** Tokens mexidos nesta tela (e quando): a conferência não os volta enquanto a gravação ainda pode estar a caminho. */
-	private mexidoAqui = new Map<string, number>();
+	/** Uma leitura dos tokens, sem voltar o que acabou de mudar aqui: a resposta pode ser de antes da gravação. */
+	private aplicarTokens(linhas: MesaToken[]) {
+		const novos = linhas.map((t) => this.comNome(this.frescos.filtrar(t.id, t, this.tokens.find((k) => k.id === t.id)).linha));
+		if (JSON.stringify(novos) !== JSON.stringify(this.tokens)) this.tokens = novos;
+	}
+	/** Uma cena lida do banco, sem voltar o que acabou de mudar aqui. */
+	private cenaLida(c: MesaCena) {
+		return mascararCena(this.frescos.filtrar(`cena:${c.id}`, c, this.cenas.find((x) => x.id === c.id)).linha, this.mestre);
+	}
 	/**
 	 * Conferência leve: os tokens e a cena atual. Sob carga, o tempo real às vezes descarta avisos sem fechar o canal (visto
 	 * no teste de estresse); assim nada fica diferente do banco por mais que uns segundos.
@@ -501,18 +569,9 @@ export class Mesa {
 		if (!cena) return;
 		const [tk, c] = await Promise.all([sb().from('mesa_tokens').select('*').eq('cena_id', cena).order('criado_em'), sb().from('mesa_cenas').select('*').eq('id', cena).maybeSingle()]);
 		if (cena !== this.cenaId) return;
-		const agora = Date.now();
-		if (tk.data) {
-			const novos = (tk.data as MesaToken[]).map((t) => {
-				const m = this.mexidoAqui.get(t.id);
-				return (m && agora - m < 4000 && this.tokens.find((k) => k.id === t.id)) || this.comNome(t);
-			});
-			if (JSON.stringify(novos) !== JSON.stringify(this.tokens)) this.tokens = novos;
-		}
-		// a cena: só se ninguém aqui a mudou há pouco (a resposta pode ser de antes da gravação)
-		const mudouAqui = [...this.enviadosAqui.values()].some((e) => agora - e.quando < 4000);
-		if (c.data && !mudouAqui) {
-			const nova = mascararCena(c.data as MesaCena, this.mestre);
+		if (tk.data) this.aplicarTokens(tk.data as MesaToken[]);
+		if (c.data) {
+			const nova = this.cenaLida(c.data as MesaCena);
 			if (JSON.stringify(nova) !== JSON.stringify(this.cena)) this.cenas = this.cenas.map((x) => (x.id === cena ? nova : x));
 		}
 	}
@@ -646,34 +705,38 @@ export class Mesa {
 	async proximoTurno() {
 		const i = this.iniciativa;
 		if (!i.ativa || !i.ordem?.length) return;
-		let vez = (i.vez ?? 0) + 1;
-		let rodada = i.rodada ?? 1;
-		if (vez >= i.ordem.length) {
-			vez = 0;
-			rodada++;
-			// rodada nova: os efeitos em cena perdem um turno e somem no zero (um efeito de 3 turnos lançado na
-			// rodada 1 vale nas rodadas 1, 2 e 3). A tela muda na hora; o banco vai em seguida.
-			const comTurnos = this.efeitos.filter((x) => x.turnos != null);
-			const acabam = comTurnos.filter((e) => e.turnos! <= 1).map((e) => e.id);
-			this.efeitos = this.efeitos.filter((e) => !acabam.includes(e.id)).map((e) => (e.turnos != null ? { ...e, turnos: e.turnos - 1 } : e));
-			await Promise.all([
-				...(acabam.length ? [sb().from('mesa_efeitos').delete().in('id', acabam)] : []),
-				...comTurnos.filter((x) => x.turnos! > 1).map((e) => sb().from('mesa_efeitos').update({ turnos: e.turnos! - 1 }).eq('id', e.id))
-			]);
-			// e quem cresceu por um jutsu também: no zero, volta ao tamanho normal; os clones de jutsu com duração em turnos
-			// (crescido_turnos guarda o que falta) somem no zero. Tudo de uma vez, sem um token esperar o outro.
-			const crescidos = this.tokens.filter((x) => x.tamanho_base != null && x.crescido_turnos != null);
-			const clones = this.tokens.filter((x) => ehClone(x) && x.crescido_turnos != null);
-			await this.zerarReacoes();
-			await Promise.all([
-				...crescidos.map((t) => (t.crescido_turnos! <= 1 ? this.voltarAoNormal(t) : this.atualizarToken(t.id, { crescido_turnos: t.crescido_turnos! - 1 }))),
-				...clones.map((t) => (t.crescido_turnos! <= 1 ? this.remover(t.id) : this.atualizarToken(t.id, { crescido_turnos: t.crescido_turnos! - 1 })))
-			]);
-		}
-		// os relógios que contam rodadas andam junto (na mesma gravação da cena)
-		const relogios = rodada !== (i.rodada ?? 1) ? avancarRodada(this.relogios) : null;
-		await this.patchCena({ iniciativa: { ...i, vez, rodada }, ...(relogios ? { relogios } : {}) });
-		await this.zerarMovido();
+		const virou = (i.vez ?? 0) + 1 >= i.ordem.length;
+		const vez = virou ? 0 : (i.vez ?? 0) + 1;
+		const rodada = (i.rodada ?? 1) + (virou ? 1 : 0);
+		// a vez muda primeiro, para todos: é o que a mesa espera ver, e o resto da rodada vem em seguida. Os relógios que
+		// contam rodadas andam junto (na mesma gravação da cena)
+		const relogios = virou ? avancarRodada(this.relogios) : null;
+		const turno = this.patchCena({ iniciativa: { ...i, vez, rodada }, ...(relogios ? { relogios } : {}) });
+		const movido = this.zerarMovido();
+		if (virou) await this.rodadaNova();
+		await Promise.all([turno, movido]);
+	}
+
+	private async rodadaNova() {
+		// os efeitos em cena perdem um turno e somem no zero (um efeito de 3 turnos lançado na rodada 1 vale nas
+		// rodadas 1, 2 e 3). A tela muda na hora; o banco vai em seguida.
+		const comTurnos = this.efeitos.filter((x) => x.turnos != null);
+		const acabam = comTurnos.filter((e) => e.turnos! <= 1).map((e) => e.id);
+		this.efeitos = this.efeitos.filter((e) => !acabam.includes(e.id)).map((e) => (e.turnos != null ? { ...e, turnos: e.turnos - 1 } : e));
+		if (acabam.length) this.avisar('fora', { tabela: 'mesa_efeitos', ids: acabam });
+		await Promise.all([
+			...(acabam.length ? [sb().from('mesa_efeitos').delete().in('id', acabam)] : []),
+			...comTurnos.filter((x) => x.turnos! > 1).map((e) => sb().from('mesa_efeitos').update({ turnos: e.turnos! - 1 }).eq('id', e.id))
+		]);
+		// e quem cresceu por um jutsu também: no zero, volta ao tamanho normal; os clones de jutsu com duração em turnos
+		// (crescido_turnos guarda o que falta) somem no zero. Tudo de uma vez, sem um token esperar o outro.
+		const crescidos = this.tokens.filter((x) => x.tamanho_base != null && x.crescido_turnos != null);
+		const clones = this.tokens.filter((x) => ehClone(x) && x.crescido_turnos != null);
+		await this.zerarReacoes();
+		await Promise.all([
+			...crescidos.map((t) => (t.crescido_turnos! <= 1 ? this.voltarAoNormal(t) : this.atualizarToken(t.id, { crescido_turnos: t.crescido_turnos! - 1 }))),
+			...clones.map((t) => (t.crescido_turnos! <= 1 ? this.remover(t.id) : this.atualizarToken(t.id, { crescido_turnos: t.crescido_turnos! - 1 })))
+		]);
 	}
 
 	async encerrarCombate() {
@@ -704,7 +767,8 @@ export class Mesa {
 	private async zerarReacoes() {
 		const ids = this.tokens.filter((t) => t.reagiu).map((t) => t.id);
 		if (!ids.length) return;
-		this.tokens = this.tokens.map((t) => (t.reagiu ? { ...t, reagiu: false } : t));
+		this.trocarVarios(ids, { reagiu: false });
+		this.avisar('tokens', { ids: this.visiveisEntre(ids), patch: { reagiu: false } });
 		const { error } = await sb().from('mesa_tokens').update({ reagiu: false }).in('id', ids);
 		if (error) toasts.mostrar('Não foi possível zerar as Reações da rodada.', 'erro');
 	}
@@ -716,8 +780,13 @@ export class Mesa {
 
 	private async zerarMovido() {
 		const ids = this.tokens.filter((t) => t.movido > 0).map((t) => t.id);
-		if (ids.length) await sb().from('mesa_tokens').update({ movido: 0 }).in('id', ids);
+		if (!ids.length) return;
+		this.trocarVarios(ids, { movido: 0 });
+		this.avisar('tokens', { ids: this.visiveisEntre(ids), patch: { movido: 0 } });
+		await sb().from('mesa_tokens').update({ movido: 0 }).in('id', ids);
 	}
+	/** O que está escondido do grupo não passa pelo canal, nem o id. */
+	private visiveisEntre = (ids: string[]) => ids.filter((id) => this.tokens.find((t) => t.id === id)?.visivel);
 
 	// ------------------------------------------------------------------ nome escondido
 	/** Para o Mestre, o token de nome escondido mostra o nome verdadeiro (o banco guarda "???" para o grupo). */
@@ -754,35 +823,44 @@ export class Mesa {
 
 	// ------------------------------------------------------------------ tokens
 	private trocar(id: string, patch: Partial<MesaToken>) {
-		this.mexidoAqui.set(id, Date.now());
+		this.frescos.marcar(id, patch);
 		this.tokens = this.tokens.map((t) => (t.id === id ? { ...t, ...patch } : t));
+	}
+	private trocarVarios(ids: readonly string[], patch: Partial<MesaToken>) {
+		for (const id of ids) this.frescos.marcar(id, patch);
+		this.tokens = this.tokens.map((t) => (ids.includes(t.id) ? { ...t, ...patch } : t));
 	}
 
 	async atualizarToken(id: string, patch: Partial<MesaToken>, erro = 'Não foi possível salvar o token.') {
 		const antes = this.tokens.find((t) => t.id === id);
 		if (!antes) return false;
+		const volta = camposDe(antes, patch);
 		this.trocar(id, patch);
+		this.espelharToken(antes, patch);
 		const { error } = await sb().from('mesa_tokens').update(patch).eq('id', id);
 		if (error) {
-			this.trocar(id, antes);
+			this.trocar(id, volta);
+			this.espelharToken(antes, volta);
 			toasts.mostrar(/travada/i.test(error.message) ? 'Mesa travada pelo Mestre.' : erro, 'erro');
 			return false;
 		}
 		if (this.mestre && patch.visivel === false && antes.visivel) this.canal?.send({ type: 'broadcast', event: 'esconder', payload: { usuario: this.eu, tokens: [id] } });
+		// apareceu para o grupo: o nome que está aqui pode ser o verdadeiro, então o de nome escondido espera o banco
+		if (this.mestre && patch.visivel === true && !antes.visivel && !antes.nome_oculto) this.avisar('linha', { tabela: 'mesa_tokens', linha: tokenPublico({ ...antes, ...patch }) });
 		return true;
 	}
 
 	async mover(id: string, x: number, y: number, metros: number) {
 		const t = this.tokens.find((k) => k.id === id);
 		if (!t || (t.x === x && t.y === y)) return;
-		const volta = { tipo: 'mover' as const, id, x: t.x, y: t.y, movido: t.movido };
+		const volta = { tipo: 'mover' as const, id, x: t.x, y: t.y, movido: t.movido, elevacao: t.elevacao ?? 0 };
 		const movido = this.daVez.has(id) ? t.movido + metros : 0;
 		// a peça vira para onde andou (só com a coluna do rumo: a migração das miniaturas)
 		const rumo = t.rumo !== undefined ? (rumoDoPasso(x - t.x, y - t.y) ?? t.rumo) : undefined;
-		const patch = rumo !== undefined ? { x, y, movido, rumo } : { x, y, movido };
-		if (!(await this.atualizarToken(id, patch))) return;
-		this.desfazer.push(volta);
-		if (t.visivel && this.conectado) this.canal?.send({ type: 'broadcast', event: 'andou', payload: { id, ...patch } });
+		// num mapa vivo, quem anda acompanha o chão: segue no telhado em que está, ou cai se ele acaba
+		const elevacao = this.alturaAo(t, x, y);
+		const patch = { x, y, movido, ...(rumo !== undefined ? { rumo } : {}), ...(elevacao !== (t.elevacao ?? 0) ? { elevacao } : {}) };
+		if (await this.atualizarToken(id, patch)) this.desfazer.push(volta);
 	}
 
 	async colocar(novo: Partial<MesaToken> & { nome: string }) {
@@ -798,12 +876,15 @@ export class Mesa {
 		}
 		const criado = this.comNome(data as MesaToken);
 		this.tokens = this.tokens.some((t) => t.id === criado.id) ? this.tokens : [...this.tokens, criado];
+		if (criado.visivel) this.avisar('linha', { tabela: 'mesa_tokens', linha: tokenPublico(data as MesaToken) });
 		return criado;
 	}
 
 	async remover(id: string) {
 		const antes = this.tokens;
+		const ids = this.visiveisEntre(antes.filter((t) => t.id === id || t.ligado_a === id).map((t) => t.id));
 		this.tokens = this.tokens.filter((t) => t.id !== id && t.ligado_a !== id);
+		if (ids.length) this.avisar('fora', { tabela: 'mesa_tokens', ids });
 		const { error } = await sb().from('mesa_tokens').delete().eq('id', id);
 		if (error) {
 			this.tokens = antes;
@@ -821,11 +902,13 @@ export class Mesa {
 		}
 		this.desfazer.push({ tipo: 'traco', id: data.id });
 		this.tracos = this.tracos.some((t) => t.id === data.id) ? this.tracos : [...this.tracos, data as MesaTraco];
+		this.avisar('linha', { tabela: 'mesa_tracos', linha: data });
 	}
 
 	async apagarTraco(id: string) {
 		const antes = this.tracos;
 		this.tracos = this.tracos.filter((t) => t.id !== id);
+		this.avisar('fora', { tabela: 'mesa_tracos', ids: [id] });
 		const { error } = await sb().from('mesa_tracos').delete().eq('id', id);
 		if (error) this.tracos = antes;
 	}
@@ -834,8 +917,10 @@ export class Mesa {
 		if (!this.cenaId) return;
 		const q = sb().from('mesa_tracos').delete().eq('cena_id', this.cenaId);
 		const { error } = await (todos ? q : q.eq('autor_id', this.eu));
-		if (error) toasts.mostrar('Não foi possível limpar os traços.', 'erro');
-		else this.tracos = todos ? [] : this.tracos.filter((t) => t.autor_id !== this.eu);
+		if (error) return toasts.mostrar('Não foi possível limpar os traços.', 'erro');
+		const ids = this.tracos.filter((t) => todos || t.autor_id === this.eu).map((t) => t.id);
+		this.tracos = this.tracos.filter((t) => !ids.includes(t.id));
+		this.avisar('fora', { tabela: 'mesa_tracos', ids });
 	}
 
 	async deixarEfeito(nome: string, quadrados: Quadrado[], turnos: number | null, rotulo: [number, number], estilo: string | null = null) {
@@ -845,8 +930,9 @@ export class Mesa {
 			.insert({ cena_id: this.cenaId, nome: nome.slice(0, 60), quadrados, turnos, rotulo_x: rotulo[0], rotulo_y: rotulo[1], estilo })
 			.select('*')
 			.single();
-		if (error || !data) toasts.mostrar('Não foi possível deixar o efeito na cena.', 'erro');
-		else this.efeitos = this.efeitos.some((e) => e.id === data.id) ? this.efeitos : [...this.efeitos, data as MesaEfeito];
+		if (error || !data) return toasts.mostrar('Não foi possível deixar o efeito na cena.', 'erro');
+		this.efeitos = this.efeitos.some((e) => e.id === data.id) ? this.efeitos : [...this.efeitos, data as MesaEfeito];
+		this.avisar('linha', { tabela: 'mesa_efeitos', linha: data });
 	}
 
 	/** Quem pode tirar o efeito do quadro: o Mestre ou quem o deixou. */
@@ -854,6 +940,7 @@ export class Mesa {
 	async removerEfeito(id: string) {
 		const antes = this.efeitos;
 		this.efeitos = this.efeitos.filter((e) => e.id !== id);
+		this.avisar('fora', { tabela: 'mesa_efeitos', ids: [id] });
 		const { error } = await sb().from('mesa_efeitos').delete().eq('id', id);
 		if (error) {
 			this.efeitos = antes;
@@ -888,6 +975,7 @@ export class Mesa {
 		}
 		const o = data as MesaObjeto;
 		this.objetos = this.objetos.some((x) => x.id === o.id) ? this.objetos : [...this.objetos, o];
+		if (o.visivel) this.avisar('linha', { tabela: 'mesa_objetos', linha: o });
 		this.desfazer.push({ tipo: 'objeto', id: o.id });
 		return o;
 	}
@@ -896,9 +984,11 @@ export class Mesa {
 		const antes = this.objetos.find((o) => o.id === id);
 		if (!antes) return false;
 		this.objetos = this.objetos.map((o) => (o.id === id ? { ...o, ...patch } : o));
+		if (antes.visivel && patch.visivel !== false) this.avisar('linha', { tabela: 'mesa_objetos', linha: { ...antes, ...patch } });
 		const { error } = await sb().from('mesa_objetos').update(patch).eq('id', id);
 		if (error) {
 			this.objetos = this.objetos.map((o) => (o.id === id ? antes : o));
+			if (antes.visivel) this.avisar('linha', { tabela: 'mesa_objetos', linha: antes });
 			toasts.mostrar('Não foi possível salvar o objeto.', 'erro');
 			return false;
 		}
@@ -908,7 +998,9 @@ export class Mesa {
 
 	async removerObjeto(id: string) {
 		const antes = this.objetos;
+		const visivel = antes.find((o) => o.id === id)?.visivel;
 		this.objetos = this.objetos.filter((o) => o.id !== id);
+		if (visivel) this.avisar('fora', { tabela: 'mesa_objetos', ids: [id] });
 		const { error } = await sb().from('mesa_objetos').delete().eq('id', id);
 		if (error) {
 			this.objetos = antes;
@@ -1035,7 +1127,7 @@ export class Mesa {
 	async desfazerUltimo() {
 		const d = this.desfazer.pop();
 		if (!d) return false;
-		if (d.tipo === 'mover') await this.atualizarToken(d.id, { x: d.x, y: d.y, movido: d.movido });
+		if (d.tipo === 'mover') await this.atualizarToken(d.id, { x: d.x, y: d.y, movido: d.movido, elevacao: d.elevacao });
 		else if (d.tipo === 'objeto') await this.removerObjeto(d.id);
 		else await this.apagarTraco(d.id);
 		return true;
@@ -1048,17 +1140,16 @@ export class Mesa {
 		const cenaId = this.cenaId;
 		if (!cenaId) return false;
 		const antes = this.cenas;
+		const velha = this.cena;
 		this.cenas = this.cenas.map((c) => (c.id === cenaId ? { ...c, ...patch } : c));
-		for (const [campo, valor] of Object.entries(patch)) {
-			const e = this.enviadosAqui.get(campo);
-			const valores = [...(e && Date.now() - e.quando < 10000 ? e.valores : []), JSON.stringify(valor)].slice(-8);
-			this.enviadosAqui.set(campo, { valores, quando: Date.now() });
-		}
+		this.frescos.marcar(`cena:${cenaId}`, patch);
+		this.espelharCena(velha, patch);
 		const gravar = this.filaCena.then(() => sb().from('mesa_cenas').update(patch).eq('id', cenaId));
 		this.filaCena = gravar.catch(() => null);
 		const { error } = await gravar;
 		if (error) {
 			this.cenas = antes;
+			if (velha) this.espelharCena(velha, camposDe(velha, patch));
 			toasts.mostrar('Não foi possível salvar a cena.', 'erro');
 			return false;
 		}
@@ -1114,9 +1205,26 @@ export class Mesa {
 	 * Mestre passa por onde quiser. A porta aberta e a janela deixam passar.
 	 */
 	passoBarrado(t: MesaToken, x: number, y: number) {
-		if (this.mestre || this.cena?.paredes_bloqueiam === false || !this.paredes.length) return false;
+		const paredes = this.paredesDe(t);
+		if (this.mestre || this.cena?.paredes_bloqueiam === false || !paredes.length) return false;
 		const n = t.tamanho / 2;
-		return bloqueiaPasso(this.paredes, t.x + n, t.y + n, x + n, y + n);
+		return bloqueiaPasso(paredes, t.x + n, t.y + n, x + n, y + n);
+	}
+	/** As paredes que valem para o token: em cima de um telhado, o que é mais baixo que ele fica para trás. */
+	paredesDe(t: Pick<MesaToken, 'elevacao'>): readonly Parede[] {
+		return this.relevo && (t.elevacao ?? 0) > 0 ? this.relevo.paredes(t.elevacao) : this.paredes;
+	}
+	/** A altura do token ao chegar a (x, y). */
+	alturaAo(t: Pick<MesaToken, 'tamanho' | 'elevacao'>, x: number, y: number) {
+		const n = t.tamanho / 2;
+		return this.relevo ? alturaAoAndar(this.relevo.niveis(x + n, y + n), t.elevacao ?? 0) : (t.elevacao ?? 0);
+	}
+	/** Para onde o token sobe ou desce agora: a próxima superfície num mapa vivo, ou um metro numa cena comum. Null: não há para onde. */
+	proximaAltura(t: MesaToken, rumo: 1 | -1) {
+		const e = t.elevacao ?? 0;
+		if (!this.relevo) return Math.abs(e + rumo) > 60 ? null : e + rumo;
+		const n = t.tamanho / 2;
+		return proximoNivel(this.relevo.niveis(t.x + n, t.y + n), e, rumo);
 	}
 	/** Os tokens têm as colunas das miniaturas (a migração já rodou)? */
 	get temMiniaturas() {
@@ -1162,7 +1270,10 @@ export class Mesa {
 	 */
 	async escolherMiniatura(tipo: 'personagem' | 'npc', alvo: string, id: string | null) {
 		const deles = this.tokens.filter((t) => (tipo === 'personagem' ? t.personagem_id : t.npc_id) === alvo);
-		for (const t of deles) this.trocar(t.id, { miniatura: id });
+		for (const t of deles) {
+			this.trocar(t.id, { miniatura: id });
+			this.espelharToken(t, { miniatura: id });
+		}
 		const { error } = await sb().rpc('definir_miniatura', { tipo, alvo, miniatura: id });
 		if (error) {
 			for (const t of deles) this.trocar(t.id, { miniatura: t.miniatura });
@@ -1175,7 +1286,10 @@ export class Mesa {
 	async trocarMiniatura(tokens: readonly MesaToken[], id: string | null) {
 		const alvos = tokens.filter((t) => t.miniatura !== undefined && t.miniatura !== id);
 		if (!alvos.length) return true;
-		for (const t of alvos) this.trocar(t.id, { miniatura: id });
+		for (const t of alvos) {
+			this.trocar(t.id, { miniatura: id });
+			this.espelharToken(t, { miniatura: id });
+		}
 		const { error } = await sb().from('mesa_tokens').update({ miniatura: id }).in('id', alvos.map((t) => t.id));
 		if (error) {
 			for (const t of alvos) this.trocar(t.id, { miniatura: t.miniatura });
@@ -1200,12 +1314,14 @@ export class Mesa {
 		const c = this.cena;
 		const p = c?.paredes?.[i];
 		if (!c || !p || !ehPorta(p[4]) || this.somenteLeitura) return false;
-		const antes = this.cenas;
-		const nova = c.paredes!.map((q, k) => (k === i ? ([q[0], q[1], q[2], q[3], q[4] === 2 ? 1 : 2] as Parede) : q));
-		this.cenas = this.cenas.map((x) => (x.id === c.id ? { ...x, paredes: nova } : x));
-		const { error } = await sb().rpc('mesa_porta', { cena: c.id, indice: i, x1: p[0], y1: p[1] });
+		const [x1, y1, tipo] = [p[0], p[1], p[4]];
+		const nova = tipo === 2 ? 1 : 2;
+		this.trocarPorta(c.id, i, nova);
+		this.avisar('porta', { cena: c.id, i, x1, y1, tipo: nova });
+		const { error } = await sb().rpc('mesa_porta', { cena: c.id, indice: i, x1, y1 });
 		if (error) {
-			this.cenas = antes;
+			this.trocarPorta(c.id, i, tipo);
+			this.avisar('porta', { cena: c.id, i, x1, y1, tipo });
 			toasts.mostrar(/trancada|perto|mudou|travada/i.test(error.message) ? error.message : 'Não foi possível abrir a porta.', 'aviso');
 			return false;
 		}
