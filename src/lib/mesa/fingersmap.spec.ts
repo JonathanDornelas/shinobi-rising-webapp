@@ -30,6 +30,29 @@ const cena = (extra: Record<string, unknown> = {}) => ({
 const ARQUIVOS = { 'fundo.png': PNG, 'mapa.fmap': FMAP, 'pacote.json': LISTA, 'pacote.pack': GZIP };
 const pacote = (c: unknown = cena(), arquivos: Record<string, Uint8Array> = ARQUIVOS) => zipSync({ 'cena.json': strToU8(JSON.stringify(c)), ...arquivos });
 
+describe('o terreno difícil do mapa', () => {
+	it('chega à cena como os quadrados que a Mesa já conhece', () => {
+		const m = lerFingersMap(pacote(cena({ terreno: [[3, 2], [4, 2]] })));
+		expect(m.terreno).toEqual([[3, 2], [4, 2]]);
+		expect(camposDaCena(m, { x: 0, y: 0 }).terreno).toEqual([[3, 2], [4, 2]]);
+	});
+
+	it('um arquivo de antes das regiões continua abrindo, sem terreno', () => {
+		expect(lerFingersMap(pacote()).terreno).toEqual([]);
+	});
+
+	it('o que vem errado ou fora da cena fica de fora', () => {
+		const m = lerFingersMap(pacote(cena({ terreno: [[1, 1], [72, 0], [0, 72], [-1, 3], [1.5, 2], 'x', [2], null] })));
+		expect(m.terreno).toEqual([[1, 1]]);
+		expect(lerFingersMap(pacote(cena({ terreno: 'muito' }))).terreno).toEqual([]);
+	});
+
+	it('não passa do que o banco guarda', () => {
+		const muitos = Array.from({ length: 10500 }, (_, i) => [i % 72, Math.floor(i / 72) % 72]);
+		expect(lerFingersMap(pacote(cena({ terreno: muitos }))).terreno).toHaveLength(10000);
+	});
+});
+
 describe('lerFingersMap', () => {
 	it('lê a cena e os arquivos', () => {
 		const m = lerFingersMap(pacote());

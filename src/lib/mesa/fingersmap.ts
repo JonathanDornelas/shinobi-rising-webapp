@@ -36,6 +36,8 @@ export interface CenaFingersMap {
 	paredes: Parede[];
 	luzes: Luz[];
 	ambiente: Ambiente;
+	/** Os quadrados de terreno difícil marcados no mapa. */
+	terreno: [number, number][];
 }
 
 const NAO_E = 'O arquivo não é uma cena do fingersMap (.fmesa).';
@@ -44,6 +46,15 @@ const ehPng = (b: Uint8Array) => b.length > 8 && [0x89, 0x50, 0x4e, 0x47].every(
 const ehZip = (b: Uint8Array) => b.length > 4 && b[0] === 0x50 && b[1] === 0x4b;
 const ehGzip = (b: Uint8Array) => b.length > 2 && b[0] === 0x1f && b[1] === 0x8b;
 const copia = (b: Uint8Array) => new Uint8Array(b) as Bytes;
+
+/** O banco guarda até isto (mesa_cenas.terreno). */
+const MAX_TERRENO = 10000;
+/** Só quadrados de verdade, dentro da cena. Um arquivo de antes das regiões não traz nenhum. */
+function terrenoDoArquivo(v: unknown, L: number, A: number): [number, number][] {
+	if (!Array.isArray(v)) return [];
+	const valido = (q: unknown): q is [number, number] => Array.isArray(q) && q.length === 2 && Number.isInteger(q[0]) && Number.isInteger(q[1]) && q[0] >= 0 && q[1] >= 0 && q[0] < L && q[1] < A;
+	return v.filter(valido).slice(0, MAX_TERRENO);
+}
 
 const LIMITES: Record<string, number> = { 'cena.json': LIMITE_CENA, 'fundo.png': LIMITE_FUNDO, 'mapa.fmap': LIMITE_MAPA, 'pacote.json': LIMITE_ARTE, 'pacote.pack': LIMITE_ARTE };
 
@@ -103,7 +114,8 @@ export function lerFingersMap(dados: Uint8Array): CenaFingersMap {
 		},
 		paredes: limparParedes(c.paredes, L, A),
 		luzes: limparLuzes(c.luzes),
-		ambiente
+		ambiente,
+		terreno: terrenoDoArquivo(c.terreno, L, A)
 	};
 }
 
@@ -118,7 +130,7 @@ export function camposDaCena(m: CenaFingersMap, b: { x: number; y: number }) {
 		fundo_escala: m.fundo.w,
 		fundo_x: m.fundo.x - b.x,
 		fundo_y: m.fundo.y - b.y,
-		terreno: [],
+		terreno: m.terreno,
 		paredes: m.paredes,
 		luzes: m.luzes,
 		luz_ambiente: m.ambiente,
