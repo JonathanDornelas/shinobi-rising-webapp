@@ -10,6 +10,18 @@ const sala = (porta: 0 | 1 | 2 | 4): Parede[] => [
 	[5, 6, 5, 10, 0]
 ];
 
+describe('a escuridão no meio da cena clara', () => {
+	it('esconde o que está nela, a não ser com luz, e deixa o resto à vista', () => {
+		const base = { L: 10, A: 10, paredes: [], ambiente: 'claro' as const, observadores: [{ x: 1.5, y: 1.5, corpo: 1 }] };
+		const escuro = new Set([5 * 10 + 5, 5 * 10 + 6]);
+		const sem = calcularVisao({ ...base, luzes: [], escuro });
+		expect(sem.visivel(5.5, 5.5)).toBe(false);
+		expect(sem.visivel(7.5, 5.5)).toBe(true);
+		const com = calcularVisao({ ...base, luzes: [{ x: 5.5, y: 5.5, plena: 1, penumbra: 1 }], escuro });
+		expect(com.visivel(5.5, 5.5)).toBe(true);
+	});
+});
+
 describe('visão', () => {
 	it('sem paredes, vê a cena inteira; a parede esconde o que está atrás dela', () => {
 		const livre = poligonoVisao(2.5, 2.5, [], { x0: 0, y0: 0, x1: 10, y1: 10 });
@@ -40,6 +52,18 @@ describe('visão', () => {
 	});
 });
 
+describe('a escuridão no meio da cena clara', () => {
+	it('esconde o que está nela, a não ser com luz, e deixa o resto à vista', () => {
+		const base = { L: 10, A: 10, paredes: [], ambiente: 'claro' as const, observadores: [{ x: 1.5, y: 1.5, corpo: 1 }] };
+		const escuro = new Set([5 * 10 + 5, 5 * 10 + 6]);
+		const sem = calcularVisao({ ...base, luzes: [], escuro });
+		expect(sem.visivel(5.5, 5.5)).toBe(false);
+		expect(sem.visivel(7.5, 5.5)).toBe(true);
+		const com = calcularVisao({ ...base, luzes: [{ x: 5.5, y: 5.5, plena: 1, penumbra: 1 }], escuro });
+		expect(com.visivel(5.5, 5.5)).toBe(true);
+	});
+});
+
 describe('exploração', () => {
 	it('revela os quadrados que o grupo vê e para na parede', () => {
 		const g = new Uint8Array(100);
@@ -54,6 +78,18 @@ describe('exploração', () => {
 		const g = new Uint8Array(16);
 		rasterizar([[0, 0], [2, 0], [2, 2], [0, 2]], 4, 4, g);
 		expect([...g].filter(Boolean).length).toBe(4);
+	});
+});
+
+describe('a escuridão no meio da cena clara', () => {
+	it('esconde o que está nela, a não ser com luz, e deixa o resto à vista', () => {
+		const base = { L: 10, A: 10, paredes: [], ambiente: 'claro' as const, observadores: [{ x: 1.5, y: 1.5, corpo: 1 }] };
+		const escuro = new Set([5 * 10 + 5, 5 * 10 + 6]);
+		const sem = calcularVisao({ ...base, luzes: [], escuro });
+		expect(sem.visivel(5.5, 5.5)).toBe(false);
+		expect(sem.visivel(7.5, 5.5)).toBe(true);
+		const com = calcularVisao({ ...base, luzes: [{ x: 5.5, y: 5.5, plena: 1, penumbra: 1 }], escuro });
+		expect(com.visivel(5.5, 5.5)).toBe(true);
 	});
 });
 
@@ -89,6 +125,18 @@ describe('paredes', () => {
 	});
 });
 
+describe('a escuridão no meio da cena clara', () => {
+	it('esconde o que está nela, a não ser com luz, e deixa o resto à vista', () => {
+		const base = { L: 10, A: 10, paredes: [], ambiente: 'claro' as const, observadores: [{ x: 1.5, y: 1.5, corpo: 1 }] };
+		const escuro = new Set([5 * 10 + 5, 5 * 10 + 6]);
+		const sem = calcularVisao({ ...base, luzes: [], escuro });
+		expect(sem.visivel(5.5, 5.5)).toBe(false);
+		expect(sem.visivel(7.5, 5.5)).toBe(true);
+		const com = calcularVisao({ ...base, luzes: [{ x: 5.5, y: 5.5, plena: 1, penumbra: 1 }], escuro });
+		expect(com.visivel(5.5, 5.5)).toBe(true);
+	});
+});
+
 describe('Universal VTT', () => {
 	it('lê tamanho, paredes, portas, luzes e o nível de luz', () => {
 		const m = lerUvtt(
@@ -108,6 +156,18 @@ describe('Universal VTT', () => {
 		expect([m.ambiente, m.tipoImagem]).toEqual(['escuro', 'image/png']);
 		expect(ambienteDaCor('ffffffff')).toBe('claro');
 		expect(() => lerUvtt('{"resolution":{"map_size":{"x":1300,"y":10}},"image":"x"}')).toThrow(/1000 × 1000/);
+	});
+});
+
+describe('a escuridão no meio da cena clara', () => {
+	it('esconde o que está nela, a não ser com luz, e deixa o resto à vista', () => {
+		const base = { L: 10, A: 10, paredes: [], ambiente: 'claro' as const, observadores: [{ x: 1.5, y: 1.5, corpo: 1 }] };
+		const escuro = new Set([5 * 10 + 5, 5 * 10 + 6]);
+		const sem = calcularVisao({ ...base, luzes: [], escuro });
+		expect(sem.visivel(5.5, 5.5)).toBe(false);
+		expect(sem.visivel(7.5, 5.5)).toBe(true);
+		const com = calcularVisao({ ...base, luzes: [{ x: 5.5, y: 5.5, plena: 1, penumbra: 1 }], escuro });
+		expect(com.visivel(5.5, 5.5)).toBe(true);
 	});
 });
 

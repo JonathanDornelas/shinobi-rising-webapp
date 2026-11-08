@@ -31,9 +31,15 @@ export interface MapaVivo {
 	telhados: boolean;
 	/** As paredes cortadas na altura de uma pessoa, para ver dentro dos cômodos. */
 	corte: boolean;
+	/** Os quadrados de escuridão marcados no mapa: neles só se vê com luz. */
+	escuro: [number, number][];
 }
 
 const CAMINHO = /^[0-9a-f-]{36}\/[a-z0-9-]{1,60}\/[a-z0-9.-]{1,40}$/;
+/** O banco guarda até tantos quadrados de escuridão, como os de terreno difícil. */
+const MAX_ESCURO = 10000;
+const quadrados = (v: unknown): [number, number][] =>
+	Array.isArray(v) ? v.filter((q): q is [number, number] => Array.isArray(q) && q.length === 2 && Number.isInteger(q[0]) && Number.isInteger(q[1]) && q[0] >= 0 && q[1] >= 0).slice(0, MAX_ESCURO) : [];
 const entre = (v: unknown, min: number, max: number, padrao: number) => (typeof v === 'number' && Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : padrao);
 
 /** O mapa vivo da cena, se estiver em ordem. Vem do banco, mas passa aqui antes de virar pedido de rede. */
@@ -51,7 +57,8 @@ export function lerMapaVivo(v: unknown): MapaVivo | null {
 		forca: entre(m.forca, 0, 1, 0.7),
 		vento: entre(m.vento, 0, 1, 0.3),
 		telhados: m.telhados !== false,
-		corte: m.corte === true
+		corte: m.corte === true,
+		escuro: quadrados(m.escuro)
 	};
 }
 
@@ -127,7 +134,7 @@ export function pintarMascaraDaNevoa(c: CanvasRenderingContext2D, L: number, A: 
  * dentro: quem vê o chão em volta vê o corpo inteiro, com o telhado. Por isso `corpos` traz só o que está de pé: um telhado
  * escondido, cortado ou aberto para quem entrou mostra o que há embaixo, e os cômodos seguem as paredes como qualquer lugar.
  */
-export function pintarVisao(c: CanvasRenderingContext2D, L: number, A: number, visao: Visao, ambiente: Ambiente, runs: readonly Run[] | null, corpos: readonly Corpo[], revelado: (x: number, y: number) => boolean) {
+export function pintarVisao(c: CanvasRenderingContext2D, L: number, A: number, visao: Visao, ambiente: Ambiente, runs: readonly Run[] | null, corpos: readonly Corpo[], revelado: (x: number, y: number) => boolean, escuro?: ReadonlySet<number>) {
 	const px = pixelsDaVisao(L, A);
 	c.setTransform(px, 0, 0, px, 0, 0);
 	c.globalCompositeOperation = 'source-over';
@@ -146,6 +153,13 @@ export function pintarVisao(c: CanvasRenderingContext2D, L: number, A: number, v
 	if (base > 0) {
 		c.fillStyle = cinza(base);
 		c.fillRect(0, 0, L, A);
+	}
+	// a escuridão do mapa apaga o que o ambiente acendeu: ali, só a luz das fontes mostra alguma coisa
+	if (escuro?.size && base > 0) {
+		c.globalCompositeOperation = 'source-over';
+		c.fillStyle = cinza(VISTA_SEM_LUZ.escuro);
+		for (const i of escuro) c.fillRect(i % L, Math.floor(i / L), 1, 1);
+		c.globalCompositeOperation = 'lighten';
 	}
 	for (const f of visao.fontes) {
 		const r = f.plena + f.penumbra;

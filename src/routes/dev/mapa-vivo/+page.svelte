@@ -4,9 +4,9 @@
 	import RedeMesa from '#lib/componentes/mesa/RedeMesa.svelte';
 	import { Mesa } from '#lib/mesa/mesa.svelte.ts';
 	import { UiMesa } from '#lib/mesa/ui.svelte.ts';
-	import type { MesaCena, MesaToken } from '#lib/supabase/banco.ts';
+	import type { MesaCena, MesaObjeto, MesaToken } from '#lib/supabase/banco.ts';
 
-	const dados = (window as unknown as { __dados: { cena: MesaCena; tokens: MesaToken[]; mestre: boolean; rede?: boolean } }).__dados;
+	const dados = (window as unknown as { __dados: { cena: MesaCena; tokens: MesaToken[]; mestre: boolean; rede?: boolean; objetos?: MesaObjeto[] } }).__dados;
 	const mesa = new Mesa({
 		campanha: dados.cena.campanha_id,
 		eu: 'u1',
@@ -17,7 +17,7 @@
 		tokens: dados.tokens,
 		tracos: [],
 		efeitos: [],
-		objetos: [],
+		objetos: dados.objetos ?? [],
 		membros: [],
 		molduraMesa: { id: null, universal: false }
 	});

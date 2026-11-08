@@ -125,8 +125,19 @@ export class MotorDaMesa {
 	}
 
 	portas(lista: readonly Door[]) {
+		// uma porta que abre muda as paredes de quem está lá em cima: o que foi guardado por altura deixa de valer
+		if (JSON.stringify(lista) !== JSON.stringify(this.asPortas)) this.paredesPorAltura.clear();
 		this.asPortas = lista;
 		this.player?.setDoors(lista);
+	}
+
+	/** A altura de um andar do mapa, em metros, e o andar de quem está a uma altura. */
+	alturaDoAndar(andar: number) {
+		return this.player?.heightOfFloor(andar) ?? andar * 2.4;
+	}
+
+	andarDe(metros: number) {
+		return this.player?.floorOf(metros) ?? 0;
 	}
 
 	camera(olhar: Camera) {

@@ -302,11 +302,12 @@
 				fundo_ladrilhos: arte.ladrilhos ?? null,
 				...(cena.fundo_rotacao !== undefined ? { fundo_rotacao: 0 } : {}),
 				...(cena.clima !== undefined ? { clima: null } : {}),
-				mapa_vivo: { ...arquivos, andar: m.andar, acima: m.acima, ...m.ar, telhados: true, corte: false }
+				mapa_vivo: { ...arquivos, andar: m.andar, acima: m.acima, ...m.ar, telhados: true, corte: false, escuro: m.escuro }
 			});
 			await mesa.tirarPecas();
+			const notas = await mesa.marcadoresDoMapa(m.marcadores);
 			if (antes) await apagarMapaVivo(antes);
-			ui.avisar(`Mapa vivo: ${m.largura} × ${m.altura} quadrados, ${m.paredes.length} paredes e ${m.luzes.length} luzes.`);
+			ui.avisar(`Mapa vivo: ${m.largura} × ${m.altura} quadrados, ${m.paredes.length} paredes e ${m.luzes.length} luzes${notas ? `, ${notas} ${notas === 1 ? 'marcador' : 'marcadores'}` : ''}.`);
 		} catch (erro) {
 			console.error(erro);
 			toasts.mostrar(erro instanceof Error && /fingersMap|quadrados|objetos|grande/.test(erro.message) ? erro.message : 'Não foi possível importar a cena.', 'erro');

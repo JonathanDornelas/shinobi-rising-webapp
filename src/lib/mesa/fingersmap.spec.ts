@@ -30,6 +30,32 @@ const cena = (extra: Record<string, unknown> = {}) => ({
 const ARQUIVOS = { 'fundo.png': PNG, 'mapa.fmap': FMAP, 'pacote.json': LISTA, 'pacote.pack': GZIP };
 const pacote = (c: unknown = cena(), arquivos: Record<string, Uint8Array> = ARQUIVOS) => zipSync({ 'cena.json': strToU8(JSON.stringify(c)), ...arquivos });
 
+describe('o que o Mestre recebe do mapa', () => {
+	it('lê as notas, a escuridão e as portas de cima, e põe as portas depois das paredes do andar', () => {
+		const m = lerFingersMap(
+			pacote(
+				cena({
+					paredes: [[0, 0, 4, 0, 0], [5, 2, 7, 2, 1, 2], [9, 9, 9, 9, 9, 9]],
+					escuro: [[6, 6]],
+					marcadores: [
+						{ tipo: 'trap', x: 10, y: 10, nome: 'Agulhas', nota: 'CD 15', visivel: false, largura: 2, altura: 3 },
+						{ tipo: 'chest', x: 4.5, y: 4.5, nome: 'Baú', visivel: true, andar: 1 },
+						{ tipo: 'dragão', x: 1, y: 1, nome: 'x' },
+						{ tipo: 'note', x: 900, y: 1, nome: 'fora' }
+					]
+				})
+			)
+		);
+		expect(m.escuro).toEqual([[6, 6]]);
+		expect(m.portasAcima).toEqual([[5, 2, 7, 2, 1, 2]]);
+		expect(m.marcadores).toEqual([
+			{ tipo: 'trap', x: 10, y: 10, nome: 'Agulhas', nota: 'CD 15', visivel: false, largura: 2, altura: 3, andar: null },
+			{ tipo: 'chest', x: 4.5, y: 4.5, nome: 'Baú', nota: null, visivel: true, largura: null, altura: null, andar: 1 }
+		]);
+		expect(camposDaCena(m, { x: 0, y: 0 }).paredes).toEqual([[0, 0, 4, 0, 0], [5, 2, 7, 2, 1, 2]]);
+	});
+});
+
 describe('o terreno difícil do mapa', () => {
 	it('chega à cena como os quadrados que a Mesa já conhece', () => {
 		const m = lerFingersMap(pacote(cena({ terreno: [[3, 2], [4, 2]] })));
@@ -125,8 +151,12 @@ describe('camposDaCena', () => {
 describe('lerMapaVivo', () => {
 	const certo = { mapa: '11111111-2222-3333-4444-555555555555/lote-1/mapa.fmap', pacote: '11111111-2222-3333-4444-555555555555/lote-1/pacote', andar: 1, acima: true, hora: 21.5, clima: 'rain', forca: 0.4, vento: 0.1, telhados: false, corte: true };
 
-	it('lê o que a cena guarda', () => {
-		expect(lerMapaVivo(certo)).toEqual(certo);
+	it('lê o que a cena guarda, e a escuridão de uma cena de antes dela é nenhuma', () => {
+		expect(lerMapaVivo(certo)).toEqual({ ...certo, escuro: [] });
+	});
+
+	it('guarda os quadrados de escuridão e deixa de fora o que não é quadrado', () => {
+		expect(lerMapaVivo({ ...certo, escuro: [[1, 2], [3, 4], [1.5, 2], 'x', [-1, 0]] })?.escuro).toEqual([[1, 2], [3, 4]]);
 	});
 
 	it('uma cena comum não tem mapa vivo', () => {

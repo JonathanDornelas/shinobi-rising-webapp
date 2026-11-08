@@ -44,6 +44,8 @@ export interface Body {
 }
 export type Wall = [number, number, number, number, 0 | 1 | 2 | 3 | 4];
 export interface Door {
+	/** O andar da porta; sem ele, o andar da cena. */
+	floor?: number;
 	x0: number;
 	y0: number;
 	x1: number;
@@ -58,6 +60,8 @@ export class MapPlayer {
 	bodies(): Body[];
 	standingBodies(): Body[];
 	levelsAt(x: number, y: number): number[];
+	floorOf(meters: number): number;
+	heightOfFloor(floor: number): number;
 	wallsFor(meters: number): Wall[];
 	setInside(people: readonly { x: number; y: number; z: number }[]): void;
 	setDoors(doors: readonly Door[]): void;

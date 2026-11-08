@@ -222,6 +222,8 @@ export interface EntradaVisao {
 	ambiente: Ambiente;
 	luzes: readonly { x: number; y: number; plena: number; penumbra: number }[];
 	observadores: readonly Observador[];
+	/** Os quadrados de escuridão (y × L + x): neles só se vê com luz, como no ambiente escuro. */
+	escuro?: ReadonlySet<number>;
 }
 
 /** Guarda os polígonos já calculados (por posição), enquanto as paredes não mudam: arrastar um token não refaz os outros. */
@@ -280,7 +282,8 @@ export function calcularVisao(e: EntradaVisao, cache = new CacheVisao()): Visao 
 		return (proprio ?? cache).poligono(x, y, emVolta(x, y), proprio ? proprio.segmentos(o.paredes!) : segs);
 	});
 	const fontes: FonteAcesa[] = [];
-	if (e.ambiente !== 'claro') {
+	const comEscuro = !!e.escuro?.size;
+	if (e.ambiente !== 'claro' || comEscuro) {
 		const acender = (x: number, y: number, plena: number, penumbra: number) => {
 			const r = plena + penumbra;
 			if (r <= 0) return;
@@ -292,11 +295,12 @@ export function calcularVisao(e: EntradaVisao, cache = new CacheVisao()): Visao 
 		};
 		for (const l of e.luzes) acender(l.x, l.y, l.plena, l.penumbra);
 		// no escuro, cada um ainda se vê (e ao chão em volta), de perto
-		if (e.ambiente === 'escuro') for (const o of e.observadores) acender(o.x, o.y, o.corpo, 0.5);
+		if (e.ambiente === 'escuro' || comEscuro) for (const o of e.observadores) acender(o.x, o.y, o.corpo, 0.5);
 	}
 	const alcancado = (x: number, y: number) => vistas.some((v) => dentro(v, x, y));
 	const iluminado = (x: number, y: number) => fontes.some((f) => Math.hypot(x - f.x, y - f.y) <= f.plena + f.penumbra && dentro(f.poligono, x, y));
-	return { vistas, fontes, visivel: (x, y) => alcancado(x, y) && (e.ambiente !== 'escuro' || iluminado(x, y)) };
+	const precisaLuz = (x: number, y: number) => e.ambiente === 'escuro' || (comEscuro && e.escuro!.has(Math.floor(y) * e.L + Math.floor(x)));
+	return { vistas, fontes, visivel: (x, y) => alcancado(x, y) && (!precisaLuz(x, y) || iluminado(x, y)) };
 }
 
 /**
@@ -306,13 +310,14 @@ export function calcularVisao(e: EntradaVisao, cache = new CacheVisao()): Visao 
 export function explorar(e: EntradaVisao, grade: Uint8Array, cache = new CacheVisao()): boolean {
 	const v = calcularVisao(e, cache);
 	let teste: ((cx: number, cy: number, i: number) => boolean) | undefined;
-	if (e.ambiente === 'escuro') {
+	if (e.ambiente === 'escuro' || e.escuro?.size) {
 		const luz = new Uint8Array(e.L * e.A);
 		for (const f of v.fontes) {
 			const r = f.plena + f.penumbra;
 			rasterizar(f.poligono, e.L, e.A, luz, (cx, cy) => Math.hypot(cx - f.x, cy - f.y) <= r);
 		}
-		teste = (_cx, _cy, i) => luz[i] === 1;
+		const tudo = e.ambiente === 'escuro';
+		teste = (_cx, _cy, i) => luz[i] === 1 || (!tudo && !e.escuro!.has(i));
 	}
 	let mudou = false;
 	for (const p of v.vistas) mudou = rasterizar(p, e.L, e.A, grade, teste) || mudou;

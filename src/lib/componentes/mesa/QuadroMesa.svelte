@@ -417,11 +417,13 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		})
 	];
 	const cacheVisao = new CacheVisao();
+	/** A escuridão marcada no mapa vivo: neles só se vê com luz. */
+	const escuroDoMapa = $derived(new Set((lerMapaVivo(cena?.mapa_vivo)?.escuro ?? []).map(([x, y]) => y * L + x)));
 	/** O que entra na conta da visão de quem olha agora: os meus tokens (o Mestre, os do grupo). */
 	const entradaVisao = $derived.by((): EntradaVisao | null => {
 		if (!pelosOlhosDoGrupo) return null;
 		const meus = mesa.tokens.filter((t) => (mesa.mestre ? doGrupo(t) && t.visivel : t.dono_id === mesa.eu));
-		return { L, A, paredes, ambiente, luzes: luzesAcesas(luzesCena, true), observadores: meus.map((t) => observadorDe(t)) };
+		return { L, A, paredes, ambiente, luzes: luzesAcesas(luzesCena, true), observadores: meus.map((t) => observadorDe(t)), escuro: escuroDoMapa };
 	});
 	const visao = $derived(entradaVisao ? calcularVisao(entradaVisao, cacheVisao) : null);
 	/** As luzes acesas que fazem sombra nas miniaturas (com a luz dinâmica): o alcance é a luz plena mais a penumbra. */
@@ -461,7 +463,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		if (!luzLigada || !memoria || !mesa.mestre || mesa.somenteLeitura) return null;
 		const grupo = mesa.tokens.filter((t) => doGrupo(t) && t.visivel);
 		if (!grupo.length) return null;
-		return { L, A, paredes: mesa.paredes, ambiente, luzes: luzesAcesas(mesa.luzes, false), observadores: grupo.map((t) => observadorDe(t, false)) };
+		return { L, A, paredes: mesa.paredes, ambiente, luzes: luzesAcesas(mesa.luzes, false), observadores: grupo.map((t) => observadorDe(t, false)), escuro: escuroDoMapa };
 	});
 	$effect(() => {
 		const e = entradaDoGrupo;
@@ -500,6 +502,33 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 				if (!visao.visivel(x + nx, y + ny) && !visao.visivel(x - nx, y - ny)) return [];
 			}
 			return [{ i, x, y, tipo: p[4] }];
+		});
+	});
+	/**
+	 * As portas dos andares de cima, erguidas na altura do andar: o Mestre vê todas; quem joga, as do andar em que um token seu está. Clicar abre e fecha,
+	 * como as do chão, e o banco confere se o token está perto.
+	 */
+	const portasDeCima = $derived.by(() => {
+		if (!mapaNoAr || (!luzLigada && ui.ferramenta !== 'paredes')) return [];
+		const andaresMeus = new Set(mesa.tokens.filter((t) => t.dono_id === mesa.eu).map((t) => motor.andarDe(t.elevacao ?? 0)));
+		return mesa.portasAcima.flatMap((p) => (mesa.mestre || andaresMeus.has(p.andar) ? [{ i: p.i, x: (p.x1 + p.x2) / 2, y: (p.y1 + p.y2) / 2, tipo: p.tipo, z: alturaNaTela(motor.alturaDoAndar(p.andar)) }] : []));
+	});
+	/** As armadilhas do mapa (alfinetes que vieram dele com a área): o Mestre fica sabendo quando um token pisa numa. */
+	let pisadas = new Map<string, string[]>();
+	$effect(() => {
+		if (!mesa.mestre) return;
+		const armadilhas = mesa.objetos.filter((o) => o.tipo === 'alfinete' && o.camada === 'fm-trap' && o.largura && o.altura);
+		const lista = mesa.tokens;
+		untrack(() => {
+			const agora = new Map<string, string[]>();
+			for (const t of lista) {
+				const [cx, cy] = [t.x + t.tamanho / 2, t.y + t.tamanho / 2];
+				const dentro = armadilhas.filter((a) => Math.abs(cx - a.x) <= a.largura! / 2 && Math.abs(cy - a.y) <= a.altura! / 2).map((a) => a.id);
+				const antes = pisadas.get(t.id);
+				if (antes) for (const id of dentro) if (!antes.includes(id)) ui.avisar(`${t.nome} pisou na armadilha: ${armadilhas.find((a) => a.id === id)?.texto ?? 'sem nome'}.`);
+				agora.set(t.id, dentro);
+			}
+			pisadas = agora;
 		});
 	});
 	/** Mapa grande: de perto, os ladrilhos em tamanho cheio que aparecem na tela (de longe, a prévia basta). */
@@ -565,6 +594,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	const motor = new MotorDaMesa();
 	// só em desenvolvimento: o teste do mapa vivo lê o motor de fora
 	if (dev) (globalThis as unknown as { __motor?: MotorDaMesa }).__motor = motor;
+	if (dev) (globalThis as unknown as { __visao?: () => typeof visao }).__visao = () => visao;
 	let telaDoMotor = $state<HTMLCanvasElement>();
 	/** O mapa está rodando: a imagem, a grade e a escuridão do quadro dão lugar às dele. */
 	const mapaNoAr = $derived(motor.pronto && !!vivo);
@@ -608,7 +638,10 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	// as portas do mapa abrem e fecham com as da cena
 	$effect(() => {
 		if (!chaveDoVivo) return;
-		motor.portas(paredes.filter((p) => ehPorta(p[4])).map((p) => ({ x0: p[0], y0: p[1], x1: p[2], y1: p[3], open: p[4] === 2 })));
+		motor.portas([
+			...paredes.filter((p) => ehPorta(p[4])).map((p) => ({ x0: p[0], y0: p[1], x1: p[2], y1: p[3], open: p[4] === 2 })),
+			...mesa.portasAcima.map((p) => ({ x0: p.x1, y0: p.y1, x1: p.x2, y1: p.y2, open: p.tipo === 2, floor: p.andar }))
+		]);
 	});
 	const noMotor = (t: MesaToken) => motor.noMapa.has(t.id);
 	let telaDaVisao: HTMLCanvasElement | null = null;
@@ -623,7 +656,7 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 		const [w, h] = [L * pixelsDaVisao(L, A), A * pixelsDaVisao(L, A)];
 		if (telaDaVisao.width !== w || telaDaVisao.height !== h) Object.assign(telaDaVisao, { width: w, height: h });
 		const c = telaDaVisao.getContext('2d')!;
-		if (v) pintarVisao(c, L, A, v, ambiente, memoria ? runsExibidas : null, motor.corpos, revelado);
+		if (v) pintarVisao(c, L, A, v, ambiente, memoria ? runsExibidas : null, motor.corpos, revelado, escuroDoMapa);
 		else pintarMascaraDaNevoa(c, L, A, runsNevoa);
 		motor.visao(telaDaVisao);
 	});
@@ -1074,10 +1107,11 @@ import { FONTES, alcas, caixa as caixaObjeto, caixaDePe, contraste, limitar as l
 	const mesmoPonto = (x: number, y: number, p: Ponto) => Math.abs(x - p[0]) < 1e-6 && Math.abs(y - p[1]) < 1e-6;
 	/** Um clique num marcador de porta (ferramenta Mover): abre ou fecha. */
 	function portaNoClique(p: { tx: number; ty: number }): boolean {
-		if (ui.ferramenta !== 'mover' || !luzLigada || !portas.length || mesa.somenteLeitura) return false;
+		const todas: { i: number; x: number; y: number; z?: number }[] = [...portas, ...portasDeCima];
+		if (ui.ferramenta !== 'mover' || !luzLigada || !todas.length || mesa.somenteLeitura) return false;
 		const raio = Math.max(0.3, F(12));
-		const d = portas.find((q) => {
-			const [x, y] = paraTela(q.x, q.y);
+		const d = todas.find((q) => {
+			const [x, y] = paraTela(q.x, q.y, q.z ?? 0);
 			return Math.hypot(p.tx - x, p.ty - y) <= raio;
 		});
 		if (!d) return false;
@@ -2005,7 +2039,7 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 					{paredes}
 					verParedes={mesa.mestre && !ui.verComoGrupo ? (ui.ferramenta === 'paredes' ? 'forte' : luzLigada && !mapaNoAr ? 'fraco' : null) : null}
 					paredeNova={paredeNova}
-					{portas}
+					portas={[...portas, ...portasDeCima]}
 					luzes={luzesCena}
 					verLuzes={mesa.mestre && !ui.verComoGrupo ? (ui.ferramenta === 'luz' ? 'forte' : luzLigada && ambiente !== 'claro' && !mapaNoAr ? 'fraco' : null) : null}
 					luzSel={ui.luzSel}
@@ -2040,6 +2074,10 @@ function arrastarObjeto(p: { mx: number; my: number; tx: number; ty: number }, s
 					{:else}
 						{@const r = Math.max(0.3, F(7))}
 					{@const cor = o.cor ?? corCss(mesa.corDe(o.autor_id))}
+					{#if o.largura && o.altura}
+						<!-- a área de uma nota do mapa (armadilha, área secreta): deitada no chão, em volta do alfinete -->
+						<rect x={o.x - o.largura / 2} y={o.y - o.altura / 2} width={o.largura} height={o.altura} style="fill: {cor}; stroke: {cor}" fill-opacity="0.14" stroke-width={F(2)} stroke-dasharray="{F(6)} {F(4)}" opacity={o.visivel ? 1 : 0.6} pointer-events="none" />
+					{/if}
 						<g opacity={o.visivel ? 1 : 0.5} pointer-events="none" transform={emPe(o.x, o.y)}>
 							<ellipse cx={o.x} cy={o.y} rx={r * 0.7} ry={r * 0.26} fill="#000" fill-opacity="0.3" />
 						<path d="M{o.x} {o.y}L{o.x - r * 0.26} {o.y - r * 2.1}L{o.x + r * 0.26} {o.y - r * 2.1}Z" fill="#cfd3d6" style="stroke: #1b1210" stroke-width={F(1)} />

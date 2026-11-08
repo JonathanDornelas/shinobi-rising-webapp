@@ -18,6 +18,11 @@ import { colocarNaOrdem, juntarManuais, tirarDaOrdem, trocarManual } from './ini
 import { deslocarQuadrados, deslocarRuns, deslocarToken } from './reenquadrar.ts';
 import { lerAjustes, lerCenaMiniaturas, rumoDoPasso, type AjusteMiniaturas, type CenaMiniaturas } from './miniaturas.ts';
 import { alturaAoAndar, proximoNivel } from './mapa-vivo.ts';
+import type { MarcadorDoMapa, TipoDeMarcador } from './fingersmap.ts';
+
+/** Como cada nota do mapa aparece no quadro: o nome que leva se veio sem um, e a cor do alfinete. */
+const NOMES_DOS_MARCADORES: Record<TipoDeMarcador, string> = { note: 'Nota', start: 'Início', encounter: 'Encontro', chest: 'Baú', trap: 'Armadilha', 'secret-door': 'Porta secreta', 'secret-area': 'Área secreta' };
+const CORES_DOS_MARCADORES: Record<TipoDeMarcador, string> = { note: '#e9e0cc', start: '#7fc97f', encounter: '#e0704f', chest: '#e3b341', trap: '#d0453a', 'secret-door': '#9b7fd6', 'secret-area': '#6f6ad6' };
 import { bloqueiaPasso, deslocarLuzes, deslocarParedes, ehPorta, limparLuzes, limparParedes, type Luz, type Parede } from './luz.ts';
 import { avancarRodada, relogiosDaCena, type Relogio } from './relogios.ts';
 import type { Quadrado } from './geometria.ts';
@@ -563,7 +568,8 @@ export class Mesa {
 	private trocarPorta(cena: string, i: number, tipo: number) {
 		const c = this.cenas.find((x) => x.id === cena);
 		if (!c?.paredes) return;
-		const paredes = c.paredes.map((q, k) => (k === i ? ([q[0], q[1], q[2], q[3], tipo] as Parede) : q));
+		// uma porta de um andar de cima traz o andar depois do tipo, e ele fica
+		const paredes = c.paredes.map((q, k) => (k === i ? ([q[0], q[1], q[2], q[3], tipo, ...q.slice(5)] as unknown as Parede) : q));
 		this.frescos.marcar(`cena:${cena}`, { paredes });
 		this.cenas = this.cenas.map((x) => (x.id === cena ? { ...x, paredes } : x));
 	}
@@ -1315,9 +1321,17 @@ export class Mesa {
 		return this.relevo && (t.elevacao ?? 0) > 0 ? this.relevo.paredes(t.elevacao) : this.paredes;
 	}
 	/** A altura do token ao chegar a (x, y). */
-	alturaAo(t: Pick<MesaToken, 'tamanho' | 'elevacao'>, x: number, y: number) {
+	alturaAo(t: Pick<MesaToken, 'tamanho' | 'elevacao'> & Partial<Pick<MesaToken, 'x' | 'y'>>, x: number, y: number) {
 		const n = t.tamanho / 2;
-		return this.relevo ? alturaAoAndar(this.relevo.niveis(x + n, y + n), t.elevacao ?? 0) : (t.elevacao ?? 0);
+		if (!this.relevo) return t.elevacao ?? 0;
+		if (t.x === undefined || t.y === undefined) return alturaAoAndar(this.relevo.niveis(x + n, y + n), t.elevacao ?? 0);
+		// a altura segue o caminho, de quarto em quarto de quadrado: quem arrasta o token escada acima sobe degrau por degrau até o andar de cima
+		const [x0, y0] = [t.x + n, t.y + n];
+		const [dx, dy] = [x + n - x0, y + n - y0];
+		const passos = Math.max(1, Math.min(400, Math.ceil(Math.hypot(dx, dy) / 0.25)));
+		let altura = t.elevacao ?? 0;
+		for (let i = 1; i <= passos; i++) altura = alturaAoAndar(this.relevo.niveis(x0 + (dx * i) / passos, y0 + (dy * i) / passos), altura);
+		return altura;
 	}
 	/** Para onde o token sobe ou desce agora: a próxima superfície num mapa vivo, ou um metro numa cena comum. Null: não há para onde. */
 	proximaAltura(t: MesaToken, rumo: 1 | -1) {
@@ -1404,7 +1418,49 @@ export class Mesa {
 	}
 	definirParedes(paredes: Parede[]) {
 		const c = this.cena;
-		return c ? this.patchCena({ paredes: limparParedes(paredes, c.largura, c.altura) }) : Promise.resolve(false);
+		// as portas dos andares de cima ficam no fim da lista, como vieram do mapa: o Mestre mexe nas paredes do andar e elas seguem lá
+		const acima = (Array.isArray(c?.paredes) ? (c.paredes as unknown[]) : []).filter((p) => Array.isArray(p) && p.length === 6);
+		return c ? this.patchCena({ paredes: [...limparParedes(paredes, c.largura, c.altura), ...acima] as Parede[] }) : Promise.resolve(false);
+	}
+
+	/** As portas dos andares de cima, com o índice de cada uma na lista da cena: vêm depois das paredes do andar, que nunca as veem. */
+	portasAcima = $derived.by(() => {
+		const bruto = this.cena?.paredes as unknown[] | undefined;
+		if (!Array.isArray(bruto)) return [];
+		return bruto.flatMap((p, i) =>
+			Array.isArray(p) && p.length === 6 && [1, 2, 3].includes(p[4]) && Number.isInteger(p[5]) ? [{ i, x1: p[0] as number, y1: p[1] as number, x2: p[2] as number, y2: p[3] as number, tipo: p[4] as 1 | 2 | 3, andar: p[5] as number }] : []
+		);
+	});
+
+	/**
+	 * Troca as notas de um mapa importado: as antigas saem (as de camada fm-…) e as novas entram de uma vez. Cada uma vira um alfinete com o tipo na camada,
+	 * e a nota, um texto logo abaixo. Escondidas do grupo, a não ser as marcadas como à vista: quem não é Mestre nem as recebe do banco.
+	 */
+	async marcadoresDoMapa(lista: readonly MarcadorDoMapa[]) {
+		const cena = this.cenaId;
+		if (!cena) return 0;
+		const antigas = this.objetos.filter((o) => o.camada?.startsWith('fm-'));
+		if (antigas.length) {
+			const { error } = await sb().from('mesa_objetos').delete().eq('cena_id', cena).like('camada', 'fm-%');
+			if (error) throw error;
+			this.objetos = this.objetos.filter((o) => !o.camada?.startsWith('fm-'));
+			const vistas = antigas.filter((o) => o.visivel).map((o) => o.id);
+			if (vistas.length) this.avisar('fora', { tabela: 'mesa_objetos', ids: vistas });
+		}
+		if (!lista.length) return 0;
+		const linhas = lista.flatMap((m) => {
+			const camada = `fm-${m.tipo}`;
+			const nome = `${m.nome || NOMES_DOS_MARCADORES[m.tipo]}${m.andar ? ` (${m.andar + 1}º andar)` : ''}`.slice(0, 40);
+			const base = { cena_id: cena, autor_id: this.eu, visivel: m.visivel, camada };
+			const pino = { ...base, tipo: 'alfinete' as const, x: m.x, y: m.y, texto: nome, cor: CORES_DOS_MARCADORES[m.tipo], largura: m.largura, altura: m.altura };
+			return m.nota ? [pino, { ...base, tipo: 'texto' as const, x: m.x, y: m.y + 0.9, texto: m.nota, tamanho: 0.35, fonte: 'sans' as const, cor: '#f4e4d6' }] : [pino];
+		});
+		const { data, error } = await sb().from('mesa_objetos').insert(linhas).select('*');
+		if (error) throw error;
+		const novas = (data ?? []) as MesaObjeto[];
+		this.objetos = [...this.objetos, ...novas];
+		for (const o of novas) if (o.visivel) this.avisar('linha', { tabela: 'mesa_objetos', linha: o });
+		return lista.length;
 	}
 	definirLuzes(luzes: Luz[]) {
 		return this.patchCena({ luzes: limparLuzes(luzes) });

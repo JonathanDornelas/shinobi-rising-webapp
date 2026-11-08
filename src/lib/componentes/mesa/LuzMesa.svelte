@@ -43,13 +43,14 @@
 		verParedes: 'forte' | 'fraco' | null;
 		paredeNova: { a: Ponto; b: Ponto; tipo: number } | null;
 		/** os marcadores de porta que aparecem (o grupo vê só os que estão à vista) */
-		portas: { i: number; x: number; y: number; tipo: number }[];
+		/** `z`: as de um andar de cima ficam erguidas a essa altura, em metros de tela. */
+		portas: { i: number; x: number; y: number; tipo: number; z?: number }[];
 		luzes: readonly Luz[];
 		/** 'forte' com a ferramenta Luz (os alcances e as alças); 'fraco' só as chamas, para o Mestre lembrar onde estão */
 		verLuzes: 'forte' | 'fraco' | null;
 		luzSel: string | null;
 		/** da grade para a tela (na isométrica, projeta) e o grupo que desfaz a projeção (o que fica "de pé") */
-		tela: (x: number, y: number) => [number, number];
+		tela: (x: number, y: number, z?: number) => [number, number];
 		desfazer: string | undefined;
 	} = $props();
 
@@ -170,7 +171,7 @@
 	<!-- portas: um clique abre e fecha (o jogador, de perto); a trancada mostra o cadeado -->
 	<g transform={desfazer} pointer-events="none">
 		{#each portas as d (d.i)}
-			{@const [x, y] = tela(d.x, d.y)}
+			{@const [x, y] = tela(d.x, d.y, d.z ?? 0)}
 			<rect x={x - F(8)} y={y - F(8)} width={F(16)} height={F(16)} style="fill: var(--b0); stroke: {COR[d.tipo]}" stroke-width={F(2)} />
 			{#if d.tipo === 3}
 				<path d="M{x - F(4)} {y - F(1)}h{F(8)}v{F(6)}h{-F(8)}z M{x - F(2.5)} {y - F(1)}v{-F(2)}a{F(2.5)} {F(2.5)} 0 0 1 {F(5)} 0v{F(2)}" style="fill: none; stroke: {COR[3]}" stroke-width={F(1.6)} />

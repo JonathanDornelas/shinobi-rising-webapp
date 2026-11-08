@@ -38,6 +38,54 @@ export interface CenaFingersMap {
 	ambiente: Ambiente;
 	/** Os quadrados de terreno difícil marcados no mapa. */
 	terreno: [number, number][];
+	/** Os quadrados de escuridão: neles só se vê com luz. */
+	escuro: [number, number][];
+	/** As portas dos andares de cima: o trecho, o tipo e o andar. Vão para o fim da lista de paredes da cena. */
+	portasAcima: PortaAcima[];
+	/** As notas do mapa para o Mestre: viram alfinetes que só ele vê, a não ser as marcadas como à vista. */
+	marcadores: MarcadorDoMapa[];
+}
+
+export type PortaAcima = [number, number, number, number, 1 | 2 | 3, number];
+
+export const TIPOS_DE_MARCADOR = ['note', 'start', 'encounter', 'chest', 'trap', 'secret-door', 'secret-area'] as const;
+export type TipoDeMarcador = (typeof TIPOS_DE_MARCADOR)[number];
+export interface MarcadorDoMapa {
+	tipo: TipoDeMarcador;
+	x: number;
+	y: number;
+	nome: string;
+	nota: string | null;
+	visivel: boolean;
+	/** Só a armadilha e a área secreta: o retângulo em volta do ponto, em quadrados. */
+	largura: number | null;
+	altura: number | null;
+	andar: number | null;
+}
+
+/** As notas que vieram no arquivo, conferidas. */
+function marcadoresDoArquivo(v: unknown, L: number, A: number): MarcadorDoMapa[] {
+	if (!Array.isArray(v)) return [];
+	return v
+		.filter((m): m is Record<string, unknown> => !!m && typeof m === 'object' && TIPOS_DE_MARCADOR.includes((m as { tipo: TipoDeMarcador }).tipo) && num((m as { x: unknown }).x, 0, L) && num((m as { y: unknown }).y, 0, A))
+		.slice(0, 200)
+		.map((m) => ({
+			tipo: m.tipo as TipoDeMarcador,
+			x: m.x as number,
+			y: m.y as number,
+			nome: typeof m.nome === 'string' ? m.nome.trim().slice(0, 40) : '',
+			nota: typeof m.nota === 'string' && m.nota.trim() ? m.nota.trim().slice(0, 300) : null,
+			visivel: m.visivel === true,
+			largura: num(m.largura, 0.25, 400) ? m.largura : null,
+			altura: num(m.altura, 0.25, 400) ? m.altura : null,
+			andar: num(m.andar, 1, 15) ? Math.round(m.andar) : null
+		}));
+}
+
+/** As portas de cima: seis números, o tipo de porta e o andar. */
+function portasAcimaDoArquivo(v: unknown, L: number, A: number): PortaAcima[] {
+	if (!Array.isArray(v)) return [];
+	return v.filter((p): p is PortaAcima => Array.isArray(p) && p.length === 6 && p.every((n) => typeof n === 'number' && Number.isFinite(n)) && [1, 2, 3].includes(p[4]) && Number.isInteger(p[5]) && p[5] >= 1 && p[5] <= 15 && [p[0], p[2]].every((x) => x >= -1 && x <= L + 1) && [p[1], p[3]].every((y) => y >= -1 && y <= A + 1));
 }
 
 const NAO_E = 'O arquivo não é uma cena do fingersMap (.fmesa).';
@@ -115,7 +163,10 @@ export function lerFingersMap(dados: Uint8Array): CenaFingersMap {
 		paredes: limparParedes(c.paredes, L, A),
 		luzes: limparLuzes(c.luzes),
 		ambiente,
-		terreno: terrenoDoArquivo(c.terreno, L, A)
+		terreno: terrenoDoArquivo(c.terreno, L, A),
+		escuro: terrenoDoArquivo(c.escuro, L, A),
+		portasAcima: portasAcimaDoArquivo(c.paredes, L, A),
+		marcadores: marcadoresDoArquivo(c.marcadores, L, A)
 	};
 }
 
@@ -131,7 +182,8 @@ export function camposDaCena(m: CenaFingersMap, b: { x: number; y: number }) {
 		fundo_x: m.fundo.x - b.x,
 		fundo_y: m.fundo.y - b.y,
 		terreno: m.terreno,
-		paredes: m.paredes,
+		// as paredes do andar primeiro: os índices delas são os mesmos com ou sem as portas de cima, que vêm depois
+		paredes: [...m.paredes, ...m.portasAcima] as unknown as Parede[],
 		luzes: m.luzes,
 		luz_ambiente: m.ambiente,
 		luz_dinamica: true,
